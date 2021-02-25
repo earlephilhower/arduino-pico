@@ -15,6 +15,8 @@ To install:
 mkdir -p ~/Arduino/hardware/pico
 git clone https://github.com/earlephilhower/arduino-pico.git ~/Arduino/hardware/pico/rp2040
 cd ~/Arduino/hardware/pico/rp2040/system
+git submodule init
+git submodule update
 python3 ./get.py
 `````
 
