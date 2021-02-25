@@ -15,20 +15,18 @@
 */
 
 #include <Arduino.h>
-#include "/home/earle/src/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h"
-#include "/home/earle/src/pico/pico-sdk/src/rp2_common/hardware_pwm/include/hardware/pwm.h"
-#include "/home/earle/src/pico/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h"
-#include "/home/earle/src/pico/pico-sdk/src/rp2_common/hardware_pll/include/hardware/pll.h"
-#include "/home/earle/src/pico/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h"
-
-extern "C" {
+#include "../../pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h"
+#include "../../pico-sdk/src/rp2_common/hardware_pwm/include/hardware/pwm.h"
+#include "../../pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h"
+#include "../../pico-sdk/src/rp2_common/hardware_pll/include/hardware/pll.h"
+#include "../../pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h"
 
 static int32_t analogScale = 255;
 static uint32_t analogMap = 0;
 static uint16_t analogFreq = 1000;
 static bool pwmInitted = false;
 
-void analogWriteFreq(uint32_t freq) {
+extern "C" void analogWriteFreq(uint32_t freq) {
   if (freq == analogFreq) {
     return;
   }
@@ -42,7 +40,7 @@ void analogWriteFreq(uint32_t freq) {
   pwmInitted = false;
 }
 
-void analogWriteRange(uint32_t range) {
+extern "C" void analogWriteRange(uint32_t range) {
   if (range == analogScale) {
     return;
   }
@@ -52,13 +50,13 @@ void analogWriteRange(uint32_t range) {
   }
 }
 
-void analogWriteResolution(int res) {
+extern "C" void analogWriteResolution(int res) {
   if ((res >= 4) && (res <= 16)) {
     analogWriteRange((1 << res) - 1);
   }
 }
 
-void analogWrite(pin_size_t pin, int val) {
+extern "C" void analogWrite(pin_size_t pin, int val) {
   if (!pwmInitted) {
     pwm_config c = pwm_get_default_config();
     pwm_config_set_clkdiv( &c, clock_get_hz(clk_sys) / 1.0 * (analogScale * analogFreq) );
@@ -79,4 +77,3 @@ void analogWrite(pin_size_t pin, int val) {
   pwm_set_gpio_level(pin, val);
 }
 
-}

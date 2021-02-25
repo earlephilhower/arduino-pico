@@ -1,10 +1,7 @@
 #include "Arduino.h"
-#include "/home/earle/src/pico/pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h"
-#ifdef __cplusplus
- extern "C" {
-#endif
+#include "../../pico-sdk/src/rp2_common/hardware_gpio/include/hardware/gpio.h"
 
-void pinMode( pin_size_t ulPin, PinMode ulMode )
+extern "C" void pinMode( pin_size_t ulPin, PinMode ulMode )
 {
 	switch (ulMode) {
 		case INPUT:
@@ -31,7 +28,7 @@ void pinMode( pin_size_t ulPin, PinMode ulMode )
 	}
 }
 
-void digitalWrite( pin_size_t ulPin, PinStatus ulVal )
+extern "C" void digitalWrite( pin_size_t ulPin, PinStatus ulVal )
 {
 	if (!gpio_is_dir_out(ulPin)) {
 		if (ulVal == LOW) {
@@ -44,11 +41,8 @@ void digitalWrite( pin_size_t ulPin, PinStatus ulVal )
 	}
 }
 
-PinStatus digitalRead( pin_size_t ulPin )
+extern "C" PinStatus digitalRead( pin_size_t ulPin )
 {
 	return gpio_get(ulPin) ? HIGH : LOW;
 }
 
-#ifdef __cplusplus
-}
-#endif
