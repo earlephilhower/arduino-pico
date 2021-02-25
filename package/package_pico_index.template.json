@@ -1,0 +1,125 @@
+{
+   "packages": [
+      {
+         "name": "Raspberry Pi Pico",
+         "maintainer": "Earle F. Philhwoer, III",
+         "websiteURL": "https://github.com/earlephilhower/arduino-pico",
+         "email": "earlephilhower@yahoo.com",
+         "help": {
+            "online": "https://github.com/earlephilhower/arduino-pico"
+         },
+         "platforms": [
+            {
+               "category": "Raspberry Pi Pico",
+               "name": "rpipico",
+               "url": "",
+               "version": "",
+               "architecture": "rp2040",
+               "archiveFileName": "",
+               "boards": [
+                  {
+                     "name": "Raspberry Pi Pico"
+                  }
+               ],
+               "toolsDependencies": [
+                  {
+                     "packager": "efp3",
+                     "version": "0.0.1-alpha",
+                     "name": "pqt-gcc"
+                  },
+                  {
+                     "packager": "efp3",
+                     "version": "0.0.1-alpha",
+                     "name": "pqt-mklittlefs"
+                  },
+                  {
+                     "packager": "efp3",
+                     "version": "0.0.1-alpha",
+                     "name": "pqt-elf2uf2"
+                  },
+                  {
+                     "packager": "efp3",
+                     "version": "0.0.1-alpha",
+                     "name": "pqt-pioasm"
+                  },
+                  {
+                     "packager": "efp3",
+                     "version": "0.0.1-alpha",
+                     "name": "pqt-python3"
+                  }
+               ],
+               "help": {
+                  "online": ""
+               }
+            }
+         ],
+         "tools": [
+            {
+               "version": "0.0.1-alpha",
+               "name": "pqt-python3",
+               "systems": [
+                  {
+                     "host": "x86_64-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/python3-via-env.tar.gz",
+                     "archiveFileName": "python3-via-env.tar.gz",
+                     "checksum": "SHA-256:c9237bfe0f62842d7187a39495baa4a7e3ab8b87c0b433614294b023cf0bc0f3",
+                     "size": "292"
+                  }
+               ]
+            },
+            {
+               "version": "0.0.1-alpha",
+               "name": "pqt-gcc",
+               "systems": [
+                 {
+                     "host": "x86_64-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.arm-none-eabi-482adf8.210217.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.arm-none-eabi-482adf8.210217.tar.gz",
+                     "checksum": "SHA-256:9a2e035c8f445c7fe7fe98e67a5b758b6246b13f9461fa3a9db3a4e2a5dfb486",
+                     "size": "106268157"
+                  }
+               ]
+            },
+            {
+               "version": "0.0.1-alpha",
+               "name": "pqt-elf2uf2",
+               "systems": [
+                  {
+                     "host": "x86_64-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.elf2uf2-0f3b795.210217.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.elf2uf2-0f3b795.210217.tar.gz",
+                     "checksum": "SHA-256:ab56df8c2faf286ad0e8e69bc75eaca07ef5467dbf4fcaaa2b8b5bbbdd8e6143",
+                     "size": "23974"
+                  }
+               ]
+            },
+            {
+               "version": "0.0.1-alpha",
+               "name": "pqt-pioasm",
+               "systems": [
+                  {
+                     "host": "x86_64-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.pioasm-0f3b795.210217.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.pioasm-0f3b795.210217.tar.gz",
+                     "checksum": "SHA-256:b058320b912a0f957b1c6121afe64d9ddf370e674bab782e86c5fcdf626b4f0b",
+                     "size": "159440"
+                  }
+               ]
+            },
+            {
+               "version": "0.0.1-alpha",
+               "name": "pqt-mklittlefs",
+               "systems": [
+                  {
+                     "host": "x86_64-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.mklittlefs-6b5c62d.210217.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.mklittlefs-6b5c62d.210217.tar.gz",
+                     "checksum": "SHA-256:e7bc64beb40386f29f85a02e6ef4b7944d174064d46051402958a47b5a61eb1b",
+                     "size": "46930"
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

@@ -1,0 +1,6 @@
+{
+    "name": "framework-arduinopico",
+    "description": "Arduino Wiring-based Framework (RPi Pico RP2040)",
+    "url": "https://github.com/esrlephilhower/arduino-pico",
+    "version": "0.0.1-dev"
+}
