@@ -10,3 +10,5 @@ Only delay, analogWrite, and digitalWrite are implemented now.  The biggest hurd
 Presently, a manually build `pico.a` file is generated using objects compiled by `cmake` in the pico-examples repo, but in the future this will be scripted and automated.
 
 There is automated discovery of boards in bootloader mode, so they show up in the IDE, and the upload command works using the Microsoft UF2 tool (included).
+
+To install: `mkdir -p ~/Arduino/hardware/pico; git clone https://github.com/earlephilhower/arduino-pico.git ~/Arduino/hardware/pico/rp2040`
