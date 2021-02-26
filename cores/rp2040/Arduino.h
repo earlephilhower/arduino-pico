@@ -38,6 +38,7 @@ void analogWrite(pin_size_t pinNumber, int value);
 
 void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
+unsigned long millis();
 
 
 #ifdef __cplusplus
