@@ -44,6 +44,10 @@ void delayMicroseconds(unsigned int us);
 } // extern "C"
 #endif
 
+#ifdef __cplusplus
+#include "SerialUSB.h"
+#endif
+
 
 // ARM toolchain doesn't provide itoa etc, provide them
 #include "api/itoa.h"
