@@ -29,12 +29,20 @@ typedef uint8_t pin_size_t;
 
 
 void pinMode(pin_size_t pinNumber, PinMode pinMode);
+
+// SIO (GPIO)
 void digitalWrite(pin_size_t pinNumber, PinStatus status);
 PinStatus digitalRead(pin_size_t pinNumber);
 
+// ADC
+static const pin_size_t A0 = 26;
+static const pin_size_t A1 = 27;
+static const pin_size_t A2 = 28;
+static const pin_size_t A3 = 29;
+int analogRead(pin_size_t pinNumber);
 
+// PWM
 void analogWrite(pin_size_t pinNumber, int value);
-
 
 void delay(unsigned long);
 void delayMicroseconds(unsigned int us);

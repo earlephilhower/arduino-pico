@@ -20,6 +20,7 @@
 #include "../../pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h"
 #include "../../pico-sdk/src/rp2_common/hardware_pll/include/hardware/pll.h"
 #include "../../pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h"
+#include "../../pico-sdk/src/rp2_common/hardware_adc/include/hardware/adc.h"
 
 static int32_t analogScale = 255;
 static uint32_t analogMap = 0;
@@ -75,5 +76,18 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
 
   gpio_set_function(pin, GPIO_FUNC_PWM);
   pwm_set_gpio_level(pin, val);
+}
+
+extern "C" int analogRead(pin_size_t pinNumber) {
+  if ((pinNumber < A0) || (pinNumber > A3)) {
+    return 0;
+  }
+  static bool adcInitted = false;
+  if (!adcInitted) {
+    adc_init();
+  }
+  adc_gpio_init(pinNumber);
+  adc_select_input(pinNumber - A0);
+  return adc_read();
 }
 
