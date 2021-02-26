@@ -26,7 +26,7 @@ typedef enum {
 } PinMode;
 
 typedef uint8_t pin_size_t;
-
+#include <pins_arduino.h>
 
 void pinMode(pin_size_t pinNumber, PinMode pinMode);
 
@@ -35,10 +35,6 @@ void digitalWrite(pin_size_t pinNumber, PinStatus status);
 PinStatus digitalRead(pin_size_t pinNumber);
 
 // ADC
-static const pin_size_t A0 = 26;
-static const pin_size_t A1 = 27;
-static const pin_size_t A2 = 28;
-static const pin_size_t A3 = 29;
 int analogRead(pin_size_t pinNumber);
 
 // PWM
