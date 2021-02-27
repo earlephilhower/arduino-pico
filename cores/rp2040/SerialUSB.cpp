@@ -7,6 +7,7 @@ extern "C" {
 #include "pico/binary_info.h"
 #include "hardware/irq.h"
 #include "pico/mutex.h"
+#include "hardware/watchdog.h"
 }
 #define PICO_STDIO_USB_TASK_INTERVAL_US 1000
 #define PICO_STDIO_USB_LOW_PRIORITY_IRQ 31
@@ -218,5 +219,28 @@ SerialUSB::operator bool() {
     auto ret = tud_cdc_connected();
     mutex_exit(&usb_mutex);
     return ret;
+}
+
+
+static bool _dtr = false;
+static bool _rts = false;
+static int _bps = 115200;
+static void CheckSerialReset() {
+    if ((_bps == 1200) && (!_dtr)) {
+        watchdog_enable(100, 1);
+	while (1); // WDT will fire here
+    }
+}
+
+
+extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
+    _dtr = dtr ? true : false;
+    _rts = rts ? true : false;
+    CheckSerialReset();
+}
+
+extern "C" void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding) {
+    _bps = p_line_coding->bit_rate;
+    CheckSerialReset();
 }
 
