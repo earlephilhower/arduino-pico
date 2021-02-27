@@ -5,6 +5,7 @@ extern "C" {
 #include "tusb.h"
 #include "pico/time.h"
 #include "pico/binary_info.h"
+#include "pico/bootrom.h"
 #include "hardware/irq.h"
 #include "pico/mutex.h"
 #include "hardware/watchdog.h"
@@ -227,7 +228,8 @@ static bool _rts = false;
 static int _bps = 115200;
 static void CheckSerialReset() {
     if ((_bps == 1200) && (!_dtr)) {
-        watchdog_enable(100, 1);
+        reset_usb_boot(0,0);
+//	watchdog_enable(100, 1);
 	while (1); // WDT will fire here
     }
 }
