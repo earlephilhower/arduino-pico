@@ -19,6 +19,8 @@ public:
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
     operator bool();
+private:
+    bool _running = false;
 };
 
 extern SerialUSB Serial;

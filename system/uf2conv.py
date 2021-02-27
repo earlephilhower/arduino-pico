@@ -32,7 +32,8 @@ import re
 import os
 import os.path
 import argparse
-
+import serial
+import time
 
 UF2_MAGIC_START0 = 0x0A324655 # "UF2\n"
 UF2_MAGIC_START1 = 0x9E5D5157 # Randomly selected
@@ -290,6 +291,7 @@ def main():
                         help='specify familyID - number or name (default: 0x0)')
     parser.add_argument('-C' , '--carray', action='store_true',
                         help='convert binary file to a C array, not UF2')
+    parser.add_argument('-s', '--serial', dest='serial', help='Serial port to reset before upload')
     args = parser.parse_args()
     appstartaddr = int(args.base, 0)
 
@@ -300,6 +302,17 @@ def main():
             familyid = int(args.family, 0)
         except ValueError:
             error("Family ID needs to be a number or one of: " + ", ".join(families.keys()))
+
+    if args.serial:
+        if str(args.serial).startswith("/dev/tty") or str(args.serial).startswith("COM"):
+            try:
+                ser = serial.Serial(args.serial, 1200)
+                ser.dtr = False
+                print("Resetting "+str(args.serial))
+                # Probably should be smart and check for device appearance or something
+                time.sleep(10)
+            except:
+                pass
 
     if args.list:
         list_drives()

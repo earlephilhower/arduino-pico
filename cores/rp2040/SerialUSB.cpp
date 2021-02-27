@@ -122,6 +122,10 @@ static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
 void SerialUSB::begin(int baud) {
     (void) baud; //ignored
 
+    if (_running) {
+        return;
+    }
+
     tusb_init();
 
     irq_set_exclusive_handler(PICO_STDIO_USB_LOW_PRIORITY_IRQ, low_priority_worker_irq);
@@ -129,6 +133,8 @@ void SerialUSB::begin(int baud) {
 
     mutex_init(&usb_mutex);
     add_alarm_in_us(PICO_STDIO_USB_TASK_INTERVAL_US, timer_task, NULL, true);
+
+    _running = true;
 }
 
 void SerialUSB::end() {
