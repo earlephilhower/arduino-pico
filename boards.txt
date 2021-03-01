@@ -6,6 +6,8 @@ menu.lvl=Debug Level
 
 ##############################################################
 rpipico.name=Raspberry Pi Pico
+rpipico.vid.0=0x2e8a
+rpipico.pid.0=0x000a
 rpipico.build.board=RPI_PICO
 rpipico.build.mcu=cortex-m0plus
 rpipico.build.variant=rpipico
