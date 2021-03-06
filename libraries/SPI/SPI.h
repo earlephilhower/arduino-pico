@@ -1,9 +1,7 @@
 /*
  * SPI Master library for the Raspberry Pi Pico RP2040
- * Copyright (c) 2021 Earle F. Philhower, III
  *
- * Based on the Arduino Zero SPI.h file, (2) 2015 Arduino, Inc. and
- * licensed as LGPL.
+ * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

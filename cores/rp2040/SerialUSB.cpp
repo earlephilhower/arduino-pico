@@ -1,15 +1,38 @@
+/*
+ * Serial-Over-USB for the Raspberry Pi Pico RP2040
+ * Implements an ACM which will reboot into UF2 mode on a 1200bps DTR toggle.
+ * Much of this was modified from the Raspberry Pi Pico SDK stdio_usb.c file.
+ *
+ * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 #include <Arduino.h>
 
-SerialUSB Serial;
-extern "C" {
+
 #include "tusb.h"
 #include "pico/time.h"
 #include "pico/binary_info.h"
-#include "pico/bootrom.h"
+extern "C" {
+    #include "pico/bootrom.h"
+}
 #include "hardware/irq.h"
 #include "pico/mutex.h"
 #include "hardware/watchdog.h"
-}
+
 #define PICO_STDIO_USB_TASK_INTERVAL_US 1000
 #define PICO_STDIO_USB_LOW_PRIORITY_IRQ 31
 
@@ -235,11 +258,9 @@ static int _bps = 115200;
 static void CheckSerialReset() {
     if ((_bps == 1200) && (!_dtr)) {
         reset_usb_boot(0,0);
-//	watchdog_enable(100, 1);
 	while (1); // WDT will fire here
     }
 }
-
 
 extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
     _dtr = dtr ? true : false;
@@ -252,3 +273,5 @@ extern "C" void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_l
     CheckSerialReset();
 }
 
+
+SerialUSB Serial;
