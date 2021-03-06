@@ -1,7 +1,7 @@
 #ifndef Arduino_h
 #define Arduino_h
 
-//#include "api/ArduinoAPI.h"
+#include "api/ArduinoAPI.h"
 
 #ifdef __cplusplus
 extern "C"{
@@ -10,6 +10,7 @@ extern "C"{
 #include <stdint.h>
 #include <stdlib.h>
 
+#if 0
 typedef enum {
   LOW     = 0,
   HIGH    = 1,
@@ -24,8 +25,9 @@ typedef enum {
   INPUT_PULLUP    = 0x2,
   INPUT_PULLDOWN  = 0x3,
 } PinMode;
-
 typedef uint8_t pin_size_t;
+#endif
+
 #include <pins_arduino.h>
 
 void pinMode(pin_size_t pinNumber, PinMode pinMode);
