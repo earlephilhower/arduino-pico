@@ -40,5 +40,24 @@ static const pin_size_t A2 = 28;
 static const pin_size_t A3 = 29;
 
 
+#ifndef PIN_SPI_SS
+#define PIN_SPI_SS   (1)
+#endif
+#ifndef PIN_SPI_MOSI
+#define PIN_SPI_MOSI (3)
+#endif
+#ifndef PIN_SPI_MISO
+#define PIN_SPI_MISO (0)
+#endif
+#ifndef PIN_SPI_SCK
+#define PIN_SPI_SCK  (2)
+#endif
+
+static const pin_size_t SS = PIN_SPI_SS;
+static const pin_size_t MOSI = PIN_SPI_MOSI;
+static const pin_size_t MISO = PIN_SPI_MISO;
+static const pin_size_t SCK = PIN_SPI_SCK;
+
+
 #endif
 

@@ -38,3 +38,15 @@ extern "C" void delayMicroseconds( unsigned int usec )
     sleep_us(usec);
 }
 
+extern "C" void yield() {
+    // NOOP
+}
+
+extern "C" uint32_t millis() {
+    return to_ms_since_boot(get_absolute_time());
+}
+
+extern "C" uint32_t micros() {
+    return to_us_since_boot(get_absolute_time());
+}
+
