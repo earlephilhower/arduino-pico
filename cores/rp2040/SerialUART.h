@@ -1,5 +1,5 @@
 /*
- * Serial-over-USB for the Raspberry Pi Pico RP2040
+ * Serial-over-UART for the Raspberry Pi Pico RP2040
  *
  * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
  *
@@ -18,18 +18,23 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef __SERIALUSB_H__
-#define __SERIALUSB_H__
+#ifndef __SERIALUART_H__
+#define __SERIALUART_H__
 
-#include "api/Stream.h"
+#include <Arduino.h>
+#include "api/HardwareSerial.h"
+#include <hardware/uart.h>
 
-class SerialUSB : public Stream
+class SerialUART : public HardwareSerial
 {
 public:
-    SerialUSB() { }
-    void begin(int baud = 115200);
-    void begin(int baud, uint16_t config) { begin(baud); };
-    void end();
+    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) { _uart = uart; _tx = tx; _rx = rx; }
+    
+    bool setPinout(pin_size_t tx, pin_size_t rx);
+
+    void begin(unsigned long baud = 115200) override { begin(baud, SERIAL_8N1); };
+    void begin(unsigned long baud, uint16_t config) override;
+    void end() override;
 
     virtual int peek() override;
     virtual int read() override;
@@ -39,11 +44,16 @@ public:
     virtual size_t write(uint8_t c) override;
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
-    operator bool();
+    operator bool() override;
 private:
     bool _running = false;
+    uart_inst_t *_uart;
+    pin_size_t _tx, _rx;
+    int _baud;
+    int _peek;
 };
 
-extern SerialUSB Serial;
+extern SerialUART Serial1; // HW UART 0
+extern SerialUART Serial2; // HW UART 1
 
 #endif
