@@ -21,7 +21,7 @@
 
 #include <Arduino.h>
 
-extern "C" uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
+extern "C" uint8_t shiftIn(pin_size_t dataPin, pin_size_t clockPin, BitOrder bitOrder) {
     uint8_t value = 0;
     uint8_t i;
     for (i = 0; i < 8; ++i) {
@@ -35,7 +35,7 @@ extern "C" uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) 
     return value;
 }
 
-extern "C" void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val) {
+extern "C" void shiftOut(pin_size_t dataPin, pin_size_t clockPin, BitOrder bitOrder, uint8_t val) {
     uint8_t i;
     for (i = 0; i < 8; i++)  {
        	if (bitOrder == LSBFIRST)
