@@ -31,6 +31,8 @@ Lots of things are working now!
 * analogWrite/PWM (tested using Fade.ino)
 * Wire/I2C (tested using DS3231 https://github.com/rodan/ds3231)
 * EEPROM (tested examples)
+* USB Serial(ACM) w/automatic reboot-to-UF2 upload)
+* Hardware UART
 
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
 
