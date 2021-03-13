@@ -30,6 +30,7 @@ Lots of things are working now!
 * SPI (tested using SdFat 2.0 https://github.com/greiman/SdFat ... note that the Pico voltage regulator can't reliably supply enough power for a SD Card so use external power)
 * analogWrite/PWM (tested using Fade.ino)
 * Wire/I2C (tested using DS3231 https://github.com/rodan/ds3231)
+* EEPROM (tested examples)
 
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
 
