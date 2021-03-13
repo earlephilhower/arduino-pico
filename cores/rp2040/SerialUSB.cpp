@@ -142,7 +142,7 @@ static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
     return PICO_STDIO_USB_TASK_INTERVAL_US;
 }
 
-void SerialUSB::begin(int baud) {
+void SerialUSB::begin(unsigned long baud) {
     (void) baud; //ignored
 
     if (_running) {

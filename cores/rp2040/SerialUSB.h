@@ -21,15 +21,16 @@
 #ifndef __SERIALUSB_H__
 #define __SERIALUSB_H__
 
-#include "api/Stream.h"
+#include <Arduino.h>
+#include "api/HardwareSerial.h"
 
-class SerialUSB : public Stream
+class SerialUSB : public HardwareSerial
 {
 public:
     SerialUSB() { }
-    void begin(int baud = 115200);
-    void begin(int baud, uint16_t config) { begin(baud); };
-    void end();
+    void begin(unsigned long baud = 115200) override;
+    void begin(unsigned long baud, uint16_t config) override { begin(baud); };
+    void end() override;
 
     virtual int peek() override;
     virtual int read() override;
@@ -39,7 +40,7 @@ public:
     virtual size_t write(uint8_t c) override;
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
-    operator bool();
+    operator bool() override;
 private:
     bool _running = false;
 };
