@@ -23,6 +23,7 @@ name=Rasperry Pi RP2040 Boards
 version=1.0.0
 runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
+runtime.tools.python3.path={runtime.platform.path}/system/python3
 runtime.tools.pqt-mklittlefs.path={runtime.platform.path}/system/mklittlefs
 runtime.tools.pqt-pioasm.path={runtime.platform.path}/system/pioasm
 runtime.tools.pqt-elf2uf2.path={runtime.platform.path}/system/elf2uf2
@@ -77,7 +78,7 @@ compiler.S.extra_flags=
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 
-discovery.rp2040.pattern="python3" "{runtime.platform.path}/system/discovery.py" 
+discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/system/discovery.py"
 
 # USB Flags
 # ---------
@@ -125,8 +126,8 @@ tools.uf2conv.path=
 # Because the variable expansion doesn't allow one tool to find another, the following lines
 # will point to "{runtime.platform.path}/tools/python3/python3" in GIT and
 # "{runtime.tools.python3.path}/python3" for JSON board manager releases.
-tools.uf2conv.cmd=python3
-tools.uf2conv.network_cmd=python3
+tools.uf2conv.cmd={runtime.platform.path}/system/python3/python3
+tools.uf2conv.network_cmd="{runtime.tools.pqt-python3.path}/python3"
 
 tools.uf2conv.upload.protocol=uf2
 tools.uf2conv.upload.params.verbose=
