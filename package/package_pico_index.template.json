@@ -24,27 +24,27 @@
                "toolsDependencies": [
                   {
                      "packager": "efp3",
-                     "version": "0.0.1-alpha",
+                     "version": "1.0.1-base-3a57aed",
                      "name": "pqt-gcc"
                   },
                   {
                      "packager": "efp3",
-                     "version": "0.0.1-alpha",
+                     "version": "1.0.1-base-3a57aed",
                      "name": "pqt-mklittlefs"
                   },
                   {
                      "packager": "efp3",
-                     "version": "0.0.1-alpha",
+                     "version": "1.0.1-base-3a57aed",
                      "name": "pqt-elf2uf2"
                   },
                   {
                      "packager": "efp3",
-                     "version": "0.0.1-alpha",
+                     "version": "1.0.1-base-3a57aed",
                      "name": "pqt-pioasm"
                   },
                   {
                      "packager": "efp3",
-                     "version": "0.0.1-alpha",
+                     "version": "1.0.1-base-3a57aed",
                      "name": "pqt-python3"
                   }
                ],
@@ -55,12 +55,54 @@
          ],
          "tools": [
             {
-               "version": "0.0.1-alpha",
+               "version": "1.0.1-base-3a57aed",
                "name": "pqt-python3",
                "systems": [
                   {
+                     "host": "x86_64-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-3.7.2.post1-embed-win32v2a.zip",
+                     "archiveFileName": "python3-3.7.2.post1-embed-win32v2a.zip",
+                     "checksum": "SHA-256:f57cb2daf86176d2929e7c58990c2ac32554e3219d454dcac10e464ddda35bf2",
+                     "size": "6428926"
+                  },
+                  {
+                     "host": "i686-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-3.7.2.post1-embed-win32v2a.zip",
+                     "archiveFileName": "python3-3.7.2.post1-embed-win32v2a.zip",
+                     "checksum": "SHA-256:f57cb2daf86176d2929e7c58990c2ac32554e3219d454dcac10e464ddda35bf2",
+                     "size": "6428926"
+                  },
+                  {
+                     "host": "aarch64-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-via-env.tar.gz",
+                     "archiveFileName": "python3-via-env.tar.gz",
+                     "checksum": "SHA-256:c9237bfe0f62842d7187a39495baa4a7e3ab8b87c0b433614294b023cf0bc0f3",
+                     "size": "292"
+                  },
+                  {
+                     "host": "arm-linux-gnueabihf",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-via-env.tar.gz",
+                     "archiveFileName": "python3-via-env.tar.gz",
+                     "checksum": "SHA-256:c9237bfe0f62842d7187a39495baa4a7e3ab8b87c0b433614294b023cf0bc0f3",
+                     "size": "292"
+                  },
+                  {
+                     "host": "i686-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-via-env.tar.gz",
+                     "archiveFileName": "python3-via-env.tar.gz",
+                     "checksum": "SHA-256:c9237bfe0f62842d7187a39495baa4a7e3ab8b87c0b433614294b023cf0bc0f3",
+                     "size": "292"
+                  },
+                  {
+                     "host": "x86_64-apple-darwin",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-macosx-portable.tar.gz",
+                     "archiveFileName": "python3-macosx-portable.tar.gz",
+                     "checksum": "SHA-256:01a5bf1fa264c6f04cfaadf4c6e9f6caaacb6833ef40104dfbe953fcdb9bca1c",
+                     "size": "25494144"
+                  },
+                  {
                      "host": "x86_64-pc-linux-gnu",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/python3-via-env.tar.gz",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-via-env.tar.gz",
                      "archiveFileName": "python3-via-env.tar.gz",
                      "checksum": "SHA-256:c9237bfe0f62842d7187a39495baa4a7e3ab8b87c0b433614294b023cf0bc0f3",
                      "size": "292"
@@ -68,54 +110,208 @@
                ]
             },
             {
-               "version": "0.0.1-alpha",
+               "version": "1.0.1-base-3a57aed",
                "name": "pqt-gcc",
                "systems": [
-                 {
+                  {
+                     "host": "aarch64-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/aarch64-linux-gnu.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "archiveFileName": "aarch64-linux-gnu.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "checksum": "SHA-256:dc2114a35b06275b75459ecb8d5cb25a7d2df8d7e713eafa557becca78a5f40a",
+                     "size": "101453053"
+                  },
+                  {
+                     "host": "i686-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-linux-gnu.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "archiveFileName": "i686-linux-gnu.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "checksum": "SHA-256:4fe2689e260fb8bc48fa17132d7daa6ff168d3b95940747f6539fd5f0181ea4c",
+                     "size": "104235638"
+                  },
+                  {
+                     "host": "i686-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-w64-mingw32.arm-none-eabi-3a57aed.210313.zip",
+                     "archiveFileName": "i686-w64-mingw32.arm-none-eabi-3a57aed.210313.zip",
+                     "checksum": "SHA-256:4674be35ae64dc70e0bb71dfd8b7fe1a3fc391b2a3cdb4f1c09b3a20b33d0f6e",
+                     "size": "103801267"
+                  },
+                  {
+                     "host": "x86_64-apple-darwin",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-apple-darwin14.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin14.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "checksum": "SHA-256:64fe0701158de39afd6dced8e29f6cee41549a07d60c62f751a5052e67d1d7bf",
+                     "size": "105658586"
+                  },
+                  {
                      "host": "x86_64-pc-linux-gnu",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.arm-none-eabi-482adf8.210217.tar.gz",
-                     "archiveFileName": "x86_64-linux-gnu.arm-none-eabi-482adf8.210217.tar.gz",
-                     "checksum": "SHA-256:9a2e035c8f445c7fe7fe98e67a5b758b6246b13f9461fa3a9db3a4e2a5dfb486",
-                     "size": "106268157"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-linux-gnu.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.arm-none-eabi-3a57aed.210313.tar.gz",
+                     "checksum": "SHA-256:f7c76cd1844cc81baa302ffd7197485de51bb6f7d250612950730abefdf3b385",
+                     "size": "106137013"
+                  },
+                  {
+                     "host": "x86_64-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-w64-mingw32.arm-none-eabi-3a57aed.210313.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.arm-none-eabi-3a57aed.210313.zip",
+                     "checksum": "SHA-256:706e67177c88ce4ad01350b18ae5739f989c001e5c9b891139a2fc1148a8ff07",
+                     "size": "108656841"
                   }
                ]
             },
             {
-               "version": "0.0.1-alpha",
+               "version": "1.0.1-base-3a57aed",
                "name": "pqt-elf2uf2",
                "systems": [
                   {
+                     "host": "aarch64-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/aarch64-linux-gnu.elf2uf2-0f3b795.210313.tar.gz",
+                     "archiveFileName": "aarch64-linux-gnu.elf2uf2-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:9f88e2842af0372073f612f6080dbd00c0991fa66f970177eeaa9caa633466b6",
+                     "size": "24865"
+                  },
+                  {
+                     "host": "i686-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-linux-gnu.elf2uf2-0f3b795.210313.tar.gz",
+                     "archiveFileName": "i686-linux-gnu.elf2uf2-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:7fa194d699656e44441d8e4ab70fd5efaf1fce536ff2f3fa802e1ad3da1fd001",
+                     "size": "25708"
+                  },
+                  {
+                     "host": "i686-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-w64-mingw32.elf2uf2-0f3b795.210313.zip",
+                     "archiveFileName": "i686-w64-mingw32.elf2uf2-0f3b795.210313.zip",
+                     "checksum": "SHA-256:92dacd8009c201cbe13b30510a7e26261e508724e4676c1546c80c089ad28f23",
+                     "size": "187064"
+                  },
+                  {
+                     "host": "x86_64-apple-darwin",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-apple-darwin14.elf2uf2-0f3b795.210313.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin14.elf2uf2-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:dd5a3f240eed1c9331e7b9a94da441664488ed6acd15a1291a928db043a0dc71",
+                     "size": "106607"
+                  },
+                  {
                      "host": "x86_64-pc-linux-gnu",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.elf2uf2-0f3b795.210217.tar.gz",
-                     "archiveFileName": "x86_64-linux-gnu.elf2uf2-0f3b795.210217.tar.gz",
-                     "checksum": "SHA-256:ab56df8c2faf286ad0e8e69bc75eaca07ef5467dbf4fcaaa2b8b5bbbdd8e6143",
-                     "size": "23974"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-linux-gnu.elf2uf2-0f3b795.210313.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.elf2uf2-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:f97c695cdf8152700521666cf8822f24aca879a28995ea4ea9467cb02a740067",
+                     "size": "23963"
+                  },
+                  {
+                     "host": "x86_64-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-w64-mingw32.elf2uf2-0f3b795.210313.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.elf2uf2-0f3b795.210313.zip",
+                     "checksum": "SHA-256:7fa58e23785f6b5f6318abf642dc58e0107491673a9ffb69197fbc8628369de3",
+                     "size": "204743"
                   }
                ]
             },
             {
-               "version": "0.0.1-alpha",
+               "version": "1.0.1-base-3a57aed",
                "name": "pqt-pioasm",
                "systems": [
                   {
+                     "host": "aarch64-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/aarch64-linux-gnu.pioasm-0f3b795.210313.tar.gz",
+                     "archiveFileName": "aarch64-linux-gnu.pioasm-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:8906187126f4e1020fccb003469ec791b1ca503954562158053fa1ee5caec654",
+                     "size": "159824"
+                  },
+                  {
+                     "host": "arm-linux-gnueabihf",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/arm-linux-gnueabihf.pioasm-0f3b795.210313.tar.gz",
+                     "archiveFileName": "arm-linux-gnueabihf.pioasm-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:c5db2035e5cf22a7bef2f183100d938d1395108a1785423254e5ab458fd52521",
+                     "size": "142636"
+                  },
+                  {
+                     "host": "i686-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-linux-gnu.pioasm-0f3b795.210313.tar.gz",
+                     "archiveFileName": "i686-linux-gnu.pioasm-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:c077562da5bc6e06631852ce4cc360bcd1df534c5351f06d2cc997e2cf9f731d",
+                     "size": "172777"
+                  },
+                  {
+                     "host": "i686-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-w64-mingw32.pioasm-0f3b795.210313.zip",
+                     "archiveFileName": "i686-w64-mingw32.pioasm-0f3b795.210313.zip",
+                     "checksum": "SHA-256:127dcde2706fe7730dc1e67a69d9ad84f670f62358abb5479e54e0397bdaed4a",
+                     "size": "309084"
+                  },
+                  {
+                     "host": "x86_64-apple-darwin",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-apple-darwin14.pioasm-0f3b795.210313.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin14.pioasm-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:faf394d4d1a3722f062f1ecc32da8a54c1025764494ba9c548d2ad230e21f562",
+                     "size": "590059"
+                  },
+                  {
                      "host": "x86_64-pc-linux-gnu",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.pioasm-0f3b795.210217.tar.gz",
-                     "archiveFileName": "x86_64-linux-gnu.pioasm-0f3b795.210217.tar.gz",
-                     "checksum": "SHA-256:b058320b912a0f957b1c6121afe64d9ddf370e674bab782e86c5fcdf626b4f0b",
-                     "size": "159440"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-linux-gnu.pioasm-0f3b795.210313.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.pioasm-0f3b795.210313.tar.gz",
+                     "checksum": "SHA-256:9d10d92eb71c9661515a3988e5099fb7a83ce69aebbd3723d2ec9cc328106664",
+                     "size": "159488"
+                  },
+                  {
+                     "host": "x86_64-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-w64-mingw32.pioasm-0f3b795.210313.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.pioasm-0f3b795.210313.zip",
+                     "checksum": "SHA-256:cbf9a5335419268ed6bf2338dcc3d426aa24f639923a4cd7dd83f6ead1b773cf",
+                     "size": "380973"
                   }
                ]
             },
             {
-               "version": "0.0.1-alpha",
+               "version": "1.0.1-base-3a57aed",
                "name": "pqt-mklittlefs",
                "systems": [
                   {
+                     "host": "aarch64-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/aarch64-linux-gnu.mklittlefs-6b5c62d.210313.tar.gz",
+                     "archiveFileName": "aarch64-linux-gnu.mklittlefs-6b5c62d.210313.tar.gz",
+                     "checksum": "SHA-256:c31df4ede9e2137c96ff532b3cb8af1a47304258837f69b1bd717160d44ef3a9",
+                     "size": "44794"
+                  },
+                  {
+                     "host": "arm-linux-gnueabihf",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/arm-linux-gnueabihf.mklittlefs-6b5c62d.210313.tar.gz",
+                     "archiveFileName": "arm-linux-gnueabihf.mklittlefs-6b5c62d.210313.tar.gz",
+                     "checksum": "SHA-256:2572e4e024bc97995aadf3512dad6843ee9c5c6a66b171963b36563f7632041b",
+                     "size": "37335"
+                  },
+                  {
+                     "host": "i686-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-linux-gnu.mklittlefs-6b5c62d.210313.tar.gz",
+                     "archiveFileName": "i686-linux-gnu.mklittlefs-6b5c62d.210313.tar.gz",
+                     "checksum": "SHA-256:141a45d6b1ad97bc220daefd8d1876b43cc509e7bc2a4dccf2f99483d9a88c78",
+                     "size": "48245"
+                  },
+                  {
+                     "host": "i686-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/i686-w64-mingw32.mklittlefs-6b5c62d.210313.zip",
+                     "archiveFileName": "i686-w64-mingw32.mklittlefs-6b5c62d.210313.zip",
+                     "checksum": "SHA-256:d30b9b34cce408df396dcd77cebd0fe876f950a13cefcb21f724412089c4b1c4",
+                     "size": "332804"
+                  },
+                  {
+                     "host": "x86_64-apple-darwin",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-apple-darwin14.mklittlefs-6b5c62d.210313.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin14.mklittlefs-6b5c62d.210313.tar.gz",
+                     "checksum": "SHA-256:3430d401f0f1ec188e18fb6380f17d6ee07aa11a11509eb85dadfda429d1bbee",
+                     "size": "362809"
+                  },
+                  {
                      "host": "x86_64-pc-linux-gnu",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/0.0.1-alpha/x86_64-linux-gnu.mklittlefs-6b5c62d.210217.tar.gz",
-                     "archiveFileName": "x86_64-linux-gnu.mklittlefs-6b5c62d.210217.tar.gz",
-                     "checksum": "SHA-256:e7bc64beb40386f29f85a02e6ef4b7944d174064d46051402958a47b5a61eb1b",
-                     "size": "46930"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-linux-gnu.mklittlefs-6b5c62d.210313.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.mklittlefs-6b5c62d.210313.tar.gz",
+                     "checksum": "SHA-256:fa762ca823cf31862a28cfff2646c8c9241a8e29b989619f3ee25ac9a4e8ce8a",
+                     "size": "46917"
+                  },
+                  {
+                     "host": "x86_64-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/x86_64-w64-mingw32.mklittlefs-6b5c62d.210313.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.mklittlefs-6b5c62d.210313.zip",
+                     "checksum": "SHA-256:90c99760b47894ef4f7bfacacd2586c29245ebffb89af46d47cda7de1a5110a5",
+                     "size": "345249"
                   }
                ]
             }
