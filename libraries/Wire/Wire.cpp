@@ -22,9 +22,9 @@
  */
 
 #include <Arduino.h>
-#include "Wire.h"
 #include <hardware/gpio.h>
 #include <hardware/i2c.h>
+#include "Wire.h"
 
 TwoWireRP2040::TwoWireRP2040(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _sda = sda;
@@ -169,6 +169,7 @@ size_t TwoWireRP2040::requestFrom(uint8_t address, size_t quantity, bool stopBit
 
     size_t byteRead = 0;
     _buffLen = i2c_read_blocking(_i2c, address, _buff, quantity, !stopBit);
+    _buffOff = 0;
     return _buffLen;
 }
 

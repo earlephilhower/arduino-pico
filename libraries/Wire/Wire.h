@@ -24,6 +24,7 @@
 #ifndef TwoWire_h
 #define TwoWire_h
 
+#include <Arduino.h>
 #include "api/HardwareI2C.h"
 #include <hardware/i2c.h>
 

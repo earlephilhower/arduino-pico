@@ -25,10 +25,11 @@ python3 ./get.py
 `````
 
 Lots of things are working now!
-* digitalWrite/Read
-* shiftIn/Out (tested using Nokia5110 https://github.com/ionpan/Nokia5110.git)
-* SPI/Wire (tested using SdFat 2.0 https://github.com/greiman/SdFat.git ... note that the Pico voltage regulator can't reliably supply enough power for a SD Card so use external power)
+* digitalWrite/Read (basic sanity tested)
+* shiftIn/Out (tested using Nokia5110 https://github.com/ionpan/Nokia5110)
+* SPI (tested using SdFat 2.0 https://github.com/greiman/SdFat ... note that the Pico voltage regulator can't reliably supply enough power for a SD Card so use external power)
 * analogWrite/PWM (tested using Fade.ino)
+* Wire/I2C (tested using DS3231 https://github.com/rodan/ds3231)
 
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
 
