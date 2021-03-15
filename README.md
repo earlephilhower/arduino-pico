@@ -29,6 +29,7 @@ Lots of things are working now!
 * shiftIn/Out (tested using Nokia5110 https://github.com/ionpan/Nokia5110)
 * SPI (tested using SdFat 2.0 https://github.com/greiman/SdFat ... note that the Pico voltage regulator can't reliably supply enough power for a SD Card so use external power)
 * analogWrite/PWM (tested using Fade.ino)
+* tone/noTone (using IRQ generated waveform)
 * Wire/I2C (tested using DS3231 https://github.com/rodan/ds3231)
 * EEPROM (tested examples)
 * USB Serial(ACM) w/automatic reboot-to-UF2 upload)

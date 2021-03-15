@@ -70,7 +70,7 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         }
         pwmInitted = true;
     }
-
+ 
     if (val < 0) {
         val = 0;
     } else if (val > analogScale) {
@@ -93,4 +93,3 @@ extern "C" int analogRead(pin_size_t pinNumber) {
     adc_select_input(pinNumber - A0);
     return adc_read();
 }
-
