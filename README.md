@@ -34,6 +34,7 @@ Lots of things are working now!
 * EEPROM (tested examples)
 * USB Serial(ACM) w/automatic reboot-to-UF2 upload)
 * Hardware UART
+* Servo (basic waveform testing)
 
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
 
