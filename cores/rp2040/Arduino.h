@@ -57,6 +57,7 @@ unsigned long millis();
 #ifdef __cplusplus
 #include "SerialUSB.h"
 #include "SerialUART.h"
+#include "RP2040.h"
 #endif
 
 

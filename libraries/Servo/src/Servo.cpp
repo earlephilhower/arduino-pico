@@ -23,7 +23,11 @@
 #include <Servo.h>
 #include <hardware/clocks.h>
 #include <hardware/pio.h>
+
+// The PWM example from theSDK is general purpose enough to use here
+// with no PIO code changes whatsoever.  RP2040 is awesome!
 #include "pwm.pio.h"
+static PIOProgram _servoPgm(&pwm_program);
 
 // similiar to map but will have increased accuracy that provides a more
 // symmetrical api (call it and use result to reverse will provide the original value)
@@ -57,43 +61,6 @@ Servo::~Servo() {
     detach();
 }
 
-static bool _findFreeSM(PIO *pio, int *smIdx) {
-    int idx = pio_claim_unused_sm(pio0, false);
-    if (idx >= 0) {
-        *pio = pio0;
-        *smIdx = idx;
-        return true;
-    }
-    idx = pio_claim_unused_sm(pio1, false);
-    if (idx >= 0) {
-        *pio = pio1;
-        *smIdx = idx;
-        return true;
-    }
-    return false;
-}
-
-
-static int _usToPIO(int us) {
-    return (us * ( clock_get_hz(clk_sys) / 1000000 )) / 3;
-}
-
-
-
-// Write `period` to the input shift register
-static void pio_pwm_set_period(PIO pio, uint sm, uint32_t period) {
-    pio_sm_set_enabled(pio, sm, false);
-    pio_sm_put_blocking(pio, sm, period);
-    pio_sm_exec(pio, sm, pio_encode_pull(false, false));
-    pio_sm_exec(pio, sm, pio_encode_out(pio_isr, 32));
-    pio_sm_set_enabled(pio, sm, true);
-}
-
-// Write `level` to TX FIFO. State machine will copy this into X.
-void pio_pwm_set_level(PIO pio, uint sm, uint32_t level) {
-    pio_sm_put_blocking(pio, sm, level);
-}
-
 int Servo::attach(pin_size_t pin)
 {
     return attach(pin, DEFAULT_MIN_PULSE_WIDTH, DEFAULT_MAX_PULSE_WIDTH);
@@ -113,16 +80,19 @@ int Servo::attach(pin_size_t pin, int minUs, int maxUs, int value)
     _minUs = max(200, min(_maxUs, minUs));
 
     if (!_attached) {
-        if (!_findFreeSM(&_pio, &_smIdx)) {
+        int off;
+        digitalWrite(pin, LOW);
+        pinMode(pin, OUTPUT);
+        if (!_servoPgm.prepare(&_pio, &_smIdx, &off)) {
             // ERROR, no free slots
             return -1;
         }
-        digitalWrite(pin, LOW);
-        pinMode(pin, OUTPUT);
-        // Load the PIO program - TODO , only one copy needed for all SMs!
-        _pgmOffset = pio_add_program(_pio, &pwm_program);
-        pwm_program_init(_pio, _smIdx, _pgmOffset, pin);
-        pio_pwm_set_period(_pio, _smIdx, _usToPIO(REFRESH_INTERVAL) );
+        pwm_program_init(_pio, _smIdx, off, pin);
+        pio_sm_set_enabled(_pio, _smIdx, false);
+        pio_sm_put_blocking(_pio, _smIdx, RP2040::usToPIOCycles(REFRESH_INTERVAL) / 3);
+        pio_sm_exec(_pio, _smIdx, pio_encode_pull(false, false));
+        pio_sm_exec(_pio, _smIdx, pio_encode_out(pio_isr, 32));
+        pio_sm_set_enabled(_pio, _smIdx, true);
         _pin = pin;
 	_attached = true;
     }
@@ -136,7 +106,6 @@ void Servo::detach()
 {
     if (_attached) {
         pio_sm_set_enabled(_pio, _smIdx, false);
-        pio_remove_program(_pio, &pwm_program, _pgmOffset);
         pio_sm_unclaim(_pio, _smIdx);
         _attached = false;
         _valueUs = DEFAULT_NEUTRAL_PULSE_WIDTH;
@@ -159,7 +128,7 @@ void Servo::writeMicroseconds(int value)
     value = constrain(value, _minUs, _maxUs);
     _valueUs = value;
     if (_attached) {
-        pio_pwm_set_level(_pio, _smIdx, _usToPIO(value));
+        pio_sm_put_blocking(_pio, _smIdx, RP2040::usToPIOCycles(value) / 3);
     }
 }
 
