@@ -135,6 +135,7 @@ int Servo::attach(pin_size_t pin, int minUs, int maxUs, int value)
 void Servo::detach()
 {
     if (_attached) {
+        pio_sm_set_enabled(_pio, _smIdx, false);
         pio_remove_program(_pio, &pwm_program, _pgmOffset);
         pio_sm_unclaim(_pio, _smIdx);
         _attached = false;
