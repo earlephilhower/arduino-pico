@@ -313,9 +313,12 @@ def main():
     if args.serial:
         if str(args.serial).startswith("/dev/tty") or str(args.serial).startswith("COM"):
             try:
-                ser = serial.Serial(args.serial, 1200)
-                ser.dtr = False
                 print("Resetting "+str(args.serial))
+                try:
+                    ser = serial.Serial(args.serial, 1200)
+                    ser.dtr = False
+                except:
+                    pass
                 # Probably should be smart and check for device appearance or something
                 time.sleep(10)
             except:

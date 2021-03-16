@@ -133,9 +133,6 @@ tools.uf2conv.upload.protocol=uf2
 tools.uf2conv.upload.params.verbose=
 tools.uf2conv.upload.params.quiet=
 
-# First, potentially perform an erase or nothing
-# Next, do the binary upload
-# Combined in one rule because Arduino doesn't suport upload.1.pattern/upload.3.pattern
 tools.uf2conv.upload.pattern="{cmd}" "{runtime.platform.path}/system/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
-tools.uf2conv.upload.network_pattern="{cmd}" "{runtime.platform.path}/system/uf2conv.py" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
+tools.uf2conv.upload.network_pattern="{cmd}" "{runtime.platform.path}/system/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
 
