@@ -21,16 +21,17 @@
 #ifndef Arduino_h
 #define Arduino_h
 
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "api/ArduinoAPI.h"
+
+#include <pins_arduino.h>
 
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
-
-#include <stdint.h>
-#include <stdlib.h>
-
-#include <pins_arduino.h>
 
 void pinMode(pin_size_t pinNumber, PinMode pinMode);
 
