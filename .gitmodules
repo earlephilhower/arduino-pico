@@ -4,3 +4,6 @@
 [submodule "pico-sdk"]
 	path = pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk.git
+[submodule "system/pyserial"]
+	path = system/pyserial
+	url = https://github.com/pyserial/pyserial.git

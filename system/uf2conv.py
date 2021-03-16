@@ -32,8 +32,15 @@ import re
 import os
 import os.path
 import argparse
-import serial
 import time
+
+toolspath = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') # CWD in UNIX format
+try:
+    sys.path.insert(0, toolspath + "/pyserial") # Add pyserial dir to search path
+    import serial # If this fails, we can't continue and will bomb below
+except Exception:
+    sys.stderr.write("pyserial directory not found next to this upload.py tool.\n")
+    sys.exit(1)
 
 UF2_MAGIC_START0 = 0x0A324655 # "UF2\n"
 UF2_MAGIC_START1 = 0x9E5D5157 # Randomly selected
