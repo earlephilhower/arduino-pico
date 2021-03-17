@@ -27,7 +27,7 @@
 
 class SPIClassRP2040 : public arduino::HardwareSPI {
 public:
-    SPIClassRP2040(spi_inst_t *spi);
+    SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_size_t sck, pin_size_t tx);
 
     // Send or receive 8- or 16-bit data.  Returns read back value
     byte transfer(uint8_t data) override;
@@ -40,9 +40,15 @@ public:
     void beginTransaction(SPISettings settings) override;
     void endTransaction(void) override;
 
+    // Assign pins, call before begin()
+    bool setRX(pin_size_t pin);
+    bool setCS(pin_size_t pin);
+    bool setSCK(pin_size_t pin);
+    bool setTX(pin_size_t pin);
+
     // Call once to init/deinit SPI class, select pins, etc.
-    virtual void begin() override { begin(false, D0); }
-    void begin(bool hwCS, pin_size_t spiRX);
+    virtual void begin() override { begin(false); }
+    void begin(bool hwCS);
     void end() override;
 
     // Deprecated - do not use!
@@ -65,7 +71,7 @@ private:
 
     spi_inst_t *_spi;
     SPISettings _spis;
-    pin_size_t _pin;
+    pin_size_t _RX, _TX, _SCK, _CS;
     bool _hwCS;
     bool _initted;
 };

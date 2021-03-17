@@ -22,10 +22,14 @@
 #include <hardware/spi.h>
 #include <hardware/gpio.h>
 
-SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi) {
+SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_size_t sck, pin_size_t tx) {
     _spi = spi;
     _initted = false;
     _spis = SPISettings();
+    _RX = rx;
+    _TX = tx;
+    _SCK = sck;
+    _CS = cs;
 }
 
 inline spi_cpol_t SPIClassRP2040::cpol() {
@@ -125,57 +129,62 @@ void SPIClassRP2040::endTransaction(void) {
     _initted = false;
 }
 
-void SPIClassRP2040::begin(bool hwCS, pin_size_t spiRX) {
-    switch (spi_get_index(_spi)) {
-        case 0:
-            switch (spiRX) {
-                case 0:
-                case 4:
-                case 16:
-                case 20:
-                    _pin = spiRX;
-                    break;
-                default:
-                    // error
-                    return;
-            }
-            break;
-        case 1:
-            switch (spiRX) {
-                case 8:
-                case 12:
-                case 24:
-                case 28:
-                    _pin = spiRX;
-                    break;
-                default:
-                    // error
-                    return;
-            }
-            break;
-        default:
-            // error
-            return;
+bool SPIClassRP2040::setRX(pin_size_t pin) {
+    const uint32_t valid[2] = { 0b10001000000000001000100000000000, 0b00000000100010000000000010001000 };
+    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+        _RX = pin;
+        return true;
     }
+    return false;
+}
 
-    gpio_set_function(_pin + 0, GPIO_FUNC_SPI);
+bool SPIClassRP2040::setCS(pin_size_t pin) {
+    const uint32_t valid[2] = { 0b01000100000000000100010000000000, 0b00000000010001000000000001000100 };
+    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+        _CS = pin;
+        return true;
+    }
+    return false;
+}
+
+bool SPIClassRP2040::setSCK(pin_size_t pin) {
+    const uint32_t valid[2] = { 0b00100010000000000010001000000000, 0b00000000001000100000000000100010 };
+    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+        _SCK = pin;
+        return true;
+    }
+    return false;
+}
+
+bool SPIClassRP2040::setTX(pin_size_t pin) {
+    const uint32_t valid[2] = { 0b00010001000000000001000100000000, 0b00000000000100010000000000010001 };
+    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+        _TX = pin;
+        return true;
+    }
+    return false;
+}
+
+
+void SPIClassRP2040::begin(bool hwCS) {
+    gpio_set_function(_RX, GPIO_FUNC_SPI);
     _hwCS = hwCS;
     if (hwCS) {
-        gpio_set_function(_pin + 1, GPIO_FUNC_SPI);
+        gpio_set_function(_CS, GPIO_FUNC_SPI);
     }
-    gpio_set_function(_pin + 2, GPIO_FUNC_SPI);
-    gpio_set_function(_pin + 3, GPIO_FUNC_SPI);
+    gpio_set_function(_SCK, GPIO_FUNC_SPI);
+    gpio_set_function(_TX, GPIO_FUNC_SPI);
     // Give a default config in case user doesn't use beginTransaction
     beginTransaction(_spis);
 }
 
 void SPIClassRP2040::end() {
-    gpio_set_function(_pin + 0, GPIO_FUNC_SIO);
+    gpio_set_function(_RX, GPIO_FUNC_SIO);
     if (_hwCS) {
-        gpio_set_function(_pin + 1, GPIO_FUNC_SIO);
+        gpio_set_function(_CS, GPIO_FUNC_SIO);
     }
-    gpio_set_function(_pin + 2, GPIO_FUNC_SIO);
-    gpio_set_function(_pin + 3, GPIO_FUNC_SIO);
+    gpio_set_function(_SCK, GPIO_FUNC_SIO);
+    gpio_set_function(_TX, GPIO_FUNC_SIO);
 }
 
 void SPIClassRP2040::setBitOrder(BitOrder order) {
@@ -192,7 +201,5 @@ void SPIClassRP2040::setClockDivider(uint8_t uc_div) {
   (void) uc_div; // no-op
 }
 
-
-SPIClassRP2040 SPI(spi0);
-SPIClassRP2040 SPI1(spi1);
-
+SPIClassRP2040 SPI(spi0, 0, 1, 2, 3);
+SPIClassRP2040 SPI1(spi1, 8, 9, 10, 11);
