@@ -29,20 +29,21 @@ class SPIClassRP2040 : public arduino::HardwareSPI {
 public:
     SPIClassRP2040(spi_inst_t *spi);
 
-    // Send or receive data in 8- or 16-bit chunks  Returns readback value
-    byte transfer(uint8_t data);
-    uint16_t transfer16(uint16_t data);
+    // Send or receive 8- or 16-bit data.  Returns read back value
+    byte transfer(uint8_t data) override;
+    uint16_t transfer16(uint16_t data) override;
+
     // Sends buffer in 8 bit chunks.  Overwrites buffer with read data
-    void transfer(void *buf, size_t count);
+    void transfer(void *buf, size_t count) override;
 
     // Call before/after every complete transaction
-    void beginTransaction(SPISettings settings);
-    void endTransaction(void);
+    void beginTransaction(SPISettings settings) override;
+    void endTransaction(void) override;
 
     // Call once to init/deinit SPI class, select pins, etc.
-    virtual void begin() { begin(false, D0); }
+    virtual void begin() override { begin(false, D0); }
     void begin(bool hwCS, pin_size_t spiRX);
-    void end();
+    void end() override;
 
     // Deprecated - do not use!
     void setBitOrder(BitOrder order) __attribute__((deprecated));
@@ -50,10 +51,10 @@ public:
     void setClockDivider(uint8_t uc_div) __attribute__((deprecated));
 
     // Unimplemented
-    virtual void usingInterrupt(int interruptNumber) { (void) interruptNumber; }
-    virtual void notUsingInterrupt(int interruptNumber) { (void) interruptNumber; }
-    virtual void attachInterrupt() { /* noop */ }
-    virtual void detachInterrupt() { /* noop */ }
+    virtual void usingInterrupt(int interruptNumber) override { (void) interruptNumber; }
+    virtual void notUsingInterrupt(int interruptNumber) override { (void) interruptNumber; }
+    virtual void attachInterrupt() override { /* noop */ }
+    virtual void detachInterrupt() override { /* noop */ }
 
 private:
     spi_cpol_t cpol();
