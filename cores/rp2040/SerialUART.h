@@ -24,9 +24,9 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include <hardware/uart.h>
+#include <stdarg.h>
 
-class SerialUART : public HardwareSerial
-{
+class SerialUART : public HardwareSerial {
 public:
     SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) { _uart = uart; _tx = tx; _rx = rx; }
     
@@ -45,6 +45,30 @@ public:
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
     operator bool() override;
+
+    // By all rights, this should be in Print.h...
+    size_t printf(const char *format, ...) {
+        va_list arg;
+        va_start(arg, format);
+        char temp[64];
+        char* buffer = temp;
+        size_t len = vsnprintf(temp, sizeof(temp), format, arg);
+        va_end(arg);
+        if (len > sizeof(temp) - 1) {
+            buffer = new char[len + 1];
+            if (!buffer) {
+                return 0;
+            }
+            va_start(arg, format);
+            vsnprintf(buffer, len + 1, format, arg);
+            va_end(arg);
+        }
+        len = write((const uint8_t*) buffer, len);
+        if (buffer != temp) {
+            delete[] buffer;
+        }
+        return len;
+    }
 private:
     bool _running = false;
     uart_inst_t *_uart;
