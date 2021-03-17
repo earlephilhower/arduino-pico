@@ -3,10 +3,11 @@
 #######################################
 
 #######################################
-# Datatypes (KEYWORD1)
+# Instances (KEYWORD2)
 #######################################
 
 SPI	KEYWORD1
+SPI1	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -17,7 +18,10 @@ transfer	KEYWORD2
 setBitOrder	KEYWORD2
 setDataMode	KEYWORD2
 setClockDivider	KEYWORD2
-
+setRX	KEYWORD2
+setTX	KEYWORD2
+setSCK	KEYWORD2
+setCS	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
