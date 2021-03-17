@@ -24,6 +24,10 @@ cd ../system
 python3 ./get.py
 `````
 
+The RP2040 PIO state machines (SMs) are used to generate jitter-free:
+* Servos
+* Tones
+
 Lots of things are working now!
 * digitalWrite/Read (basic sanity tested)
 * shiftIn/Out (tested using Nokia5110 https://github.com/ionpan/Nokia5110)
