@@ -1,0 +1,37 @@
+;
+; Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+;
+; SPDX-License-Identifier: BSD-3-Clause
+;
+
+; Side-set pin 0 is used for Tone output
+
+.program tone
+.side_set 1 opt
+
+    pull
+    mov x, osr
+
+high:
+    mov y, isr      side 1
+highloop:
+    jmp y-- highloop
+
+    jmp x-- low
+
+low:
+    mov y, isr      side 0
+lowloop:
+    jmp y-- lowloop
+
+    jmp x-- high
+
+% c-sdk {
+static inline void tone_program_init(PIO pio, uint sm, uint offset, uint pin) {
+   pio_gpio_init(pio, pin);
+   pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+   pio_sm_config c = tone_program_get_default_config(offset);
+   sm_config_set_sideset_pins(&c, pin);
+   pio_sm_init(pio, sm, offset, &c);
+}
+%}

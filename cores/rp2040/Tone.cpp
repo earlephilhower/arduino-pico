@@ -25,26 +25,14 @@
 
 typedef struct {
     pin_size_t pin;
-    bool curState;
-    repeating_timer_t timer;
-    int timeout;
+    PIO pio;
+    int sm;
 } Tone;
 
-static std::map<pin_size_t, Tone *> _toneMap;
+#include "tone.pio.h"
+PIOProgram _tonePgm(&tone_program);
 
-static bool _toneCB(repeating_timer_t *t) {
-    Tone *me = (Tone*) t->user_data;
-    if (me->timeout == 1) {
-        digitalWrite(me->pin, LOW);
-        return false; // done
-    }
-    me->curState = !me->curState;
-    digitalWrite(me->pin, me->curState ? HIGH : LOW);
-    if (me->timeout) {
-        me->timeout--;
-    }
-    return true;
-}
+static std::map<pin_size_t, Tone *> _toneMap;
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     if (!frequency) {
@@ -55,25 +43,39 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     if (us < 20) {
         us = 20;
     }
-    int flips = duration * 1000 / us;
+    // Even phases run forever, odd phases end after count...so ensure its odd
+    int phases = duration ? (duration * 1000 / us) | 1 : 2;
     auto entry = _toneMap.find(pin);
     if (entry != _toneMap.end()) {
         noTone(pin);
     }
     auto newTone = new Tone();
-    newTone->timeout = flips;
     newTone->pin = pin;
-    newTone->curState = true;
+    pinMode(pin, OUTPUT);
+    int off;
+    if (!_tonePgm.prepare(&newTone->pio, &newTone->sm, &off)) {
+        // ERROR, no free slots
+	delete newTone;
+        return;
+    }
+    tone_program_init(newTone->pio, newTone->sm, off, pin);
+    pio_sm_set_enabled(newTone->pio, newTone->sm, false);
+    pio_sm_put_blocking(newTone->pio, newTone->sm, RP2040::usToPIOCycles(us));
+    pio_sm_exec(newTone->pio, newTone->sm, pio_encode_pull(false, false));
+    pio_sm_exec(newTone->pio, newTone->sm, pio_encode_out(pio_isr, 32));
+    pio_sm_set_enabled(newTone->pio, newTone->sm, true);
+    pio_sm_put_blocking(newTone->pio, newTone->sm, phases);
+
     _toneMap.insert({pin, newTone});
-    digitalWrite(pin, HIGH);
-    add_repeating_timer_us(-us, _toneCB, (void*)newTone, &newTone->timer);
 }
 
 void noTone(uint8_t pin) {
     auto entry = _toneMap.find(pin);
     if (entry != _toneMap.end()) {
-        cancel_repeating_timer(&entry->second->timer);
+        pio_sm_set_enabled(entry->second->pio, entry->second->sm, false);
+	pio_sm_unclaim(entry->second->pio, entry->second->sm);
         _toneMap.erase(entry);
+        pinMode(pin, OUTPUT);
+        digitalWrite(pin, LOW);
     }
-    digitalWrite(pin, LOW);
 }
