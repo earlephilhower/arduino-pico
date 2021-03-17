@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-# This script will download and extract required tools into the current directory.
-# Tools list is obtained from package/package_esp8266com_index.template.json file.
-# Written by Ivan Grokhotkov, 2015.
+# This script will download and extract required tools into the system directory.
+# Originally written by Ivan Grokhotkov, 2015.
 #
 from __future__ import print_function
 import os
@@ -49,14 +48,17 @@ def report_progress(count, blockSize, totalSize):
         sys.stdout.flush()
 
 def unpack(filename, destination):
+    here = os.getcwd()
     dirname = ''
     print('Extracting {0}'.format(filename))
     if filename.endswith('tar.gz'):
         tfile = tarfile.open(filename, 'r:gz')
+        os.chdir("../system/")
         tfile.extractall(destination)
         dirname= tfile.getnames()[0]
     elif filename.endswith('zip'):
         zfile = zipfile.ZipFile(filename)
+        os.chdir("../system/")
         zfile.extractall(destination)
         dirname = zfile.namelist()[0]
     else:
@@ -69,6 +71,7 @@ def unpack(filename, destination):
         if os.path.isdir(rename_to):
             shutil.rmtree(rename_to)
         shutil.move(dirname, rename_to)
+    os.chdir(here)
 
 def get_tool(tool):
     archive_name = tool['archiveFileName']

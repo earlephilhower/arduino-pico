@@ -78,7 +78,7 @@ compiler.S.extra_flags=
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 
-discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/system/discovery.py"
+discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/tools/discovery.py"
 
 # USB Flags
 # ---------
@@ -106,7 +106,7 @@ archive_file_path={build.path}/{archive_file}
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Combine gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}"  "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} "-Wl,--script={build.variant.path}/{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" --specs=nosys.specs {compiler.ldflags} -o "{build.path}/{build.project_name}.elf" {object_files} "{build.path}/{archive_file}" {runtime.platform.path}/system/libs/pico.a -lm -I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/ -I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include {runtime.platform.path}/assembly/bs2_default_padded_checksummed.S
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}"  "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} "-Wl,--script={build.variant.path}/{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" --specs=nosys.specs {compiler.ldflags} -o "{build.path}/{build.project_name}.elf" {object_files} "{build.path}/{archive_file}" {runtime.platform.path}/lib/pico.a -lm -I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/ -I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include {runtime.platform.path}/assembly/bs2_default_padded_checksummed.S
 
 ## Create output (UF2 file)
 recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2"
@@ -133,6 +133,6 @@ tools.uf2conv.upload.protocol=uf2
 tools.uf2conv.upload.params.verbose=
 tools.uf2conv.upload.params.quiet=
 
-tools.uf2conv.upload.pattern="{cmd}" "{runtime.platform.path}/system/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
-tools.uf2conv.upload.network_pattern="{cmd}" "{runtime.platform.path}/system/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
+tools.uf2conv.upload.pattern="{cmd}" "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
+tools.uf2conv.upload.network_pattern="{cmd}" "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
 
