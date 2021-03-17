@@ -35,13 +35,14 @@ PIOProgram _tonePgm(&tone_program);
 static std::map<pin_size_t, Tone *> _toneMap;
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
+    DEBUGCORE("TONE: tone(%d, %d, %d)\n", pin, frequency, duration);
     if (!frequency) {
         noTone(pin);
         return;
     }
     int us = 1000000 / frequency / 2;
-    if (us < 20) {
-        us = 20;
+    if (us < 5) {
+        us = 5;
     }
     // Even phases run forever, odd phases end after count...so ensure its odd
     int phases = duration ? (duration * 1000 / us) | 1 : 2;
@@ -49,11 +50,13 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     if (entry != _toneMap.end()) {
         noTone(pin);
     }
+    DEBUGCORE("TONE: phaseUS=%d, phaseCnt=%d\n", us, phases);
     auto newTone = new Tone();
     newTone->pin = pin;
     pinMode(pin, OUTPUT);
     int off;
     if (!_tonePgm.prepare(&newTone->pio, &newTone->sm, &off)) {
+        DEBUGCORE("TONE: Unable to start, out of PIO resources\n");
         // ERROR, no free slots
 	delete newTone;
         return;
@@ -66,12 +69,15 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     pio_sm_set_enabled(newTone->pio, newTone->sm, true);
     pio_sm_put_blocking(newTone->pio, newTone->sm, phases);
 
+    DEBUGCORE("TONE: Began on pio=%p, sm=%d\n", newTone->pio, newTone->sm);
     _toneMap.insert({pin, newTone});
 }
 
 void noTone(uint8_t pin) {
+    DEBUGCORE("NOTONE: noTone(%d)\n", pin);
     auto entry = _toneMap.find(pin);
     if (entry != _toneMap.end()) {
+        DEBUGCORE("NOTONE: Disabling PIO tone generator pio=%p, sm=%d\n", entry->second->pio, entry->second->sm);
         pio_sm_set_enabled(entry->second->pio, entry->second->sm, false);
 	pio_sm_unclaim(entry->second->pio, entry->second->sm);
         _toneMap.erase(entry);

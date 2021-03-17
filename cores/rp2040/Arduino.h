@@ -29,6 +29,8 @@
 
 #include <pins_arduino.h>
 
+#include "debug_internal.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus

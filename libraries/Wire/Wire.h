@@ -31,8 +31,11 @@
  // WIRE_HAS_END means Wire has end()
 #define WIRE_HAS_END 1
 
-class TwoWireRP2040 : public HardwareI2C
-{
+#ifndef WIRE_BUFFER_SIZE
+    #define WIRE_BUFFER_SIZE 128
+#endif
+
+class TwoWireRP2040 : public HardwareI2C {
 public:
     TwoWireRP2040(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl);
 
@@ -85,7 +88,7 @@ private:
     uint8_t _addr;
     bool _txBegun;
 
-    uint8_t _buff[256];
+    uint8_t _buff[WIRE_BUFFER_SIZE];
     int _buffLen;
     int _buffOff;
 
