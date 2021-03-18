@@ -89,8 +89,10 @@ byte SPIClassRP2040::transfer(uint8_t data) {
     if (!_initted) return 0;
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverseByte(data);
     spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
+    DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
     spi_write_read_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
+    DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
 }
 
@@ -101,31 +103,42 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverse16Bit(data);
     spi_set_format(_spi, 16, cpol(), cpha(), SPI_MSB_FIRST);
+    DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
     spi_write16_read16_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
+    DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
 }
 
 void SPIClassRP2040::transfer(void *buf, size_t count) {
+    DEBUGSPI("SPI::transfer(%p, %d)\n", buf, count);
     uint8_t *buff = reinterpret_cast<uint8_t *>(buf);
     for (auto i = 0; i < count; i++) {
         *buff = transfer(*buff);
         *buff = (_spis.getBitOrder() == MSBFIRST) ? *buff : reverseByte(*buff);
         buff++;
     }
+    DEBUGSPI("SPI::transfer completed\n");
 }
 
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
+    DEBUGSPI("SPI::beginTransaction(clk=%d, bo=%s\n", _spis.getClockFreq(), (_spis.getBitOrder() == MSBFIRST) ? "MSB":"LSB");
     _spis = settings;
     if (_initted) {
+        DEBUGSPI("SPI: deinitting currently active SPI\n");
         spi_deinit(_spi);
     }
+    DEBUGSPI("SPI: initting SPI\n");
     spi_init(_spi, _spis.getClockFreq());
     _initted = true;
 }
 
 void SPIClassRP2040::endTransaction(void) {
-    spi_deinit(_spi);
+    DEBUGSPI("SPI::endTransaction()\n");
+    if (_initted) {
+        DEBUGSPI("SPI: deinitting currently active SPI\n");
+        spi_deinit(_spi);
+    }
     _initted = false;
 }
 
@@ -167,6 +180,7 @@ bool SPIClassRP2040::setTX(pin_size_t pin) {
 
 
 void SPIClassRP2040::begin(bool hwCS) {
+    DEBUGSPI("SPI::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d\n", hwCS, _RX, _CS, _SCK, _TX);
     gpio_set_function(_RX, GPIO_FUNC_SPI);
     _hwCS = hwCS;
     if (hwCS) {
@@ -179,6 +193,7 @@ void SPIClassRP2040::begin(bool hwCS) {
 }
 
 void SPIClassRP2040::end() {
+    DEBUGSPI("SPI::end()\n");
     gpio_set_function(_RX, GPIO_FUNC_SIO);
     if (_hwCS) {
         gpio_set_function(_CS, GPIO_FUNC_SIO);
