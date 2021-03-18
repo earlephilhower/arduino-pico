@@ -1,0 +1,39 @@
+; Servo.PIO - Generate Servo pulses
+;
+; Based on PWM.PIO Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+;
+; SPDX-License-Identifier: BSD-3-Clause
+;
+
+; Side-set pin 0 is used for PWM output
+
+; A servo count of 0 will cause an infinite loop allowing for
+; the RP2040 to determine when it is safe to shut down this
+; PIO program without causing any short pulses.
+; RP2040 code can check the PIO PC and determine when to stop it.
+
+.program servo
+.side_set 1 opt
+
+    pull noblock    side 0 ; Pull from FIFO to OSR if available, else copy X to OSR.
+    mov x, osr             ; Copy most-recently-pulled value back to scratch X
+public halt:
+    jmp !x halt            ; If x == 0 then a halt was requested
+    mov y, isr             ; ISR contains servo period. Y used as counter.
+countloop:
+    jmp x!=y noset         ; Set pin high if X == Y, keep the two paths length matched
+    jmp skip        side 1
+noset:
+    nop                    ; Single dummy cycle to keep the two paths the same length
+skip:
+    jmp y-- countloop      ; Loop until Y hits 0, then pull a fresh servo value from FIFO
+
+% c-sdk {
+static inline void servo_program_init(PIO pio, uint sm, uint offset, uint pin) {
+   pio_gpio_init(pio, pin);
+   pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+   pio_sm_config c = servo_program_get_default_config(offset);
+   sm_config_set_sideset_pins(&c, pin);
+   pio_sm_init(pio, sm, offset, &c);
+}
+%}

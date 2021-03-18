@@ -24,10 +24,8 @@
 #include <hardware/clocks.h>
 #include <hardware/pio.h>
 
-// The PWM example from theSDK is general purpose enough to use here
-// with no PIO code changes whatsoever.  RP2040 is awesome!
-#include "pwm.pio.h"
-static PIOProgram _servoPgm(&pwm_program);
+#include "servo.pio.h"
+static PIOProgram _servoPgm(&servo_program);
 
 // similiar to map but will have increased accuracy that provides a more
 // symmetrical api (call it and use result to reverse will provide the original value)
@@ -80,21 +78,23 @@ int Servo::attach(pin_size_t pin, int minUs, int maxUs, int value)
     _minUs = max(200, min(_maxUs, minUs));
 
     if (!_attached) {
-        int off;
         digitalWrite(pin, LOW);
         pinMode(pin, OUTPUT);
-        if (!_servoPgm.prepare(&_pio, &_smIdx, &off)) {
+        _pin = pin;
+        if (!_servoPgm.prepare(&_pio, &_smIdx, &_pgmOffset)) {
             // ERROR, no free slots
             return -1;
         }
-        pwm_program_init(_pio, _smIdx, off, pin);
+	_attached = true;
+        servo_program_init(_pio, _smIdx, _pgmOffset, pin);
         pio_sm_set_enabled(_pio, _smIdx, false);
         pio_sm_put_blocking(_pio, _smIdx, RP2040::usToPIOCycles(REFRESH_INTERVAL) / 3);
         pio_sm_exec(_pio, _smIdx, pio_encode_pull(false, false));
         pio_sm_exec(_pio, _smIdx, pio_encode_out(pio_isr, 32));
+        write(value);
+        pio_sm_exec(_pio, _smIdx, pio_encode_pull(false, false));
+        pio_sm_exec(_pio, _smIdx, pio_encode_mov(pio_x, pio_osr));
         pio_sm_set_enabled(_pio, _smIdx, true);
-        _pin = pin;
-	_attached = true;
     }
 
     write(value);
@@ -105,6 +105,12 @@ int Servo::attach(pin_size_t pin, int minUs, int maxUs, int value)
 void Servo::detach()
 {
     if (_attached) {
+        // Set a 0 for the width and then wait for the halt loop
+        pio_sm_put_blocking(_pio, _smIdx, 0);
+        delayMicroseconds(5);  // Avoid race condition
+        do {
+            // Do nothing until we are stuck in the halt loop (avoid short pulses
+        } while (pio_sm_get_pc(_pio, _smIdx) != servo_offset_halt + _pgmOffset);
         pio_sm_set_enabled(_pio, _smIdx, false);
         pio_sm_unclaim(_pio, _smIdx);
         _attached = false;
