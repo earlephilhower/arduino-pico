@@ -49,7 +49,7 @@ compiler.c.flags=-c {compiler.defines} {compiler.flags} {compiler.includes} -std
 compiler.c.elf.cmd=arm-none-eabi-g++
 compiler.c.elf.flags={compiler.defines} {compiler.flags} -Os -Wl,--gc-sections
 compiler.S.cmd=arm-none-eabi-gcc
-compiler.S.flags=-c -g -x assembler-with-cpp -MMD {compiler.includes}
+compiler.S.flags=-c -g -x assembler-with-cpp -MMD {compiler.includes} -g
 compiler.cpp.cmd=arm-none-eabi-g++
 compiler.cpp.flags=-c {compiler.defines} {compiler.flags} {compiler.includes} -std=gnu++17 -g
 
