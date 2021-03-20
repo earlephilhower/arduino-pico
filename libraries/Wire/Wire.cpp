@@ -26,7 +26,7 @@
 #include <hardware/i2c.h>
 #include "Wire.h"
 
-TwoWireRP2040::TwoWireRP2040(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
+TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _sda = sda;
     _scl = scl;
     _i2c = i2c;
@@ -36,7 +36,7 @@ TwoWireRP2040::TwoWireRP2040(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _buffLen = 0;
 }
 
-bool TwoWireRP2040::setSDA(pin_size_t pin) {
+bool TwoWire::setSDA(pin_size_t pin) {
     if (sdaAllowed(pin)) {
         _sda = pin;
         return true;
@@ -44,7 +44,7 @@ bool TwoWireRP2040::setSDA(pin_size_t pin) {
     return false;
 }
 
-bool TwoWireRP2040::setSCL(pin_size_t pin) {
+bool TwoWire::setSCL(pin_size_t pin) {
     if (sclAllowed(pin)) {
         _scl = pin;
         return true;
@@ -52,12 +52,12 @@ bool TwoWireRP2040::setSCL(pin_size_t pin) {
     return false;
 }
 
-void TwoWireRP2040::setClock(uint32_t hz) {
+void TwoWire::setClock(uint32_t hz) {
     _clkHz = hz;
 }
 
 // Master mode
-void TwoWireRP2040::begin() {
+void TwoWire::begin() {
     if (_begun) {
         // ERROR
         return;
@@ -76,8 +76,8 @@ void TwoWireRP2040::begin() {
 }
 
 // Slave mode
-void TwoWireRP2040::begin(uint8_t addr) {
-    // Slave moce isn't documented in the SDK, need to twiddle raw registers
+void TwoWire::begin(uint8_t addr) {
+    // Slave mode isn't documented in the SDK, need to twiddle raw registers
     // and use bare interrupts.  TODO to implement, for now.
 #if 0
     if (_begun) {
@@ -94,7 +94,7 @@ void TwoWireRP2040::begin(uint8_t addr) {
 #endif
 }
 
-void TwoWireRP2040::end() {
+void TwoWire::end() {
     if (!_begun) {
         // ERROR
         return;
@@ -104,7 +104,7 @@ void TwoWireRP2040::end() {
     _txBegun = false;
 }
 
-void TwoWireRP2040::beginTransmission(uint8_t addr) {
+void TwoWire::beginTransmission(uint8_t addr) {
     if (!_begun || _txBegun) {
         // ERROR
         return;
@@ -114,7 +114,7 @@ void TwoWireRP2040::beginTransmission(uint8_t addr) {
     _txBegun = true;
 }
 
-bool TwoWireRP2040::sdaAllowed(pin_size_t pin) {
+bool TwoWire::sdaAllowed(pin_size_t pin) {
     switch (i2c_hw_index(_i2c)) {
         case 0:
             switch (pin) {
@@ -138,7 +138,7 @@ bool TwoWireRP2040::sdaAllowed(pin_size_t pin) {
     return false;
 }
 
-bool TwoWireRP2040::sclAllowed(pin_size_t pin) {
+bool TwoWire::sclAllowed(pin_size_t pin) {
     switch (i2c_hw_index(_i2c)) {
         case 0:
             switch (pin) {
@@ -162,7 +162,7 @@ bool TwoWireRP2040::sclAllowed(pin_size_t pin) {
     return false;
 }
 
-size_t TwoWireRP2040::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
+size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
     if (!_begun || _txBegun || !quantity || (quantity > sizeof(_buff))) {
         return 0;
     }
@@ -173,7 +173,7 @@ size_t TwoWireRP2040::requestFrom(uint8_t address, size_t quantity, bool stopBit
     return _buffLen;
 }
 
-size_t TwoWireRP2040::requestFrom(uint8_t address, size_t quantity) {
+size_t TwoWire::requestFrom(uint8_t address, size_t quantity) {
     return requestFrom(address, quantity, true);
 }
 
@@ -183,7 +183,7 @@ size_t TwoWireRP2040::requestFrom(uint8_t address, size_t quantity) {
 //  2 : NACK on transmit of address
 //  3 : NACK on transmit of data
 //  4 : Other error
-uint8_t TwoWireRP2040::endTransmission(bool stopBit) {
+uint8_t TwoWire::endTransmission(bool stopBit) {
     if (!_begun || !_txBegun || !_buffLen) {
         return 4; 
     }
@@ -194,11 +194,11 @@ uint8_t TwoWireRP2040::endTransmission(bool stopBit) {
     return (ret == len) ? 0 : 4;
 }
 
-uint8_t TwoWireRP2040::endTransmission() {
+uint8_t TwoWire::endTransmission() {
   return endTransmission(true);
 }
 
-size_t TwoWireRP2040::write(uint8_t ucData) {
+size_t TwoWire::write(uint8_t ucData) {
     if (!_begun || !_txBegun || (_buffLen == sizeof(_buff))) {
         return 0;
     }
@@ -206,7 +206,7 @@ size_t TwoWireRP2040::write(uint8_t ucData) {
     return 1 ;
 }
 
-size_t TwoWireRP2040::write(const uint8_t *data, size_t quantity) {
+size_t TwoWire::write(const uint8_t *data, size_t quantity) {
     for (size_t i = 0; i < quantity; ++i) {
         if (!write(data[i])) {
             return i;
@@ -216,40 +216,40 @@ size_t TwoWireRP2040::write(const uint8_t *data, size_t quantity) {
     return quantity;
 }
 
-int TwoWireRP2040::available(void) {
+int TwoWire::available(void) {
     return _begun  ? _buffLen - _buffOff : 0;
 }
 
-int TwoWireRP2040::read(void) {
+int TwoWire::read(void) {
     if (available()) {
         return _buff[_buffOff++];
     }
     return -1; // EOF
 }
 
-int TwoWireRP2040::peek(void) {
+int TwoWire::peek(void) {
     if (available()) {
         return _buff[_buffOff];
     }
     return -1; // EOF
 }
 
-void TwoWireRP2040::flush(void) {
+void TwoWire::flush(void) {
     // Do nothing, use endTransmission(..) to force
     // data transfer.
 }
 
 
-void TwoWireRP2040::onReceive(void(*function)(int))
+void TwoWire::onReceive(void(*function)(int))
 {
     _onReceiveCallback = function;
 }
 
-void TwoWireRP2040::onRequest(void(*function)(void))
+void TwoWire::onRequest(void(*function)(void))
 {
     _onRequestCallback = function;
 }
 
-TwoWireRP2040 Wire(i2c0, 0, 1);
-TwoWireRP2040 Wire1(i2c1, 4, 5);
+TwoWire Wire(i2c0, 0, 1);
+TwoWire Wire1(i2c1, 4, 5);
 

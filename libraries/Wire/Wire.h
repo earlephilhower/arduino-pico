@@ -35,9 +35,9 @@
     #define WIRE_BUFFER_SIZE 128
 #endif
 
-class TwoWireRP2040 : public HardwareI2C {
+class TwoWire : public HardwareI2C {
 public:
-    TwoWireRP2040(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl);
+    TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl);
 
     // Start as Master
     void begin();
@@ -100,8 +100,8 @@ private:
     static const uint32_t TWI_CLOCK = 100000;
 };
 
-extern TwoWireRP2040 Wire;
-extern TwoWireRP2040 Wire1;
+extern TwoWire Wire;
+extern TwoWire Wire1;
 
 #endif
 
