@@ -106,7 +106,7 @@ archive_file_path={build.path}/{archive_file}
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Combine gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}"  "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} "-Wl,--script={build.variant.path}/{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" --specs=nosys.specs {compiler.ldflags} -o "{build.path}/{build.project_name}.elf" {object_files} "{build.path}/{archive_file}" {runtime.platform.path}/lib/pico.a -lm -I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/ -I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include {runtime.platform.path}/assembly/bs2_default_padded_checksummed.S
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}"  "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} "-Wl,--script={build.variant.path}/{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" --specs=nosys.specs {compiler.ldflags} -o "{build.path}/{build.project_name}.elf" {object_files} "{build.path}/{archive_file}" {runtime.platform.path}/lib/libpico.a -lm -I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/ -I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include {runtime.platform.path}/assembly/bs2_default_padded_checksummed.S
 
 ## Create output (UF2 file)
 recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2"

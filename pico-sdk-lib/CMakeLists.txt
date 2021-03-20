@@ -62,8 +62,13 @@ pico_stdlib
 pico_unique_id
 tinyusb
 )
+add_custom_command(TARGET pico PRE_BUILD
+	COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-gcc -g -c ../../assembly/crt0.S  -I ../../pico-sdk/src/rp2040/hardware_regs/include -I ../../pico-sdk/src/common/pico_binary_info/include/
+)
 
 add_custom_command(TARGET pico POST_BUILD
-       	COMMAND  ar dv libpico.a  stdio_uart.c.obj stdio.c.obj printf.c.obj
+	COMMAND ar d libpico.a crt0.S.obj
+	COMMAND ar r libpico.a crt0.o
 	)
+#       	COMMAND  ar dv libpico.a  stdio_uart.c.obj stdio.c.obj printf.c.obj
 
