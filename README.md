@@ -1,4 +1,4 @@
-# arduino-pico
+# Arduino-Pico
 Raspberry Pi Pico Arduino core, for all RP2040 boards
 
 This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem.
@@ -11,7 +11,9 @@ There is automated discovery of boards in bootloader mode, so they show up in th
 Open up the Arduino IDE and go to File->Preferences.
 
 In the dialog that pops up, enter the following URL in the "Additional Boards Manager URLs" field:
+
 https://github.com/earlephilhower/arduino-pico/releases/download/0.9.0/package_rp2040_index.json
+
 ![image](https://user-images.githubusercontent.com/11875/111917251-3c57f400-8a3c-11eb-8120-810a8328ab3f.png)
 
 Hit OK to close the dialog.
@@ -19,6 +21,7 @@ Hit OK to close the dialog.
 Go to Tools->Boards->Board Manager in the IDE
 
 Type "pico" in the search box and select "Add":
+
 ![image](https://user-images.githubusercontent.com/11875/111917223-12063680-8a3c-11eb-8884-4f32b8f0feb1.png)
 
 # Installing via GIT
@@ -36,8 +39,7 @@ cd ../tools
 python3 ./get.py
 `````
 
-
-# Status of port
+# Status of Port
 Lots of things are working now!
 * digitalWrite/Read (basic sanity tested)
 * shiftIn/Out (tested using Nokia5110 https://github.com/ionpan/Nokia5110)
