@@ -32,6 +32,7 @@ extern "C" {
 #include "hardware/irq.h"
 #include "pico/mutex.h"
 #include "hardware/watchdog.h"
+#include "pico/unique_id.h"
 
 #define PICO_STDIO_USB_TASK_INTERVAL_US 1000
 #define PICO_STDIO_USB_LOW_PRIORITY_IRQ 31
@@ -84,11 +85,13 @@ static const uint8_t usbd_desc_cfg[USBD_DESC_LEN] = {
         USBD_CDC_CMD_MAX_SIZE, USBD_CDC_EP_OUT, USBD_CDC_EP_IN, USBD_CDC_IN_OUT_MAX_SIZE),
 };
 
+static char _idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 2 + 1];
+
 static const char *const usbd_desc_str[] = {
     [USBD_STR_0] = "",
     [USBD_STR_MANUF] = "Raspberry Pi",
     [USBD_STR_PRODUCT] = "PicoArduino",
-    [USBD_STR_SERIAL] = "000000000000", // TODO
+    [USBD_STR_SERIAL] = _idString,
     [USBD_STR_CDC] = "Board CDC",
 };
 
@@ -147,6 +150,16 @@ void SerialUSB::begin(unsigned long baud) {
 
     if (_running) {
         return;
+    }
+
+    // Get ID string into human readable serial number
+    pico_unique_board_id_t id;
+    pico_get_unique_board_id(&id);
+    _idString[0] = 0;
+    for (auto i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
+        char hx[3];
+        sprintf(hx, "%02X", id.id[i]);
+        strcat(_idString, hx);
     }
 
     tusb_init();
