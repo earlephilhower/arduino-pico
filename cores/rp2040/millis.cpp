@@ -24,3 +24,6 @@ extern "C" unsigned long millis() {
     return to_ms_since_boot(get_absolute_time());
 }
 
+extern "C" unsigned long micros() {
+    return time_us_32();
+}
