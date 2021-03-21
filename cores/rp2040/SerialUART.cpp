@@ -19,6 +19,7 @@
  */
 
 #include "SerialUART.h"
+#include <hardware/uart.h>
 #include <hardware/gpio.h>
 
 bool SerialUART::setPinout(pin_size_t tx, pin_size_t rx) {

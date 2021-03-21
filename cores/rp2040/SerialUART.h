@@ -23,8 +23,9 @@
 
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
-#include <hardware/uart.h>
 #include <stdarg.h>
+
+extern "C" typedef struct uart_inst uart_inst_t;
 
 class SerialUART : public HardwareSerial {
 public:
