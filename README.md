@@ -17,7 +17,7 @@ git submodule update
 cd pico-sdk
 git submodule init
 git submodule update
-cd ../system
+cd ../tools
 python3 ./get.py
 `````
 
