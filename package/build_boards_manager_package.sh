@@ -93,7 +93,7 @@ fi
 cat $srcdir/platform.txt | \
 $SED 's/^runtime.tools.pqt-.*.path=.*//g' | \
 $SED 's/^tools.uf2conv.cmd=.*//g' | \
-$SED 's/^#tools.uf2conv.cmd=/tools.uf2conf.cmd=/g' | \
+$SED 's/^#tools.uf2conv.cmd=/tools.uf2conv.cmd=/g' | \
 $SED "s/version=.*/version=$ver/g" |\
 $SED -E "s/name=([a-zA-Z0-9\ -]+).*/name=\1($ver)/g"\
  > $outdir/platform.txt
