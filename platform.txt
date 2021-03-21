@@ -23,7 +23,6 @@ name=Rasperry Pi RP2040 Boards
 version=1.0.0
 runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
-runtime.tools.python3.path={runtime.platform.path}/system/python3
 runtime.tools.pqt-mklittlefs.path={runtime.platform.path}/system/mklittlefs
 runtime.tools.pqt-pioasm.path={runtime.platform.path}/system/pioasm
 runtime.tools.pqt-elf2uf2.path={runtime.platform.path}/system/elf2uf2
@@ -72,12 +71,13 @@ build.extra_flags=
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=
 compiler.c.elf.extra_flags=
-#compiler.c.elf.extra_flags=-v
 compiler.cpp.extra_flags=
 compiler.S.extra_flags=
 compiler.ar.extra_flags=
 compiler.elf2hex.extra_flags=
 
+
+# Allow Pico boards do be auto-discovered by the IDE
 discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/tools/discovery.py"
 
 # USB Flags
@@ -125,14 +125,13 @@ recipe.size.regex=\.text\s+([0-9]+).*
 tools.uf2conv.path=
 # Because the variable expansion doesn't allow one tool to find another, the following lines
 # will point to "{runtime.platform.path}/tools/python3/python3" in GIT and
-# "{runtime.tools.python3.path}/python3" for JSON board manager releases.
+# "{runtime.tools.pqt-python3.path}/python3" for JSON board manager releases.
+#tools.uf2conv.cmd={runtime.tools.pqt-python3.path}/python3
 tools.uf2conv.cmd={runtime.platform.path}/system/python3/python3
-tools.uf2conv.network_cmd="{runtime.tools.pqt-python3.path}/python3"
 
 tools.uf2conv.upload.protocol=uf2
 tools.uf2conv.upload.params.verbose=
 tools.uf2conv.upload.params.quiet=
 
 tools.uf2conv.upload.pattern="{cmd}" "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
-tools.uf2conv.upload.network_pattern="{cmd}" "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
 
