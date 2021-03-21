@@ -1,7 +1,7 @@
 {
    "packages": [
       {
-         "name": "Raspberry Pi Pico",
+         "name": "rp2040",
          "maintainer": "Earle F. Philhwoer, III",
          "websiteURL": "https://github.com/earlephilhower/arduino-pico",
          "email": "earlephilhower@yahoo.com",
@@ -11,7 +11,7 @@
          "platforms": [
             {
                "category": "Raspberry Pi Pico",
-               "name": "rpipico",
+               "name": "Raspberry Pi Pico/RP2040",
                "url": "",
                "version": "",
                "architecture": "rp2040",
@@ -23,27 +23,27 @@
                ],
                "toolsDependencies": [
                   {
-                     "packager": "efp3",
+                     "packager": "rp2040",
                      "version": "1.0.1-base-3a57aed",
                      "name": "pqt-gcc"
                   },
                   {
-                     "packager": "efp3",
+                     "packager": "rp2040",
                      "version": "1.0.1-base-3a57aed",
                      "name": "pqt-mklittlefs"
                   },
                   {
-                     "packager": "efp3",
+                     "packager": "rp2040",
                      "version": "1.0.1-base-3a57aed",
                      "name": "pqt-elf2uf2"
                   },
                   {
-                     "packager": "efp3",
+                     "packager": "rp2040",
                      "version": "1.0.1-base-3a57aed",
                      "name": "pqt-pioasm"
                   },
                   {
-                     "packager": "efp3",
+                     "packager": "rp2040",
                      "version": "1.0.1-base-3a57aed",
                      "name": "pqt-python3"
                   }
