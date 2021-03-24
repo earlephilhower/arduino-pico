@@ -187,6 +187,8 @@ for json in ${MOREJSONPACKAGES}; do
     fi
 done
 
+mv tmp $new_json
+
 # Verify the JSON file can be read, fail if it's not OK
 set -e
 cat $new_json | jq empty
