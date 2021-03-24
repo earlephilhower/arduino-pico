@@ -140,21 +140,25 @@ fi
 cat $srcdir/package/package_pico_index.template.json | \
     jq "$jq_arg" > package_rp2040_index.json
 
-exit
+#exit
 
-# Use Github API token, if available
-curl_gh_token_arg=()
-if [ ! -z "$CI_GITHUB_API_KEY" ]; then
-    curl_gh_token_arg=(-H "Authorization: token $CI_GITHUB_API_KEY")
+if [ -z "prev_any_release" ]; then
+    # Use Github API token, if available
+    curl_gh_token_arg=()
+    if [ ! -z "$CI_GITHUB_API_KEY" ]; then
+        curl_gh_token_arg=(-H "Authorization: token $CI_GITHUB_API_KEY")
+    fi
+    # Get previous release name
+    curl --silent "${curl_gh_token_arg[@]}" https://api.github.com/repos/earlephilhower/arduino-pico/releases > releases.json
+    # Previous final release (prerelase == false)
+    prev_release=$(jq -r '. | map(select(.draft == false and .prerelease == false)) | sort_by(.created_at | - fromdateiso8601) | .[0].tag_name' releases.json)
+    # Previous release (possibly a pre-release)
+    prev_any_release=$(jq -r '. | map(select(.draft == false)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
+    # Previous pre-release
+    prev_pre_release=$(jq -r '. | map(select(.draft == false and .prerelease == true)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
+else
+    prev_any_release=$prev_release
 fi
-# Get previous release name
-curl --silent "${curl_gh_token_arg[@]}" https://api.github.com/repos/earlephilhower/arduino-pico/releases > releases.json
-# Previous final release (prerelase == false)
-prev_release=$(jq -r '. | map(select(.draft == false and .prerelease == false)) | sort_by(.created_at | - fromdateiso8601) | .[0].tag_name' releases.json)
-# Previous release (possibly a pre-release)
-prev_any_release=$(jq -r '. | map(select(.draft == false)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
-# Previous pre-release
-prev_pre_release=$(jq -r '. | map(select(.draft == false and .prerelease == true)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
 
 echo "Previous release: $prev_release"
 echo "Previous (pre-?)release: $prev_any_release"
