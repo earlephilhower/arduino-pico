@@ -24,7 +24,7 @@ extern void setup();
 extern void loop();
 
 extern "C" int main() {
-    Serial.begin();
+    DEBUG_RP2040_PORT.begin();
     setup();
     while (1) {
         loop();
@@ -50,7 +50,7 @@ extern "C" int main() {
 extern "C" int errno;
 
 extern "C" ssize_t _write(int fd, const void *buf, size_t count) {
-    return Serial.write((const char *)buf, count);
+    return DEBUG_RP2040_PORT.write((const char *)buf, count);
 }
 
 extern "C" int _chown (const char *path, uid_t owner, gid_t group) {
