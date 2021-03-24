@@ -40,3 +40,41 @@ rpipico.menu.lvl.All=All
 rpipico.menu.lvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
 rpipico.menu.lvl.NoAssert-NDEBUG=NoAssert-NDEBUG
 rpipico.menu.lvl.NoAssert-NDEBUG.build.debug_level=-DNDEBUG
+
+##############################################################
+
+rpipicoprobe.name=Raspberry Pi PicoProbe
+rpipicoprobe.vid.0=0x2e8a
+rpipicoprobe.pid.0=0x0004
+rpipicoprobe.build.board=RPI_PICO
+rpipicoprobe.build.mcu=cortex-m0plus
+rpipicoprobe.build.variant=rpipico
+rpipicoprobe.upload.tool=picoprobe
+rpipicoprobe.upload.maximum_data_size=81920
+rpipicoprobe.upload.wait_for_upload_port=false
+rpipicoprobe.upload.erase_cmd=
+rpipicoprobe.serial.disableDTR=false
+rpipicoprobe.serial.disableRTS=false
+rpipicoprobe.build.led=
+rpipicoprobe.build.core=rp2040
+rpipicoprobe.build.mcu=rp2040
+rpipicoprobe.build.ldscript=memmap_default.ld
+rpipicoprobe.menu.dbg.Disabled.build.debug_port=
+rpipicoprobe.menu.dbg.Serial=Serial (USB)
+rpipicoprobe.menu.dbg.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+rpipicoprobe.menu.dbg.Serial1=Serial1 (UART0)
+rpipicoprobe.menu.dbg.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+rpipicoprobe.menu.dbg.Serial2=Serial2 (UART1)
+rpipicoprobe.menu.dbg.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+rpipicoprobe.menu.lvl.None____=None
+rpipicoprobe.menu.lvl.None____.build.debug_level=
+rpipicoprobe.menu.lvl.Core=Core
+rpipicoprobe.menu.lvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+rpipicoprobe.menu.lvl.SPI=SPI
+rpipicoprobe.menu.lvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+rpipicoprobe.menu.lvl.Wire=Wire
+rpipicoprobe.menu.lvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+rpipicoprobe.menu.lvl.All=All
+rpipicoprobe.menu.lvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+rpipicoprobe.menu.lvl.NoAssert-NDEBUG=NoAssert-NDEBUG
+rpipicoprobe.menu.lvl.NoAssert-NDEBUG.build.debug_level=-DNDEBUG
