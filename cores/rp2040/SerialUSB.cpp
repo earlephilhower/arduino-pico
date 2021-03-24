@@ -235,22 +235,40 @@ void SerialUSB::flush() {
 size_t SerialUSB::write(uint8_t c) {
     return write(&c, 1);
 }
-size_t SerialUSB::write(const uint8_t *p, size_t len) {
+size_t SerialUSB::write(const uint8_t *buf, size_t length) {
+    static uint64_t last_avail_time;
     uint32_t owner;
     if (!mutex_try_enter(&usb_mutex, &owner)) {
         if (owner == get_core_num()) return 0; // would deadlock otherwise
         mutex_enter_blocking(&usb_mutex);
     }
-    size_t remain = len;
-    while (remain && tud_cdc_connected()) {
-        size_t cnt = tud_cdc_write(p, remain);
-        p += cnt;
-        remain -= cnt;
-        tud_task();
-        tud_cdc_write_flush();
+    int i = 0;
+    if (tud_cdc_connected()) {
+        for (int i = 0; i < length;) {
+            int n = length - i;
+            int avail = tud_cdc_write_available();
+            if (n > avail) n = avail;
+            if (n) {
+                int n2 = tud_cdc_write(buf + i, n);
+                tud_task();
+                tud_cdc_write_flush();
+                i += n2;
+                last_avail_time = time_us_64();
+            } else {
+                tud_task();
+                tud_cdc_write_flush();
+                if (!tud_cdc_connected() ||
+                    (!tud_cdc_write_available() && time_us_64() > last_avail_time + 1000000 /* 1 second */)) {
+                    break;
+                }
+            }
+        }
+    } else {
+        // reset our timeout
+        last_avail_time = 0;
     }
     mutex_exit(&usb_mutex);
-    return len - remain;
+    return i;
 }
 SerialUSB::operator bool() {
     uint32_t owner;
