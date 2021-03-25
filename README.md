@@ -39,6 +39,18 @@ cd ../tools
 python3 ./get.py
 `````
 
+# Uploading Sketches
+To upload your first sketch, you will need to hold the BOOTSEL button down while plugging in the Pico to your computer.
+Then hit the upload button and the sketch should be transferred and start to run.
+
+After the first upload, this should not be necessary as the `arduino-pico` core has auto-reset support.
+Select the appropriate serial port shown in the Arduino Tools->Port->Serial Port menu once (this setting will stick and does not need to be
+touched for multiple uploads).   This selection allows the auto-reset tool to identify the proper device to reset.
+Them hit the upload button and your sketch should upload and run.
+
+In some cases the Pico will encounter a hard hang and its USB port will not respond to the auto-reset request.  Should this happen, just
+follow the initial procedure of holding the BOOTSEL button down while plugging in the Pico to enter the ROM bootloader.
+
 # Status of Port
 Lots of things are working now!
 * digitalWrite/Read (basic sanity tested)
@@ -56,6 +68,22 @@ Lots of things are working now!
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
 * Tones
+
+# Using Picoprobe
+If you have built a Raspberry Pi Picoprobe, you can use OpenOCD to handle your sketch uploads and for debugging with GDB.
+
+Under Windows a local admin user should be able to access the Picoprobe port automatically, but under Linux `udev` must be told about the device and to allow normal users access.
+
+To set up user-level access to Picoprobes on Ubuntu (and other OSes which use `udev`):
+````
+echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", GROUP="users", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+sudo udevadm control --reload
+````
+
+The first line creates a file with the USB vendor and ID of the Picoprobe and tells UDEV to give users full access to it.  The second causes `udev` to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.
+
+Once Picoprobe permissions are set up properly, then select the board "Raspberry Pi Pico via Picoprobe" in the Tools menu and upload as normal.
+
 
 # Todo
 Some major features I want to add are:
