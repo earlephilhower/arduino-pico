@@ -43,7 +43,10 @@ python3 ./get.py
 To upload your first sketch, you will need to hold the BOOTSEL button down while plugging in the Pico to your computer.
 Then hit the upload button and the sketch should be transferred and start to run.
 
-After the first upload, this should not be necessary as the `arduino-pico` core has auto-reset support.  Just hit the upload button and it should run.
+After the first upload, this should not be necessary as the `arduino-pico` core has auto-reset support. 
+Select the appropriate serial port shown in the Arduino Tools->Port->Serial Port menu once (this setting will stick and does not need to be
+touched for multiple uploads).   This selection allows the auto-reset tool to identify the proper device to reset.
+Them hit the upload button and your sketch should upload and run.
 
 In some cases the Pico will encounter a hard hang and its USB port will not respond to the auto-reset request.  Should this happen, just
 follow the initial procedure of holding the BOOTSEL button down while plugging in the Pico to enter the ROM bootloader.
