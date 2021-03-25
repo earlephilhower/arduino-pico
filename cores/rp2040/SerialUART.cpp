@@ -22,6 +22,14 @@
 #include <hardware/uart.h>
 #include <hardware/gpio.h>
 
+// SerialEvent functions are weak, so when the user doesn't define them,
+// the linker just sets their address to 0 (which is checked below).
+// The Serialx_available is just a wrapper around Serialx.available(),
+// but we can refer to it weakly so we don't pull in the entire
+// HardwareSerial instance if the user doesn't also refer to it.
+extern void serialEvent1() __attribute__((weak));
+extern void serialEvent2() __attribute__((weak));
+
 bool SerialUART::setPinout(pin_size_t tx, pin_size_t rx) {
     const uint32_t uart_tx[2] = { 0b000010001000000000001000100000, 0b100000000000100010000000000010 };
     const uint32_t uart_rx[2] = { 0b000001000100000000000100010000, 0b010000000000010001000000000001 };
@@ -147,3 +155,14 @@ SerialUART::operator bool() {
 SerialUART Serial1(uart0, 0, 1);
 SerialUART Serial2(uart1, 4, 5);
 
+void arduino::serialEvent1Run(void) {
+    if (serialEvent1 && Serial1.available()) {
+      serialEvent1();
+    }
+}
+
+void arduino::serialEvent2Run(void) {
+    if (serialEvent2 && Serial2.available()) {
+      serialEvent2();
+    }
+}

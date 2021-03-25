@@ -28,6 +28,15 @@ extern "C" int main() {
     setup();
     while (1) {
         loop();
+        if (arduino::serialEventRun) {
+            arduino::serialEventRun();
+        }
+        if (arduino::serialEvent1Run) {
+            arduino::serialEvent1Run();
+        }
+        if (arduino::serialEvent2Run) {
+            arduino::serialEvent2Run();
+        }
     }
     return 0;
 }
