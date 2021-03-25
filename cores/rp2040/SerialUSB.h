@@ -72,4 +72,8 @@ private:
 
 extern SerialUSB Serial;
 
+namespace arduino {
+    extern void serialEventRun(void) __attribute__((weak));
+};
+
 #endif

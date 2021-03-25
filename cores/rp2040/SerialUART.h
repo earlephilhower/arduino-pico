@@ -81,4 +81,9 @@ private:
 extern SerialUART Serial1; // HW UART 0
 extern SerialUART Serial2; // HW UART 1
 
+namespace arduino {
+    extern void serialEvent1Run(void) __attribute__((weak));
+    extern void serialEvent2Run(void) __attribute__((weak));
+};
+
 #endif

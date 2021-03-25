@@ -22,10 +22,7 @@
 
 #include <Arduino.h>
 #include "EEPROM.h"
-extern "C" {
-// This header is missing the "ifdef cplusplus extern C" bit
 #include <hardware/flash.h>
-}
 #include <hardware/sync.h>
 
 extern "C" uint8_t _EEPROM_start;
