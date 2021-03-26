@@ -8,6 +8,13 @@ It uses a custom toolset with GCC 10.2 and Newlib 4.0.0, not depending on system
 There is automated discovery of boards in bootloader mode, so they show up in the IDE, and the upload command works using the Microsoft UF2 tool (included).
 
 # Installing via Arduino Boards Manager
+**Windows Users**: Please do not use the Windows Store version of the actual Arduino application
+because it has issues detecting attached Pico boards.  Use the "Windows ZIP" or plain "Windows"
+executable (EXE)  download direct from https://arduino.cc. and allow it to install any device
+drivers it suggests.  Otherwise the Pico board may not be detected.  Also, if trying out the
+2.0 beta Arduino please install the release 1.8 version beforehand to ensure needed device drivers
+are present.  (See #20 for more details.)
+
 Open up the Arduino IDE and go to File->Preferences.
 
 In the dialog that pops up, enter the following URL in the "Additional Boards Manager URLs" field:
@@ -79,6 +86,10 @@ Some major features I want to add are:
 * Installable filesystem support (SD, LittleFS, etc.)
 * Updated debug infrastructure
 * I2S port from pico-extras
+
+# Tutorials from Across the Web
+Here are some links to coverage and additional tutorials for using `arduino-pico`
+* Arduino Support for the Pi Pico available! And how fast is the Pico? - https://youtu.be/-XHh17cuH5E
 
 # Contributing
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
