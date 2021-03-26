@@ -24,6 +24,7 @@
 
 SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_size_t sck, pin_size_t tx) {
     _spi = spi;
+    _running = false;
     _initted = false;
     _spis = SPISettings();
     _RX = rx;
@@ -143,41 +144,56 @@ void SPIClassRP2040::endTransaction(void) {
 }
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
-    const uint32_t valid[2] = { 0b10001000000000001000100000000000, 0b00000000100010000000000010001000 };
-    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+    constexpr uint32_t valid[2] = { __bitset({0, 4, 16, 20}) /* SPI0 */,
+                                    __bitset({8, 12, 24, 28})  /* SPI1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
         _RX = pin;
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 bool SPIClassRP2040::setCS(pin_size_t pin) {
-    const uint32_t valid[2] = { 0b01000100000000000100010000000000, 0b00000000010001000000000001000100 };
-    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+    constexpr uint32_t valid[2] = { __bitset({1, 5, 17, 21}) /* SPI0 */,
+                                    __bitset({9, 13, 25, 29})  /* SPI1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
         _CS = pin;
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 bool SPIClassRP2040::setSCK(pin_size_t pin) {
-    const uint32_t valid[2] = { 0b00100010000000000010001000000000, 0b00000000001000100000000000100010 };
-    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+    constexpr uint32_t valid[2] = { __bitset({2, 6, 18, 22}) /* SPI0 */,
+                                    __bitset({10, 14, 26})  /* SPI1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
         _SCK = pin;
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 bool SPIClassRP2040::setTX(pin_size_t pin) {
-    const uint32_t valid[2] = { 0b00010001000000000001000100000000, 0b00000000000100010000000000010001 };
-    if ( (1 << pin) & valid[spi_get_index(_spi)] ) {
+    constexpr uint32_t valid[2] = { __bitset({3, 7, 19, 23}) /* SPI0 */,
+                                    __bitset({11, 15, 27})  /* SPI1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
         _TX = pin;
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
-
 
 void SPIClassRP2040::begin(bool hwCS) {
     DEBUGSPI("SPI::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d\n", hwCS, _RX, _CS, _SCK, _TX);

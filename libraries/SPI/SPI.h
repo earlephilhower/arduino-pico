@@ -73,7 +73,8 @@ private:
     SPISettings _spis;
     pin_size_t _RX, _TX, _SCK, _CS;
     bool _hwCS;
-    bool _initted;
+    bool _running; // SPI port active
+    bool _initted; // Transaction begun
 };
 
 extern SPIClassRP2040 SPI;

@@ -46,8 +46,10 @@ public:
     // Shut down the I2C interface
     void end();
 
+    // Select IO pins to use.  Call before ::begin()
     bool setSDA(pin_size_t sda);
     bool setSCL(pin_size_t scl);
+
     void setClock(uint32_t freqHz) override;
 
     void beginTransmission(uint8_t);
@@ -74,16 +76,12 @@ public:
     using Print::write;
 
 private:
-    // Verifies the passed in pin can be used by this I2C device
-    bool sdaAllowed(pin_size_t pin);
-    bool sclAllowed(pin_size_t pin);
-
     i2c_inst_t *_i2c;
     pin_size_t _sda;
     pin_size_t _scl;
     int _clkHz;
 
-    bool _begun;
+    bool _running;
     bool _slave;
     uint8_t _addr;
     bool _txBegun;

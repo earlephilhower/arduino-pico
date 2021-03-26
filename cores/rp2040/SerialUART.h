@@ -31,7 +31,10 @@ class SerialUART : public HardwareSerial {
 public:
     SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) { _uart = uart; _tx = tx; _rx = rx; }
     
-    bool setPinout(pin_size_t tx, pin_size_t rx);
+    // Select the pinout.  Call before .begin()
+    bool setRX(pin_size_t pin);
+    bool setTX(pin_size_t pin);
+    bool setPinout(pin_size_t tx, pin_size_t rx) { bool ret = setRX(rx); ret &= setTX(tx); return ret; }
 
     void begin(unsigned long baud = 115200) override { begin(baud, SERIAL_8N1); };
     void begin(unsigned long baud, uint16_t config) override;

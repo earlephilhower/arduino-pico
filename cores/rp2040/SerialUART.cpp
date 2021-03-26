@@ -30,26 +30,31 @@
 extern void serialEvent1() __attribute__((weak));
 extern void serialEvent2() __attribute__((weak));
 
-bool SerialUART::setPinout(pin_size_t tx, pin_size_t rx) {
-    const uint32_t uart_tx[2] = { 0b000010001000000000001000100000, 0b100000000000100010000000000010 };
-    const uint32_t uart_rx[2] = { 0b000001000100000000000100010000, 0b010000000000010001000000000001 };
-    if ( ((1 << tx) & uart_tx[uart_get_index(_uart)]) &&
-        ((1 << rx) & uart_rx[uart_get_index(_uart)]) ) {
-        if (_running) {
-            pinMode(_tx, INPUT);
-            pinMode(_rx, INPUT);
-        }
-        _tx = tx;
+bool SerialUART::setRX(pin_size_t rx) {
+    constexpr uint32_t valid[2] = { __bitset({1, 13, 17, 29}) /* UART0 */,
+                                    __bitset({5, 9, 21, 25})  /* UART1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << rx) & valid[uart_get_index(_uart)]) {
         _rx = rx;
-        if (_running) {
-            gpio_set_function(_tx, GPIO_FUNC_UART);
-            gpio_set_function(_rx, GPIO_FUNC_UART);
-        }
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
+bool SerialUART::setTX(pin_size_t tx) {
+    constexpr uint32_t valid[2] = { __bitset({0, 12, 16, 28}) /* UART0 */,
+                                    __bitset({4, 8, 20, 24})  /* UART1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << tx) & valid[uart_get_index(_uart)]) {
+        _tx = tx;
+        return true;
+    } else {
+        return false;
+    }
+}
 
 void SerialUART::begin(unsigned long baud, uint16_t config) {
     _baud = baud;

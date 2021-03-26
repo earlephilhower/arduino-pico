@@ -31,25 +31,35 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _scl = scl;
     _i2c = i2c;
     _clkHz = TWI_CLOCK;
-    _begun = false;
+    _running = false;
     _txBegun = false;
     _buffLen = 0;
 }
 
 bool TwoWire::setSDA(pin_size_t pin) {
-    if (sdaAllowed(pin)) {
+    constexpr uint32_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28}) /* I2C0 */,
+                                    __bitset({2, 6, 10, 14, 18, 22, 26})  /* I2C1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << pin) & valid[i2c_hw_index(_i2c)]) {
         _sda = pin;
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 bool TwoWire::setSCL(pin_size_t pin) {
-    if (sclAllowed(pin)) {
+    constexpr uint32_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29}) /* I2C0 */,
+                                    __bitset({3, 7, 11, 15, 19, 23, 27})  /* I2C1 */};
+    if (_running) {
+        return false;
+    } else if ((1 << pin) & valid[i2c_hw_index(_i2c)]) {
         _scl = pin;
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
 void TwoWire::setClock(uint32_t hz) {
@@ -58,7 +68,7 @@ void TwoWire::setClock(uint32_t hz) {
 
 // Master mode
 void TwoWire::begin() {
-    if (_begun) {
+    if (_running) {
         // ERROR
         return;
     }
@@ -70,7 +80,7 @@ void TwoWire::begin() {
     gpio_set_function(_scl, GPIO_FUNC_I2C);
     gpio_pull_up(_scl);
 
-    _begun = true;
+    _running = true;
     _txBegun = false;
     _buffLen = 0;
 }
@@ -80,7 +90,7 @@ void TwoWire::begin(uint8_t addr) {
     // Slave mode isn't documented in the SDK, need to twiddle raw registers
     // and use bare interrupts.  TODO to implement, for now.
 #if 0
-    if (_begun) {
+    if (_running) {
         // ERROR
         return;
     }
@@ -95,17 +105,17 @@ void TwoWire::begin(uint8_t addr) {
 }
 
 void TwoWire::end() {
-    if (!_begun) {
+    if (!_running) {
         // ERROR
         return;
     }
     i2c_deinit(_i2c);
-    _begun = false;
+    _running = false;
     _txBegun = false;
 }
 
 void TwoWire::beginTransmission(uint8_t addr) {
-    if (!_begun || _txBegun) {
+    if (!_running || _txBegun) {
         // ERROR
         return;
     }
@@ -114,56 +124,8 @@ void TwoWire::beginTransmission(uint8_t addr) {
     _txBegun = true;
 }
 
-bool TwoWire::sdaAllowed(pin_size_t pin) {
-    switch (i2c_hw_index(_i2c)) {
-        case 0:
-            switch (pin) {
-                case 0:
-                case 4:
-                case 16:
-                case 20:
-                    return true;
-            }
-            break;
-        case 1:
-            switch (pin) {
-                case 8:
-                case 12:
-                case 24:
-                case 28:
-                    return true;
-            }
-            break;
-    }
-    return false;
-}
-
-bool TwoWire::sclAllowed(pin_size_t pin) {
-    switch (i2c_hw_index(_i2c)) {
-        case 0:
-            switch (pin) {
-                case 1:
-                case 5:
-                case 17:
-                case 21:
-                    return true;
-            }
-            break;
-        case 1:
-            switch (pin) {
-                case 9:
-                case 13:
-                case 25:
-                case 29:
-                    return true;
-            }
-            break;
-    }
-    return false;
-}
-
 size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
-    if (!_begun || _txBegun || !quantity || (quantity > sizeof(_buff))) {
+    if (!_running || _txBegun || !quantity || (quantity > sizeof(_buff))) {
         return 0;
     }
 
@@ -184,7 +146,7 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity) {
 //  3 : NACK on transmit of data
 //  4 : Other error
 uint8_t TwoWire::endTransmission(bool stopBit) {
-    if (!_begun || !_txBegun || !_buffLen) {
+    if (!_running || !_txBegun || !_buffLen) {
         return 4; 
     }
     auto len = _buffLen;
@@ -199,7 +161,7 @@ uint8_t TwoWire::endTransmission() {
 }
 
 size_t TwoWire::write(uint8_t ucData) {
-    if (!_begun || !_txBegun || (_buffLen == sizeof(_buff))) {
+    if (!_running || !_txBegun || (_buffLen == sizeof(_buff))) {
         return 0;
     }
     _buff[_buffLen++] = ucData;
@@ -217,7 +179,7 @@ size_t TwoWire::write(const uint8_t *data, size_t quantity) {
 }
 
 int TwoWire::available(void) {
-    return _begun  ? _buffLen - _buffOff : 0;
+    return _running  ? _buffLen - _buffOff : 0;
 }
 
 int TwoWire::read(void) {
