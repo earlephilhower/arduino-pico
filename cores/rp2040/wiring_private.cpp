@@ -22,23 +22,37 @@
 #include <hardware/gpio.h>
 #include <hardware/sync.h>
 #include <stack>
+#include <map>
 
-std::stack<uint32_t> irqStack;
+// Support nested IRQ disable/re-enable
+static std::stack<uint32_t> _irqStack;
 
 extern "C" void interrupts() {
-    if (irqStack.empty()) {
+    if (_irqStack.empty()) {
         // ERROR
         return;
     }
-    restore_interrupts(irqStack.top());
-    irqStack.pop();
+    restore_interrupts(_irqStack.top());
+    _irqStack.pop();
 }
 
 extern "C" void noInterrupts() {
-    irqStack.push(save_and_disable_interrupts());
+    _irqStack.push(save_and_disable_interrupts());
 }
 
-static uint32_t _irqMap = 0;
+// Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
+// dispatch to the real callback manually
+static std::map<pin_size_t, voidFuncPtr> _map;
+
+void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
+    auto irq = _map.find(gpio);
+    if (irq != _map.end()) {
+        // Ignore events, only one event per pin supported by Arduino
+        irq->second(); // Do the callback
+    } else {
+        // ERROR, but we're in an IRQ so do nothing
+    }
+}
 
 extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode) {
     uint32_t events;
@@ -52,16 +66,17 @@ extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus 
     }
     noInterrupts();
     detachInterrupt(pin);
-    gpio_set_irq_enabled_with_callback(pin, events, true, (gpio_irq_callback_t)callback);
-    _irqMap |= 1<<pin;
+    _map.insert({pin, callback});
+    gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
     interrupts();
 }
 
-extern "C" void detachInterrupt(pin_size_t pin){
+extern "C" void detachInterrupt(pin_size_t pin) {
     noInterrupts();
-    if (_irqMap & (1<<pin)) {
+    auto irq = _map.find(pin);
+    if (irq != _map.end()) {
         gpio_set_irq_enabled(pin, 0x0f /* all */, false);
-        _irqMap &= ~(1<<pin);
+        _map.erase(pin);
     }
     interrupts();
 }
