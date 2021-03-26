@@ -28,12 +28,20 @@
 #include "api/ArduinoAPI.h"
 
 #include <pins_arduino.h>
+#define digitalPinToInterrupt(P) (P)
 
 #include "debug_internal.h"
 
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
+
+void interrupts();
+void noInterrupts();
+void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode);
+void detachInterrupt(pin_size_t pin);
+
+
 
 void pinMode(pin_size_t pinNumber, PinMode pinMode);
 
