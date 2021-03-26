@@ -17,6 +17,7 @@ rpipico.upload.wait_for_upload_port=true
 rpipico.upload.erase_cmd=
 rpipico.serial.disableDTR=false
 rpipico.serial.disableRTS=false
+rpipico.build.f_cpu=125000000
 rpipico.build.led=
 rpipico.build.core=rp2040
 rpipico.build.mcu=rp2040
