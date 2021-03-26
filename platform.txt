@@ -46,7 +46,7 @@ compiler.wrap=-Wl,--wrap=acos -Wl,--wrap=acosf -Wl,--wrap=acosh -Wl,--wrap=acosh
 compiler.c.cmd=arm-none-eabi-gcc
 compiler.c.flags=-c {compiler.defines} {compiler.flags} {compiler.includes} -std=gnu17 -g
 compiler.c.elf.cmd=arm-none-eabi-g++
-compiler.c.elf.flags={compiler.defines} {compiler.flags} -Wl,--gc-sections
+compiler.c.elf.flags={compiler.defines} {compiler.flags} -Wl,--gc-sections -u _printf_float -u _scanf_float
 compiler.S.cmd=arm-none-eabi-gcc
 compiler.S.flags=-c -g -x assembler-with-cpp -MMD {compiler.includes} -g
 compiler.cpp.cmd=arm-none-eabi-g++
