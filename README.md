@@ -39,6 +39,11 @@ cd ../tools
 python3 ./get.py
 `````
 
+# Installing both Arduino and CMake
+Tom's Hardware presented a very nice writeup on installing `arduino-pico` on both Windows and Linux, available at https://www.tomshardware.com/how-to/program-raspberry-pi-pico-with-arduino-ide
+
+If you follow Les' step-by-step you will also have a fully functional `CMake`-based environment to build Pico apps on if you outgrow the Arduino ecosystem.
+
 # Uploading Sketches
 To upload your first sketch, you will need to hold the BOOTSEL button down while plugging in the Pico to your computer.
 Then hit the upload button and the sketch should be transferred and start to run.
