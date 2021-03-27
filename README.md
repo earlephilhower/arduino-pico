@@ -1,4 +1,7 @@
-# Arduino-Pico
+# Arduino-Pico [![Join the chat at https://gitter.im/arduino-pico/community](https://badges.gitter.im/arduino-pico/community.svg)](https://gitter.im/arduino-pico/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
+
 Raspberry Pi Pico Arduino core, for all RP2040 boards
 
 This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem.
