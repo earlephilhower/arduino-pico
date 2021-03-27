@@ -24,12 +24,13 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
+#include "CoreMutex.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
 
 class SerialUART : public HardwareSerial {
 public:
-    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) { _uart = uart; _tx = tx; _rx = rx; }
+    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx);
     
     // Select the pinout.  Call before .begin()
     bool setRX(pin_size_t pin);
@@ -79,6 +80,7 @@ private:
     pin_size_t _tx, _rx;
     int _baud;
     int _peek;
+    mutex_t _mutex;
 };
 
 extern SerialUART Serial1; // HW UART 0

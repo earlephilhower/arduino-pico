@@ -19,6 +19,7 @@
  */
 
 #include "SerialUART.h"
+#include "CoreMutex.h"
 #include <hardware/uart.h>
 #include <hardware/gpio.h>
 
@@ -56,6 +57,13 @@ bool SerialUART::setTX(pin_size_t tx) {
     }
 }
 
+SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
+    _uart = uart;
+    _tx = tx;
+    _rx = rx;
+    mutex_init(&_mutex);
+}
+
 void SerialUART::begin(unsigned long baud, uint16_t config) {
     _baud = baud;
     uart_init(_uart, baud);
@@ -84,12 +92,16 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
 }
 
 void SerialUART::end() {
+    if (!_running) {
+        return;
+    }
     uart_deinit(_uart);
     _running = false;
 }
 
 int SerialUART::peek() {
-    if (!_running) {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
         return -1;
     }
     if (_peek >= 0) {
@@ -100,7 +112,8 @@ int SerialUART::peek() {
 }
 
 int SerialUART::read() {
-    if (!_running) {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
         return -1;
     }
     if (_peek >= 0) {
@@ -112,28 +125,32 @@ int SerialUART::read() {
 }
 
 int SerialUART::available() {
-    if (!_running) {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
         return 0;
     }
     return (uart_is_readable(_uart)) ? 1 : 0;
 }
 
 int SerialUART::availableForWrite() {
-    if (!_running) {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
         return 0;
     }
     return (uart_is_writable(_uart)) ? 1 : 0;
 }
 
 void SerialUART::flush() {
-    // TODO, must be smarter way.  Now, just sleep long enough to guarantee a full FIFO goes out (very conservative)
-    //int us_per_bit = 1 + (1000000 / _baud);
-    //delayMicroseconds(us_per_bit * 32 * 8);
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
+        return;
+    }
     uart_default_tx_wait_blocking();
 }
 
 size_t SerialUART::write(uint8_t c) {
-    if (!_running) {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
         return 0;
     }
     uart_putc_raw(_uart, c);
@@ -141,7 +158,8 @@ size_t SerialUART::write(uint8_t c) {
 }
 
 size_t SerialUART::write(const uint8_t *p, size_t len) {
-    if (!_running) {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
         return 0;
     }
     size_t cnt = len;
