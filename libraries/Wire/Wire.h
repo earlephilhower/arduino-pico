@@ -75,6 +75,9 @@ public:
     inline size_t write(int n) { return write((uint8_t)n); }
     using Print::write;
 
+    // IRQ callback
+    void onIRQ();
+
 private:
     i2c_inst_t *_i2c;
     pin_size_t _sda;
@@ -93,6 +96,8 @@ private:
     // Callback user functions
     void (*_onRequestCallback)(void);
     void (*_onReceiveCallback)(int);
+
+    bool _slaveStartDet = false;
 
     // TWI clock frequency
     static const uint32_t TWI_CLOCK = 100000;
