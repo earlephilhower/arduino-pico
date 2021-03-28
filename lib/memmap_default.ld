@@ -23,12 +23,14 @@
 
 MEMORY
 {
-    FLASH(rx) : ORIGIN = 0x10000000, LENGTH = 2044k /* 2048 - 4K for EEPROM */
+    FLASH(rx) : ORIGIN = 0x10000000, LENGTH = __FLASH_LENGTH__
     RAM(rwx) : ORIGIN =  0x20000000, LENGTH = 256k
     SCRATCH_X(rwx) : ORIGIN = 0x20040000, LENGTH = 4k
     SCRATCH_Y(rwx) : ORIGIN = 0x20041000, LENGTH = 4k
 }
-PROVIDE ( _EEPROM_start = 0x101FF000 );
+PROVIDE ( _EEPROM_start = __EEPROM_START__ );
+PROVIDE ( _FS_start     = __FS_START__ );
+PROVIDE ( _FS_end       = __FS_END__ );
 
 ENTRY(_entry_point)
 
