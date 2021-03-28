@@ -7,3 +7,9 @@
 [submodule "system/pyserial"]
 	path = tools/pyserial
 	url = https://github.com/pyserial/pyserial.git
+[submodule "libraries/LittleFS/lib/littlefs"]
+	path = libraries/LittleFS/lib/littlefs
+	url = https://github.com/littlefs-project/littlefs.git
+[submodule "libraries/SdFat"]
+	path = libraries/SdFat
+	url = https://github.com/earlephilhower/ESP8266SdFat.git
