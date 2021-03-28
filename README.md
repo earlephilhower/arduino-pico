@@ -78,11 +78,12 @@ Lots of things are working now!
 * SPI (tested using SdFat 2.0 https://github.com/greiman/SdFat ... note that the Pico voltage regulator can't reliably supply enough power for a SD Card so use external power, and adjust the `USE_SIMPLE_LITTLE_ENDIAN` define in `src/sdfat.h` to 0)
 * analogWrite/PWM (tested using Fade.ino)
 * tone/noTone (using IRQ generated waveform)
-* Wire/I2C (tested using DS3231 https://github.com/rodan/ds3231)
+* Wire/I2C Master and Slave (tested using DS3231 https://github.com/rodan/ds3231)
 * EEPROM (tested examples)
 * USB Serial(ACM) w/automatic reboot-to-UF2 upload)
 * Hardware UART
 * Servo (basic waveform testing, disables/re-enables without any short pulses)
+* Overclocking and underclocking from the menus
 * printf (i.e. debug) output over USB serial 
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
