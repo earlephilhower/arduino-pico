@@ -126,10 +126,10 @@
                "systems": [
                   {
                      "host": "arm-linux-gnueabihf",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.1.0-base/aarch64-linux-gnu.openocd-d58c2ef5e.210324.tar.gz",
-                     "archiveFileName": "aarch64-linux-gnu.openocd-d58c2ef5e.210324.tar.gz",
-                     "checksum": "SHA-256:46866ab64b7a36630d9435b94c57ce7790766425ba09f08187888879c25e1c97",
-                     "size": "6075925"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-via-env.tar.gz",
+                     "archiveFileName": "python3-via-env.tar.gz",
+                     "checksum": "SHA-256:c9237bfe0f62842d7187a39495baa4a7e3ab8b87c0b433614294b023cf0bc0f3",
+                     "size": "292"
                   },
                   {
                      "host": "x86_64-mingw32",
