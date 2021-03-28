@@ -21,6 +21,8 @@
 #include "Arduino.h"
 #include <hardware/gpio.h>
 
+static PinMode _pm[30];
+
 extern "C" void pinMode( pin_size_t ulPin, PinMode ulMode ) {
     switch (ulMode) {
         case INPUT:
@@ -31,11 +33,13 @@ extern "C" void pinMode( pin_size_t ulPin, PinMode ulMode ) {
             gpio_init(ulPin);
             gpio_set_dir(ulPin, false);
             gpio_pull_up(ulPin);
+            gpio_put(ulPin, 0);
             break;
         case INPUT_PULLDOWN:
             gpio_init(ulPin);
             gpio_set_dir(ulPin, false);
             gpio_pull_down(ulPin);
+            gpio_put(ulPin, 1);
             break;
         case OUTPUT:
             gpio_init(ulPin);
@@ -43,16 +47,23 @@ extern "C" void pinMode( pin_size_t ulPin, PinMode ulMode ) {
             break;
         default:
             // Error
-            break;
+            return;
     }
+    _pm[ulPin] = ulMode;
 }
 
 extern "C" void digitalWrite( pin_size_t ulPin, PinStatus ulVal ) {
-    if (!gpio_is_dir_out(ulPin)) {
+    if (_pm[ulPin] == INPUT_PULLDOWN) {
         if (ulVal == LOW) {
-            gpio_pull_down(ulPin);
+            gpio_set_dir(ulPin, false);
         } else {
-            gpio_pull_up(ulPin);
+            gpio_set_dir(ulPin, true);
+        }
+    } else if (_pm[ulPin] == INPUT_PULLUP) {
+        if (ulVal == HIGH) {
+            gpio_set_dir(ulPin, false);
+        } else {
+            gpio_set_dir(ulPin, true);
         }
     } else {
         gpio_put(ulPin, ulVal == LOW ? 0 : 1);

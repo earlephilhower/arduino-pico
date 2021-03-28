@@ -40,11 +40,11 @@ public:
     TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl);
 
     // Start as Master
-    void begin();
+    void begin() override;
     // Start as Slave
-    void begin(uint8_t address);
+    void begin(uint8_t address) override;
     // Shut down the I2C interface
-    void end();
+    void end() override;
 
     // Select IO pins to use.  Call before ::begin()
     bool setSDA(pin_size_t sda);
@@ -52,20 +52,20 @@ public:
 
     void setClock(uint32_t freqHz) override;
 
-    void beginTransmission(uint8_t);
-    uint8_t endTransmission(bool stopBit);
-    uint8_t endTransmission(void);
+    void beginTransmission(uint8_t) override;
+    uint8_t endTransmission(bool stopBit) override;
+    uint8_t endTransmission(void) override;
 
-    size_t requestFrom(uint8_t address, size_t quantity, bool stopBit);
-    size_t requestFrom(uint8_t address, size_t quantity);
+    size_t requestFrom(uint8_t address, size_t quantity, bool stopBit) override;
+    size_t requestFrom(uint8_t address, size_t quantity) override;
 
-    size_t write(uint8_t data);
-    size_t write(const uint8_t * data, size_t quantity);
+    size_t write(uint8_t data) override;
+    size_t write(const uint8_t * data, size_t quantity) override;
 
-    virtual int available(void);
-    virtual int read(void);
-    virtual int peek(void);
-    virtual void flush(void);
+    virtual int available(void) override;
+    virtual int read(void) override;
+    virtual int peek(void) override;
+    virtual void flush(void) override;
     void onReceive(void(*)(int));
     void onRequest(void(*)(void));
 
