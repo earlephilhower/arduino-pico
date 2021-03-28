@@ -180,13 +180,70 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
     }
 
     size_t byteRead = 0;
-    _buffLen = i2c_read_blocking(_i2c, address, _buff, quantity, !stopBit);
+    _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(50));
     _buffOff = 0;
     return _buffLen;
 }
 
 size_t TwoWire::requestFrom(uint8_t address, size_t quantity) {
     return requestFrom(address, quantity, true);
+}
+
+static bool _clockStretch(pin_size_t pin) {
+    auto end = time_us_64() + 100;
+    while ((time_us_64() < end) && (!digitalRead(pin))) { /* noop */ }
+    return digitalRead(pin);
+}
+
+bool _probe(int addr, pin_size_t sda, pin_size_t scl, int freq) {
+    int delay = (1000000 / freq) / 2;
+    bool ack = false;
+
+    pinMode(sda, INPUT_PULLUP);
+    pinMode(scl, INPUT_PULLUP);
+    gpio_set_function(scl, GPIO_FUNC_SIO);
+    gpio_set_function(sda, GPIO_FUNC_SIO);
+
+    digitalWrite(sda, HIGH);
+    sleep_us(delay);
+    digitalWrite(scl, HIGH);
+    if (!_clockStretch(scl)) goto stop;
+    digitalWrite(sda, LOW);
+    sleep_us(delay);
+    digitalWrite(scl, LOW);
+    sleep_us(delay);
+    for (int i=0; i<8; i++) {
+        addr <<= 1;
+        digitalWrite(sda, (addr & (1<<7)) ? HIGH : LOW);
+        sleep_us(delay);
+        digitalWrite(scl, HIGH);
+        sleep_us(delay);
+        if (!_clockStretch(scl)) goto stop;
+        digitalWrite(scl, LOW);
+        sleep_us(5); // Ensure we don't change too close to clock edge
+    }
+
+    digitalWrite(sda, HIGH);
+    sleep_us(delay);
+    digitalWrite(scl, HIGH);
+    if (!_clockStretch(scl)) goto stop;
+
+    ack = digitalRead(sda) == LOW;
+    sleep_us(delay);
+    digitalWrite(scl, LOW);
+
+stop:
+    sleep_us(delay);
+    digitalWrite(sda, LOW);
+    sleep_us(delay);
+    digitalWrite(scl, HIGH);
+    sleep_us(delay);
+    digitalWrite(sda, HIGH);
+    sleep_us(delay);
+    gpio_set_function(scl, GPIO_FUNC_I2C);
+    gpio_set_function(sda, GPIO_FUNC_I2C);
+
+    return ack;
 }
 
 // Errors:
@@ -196,14 +253,19 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity) {
 //  3 : NACK on transmit of data
 //  4 : Other error
 uint8_t TwoWire::endTransmission(bool stopBit) {
-    if (!_running || !_txBegun || !_buffLen) {
+    if (!_running || !_txBegun) {
         return 4; 
     }
-    auto len = _buffLen;
-    auto ret = i2c_write_blocking(_i2c, _addr, _buff, _buffLen, !stopBit);
-    _buffLen = 0;
     _txBegun = false;
-    return (ret == len) ? 0 : 4;
+    if (!_buffLen) {
+        // Special-case 0-len writes which are used for I2C probing
+        return _probe(_addr, _sda, _scl, _clkHz) ? 0 : 2;
+    } else {
+        auto len = _buffLen;
+        auto ret = i2c_write_blocking_until(_i2c, _addr, _buff, _buffLen, !stopBit, make_timeout_time_ms(50));
+        _buffLen = 0;
+        return (ret == len) ? 0 : 4;
+    }
 }
 
 uint8_t TwoWire::endTransmission() {
