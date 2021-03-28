@@ -43,7 +43,12 @@ extern void serialEvent() __attribute__((weak));
 #define PICO_STDIO_USB_LOW_PRIORITY_IRQ 31
 
 #define USBD_VID (0x2E8A) // Raspberry Pi
-#define USBD_PID (0x000a) // Raspberry Pi Pico SDK CDC
+
+#ifdef SERIALUSB_PID
+    #define USBD_PID (SERIALUSB_PID)
+#else
+    #define USBD_PID (0x000a) // Raspberry Pi Pico SDK CDC
+#endif
 
 #define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN)
 #define USBD_MAX_POWER_MA (250)
