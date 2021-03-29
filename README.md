@@ -95,6 +95,7 @@ Some major features I want to add are:
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`
 * Arduino Support for the Pi Pico available! And how fast is the Pico? - https://youtu.be/-XHh17cuH5E
+* Pre-release Adafruit QT Pi RP2040 - https://www.youtube.com/watch?v=sfC1msqXX0I
 
 # Contributing
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
