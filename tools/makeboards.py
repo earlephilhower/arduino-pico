@@ -36,7 +36,7 @@ def BuildFreq(name):
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
-def BuildHeader(name, prettyname, pid, boarddefine, variant, uploadtool, flashsize):
+def BuildHeader(name, prettyname, pid, boarddefine, variant, libpico, uploadtool, flashsize):
     print("%s.name=%s" % (name, prettyname))
     print("%s.vid.0=0x2e8a" % (name))
     print("%s.pid.0=%s" % (name, pid))
@@ -56,6 +56,7 @@ def BuildHeader(name, prettyname, pid, boarddefine, variant, uploadtool, flashsi
     print("%s.build.core=rp2040" % (name))
     print("%s.build.mcu=rp2040" % (name))
     print("%s.build.ldscript=memmap_default.ld" % (name))
+    print("%s.build.picolib=%s" % (name, libpico))
 
 def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
@@ -66,19 +67,19 @@ def BuildGlobalMenuList():
 
 BuildGlobalMenuList()
 
-BuildHeader("rpipico", "Raspberry Pi Pico", "0x000a", "RASPBERRY_PI_PICO", "rpipico", "uf2conv", 2 * 1024*1024)
+BuildHeader("rpipico", "Raspberry Pi Pico", "0x000a", "RASPBERRY_PI_PICO", "rpipico", "libpico.a", "uf2conv", 2 * 1024*1024)
 BuildFlashMenu("rpipico", 2 * 1024 * 1024, [ 0, 64 * 1024, 256 * 1024, 512 * 1024, 1024 * 1024 ])
 BuildFreq("rpipico")
 BuildDebugPort("rpipico")
 BuildDebugLevel("rpipico")
 
-BuildHeader("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", "adafruitfeather", "uf2conv", 8 *1024*1024)
+BuildHeader("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", "adafruitfeather", "libpico_b1.a", "uf2conv", 8 *1024*1024)
 BuildFlashMenu("adafruitfeather", 8 * 1024 * 1024, [ 0, 64 * 1024, 256 * 1024, 512 * 1024, 1024 * 1024, 2 * 1024 * 1024, 3 * 1024 * 1024, 4 * 1024 *1024, 5 * 1024 *1024, 6 * 1024*1024, 7*1024*1024 ])
 BuildFreq("adafruitfeather")
 BuildDebugPort("adafruitfeather")
 BuildDebugLevel("adafruitfeather")
 
-BuildHeader("generic", "Generic RP2040", "0xf00a", "GENERIC_RP2040", "generif", "uf2conv", 2 * 1024*1024)
+BuildHeader("generic", "Generic RP2040", "0xf00a", "GENERIC_RP2040", "generic", "libpico_b1.a", "uf2conv", 2 * 1024*1024)
 BuildFlashMenu("generic", 2 * 1024 * 1024, [ 0, 64 * 1024, 256 * 1024, 512 * 1024, 1024 * 1024 ])
 BuildFreq("generic")
 BuildDebugPort("generic")
