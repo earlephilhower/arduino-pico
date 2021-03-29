@@ -18,10 +18,6 @@ drivers it suggests.  Otherwise the Pico board may not be detected.  Also, if tr
 2.0 beta Arduino please install the release 1.8 version beforehand to ensure needed device drivers
 are present.  (See #20 for more details.)
 
-**Raspberry Pi 3/4 Users**:  Sorry, but there is no support for your computer at this time.  I am
-in need of a more modern GCC cross-compiler than is available from the Raspbery PI repo (gcc 4.xxx)
-in order to build the compiler for your systems.  Any help finding such a cross-compiler would be
-appreciated.
 
 Open up the Arduino IDE and go to File->Preferences.
 
