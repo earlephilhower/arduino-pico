@@ -59,7 +59,6 @@ void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
 unsigned long millis();
 
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
@@ -68,6 +67,7 @@ unsigned long millis();
 #include "SerialUSB.h"
 #include "SerialUART.h"
 #include "RP2040.h"
+#include "Bootsel.h"
 
 // Template which will evaluate at *compile time* to a single 32b number
 // with the specified bits set.
