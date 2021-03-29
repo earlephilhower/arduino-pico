@@ -64,22 +64,22 @@ def BuildGlobalMenuList():
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
 
+
+def MakeBoard(name, prettyname, pid, boarddefine, flashsizemb):
+    for a, b, c in [ ["", "", "uf2conv"], ["picoprobe", " (Picoprobe)", "picoprobe"]]:
+        n = name + a
+        p = prettyname + b
+        fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
+        for i in range(1, flashsizemb):
+            fssizelist.append(i * 1024 * 1024)
+        BuildHeader(n, p, pid, boarddefine, name, c, flashsizemb * 1024 * 1024)
+        BuildFlashMenu(n, flashsizemb * 1024 * 1024, fssizelist)
+        BuildFreq(n)
+        BuildDebugPort(n)
+        BuildDebugLevel(n)
+
 BuildGlobalMenuList()
+MakeBoard("rpipico", "Raspberry Pi Pico", "0x000a", "RASPBERRY_PI_PICO", 2) 
+MakeBoard("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", 8)
+MakeBoard("generic", "Generic RP2040", "0xf00a", "GENERIC_RP2040", 16)
 
-BuildHeader("rpipico", "Raspberry Pi Pico", "0x000a", "RASPBERRY_PI_PICO", "rpipico", "uf2conv", 2 * 1024*1024)
-BuildFlashMenu("rpipico", 2 * 1024 * 1024, [ 0, 64 * 1024, 256 * 1024, 512 * 1024, 1024 * 1024 ])
-BuildFreq("rpipico")
-BuildDebugPort("rpipico")
-BuildDebugLevel("rpipico")
-
-BuildHeader("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", "adafruitfeather", "uf2conv", 8 *1024*1024)
-BuildFlashMenu("adafruitfeather", 8 * 1024 * 1024, [ 0, 64 * 1024, 256 * 1024, 512 * 1024, 1024 * 1024, 2 * 1024 * 1024, 3 * 1024 * 1024, 4 * 1024 *1024, 5 * 1024 *1024, 6 * 1024*1024, 7*1024*1024 ])
-BuildFreq("adafruitfeather")
-BuildDebugPort("adafruitfeather")
-BuildDebugLevel("adafruitfeather")
-
-BuildHeader("generic", "Generic RP2040", "0xf00a", "GENERIC_RP2040", "generif", "uf2conv", 2 * 1024*1024)
-BuildFlashMenu("generic", 2 * 1024 * 1024, [ 0, 64 * 1024, 256 * 1024, 512 * 1024, 1024 * 1024 ])
-BuildFreq("generic")
-BuildDebugPort("generic")
-BuildDebugLevel("generic")
