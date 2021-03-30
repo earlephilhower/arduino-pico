@@ -130,7 +130,7 @@ jq_arg=".packages[0].platforms[0].version = \"$visiblever\" | \
 
 if [ -z "$is_nightly" ]; then
     jq_arg="$jq_arg |\
-        .packages[0].platforms[0].size = \"$size\" |\
+        .packages[0].platforms[0].size = \"${size-0}\" |\
         .packages[0].platforms[0].checksum = \"SHA-256:$sha\""
 fi
 
