@@ -63,6 +63,7 @@ PinStatus digitalRead(pin_size_t pinNumber);
 
 // ADC
 int analogRead(pin_size_t pinNumber);
+float analogReadTemp();  // Returns core temp in Centigrade
 
 // PWM
 void analogWrite(pin_size_t pinNumber, int value);
