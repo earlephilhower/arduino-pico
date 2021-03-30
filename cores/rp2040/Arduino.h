@@ -26,9 +26,10 @@
 #include <string.h>
 
 #include "api/ArduinoAPI.h"
-
 #include <pins_arduino.h>
-#define digitalPinToInterrupt(P) (P)
+
+// Required for the port*Register macros
+#include "hardware/gpio.h"
 
 #include "debug_internal.h"
 
@@ -36,13 +37,24 @@
 extern "C"{
 #endif // __cplusplus
 
+// Disable/reenable all interrupts.  Safely handles nested disables
 void interrupts();
 void noInterrupts();
+
+// GPIO change/value interrupts
 void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode);
 void detachInterrupt(pin_size_t pin);
 
+// AVR compatibilty macros...naughty and accesses the HW directly
+#define digitalPinToPort(pin)       (0)
+#define digitalPinToBitMask(pin)    (1UL << (pin))
+#define digitalPinToTimer(pin)      (0)
+#define digitalPinToInterrupt(pin)  (pin)
+#define portOutputRegister(port)    ((volatile uint32_t*) sio_hw->gpio_out)
+#define portInputRegister(port)     ((volatile uint32_t*) sio_hw->gpio_in)
+#define portModeRegister(port)      ((volatile uint32_t*) sio_hw->gpio_oe)
 
-
+// IO config
 void pinMode(pin_size_t pinNumber, PinMode pinMode);
 
 // SIO (GPIO)
