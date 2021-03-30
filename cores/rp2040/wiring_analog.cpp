@@ -63,7 +63,7 @@ extern "C" void analogWriteResolution(int res) {
 extern "C" void analogWrite(pin_size_t pin, int val) {
     if (!pwmInitted) {
         pwm_config c = pwm_get_default_config();
-        pwm_config_set_clkdiv( &c, clock_get_hz(clk_sys) / 1.0 / (analogScale * analogFreq) );
+        pwm_config_set_clkdiv( &c, clock_get_hz(clk_sys) / (float) (analogScale * analogFreq) );
         pwm_config_set_wrap( &c, analogScale );
         for (int i=0; i<30; i++) {
             pwm_init(pwm_gpio_to_slice_num(i), &c, true);
