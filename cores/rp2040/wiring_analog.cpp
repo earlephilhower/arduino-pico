@@ -81,15 +81,28 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
     pwm_set_gpio_level(pin, val);
 }
 
+static bool adcInitted = false;
 extern "C" int analogRead(pin_size_t pinNumber) {
     if ((pinNumber < A0) || (pinNumber > A3)) {
         return 0;
     }
-    static bool adcInitted = false;
     if (!adcInitted) {
         adc_init();
     }
     adc_gpio_init(pinNumber);
     adc_select_input(pinNumber - A0);
     return adc_read();
+}
+
+extern "C" float analogReadTemp() {
+    if (!adcInitted) {
+        adc_init();
+    }
+    adc_set_temp_sensor_enabled(true);
+    delay(1); // Allow things to settle.  Without this, readings can be erratic
+    adc_select_input(4); // Temperature sensor
+    int v = adc_read();
+    adc_set_temp_sensor_enabled(false);
+    float t = 27.0f - ((v * 3.3f / 4096.0f) - 0.706f) / 0.001721f; // From the datasheet
+    return t;
 }
