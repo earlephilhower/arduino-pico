@@ -6,6 +6,7 @@ include(pico_sdk_import.cmake)
 project(pico_lib C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 # Initialize the SDK
 pico_sdk_init()
@@ -15,7 +16,6 @@ add_library(pico STATIC)
 target_compile_definitions(pico PUBLIC
 	PICO_PRINTF_ALWAYS_INCLUDED=1
 )
-
 
 target_link_libraries(pico 
 	boot_stage2
