@@ -45,11 +45,9 @@ To install via GIT (for latest and greatest versions):
 mkdir -p ~/Arduino/hardware/pico
 git clone https://github.com/earlephilhower/arduino-pico.git ~/Arduino/hardware/pico/rp2040
 cd ~/Arduino/hardware/pico/rp2040
-git submodule init
-git submodule update
+git submodule update --init
 cd pico-sdk
-git submodule init
-git submodule update
+git submodule update --init
 cd ../tools
 python3 ./get.py
 `````
@@ -71,19 +69,31 @@ Them hit the upload button and your sketch should upload and run.
 In some cases the Pico will encounter a hard hang and its USB port will not respond to the auto-reset request.  Should this happen, just
 follow the initial procedure of holding the BOOTSEL button down while plugging in the Pico to enter the ROM bootloader.
 
+# Uploading Filesystem Images
+The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
+* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+
+To install, follow the directions in 
+* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
+
+For detailed usage information, please check the ESP8266 repo documentation (ignore SPIFFS related notes) available at
+* https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
+
 # Status of Port
 Lots of things are working now!
-* digitalWrite/Read (basic sanity tested)
-* shiftIn/Out (tested using Nokia5110 https://github.com/ionpan/Nokia5110)
-* SPI (tested using SdFat 2.0 https://github.com/greiman/SdFat ... note that the Pico voltage regulator can't reliably supply enough power for a SD Card so use external power, and adjust the `USE_SIMPLE_LITTLE_ENDIAN` define in `src/sdfat.h` to 0)
-* analogWrite/PWM (tested using Fade.ino)
-* tone/noTone (using IRQ generated waveform)
-* Wire/I2C Master and Slave (tested using DS3231 https://github.com/rodan/ds3231)
-* EEPROM (tested examples)
-* USB Serial(ACM) w/automatic reboot-to-UF2 upload)
+* digitalWrite/Read
+* shiftIn/Out
+* SPI
+* analogWrite/PWM
+* tone/noTone
+* Wire/I2C Master and Slave
+* EEPROM
+* USB Serial(ACM) w/automatic reboot-to-UF2 upload
 * Hardware UART
-* Servo (basic waveform testing, disables/re-enables without any short pulses)
+* Servo, glitchless
 * Overclocking and underclocking from the menus
+* analogRead and Pico chip temperature
+* Filesystems (LittleFS and SD/SDFS)
 * printf (i.e. debug) output over USB serial 
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
@@ -92,7 +102,6 @@ The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 
 # Todo
 Some major features I want to add are:
-* Installable filesystem support (SD, LittleFS, etc.)
 * Updated debug infrastructure
 * I2S port from pico-extras
 

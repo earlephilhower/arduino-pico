@@ -1,0 +1,4 @@
+Hello!
+
+Welcome to the Raspberry Pi Pico using arduino-pico!
+
