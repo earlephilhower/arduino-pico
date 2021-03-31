@@ -21,8 +21,7 @@
 #include <pico.h>
 #include <pico/time.h>
 
-extern "C" void delay( unsigned long ms )
-{
+extern "C" void delay( unsigned long ms ) {
     if (!ms) {
         return;
     }
@@ -30,8 +29,7 @@ extern "C" void delay( unsigned long ms )
     sleep_ms(ms);
 }
 
-extern "C" void delayMicroseconds( unsigned int usec )
-{
+extern "C" void delayMicroseconds( unsigned int usec ) {
     if (!usec) {
         return;
     }

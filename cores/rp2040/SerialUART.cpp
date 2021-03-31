@@ -35,11 +35,13 @@ bool SerialUART::setRX(pin_size_t rx) {
     constexpr uint32_t valid[2] = { __bitset({1, 13, 17, 29}) /* UART0 */,
                                     __bitset({5, 9, 21, 25})  /* UART1 */};
     if (_running) {
+        DEBUGCORE("ERROR: SerialUART setRX while running\n");
         return false;
     } else if ((1 << rx) & valid[uart_get_index(_uart)]) {
         _rx = rx;
         return true;
     } else {
+        DEBUGCORE("ERROR: SerialUART setRX illegal pin (%d)\n", rx);
         return false;
     }
 }
@@ -48,11 +50,13 @@ bool SerialUART::setTX(pin_size_t tx) {
     constexpr uint32_t valid[2] = { __bitset({0, 12, 16, 28}) /* UART0 */,
                                     __bitset({4, 8, 20, 24})  /* UART1 */};
     if (_running) {
+        DEBUGCORE("ERROR: SerialUART setTX while running\n");
         return false;
     } else if ((1 << tx) & valid[uart_get_index(_uart)]) {
         _tx = tx;
         return true;
     } else {
+        DEBUGCORE("ERROR: SerialUART setTX illegal pin (%d)\n", tx);
         return false;
     }
 }

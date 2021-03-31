@@ -24,6 +24,14 @@
 extern "C" uint8_t shiftIn(pin_size_t dataPin, pin_size_t clockPin, BitOrder bitOrder) {
     uint8_t value = 0;
     uint8_t i;
+    if ((dataPin < 0) || (dataPin > 29)) {
+        DEBUGCORE("ERROR: Illegal dataPin in shiftIn (%d)\n", dataPin);
+        return 0;
+    }
+    if ((clockPin < 0) || (clockPin > 29)) {
+        DEBUGCORE("ERROR: Illegal clockPin in shiftIn (%d)\n", clockPin);
+        return 0;
+    }
     for (i = 0; i < 8; ++i) {
        digitalWrite(clockPin, HIGH);
        if (bitOrder == LSBFIRST)
@@ -37,6 +45,14 @@ extern "C" uint8_t shiftIn(pin_size_t dataPin, pin_size_t clockPin, BitOrder bit
 
 extern "C" void shiftOut(pin_size_t dataPin, pin_size_t clockPin, BitOrder bitOrder, uint8_t val) {
     uint8_t i;
+    if ((dataPin < 0) || (dataPin > 29)) {
+        DEBUGCORE("ERROR: Illegal dataPin in shiftOut (%d)\n", dataPin);
+        return;
+    }
+    if ((clockPin < 0) || (clockPin > 29)) {
+        DEBUGCORE("ERROR: Illegal clockPin in shiftOut (%d)\n", clockPin);
+        return;
+    }
     for (i = 0; i < 8; i++)  {
        	if (bitOrder == LSBFIRST)
             digitalWrite(dataPin, !!(val & (1 << i)));

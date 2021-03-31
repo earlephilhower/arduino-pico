@@ -16,33 +16,25 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-extern "C" {
-  #include "stdlib.h"
-  #include "stdint.h"
-}
+#include "stdlib.h"
+#include "stdint.h"
 
-void randomSeed( uint32_t dwSeed )
-{
-  if ( dwSeed != 0 )
-  {
+void randomSeed( uint32_t dwSeed ) {
+  if ( dwSeed != 0 ) {
     srand( dwSeed ) ;
   }
 }
 
-long random( long howbig )
-{
-  if ( howbig == 0 )
-  {
+long random( long howbig ) {
+  if ( howbig == 0 ) {
     return 0 ;
   }
 
   return rand() % howbig;
 }
 
-long random( long howsmall, long howbig )
-{
-  if (howsmall >= howbig)
-  {
+long random( long howsmall, long howbig ) {
+  if (howsmall >= howbig) {
     return howsmall;
   }
 
