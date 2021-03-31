@@ -311,7 +311,7 @@ def main():
             error("Family ID needs to be a number or one of: " + ", ".join(families.keys()))
 
     if args.serial:
-        if str(args.serial).startswith("/dev/tty") or str(args.serial).startswith("COM"):
+        if str(args.serial).startswith("/dev/tty") or str(args.serial).startswith("COM") or str(args.serial).startswith("/dev/cu"):
             try:
                 print("Resetting "+str(args.serial))
                 try:

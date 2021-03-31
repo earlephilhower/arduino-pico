@@ -1,5 +1,5 @@
 /*
- * delay() for the Raspberry Pi Pico RP2040
+ * Simple BOOTSEL reader object
  *
  * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
  *
@@ -18,33 +18,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <pico.h>
-#include <pico/time.h>
+#pragma once
 
-extern "C" void delay( unsigned long ms ) {
-    if (!ms) {
-        return;
-    }
+class __Bootsel {
+public:
+    __Bootsel() { }
+    operator bool();
+};
 
-    sleep_ms(ms);
-}
-
-extern "C" void delayMicroseconds( unsigned int usec ) {
-    if (!usec) {
-        return;
-    }
-    sleep_us(usec);
-}
-
-extern "C" void yield() {
-    // NOOP
-}
-
-extern "C" uint32_t millis() {
-    return to_ms_since_boot(get_absolute_time());
-}
-
-extern "C" uint32_t micros() {
-    return to_us_since_boot(get_absolute_time());
-}
-
+extern __Bootsel BOOTSEL;

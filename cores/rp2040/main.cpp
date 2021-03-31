@@ -28,6 +28,12 @@ extern "C" int main() {
 #if F_CPU != 125000000
     set_sys_clock_khz(F_CPU / 1000, true);
 #endif
+
+#ifndef DISABLE_USB_SERIAL
+    // Enable serial port for reset/upload always
+    Serial.begin();
+#endif
+
 #if defined DEBUG_RP2040_PORT
     DEBUG_RP2040_PORT.begin();
 #endif

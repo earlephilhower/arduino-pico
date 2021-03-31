@@ -26,9 +26,10 @@
 #include <string.h>
 
 #include "api/ArduinoAPI.h"
-
 #include <pins_arduino.h>
-#define digitalPinToInterrupt(P) (P)
+
+// Required for the port*Register macros
+#include "hardware/gpio.h"
 
 #include "debug_internal.h"
 
@@ -36,13 +37,24 @@
 extern "C"{
 #endif // __cplusplus
 
+// Disable/reenable all interrupts.  Safely handles nested disables
 void interrupts();
 void noInterrupts();
+
+// GPIO change/value interrupts
 void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode);
 void detachInterrupt(pin_size_t pin);
 
+// AVR compatibilty macros...naughty and accesses the HW directly
+#define digitalPinToPort(pin)       (0)
+#define digitalPinToBitMask(pin)    (1UL << (pin))
+#define digitalPinToTimer(pin)      (0)
+#define digitalPinToInterrupt(pin)  (pin)
+#define portOutputRegister(port)    ((volatile uint32_t*) sio_hw->gpio_out)
+#define portInputRegister(port)     ((volatile uint32_t*) sio_hw->gpio_in)
+#define portModeRegister(port)      ((volatile uint32_t*) sio_hw->gpio_oe)
 
-
+// IO config
 void pinMode(pin_size_t pinNumber, PinMode pinMode);
 
 // SIO (GPIO)
@@ -51,6 +63,7 @@ PinStatus digitalRead(pin_size_t pinNumber);
 
 // ADC
 int analogRead(pin_size_t pinNumber);
+float analogReadTemp();  // Returns core temp in Centigrade
 
 // PWM
 void analogWrite(pin_size_t pinNumber, int value);
@@ -58,7 +71,6 @@ void analogWrite(pin_size_t pinNumber, int value);
 void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
 unsigned long millis();
-
 
 #ifdef __cplusplus
 } // extern "C"
@@ -68,6 +80,7 @@ unsigned long millis();
 #include "SerialUSB.h"
 #include "SerialUART.h"
 #include "RP2040.h"
+#include "Bootsel.h"
 
 // Template which will evaluate at *compile time* to a single 32b number
 // with the specified bits set.

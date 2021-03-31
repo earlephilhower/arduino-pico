@@ -1,7 +1,6 @@
 # Arduino-Pico [![Join the chat at https://gitter.im/arduino-pico/community](https://badges.gitter.im/arduino-pico/community.svg)](https://gitter.im/arduino-pico/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-
 Raspberry Pi Pico Arduino core, for all RP2040 boards
 
 This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem.
@@ -18,10 +17,6 @@ drivers it suggests.  Otherwise the Pico board may not be detected.  Also, if tr
 2.0 beta Arduino please install the release 1.8 version beforehand to ensure needed device drivers
 are present.  (See #20 for more details.)
 
-**Raspberry Pi 3/4 Users**:  Sorry, but there is no support for your computer at this time.  I am
-in need of a more modern GCC cross-compiler than is available from the Raspbery PI repo (gcc 4.xxx)
-in order to build the compiler for your systems.  Any help finding such a cross-compiler would be
-appreciated.
 
 Open up the Arduino IDE and go to File->Preferences.
 
@@ -79,16 +74,34 @@ To install, follow the directions in
 For detailed usage information, please check the ESP8266 repo documentation (ignore SPIFFS related notes) available at
 * https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
 
+# Uploading Sketches with Picoprobe
+If you have built a Raspberry Pi Picoprobe, you can use OpenOCD to handle your sketch uploads and for debugging with GDB.
+
+Under Windows a local admin user should be able to access the Picoprobe port automatically, but under Linux `udev` must be told about the device and to allow normal users access.
+
+To set up user-level access to Picoprobes on Ubuntu (and other OSes which use `udev`):
+````
+echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", GROUP="users", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+sudo udevadm control --reload
+````
+
+The first line creates a file with the USB vendor and ID of the Picoprobe and tells UDEV to give users full access to it.  The second causes `udev` to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.
+
+Once Picoprobe permissions are set up properly, then select the board "Raspberry Pi Pico (Picoprobe)" in the Tools menu and upload as normal.
+
+# Debugging with Picoprobe, OpenOCD, and GDB
+The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.
+
 # Status of Port
-Lots of things are working now!
+Relatively stable and very functional, but bug reports and PRs always accepted.
 * digitalWrite/Read
 * shiftIn/Out
-* SPI
+* SPI master
 * analogWrite/PWM
 * tone/noTone
 * Wire/I2C Master and Slave
 * EEPROM
-* USB Serial(ACM) w/automatic reboot-to-UF2 upload
+* USB Serial(ACM) w/automatic reboot-to-UF2 upload)
 * Hardware UART
 * Servo, glitchless
 * Overclocking and underclocking from the menus
@@ -108,6 +121,8 @@ Some major features I want to add are:
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`
 * Arduino Support for the Pi Pico available! And how fast is the Pico? - https://youtu.be/-XHh17cuH5E
+* Pre-release Adafruit QT Py RP2040 - https://www.youtube.com/watch?v=sfC1msqXX0I
+* Adafruit Feather RP2040 running LCD + TMP117 - https://www.youtube.com/watch?v=fKDeqZiIwHg
 
 # Contributing
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.

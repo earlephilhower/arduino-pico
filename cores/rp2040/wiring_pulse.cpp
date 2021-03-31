@@ -27,6 +27,11 @@ extern "C" unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeo
     uint64_t start = time_us_64();
     uint64_t abort = start + timeout;
 
+    if ((pin < 0) || (pin > 29)) {
+        DEBUGCORE("ERROR: Illegal pin in pulseIn (%d)\n", pin);
+        return 0;
+    }
+
     // Wait for deassert, if needed
     while ((!!gpio_get(pin) != !state) && (time_us_64() < abort) );
     if (time_us_64() >= abort) return 0;
