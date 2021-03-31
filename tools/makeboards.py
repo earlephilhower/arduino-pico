@@ -36,7 +36,15 @@ def BuildFreq(name):
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
-def BuildHeader(name, prettyname, pid, boarddefine, variant, uploadtool, flashsize):
+def BuildBoot(name):
+    for l in [ ("Generic SPI /2", "boot2_generic_03h_2_padded_checksum"),  ("Generic SPI /4", "boot2_generic_03h_4_padded_checksum"),
+            ("IS25LP080 QSPI /2", "boot2_is25lp080_2_padded_checksum"), ("IS25LP080 QSPI /4", "boot2_is25lp080_4_padded_checksum"),
+            ("W25Q080 QSPI /2", "boot2_w25q080_2_padded_checksum"), ("W25Q080 QSPI /4", "boot2_w25q080_4_padded_checksum"),
+            ("W25X10CL QSPI /2", "boot2_w25x10cl_2_padded_checksum"), ("W25X10CL QSPI /4", "boot2_w25x10cl_4_padded_checksum") ]:
+        print("%s.menu.boot2.%s=%s" % (name, l[1], l[0]))
+        print("%s.menu.boot2.%s.build.boot2=%s" % (name, l[1], l[1]))
+
+def BuildHeader(name, prettyname, pid, boarddefine, variant, uploadtool, flashsize, boot2):
     print("%s.name=%s" % (name, prettyname))
     print("%s.vid.0=0x2e8a" % (name))
     print("%s.pid.0=%s" % (name, pid))
@@ -56,6 +64,7 @@ def BuildHeader(name, prettyname, pid, boarddefine, variant, uploadtool, flashsi
     print("%s.build.core=rp2040" % (name))
     print("%s.build.mcu=rp2040" % (name))
     print("%s.build.ldscript=memmap_default.ld" % (name))
+    print("%s.build.boot2=%s" % (name, boot2))
 
 def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
@@ -63,23 +72,33 @@ def BuildGlobalMenuList():
     print("menu.freq=CPU Speed")
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
+    print("menu.boot2=Boot Stage 2")
 
 
-def MakeBoard(name, prettyname, pid, boarddefine, flashsizemb):
+def MakeBoard(name, prettyname, pid, boarddefine, flashsizemb, boot2):
     for a, b, c in [ ["", "", "uf2conv"], ["picoprobe", " (Picoprobe)", "picoprobe"]]:
         n = name + a
         p = prettyname + b
         fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
         for i in range(1, flashsizemb):
             fssizelist.append(i * 1024 * 1024)
-        BuildHeader(n, p, pid, boarddefine, name, c, flashsizemb * 1024 * 1024)
-        BuildFlashMenu(n, flashsizemb * 1024 * 1024, fssizelist)
+        BuildHeader(n, p, pid, boarddefine, name, c, flashsizemb * 1024 * 1024, boot2)
+        if name == "generic":
+            BuildFlashMenu(n, 2*1024*1024, [0, 1*1024*1024])
+            BuildFlashMenu(n, 4*1024*1024, [0, 2*1024*1024])
+            BuildFlashMenu(n, 8*1024*1024, [0, 4*1024*1024])
+            BuildFlashMenu(n, 16*1024*1024, [0, 8*1024*1024])
+        else:
+            BuildFlashMenu(n, flashsizemb * 1024 * 1024, fssizelist)
         BuildFreq(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
+        if name == "generic":
+            BuildBoot(n)
+
 
 BuildGlobalMenuList()
-MakeBoard("rpipico", "Raspberry Pi Pico", "0x000a", "RASPBERRY_PI_PICO", 2) 
-MakeBoard("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", 8)
-MakeBoard("generic", "Generic RP2040", "0xf00a", "GENERIC_RP2040", 16)
+MakeBoard("rpipico", "Raspberry Pi Pico", "0x000a", "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("generic", "Generic RP2040", "0xf00a", "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 
