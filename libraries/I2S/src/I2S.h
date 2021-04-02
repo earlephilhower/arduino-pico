@@ -61,6 +61,7 @@ public:
 
 private:
     int _bps;
+    int _freq;
     bool _running;
 
     // Audio format/pool config

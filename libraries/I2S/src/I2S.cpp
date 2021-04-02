@@ -67,6 +67,7 @@ bool I2SClass::begin(long sampleRate, pin_size_t sck, pin_size_t data) {
     _curBuff->sample_count = 0;
 
     _bps = 16;
+    _freq = sampleRate;
     _running = true;
     return true;
 }
@@ -81,6 +82,7 @@ void I2SClass::end() {
     }
     _running = false;
     _bps = 0;
+    _freq = 0;
     _writtenHalf = false;
 }
 
@@ -103,15 +105,15 @@ void I2SClass::flush() {
     if (!_curBuff || !_curBuff->sample_count) {
         return;
     }
-    _audio_format.sample_freq = _bps;
+    _audio_format.sample_freq = _freq;
     give_audio_buffer(_pool, _curBuff);
     _curBuff = nullptr;
 }
 
 bool I2SClass::setFrequency(int newFreq) {
-    if (newFreq != _bps) {
+    if (newFreq != _freq) {
         flush();
-        _bps = newFreq;
+        _freq = newFreq;
     }
     return true;
 }
@@ -143,7 +145,7 @@ size_t I2SClass::write(int16_t s) {
             int32_t *samples = (int32_t *)_curBuff->buffer->bytes;
             samples[_curBuff->sample_count++] = _writtenData;
             if (_curBuff->sample_count == _curBuff->max_sample_count) {
-                _audio_format.sample_freq = _bps;
+                _audio_format.sample_freq = _freq;
                 give_audio_buffer(_pool, _curBuff);
                 _curBuff = nullptr;
             }
@@ -166,7 +168,7 @@ size_t I2SClass::write(const void *buffer, size_t size) {
         _curBuff->sample_count = 0;
     }
 
-    int32_t *inSamples = (int32_t *)_curBuff->buffer->bytes;
+    int32_t *inSamples = (int32_t *)buffer;
     int written = 0;
     int wantToWrite = size / 4;
     while (wantToWrite) {
@@ -186,8 +188,9 @@ size_t I2SClass::write(const void *buffer, size_t size) {
         _curBuff->sample_count += writeSize;
         inSamples += writeSize;
         written += writeSize;
+	wantToWrite -= writeSize;
         if (_curBuff->sample_count == _curBuff->max_sample_count) {
-            _audio_format.sample_freq = _bps;
+            _audio_format.sample_freq = _freq;
             give_audio_buffer(_pool, _curBuff);
             _curBuff = nullptr;
         }
