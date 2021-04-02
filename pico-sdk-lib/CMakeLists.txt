@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
-# Pull in PICO SDK (must be before project)
 include(pico_sdk_import.cmake)
+include(pico_extras_import.cmake)
 
 project(pico_lib C CXX ASM)
 set(CMAKE_C_STANDARD 11)
@@ -61,6 +61,8 @@ target_link_libraries(pico
 	pico_stdlib
 	pico_unique_id
 	tinyusb
+	pico_audio
+	pico_audio_i2s
 )
 
 add_custom_command(TARGET pico PRE_BUILD

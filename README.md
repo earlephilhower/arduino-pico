@@ -40,11 +40,11 @@ To install via GIT (for latest and greatest versions):
 mkdir -p ~/Arduino/hardware/pico
 git clone https://github.com/earlephilhower/arduino-pico.git ~/Arduino/hardware/pico/rp2040
 cd ~/Arduino/hardware/pico/rp2040
-git submodule init
-git submodule update
+git submodule update --init
 cd pico-sdk
-git submodule init
-git submodule update
+git submodule update --init
+cd pico-extras
+git submodule update --init
 cd ../tools
 python3 ./get.py
 `````
@@ -97,17 +97,18 @@ Relatively stable and very functional, but bug reports and PRs always accepted.
 * Hardware UART
 * Servo
 * Overclocking and underclocking from the menus
+* I2S audio output
 * printf (i.e. debug) output over USB serial 
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
 * Tones
+* I2S Output
 
 # Todo
 Some major features I want to add are:
 * Installable filesystem support (SD, LittleFS, etc.)
 * Updated debug infrastructure
-* I2S port from pico-extras
 
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`
