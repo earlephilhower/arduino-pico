@@ -43,6 +43,8 @@ public:
   virtual size_t write(const uint8_t *buffer, size_t size) override;
   virtual int availableForWrite() override;
 
+  bool setFrequency(int newFreq);
+
   // Write a single L:R sample to the I2S device.  Blocking until write succeeds
   size_t write(int16_t);
   // Write up to size samples to the I2S device.  Non-blocking, will write

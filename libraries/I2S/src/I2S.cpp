@@ -103,8 +103,17 @@ void I2SClass::flush() {
     if (!_curBuff || !_curBuff->sample_count) {
         return;
     }
+    _audio_format.sample_freq = _bps;
     give_audio_buffer(_pool, _curBuff);
     _curBuff = nullptr;
+}
+
+bool I2SClass::setFrequency(int newFreq) {
+    if (newFreq != _bps) {
+        flush();
+        _bps = newFreq;
+    }
+    return true;
 }
 
 size_t I2SClass::write(uint8_t s) {
@@ -134,6 +143,7 @@ size_t I2SClass::write(int16_t s) {
             int32_t *samples = (int32_t *)_curBuff->buffer->bytes;
             samples[_curBuff->sample_count++] = _writtenData;
             if (_curBuff->sample_count == _curBuff->max_sample_count) {
+                _audio_format.sample_freq = _bps;
                 give_audio_buffer(_pool, _curBuff);
                 _curBuff = nullptr;
             }
@@ -177,6 +187,7 @@ size_t I2SClass::write(const void *buffer, size_t size) {
         inSamples += writeSize;
         written += writeSize;
         if (_curBuff->sample_count == _curBuff->max_sample_count) {
+            _audio_format.sample_freq = _bps;
             give_audio_buffer(_pool, _curBuff);
             _curBuff = nullptr;
         }
