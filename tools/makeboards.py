@@ -5,9 +5,9 @@ def BuildFlashMenu(name, flashsize, fssizelist):
         if fssize == 0:
             fssizename = "no FS"
         elif fssize < 1024 * 1024:
-            fssizename = "FS: %dKB" % (fssize / 1024)
+            fssizename = "Sketch: %dKB, FS: %dKB" % ((flashsize - fssize) / 1024, fssize / 1024)
         else:
-            fssizename = "FS: %dMB" % (fssize / (1024 * 1024))
+            fssizename = "Sketch: %dMB, FS: %dMB" % ((flashsize - fssize) / (1024 * 1024), fssize / (1024 * 1024))
         mn="%d_%d" % (flashsize, fssize)
         print("%s.menu.flash.%s=%dMB (%s)" % (name, mn, flashsize / (1024 * 1024), fssizename))
         print("%s.menu.flash.%s.upload.maximum_size=%d" % (name, mn, flashsize - 4096 - fssize))
@@ -99,6 +99,6 @@ def MakeBoard(name, prettyname, pid, boarddefine, flashsizemb, boot2):
 
 BuildGlobalMenuList()
 MakeBoard("rpipico", "Raspberry Pi Pico", "0x000a", "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("adafruitfeather", "Adafruit Feather RP2040", "0x000b", "ADAFRUIT_FEATHER_RP2040", 8, "boot2_w25x10cl_4_padded_checksum")
 MakeBoard("generic", "Generic RP2040", "0xf00a", "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 

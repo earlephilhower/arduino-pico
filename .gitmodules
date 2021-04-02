@@ -1,6 +1,6 @@
 [submodule "ArduinoCore-API"]
 	path = ArduinoCore-API
-	url = https://github.com/arduino/ArduinoCore-API.git
+	url = https://github.com/earlephilhower/ArduinoCore-API.git
 [submodule "pico-sdk"]
 	path = pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk.git
@@ -13,3 +13,6 @@
 [submodule "libraries/SdFat"]
 	path = libraries/SdFat
 	url = https://github.com/earlephilhower/ESP8266SdFat.git
+[submodule "pico-extras"]
+	path = pico-extras
+	url = https://github.com/raspberrypi/pico-extras.git

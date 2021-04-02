@@ -43,6 +43,8 @@ cd ~/Arduino/hardware/pico/rp2040
 git submodule update --init
 cd pico-sdk
 git submodule update --init
+cd pico-extras
+git submodule update --init
 cd ../tools
 python3 ./get.py
 `````
@@ -107,19 +109,17 @@ Relatively stable and very functional, but bug reports and PRs always accepted.
 * Overclocking and underclocking from the menus
 * analogRead and Pico chip temperature
 * Filesystems (LittleFS and SD/SDFS)
+* I2S audio output
 * printf (i.e. debug) output over USB serial 
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
 * Tones
-
-# Todo
-Some major features I want to add are:
-* Updated debug infrastructure
-* I2S port from pico-extras
+* I2S Output
 
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`
+* The File:: class is taken from the ESP8266.  See https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
 * Arduino Support for the Pi Pico available! And how fast is the Pico? - https://youtu.be/-XHh17cuH5E
 * Pre-release Adafruit QT Py RP2040 - https://www.youtube.com/watch?v=sfC1msqXX0I
 * Adafruit Feather RP2040 running LCD + TMP117 - https://www.youtube.com/watch?v=fKDeqZiIwHg
