@@ -5,9 +5,9 @@ def BuildFlashMenu(name, flashsize, fssizelist):
         if fssize == 0:
             fssizename = "no FS"
         elif fssize < 1024 * 1024:
-            fssizename = "FS: %dKB" % (fssize / 1024)
+            fssizename = "Sketch: %dKB, FS: %dKB" % ((flashsize - fssize) / 1024, fssize / 1024)
         else:
-            fssizename = "FS: %dMB" % (fssize / (1024 * 1024))
+            fssizename = "Sketch: %dMB, FS: %dMB" % ((flashsize - fssize) / (1024 * 1024), fssize / (1024 * 1024))
         mn="%d_%d" % (flashsize, fssize)
         print("%s.menu.flash.%s=%dMB (%s)" % (name, mn, flashsize / (1024 * 1024), fssizename))
         print("%s.menu.flash.%s.upload.maximum_size=%d" % (name, mn, flashsize - 4096 - fssize))
