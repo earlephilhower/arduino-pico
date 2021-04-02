@@ -97,6 +97,7 @@ Relatively stable and very functional, but bug reports and PRs always accepted.
 * Hardware UART
 * Servo
 * Overclocking and underclocking from the menus
+* I2S audio output
 * printf (i.e. debug) output over USB serial 
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
