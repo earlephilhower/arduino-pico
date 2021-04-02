@@ -100,7 +100,11 @@ int I2SClass::availableForWrite() {
 }
 
 void I2SClass::flush() {
-    /* No-op */
+    if (!_curBuff || !_curBuff->sample_count) {
+        return;
+    }
+    give_audio_buffer(_pool, _curBuff);
+    _curBuff = nullptr;
 }
 
 size_t I2SClass::write(uint8_t s) {

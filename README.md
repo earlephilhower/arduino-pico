@@ -102,12 +102,12 @@ Relatively stable and very functional, but bug reports and PRs always accepted.
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
 * Tones
+* I2S Output
 
 # Todo
 Some major features I want to add are:
 * Installable filesystem support (SD, LittleFS, etc.)
 * Updated debug infrastructure
-* I2S port from pico-extras
 
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`
