@@ -4,10 +4,10 @@
   This example shows how to create and destroy an SD card file
   The circuit:
    SD card attached to SPI bus as follows:
- ** MOSI - pin 11
- ** MISO - pin 12
- ** CLK - pin 13
- ** CS - pin 4
+   ** MISO - pin 0
+   ** MOSI - pin 3
+   ** CS   - pin 1
+   ** SCK  - pin 2
 
   created   Nov 2010
   by David A. Mellis

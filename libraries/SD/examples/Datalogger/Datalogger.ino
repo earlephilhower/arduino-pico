@@ -6,11 +6,11 @@
 
   The circuit:
    analog sensors on analog ins 0, 1, and 2
-   SD card attached to SPI bus as follows:
- ** MOSI - pin 11
- ** MISO - pin 12
- ** CLK - pin 13
- ** CS - pin 4
+   SD card attached to SPI bus as follows (Raspberry Pi Pico):
+   ** MISO - pin 0
+   ** MOSI - pin 3
+   ** CS   - pin 1
+   ** SCK  - pin 2
 
   created  24 Nov 2010
   modified 9 Apr 2012
