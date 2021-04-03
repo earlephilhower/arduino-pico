@@ -66,7 +66,17 @@ Them hit the upload button and your sketch should upload and run.
 In some cases the Pico will encounter a hard hang and its USB port will not respond to the auto-reset request.  Should this happen, just
 follow the initial procedure of holding the BOOTSEL button down while plugging in the Pico to enter the ROM bootloader.
 
-# Uploading with Picoprobe
+# Uploading Filesystem Images
+The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
+* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+
+To install, follow the directions in 
+* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
+
+For detailed usage information, please check the ESP8266 repo documentation (ignore SPIFFS related notes) available at
+* https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
+
+# Uploading Sketches with Picoprobe
 If you have built a Raspberry Pi Picoprobe, you can use OpenOCD to handle your sketch uploads and for debugging with GDB.
 
 Under Windows a local admin user should be able to access the Picoprobe port automatically, but under Linux `udev` must be told about the device and to allow normal users access.
@@ -88,15 +98,17 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 Relatively stable and very functional, but bug reports and PRs always accepted.
 * digitalWrite/Read
 * shiftIn/Out
-* SPI master (tested using SdFat 2.0 https://github.com/greiman/SdFat ... note that the Pico voltage regulator can't reliably supply enough power for a SD Card so use external power, and adjust the `USE_SIMPLE_LITTLE_ENDIAN` define in `src/sdfat.h` to 0)
+* SPI master
 * analogWrite/PWM
 * tone/noTone
-* Wire/I2C Master and Slave (tested using DS3231 https://github.com/rodan/ds3231)
+* Wire/I2C Master and Slave
 * EEPROM
 * USB Serial(ACM) w/automatic reboot-to-UF2 upload)
 * Hardware UART
-* Servo
+* Servo, glitchless
 * Overclocking and underclocking from the menus
+* analogRead and Pico chip temperature
+* Filesystems (LittleFS and SD/SDFS)
 * I2S audio output
 * printf (i.e. debug) output over USB serial 
 
@@ -105,13 +117,9 @@ The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Tones
 * I2S Output
 
-# Todo
-Some major features I want to add are:
-* Installable filesystem support (SD, LittleFS, etc.)
-* Updated debug infrastructure
-
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`
+* The File:: class is taken from the ESP8266.  See https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
 * Arduino Support for the Pi Pico available! And how fast is the Pico? - https://youtu.be/-XHh17cuH5E
 * Pre-release Adafruit QT Py RP2040 - https://www.youtube.com/watch?v=sfC1msqXX0I
 * Adafruit Feather RP2040 running LCD + TMP117 - https://www.youtube.com/watch?v=fKDeqZiIwHg
