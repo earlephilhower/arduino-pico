@@ -15,6 +15,7 @@ add_library(pico STATIC)
 
 target_compile_definitions(pico PUBLIC
 	PICO_PRINTF_ALWAYS_INCLUDED=1
+	PICO_FLASH_SIZE_BYTES=16777216
 )
 
 target_link_libraries(pico 
