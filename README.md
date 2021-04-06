@@ -1,6 +1,5 @@
 # Arduino-Pico [![Join the chat at https://gitter.im/arduino-pico/community](https://badges.gitter.im/arduino-pico/community.svg)](https://gitter.im/arduino-pico/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-
 Raspberry Pi Pico Arduino core, for all RP2040 boards
 
 This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem.
@@ -8,6 +7,9 @@ This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosys
 It uses a custom toolset with GCC 10.2 and Newlib 4.0.0, not depending on system-installed prerequisites.  https://github.com/earlephilhower/pico-quick-toolchain
 
 There is automated discovery of boards in bootloader mode, so they show up in the IDE, and the upload command works using the Microsoft UF2 tool (included).
+
+# Detailed Documentation
+Refer to the examples and https://arduino-pico.readthedocs.io/en/latest/ for more detailed usage information.
 
 # Installing via Arduino Boards Manager
 **Windows Users**: Please do not use the Windows Store version of the actual Arduino application
