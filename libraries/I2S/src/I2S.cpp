@@ -27,9 +27,25 @@ I2SClass::I2SClass() {
     _curBuff = nullptr;
     _bps = 0;
     _writtenHalf = false;
+    _pinBCLK = 26;
+    _pinDOUT = 28;
 }
 
-bool I2SClass::begin(long sampleRate, pin_size_t sck, pin_size_t data) {
+bool I2SClass::setBCLK(pin_size_t pin) {
+    if (_running || (pin < 0) || (pin > 28)) {
+        return false;
+    }
+    _pinBCLK = pin;
+}
+
+bool I2SClass::setDOUT(pin_size_t pin) {
+    if (_running || (pin < 0) || (pin > 29)) {
+        return false;
+    }
+    _pinDOUT = pin;
+}
+
+bool I2SClass::begin(long sampleRate) {
     if (_running) {
         return false;
     }
@@ -48,8 +64,8 @@ bool I2SClass::begin(long sampleRate, pin_size_t sck, pin_size_t data) {
     }
 
     bzero(&_config, sizeof(_config));
-    _config.data_pin = data;
-    _config.clock_pin_base = sck;
+    _config.data_pin = _pinDOUT;
+    _config.clock_pin_base = _pinBCLK;
     _config.dma_channel = 0;
     _config.pio_sm = 1;
 
