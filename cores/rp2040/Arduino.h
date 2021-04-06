@@ -68,6 +68,7 @@ float analogReadTemp();  // Returns core temp in Centigrade
 // PWM
 void analogWrite(pin_size_t pinNumber, int value);
 
+// Timing
 void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
 unsigned long millis();
