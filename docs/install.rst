@@ -70,12 +70,15 @@ follow the initial procedure of holding the BOOTSEL button down while plugging i
 Uploading Filesystem Images
 ---------------------------
 The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
+
 * https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
 
 To install, follow the directions in 
+
 * https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
 
 For detailed usage information, please check the repo documentation available at
+
 * https://arduino-pico.readthedocs.io/en/latest/fs.html
 
 Uploading Sketches with Picoprobe

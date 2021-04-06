@@ -1,6 +1,8 @@
 Using the Raspberry Pi Pico SDK (PICO-SDK)
 ==========================================
 
+Included SDK
+------------
 A complete copy of the `Raspberry Pi Pico SDK <https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf>`_
 is included with the Arduino core, and all functions in the core are available
 inside the standard link libraries.
@@ -29,6 +31,8 @@ appropriate header as shown below
 libraries are not aware of any changes to the Pico you perform.  So,
 you may break the functionality of certain libraries in doing so.
 
+Multicore (CORE1) Processing
+----------------------------
 **Warning:**  While you may spawn multicore applications on CORE1
 using the SDK, the Arduino core may have issues running properly with
 them.  In particular, anything involving flash writes (i.e. EEPROM,

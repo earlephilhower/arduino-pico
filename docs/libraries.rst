@@ -10,4 +10,4 @@ the generic versions available in the Library Manager
 
 * `Adafruit GFX Library <https://github.com/Bodmer/Adafruit-GFX-Library>`_ by @Bodmer, 2-20x faster than the standard version on the Pico
 * `Adafruit ILI9341 Library <https://github.com/Bodmer/Adafruit_ILI9341>`_ again by @Bodmer
-* `ESP8266Audio <https://github.com/earlephilhower/ESP8266Audio>_` ported to use the included ``I2S`` library
+* `ESP8266Audio <https://github.com/earlephilhower/ESP8266Audio>`_ ported to use the included ``I2S`` library
