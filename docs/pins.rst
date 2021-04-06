@@ -11,24 +11,24 @@ I/O pins **before calling ::begin**.  This is especially helpful when
 using third party libraries:  the library doesn't need to be modified,
 only your own code in `setup()` is needed to adjust pinouts.
 
-I2S:
-----
+I2S
+---
 
 .. code:: cpp
 
         ::setBCLK(pin)
         ::setDOUT(pin)
 
-Serial1 (UART0), Serial2 (UART1):
----------------------------------
+Serial1 (UART0), Serial2 (UART1)
+--------------------------------
 
 .. code:: cpp
 
         ::setRX(pin)
         ::setTX(pin)
 
-SPI (SPI0), SPI1 (SPI1):
-------------------------
+SPI (SPI0), SPI1 (SPI1)
+-----------------------
 
 .. code:: cpp
 
@@ -36,8 +36,8 @@ SPI (SPI0), SPI1 (SPI1):
         ::setRX(pin)
         ::setTX(pin)
 
-Wire (I2C0), Wire1 (I2C1):
---------------------------
+Wire (I2C0), Wire1 (I2C1)
+-------------------------
 
 .. code:: cpp
 

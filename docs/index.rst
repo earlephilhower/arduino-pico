@@ -18,7 +18,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    Getting Help and Contributing <help>
    Installation <install>
-   Using the IDE <ide>
+   IDE Menus <ide>
 
    Pin (Re)Assignment <pins>
 
@@ -37,10 +37,3 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    Using Pico-SDK <sdk>
 
    Licenses <license>
-
-Indices and Tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

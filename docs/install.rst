@@ -48,7 +48,7 @@ To install via GIT (for latest and greatest versions):
 Installing both Arduino and CMake
 ---------------------------------
 Tom's Hardware presented a very nice writeup on installing `arduino-pico` on
-both Windows and Linux, available at [Tom's Hardware](https://www.tomshardware.com/how-to/program-raspberry-pi-pico-with-arduino-ide)
+both Windows and Linux, available at `Tom's Hardware <https://www.tomshardware.com/how-to/program-raspberry-pi-pico-with-arduino-ide>`_ .
 
 If you follow their step-by-step you will also have a fully functional
 `CMake`-based environment to build Pico apps on if you outgrow the Arduino

@@ -1,7 +1,7 @@
 Using the Raspberry Pi Pico SDK (PICO-SDK)
 ==========================================
 
-A complete copy of the [Raspberry Pi Pico SDK](https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf)
+A complete copy of the `Raspberry Pi Pico SDK <https://datasheets.raspberrypi.org/pico/raspberry-pi-pico-c-sdk.pdf>`_
 is included with the Arduino core, and all functions in the core are available
 inside the standard link libraries.
 
