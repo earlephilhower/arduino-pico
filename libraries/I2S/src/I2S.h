@@ -29,7 +29,9 @@ public:
   I2SClass();
 
   // Only 16 bitsPerSample are allowed by the PIO code.  Only write, no read.
-  bool begin(long sampleRate, pin_size_t sck = 26, /* lrclk is sck+1 */ pin_size_t data = 28);
+  bool setBCLK(pin_size_t pin);
+  bool setDOUT(pin_size_t pin);
+  bool begin(long sampleRate);
   void end();
 
   // from Stream
@@ -60,6 +62,8 @@ public:
   //void onReceive(void(*)(void)); -- no I2S input yet
 
 private:
+    pin_size_t _pinBCLK;
+    pin_size_t _pinDOUT;
     int _bps;
     int _freq;
     bool _running;
