@@ -104,7 +104,7 @@ rpipico.menu.dbglvl.NDEBUG=NDEBUG
 rpipico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipicopicoprobe.name=Raspberry Pi Pico (Picoprobe)
 rpipicopicoprobe.vid.0=0x2e8a
-rpipicopicoprobe.pid.0=0x000a
+rpipicopicoprobe.pid.0=0x0004
 rpipicopicoprobe.build.usbpid=-DSERIALUSB_PID=0x000a
 rpipicopicoprobe.build.board=RASPBERRY_PI_PICO
 rpipicopicoprobe.build.mcu=cortex-m0plus
@@ -336,7 +336,7 @@ adafruitfeather.menu.dbglvl.NDEBUG=NDEBUG
 adafruitfeather.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruitfeatherpicoprobe.name=Adafruit Feather RP2040 (Picoprobe)
 adafruitfeatherpicoprobe.vid.0=0x2e8a
-adafruitfeatherpicoprobe.pid.0=0x000b
+adafruitfeatherpicoprobe.pid.0=0x0004
 adafruitfeatherpicoprobe.build.usbpid=-DSERIALUSB_PID=0x000b
 adafruitfeatherpicoprobe.build.board=ADAFRUIT_FEATHER_RP2040
 adafruitfeatherpicoprobe.build.mcu=cortex-m0plus
@@ -596,7 +596,7 @@ generic.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 generic.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
 genericpicoprobe.name=Generic RP2040 (Picoprobe)
 genericpicoprobe.vid.0=0x2e8a
-genericpicoprobe.pid.0=0xf00a
+genericpicoprobe.pid.0=0x0004
 genericpicoprobe.build.usbpid=-DSERIALUSB_PID=0xf00a
 genericpicoprobe.build.board=GENERIC_RP2040
 genericpicoprobe.build.mcu=cortex-m0plus

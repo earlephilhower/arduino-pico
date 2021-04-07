@@ -44,10 +44,10 @@ def BuildBoot(name):
         print("%s.menu.boot2.%s=%s" % (name, l[1], l[0]))
         print("%s.menu.boot2.%s.build.boot2=%s" % (name, l[1], l[1]))
 
-def BuildHeader(name, prettyname, pid, boarddefine, variant, uploadtool, flashsize, boot2):
+def BuildHeader(name, prettyname, pidtouse, pid, boarddefine, variant, uploadtool, flashsize, boot2):
     print("%s.name=%s" % (name, prettyname))
     print("%s.vid.0=0x2e8a" % (name))
-    print("%s.pid.0=%s" % (name, pid))
+    print("%s.pid.0=%s" % (name, pidtouse))
     print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid))
     print("%s.build.board=%s" % (name, boarddefine))
     print("%s.build.mcu=cortex-m0plus" % (name))
@@ -82,7 +82,11 @@ def MakeBoard(name, prettyname, pid, boarddefine, flashsizemb, boot2):
         fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
         for i in range(1, flashsizemb):
             fssizelist.append(i * 1024 * 1024)
-        BuildHeader(n, p, pid, boarddefine, name, c, flashsizemb * 1024 * 1024, boot2)
+        if a == "picoprobe":
+            pidtouse = '0x0004'
+        else:
+            pidtouse = pid
+        BuildHeader(n, p, pidtouse, pid, boarddefine, name, c, flashsizemb * 1024 * 1024, boot2)
         if name == "generic":
             BuildFlashMenu(n, 2*1024*1024, [0, 1*1024*1024])
             BuildFlashMenu(n, 4*1024*1024, [0, 2*1024*1024])
