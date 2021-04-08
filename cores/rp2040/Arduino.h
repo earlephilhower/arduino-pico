@@ -77,6 +77,10 @@ unsigned long millis();
 } // extern "C"
 #endif
 
+// Ancient AVR defines
+#define HAVE_HWSERIAL0
+#define HAVE_HWSERIAL1
+
 #ifdef __cplusplus
 #include "SerialUSB.h"
 #include "SerialUART.h"
