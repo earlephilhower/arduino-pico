@@ -67,6 +67,19 @@ Them hit the upload button and your sketch should upload and run.
 In some cases the Pico will encounter a hard hang and its USB port will not respond to the auto-reset request.  Should this happen, just
 follow the initial procedure of holding the BOOTSEL button down while plugging in the Pico to enter the ROM bootloader.
 
+Windows 7 Driver Notes
+----------------------
+
+Windows 10, Linux, and Mac will all support the Pico CDC/ACM USB serial port
+automatically.  However, Windows 7 may not include the proper driver and
+therefore no detect the Pico for automatic uploads or the Serial Monitor.
+
+For Windows 7, if this occurs, you can use `Zadig <https://zadig.akeo.ie/>`
+to install the appropriate driver.  Select the USB ID of ``2E8A`` and use
+the ``USB Serial (CDC)`` driver.
+
+   .. image:: images/install_driver_old_win.png
+
 Uploading Filesystem Images
 ---------------------------
 The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
