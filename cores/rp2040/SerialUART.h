@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef __SERIALUART_H__
-#define __SERIALUART_H__
+#pragma once
 
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
@@ -67,5 +66,3 @@ namespace arduino {
     extern void serialEvent1Run(void) __attribute__((weak));
     extern void serialEvent2Run(void) __attribute__((weak));
 };
-
-#endif

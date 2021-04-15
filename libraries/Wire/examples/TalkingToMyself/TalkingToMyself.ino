@@ -11,7 +11,11 @@
 void setup() {
     Serial.begin(115200);
     delay(5000);
+    Wire.setSDA(0);
+    Wire.setSCL(1);
     Wire.begin();
+    Wire1.setSDA(2);
+    Wire1.setSCL(3);
     Wire1.begin(0x30);
     Wire1.onReceive(recv);
     Wire1.onRequest(req);
