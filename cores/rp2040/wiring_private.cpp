@@ -19,42 +19,58 @@
  */
 
 #include <Arduino.h>
+#include <CoreMutex.h>
 #include <hardware/gpio.h>
 #include <hardware/sync.h>
 #include <stack>
 #include <map>
 
 // Support nested IRQ disable/re-enable
-static std::stack<uint32_t> _irqStack;
+static std::stack<uint32_t> _irqStack[2];
 
 extern "C" void interrupts() {
-    if (_irqStack.empty()) {
+    if (_irqStack[get_core_num()].empty()) {
         // ERROR
         return;
     }
-    restore_interrupts(_irqStack.top());
-    _irqStack.pop();
+    restore_interrupts(_irqStack[get_core_num()].top());
+    _irqStack[get_core_num()].pop();
 }
 
 extern "C" void noInterrupts() {
-    _irqStack.push(save_and_disable_interrupts());
+    _irqStack[get_core_num()].push(save_and_disable_interrupts());
 }
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
 // dispatch to the real callback manually
+auto_init_mutex(_irqMutex);
 static std::map<pin_size_t, voidFuncPtr> _map;
 
 void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
-    auto irq = _map.find(gpio);
-    if (irq != _map.end()) {
-        // Ignore events, only one event per pin supported by Arduino
-        irq->second(); // Do the callback
+    // Only need to lock around the std::map check, not the whole IRQ callback
+    voidFuncPtr cb = nullptr;
+    {
+	CoreMutex m(&_irqMutex);
+        if (m) {
+            auto irq = _map.find(gpio);
+            if (irq != _map.end()) {
+                cb = irq->second;
+            }
+        }
+    }
+    if (cb) {
+        cb(); // Do the callback
     } else {
         // ERROR, but we're in an IRQ so do nothing
     }
 }
 
 extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode) {
+    CoreMutex m(&_irqMutex);
+    if (!m) {
+        return;
+    }
+
     uint32_t events;
     switch (mode) {
         case LOW:     events = 1; break;
@@ -72,6 +88,11 @@ extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus 
 }
 
 extern "C" void detachInterrupt(pin_size_t pin) {
+    CoreMutex m(&_irqMutex);
+    if (!m) {
+        return;
+    }
+
     noInterrupts();
     auto irq = _map.find(pin);
     if (irq != _map.end()) {
