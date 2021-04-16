@@ -31,20 +31,14 @@ typedef struct {
 } Tone;
 
 // Keep std::map safe for multicore use
-static bool _mutexInitted = false;
-static mutex_t _mutex;
+auto_init_mutex(_toneMutex);
 
 
 #include "tone.pio.h"
 static PIOProgram _tonePgm(&tone_program);
-
 static std::map<pin_size_t, Tone *> _toneMap;
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
-    if (!_mutexInitted) {
-        mutex_init(&_mutex);
-        _mutexInitted = true;
-    }
     if ((pin < 0) || (pin > 29)) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
         return;
@@ -55,7 +49,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     }
 
     // Ensure only 1 core can start or stop at a time
-    CoreMutex m(&_mutex);
+    CoreMutex m(&_toneMutex);
     if (!m) return; // Weird deadlock case
 
     int us = 1000000 / frequency / 2;
@@ -91,12 +85,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
 }
 
 void noTone(uint8_t pin) {
-    if (!_mutexInitted) {
-        mutex_init(&_mutex);
-        _mutexInitted = true;
-    }
-
-    CoreMutex m(&_mutex);
+    CoreMutex m(&_toneMutex);
 
     if ((pin < 0) || (pin > 29) || !m) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
