@@ -1,63 +1,50 @@
-#ifndef __generic_common_h__
-#define __generic_common_h__
+#pragma once
 
-#include <Arduino.h>
+#define PINS_COUNT          (30u)
+#define NUM_DIGITAL_PINS    (30u)
+#define NUM_ANALOG_INPUTS   (4u)
+#define NUM_ANALOG_OUTPUTS  (0u)
+#define ADC_RESOLUTION      (12u)
 
-static const pin_size_t D0 = 0;
-static const pin_size_t D1 = 1;
-static const pin_size_t D2 = 2;
-static const pin_size_t D3 = 3;
-static const pin_size_t D4 = 4;
-static const pin_size_t D5 = 5;
-static const pin_size_t D6 = 6;
-static const pin_size_t D7 = 7;
-static const pin_size_t D8 = 8;
-static const pin_size_t D9 = 9;
-static const pin_size_t D10 = 10;
-static const pin_size_t D11 = 11;
-static const pin_size_t D12 = 12;
-static const pin_size_t D13 = 13;
-static const pin_size_t D14 = 14;
-static const pin_size_t D15 = 15;
-static const pin_size_t D16 = 16;
-static const pin_size_t D17 = 17;
-static const pin_size_t D18 = 18;
-static const pin_size_t D19 = 19;
-static const pin_size_t D20 = 20;
-static const pin_size_t D21 = 21;
-static const pin_size_t D22 = 22;
-static const pin_size_t D23 = 23;
-static const pin_size_t D24 = 24;
-static const pin_size_t D25 = 25;
-static const pin_size_t D26 = 26;
-static const pin_size_t D27 = 27;
-static const pin_size_t D28 = 28;
-static const pin_size_t D29 = 29;
+#define LED_BUILTIN PIN_LED
 
-static const pin_size_t A0 = 26;
-static const pin_size_t A1 = 27;
-static const pin_size_t A2 = 28;
-static const pin_size_t A3 = 29;
+static const uint8_t D0 = (0u);
+static const uint8_t D1 = (1u);
+static const uint8_t D2 = (2u);
+static const uint8_t D3 = (3u);
+static const uint8_t D4 = (4u);
+static const uint8_t D5 = (5u);
+static const uint8_t D6 = (6u);
+static const uint8_t D7 = (7u);
+static const uint8_t D8 = (8u);
+static const uint8_t D9 = (9u);
+static const uint8_t D10 = (10u);
+static const uint8_t D11 = (11u);
+static const uint8_t D12 = (12u);
+static const uint8_t D13 = (13u);
+static const uint8_t D14 = (14u);
+static const uint8_t D15 = (15u);
+static const uint8_t D16 = (16u);
+static const uint8_t D17 = (17u);
+static const uint8_t D18 = (18u);
+static const uint8_t D19 = (19u);
+static const uint8_t D20 = (20u);
+static const uint8_t D21 = (21u);
+static const uint8_t D22 = (22u);
+static const uint8_t D23 = (23u);
+static const uint8_t D24 = (24u);
+static const uint8_t D25 = (25u);
+static const uint8_t D26 = (26u);
+static const uint8_t D27 = (27u);
+static const uint8_t D28 = (28u);
+static const uint8_t D29 = (29u);
 
+static const uint8_t A0 = (26u);
+static const uint8_t A1 = (27u);
+static const uint8_t A2 = (28u);
+static const uint8_t A3 = (29u);
 
-#ifndef PIN_SPI_SS
-#define PIN_SPI_SS   (1)
-#endif
-#ifndef PIN_SPI_MOSI
-#define PIN_SPI_MOSI (3)
-#endif
-#ifndef PIN_SPI_MISO
-#define PIN_SPI_MISO (0)
-#endif
-#ifndef PIN_SPI_SCK
-#define PIN_SPI_SCK  (2)
-#endif
-
-static const pin_size_t SS = PIN_SPI_SS;
-static const pin_size_t MOSI = PIN_SPI_MOSI;
-static const pin_size_t MISO = PIN_SPI_MISO;
-static const pin_size_t SCK = PIN_SPI_SCK;
-
-
-#endif
-
+static const uint8_t SS = PIN_SPI1_SS;
+static const uint8_t MOSI = PIN_SPI1_MOSI;
+static const uint8_t MISO = PIN_SPI1_MISO;
+static const uint8_t SCK = PIN_SPI1_SCK;

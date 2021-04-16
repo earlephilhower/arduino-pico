@@ -21,8 +21,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef TwoWire_h
-#define TwoWire_h
+#pragma once
 
 #include <Arduino.h>
 #include "api/HardwareI2C.h"
@@ -105,6 +104,3 @@ private:
 
 extern TwoWire Wire;
 extern TwoWire Wire1;
-
-#endif
-

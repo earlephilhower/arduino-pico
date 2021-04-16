@@ -232,5 +232,5 @@ void SPIClassRP2040::setClockDivider(uint8_t uc_div) {
   (void) uc_div; // no-op
 }
 
-SPIClassRP2040 SPI(spi0, 0, 1, 2, 3);
-SPIClassRP2040 SPI1(spi1, 8, 9, 10, 11);
+SPIClassRP2040 SPI(spi0, PIN_SPI0_MISO, PIN_SPI0_SS, PIN_SPI0_SCK, PIN_SPI0_MOSI);
+SPIClassRP2040 SPI1(spi1, PIN_SPI1_MISO, PIN_SPI1_SS, PIN_SPI1_SCK, PIN_SPI1_MOSI);
