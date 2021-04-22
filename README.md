@@ -45,7 +45,7 @@ cd ~/Arduino/hardware/pico/rp2040
 git submodule update --init
 cd pico-sdk
 git submodule update --init
-cd pico-extras
+cd ../pico-extras
 git submodule update --init
 cd ../tools
 python3 ./get.py
