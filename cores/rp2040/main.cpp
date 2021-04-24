@@ -20,6 +20,7 @@
 
 #include <Arduino.h>
 #include <pico/stdlib.h>
+#include <pico/multicore.h>
 
 extern void setup();
 extern void loop();
@@ -28,6 +29,21 @@ extern void loop();
 // Weak empty variant initialization. May be redefined by variant files.
 void initVariant() __attribute__((weak));
 void initVariant() { }
+
+
+// Optional 2nd core setup and loop
+extern void setup1() __attribute__((weak));
+extern void loop1() __attribute__((weak));
+static void main1() {
+    if (setup1) {
+        setup1();
+    }
+    while (true) {
+        if (loop1) {
+            loop1();
+        }
+    }
+}
 
 extern "C" int main() {
 #if F_CPU != 125000000
@@ -45,8 +61,12 @@ extern "C" int main() {
     DEBUG_RP2040_PORT.begin();
 #endif
 
+    if (setup1 || loop1) {
+        multicore_launch_core1(main1);
+    }
+
     setup();
-    while (1) {
+    while (true) {
         loop();
         if (arduino::serialEventRun) {
             arduino::serialEventRun();

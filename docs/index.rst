@@ -34,6 +34,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    Ported/Optimized Libraries <libraries>
 
+   Multicore Processing <multicore>
+
    Using Pico-SDK <sdk>
 
    Licenses <license>
