@@ -19,6 +19,7 @@
  */
 
 #include <Arduino.h>
+#include <CoreMutex.h>
 #include <hardware/gpio.h>
 #include <hardware/pwm.h>
 #include <hardware/clocks.h>
@@ -30,6 +31,8 @@ static uint32_t analogMap = 0;
 static uint16_t analogFreq = 1000;
 static bool pwmInitted = false;
 static bool adcInitted = false;
+
+auto_init_mutex(_dacMutex);
 
 extern "C" void analogWriteFreq(uint32_t freq) {
     if (freq == analogFreq) {
@@ -68,7 +71,9 @@ extern "C" void analogWriteResolution(int res) {
 }
 
 extern "C" void analogWrite(pin_size_t pin, int val) {
-    if ((pin < 0) || (pin > 29)) {
+    CoreMutex m(&_dacMutex);
+
+    if ((pin < 0) || (pin > 29) || !m) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
     }
@@ -92,8 +97,12 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
     pwm_set_gpio_level(pin, val);
 }
 
+auto_init_mutex(_adcMutex);
+
 extern "C" int analogRead(pin_size_t pin) {
-    if ((pin < A0) || (pin > A3)) {
+    CoreMutex m(&_adcMutex);
+
+    if ((pin < A0) || (pin > A3) || !m) {
         DEBUGCORE("ERROR: Illegal analogRead pin (%d)\n", pin);
         return 0;
     }
@@ -106,6 +115,11 @@ extern "C" int analogRead(pin_size_t pin) {
 }
 
 extern "C" float analogReadTemp() {
+    CoreMutex m(&_adcMutex);
+
+    if (!m) {
+        return 0.0f; // Deadlock
+    }
     if (!adcInitted) {
         adc_init();
     }

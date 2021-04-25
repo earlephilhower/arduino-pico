@@ -19,6 +19,7 @@
  */
 
 #include <Arduino.h>
+#include "CoreMutex.h"
 #include <hardware/gpio.h>
 #include <pico/time.h>
 #include <map>
@@ -29,9 +30,12 @@ typedef struct {
     int sm;
 } Tone;
 
+// Keep std::map safe for multicore use
+auto_init_mutex(_toneMutex);
+
+
 #include "tone.pio.h"
 static PIOProgram _tonePgm(&tone_program);
-
 static std::map<pin_size_t, Tone *> _toneMap;
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
@@ -43,6 +47,11 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         noTone(pin);
         return;
     }
+
+    // Ensure only 1 core can start or stop at a time
+    CoreMutex m(&_toneMutex);
+    if (!m) return; // Weird deadlock case
+
     int us = 1000000 / frequency / 2;
     if (us < 5) {
         us = 5;
@@ -76,7 +85,9 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
 }
 
 void noTone(uint8_t pin) {
-    if ((pin < 0) || (pin > 29)) {
+    CoreMutex m(&_toneMutex);
+
+    if ((pin < 0) || (pin > 29) || !m) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
         return;
     }

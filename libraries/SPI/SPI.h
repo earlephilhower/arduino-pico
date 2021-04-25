@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef _SPI_H_INCLUDED
-#define _SPI_H_INCLUDED
+#pragma once
 
 #include <Arduino.h>
 #include <api/HardwareSPI.h>
@@ -79,6 +78,3 @@ private:
 
 extern SPIClassRP2040 SPI;
 extern SPIClassRP2040 SPI1;
-
-#endif
-

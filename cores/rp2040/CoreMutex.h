@@ -33,6 +33,7 @@ public:
         _acquired = false;
         if (!mutex_try_enter(_mutex, &owner)) {
             if (owner == get_core_num()) { // Deadlock!
+                DEBUGCORE("CoreMutex - Deadlock detected!\n");
                 return;
             }
             mutex_enter_blocking(_mutex);

@@ -179,8 +179,8 @@ SerialUART::operator bool() {
     return _running;
 }
 
-SerialUART Serial1(uart0, 0, 1);
-SerialUART Serial2(uart1, 4, 5);
+SerialUART Serial1(uart0, PIN_SERIAL1_TX, PIN_SERIAL1_RX);
+SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
 
 void arduino::serialEvent1Run(void) {
     if (serialEvent1 && Serial1.available()) {

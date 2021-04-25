@@ -50,6 +50,7 @@ void detachInterrupt(pin_size_t pin);
 #define digitalPinToBitMask(pin)    (1UL << (pin))
 #define digitalPinToTimer(pin)      (0)
 #define digitalPinToInterrupt(pin)  (pin)
+#define NOT_AN_INTERRUPT            (-1)
 #define portOutputRegister(port)    ((volatile uint32_t*) sio_hw->gpio_out)
 #define portInputRegister(port)     ((volatile uint32_t*) sio_hw->gpio_in)
 #define portModeRegister(port)      ((volatile uint32_t*) sio_hw->gpio_oe)
