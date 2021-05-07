@@ -30,7 +30,7 @@ pauses core 1, and vice versa).  Waits for the other core to acknowledge
 before returning.
 
 The other core will have its interrupts disabled and be busy-waiting in
-an RAM-based routine, so flash and other peripherals can be accesses.
+an RAM-based routine, so flash and other peripherals can be accessed.
 
 **NOTE** If you idle core 0 too long, then the USB port can become frozen.
 This is because core 0 manages the USB and needs to service IRQs in a
@@ -46,7 +46,7 @@ Communicating Between Cores
 
 The RP2040 provides a hardware FIFO for communicating between cores, but it
 is used exclusively for the idle/resume calls described above.  Instead, please
-use the following functions to access a softwarae-managed, multicore safe
+use the following functions to access a software-managed, multicore safe
 FIFO.
 
 void rp2040.fifo.push(uint32_t)
