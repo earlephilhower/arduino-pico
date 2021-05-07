@@ -21,12 +21,29 @@
 #include <pico.h>
 #include <pico/time.h>
 
+extern "C"
+{
+
+static void __empty(void) {
+	// NOOP
+}
+
+void yield(void) __attribute__ ((weak, alias("__empty")));
+}
+
 extern "C" void delay( unsigned long ms ) {
     if (!ms) {
         return;
     }
 
-    sleep_ms(ms);
+    // Call wfe/wfi while have pending USB event can starve the task.
+    // If there is no alarm interrupt to help wake up MCU.
+    // TODO better implementation later
+    // More detail https://github.com/adafruit/circuitpython/pull/2956
+    while (ms--) {
+      yield();
+      sleep_ms(1);
+    }
 }
 
 extern "C" void delayMicroseconds( unsigned int usec ) {
@@ -34,10 +51,6 @@ extern "C" void delayMicroseconds( unsigned int usec ) {
         return;
     }
     sleep_us(usec);
-}
-
-extern "C" void yield() {
-    // NOOP
 }
 
 extern "C" uint32_t millis() {

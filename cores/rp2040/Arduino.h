@@ -95,7 +95,14 @@ unsigned long millis();
 #define HAVE_HWSERIAL2
 
 #ifdef __cplusplus
-#include "SerialUSB.h"
+
+#ifdef USE_TINYUSB
+  #include "Adafruit_USBD_Interface.h"
+  #include "Adafruit_USBD_CDC.h"
+#else
+  #include "SerialUSB.h"
+#endif
+
 #include "SerialUART.h"
 #include "RP2040.h"
 #include "Bootsel.h"

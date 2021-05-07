@@ -36,6 +36,12 @@ extern void loop();
 void initVariant() __attribute__((weak));
 void initVariant() { }
 
+#ifdef USE_TINYUSB
+// Called by main.cpp to initialize usb device typically with CDC device for Serial
+void TinyUSB_Device_Init(uint8_t rhport) __attribute__((weak));
+#endif
+
+
 
 // Optional 2nd core setup and loop
 extern void setup1() __attribute__((weak));
@@ -61,9 +67,13 @@ extern "C" int main() {
     initVariant();
     __USBStart();
 
+#ifdef USE_TINYUSB
+    TinyUSB_Device_Init(0);
+#else
 #ifndef DISABLE_USB_SERIAL
     // Enable serial port for reset/upload always
     Serial.begin();
+#endif
 #endif
 
 #if defined DEBUG_RP2040_PORT
