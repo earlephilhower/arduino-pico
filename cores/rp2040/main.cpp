@@ -26,6 +26,9 @@ RP2040 rp2040;
 
 volatile bool _MFIFO::_otherIdled = false;
 
+auto_init_mutex(_pioMutex);
+
+
 extern void setup();
 extern void loop();
 
