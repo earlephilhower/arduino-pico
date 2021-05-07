@@ -105,11 +105,12 @@ bool EEPROMClass::commit() {
     if (!_data)
         return false;
 
-    // TODO - this only stops IRQs on 1 core, need to do it on both
-    uint32_t save = save_and_disable_interrupts();
+    noInterrupts();
+    rp2040.idleOtherCore();
     flash_range_erase((intptr_t)_sector - (intptr_t)XIP_BASE, 4096);
     flash_range_program((intptr_t)_sector - (intptr_t)XIP_BASE, _data, _size);
-    restore_interrupts(save);
+    rp2040.resumeOtherCore();
+    interrupts();
 
     return true;
 }
