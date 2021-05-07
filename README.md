@@ -98,6 +98,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 
 # Status of Port
 Relatively stable and very functional, but bug reports and PRs always accepted.
+* Multicore support (setup1() and loop1())
 * digitalWrite/Read
 * shiftIn/Out
 * SPI master
@@ -136,7 +137,7 @@ If you want to contribute or have bugfixes, drop me a note at <earlephilhower@ya
 * The [Pico-SDK](https://github.com/raspberrypi/pico-sdk) and [Pico-Extras](https://github.com/raspberrypi/pico-extras) are by Raspberry Pi (Trading) Ltd and licensed under the BSD 3-Clause license.
 * [Arduino-Pico](https://github.com/earlephilhower/arduino-pico) core files are licenses under the LGPL.
 * [LittleFS](https://github.com/ARMmbed/littlefs) library written by ARM Limited and released under the [BSD 3-clause license](https://github.com/ARMmbed/littlefs/blob/master/LICENSE.md).
-* [UF2CONV.PY](https://github.com/microsoft/uf2) is by Microsoft Corporatio and licensed under the MIT license.
+* [UF2CONV.PY](https://github.com/microsoft/uf2) is by Microsoft Corporation and licensed under the MIT license.
 * Some filesystem code taken from the [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) and licensed under the LGPL.
 
 -Earle F. Philhower, III
