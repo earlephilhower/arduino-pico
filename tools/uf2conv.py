@@ -236,6 +236,10 @@ def get_drives():
                 drives.append(words[0])
     else:
         rootpath = "/media"
+        if not os.path.isdir(rootpath):
+            rootpath = "/run/media"
+        if not os.path.isdir(rootpath):
+            rootpath = "/opt/media"
         if sys.platform == "darwin":
             rootpath = "/Volumes"
         elif sys.platform == "linux":
