@@ -33,8 +33,9 @@ extern "C" void interrupts() {
         // ERROR
         return;
     }
-    restore_interrupts(_irqStack[get_core_num()].top());
+    auto oldIrqs = _irqStack[get_core_num()].top();
     _irqStack[get_core_num()].pop();
+    restore_interrupts(oldIrqs);
 }
 
 extern "C" void noInterrupts() {

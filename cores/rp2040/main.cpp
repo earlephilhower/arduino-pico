@@ -22,6 +22,10 @@
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 
+RP2040 rp2040;
+
+volatile bool _MFIFO::_otherIdled = false;
+
 extern void setup();
 extern void loop();
 
@@ -35,6 +39,7 @@ void initVariant() { }
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 static void main1() {
+    rp2040.fifo.registerCore();
     if (setup1) {
         setup1();
     }
@@ -62,8 +67,12 @@ extern "C" int main() {
 #endif
 
     if (setup1 || loop1) {
+        rp2040.fifo.begin(2);
         multicore_launch_core1(main1);
+    } else {
+        rp2040.fifo.begin(1);
     }
+    rp2040.fifo.registerCore();
 
     setup();
     while (true) {
