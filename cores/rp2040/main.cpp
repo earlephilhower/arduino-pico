@@ -91,6 +91,11 @@ extern "C" int main() {
     setup();
     while (true) {
         loop();
+
+#ifdef USE_TINYUSB
+        yield();
+#endif
+
         if (arduino::serialEventRun) {
             arduino::serialEventRun();
         }
