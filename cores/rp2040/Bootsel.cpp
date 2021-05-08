@@ -26,7 +26,8 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
 
     // Must disable interrupts, as interrupt handlers may be in flash, and we
     // are about to temporarily disable flash access!
-    uint32_t flags = save_and_disable_interrupts();
+    noInterrupts();
+    rp2040.idleOtherCore();
 
     // Set chip select to Hi-Z
     hw_write_masked(&ioqspi_hw->io[CS_PIN_INDEX].ctrl,
@@ -46,7 +47,8 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
                     GPIO_OVERRIDE_NORMAL << IO_QSPI_GPIO_QSPI_SS_CTRL_OEOVER_LSB,
                     IO_QSPI_GPIO_QSPI_SS_CTRL_OEOVER_BITS);
 
-    restore_interrupts(flags);
+    interrupts();
+    rp2040.resumeOtherCore();
 
     return button_state;
 }

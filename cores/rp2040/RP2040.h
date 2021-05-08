@@ -23,6 +23,7 @@
 #include <hardware/pio.h>
 #include <pico/multicore.h>
 #include <pico/util/queue.h>
+#include <CoreMutex.h>
 
 class _MFIFO {
 public:
@@ -132,7 +133,6 @@ public:
 extern RP2040 rp2040;
 
 // Wrapper class for PIO programs, abstracting common operations out
-// TODO - Make dualcore safe
 // TODO - Add unload/destructor
 class PIOProgram {
 public:
@@ -140,6 +140,8 @@ public:
 
     // Possibly load into a PIO and allocate a SM
     bool prepare(PIO *pio, int *sm, int *offset) {
+        extern mutex_t _pioMutex;
+        CoreMutex m(&_pioMutex);
         // Is there an open slot to run in, first?
         if (!_findFreeSM(pio, sm)) return false;
 	// Is it loaded on that PIO?
