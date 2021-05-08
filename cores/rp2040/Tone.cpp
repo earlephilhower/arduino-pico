@@ -95,6 +95,7 @@ void noTone(uint8_t pin) {
     if (entry != _toneMap.end()) {
         pio_sm_set_enabled(entry->second->pio, entry->second->sm, false);
 	pio_sm_unclaim(entry->second->pio, entry->second->sm);
+        delete entry->second;
         _toneMap.erase(entry);
         pinMode(pin, OUTPUT);
         digitalWrite(pin, LOW);
