@@ -25,8 +25,7 @@
 RP2040 rp2040;
 
 volatile bool _MFIFO::_otherIdled = false;
-
-auto_init_mutex(_pioMutex);
+mutex_t _pioMutex;
 
 
 extern void setup();
@@ -58,6 +57,7 @@ extern "C" int main() {
     set_sys_clock_khz(F_CPU / 1000, true);
 #endif
 
+    mutex_init(&_pioMutex);
     initVariant();
 
 #ifndef DISABLE_USB_SERIAL

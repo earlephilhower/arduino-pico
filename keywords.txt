@@ -9,6 +9,8 @@
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+setup1  KEYWORD2
+loop2   KEYWORD2
 analogWriteFreq	KEYWORD2
 analogWriteRange	KEYWORD2
 analogWriteResolution KEYWORD2
