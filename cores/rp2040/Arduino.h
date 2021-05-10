@@ -97,7 +97,7 @@ unsigned long millis();
 #ifdef __cplusplus
 
 #ifdef USE_TINYUSB
-  #include "Adafruit_USBD_Interface.h"
+  // Needed for declaring Serial
   #include "Adafruit_USBD_CDC.h"
 #else
   #include "SerialUSB.h"
