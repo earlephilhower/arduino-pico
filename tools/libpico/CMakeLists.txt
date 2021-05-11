@@ -72,7 +72,7 @@ target_link_libraries(pico
 )
 
 add_custom_command(TARGET pico PRE_BUILD
-	COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-gcc -g -c ../../assembly/crt0.S  -I ../../pico-sdk/src/rp2040/hardware_regs/include -I ../../pico-sdk/src/common/pico_binary_info/include/
+	COMMAND arm-none-eabi-gcc -g -c ../../../assembly/crt0.S -I "${PICO_SDK_PATH}/src/rp2040/hardware_regs/include" -I "${PICO_SDK_PATH}/src/common/pico_binary_info/include/"
 )
 
 add_custom_command(TARGET pico POST_BUILD
