@@ -18,6 +18,11 @@ target_compile_definitions(pico PUBLIC
 	PICO_FLASH_SIZE_BYTES=16777216
 )
 
+target_compile_options(pico PUBLIC
+	-fno-exceptions
+	$<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+)
+
 target_link_libraries(pico 
 	boot_stage2
 	hardware_adc
