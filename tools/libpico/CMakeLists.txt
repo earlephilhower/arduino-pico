@@ -23,6 +23,8 @@ target_compile_options(pico PUBLIC
 	$<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 )
 
+include_directories(BEFORE ${PICO_SDK_PATH}/../tools/libpico)
+
 target_link_libraries(pico 
 	boot_stage2
 	hardware_adc
@@ -63,10 +65,10 @@ target_link_libraries(pico
 	pico_platform
 	pico_runtime
 	pico_standard_link
-	pico_stdio_usb
 	pico_stdlib
 	pico_unique_id
 	tinyusb
+        tinyusb_device_unmarked
 	pico_audio
 	pico_audio_i2s
 )

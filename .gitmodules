@@ -16,3 +16,9 @@
 [submodule "pico-extras"]
 	path = pico-extras
 	url = https://github.com/raspberrypi/pico-extras.git
+[submodule "libraries/Keyboard"]
+	path = libraries/Keyboard
+	url = https://github.com/earlephilhower/Keyboard
+[submodule "libraries/Mouse"]
+	path = libraries/Mouse
+	url = https://github.com/earlephilhower/Mouse
