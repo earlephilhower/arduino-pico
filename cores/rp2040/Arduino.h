@@ -24,9 +24,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+// Wacky deprecated AVR compatibilty functions
+#include "stdlib_noniso.h"
 
 #include "api/ArduinoAPI.h"
 #include <pins_arduino.h>
+
 
 // Required for the port*Register macros
 #include "hardware/gpio.h"
