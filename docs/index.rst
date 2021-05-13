@@ -31,11 +31,9 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    SPI <spi>
    Wire(I2C) <wire>
    File Systems (SD, SDFS, LittleFS) <fs>
-
-   Ported/Optimized Libraries <libraries>
-
    Multicore Processing <multicore>
 
+   Ported/Optimized Libraries <libraries>
    Using Pico-SDK <sdk>
 
    Licenses <license>
