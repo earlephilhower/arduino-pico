@@ -6,7 +6,7 @@
          "websiteURL": "https://github.com/earlephilhower/arduino-pico",
          "email": "earlephilhower@yahoo.com",
          "help": {
-            "online": "https://github.com/earlephilhower/arduino-pico"
+            "online": "https://arduino-pico.readthedocs.io/en/latest/"
          },
          "platforms": [
             {
