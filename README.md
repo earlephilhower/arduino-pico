@@ -98,6 +98,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 
 # Status of Port
 Relatively stable and very functional, but bug reports and PRs always accepted.
+* USB Keyboard and Mouse emulation
 * Multicore support (setup1() and loop1())
 * digitalWrite/Read
 * shiftIn/Out
