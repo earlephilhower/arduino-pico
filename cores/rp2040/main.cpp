@@ -19,6 +19,7 @@
  */
 
 #include <Arduino.h>
+#include "RP2040USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 
@@ -52,8 +53,6 @@ static void main1() {
     }
 }
 
-extern void __StartUSB();
-
 extern "C" int main() {
 #if F_CPU != 125000000
     set_sys_clock_khz(F_CPU / 1000, true);
@@ -61,7 +60,7 @@ extern "C" int main() {
 
     mutex_init(&_pioMutex);
     initVariant();
-    __StartUSB();
+    __USBStart();
 
 #ifndef DISABLE_USB_SERIAL
     // Enable serial port for reset/upload always

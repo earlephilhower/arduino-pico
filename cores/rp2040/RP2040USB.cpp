@@ -21,28 +21,26 @@
 
 #include <Arduino.h>
 #include "CoreMutex.h"
+#include "RP2040USB.h"
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"
 #include "class/audio/audio.h"
 #include "class/midi/midi.h"
 #include "pico/time.h"
-#include "pico/binary_info.h"
-#include "pico/bootrom.h"
 #include "hardware/irq.h"
 #include "pico/mutex.h"
-#include "hardware/watchdog.h"
 #include "pico/unique_id.h"
 
-// Weak function definitions for each type of endpoint
-extern void __USBInstallSerial() __attribute__((weak));
-extern void __USBInstallKeyboard() __attribute__((weak));
-extern void __USBInstallMouse() __attribute__((weak));
-extern void __USBInstallMIDI() __attribute__((weak));
+// Big, global USB mutex, shared with all USB devices to make sure we don't
+// have multiple cores updating the TUSB state in parallel
+mutex_t __usb_mutex;
 
-#define PICO_STDIO_USB_TASK_INTERVAL_US 1000
-#define PICO_STDIO_USB_LOW_PRIORITY_IRQ 31
+// USB processing will be a periodic timer task
+#define USB_TASK_INTERVAL 1000
+#define USB_TASK_IRQ 31
 
+// USB VID/PID (note that PID can change depending on the add'l interfaces)
 #define USBD_VID (0x2E8A) // Raspberry Pi
 
 #ifdef SERIALUSB_PID
@@ -72,21 +70,10 @@ extern void __USBInstallMIDI() __attribute__((weak));
 
 #define EPNUM_HID   0x83
 
+#define EPNUM_MIDI   0x01
 
-  #define EPNUM_MIDI   0x01
 
-
-static char _idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 2 + 1];
-
-static const char *const usbd_desc_str[] = {
-    [USBD_STR_0] = "",
-    [USBD_STR_MANUF] = "Raspberry Pi",
-    [USBD_STR_PRODUCT] = "PicoArduino",
-    [USBD_STR_SERIAL] = _idString,
-    [USBD_STR_CDC] = "Board CDC",
-};
-
-extern "C" const uint8_t *tud_descriptor_device_cb(void) {
+const uint8_t *tud_descriptor_device_cb(void) {
     static tusb_desc_device_t usbd_desc_device = {
         .bLength = sizeof(tusb_desc_device_t),
         .bDescriptorType = TUSB_DESC_DEVICE,
@@ -124,7 +111,11 @@ extern "C" const uint8_t *tud_descriptor_device_cb(void) {
     return (const uint8_t *)&usbd_desc_device;
 }
 
-int __GetMouseReportID() {
+int __USBGetKeyboardReportID() {
+    return 1;
+}
+
+int __USBGetMouseReportID() {
     return __USBInstallKeyboard ? 2 : 1;
 }
 
@@ -160,7 +151,7 @@ static uint8_t *GetDescHIDReport(int *len) {
 // Invoked when received GET HID REPORT DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
-extern "C" uint8_t const * tud_hid_descriptor_report_cb(void)
+uint8_t const * tud_hid_descriptor_report_cb(void)
 {
     return GetDescHIDReport(nullptr);
 }   
@@ -227,6 +218,28 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
     #define DESC_STR_MAX (20)
     static uint16_t desc_str[DESC_STR_MAX];
 
+    static char idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 2 + 1];
+
+    static const char *const usbd_desc_str[] = {
+        [USBD_STR_0] = "",
+        [USBD_STR_MANUF] = "Raspberry Pi",
+        [USBD_STR_PRODUCT] = "PicoArduino",
+        [USBD_STR_SERIAL] = idString,
+        [USBD_STR_CDC] = "Board CDC",
+    };
+
+    if (!idString[0]) {
+        // Get ID string into human readable serial number on the first pass
+        pico_unique_board_id_t id;
+        pico_get_unique_board_id(&id);
+        idString[0] = 0;
+        for (auto i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
+            char hx[3];
+            sprintf(hx, "%02X", id.id[i]);
+            strcat(idString, hx);
+        }
+    }
+
     uint8_t len;
     if (index == 0) {
         desc_str[1] = 0x0409; // supported language is English
@@ -247,9 +260,8 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
     return desc_str;
 }
 
-mutex_t __usb_mutex;
 
-static void low_priority_worker_irq() {
+static void usb_irq() {
     // if the mutex is already owned, then we are in user code
     // in this file which will do a tud_task itself, so we'll just do nothing
     // until the next tick; we won't starve
@@ -260,33 +272,23 @@ static void low_priority_worker_irq() {
 }
 
 static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
-    irq_set_pending(PICO_STDIO_USB_LOW_PRIORITY_IRQ);
-    return PICO_STDIO_USB_TASK_INTERVAL_US;
+    irq_set_pending(USB_TASK_IRQ);
+    return USB_TASK_INTERVAL;
 }
 
-void __StartUSB() {
+void __USBStart() {
     if (tusb_inited()) {
         // Already called
         return;
     }
 
-    // Get ID string into human readable serial number
-    pico_unique_board_id_t id;
-    pico_get_unique_board_id(&id);
-    _idString[0] = 0;
-    for (auto i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
-        char hx[3];
-        sprintf(hx, "%02X", id.id[i]);
-        strcat(_idString, hx);
-    }
-
     mutex_init(&__usb_mutex);
     tusb_init();
 
-    irq_set_exclusive_handler(PICO_STDIO_USB_LOW_PRIORITY_IRQ, low_priority_worker_irq);
-    irq_set_enabled(PICO_STDIO_USB_LOW_PRIORITY_IRQ, true);
+    irq_set_exclusive_handler(USB_TASK_IRQ, usb_irq);
+    irq_set_enabled(USB_TASK_IRQ, true);
 
-    add_alarm_in_us(PICO_STDIO_USB_TASK_INTERVAL_US, timer_task, NULL, true);
+    add_alarm_in_us(USB_TASK_INTERVAL, timer_task, NULL, true);
 }
 
 
