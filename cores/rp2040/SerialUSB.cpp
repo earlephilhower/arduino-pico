@@ -32,6 +32,11 @@
 #include "hardware/watchdog.h"
 #include "pico/unique_id.h"
 
+#ifndef DISABLE_USB_SERIAL
+    // Ensure we are installed in the USB chain
+    void __USBInstallSerial() { /* noop */ }
+#endif
+
 // SerialEvent functions are weak, so when the user doesn't define them,
 // the linker just sets their address to 0 (which is checked below).
 // The Serialx_available is just a wrapper around Serialx.available(),
@@ -39,121 +44,8 @@
 // HardwareSerial instance if the user doesn't also refer to it.
 extern void serialEvent() __attribute__((weak));
 
-#define PICO_STDIO_USB_TASK_INTERVAL_US 1000
-#define PICO_STDIO_USB_LOW_PRIORITY_IRQ 31
 
-#define USBD_VID (0x2E8A) // Raspberry Pi
-
-#ifdef SERIALUSB_PID
-    #define USBD_PID (SERIALUSB_PID)
-#else
-    #define USBD_PID (0x000a) // Raspberry Pi Pico SDK CDC
-#endif
-
-#define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN)
-#define USBD_MAX_POWER_MA (250)
-
-#define USBD_ITF_CDC (0) // needs 2 interfaces
-#define USBD_ITF_MAX (2)
-
-#define USBD_CDC_EP_CMD (0x81)
-#define USBD_CDC_EP_OUT (0x02)
-#define USBD_CDC_EP_IN (0x82)
-#define USBD_CDC_CMD_MAX_SIZE (8)
-#define USBD_CDC_IN_OUT_MAX_SIZE (64)
-
-#define USBD_STR_0 (0x00)
-#define USBD_STR_MANUF (0x01)
-#define USBD_STR_PRODUCT (0x02)
-#define USBD_STR_SERIAL (0x03)
-#define USBD_STR_CDC (0x04)
-
-// Note: descriptors returned from callbacks must exist long enough for transfer to complete
-
-static const tusb_desc_device_t usbd_desc_device = {
-    .bLength = sizeof(tusb_desc_device_t),
-    .bDescriptorType = TUSB_DESC_DEVICE,
-    .bcdUSB = 0x0200,
-    .bDeviceClass = TUSB_CLASS_CDC,
-    .bDeviceSubClass = MISC_SUBCLASS_COMMON,
-    .bDeviceProtocol = MISC_PROTOCOL_IAD,
-    .bMaxPacketSize0 = CFG_TUD_ENDPOINT0_SIZE,
-    .idVendor = USBD_VID,
-    .idProduct = USBD_PID,
-    .bcdDevice = 0x0100,
-    .iManufacturer = USBD_STR_MANUF,
-    .iProduct = USBD_STR_PRODUCT,
-    .iSerialNumber = USBD_STR_SERIAL,
-    .bNumConfigurations = 1,
-};
-
-static const uint8_t usbd_desc_cfg[USBD_DESC_LEN] = {
-    TUD_CONFIG_DESCRIPTOR(1, USBD_ITF_MAX, USBD_STR_0, USBD_DESC_LEN,
-        TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA),
-
-    TUD_CDC_DESCRIPTOR(USBD_ITF_CDC, USBD_STR_CDC, USBD_CDC_EP_CMD,
-        USBD_CDC_CMD_MAX_SIZE, USBD_CDC_EP_OUT, USBD_CDC_EP_IN, USBD_CDC_IN_OUT_MAX_SIZE),
-};
-
-static char _idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 2 + 1];
-
-static const char *const usbd_desc_str[] = {
-    [USBD_STR_0] = "",
-    [USBD_STR_MANUF] = "Raspberry Pi",
-    [USBD_STR_PRODUCT] = "PicoArduino",
-    [USBD_STR_SERIAL] = _idString,
-    [USBD_STR_CDC] = "Board CDC",
-};
-
-const uint8_t *tud_descriptor_device_cb(void) {
-    return (const uint8_t *)&usbd_desc_device;
-}
-
-const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
-    (void)index;
-    return usbd_desc_cfg;
-}
-
-const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
-    #define DESC_STR_MAX (20)
-    static uint16_t desc_str[DESC_STR_MAX];
-
-    uint8_t len;
-    if (index == 0) {
-        desc_str[1] = 0x0409; // supported language is English
-        len = 1;
-    } else {
-        if (index >= sizeof(usbd_desc_str) / sizeof(usbd_desc_str[0])) {
-            return NULL;
-        }
-        const char *str = usbd_desc_str[index];
-        for (len = 0; len < DESC_STR_MAX - 1 && str[len]; ++len) {
-            desc_str[1 + len] = str[len];
-        }
-    }
-
-    // first byte is length (including header), second byte is string type
-    desc_str[0] = (TUSB_DESC_STRING << 8) | (2 * len + 2);
-
-    return desc_str;
-}
-
-static mutex_t usb_mutex;
-
-static void low_priority_worker_irq() {
-    // if the mutex is already owned, then we are in user code
-    // in this file which will do a tud_task itself, so we'll just do nothing
-    // until the next tick; we won't starve
-    if (mutex_try_enter(&usb_mutex, NULL)) {
-        tud_task();
-        mutex_exit(&usb_mutex);
-    }
-}
-
-static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
-    irq_set_pending(PICO_STDIO_USB_LOW_PRIORITY_IRQ);
-    return PICO_STDIO_USB_TASK_INTERVAL_US;
-}
+extern mutex_t __usb_mutex;
 
 void SerialUSB::begin(unsigned long baud) {
     (void) baud; //ignored
@@ -161,24 +53,6 @@ void SerialUSB::begin(unsigned long baud) {
     if (_running) {
         return;
     }
-
-    // Get ID string into human readable serial number
-    pico_unique_board_id_t id;
-    pico_get_unique_board_id(&id);
-    _idString[0] = 0;
-    for (auto i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
-        char hx[3];
-        sprintf(hx, "%02X", id.id[i]);
-        strcat(_idString, hx);
-    }
-
-    tusb_init();
-
-    irq_set_exclusive_handler(PICO_STDIO_USB_LOW_PRIORITY_IRQ, low_priority_worker_irq);
-    irq_set_enabled(PICO_STDIO_USB_LOW_PRIORITY_IRQ, true);
-
-    mutex_init(&usb_mutex);
-    add_alarm_in_us(PICO_STDIO_USB_TASK_INTERVAL_US, timer_task, NULL, true);
 
     _running = true;
 }
@@ -188,7 +62,7 @@ void SerialUSB::end() {
 }
 
 int SerialUSB::peek() {
-    CoreMutex m(&usb_mutex);
+    CoreMutex m(&__usb_mutex);
     if (!_running || !m) {
         return 0;
     }
@@ -198,7 +72,7 @@ int SerialUSB::peek() {
 }
 
 int SerialUSB::read() {
-    CoreMutex m(&usb_mutex);
+    CoreMutex m(&__usb_mutex);
     if (!_running || !m) {
         return -1;
     }
@@ -210,7 +84,7 @@ int SerialUSB::read() {
 }
 
 int SerialUSB::available() {
-    CoreMutex m(&usb_mutex);
+    CoreMutex m(&__usb_mutex);
     if (!_running || !m) {
         return 0;
     }
@@ -219,7 +93,7 @@ int SerialUSB::available() {
 }
 
 int SerialUSB::availableForWrite() {
-    CoreMutex m(&usb_mutex);
+    CoreMutex m(&__usb_mutex);
     if (!_running || !m) {
         return 0;
     }
@@ -228,7 +102,7 @@ int SerialUSB::availableForWrite() {
 }
 
 void SerialUSB::flush() {
-    CoreMutex m(&usb_mutex);
+    CoreMutex m(&__usb_mutex);
     if (!_running || !m) {
         return;
     }
@@ -241,7 +115,7 @@ size_t SerialUSB::write(uint8_t c) {
 }
 
 size_t SerialUSB::write(const uint8_t *buf, size_t length) {
-    CoreMutex m(&usb_mutex);
+    CoreMutex m(&__usb_mutex);
     if (!_running || !m) {
         return 0;
     }
@@ -276,7 +150,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
 }
 
 SerialUSB::operator bool() {
-    CoreMutex m(&usb_mutex);
+    CoreMutex m(&__usb_mutex);
     if (!_running || !m) {
         return false;
     }

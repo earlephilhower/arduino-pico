@@ -18,6 +18,13 @@ target_compile_definitions(pico PUBLIC
 	PICO_FLASH_SIZE_BYTES=16777216
 )
 
+target_compile_options(pico PUBLIC
+	-fno-exceptions
+	$<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+)
+
+include_directories(BEFORE ${PICO_SDK_PATH}/../tools/libpico)
+
 target_link_libraries(pico 
 	boot_stage2
 	hardware_adc
@@ -58,16 +65,16 @@ target_link_libraries(pico
 	pico_platform
 	pico_runtime
 	pico_standard_link
-	pico_stdio_usb
 	pico_stdlib
 	pico_unique_id
 	tinyusb
+        tinyusb_device_unmarked
 	pico_audio
 	pico_audio_i2s
 )
 
 add_custom_command(TARGET pico PRE_BUILD
-	COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-gcc -g -c ../../assembly/crt0.S  -I ../../pico-sdk/src/rp2040/hardware_regs/include -I ../../pico-sdk/src/common/pico_binary_info/include/
+	COMMAND arm-none-eabi-gcc -g -c ../../../assembly/crt0.S -I "${PICO_SDK_PATH}/src/rp2040/hardware_regs/include" -I "${PICO_SDK_PATH}/src/common/pico_binary_info/include/"
 )
 
 add_custom_command(TARGET pico POST_BUILD
