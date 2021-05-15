@@ -2,14 +2,10 @@
 
 Raspberry Pi Pico Arduino core, for all RP2040 boards
 
-This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem.
+This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem. It uses the bare Raspberry Pi Pico SDK and a custom GCC 10.2/Newlib 4.0 toolchain.
 
-It uses a custom toolset with GCC 10.2 and Newlib 4.0.0, not depending on system-installed prerequisites.  https://github.com/earlephilhower/pico-quick-toolchain
-
-There is automated discovery of boards in bootloader mode, so they show up in the IDE, and the upload command works using the Microsoft UF2 tool (included).
-
-# Detailed Documentation
-Refer to the examples and https://arduino-pico.readthedocs.io/en/latest/ for more detailed usage information.
+# Documentation
+See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
 
 # Installing via Arduino Boards Manager
 **Windows Users**: Please do not use the Windows Store version of the actual Arduino application
@@ -136,7 +132,7 @@ If you want to contribute or have bugfixes, drop me a note at <earlephilhower@ya
 * The [Arduino IDE and ArduinoCore-API](https://arduino.cc) are developed and maintained by the Arduino team. The IDE is licensed under GPL.
 * The [RP2040 GCC-based toolchain](https://github.com/earlephilhower/pico-quick-toolchain) is licensed under under the GPL.
 * The [Pico-SDK](https://github.com/raspberrypi/pico-sdk) and [Pico-Extras](https://github.com/raspberrypi/pico-extras) are by Raspberry Pi (Trading) Ltd and licensed under the BSD 3-Clause license.
-* [Arduino-Pico](https://github.com/earlephilhower/arduino-pico) core files are licenses under the LGPL.
+* [Arduino-Pico](https://github.com/earlephilhower/arduino-pico) core files are licensed under the LGPL.
 * [LittleFS](https://github.com/ARMmbed/littlefs) library written by ARM Limited and released under the [BSD 3-clause license](https://github.com/ARMmbed/littlefs/blob/master/LICENSE.md).
 * [UF2CONV.PY](https://github.com/microsoft/uf2) is by Microsoft Corporation and licensed under the MIT license.
 * Some filesystem code taken from the [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) and licensed under the LGPL.
