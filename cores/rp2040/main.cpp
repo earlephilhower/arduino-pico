@@ -232,5 +232,3 @@ extern "C" int _wait (int  *status) {
     errno = ENOSYS;
     return -1;
 }
-
-extern "C" void __sync_synchronize() { /* noop */ }
