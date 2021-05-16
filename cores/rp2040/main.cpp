@@ -104,7 +104,6 @@ extern "C" int main() {
 #include <errno.h>
 #include <_syslist.h>
 #include <sys/times.h>
-#include <bits/stdc++.h>
 #undef errno
 
 
