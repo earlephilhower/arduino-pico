@@ -80,6 +80,30 @@ the ``USB Serial (CDC)`` driver.
 
    .. image:: images/install_driver_old_win.png
 
+Windows 7 Installation Problems
+-------------------------------
+
+When running MalwareBytes antivirus (or others) the scanner may lock the compiler or other toolchain executables, causing installation or build failures.  (Thanks to @Andy2No)
+
+Symptoms include:
+
+*Access denied during update in the boards manager - affects the .exe files, because MalwareBytes has locked them.
+* Access denied during compilation, to one of the .exe files - same reason.
+* Can't delete the .exe files - they're locked by MalwareBytes.
+
+A workaround is possible, involving setting the toolchain as an "excluded directory" and reinstalling.
+
+1. In MalwareBytes Settings, click the Exclusions tab. Add an exclusion for the equivalent of this folder path:
+
+``C:\Users{YOUR_USERNAME_HERE}\AppData\Local\Arduino15\packages\rp2040\tools\pqt-gcc\1.1.0-a-81a1771``
+
+2. Reboot to unlock the files.
+
+3. Do the boards manager installation / upgrade again.
+
+4. Set the board type, e.g. to Raspberry Pi Pico and check it can compile.
+
+
 Uploading Filesystem Images
 ---------------------------
 The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
