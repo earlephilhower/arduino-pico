@@ -149,12 +149,27 @@ extern "C" int _getpid (void) {
     return -1;
 }
 
-struct timeval;
 
-extern "C" int _gettimeofday (struct timeval  *ptimeval, void *ptimezone)
-{
-    errno = ENOSYS;
-    return -1;
+static int64_t __timedelta_us = 0.0;
+
+extern "C" int _gettimeofday (struct timeval *tv, void *tz) {
+    uint64_t now_us = to_us_since_boot(get_absolute_time()) + __timedelta_us;
+    if (tv) {
+        tv->tv_sec = now_us / 1000000L;
+        tv->tv_usec = now_us % 1000000L;
+    }
+    return 0;
+}
+
+extern "C" int settimeofday (const struct timeval *tv, const struct timezone *tz) {
+    uint64_t now_us = to_us_since_boot(get_absolute_time());
+    if (tv) {
+        uint64_t newnow_us;
+        newnow_us = tv->tv_sec * 1000000L;
+        newnow_us += tv->tv_usec;
+        __timedelta_us = newnow_us - now_us;
+    }
+    return 0;
 }
 
 extern "C" int _isatty (int file) {
