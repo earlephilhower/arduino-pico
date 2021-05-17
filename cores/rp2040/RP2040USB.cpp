@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef USE_TINYUSB
+
 #include <Arduino.h>
 #include "CoreMutex.h"
 #include "RP2040USB.h"
@@ -316,4 +318,6 @@ void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uin
   (void) buffer;
   (void) bufsize;
 }
+
+#endif
 

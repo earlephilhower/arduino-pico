@@ -59,11 +59,11 @@ extern "C" int main() {
 
     mutex_init(&_pioMutex);
     initVariant();
-    __USBStart();
 
 #ifdef USE_TINYUSB
     TinyUSB_Device_Init(0);
 #else
+    __USBStart();
 #ifndef DISABLE_USB_SERIAL
     // Enable serial port for reset/upload always
     Serial.begin();

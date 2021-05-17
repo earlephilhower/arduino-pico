@@ -29,8 +29,10 @@ extern "C"
 {
 
 void yield(void) {
+#ifdef USE_TINYUSB
     TinyUSB_Device_Task();
     TinyUSB_Device_FlushCDC();
+#endif
 }
 
 void delay( unsigned long ms ) {
@@ -43,7 +45,7 @@ void delay( unsigned long ms ) {
     // TODO better implementation later
     // More detail https://github.com/adafruit/circuitpython/pull/2956
     while (ms--) {
-      yield();
+//      yield();
       sleep_ms(1);
     }
 }
