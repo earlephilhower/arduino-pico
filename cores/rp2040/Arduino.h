@@ -40,6 +40,11 @@
 extern "C"{
 #endif // __cplusplus
 
+// For compatibility to many platforms and libraries
+#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
+#define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
+#define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
+
 // Disable/reenable all interrupts.  Safely handles nested disables
 void interrupts();
 void noInterrupts();
