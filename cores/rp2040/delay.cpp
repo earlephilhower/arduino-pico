@@ -28,26 +28,12 @@
 extern "C"
 {
 
-void yield(void) {
-#ifdef USE_TINYUSB
-    TinyUSB_Device_Task();
-    TinyUSB_Device_FlushCDC();
-#endif
-}
-
 void delay( unsigned long ms ) {
     if (!ms) {
         return;
     }
 
-    // Call wfe/wfi while have pending USB event can starve the task.
-    // If there is no alarm interrupt to help wake up MCU.
-    // TODO better implementation later
-    // More detail https://github.com/adafruit/circuitpython/pull/2956
-    while (ms--) {
-//      yield();
-      sleep_ms(1);
-    }
+    sleep_ms(ms);
 }
 
 void delayMicroseconds( unsigned int usec ) {
@@ -57,6 +43,14 @@ void delayMicroseconds( unsigned int usec ) {
     sleep_us(usec);
 }
 
+void yield() {
+#ifdef USE_TINYUSB
+    TinyUSB_Device_Task();
+    TinyUSB_Device_FlushCDC();
+#endif
+}
+
+
 uint32_t millis() {
     return to_ms_since_boot(get_absolute_time());
 }
@@ -65,4 +59,4 @@ uint32_t micros() {
     return to_us_since_boot(get_absolute_time());
 }
 
-}
+} // extern C

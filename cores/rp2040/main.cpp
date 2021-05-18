@@ -62,12 +62,14 @@ extern "C" int main() {
 
 #ifdef USE_TINYUSB
     TinyUSB_Device_Init(0);
+
 #else
     __USBStart();
-#ifndef DISABLE_USB_SERIAL
+
+    #ifndef DISABLE_USB_SERIAL
     // Enable serial port for reset/upload always
     Serial.begin();
-#endif
+    #endif
 #endif
 
 #if defined DEBUG_RP2040_PORT
