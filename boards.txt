@@ -6,6 +6,9 @@ menu.dbglvl=Debug Level
 menu.boot2=Boot Stage 2
 menu.usbstack=USB Stack
 
+# -----------------------------------
+# Raspberry Pi Pico
+# -----------------------------------
 rpipico.name=Raspberry Pi Pico
 rpipico.vid.0=0x2e8a
 rpipico.pid.0=0x000a
@@ -26,10 +29,10 @@ rpipico.build.core=rp2040
 rpipico.build.mcu=rp2040
 rpipico.build.ldscript=memmap_default.ld
 rpipico.build.boot2=boot2_w25q080_2_padded_checksum
-rpipico.build.usb_manufacturer="Raspberry Pi"
-rpipico.build.usb_product="Pico"
 rpipico.build.vid=0x2e8a
 rpipico.build.pid=0x000a
+rpipico.build.usb_manufacturer="Raspberry Pi"
+rpipico.build.usb_product="Pico"
 rpipico.menu.flash.2097152_0=2MB (no FS)
 rpipico.menu.flash.2097152_0.upload.maximum_size=2093056
 rpipico.menu.flash.2097152_0.build.flash_length=2093056
@@ -108,11 +111,14 @@ rpipico.menu.dbglvl.All=All
 rpipico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
 rpipico.menu.dbglvl.NDEBUG=NDEBUG
 rpipico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
-rpipico.menu.usbstack.picosdk=Built-in
-rpipico.menu.usbstack.picosdk.build.flags.usbstack=
-rpipico.menu.usbstack.tinyusb=TinyUSB
-rpipico.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipico.menu.usbstack.picosdk=Pico SDK
+rpipico.menu.usbstack.picosdk.build.usbstack_flags=
+rpipico.menu.usbstack.tinyusb=Adafruit TinyUSB
+rpipico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
+# -----------------------------------
+# Raspberry Pi Pico (Picoprobe)
+# -----------------------------------
 rpipicopicoprobe.name=Raspberry Pi Pico (Picoprobe)
 rpipicopicoprobe.vid.0=0x2e8a
 rpipicopicoprobe.pid.0=0x0004
@@ -133,10 +139,10 @@ rpipicopicoprobe.build.core=rp2040
 rpipicopicoprobe.build.mcu=rp2040
 rpipicopicoprobe.build.ldscript=memmap_default.ld
 rpipicopicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
-rpipicopicoprobe.build.usb_manufacturer="Raspberry Pi"
-rpipicopicoprobe.build.usb_product="Pico (picoprobe)"
 rpipicopicoprobe.build.vid=0x2e8a
 rpipicopicoprobe.build.pid=0x000a
+rpipicopicoprobe.build.usb_manufacturer="Raspberry Pi"
+rpipicopicoprobe.build.usb_product="Pico (Picoprobe)"
 rpipicopicoprobe.menu.flash.2097152_0=2MB (no FS)
 rpipicopicoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
 rpipicopicoprobe.menu.flash.2097152_0.build.flash_length=2093056
@@ -215,15 +221,18 @@ rpipicopicoprobe.menu.dbglvl.All=All
 rpipicopicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
 rpipicopicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 rpipicopicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
-rpipicopicoprobe.menu.usbstack.picosdk=Built-in
-rpipicopicoprobe.menu.usbstack.picosdk.build.flags.usbstack=
-rpipicopicoprobe.menu.usbstack.tinyusb=TinyUSB
-rpipicopicoprobe.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicopicoprobe.menu.usbstack.picosdk=Pico SDK
+rpipicopicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+rpipicopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
+rpipicopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
+# -----------------------------------
+# Adafruit Feather RP2040
+# -----------------------------------
 adafruitfeather.name=Adafruit Feather RP2040
-adafruitfeather.vid.0=0x2e8a
-adafruitfeather.pid.0=0x000b
-adafruitfeather.build.usbpid=-DSERIALUSB_PID=0x000b
+adafruitfeather.vid.0=0x239a
+adafruitfeather.pid.0=0x80f1
+adafruitfeather.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruitfeather.build.board=ADAFRUIT_FEATHER_RP2040
 adafruitfeather.build.mcu=cortex-m0plus
 adafruitfeather.build.variant=adafruitfeather
@@ -240,10 +249,10 @@ adafruitfeather.build.core=rp2040
 adafruitfeather.build.mcu=rp2040
 adafruitfeather.build.ldscript=memmap_default.ld
 adafruitfeather.build.boot2=boot2_w25x10cl_4_padded_checksum
-adafruitfeather.build.usb_manufacturer="Adafruit LLC"
-adafruitfeather.build.usb_product="Feather RP2040"
 adafruitfeather.build.vid=0x239a
 adafruitfeather.build.pid=0x80f1
+adafruitfeather.build.usb_manufacturer="Adafruit"
+adafruitfeather.build.usb_product="Feather RP2040"
 adafruitfeather.menu.flash.8388608_0=8MB (no FS)
 adafruitfeather.menu.flash.8388608_0.upload.maximum_size=8384512
 adafruitfeather.menu.flash.8388608_0.build.flash_length=8384512
@@ -358,15 +367,18 @@ adafruitfeather.menu.dbglvl.All=All
 adafruitfeather.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
 adafruitfeather.menu.dbglvl.NDEBUG=NDEBUG
 adafruitfeather.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
-adafruitfeather.menu.usbstack.picosdk=Built-in
-adafruitfeather.menu.usbstack.picosdk.build.flags.usbstack=
-adafruitfeather.menu.usbstack.tinyusb=TinyUSB
-adafruitfeather.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruitfeather.menu.usbstack.picosdk=Pico SDK
+adafruitfeather.menu.usbstack.picosdk.build.usbstack_flags=
+adafruitfeather.menu.usbstack.tinyusb=Adafruit TinyUSB
+adafruitfeather.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
+# -----------------------------------
+# Adafruit Feather RP2040 (Picoprobe)
+# -----------------------------------
 adafruitfeatherpicoprobe.name=Adafruit Feather RP2040 (Picoprobe)
-adafruitfeatherpicoprobe.vid.0=0x2e8a
+adafruitfeatherpicoprobe.vid.0=0x239a
 adafruitfeatherpicoprobe.pid.0=0x0004
-adafruitfeatherpicoprobe.build.usbpid=-DSERIALUSB_PID=0x000b
+adafruitfeatherpicoprobe.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruitfeatherpicoprobe.build.board=ADAFRUIT_FEATHER_RP2040
 adafruitfeatherpicoprobe.build.mcu=cortex-m0plus
 adafruitfeatherpicoprobe.build.variant=adafruitfeather
@@ -383,10 +395,10 @@ adafruitfeatherpicoprobe.build.core=rp2040
 adafruitfeatherpicoprobe.build.mcu=rp2040
 adafruitfeatherpicoprobe.build.ldscript=memmap_default.ld
 adafruitfeatherpicoprobe.build.boot2=boot2_w25x10cl_4_padded_checksum
-adafruitfeatherpicoprobe.build.usb_manufacturer="Adafruit LLC"
-adafruitfeatherpicoprobe.build.usb_product="Feather RP2040 (picoprobe)"
 adafruitfeatherpicoprobe.build.vid=0x239a
 adafruitfeatherpicoprobe.build.pid=0x80f1
+adafruitfeatherpicoprobe.build.usb_manufacturer="Adafruit"
+adafruitfeatherpicoprobe.build.usb_product="Feather RP2040 (Picoprobe)"
 adafruitfeatherpicoprobe.menu.flash.8388608_0=8MB (no FS)
 adafruitfeatherpicoprobe.menu.flash.8388608_0.upload.maximum_size=8384512
 adafruitfeatherpicoprobe.menu.flash.8388608_0.build.flash_length=8384512
@@ -501,11 +513,14 @@ adafruitfeatherpicoprobe.menu.dbglvl.All=All
 adafruitfeatherpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
 adafruitfeatherpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 adafruitfeatherpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
-adafruitfeatherpicoprobe.menu.usbstack.picosdk=Built-in
-adafruitfeatherpicoprobe.menu.usbstack.picosdk.build.flags.usbstack=
-adafruitfeatherpicoprobe.menu.usbstack.tinyusb=TinyUSB
-adafruitfeatherpicoprobe.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruitfeatherpicoprobe.menu.usbstack.picosdk=Pico SDK
+adafruitfeatherpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+adafruitfeatherpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
+adafruitfeatherpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
+# -----------------------------------
+# Generic RP2040
+# -----------------------------------
 generic.name=Generic RP2040
 generic.vid.0=0x2e8a
 generic.pid.0=0xf00a
@@ -526,10 +541,10 @@ generic.build.core=rp2040
 generic.build.mcu=rp2040
 generic.build.ldscript=memmap_default.ld
 generic.build.boot2=boot2_generic_03h_4_padded_checksum
-generic.build.usb_manufacturer="Generic"
-generic.build.usb_product="Generic RP2040"
 generic.build.vid=0x2e8a
 generic.build.pid=0xf00a
+generic.build.usb_manufacturer="Generic"
+generic.build.usb_product="RP2040"
 generic.menu.flash.2097152_0=2MB (no FS)
 generic.menu.flash.2097152_0.upload.maximum_size=2093056
 generic.menu.flash.2097152_0.build.flash_length=2093056
@@ -620,6 +635,10 @@ generic.menu.dbglvl.All=All
 generic.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
 generic.menu.dbglvl.NDEBUG=NDEBUG
 generic.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+generic.menu.usbstack.picosdk=Pico SDK
+generic.menu.usbstack.picosdk.build.usbstack_flags=
+generic.menu.usbstack.tinyusb=Adafruit TinyUSB
+generic.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 generic.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4
@@ -636,11 +655,10 @@ generic.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 generic.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 generic.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 generic.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
-generic.menu.usbstack.picosdk=Built-in
-generic.menu.usbstack.picosdk.build.flags.usbstack=
-generic.menu.usbstack.tinyusb=TinyUSB
-generic.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
+# -----------------------------------
+# Generic RP2040 (Picoprobe)
+# -----------------------------------
 genericpicoprobe.name=Generic RP2040 (Picoprobe)
 genericpicoprobe.vid.0=0x2e8a
 genericpicoprobe.pid.0=0x0004
@@ -661,10 +679,10 @@ genericpicoprobe.build.core=rp2040
 genericpicoprobe.build.mcu=rp2040
 genericpicoprobe.build.ldscript=memmap_default.ld
 genericpicoprobe.build.boot2=boot2_generic_03h_4_padded_checksum
-genericpicoprobe.build.usb_manufacturer="Generic"
-genericpicoprobe.build.usb_product="Generic RP2040 (picoprobe)"
 genericpicoprobe.build.vid=0x2e8a
 genericpicoprobe.build.pid=0xf00a
+genericpicoprobe.build.usb_manufacturer="Generic"
+genericpicoprobe.build.usb_product="RP2040 (Picoprobe)"
 genericpicoprobe.menu.flash.2097152_0=2MB (no FS)
 genericpicoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
 genericpicoprobe.menu.flash.2097152_0.build.flash_length=2093056
@@ -755,6 +773,10 @@ genericpicoprobe.menu.dbglvl.All=All
 genericpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
 genericpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 genericpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+genericpicoprobe.menu.usbstack.picosdk=Pico SDK
+genericpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+genericpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
+genericpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 genericpicoprobe.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 genericpicoprobe.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 genericpicoprobe.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4
@@ -771,7 +793,3 @@ genericpicoprobe.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 genericpicoprobe.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 genericpicoprobe.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 genericpicoprobe.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
-genericpicoprobe.menu.usbstack.picosdk=Built-in
-genericpicoprobe.menu.usbstack.picosdk.build.flags.usbstack=
-genericpicoprobe.menu.usbstack.tinyusb=TinyUSB
-genericpicoprobe.menu.usbstack.tinyusb.build.flags.usbstack=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
