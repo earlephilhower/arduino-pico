@@ -31,7 +31,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    SPI <spi>
    Wire(I2C) <wire>
    File Systems (SD, SDFS, LittleFS) <fs>
-   USB Keyboard/Mouse <usb>
+   USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
 
    Ported/Optimized Libraries <libraries>

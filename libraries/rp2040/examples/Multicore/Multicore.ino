@@ -19,7 +19,7 @@
 
 // The normal, core0 setup
 void setup() {
-  Serial.begin();
+  Serial.begin(115200);
   delay(5000);
 }
 
