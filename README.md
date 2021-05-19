@@ -7,6 +7,13 @@ This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosys
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
 
+# Supported Boards
+* Raspberry Pi Pico
+* Adafruit Feather RP2040
+* Adafruit ItsyBitsy RP2040
+* Adafruit QTPy RP2040
+* Generic (configurable flash, I/O pins)
+
 # Installing via Arduino Boards Manager
 **Windows Users**: Please do not use the Windows Store version of the actual Arduino application
 because it has issues detecting attached Pico boards.  Use the "Windows ZIP" or plain "Windows"
@@ -14,7 +21,6 @@ executable (EXE)  download direct from https://arduino.cc. and allow it to insta
 drivers it suggests.  Otherwise the Pico board may not be detected.  Also, if trying out the
 2.0 beta Arduino please install the release 1.8 version beforehand to ensure needed device drivers
 are present.  (See #20 for more details.)
-
 
 Open up the Arduino IDE and go to File->Preferences.
 
@@ -92,24 +98,14 @@ Once Picoprobe permissions are set up properly, then select the board "Raspberry
 # Debugging with Picoprobe, OpenOCD, and GDB
 The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.
 
-# Status of Port
-Relatively stable and very functional, but bug reports and PRs always accepted.
-* USB Keyboard and Mouse emulation
-* Multicore support (setup1() and loop1())
-* digitalWrite/Read
-* shiftIn/Out
-* SPI master
-* analogWrite/PWM
-* tone/noTone
-* Wire/I2C Master and Slave
-* EEPROM
-* USB Serial(ACM) w/automatic reboot-to-UF2 upload)
-* Hardware UART
-* Servo, glitchless
-* Overclocking and underclocking from the menus
-* analogRead and Pico chip temperature
+# Features
+* Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
+* Generic Arduino USB Serial, Keyboard, and Mouse emulation
 * Filesystems (LittleFS and SD/SDFS)
-* I2S audio output
+* Multicore support (setup1() and loop1())
+* Overclocking and underclocking from the menus
+* digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
+* Peripherals:  SPI master, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio output, Servo
 * printf (i.e. debug) output over USB serial 
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:

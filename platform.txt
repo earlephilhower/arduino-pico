@@ -38,7 +38,7 @@ compiler.warning_flags.default=
 compiler.warning_flags.more=-Wall
 compiler.warning_flags.all=-Wall -Wextra
 
-compiler.defines={build.led}
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt"
 compiler.flags=-Os -march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections -fno-exceptions
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
@@ -81,6 +81,7 @@ build.flash_length=
 build.eeprom_start=
 build.fs_start=
 build.fs_end=
+build.usbstack_flags=
 
 build.boot2=boot2_generic_03h_4_padded_checksum
 
@@ -92,15 +93,12 @@ discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.pl
 # ----------------
 
 ## Compile c files
-## Add -DBOARD_NAME="{build.board}"
 recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile c++ files
-## Add -DBOARD_NAME="{build.board}"
 recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile S files
-## Add -DBOARD_NAME="{build.board}"
 recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
 
 ## Create archives
