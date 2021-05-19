@@ -20,6 +20,7 @@
 
 #include <Arduino.h>
 #include "RP2040USB.h"
+#include <pico/stdlib.h>
 #include <pico/multicore.h>
 
 RP2040 rp2040;
