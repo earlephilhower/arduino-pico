@@ -20,6 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef USE_TINYUSB
+
 #include <Arduino.h>
 #include "CoreMutex.h"
 
@@ -189,3 +191,5 @@ void arduino::serialEventRun(void)
       serialEvent();
     }
 }
+
+#endif

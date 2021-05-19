@@ -21,7 +21,14 @@
 #include <pico.h>
 #include <pico/time.h>
 
-extern "C" void delay( unsigned long ms ) {
+#ifdef USE_TINYUSB
+#include "Adafruit_TinyUSB_API.h"
+#endif
+
+extern "C"
+{
+
+void delay( unsigned long ms ) {
     if (!ms) {
         return;
     }
@@ -29,22 +36,27 @@ extern "C" void delay( unsigned long ms ) {
     sleep_ms(ms);
 }
 
-extern "C" void delayMicroseconds( unsigned int usec ) {
+void delayMicroseconds( unsigned int usec ) {
     if (!usec) {
         return;
     }
     sleep_us(usec);
 }
 
-extern "C" void yield() {
-    // NOOP
+void yield() {
+#ifdef USE_TINYUSB
+    TinyUSB_Device_Task();
+    TinyUSB_Device_FlushCDC();
+#endif
 }
 
-extern "C" uint32_t millis() {
+
+uint32_t millis() {
     return to_ms_since_boot(get_absolute_time());
 }
 
-extern "C" uint32_t micros() {
+uint32_t micros() {
     return to_us_since_boot(get_absolute_time());
 }
 
+} // extern C

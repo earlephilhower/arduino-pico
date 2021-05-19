@@ -59,11 +59,17 @@ extern "C" int main() {
 
     mutex_init(&_pioMutex);
     initVariant();
+
+#ifdef USE_TINYUSB
+    TinyUSB_Device_Init(0);
+
+#else
     __USBStart();
 
-#ifndef DISABLE_USB_SERIAL
+    #ifndef DISABLE_USB_SERIAL
     // Enable serial port for reset/upload always
     Serial.begin();
+    #endif
 #endif
 
 #if defined DEBUG_RP2040_PORT
@@ -81,6 +87,11 @@ extern "C" int main() {
     setup();
     while (true) {
         loop();
+
+#ifdef USE_TINYUSB
+        yield();
+#endif
+
         if (arduino::serialEventRun) {
             arduino::serialEventRun();
         }

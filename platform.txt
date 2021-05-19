@@ -38,7 +38,7 @@ compiler.warning_flags.default=
 compiler.warning_flags.more=-Wall
 compiler.warning_flags.all=-Wall -Wextra
 
-compiler.defines={build.led}
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt"
 compiler.flags=-Os -march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections -fno-exceptions
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
@@ -81,6 +81,7 @@ build.flash_length=
 build.eeprom_start=
 build.fs_start=
 build.fs_end=
+build.usbstack_flags=
 
 build.boot2=boot2_generic_03h_4_padded_checksum
 
