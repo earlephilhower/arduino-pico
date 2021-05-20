@@ -23,3 +23,4 @@ jobs:
       uses: codespell-project/actions-codespell@master
       with:
         skip: ./pico-extras,./ArduinoCore-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk
+        ignore_words_list: ser,DOUT
