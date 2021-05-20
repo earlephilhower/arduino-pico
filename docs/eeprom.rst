@@ -4,7 +4,7 @@ EEPROM Library
 While the Raspberry Pi Pico RP2040 does not come with an EEPROM onboard, we
 simulate one by using a single 4K chunk of flash at the end of flash space.
 
-**Note that this is a simulated EEPROM and will only support the numeber of
+**Note that this is a simulated EEPROM and will only support the number of
 writes as the onboard flash chip, not the 100,000 or so of a real EEPROM.**
 Therefore, do not frequently update the EEPROM or you may prematurely wear
 out the flash.

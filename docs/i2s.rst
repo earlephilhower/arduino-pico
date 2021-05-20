@@ -47,7 +47,7 @@ the output will be changing.
 
 size_t write(uint8_t)
 ~~~~~~~~~~~~~~~~~~~~~
-Provided for compatibilty, but not very useful.  Writes a sample from 0...255
+Provided for compatibility, but not very useful.  Writes a sample from 0...255
 to the I2S buffer.  See ``write(int16_t)`` for a better one
 
 size_t write(const uint8_t \*buffer, size_t size)

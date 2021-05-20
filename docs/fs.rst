@@ -3,7 +3,7 @@ File Systems
 
 The Arduino-Pico core supports using some of the onboard flash as a file
 system, useful for storing configuration data, output strings, logging,
-and more.  It also supports using SD cards as another (FAT32) filesytem,
+and more.  It also supports using SD cards as another (FAT32) filesystem,
 with an API that's compatible with the onboard flash file system.
 
 

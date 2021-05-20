@@ -4,8 +4,6 @@ Raspberry Pi Pico Arduino core, for all RP2040 boards
 
 This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem. It uses the bare Raspberry Pi Pico SDK and a custom GCC 10.2/Newlib 4.0 toolchain.
 
-bood spalling
-
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
 
