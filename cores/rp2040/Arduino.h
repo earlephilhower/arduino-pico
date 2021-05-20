@@ -24,7 +24,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-// Wacky deprecated AVR compatibilty functions
+// Wacky deprecated AVR compatibility functions
 #include "stdlib_noniso.h"
 
 #include "api/ArduinoAPI.h"
@@ -45,7 +45,7 @@ extern "C"{
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
 
-// Disable/reenable all interrupts.  Safely handles nested disables
+// Disable/re-enable all interrupts.  Safely handles nested disables
 void interrupts();
 void noInterrupts();
 
@@ -53,7 +53,7 @@ void noInterrupts();
 void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode);
 void detachInterrupt(pin_size_t pin);
 
-// AVR compatibilty macros...naughty and accesses the HW directly
+// AVR compatibility macros...naughty and accesses the HW directly
 #define digitalPinToPort(pin)       (0)
 #define digitalPinToBitMask(pin)    (1UL << (pin))
 #define digitalPinToTimer(pin)      (0)

@@ -18,7 +18,7 @@ to get the board into update mode (1200bps connection).
 Very dumb `sed`-like tool used by the platform scripts to generate the
 linker `.ld` file (replacing the EEPROM location, FS sizes, etc.).
 Because we run on Windows, Mac, and Linux, need to provide this and not
-rely on existance of `sed` command.
+rely on existence of `sed` command.
 
 ## pyserial
 `git clone` of the PySerial Python3 library to be used by the IDE.
