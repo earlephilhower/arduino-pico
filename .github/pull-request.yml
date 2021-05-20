@@ -1,0 +1,23 @@
+# Run whenever a PR is generated or updated.
+
+
+name: Arduino-Pico CI
+
+on:
+  pull_request:
+
+
+jobs:
+
+  code-spell:
+    name: Check spelling
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Run codespell
+      uses: codespell-project/actions-codespell@master
