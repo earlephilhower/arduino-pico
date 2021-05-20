@@ -65,7 +65,7 @@ compiler.size.cmd=arm-none-eabi-size
 compiler.define=-DARDUINO=
 compiler.readelf.cmd=arm-none-eabi-readelf
 
-# this can be overriden in boards.txt
+# this can be overridden in boards.txt
 build.extra_flags=
 
 # These can be overridden in platform.local.txt
