@@ -21,3 +21,5 @@ jobs:
         python-version: '3.x'
     - name: Run codespell
       uses: codespell-project/actions-codespell@master
+      with:
+        skip: ./pico-extras,./ArduinoCode-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk
