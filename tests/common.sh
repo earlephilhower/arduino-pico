@@ -186,24 +186,24 @@ function install_ide()
     fi
     mv arduino-distrib $ide_path
     cd $ide_path/hardware
-    mkdir esp8266com
-    cd esp8266com
+    mkdir pico
+    cd pico
     if [ "$WINDOWS" = "1" ]; then
-        cp -a $core_path esp8266
+        cp -a $core_path rp2040
     else
-        ln -s $core_path esp8266
+        ln -s $core_path rp2040
     fi
     local debug_flags=""
     if [ "$debug" = "debug" ]; then
-        debug_flags="-DDEBUG_ESP_PORT=Serial -DDEBUG_ESP_SSL -DDEBUG_ESP_TLS_MEM -DDEBUG_ESP_HTTP_CLIENT -DDEBUG_ESP_HTTP_SERVER -DDEBUG_ESP_CORE -DDEBUG_ESP_WIFI -DDEBUG_ESP_HTTP_UPDATE -DDEBUG_ESP_UPDATER -DDEBUG_ESP_OTA -DDEBUG_ESP_OOM"
+        debug_flags="-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_PORT=Serial"
     fi
     # Set custom warnings for all builds (i.e. could add -Wextra at some point)
-    echo "compiler.c.extra_flags=-Wall -Wextra -Werror $debug_flags" > esp8266/platform.local.txt
-    echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror $debug_flags" >> esp8266/platform.local.txt
+    echo "compiler.c.extra_flags=-Wall -Wextra -Werror $debug_flags" > rp2040/platform.local.txt
+    echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror $debug_flags" >> rp2040/platform.local.txt
     echo -e "\n----platform.local.txt----"
-    cat esp8266/platform.local.txt
+    cat rp2040/platform.local.txt
     echo -e "\n----\n"
-    cd esp8266/tools
+    cd rp2040/tools
     python3 get.py -q
     if [ "$WINDOWS" = "1" ]; then
         # Because the symlinks don't work well under Win32, we need to add the path to this copy, not the original...
