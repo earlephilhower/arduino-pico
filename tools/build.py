@@ -60,17 +60,11 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
         cmd += ['-hardware', hardware_dir]
     # Debug=Serial,DebugLevel=Core____
     fqbn = '-fqbn=pico:rp2040:rpipico:' \
-            'xtal={cpu_freq},' \
-            'FlashFreq={flash_freq},' \
-            'FlashMode={flash_mode},' \
-            'baud=921600,' \
-            'eesz={flash_size},' \
-            'ip={lwIP},' \
-            'ResetMethod=nodemcu'.format(**vars(args))
-    if args.debug_port and args.debug_level:
-        fqbn += 'dbg={debug_port},lvl={debug_level}'.format(**vars(args))
-    if args.waveform_phase:
-        fqbn += ',waveform=phase'
+               'flash=2097152_65536,' \
+               'freq={freq},' \
+               'dbgport={dbgport},' \
+               'dbglvl={dbglvl},' \
+               'usbstack={usbstack}'.format(**vars(args))
     cmd += [fqbn]
     cmd += ['-built-in-libraries', ide_path + '/libraries']
     cmd += ['-ide-version=10607']
@@ -100,26 +94,17 @@ def parse_args():
     parser.add_argument('-d', '--hardware_dir', help='Additional hardware path',
                         action='append')
     parser.add_argument('-b', '--board_name', help='Board name', default='generic')
-    parser.add_argument('-s', '--flash_size', help='Flash size', default='512K64',
-                        choices=['512K0', '512K64', '1M512', '4M1M', '4M3M'])
-    parser.add_argument('-f', '--cpu_freq', help='CPU frequency', default=80,
-                        choices=[80, 160], type=int)
-    parser.add_argument('-m', '--flash_mode', help='Flash mode', default='qio',
-                        choices=['dio', 'qio'])
-    parser.add_argument('-n', '--lwIP', help='lwIP version', default='lm2f',
-                        choices=['lm2f', 'hb2f', 'lm6f', 'hb6f', 'hb1'])
+    parser.add_argument('-f', '--freq', help='CPU frequency', default=133,
+                        choices=[50, 125, 133], type=int)
     parser.add_argument('-w', '--warnings', help='Compilation warnings level',
                         default='none', choices=['none', 'all', 'more'])
     parser.add_argument('-o', '--output_binary', help='File name for output binary')
     parser.add_argument('-k', '--keep', action='store_true',
                         help='Don\'t delete temporary build directory')
-    parser.add_argument('--flash_freq', help='Flash frequency', default=40,
-                        type=int, choices=[40, 80])
-    parser.add_argument('--debug_port', help='Debug port',
-                        choices=['Serial', 'Serial1'])
-    parser.add_argument('--waveform_phase', action='store_true',
-                        help='Select waveform locked on phase')
-    parser.add_argument('--debug_level', help='Debug level')
+    parser.add_argument('--dbgport', help='Debug port',
+                        choices=['Disabled', 'Serial', 'Serial1'])
+    parser.add_argument('--dbglvl', help='Debug level',
+                        choices=['None', 'All'])
     parser.add_argument('--build_cache', help='Build directory to cache core.a', default='')
     parser.add_argument('sketch_path', help='Sketch file path')
     return parser.parse_args()

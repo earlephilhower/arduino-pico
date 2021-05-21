@@ -60,9 +60,8 @@ function build_sketches()
     local build_dir=build.tmp
     local build_mod=$4
     local build_rem=$5
-    local lwip=$6
     mkdir -p $build_dir
-    local build_cmd="python3 tools/build.py -b generic -v -w all -s 4M1M -v -k --build_cache $cache_dir -p ./$build_dir -n $lwip $build_arg "
+    local build_cmd="python3 tools/build.py -b generic -v -w all -v -k --build_cache $cache_dir -p ./$build_dir -n $build_arg "
     if [ "$WINDOWS" = "1" ]; then
         # Paths to the arduino builder need to be / referenced, not our native ones
         build_cmd=$(echo $build_cmd --ide_path $arduino | sed 's/ \/c\// \//g' ) # replace '/c/' with '/'
@@ -230,11 +229,10 @@ function build_sketches_with_arduino()
 {
     local build_mod=$1
     local build_rem=$2
-    local lwip=$3
 
     # Compile sketches
     echo -e "travis_fold:start:sketch_test"
-    build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries" $build_mod $build_rem $lwip
+    build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries" $build_mod $build_rem
     echo -e "travis_fold:end:sketch_test"
 
     # Generate size report
