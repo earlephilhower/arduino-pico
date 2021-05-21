@@ -24,3 +24,34 @@ jobs:
       with:
         skip: ./pico-extras,./ArduinoCore-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst
         ignore_words_list: ser,DOUT
+
+
+  build-linux:
+    name: Build ${{ matrix.chunk }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        chunk: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Cache Linux toolchain
+      id: cache-linux
+      uses: actions/cache@v2
+      with:
+        path: ./tools/dist
+        key: ${{ runner.os }}-${{ hashFiles('package/package_esp8266com_index.template.json', 'tests/common.sh') }}
+    - name: Build Sketches
+      env:
+        TRAVIS_BUILD_DIR: ${{ github.workspace }}
+        TRAVIS_TAG: ${{ github.ref }}
+        BUILD_PARITY: custom
+        mod: 8
+        rem: ${{ matrix.chunk }}
+      run: |
+        bash ./tests/build.sh
+
