@@ -59,7 +59,7 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
     else:
         cmd += ['-hardware', hardware_dir]
     # Debug=Serial,DebugLevel=Core____
-    fqbn = '-fqbn=rp2040:rp2040:rpipico:' \
+    fqbn = '-fqbn=pico:rp2040:rpipico:' \
             'xtal={cpu_freq},' \
             'FlashFreq={flash_freq},' \
             'FlashMode={flash_mode},' \
