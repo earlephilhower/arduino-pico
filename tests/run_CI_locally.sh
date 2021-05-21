@@ -62,10 +62,10 @@ Which build?
 9. style
 EOF
 
-	read ans
+	read answer
 
 	BUILD_TYPE=""
-	case "$ans" in
+	case "$answer" in
 		1) BUILD_TYPE=build;;
 		2) BUILD_TYPE=build6;;
 		4) BUILD_TYPE=debug_even;;
