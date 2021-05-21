@@ -36,6 +36,18 @@
 
 #include "debug_internal.h"
 
+// Try and make the best of the old Arduino abs() macro.  When in C++, use
+// the sane std::abs() call, but for C code use their macro since stdlib abs()
+// is int but their macro "works" for everything (with potential side effects)
+#ifdef abs
+#undef abs
+#endif // abs
+#ifdef __cplusplus
+using std::abs;
+#else
+#define abs(x) ((x)>0?(x):-(x))
+#endif
+
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
