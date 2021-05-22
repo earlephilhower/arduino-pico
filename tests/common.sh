@@ -22,6 +22,10 @@ function skip_ino()
 /UserChipSelectFunction/
 /UserSPIDriver/
 /Adafruit_TinyUSB_Arduino/
+/ArduinoISP/
+/p08_DigitalHourglass/
+/p13_TouchSensorLamp/
+/StringComparisonOperators/
 EOL
     echo $ino | grep -q -F "$skiplist"
     echo $(( 1 - $? ))
