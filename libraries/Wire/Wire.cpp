@@ -146,7 +146,7 @@ void TwoWire::onIRQ() {
     }
     if (_i2c->hw->intr_stat & (1<<2)) {
         // RX_FULL
-        if (_slaveStartDet && (_buffLen < sizeof(_buff))) {
+        if (_slaveStartDet && (_buffLen < (int)sizeof(_buff))) {
             _buff[_buffLen++] = _i2c->hw->data_cmd & 0xff;
         } else {
             _i2c->hw->data_cmd;
@@ -179,7 +179,6 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
         return 0;
     }
 
-    size_t byteRead = 0;
     _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(50));
     _buffOff = 0;
     return _buffLen;
@@ -279,7 +278,7 @@ size_t TwoWire::write(uint8_t ucData) {
 
     if (_slave) {
         // Wait for a spot in the TX FIFO
-        while (0 == _i2c->hw->status & (1<<1)) { /* noop wait */ }
+        while (0 == (_i2c->hw->status & (1<<1))) { /* noop wait */ }
         _i2c->hw->data_cmd = ucData;
         return 1;
     } else {
