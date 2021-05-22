@@ -26,8 +26,7 @@
 #include <hardware/pll.h>
 #include <hardware/adc.h>
 
-static int32_t analogScale = 255;
-static uint32_t analogMap = 0;
+static uint32_t analogScale = 255;
 static uint16_t analogFreq = 1000;
 static bool pwmInitted = false;
 static bool adcInitted = false;
@@ -73,7 +72,7 @@ extern "C" void analogWriteResolution(int res) {
 extern "C" void analogWrite(pin_size_t pin, int val) {
     CoreMutex m(&_dacMutex);
 
-    if ((pin < 0) || (pin > 29) || !m) {
+    if ((pin > 29) || !m) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
     }
@@ -89,7 +88,7 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
  
     if (val < 0) {
         val = 0;
-    } else if (val > analogScale) {
+    } else if ((uint32_t)val > analogScale) {
         val = analogScale;
     }
 

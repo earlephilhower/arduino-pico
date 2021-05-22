@@ -32,7 +32,7 @@ function print_size_info()
     elf_file=$1
 
     if [ -z "$elf_file" ]; then
-        printf "sketch                       data     rodata   bss      text     irom0.text   dram     flash\n"
+        printf "sketch                       data     rodata   bss      text      dram     flash\n"
         return 0
     fi
 
@@ -46,9 +46,9 @@ function print_size_info()
     done
 
     total_ram=$((${segments[data]} + ${segments[rodata]} + ${segments[bss]}))
-    total_flash=$((${segments[data]} + ${segments[rodata]} + ${segments[text]} + ${segments[irom0text]}))
+    total_flash=$((${segments[data]} + ${segments[rodata]} + ${segments[text]}))
 
-    printf "%-28s %-8d %-8d %-8d %-8d %-8d     %-8d %-8d\n" $sketch_name ${segments[data]} ${segments[rodata]} ${segments[bss]} ${segments[text]} ${segments[irom0text]} $total_ram $total_flash
+    printf "%-28s %-8d %-8d %-8d %-8d %-8d     %-8d %-8d\n" $sketch_name ${segments[data]} ${segments[rodata]} ${segments[bss]} ${segments[text]} $total_ram $total_flash
     return 0
 }
 

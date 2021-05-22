@@ -39,7 +39,7 @@ static PIOProgram _tonePgm(&tone_program);
 static std::map<pin_size_t, Tone *> _toneMap;
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
-    if ((pin < 0) || (pin > 29)) {
+    if (pin > 29) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
         return;
     }
@@ -87,7 +87,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
 void noTone(uint8_t pin) {
     CoreMutex m(&_toneMutex);
 
-    if ((pin < 0) || (pin > 29) || !m) {
+    if ((pin > 29) || !m) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
         return;
     }

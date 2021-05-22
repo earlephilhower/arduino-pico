@@ -51,7 +51,7 @@ extern "C" void pinMode( pin_size_t ulPin, PinMode ulMode ) {
             return;
     }
 
-    if ((ulPin < 0) || (ulPin > 29)) {
+    if (ulPin > 29) {
         DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
         return;
     }
@@ -59,7 +59,7 @@ extern "C" void pinMode( pin_size_t ulPin, PinMode ulMode ) {
 }
 
 extern "C" void digitalWrite( pin_size_t ulPin, PinStatus ulVal ) {
-    if ((ulPin < 0) || (ulPin > 29)) {
+    if (ulPin > 29) {
         DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
         return;
     }
@@ -81,10 +81,9 @@ extern "C" void digitalWrite( pin_size_t ulPin, PinStatus ulVal ) {
 }
 
 extern "C" PinStatus digitalRead( pin_size_t ulPin ) {
-    if ((ulPin < 0) || (ulPin > 29)) {
+    if (ulPin > 29) {
         DEBUGCORE("ERROR: Illegal pin in digitalRead (%d)\n", ulPin);
         return LOW;
     }
     return gpio_get(ulPin) ? HIGH : LOW;
 }
-
