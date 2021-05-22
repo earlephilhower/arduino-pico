@@ -53,7 +53,7 @@ while true; do
 	cat << EOF
 Which build?
 1. main
-2. main + IPv6
+2. tinyusb
 4. debug even
 5. debug odd
 6. platformio
@@ -67,7 +67,7 @@ EOF
 	BUILD_TYPE=""
 	case "$answer" in
 		1) BUILD_TYPE=build;;
-		2) BUILD_TYPE=build6;;
+		2) BUILD_TYPE=build_tinyusb;;
 		4) BUILD_TYPE=debug_even;;
 		5) BUILD_TYPE=debug_odd;;
 		6) BUILD_TYPE=platformio;;
@@ -99,8 +99,8 @@ elif [ "$BUILD_TYPE" = "debug_even" ]; then
 elif [ "$BUILD_TYPE" = "debug_odd" ]; then
     BUILD_PARITY=odd tests/debug.sh
 
-elif [ "$BUILD_TYPE" = "build6" ]; then
-    tests/build6.sh
+elif [ "$BUILD_TYPE" = "build_tinyusb" ]; then
+    tests/build-tinyusb.sh
 elif [ "$BUILD_TYPE" = "build6_even" ]; then
     BUILD_PARITY=even tests/build6.sh
 elif [ "$BUILD_TYPE" = "build6_odd" ]; then

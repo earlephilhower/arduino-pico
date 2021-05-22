@@ -60,6 +60,35 @@ jobs:
         cd ..
         bash ./tests/build.sh
 
+  build-tinyusb:
+    name: Build TinyUSB Examples
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Cache Linux toolchain
+      id: cache-linux
+      uses: actions/cache@v2
+      with:
+        path: ./tools/dist
+        key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
+    - name: Build Sketches
+      env:
+        TRAVIS_BUILD_DIR: ${{ github.workspace }}
+        TRAVIS_TAG: ${{ github.ref }}
+        BUILD_PARITY: custom
+      run: |
+        cd pico-sdk
+        git submodule update --init
+        cd ../pico-extras
+        git submodule update --init
+        cd ..
+        bash ./tests/build-tinyusb.sh
+
 
 # Single build under Windows to ensure the Win toolchain is good.
   build-windows:

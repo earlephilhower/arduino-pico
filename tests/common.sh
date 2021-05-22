@@ -65,6 +65,7 @@ function build_sketches()
     local build_dir=build.tmp
     local build_mod=$4
     local build_rem=$5
+
     mkdir -p $build_dir
     local build_cmd="python3 tools/build.py -b generic -v -w all -v -k --build_cache $cache_dir -p ./$build_dir $build_arg "
     if [ "$WINDOWS" = "1" ]; then
@@ -149,9 +150,12 @@ function install_libraries()
     pushd $HOME/Arduino/libraries
 
     # install ArduinoJson library
-    { test -r ArduinoJson-v6.11.0.zip || curl --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -q ArduinoJson-v6.11.0.zip
-    { test -r Adafruit_SPIFlash-3.4.1.zip || curl --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -q Adafruit_SPIFlash-3.4.1.zip
-
+    { test -r ArduinoJson-v6.11.0.zip || curl --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -qo ArduinoJson-v6.11.0.zip
+    { test -r Adafruit_SPIFlash-3.4.1.zip || curl --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -qo Adafruit_SPIFlash-3.4.1.zip
+    { test -r Adafruit_Seesaw-1.4.3.zip || curl --output Adafruit_Seesaw-1.4.3.zip -L https://github.com/adafruit/Adafruit_Seesaw/archive/refs/tags/1.4.3.zip; } && unzip -qo Adafruit_Seesaw-1.4.3.zip
+    { test -r Adafruit_BusIO-1.7.3.zip || curl --output Adafruit_BusIO-1.7.3.zip -L https://github.com/adafruit/Adafruit_BusIO/archive/refs/tags/1.7.3.zip; } && unzip -qo Adafruit_BusIO-1.7.3.zip
+    { test -r Adafruit_CircuitPlayground-1.11.3.zip || curl --output Adafruit_CircuitPlayground-1.11.3.zip -L https://github.com/adafruit/Adafruit_CircuitPlayground/archive/refs/tags/1.11.3.zip;} && unzip -qo Adafruit_CircuitPlayground-1.11.3.zip
+    { test -r Arduino_MIDI_Library-5.0.2.zip || curl --output Arduino_MIDI_Library-5.0.2.zip -L https://github.com/FortySevenEffects/arduino_midi_library/archive/refs/tags/5.0.2.zip; } && unzip -qo Arduino_MIDI_Library-5.0.2.zip
     popd
 }
 
@@ -207,8 +211,6 @@ function install_ide()
     # Set custom warnings for all builds (i.e. could add -Wextra at some point)
     echo "compiler.c.extra_flags=-Wall -Wextra -Werror -Wno-ignored-qualifiers $debug_flags" > rp2040/platform.local.txt
     echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror -Wno-ignored-qualifiers $debug_flags" >> rp2040/platform.local.txt
-    echo "compiler.c.extra_flags=-Wall -Wextra -Wno-ignored-qualifiers $debug_flags" > rp2040/platform.local.txt
-    echo "compiler.cpp.extra_flags=-Wall -Wextra -Wno-ignored-qualifiers $debug_flags" >> rp2040/platform.local.txt
     echo -e "\n----platform.local.txt----"
     cat rp2040/platform.local.txt
     echo -e "\n----\n"
