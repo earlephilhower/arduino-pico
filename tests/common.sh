@@ -206,6 +206,8 @@ function install_ide()
     # Set custom warnings for all builds (i.e. could add -Wextra at some point)
     echo "compiler.c.extra_flags=-Wall -Wextra -Werror -Wno-ignored-qualifiers $debug_flags" > rp2040/platform.local.txt
     echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror -Wno-ignored-qualifiers $debug_flags" >> rp2040/platform.local.txt
+    echo "compiler.c.extra_flags=-Wall -Wextra -Wno-ignored-qualifiers $debug_flags" > rp2040/platform.local.txt
+    echo "compiler.cpp.extra_flags=-Wall -Wextra -Wno-ignored-qualifiers $debug_flags" >> rp2040/platform.local.txt
     echo -e "\n----platform.local.txt----"
     cat rp2040/platform.local.txt
     echo -e "\n----\n"
