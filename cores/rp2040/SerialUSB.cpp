@@ -125,7 +125,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
     static uint64_t last_avail_time;
     int i = 0;
     if (tud_cdc_connected()) {
-        for (int i = 0; i < length;) {
+        for (size_t i = 0; i < length;) {
             int n = length - i;
             int avail = tud_cdc_write_available();
             if (n > avail) n = avail;
@@ -173,12 +173,14 @@ static void CheckSerialReset() {
 }
 
 extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
+    (void) itf;
     _dtr = dtr ? true : false;
     _rts = rts ? true : false;
     CheckSerialReset();
 }
 
 extern "C" void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding) {
+    (void) itf;
     _bps = p_line_coding->bit_rate;
     CheckSerialReset();
 }

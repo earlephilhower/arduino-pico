@@ -161,7 +161,6 @@ uint8_t const * tud_hid_descriptor_report_cb(void)
 
 const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
     (void)index;
-    int len = 0;
     static uint8_t *usbd_desc_cfg;
     
     if (!usbd_desc_cfg) {
@@ -217,6 +216,7 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
 }
 
 const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    (void) langid;
     #define DESC_STR_MAX (20)
     static uint16_t desc_str[DESC_STR_MAX];
 

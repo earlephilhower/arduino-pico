@@ -32,17 +32,19 @@ I2SClass::I2SClass() {
 }
 
 bool I2SClass::setBCLK(pin_size_t pin) {
-    if (_running || (pin < 0) || (pin > 28)) {
+    if (_running || (pin > 28)) {
         return false;
     }
     _pinBCLK = pin;
+    return true;
 }
 
 bool I2SClass::setDOUT(pin_size_t pin) {
-    if (_running || (pin < 0) || (pin > 29)) {
+    if (_running || (pin > 29)) {
         return false;
     }
     _pinDOUT = pin;
+    return true;
 }
 
 bool I2SClass::begin(long sampleRate) {

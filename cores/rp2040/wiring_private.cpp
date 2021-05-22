@@ -48,6 +48,7 @@ auto_init_mutex(_irqMutex);
 static std::map<pin_size_t, voidFuncPtr> _map;
 
 void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
+    (void) events;
     // Only need to lock around the std::map check, not the whole IRQ callback
     voidFuncPtr cb = nullptr;
     {
