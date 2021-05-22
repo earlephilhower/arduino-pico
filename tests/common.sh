@@ -193,7 +193,9 @@ function install_ide()
     mkdir pico
     cd pico
     if [ "$WINDOWS" = "1" ]; then
+        rm $core_path/cores/rp2040/api
         cp -a $core_path rp2040
+        cp -a $core_path/ArduinoCore-API/api rp2040/cores/rp2040/api
     else
         ln -s $core_path rp2040
     fi
