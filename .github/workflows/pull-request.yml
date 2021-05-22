@@ -90,6 +90,11 @@ jobs:
         # Windows has python3 already installed, but it's called "python".
         # Copy python.exe to the proper name so scripts "just work".
         try { Get-Command python3 } catch { copy (get-command python).source (get-command python).source.Replace("python.exe", "python3.exe") }
+        cd pico-sdk
+        git submodule update --init
+        cd ../pico-extras
+        git submodule update --init
+        cd ..
         bash ./tests/build.sh
 
 
@@ -119,5 +124,10 @@ jobs:
         mod: 500
         rem: 1
       run: |
+        cd pico-sdk
+        git submodule update --init
+        cd ../pico-extras
+        git submodule update --init
+        cd ..
         bash ./tests/build.sh
 
