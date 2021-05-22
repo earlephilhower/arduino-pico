@@ -150,6 +150,7 @@ function install_libraries()
 
     # install ArduinoJson library
     { test -r ArduinoJson-v6.11.0.zip || curl --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -q ArduinoJson-v6.11.0.zip
+    { test -r Adafruit_SPIFlash-3.4.1.zip || curl --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -q Adafruit_SPIFlash-3.4.1.zip
 
     popd
 }

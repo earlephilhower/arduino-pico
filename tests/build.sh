@@ -20,8 +20,13 @@ install_arduino nodebug
 function skip_ino()
 {
     local ino=$1
-    echo $ino | grep -q Adafruit_TinyUSB_Arduino
-    echo $(( $? ))
+    echo $ino | grep -q mouse_external_flash
+    if [ $? -eq 1 ]; then
+        echo 0
+    else
+        echo $ino | grep -q Adafruit_TinyUSB_Arduino
+        echo $(( $? ))
+    fi
 }
 build_sketches_with_arduino "$mod" "$rem" "--usbstack tinyusb"
 build_sketches_with_arduino "$mod" "$rem" ""
