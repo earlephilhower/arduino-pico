@@ -73,13 +73,13 @@ void SPIClassRP2040::adjustBuffer(const void *s, void *d, size_t cnt, bool by16)
     } else if (!by16) {
         const uint8_t *src = (const uint8_t *)s;
         uint8_t *dst = (uint8_t *)d;
-        for (auto i = 0; i < cnt; i++) {
+        for (size_t i = 0; i < cnt; i++) {
           *(dst++) = reverseByte( *(src++) );
         }
     } else { /* by16 */
         const uint16_t *src = (const uint16_t *)s;
         uint16_t *dst = (uint16_t *)d;
-        for (auto i = 0; i < cnt; i++) {
+        for (size_t i = 0; i < cnt; i++) {
           *(dst++) = reverse16Bit( *(src++) );
         }
     }
@@ -114,7 +114,7 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
 void SPIClassRP2040::transfer(void *buf, size_t count) {
     DEBUGSPI("SPI::transfer(%p, %d)\n", buf, count);
     uint8_t *buff = reinterpret_cast<uint8_t *>(buf);
-    for (auto i = 0; i < count; i++) {
+    for (size_t i = 0; i < count; i++) {
         *buff = transfer(*buff);
         *buff = (_spis.getBitOrder() == MSBFIRST) ? *buff : reverseByte(*buff);
         buff++;
