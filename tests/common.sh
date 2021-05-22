@@ -233,6 +233,7 @@ function build_sketches_with_arduino()
 
     # Compile sketches
     echo -e "travis_fold:start:sketch_test"
+    build_sketches $HOME/arduino_ide $HOME/arduino_ide/examples "-l $HOME/Arduino/libraries" $build_mod $build_rem
     build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries" $build_mod $build_rem
     echo -e "travis_fold:end:sketch_test"
 
