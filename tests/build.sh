@@ -23,8 +23,8 @@ function skip_ino()
     echo $ino | grep -q Adafruit_TinyUSB_Arduino
     echo $(( $? ))
 }
-build_sketches_with_arduino "$mod" "$rem"
-build_sketches_with_arduino "$mod" "$rem"
+build_sketches_with_arduino "$mod" "$rem" "--usbstack tinyusb"
+build_sketches_with_arduino "$mod" "$rem" ""
 
 
 
