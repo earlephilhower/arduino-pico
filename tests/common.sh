@@ -61,7 +61,7 @@ function build_sketches()
     local build_mod=$4
     local build_rem=$5
     mkdir -p $build_dir
-    local build_cmd="python3 tools/build.py -b generic -v -w all -v -k --build_cache $cache_dir -p ./$build_dir -n $build_arg "
+    local build_cmd="python3 tools/build.py -b generic -v -w all -v -k --build_cache $cache_dir -p ./$build_dir $build_arg "
     if [ "$WINDOWS" = "1" ]; then
         # Paths to the arduino builder need to be / referenced, not our native ones
         build_cmd=$(echo $build_cmd --ide_path $arduino | sed 's/ \/c\// \//g' ) # replace '/c/' with '/'

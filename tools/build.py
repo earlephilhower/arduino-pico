@@ -101,10 +101,12 @@ def parse_args():
     parser.add_argument('-o', '--output_binary', help='File name for output binary')
     parser.add_argument('-k', '--keep', action='store_true',
                         help='Don\'t delete temporary build directory')
-    parser.add_argument('--dbgport', help='Debug port',
+    parser.add_argument('--dbgport', help='Debug port', default='Disabled',
                         choices=['Disabled', 'Serial', 'Serial1'])
-    parser.add_argument('--dbglvl', help='Debug level',
+    parser.add_argument('--dbglvl', help='Debug level', default='None',
                         choices=['None', 'All'])
+    parser.add_argument('--usbstack', help='USB stack', default='picosdk',
+                        choices=['picosdk', 'tinyusb'])
     parser.add_argument('--build_cache', help='Build directory to cache core.a', default='')
     parser.add_argument('sketch_path', help='Sketch file path')
     return parser.parse_args()

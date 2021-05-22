@@ -29,7 +29,7 @@ class SerialUSB : public HardwareSerial {
 public:
     SerialUSB() { }
     void begin(unsigned long baud = 115200) override;
-    void begin(unsigned long baud, uint16_t config) override { begin(baud); };
+    void begin(unsigned long baud, uint16_t config) override { (void) config; begin(baud); };
     void end() override;
 
     virtual int peek() override;
