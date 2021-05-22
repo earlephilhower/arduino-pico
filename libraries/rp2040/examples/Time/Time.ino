@@ -18,7 +18,6 @@ void setup() {
 
 void loop() {
   time_t now;
-  struct tm *info;
   char buff[80];
 
   time(&now);
