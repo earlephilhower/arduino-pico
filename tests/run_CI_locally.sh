@@ -80,6 +80,8 @@ done
 
 
 git submodule update --init
+(cd pico-sdk && git submodule update --init)
+(cd pico-extras && git submodule update --init)
 
 export HOME="${TMPCI}"
 export TRAVIS_BUILD_DIR="${TMPCI}"
