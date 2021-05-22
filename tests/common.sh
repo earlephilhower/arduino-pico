@@ -21,6 +21,7 @@ function skip_ino()
 /TeensySdioDemo/
 /UserChipSelectFunction/
 /UserSPIDriver/
+/Adafruit_TinyUSB_Arduino/
 EOL
     echo $ino | grep -q -F "$skiplist"
     echo $(( 1 - $? ))
@@ -38,7 +39,7 @@ function print_size_info()
     elf_name=$(basename $elf_file)
     sketch_name="${elf_name%.*}"
     # echo $sketch_name
-    xtensa-lx106-elf-size --format=sysv $elf_file | sed s/irom0.text/irom0text/g > size.txt
+    arm-none-eabi-size --format=sysv $elf_file | sed s/irom0.text/irom0text/g > size.txt
     declare -A segments
     for seg in data rodata bss text irom0text; do
         segments[$seg]=$(grep ^.$seg size.txt | awk '{sum += $2} END {print sum}')
@@ -206,10 +207,10 @@ function install_ide()
     python3 get.py -q
     if [ "$WINDOWS" = "1" ]; then
         # Because the symlinks don't work well under Win32, we need to add the path to this copy, not the original...
-        relbin=$(realpath $PWD/xtensa-lx106-elf/bin)
+        relbin=$(realpath $PWD/../system/arm-none-eabi/bin)
         export PATH="$ide_path:$relbin:$PATH"
     else
-        export PATH="$ide_path:$core_path/tools/xtensa-lx106-elf/bin:$PATH"
+        export PATH="$ide_path:$core_path/system/arm-none-eabi/bin:$PATH"
     fi
 }
 
