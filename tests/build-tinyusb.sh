@@ -22,6 +22,7 @@ function skip_ino()
 /msc_sdfat/
 /msc_sd/
 /midi_pizza_box_dj/
+/hid_composite_joy_featherwing/
 EOL
         echo $ino | grep -q -F "$skiplist"
         echo $(( 1 - $? ))
