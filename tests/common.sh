@@ -150,12 +150,13 @@ function install_libraries()
     pushd $HOME/Arduino/libraries
 
     # install ArduinoJson library
-    { test -r ArduinoJson-v6.11.0.zip || curl --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -qo ArduinoJson-v6.11.0.zip
-    { test -r Adafruit_SPIFlash-3.4.1.zip || curl --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -qo Adafruit_SPIFlash-3.4.1.zip
-    { test -r Adafruit_Seesaw-1.4.3.zip || curl --output Adafruit_Seesaw-1.4.3.zip -L https://github.com/adafruit/Adafruit_Seesaw/archive/refs/tags/1.4.3.zip; } && unzip -qo Adafruit_Seesaw-1.4.3.zip
-    { test -r Adafruit_BusIO-1.7.3.zip || curl --output Adafruit_BusIO-1.7.3.zip -L https://github.com/adafruit/Adafruit_BusIO/archive/refs/tags/1.7.3.zip; } && unzip -qo Adafruit_BusIO-1.7.3.zip
-    { test -r Adafruit_CircuitPlayground-1.11.3.zip || curl --output Adafruit_CircuitPlayground-1.11.3.zip -L https://github.com/adafruit/Adafruit_CircuitPlayground/archive/refs/tags/1.11.3.zip;} && unzip -qo Adafruit_CircuitPlayground-1.11.3.zip
-    { test -r Arduino_MIDI_Library-5.0.2.zip || curl --output Arduino_MIDI_Library-5.0.2.zip -L https://github.com/FortySevenEffects/arduino_midi_library/archive/refs/tags/5.0.2.zip; } && unzip -qo Arduino_MIDI_Library-5.0.2.zip
+    { test -r ArduinoJson-v6.11.0.zip || curl -sS --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -qo ArduinoJson-v6.11.0.zip
+    { test -r Adafruit_SPIFlash-3.4.1.zip || curl -sS --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -qo Adafruit_SPIFlash-3.4.1.zip
+    { test -r Adafruit_Seesaw-1.4.3.zip || curl -sS --output Adafruit_Seesaw-1.4.3.zip -L https://github.com/adafruit/Adafruit_Seesaw/archive/refs/tags/1.4.3.zip; } && unzip -qo Adafruit_Seesaw-1.4.3.zip
+    { test -r Adafruit_BusIO-1.7.3.zip || curl -sS --output Adafruit_BusIO-1.7.3.zip -L https://github.com/adafruit/Adafruit_BusIO/archive/refs/tags/1.7.3.zip; } && unzip -qo Adafruit_BusIO-1.7.3.zip
+    { test -r Adafruit_CircuitPlayground-1.11.3.zip || curl -sS --output Adafruit_CircuitPlayground-1.11.3.zip -L https://github.com/adafruit/Adafruit_CircuitPlayground/archive/refs/tags/1.11.3.zip; } && unzip -qo Adafruit_CircuitPlayground-1.11.3.zip
+    { test -r Adafruit_NeoPixel-1.8.1.zip || curl -sS --output Adafruit_NeoPixel-1.8.1.zip -L https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.8.1.zip; } && unzip -qo Adafruit_NeoPixel-1.8.1.zip
+    { test -r Arduino_MIDI_Library-5.0.2.zip || curl -sS --output Arduino_MIDI_Library-5.0.2.zip -L https://github.com/FortySevenEffects/arduino_midi_library/archive/refs/tags/5.0.2.zip; } && unzip -qo Arduino_MIDI_Library-5.0.2.zip
     popd
 }
 

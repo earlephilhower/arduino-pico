@@ -9,6 +9,7 @@ on:
 
 jobs:
 
+# Me no spell so good
   code-spell:
     name: Check spelling
     runs-on: ubuntu-latest
@@ -25,13 +26,13 @@ jobs:
         skip: ./pico-extras,./ArduinoCore-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst
         ignore_words_list: ser,DOUT
 
-
+# Build all examples on linux (core and Arduino IDE)
   build-linux:
     name: Build ${{ matrix.chunk }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        chunk: [0, 1, 2, 3, 4, 5, 6, 7]
+        chunk: [0, 1, 2, 3]
     steps:
     - uses: actions/checkout@v2
       with:
@@ -50,7 +51,7 @@ jobs:
         TRAVIS_BUILD_DIR: ${{ github.workspace }}
         TRAVIS_TAG: ${{ github.ref }}
         BUILD_PARITY: custom
-        mod: 8
+        mod: 4
         rem: ${{ matrix.chunk }}
       run: |
         cd pico-sdk
@@ -60,6 +61,7 @@ jobs:
         cd ..
         bash ./tests/build.sh
 
+# Build TinyUSB examples, requires custom build command line
   build-tinyusb:
     name: Build TinyUSB Examples
     runs-on: ubuntu-latest
@@ -88,7 +90,6 @@ jobs:
         git submodule update --init
         cd ..
         bash ./tests/build-tinyusb.sh
-
 
 # Single build under Windows to ensure the Win toolchain is good.
   build-windows:
