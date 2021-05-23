@@ -65,6 +65,7 @@ function build_sketches()
     local build_dir=build.tmp
     local build_mod=$4
     local build_rem=$5
+
     mkdir -p $build_dir
     local build_cmd="python3 tools/build.py -b generic -v -w all -v -k --build_cache $cache_dir -p ./$build_dir $build_arg "
     if [ "$WINDOWS" = "1" ]; then
@@ -149,8 +150,13 @@ function install_libraries()
     pushd $HOME/Arduino/libraries
 
     # install ArduinoJson library
-    { test -r ArduinoJson-v6.11.0.zip || curl --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -q ArduinoJson-v6.11.0.zip
-
+    { test -r ArduinoJson-v6.11.0.zip || curl -sS --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -qo ArduinoJson-v6.11.0.zip
+    { test -r Adafruit_SPIFlash-3.4.1.zip || curl -sS --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -qo Adafruit_SPIFlash-3.4.1.zip
+    { test -r Adafruit_Seesaw-1.4.3.zip || curl -sS --output Adafruit_Seesaw-1.4.3.zip -L https://github.com/adafruit/Adafruit_Seesaw/archive/refs/tags/1.4.3.zip; } && unzip -qo Adafruit_Seesaw-1.4.3.zip
+    { test -r Adafruit_BusIO-1.7.3.zip || curl -sS --output Adafruit_BusIO-1.7.3.zip -L https://github.com/adafruit/Adafruit_BusIO/archive/refs/tags/1.7.3.zip; } && unzip -qo Adafruit_BusIO-1.7.3.zip
+    { test -r Adafruit_CircuitPlayground-1.11.3.zip || curl -sS --output Adafruit_CircuitPlayground-1.11.3.zip -L https://github.com/adafruit/Adafruit_CircuitPlayground/archive/refs/tags/1.11.3.zip; } && unzip -qo Adafruit_CircuitPlayground-1.11.3.zip
+    { test -r Adafruit_NeoPixel-1.8.1.zip || curl -sS --output Adafruit_NeoPixel-1.8.1.zip -L https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.8.1.zip; } && unzip -qo Adafruit_NeoPixel-1.8.1.zip
+    { test -r Arduino_MIDI_Library-5.0.2.zip || curl -sS --output Arduino_MIDI_Library-5.0.2.zip -L https://github.com/FortySevenEffects/arduino_midi_library/archive/refs/tags/5.0.2.zip; } && unzip -qo Arduino_MIDI_Library-5.0.2.zip
     popd
 }
 
@@ -236,11 +242,12 @@ function build_sketches_with_arduino()
 {
     local build_mod=$1
     local build_rem=$2
+    local build_extra=$3
 
     # Compile sketches
     echo -e "travis_fold:start:sketch_test"
-    build_sketches $HOME/arduino_ide $HOME/arduino_ide/examples "-l $HOME/Arduino/libraries" $build_mod $build_rem
-    build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries" $build_mod $build_rem
+    build_sketches $HOME/arduino_ide $HOME/arduino_ide/examples "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
+    build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
     echo -e "travis_fold:end:sketch_test"
 
     # Generate size report

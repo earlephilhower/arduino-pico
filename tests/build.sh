@@ -16,7 +16,6 @@ elif [ "$BUILD_PARITY" = "odd" ]; then
 fi
 
 install_arduino nodebug
-build_sketches_with_arduino "$mod" "$rem"
+build_sketches_with_arduino "$mod" "$rem" ""
 
 rm -rf "$cache_dir"
-
