@@ -117,7 +117,7 @@ elif [ "$BUILD_TYPE" = host ]; then
     tests/ci/host_test.sh
 
 elif [ "$BUILD_TYPE" = style ]; then
-    tests/ci/install_astyle.sh
+    tests/ci/style_check.sh
 
 else
     echo "BUILD_TYPE not set or invalid"
