@@ -1,22 +1,22 @@
 /*
- * wiring_private for the Raspberry Pi Pico RP2040
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    wiring_private for the Raspberry Pi Pico RP2040
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #include <Arduino.h>
 #include <CoreMutex.h>
@@ -52,7 +52,7 @@ void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     // Only need to lock around the std::map check, not the whole IRQ callback
     voidFuncPtr cb = nullptr;
     {
-	CoreMutex m(&_irqMutex);
+        CoreMutex m(&_irqMutex);
         if (m) {
             auto irq = _map.find(gpio);
             if (irq != _map.end()) {
@@ -75,12 +75,12 @@ extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus 
 
     uint32_t events;
     switch (mode) {
-        case LOW:     events = 1; break;
-        case HIGH:    events = 2; break;
-        case FALLING: events = 4; break;
-        case RISING:  events = 8; break;
-        case CHANGE:  events = 4 | 8; break;
-        default:      return;  // ERROR
+    case LOW:     events = 1; break;
+    case HIGH:    events = 2; break;
+    case FALLING: events = 4; break;
+    case RISING:  events = 8; break;
+    case CHANGE:  events = 4 | 8; break;
+    default:      return;  // ERROR
     }
     noInterrupts();
     detachInterrupt(pin);

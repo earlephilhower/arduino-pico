@@ -1,27 +1,27 @@
 /*
- LittleFS.h - Filesystem wrapper for LittleFS on the RP2040
- Copyright (c) 2019 Earle F. Philhower, III.  All rights reserved.
+    LittleFS.h - Filesystem wrapper for LittleFS on the RP2040
+    Copyright (c) 2019 Earle F. Philhower, III.  All rights reserved.
 
- Based heavily off of the SPIFFS equivalent code in the ESP8266 core
- "Copyright (c) 2015 Ivan Grokhotkov. All rights reserved."
+    Based heavily off of the SPIFFS equivalent code in the ESP8266 core
+    "Copyright (c) 2015 Ivan Grokhotkov. All rights reserved."
 
- This code was influenced by NodeMCU and Sming libraries, and first version of
- Arduino wrapper written by Hristo Gochkov.
+    This code was influenced by NodeMCU and Sming libraries, and first version of
+    Arduino wrapper written by Hristo Gochkov.
 
- This library is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 
 #ifndef __LITTLEFS_H
@@ -41,18 +41,16 @@ namespace littlefs_impl {
 class LittleFSFileImpl;
 class LittleFSDirImpl;
 
-class LittleFSConfig : public FSConfig
-{
+class LittleFSConfig : public FSConfig {
 public:
     static constexpr uint32_t FSId = 0x4c495454;
     LittleFSConfig(bool autoFormat = true) : FSConfig(FSId, autoFormat) { }
 };
 
-class LittleFSImpl : public FSImpl
-{
+class LittleFSImpl : public FSImpl {
 public:
     LittleFSImpl(uint8_t *start, uint32_t size, uint32_t pageSize, uint32_t blockSize, uint32_t maxOpenFds)
-        : _start(start) , _size(size) , _pageSize(pageSize) , _blockSize(blockSize) , _maxOpenFds(maxOpenFds),
+        : _start(start), _size(size), _pageSize(pageSize), _blockSize(blockSize), _maxOpenFds(maxOpenFds),
           _mounted(false) {
         memset(&_lfs, 0, sizeof(_lfs));
         memset(&_lfs_cfg, 0, sizeof(_lfs_cfg));
@@ -64,7 +62,7 @@ public:
         _lfs_cfg.read_size = 256;
         _lfs_cfg.prog_size = 256;
         _lfs_cfg.block_size =  _blockSize;
-        _lfs_cfg.block_count =_blockSize? _size / _blockSize: 0;
+        _lfs_cfg.block_count = _blockSize ? _size / _blockSize : 0;
         _lfs_cfg.block_cycles = 16; // TODO - need better explanation
         _lfs_cfg.cache_size = 256;
         _lfs_cfg.lookahead_size = 256;
@@ -162,7 +160,7 @@ public:
             return false;
         }
         int rc = lfs_mkdir(&_lfs, path);
-        return (rc==0);
+        return (rc == 0);
     }
 
     bool rmdir(const char* path) override {
@@ -174,7 +172,7 @@ public:
             return false;
         }
         _cfg = *static_cast<const LittleFSConfig *>(&cfg);
-       return true;
+        return true;
     }
 
     bool begin() override {
@@ -218,7 +216,7 @@ public:
             return false;
         }
 
-        if(_timeCallback && _tryMount()) {
+        if (_timeCallback && _tryMount()) {
             // Mounting is required to set attributes
 
             time_t t = _timeCallback();
@@ -233,7 +231,7 @@ public:
                 DEBUGV("lfs_format, lfs_setattr 't': rc=%d\n", rc);
                 return false;
             }
-            
+
             lfs_unmount(&_lfs);
             _mounted = false;
         }
@@ -274,7 +272,7 @@ protected:
         }
         memset(&_lfs, 0, sizeof(_lfs));
         int rc = lfs_mount(&_lfs, &_lfs_cfg);
-        if (rc==0) {
+        if (rc == 0) {
             _mounted = true;
         }
         return _mounted;
@@ -302,7 +300,7 @@ protected:
             mode |= LFS_O_RDONLY;
         }
         if (accessMode & AM_WRITE) {
-           mode |= LFS_O_WRONLY;
+            mode |= LFS_O_WRONLY;
         }
         return mode;
     }
@@ -350,8 +348,7 @@ protected:
 };
 
 
-class LittleFSFileImpl : public FileImpl
-{
+class LittleFSFileImpl : public FileImpl {
 public:
     LittleFSFileImpl(LittleFSImpl* fs, const char *name, std::shared_ptr<lfs_file_t> fd, int flags, time_t creation) : _fs(fs), _fd(fd), _opened(true), _flags(flags), _creation(creation) {
         _name = std::shared_ptr<char>(new char[strlen(name) + 1], std::default_delete<char[]>());
@@ -434,7 +431,7 @@ public:
     }
 
     size_t size() const override {
-        return (_opened && _fd)? lfs_file_size(_fs->getFS(), _getFD()) : 0;
+        return (_opened && _fd) ? lfs_file_size(_fs->getFS(), _getFD()) : 0;
     }
 
     bool truncate(uint32_t size) override {
@@ -476,8 +473,9 @@ public:
         time_t ftime = 0;
         if (_opened && _fd) {
             int rc = lfs_getattr(_fs->getFS(), _name.get(), 't', (void *)&ftime, sizeof(ftime));
-            if (rc != sizeof(ftime))
-                ftime = 0; // Error, so clear read value
+            if (rc != sizeof(ftime)) {
+                ftime = 0;    // Error, so clear read value
+            }
         }
         return ftime;
     }
@@ -486,8 +484,9 @@ public:
         time_t ftime = 0;
         if (_opened && _fd) {
             int rc = lfs_getattr(_fs->getFS(), _name.get(), 'c', (void *)&ftime, sizeof(ftime));
-            if (rc != sizeof(ftime))
-                ftime = 0; // Error, so clear read value
+            if (rc != sizeof(ftime)) {
+                ftime = 0;    // Error, so clear read value
+            }
         }
         return ftime;
     }
@@ -539,12 +538,10 @@ protected:
     time_t                       _creation;
 };
 
-class LittleFSDirImpl : public DirImpl
-{
+class LittleFSDirImpl : public DirImpl {
 public:
     LittleFSDirImpl(const String& pattern, LittleFSImpl* fs, std::shared_ptr<lfs_dir_t> dir, const char *dirPath = nullptr)
-        : _pattern(pattern) , _fs(fs) , _dir(dir) , _dirPath(nullptr), _valid(false), _opened(true)
-    {
+        : _pattern(pattern), _fs(fs), _dir(dir), _dirPath(nullptr), _valid(false), _opened(true) {
         memset(&_dirent, 0, sizeof(_dirent));
         if (dirPath) {
             _dirPath = std::shared_ptr<char>(new char[strlen(dirPath) + 1], std::default_delete<char[]>());
@@ -566,7 +563,7 @@ public:
         nameLen += _dirPath.get() ? strlen(_dirPath.get()) : 0;
         nameLen += strlen(_dirent.name);
         char tmpName[nameLen];
-        snprintf(tmpName, nameLen, "%s%s%s", _dirPath.get() ? _dirPath.get() : "", _dirPath.get()&&_dirPath.get()[0]?"/":"", _dirent.name);
+        snprintf(tmpName, nameLen, "%s%s%s", _dirPath.get() ? _dirPath.get() : "", _dirPath.get() && _dirPath.get()[0] ? "/" : "", _dirent.name);
         auto ret = _fs->open((const char *)tmpName, openMode, accessMode);
         return ret;
     }
@@ -661,7 +658,7 @@ protected:
         nameLen += _dirPath.get() ? strlen(_dirPath.get()) : 0;
         nameLen += strlen(_dirent.name);
         char tmpName[nameLen];
-        snprintf(tmpName, nameLen, "%s%s%s", _dirPath.get() ? _dirPath.get() : "", _dirPath.get()&&_dirPath.get()[0]?"/":"", _dirent.name);
+        snprintf(tmpName, nameLen, "%s%s%s", _dirPath.get() ? _dirPath.get() : "", _dirPath.get() && _dirPath.get()[0] ? "/" : "", _dirent.name);
         int rc = lfs_getattr(_fs->getFS(), tmpName, attr, dest, len);
         return (rc == len);
     }

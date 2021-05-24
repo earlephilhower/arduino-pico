@@ -10,7 +10,7 @@ void setup() {
   Serial.begin(115200);
   delay(5000);
   struct timeval tv;
-  
+
   tv.tv_sec = 1611198855; // Jan 21, 2021  3:14:15AM ...RPi Pico Release;
   tv.tv_usec = 0;
   settimeofday(&tv, nullptr);

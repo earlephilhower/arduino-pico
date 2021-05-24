@@ -1,22 +1,22 @@
 /*
- * Serial-over-UART for the Raspberry Pi Pico RP2040
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    Serial-over-UART for the Raspberry Pi Pico RP2040
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #include "SerialUART.h"
 #include "CoreMutex.h"
@@ -33,7 +33,8 @@ extern void serialEvent2() __attribute__((weak));
 
 bool SerialUART::setRX(pin_size_t rx) {
     constexpr uint32_t valid[2] = { __bitset({1, 13, 17, 29}) /* UART0 */,
-                                    __bitset({5, 9, 21, 25})  /* UART1 */};
+                                    __bitset({5, 9, 21, 25})  /* UART1 */
+                                  };
     if (_running) {
         DEBUGCORE("ERROR: SerialUART setRX while running\n");
         return false;
@@ -48,7 +49,8 @@ bool SerialUART::setRX(pin_size_t rx) {
 
 bool SerialUART::setTX(pin_size_t tx) {
     constexpr uint32_t valid[2] = { __bitset({0, 12, 16, 28}) /* UART0 */,
-                                    __bitset({4, 8, 20, 24})  /* UART1 */};
+                                    __bitset({4, 8, 20, 24})  /* UART1 */
+                                  };
     if (_running) {
         DEBUGCORE("ERROR: SerialUART setTX while running\n");
         return false;
@@ -74,19 +76,19 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     int bits, stop;
     uart_parity_t parity;
     switch (config & SERIAL_PARITY_MASK) {
-        case SERIAL_PARITY_EVEN: parity = UART_PARITY_EVEN; break;
-        case SERIAL_PARITY_ODD: parity = UART_PARITY_ODD; break;
-        default: parity = UART_PARITY_NONE; break;
+    case SERIAL_PARITY_EVEN: parity = UART_PARITY_EVEN; break;
+    case SERIAL_PARITY_ODD: parity = UART_PARITY_ODD; break;
+    default: parity = UART_PARITY_NONE; break;
     }
-    switch ( config & SERIAL_STOP_BIT_MASK) {
-        case SERIAL_STOP_BIT_1: stop = 1; break;
-        default: stop = 2; break;
+    switch (config & SERIAL_STOP_BIT_MASK) {
+    case SERIAL_STOP_BIT_1: stop = 1; break;
+    default: stop = 2; break;
     }
     switch (config & SERIAL_DATA_MASK) {
-        case SERIAL_DATA_5: bits = 5; break;
-        case SERIAL_DATA_6: bits = 6; break;
-        case SERIAL_DATA_7: bits = 7; break;
-        default: bits = 8; break;
+    case SERIAL_DATA_5: bits = 5; break;
+    case SERIAL_DATA_6: bits = 6; break;
+    case SERIAL_DATA_7: bits = 7; break;
+    default: bits = 8; break;
     }
     uart_set_format(_uart, bits, stop, parity);
     gpio_set_function(_tx, GPIO_FUNC_UART);
@@ -184,12 +186,12 @@ SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
 
 void arduino::serialEvent1Run(void) {
     if (serialEvent1 && Serial1.available()) {
-      serialEvent1();
+        serialEvent1();
     }
 }
 
 void arduino::serialEvent2Run(void) {
     if (serialEvent2 && Serial2.available()) {
-      serialEvent2();
+        serialEvent2();
     }
 }

@@ -1,22 +1,22 @@
 /*
- * RP2040 utility class
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    RP2040 utility class
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #include <hardware/clocks.h>
 #include <hardware/irq.h>
@@ -54,7 +54,7 @@ public:
 
     bool push_nb(uint32_t val) {
         // Push to the other FIFO
-        return queue_try_add(&_queue[get_core_num()^1], &val);
+        return queue_try_add(&_queue[get_core_num() ^ 1], &val);
     }
 
     uint32_t pop() {
@@ -73,7 +73,9 @@ public:
     }
 
     void idleOtherCore() {
-        if (!_multicore) return;
+        if (!_multicore) {
+            return;
+        }
         mutex_enter_blocking(&_idleMutex);
         _otherIdled = false;
         multicore_fifo_push_blocking(_GOTOSLEEP);
@@ -81,7 +83,9 @@ public:
     }
 
     void resumeOtherCore() {
-        if (!_multicore) return;
+        if (!_multicore) {
+            return;
+        }
         mutex_exit(&_idleMutex);
         _otherIdled = false;
         // Other core will exit busy-loop and return to operation
@@ -115,7 +119,7 @@ public:
     // Convert from microseconds to PIO clock cycles
     static int usToPIOCycles(int us) {
         // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
-        return (us * ( clock_get_hz(clk_sys) / 1000000 ));
+        return (us * (clock_get_hz(clk_sys) / 1000000));
     }
 
     // Get current clock frequency
@@ -123,8 +127,12 @@ public:
         return clock_get_hz(clk_sys);
     }
 
-    void idleOtherCore() { fifo.idleOtherCore(); }
-    void resumeOtherCore() { fifo.resumeOtherCore(); }
+    void idleOtherCore() {
+        fifo.idleOtherCore();
+    }
+    void resumeOtherCore() {
+        fifo.resumeOtherCore();
+    }
 
     // Multicore comms FIFO
     _MFIFO fifo;
@@ -136,18 +144,24 @@ extern RP2040 rp2040;
 // TODO - Add unload/destructor
 class PIOProgram {
 public:
-    PIOProgram(const pio_program_t *pgm) { _pgm = pgm; }
+    PIOProgram(const pio_program_t *pgm) {
+        _pgm = pgm;
+    }
 
     // Possibly load into a PIO and allocate a SM
     bool prepare(PIO *pio, int *sm, int *offset) {
         extern mutex_t _pioMutex;
         CoreMutex m(&_pioMutex);
         // Is there an open slot to run in, first?
-        if (!_findFreeSM(pio, sm)) return false;
-	// Is it loaded on that PIO?
+        if (!_findFreeSM(pio, sm)) {
+            return false;
+        }
+        // Is it loaded on that PIO?
         if (_offset[pio_get_index(*pio)] < 0) {
             // Nope, need to load it
-            if (!pio_can_add_program(*pio, _pgm)) return false;
+            if (!pio_can_add_program(*pio, _pgm)) {
+                return false;
+            }
             _offset[pio_get_index(*pio)] = pio_add_program(*pio, _pgm);
         }
         // Here it's guaranteed loaded, return values

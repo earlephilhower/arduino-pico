@@ -1,22 +1,22 @@
 /*
- * Tone for the Raspberry Pi Pico RP2040
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    Tone for the Raspberry Pi Pico RP2040
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #include <Arduino.h>
 #include "CoreMutex.h"
@@ -50,7 +50,9 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
 
     // Ensure only 1 core can start or stop at a time
     CoreMutex m(&_toneMutex);
-    if (!m) return; // Weird deadlock case
+    if (!m) {
+        return;    // Weird deadlock case
+    }
 
     int us = 1000000 / frequency / 2;
     if (us < 5) {
@@ -70,7 +72,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     if (!_tonePgm.prepare(&newTone->pio, &newTone->sm, &off)) {
         DEBUGCORE("ERROR: tone unable to start, out of PIO resources\n");
         // ERROR, no free slots
-	delete newTone;
+        delete newTone;
         return;
     }
     tone_program_init(newTone->pio, newTone->sm, off, pin);
@@ -94,7 +96,7 @@ void noTone(uint8_t pin) {
     auto entry = _toneMap.find(pin);
     if (entry != _toneMap.end()) {
         pio_sm_set_enabled(entry->second->pio, entry->second->sm, false);
-	pio_sm_unclaim(entry->second->pio, entry->second->sm);
+        pio_sm_unclaim(entry->second->pio, entry->second->sm);
         delete entry->second;
         _toneMap.erase(entry);
         pinMode(pin, OUTPUT);

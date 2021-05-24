@@ -1,22 +1,22 @@
 /*
- FS.cpp - file system wrapper
- Copyright (c) 2015 Ivan Grokhotkov. All rights reserved.
- This file is part of the esp8266 core for Arduino environment.
+    FS.cpp - file system wrapper
+    Copyright (c) 2015 Ivan Grokhotkov. All rights reserved.
+    This file is part of the esp8266 core for Arduino environment.
 
- This library is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #include "FS.h"
 #include "FSImpl.h"
@@ -26,37 +26,42 @@ using namespace fs;
 static bool sflags(const char* mode, OpenMode& om, AccessMode& am);
 
 size_t File::write(uint8_t c) {
-    if (!_p)
+    if (!_p) {
         return 0;
+    }
 
     return _p->write(&c, 1);
 }
 
 size_t File::write(const uint8_t *buf, size_t size) {
-    if (!_p)
+    if (!_p) {
         return 0;
+    }
 
     return _p->write(buf, size);
 }
 
 int File::available() {
-    if (!_p)
+    if (!_p) {
         return false;
+    }
 
     return _p->size() - _p->position();
 }
 
 int File::availableForWrite() {
-    if (!_p)
+    if (!_p) {
         return false;
+    }
 
     return _p->availableForWrite();
 }
 
 
 int File::read() {
-    if (!_p)
+    if (!_p) {
         return -1;
+    }
 
     uint8_t result;
     if (_p->read(&result, 1) != 1) {
@@ -67,15 +72,17 @@ int File::read() {
 }
 
 int File::read(uint8_t* buf, size_t size) {
-    if (!_p)
+    if (!_p) {
         return 0;
+    }
 
     return _p->read(buf, size);
 }
 
 int File::peek() {
-    if (!_p)
+    if (!_p) {
         return -1;
+    }
 
     size_t curPos = _p->position();
     int result = read();
@@ -84,29 +91,33 @@ int File::peek() {
 }
 
 void File::flush() {
-    if (!_p)
+    if (!_p) {
         return;
+    }
 
     _p->flush();
 }
 
 bool File::seek(uint32_t pos, SeekMode mode) {
-    if (!_p)
+    if (!_p) {
         return false;
+    }
 
     return _p->seek(pos, mode);
 }
 
 size_t File::position() const {
-    if (!_p)
+    if (!_p) {
         return 0;
+    }
 
     return _p->position();
 }
 
 size_t File::size() const {
-    if (!_p)
+    if (!_p) {
         return 0;
+    }
 
     return _p->size();
 }
@@ -123,36 +134,41 @@ File::operator bool() const {
 }
 
 bool File::truncate(uint32_t size) {
-    if (!_p)
+    if (!_p) {
         return false;
+    }
 
     return _p->truncate(size);
 }
 
 const char* File::name() const {
-    if (!_p)
+    if (!_p) {
         return nullptr;
+    }
 
     return _p->name();
 }
 
 const char* File::fullName() const {
-    if (!_p)
+    if (!_p) {
         return nullptr;
+    }
 
     return _p->fullName();
 }
 
 bool File::isFile() const {
-    if (!_p)
+    if (!_p) {
         return false;
+    }
 
     return _p->isFile();
 }
 
 bool File::isDirectory() const {
-    if (!_p)
+    if (!_p) {
         return false;
+    }
 
     return _p->isDirectory();
 }
@@ -162,7 +178,7 @@ void File::rewindDirectory() {
         _fakeDir = std::make_shared<Dir>(_baseFS->openDir(fullName()));
     } else {
         _fakeDir->rewind();
-   }
+    }
 }
 
 File File::openNextFile() {
@@ -173,38 +189,39 @@ File File::openNextFile() {
     return _fakeDir->openFile("r");
 }
 
-String File::readString()
-{
+String File::readString() {
     String ret;
     ret.reserve(size() - position());
-    char temp[256+1];
-    int countRead = readBytes(temp, sizeof(temp)-1);
-    while (countRead > 0)
-    {
+    char temp[256 + 1];
+    int countRead = readBytes(temp, sizeof(temp) - 1);
+    while (countRead > 0) {
         temp[countRead] = 0;
         ret += temp;
-        countRead = readBytes(temp, sizeof(temp)-1);
+        countRead = readBytes(temp, sizeof(temp) - 1);
     }
     return ret;
 }
 
 time_t File::getLastWrite() {
-    if (!_p)
+    if (!_p) {
         return 0;
+    }
 
     return _p->getLastWrite();
 }
 
 time_t File::getCreationTime() {
-    if (!_p)
+    if (!_p) {
         return 0;
+    }
 
     return _p->getCreationTime();
 }
 
 void File::setTimeCallback(time_t (*cb)(void)) {
-    if (!_p)
+    if (!_p) {
         return;
+    }
     _p->setTimeCallback(cb);
     _timeCallback = cb;
 }
@@ -235,14 +252,16 @@ String Dir::fileName() {
 }
 
 time_t Dir::fileTime() {
-    if (!_impl)
+    if (!_impl) {
         return 0;
+    }
     return _impl->fileTime();
 }
 
 time_t Dir::fileCreationTime() {
-    if (!_impl)
+    if (!_impl) {
         return 0;
+    }
     return _impl->fileCreationTime();
 }
 
@@ -255,15 +274,17 @@ size_t Dir::fileSize() {
 }
 
 bool Dir::isFile() const {
-    if (!_impl)
+    if (!_impl) {
         return false;
+    }
 
     return _impl->isFile();
 }
 
 bool Dir::isDirectory() const {
-    if (!_impl)
+    if (!_impl) {
         return false;
+    }
 
     return _impl->isDirectory();
 }
@@ -285,8 +306,9 @@ bool Dir::rewind() {
 }
 
 void Dir::setTimeCallback(time_t (*cb)(void)) {
-    if (!_impl)
+    if (!_impl) {
         return;
+    }
     _impl->setTimeCallback(cb);
     _timeCallback = cb;
 }
@@ -307,7 +329,7 @@ bool FS::begin() {
     }
     _impl->setTimeCallback(_timeCallback);
     bool ret = _impl->begin();
-    DEBUGV("%s\n", ret? "": "#error: FS could not start");
+    DEBUGV("%s\n", ret ? "" : "#error: FS could not start");
     return ret;
 }
 
@@ -338,14 +360,14 @@ bool FS::format() {
     return _impl->format();
 }
 
-bool FS::info(FSInfo& info){
+bool FS::info(FSInfo& info) {
     if (!_impl) {
         return false;
     }
     return _impl->info(info);
 }
 
-bool FS::info64(FSInfo64& info){
+bool FS::info64(FSInfo64& info) {
     if (!_impl) {
         return false;
     }
@@ -449,8 +471,9 @@ time_t FS::getCreationTime() {
 }
 
 void FS::setTimeCallback(time_t (*cb)(void)) {
-    if (!_impl)
+    if (!_impl) {
         return;
+    }
     _impl->setTimeCallback(cb);
     _timeCallback = cb;
 }
@@ -458,29 +481,29 @@ void FS::setTimeCallback(time_t (*cb)(void)) {
 
 static bool sflags(const char* mode, OpenMode& om, AccessMode& am) {
     switch (mode[0]) {
-        case 'r':
-            am = AM_READ;
-            om = OM_DEFAULT;
-            break;
-        case 'w':
-            am = AM_WRITE;
-            om = (OpenMode) (OM_CREATE | OM_TRUNCATE);
-            break;
-        case 'a':
-            am = AM_WRITE;
-            om = (OpenMode) (OM_CREATE | OM_APPEND);
-            break;
-        default:
-            return false;
+    case 'r':
+        am = AM_READ;
+        om = OM_DEFAULT;
+        break;
+    case 'w':
+        am = AM_WRITE;
+        om = (OpenMode)(OM_CREATE | OM_TRUNCATE);
+        break;
+    case 'a':
+        am = AM_WRITE;
+        om = (OpenMode)(OM_CREATE | OM_APPEND);
+        break;
+    default:
+        return false;
     }
-    switch(mode[1]) {
-        case '+':
-            am = (AccessMode) (AM_WRITE | AM_READ);
-            break;
-        case 0:
-            break;
-        default:
-            return false;
+    switch (mode[1]) {
+    case '+':
+        am = (AccessMode)(AM_WRITE | AM_READ);
+        break;
+    case 0:
+        break;
+    default:
+        return false;
     }
     return true;
 }
@@ -489,7 +512,7 @@ static bool sflags(const char* mode, OpenMode& om, AccessMode& am) {
 #if defined(FS_FREESTANDING_FUNCTIONS)
 
 /*
-TODO: move these functions to public API:
+    TODO: move these functions to public API:
 */
 File open(const char* path, const char* mode);
 File open(String& path, const char* mode);
@@ -545,8 +568,9 @@ File open(const char* path, const char* mode) {
         size_t offset = entry->path.length();
         if (strstr(path, entry->path.c_str())) {
             File result = entry->fs->open(path + offset);
-            if (result)
+            if (result) {
                 return result;
+            }
         }
     }
 

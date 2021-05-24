@@ -1,22 +1,22 @@
 /*
- FS.h - file system wrapper
- Copyright (c) 2015 Ivan Grokhotkov. All rights reserved.
- This file is part of the esp8266 core for Arduino environment.
+    FS.h - file system wrapper
+    Copyright (c) 2015 Ivan Grokhotkov. All rights reserved.
+    This file is part of the esp8266 core for Arduino environment.
 
- This library is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #ifndef FS_H
 #define FS_H
@@ -49,8 +49,7 @@ enum SeekMode {
     SeekEnd = 2
 };
 
-class File : public Stream
-{
+class File : public Stream {
 public:
     File(FileImplPtr p = FileImplPtr(), FS *baseFS = nullptr) : _p(p), _fakeDir(nullptr), _baseFS(baseFS) { }
 
@@ -74,7 +73,9 @@ public:
     }
     size_t position() const;
     size_t size() const;
-    virtual ssize_t streamRemaining() { return (ssize_t)size() - (ssize_t)position(); }
+    virtual ssize_t streamRemaining() {
+        return (ssize_t)size() - (ssize_t)position();
+    }
     void close();
     operator bool() const;
     const char* name() const;
@@ -86,26 +87,26 @@ public:
 
     // Arduino "class SD" methods for compatibility
     //TODO use stream::send / check read(buf,size) result
-    template<typename T> size_t write(T &src){
-      uint8_t obuf[256];
-      size_t doneLen = 0;
-      size_t sentLen;
-      int i;
+    template<typename T> size_t write(T &src) {
+        uint8_t obuf[256];
+        size_t doneLen = 0;
+        size_t sentLen;
+        int i;
 
-      while (src.available() > sizeof(obuf)){
-        src.read(obuf, sizeof(obuf));
-        sentLen = write(obuf, sizeof(obuf));
-        doneLen = doneLen + sentLen;
-        if(sentLen != sizeof(obuf)){
-          return doneLen;
+        while (src.available() > sizeof(obuf)) {
+            src.read(obuf, sizeof(obuf));
+            sentLen = write(obuf, sizeof(obuf));
+            doneLen = doneLen + sentLen;
+            if (sentLen != sizeof(obuf)) {
+                return doneLen;
+            }
         }
-      }
 
-      size_t leftLen = src.available();
-      src.read(obuf, leftLen);
-      sentLen = write(obuf, leftLen);
-      doneLen = doneLen + sentLen;
-      return doneLen;
+        size_t leftLen = src.available();
+        src.read(obuf, leftLen);
+        sentLen = write(obuf, leftLen);
+        doneLen = doneLen + sentLen;
+        return doneLen;
     }
     using Print::write;
 
@@ -172,8 +173,7 @@ struct FSInfo64 {
 };
 
 
-class FSConfig
-{
+class FSConfig {
 public:
     static constexpr uint32_t FSId = 0x00000000;
 
@@ -188,8 +188,7 @@ public:
     bool     _autoFormat;
 };
 
-class SPIFFSConfig : public FSConfig
-{
+class SPIFFSConfig : public FSConfig {
 public:
     static constexpr uint32_t FSId = 0x53504946;
     SPIFFSConfig(bool autoFormat = true) : FSConfig(FSId, autoFormat) { }
@@ -198,10 +197,11 @@ public:
     // nothing yet, enableTime TBD when SPIFFS has metadate
 };
 
-class FS
-{
+class FS {
 public:
-    FS(FSImplPtr impl) : _impl(impl) { _timeCallback = _defaultTimeCB; }
+    FS(FSImplPtr impl) : _impl(impl) {
+        _timeCallback = _defaultTimeCB;
+    }
 
     bool setConfig(const FSConfig &cfg);
 
@@ -244,18 +244,22 @@ public:
     friend class ::SDClass; // More of a frenemy, but SD needs internal implementation to get private FAT bits
 protected:
     FSImplPtr _impl;
-    FSImplPtr getImpl() { return _impl; }
+    FSImplPtr getImpl() {
+        return _impl;
+    }
     time_t (*_timeCallback)(void) = nullptr;
-    static time_t _defaultTimeCB(void) { return time(NULL); }
+    static time_t _defaultTimeCB(void) {
+        return time(NULL);
+    }
 };
 
 } // namespace fs
 
 extern "C"
 {
-void close_all_fs(void);
-void littlefs_request_end(void);
-void spiffs_request_end(void);
+    void close_all_fs(void);
+    void littlefs_request_end(void);
+    void spiffs_request_end(void);
 }
 
 #ifndef FS_NO_GLOBALS
