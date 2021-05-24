@@ -14,16 +14,16 @@
 #define tone_wrap 7
 
 static const uint16_t tone_program_instructions[] = {
-            //     .wrap_target
-    0x80a0, //  0: pull   block                      
-    0xa027, //  1: mov    x, osr                     
-    0xb846, //  2: mov    y, isr          side 1     
-    0x0083, //  3: jmp    y--, 3                     
-    0x0045, //  4: jmp    x--, 5                     
-    0xb046, //  5: mov    y, isr          side 0     
-    0x0086, //  6: jmp    y--, 6                     
-    0x0042, //  7: jmp    x--, 2                     
-            //     .wrap
+    //     .wrap_target
+    0x80a0, //  0: pull   block
+    0xa027, //  1: mov    x, osr
+    0xb846, //  2: mov    y, isr          side 1
+    0x0083, //  3: jmp    y--, 3
+    0x0045, //  4: jmp    x--, 5
+    0xb046, //  5: mov    y, isr          side 0
+    0x0086, //  6: jmp    y--, 6
+    0x0042, //  7: jmp    x--, 2
+    //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
@@ -41,11 +41,11 @@ static inline pio_sm_config tone_program_get_default_config(uint offset) {
 }
 
 static inline void tone_program_init(PIO pio, uint sm, uint offset, uint pin) {
-   pio_gpio_init(pio, pin);
-   pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
-   pio_sm_config c = tone_program_get_default_config(offset);
-   sm_config_set_sideset_pins(&c, pin);
-   pio_sm_init(pio, sm, offset, &c);
+    pio_gpio_init(pio, pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
+    pio_sm_config c = tone_program_get_default_config(offset);
+    sm_config_set_sideset_pins(&c, pin);
+    pio_sm_init(pio, sm, offset, &c);
 }
 
 #endif

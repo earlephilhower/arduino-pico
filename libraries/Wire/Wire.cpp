@@ -1,25 +1,25 @@
 /*
- * I2C Master/Slave library for the Raspberry Pi Pico RP2040
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * Based off of TWI/I2C library for Arduino Zero
- * Copyright (c) 2015 Arduino LLC. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    I2C Master/Slave library for the Raspberry Pi Pico RP2040
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    Based off of TWI/I2C library for Arduino Zero
+    Copyright (c) 2015 Arduino LLC. All rights reserved.
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #include <Arduino.h>
 #include <hardware/gpio.h>
@@ -40,7 +40,8 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
 
 bool TwoWire::setSDA(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28}) /* I2C0 */,
-                                    __bitset({2, 6, 10, 14, 18, 22, 26})  /* I2C1 */};
+                                    __bitset({2, 6, 10, 14, 18, 22, 26})  /* I2C1 */
+                                  };
     if (_running) {
         return false;
     } else if ((1 << pin) & valid[i2c_hw_index(_i2c)]) {
@@ -53,7 +54,8 @@ bool TwoWire::setSDA(pin_size_t pin) {
 
 bool TwoWire::setSCL(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29}) /* I2C0 */,
-                                    __bitset({3, 7, 11, 15, 19, 23, 27})  /* I2C1 */};
+                                    __bitset({3, 7, 11, 15, 19, 23, 27})  /* I2C1 */
+                                  };
     if (_running) {
         return false;
     } else if ((1 << pin) & valid[i2c_hw_index(_i2c)]) {
@@ -106,7 +108,7 @@ void TwoWire::begin(uint8_t addr) {
     i2c_set_slave_mode(_i2c, true, addr);
 
     // Our callback IRQ
-    _i2c->hw->intr_mask = (1<<10) | (1<<9) | (1<<5)| (1<<2);
+    _i2c->hw->intr_mask = (1 << 10) | (1 << 9) | (1 << 5) | (1 << 2);
 
     int irqNo = I2C0_IRQ + i2c_hw_index(_i2c);
     irq_set_exclusive_handler(irqNo, i2c_hw_index(_i2c) == 0 ? _handler0 : _handler1);
@@ -122,29 +124,29 @@ void TwoWire::begin(uint8_t addr) {
 }
 
 void TwoWire::onIRQ() {
-    if (_i2c->hw->intr_stat & (1<<10)) {
+    if (_i2c->hw->intr_stat & (1 << 10)) {
         _buffLen = 0;
         _buffOff = 0;
         _slaveStartDet = true;
         _i2c->hw->clr_start_det;
     }
-    if (_i2c->hw->intr_stat & (1<<9)) {
+    if (_i2c->hw->intr_stat & (1 << 9)) {
         if (_onReceiveCallback) {
             _onReceiveCallback(_buffLen);
         }
         _buffLen = 0;
-         _buffOff = 0;
+        _buffOff = 0;
         _slaveStartDet = false;
         _i2c->hw->clr_stop_det;
     }
-    if (_i2c->hw->intr_stat & (1<<5)) {
+    if (_i2c->hw->intr_stat & (1 << 5)) {
         // RD_REQ
         if (_onRequestCallback) {
             _onRequestCallback();
         }
         _i2c->hw->clr_rd_req;
     }
-    if (_i2c->hw->intr_stat & (1<<2)) {
+    if (_i2c->hw->intr_stat & (1 << 2)) {
         // RX_FULL
         if (_slaveStartDet && (_buffLen < (int)sizeof(_buff))) {
             _buff[_buffLen++] = _i2c->hw->data_cmd & 0xff;
@@ -206,18 +208,22 @@ bool _probe(int addr, pin_size_t sda, pin_size_t scl, int freq) {
     digitalWrite(sda, HIGH);
     sleep_us(delay);
     digitalWrite(scl, HIGH);
-    if (!_clockStretch(scl)) goto stop;
+    if (!_clockStretch(scl)) {
+        goto stop;
+    }
     digitalWrite(sda, LOW);
     sleep_us(delay);
     digitalWrite(scl, LOW);
     sleep_us(delay);
-    for (int i=0; i<8; i++) {
+    for (int i = 0; i < 8; i++) {
         addr <<= 1;
-        digitalWrite(sda, (addr & (1<<7)) ? HIGH : LOW);
+        digitalWrite(sda, (addr & (1 << 7)) ? HIGH : LOW);
         sleep_us(delay);
         digitalWrite(scl, HIGH);
         sleep_us(delay);
-        if (!_clockStretch(scl)) goto stop;
+        if (!_clockStretch(scl)) {
+            goto stop;
+        }
         digitalWrite(scl, LOW);
         sleep_us(5); // Ensure we don't change too close to clock edge
     }
@@ -225,7 +231,9 @@ bool _probe(int addr, pin_size_t sda, pin_size_t scl, int freq) {
     digitalWrite(sda, HIGH);
     sleep_us(delay);
     digitalWrite(scl, HIGH);
-    if (!_clockStretch(scl)) goto stop;
+    if (!_clockStretch(scl)) {
+        goto stop;
+    }
 
     ack = digitalRead(sda) == LOW;
     sleep_us(delay);
@@ -253,7 +261,7 @@ stop:
 //  4 : Other error
 uint8_t TwoWire::endTransmission(bool stopBit) {
     if (!_running || !_txBegun) {
-        return 4; 
+        return 4;
     }
     _txBegun = false;
     if (!_buffLen) {
@@ -268,7 +276,7 @@ uint8_t TwoWire::endTransmission(bool stopBit) {
 }
 
 uint8_t TwoWire::endTransmission() {
-  return endTransmission(true);
+    return endTransmission(true);
 }
 
 size_t TwoWire::write(uint8_t ucData) {
@@ -278,7 +286,7 @@ size_t TwoWire::write(uint8_t ucData) {
 
     if (_slave) {
         // Wait for a spot in the TX FIFO
-        while (0 == (_i2c->hw->status & (1<<1))) { /* noop wait */ }
+        while (0 == (_i2c->hw->status & (1 << 1))) { /* noop wait */ }
         _i2c->hw->data_cmd = ucData;
         return 1;
     } else {
@@ -324,13 +332,11 @@ void TwoWire::flush(void) {
 }
 
 
-void TwoWire::onReceive(void(*function)(int))
-{
+void TwoWire::onReceive(void(*function)(int)) {
     _onReceiveCallback = function;
 }
 
-void TwoWire::onRequest(void(*function)(void))
-{
+void TwoWire::onRequest(void(*function)(void)) {
     _onRequestCallback = function;
 }
 

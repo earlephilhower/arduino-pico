@@ -1,22 +1,22 @@
 /*
- * PWM and analogRead for the Raspberry Pi Pico RP2040
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    PWM and analogRead for the Raspberry Pi Pico RP2040
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #include <Arduino.h>
 #include <CoreMutex.h>
@@ -78,14 +78,14 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
     }
     if (!pwmInitted) {
         pwm_config c = pwm_get_default_config();
-        pwm_config_set_clkdiv( &c, clock_get_hz(clk_sys) / (float) (analogScale * analogFreq) );
-        pwm_config_set_wrap( &c, analogScale );
-        for (int i=0; i<30; i++) {
+        pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / (float)(analogScale * analogFreq));
+        pwm_config_set_wrap(&c, analogScale);
+        for (int i = 0; i < 30; i++) {
             pwm_init(pwm_gpio_to_slice_num(i), &c, true);
         }
         pwmInitted = true;
     }
- 
+
     if (val < 0) {
         val = 0;
     } else if ((uint32_t)val > analogScale) {

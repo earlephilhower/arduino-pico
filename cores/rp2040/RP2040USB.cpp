@@ -1,23 +1,23 @@
 /*
- * Shared USB for the Raspberry Pi Pico RP2040
- * Allows for multiple endpoints to share the USB controller
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    Shared USB for the Raspberry Pi Pico RP2040
+    Allows for multiple endpoints to share the USB controller
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #ifndef USE_TINYUSB
 
@@ -46,9 +46,9 @@ mutex_t __usb_mutex;
 #define USBD_VID (0x2E8A) // Raspberry Pi
 
 #ifdef SERIALUSB_PID
-    #define USBD_PID (SERIALUSB_PID)
+#define USBD_PID (SERIALUSB_PID)
 #else
-    #define USBD_PID (0x000a) // Raspberry Pi Pico SDK CDC
+#define USBD_PID (0x000a) // Raspberry Pi Pico SDK CDC
 #endif
 
 #define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN)
@@ -124,8 +124,8 @@ int __USBGetMouseReportID() {
 static uint8_t *GetDescHIDReport(int *len) {
     if (__USBInstallKeyboard && __USBInstallMouse) {
         static uint8_t desc_hid_report[] = {
-            TUD_HID_REPORT_DESC_KEYBOARD( HID_REPORT_ID(1) ),
-            TUD_HID_REPORT_DESC_MOUSE   ( HID_REPORT_ID(2) )
+            TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)),
+            TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(2))
         };
         if (len) {
             *len = sizeof(desc_hid_report);
@@ -133,7 +133,7 @@ static uint8_t *GetDescHIDReport(int *len) {
         return desc_hid_report;
     } else if (__USBInstallKeyboard && ! __USBInstallMouse) {
         static uint8_t desc_hid_report[] = {
-            TUD_HID_REPORT_DESC_KEYBOARD( HID_REPORT_ID(1) )
+            TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1))
         };
         if (len) {
             *len = sizeof(desc_hid_report);
@@ -141,7 +141,7 @@ static uint8_t *GetDescHIDReport(int *len) {
         return desc_hid_report;
     } else { // if (!__USBInstallKeyboard && __USBInstallMouse) {
         static uint8_t desc_hid_report[] = {
-            TUD_HID_REPORT_DESC_MOUSE( HID_REPORT_ID(1) )
+            TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1))
         };
         if (len) {
             *len = sizeof(desc_hid_report);
@@ -153,16 +153,15 @@ static uint8_t *GetDescHIDReport(int *len) {
 // Invoked when received GET HID REPORT DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
-uint8_t const * tud_hid_descriptor_report_cb(void)
-{
+uint8_t const * tud_hid_descriptor_report_cb(void) {
     return GetDescHIDReport(nullptr);
-}   
+}
 
 
 const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
     (void)index;
     static uint8_t *usbd_desc_cfg;
-    
+
     if (!usbd_desc_cfg) {
         bool hasHID = __USBInstallKeyboard || __USBInstallMouse;
 
@@ -217,7 +216,7 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
 
 const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
     (void) langid;
-    #define DESC_STR_MAX (20)
+#define DESC_STR_MAX (20)
     static uint16_t desc_str[DESC_STR_MAX];
 
     static char idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 2 + 1];
@@ -297,26 +296,24 @@ void __USBStart() {
 // Invoked when received GET_REPORT control request
 // Application must fill buffer report's content and return its length.
 // Return zero will cause the stack to STALL request
-uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen)
-{
-  // TODO not Implemented
-  (void) report_id;
-  (void) report_type;
-  (void) buffer;
-  (void) reqlen;
+uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen) {
+    // TODO not Implemented
+    (void) report_id;
+    (void) report_type;
+    (void) buffer;
+    (void) reqlen;
 
-  return 0;
+    return 0;
 }
 
 // Invoked when received SET_REPORT control request or
 // received data on OUT endpoint ( Report ID = 0, Type = 0 )
-void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize)
-{
-  // TODO set LED based on CAPLOCK, NUMLOCK etc...
-  (void) report_id;
-  (void) report_type;
-  (void) buffer;
-  (void) bufsize;
+void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
+    // TODO set LED based on CAPLOCK, NUMLOCK etc...
+    (void) report_id;
+    (void) report_type;
+    (void) buffer;
+    (void) bufsize;
 }
 
 #endif

@@ -1,25 +1,25 @@
 /*
- * I2C Master/Slave library for the Raspberry Pi Pico RP2040
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * Based off of TWI/I2C library for Arduino Zero
- * Copyright (c) 2015 Arduino LLC. All rights reserved.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    I2C Master/Slave library for the Raspberry Pi Pico RP2040
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    Based off of TWI/I2C library for Arduino Zero
+    Copyright (c) 2015 Arduino LLC. All rights reserved.
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #pragma once
 
@@ -27,11 +27,11 @@
 #include "api/HardwareI2C.h"
 #include <hardware/i2c.h>
 
- // WIRE_HAS_END means Wire has end()
+// WIRE_HAS_END means Wire has end()
 #define WIRE_HAS_END 1
 
 #ifndef WIRE_BUFFER_SIZE
-    #define WIRE_BUFFER_SIZE 128
+#define WIRE_BUFFER_SIZE 128
 #endif
 
 class TwoWire : public HardwareI2C {
@@ -68,10 +68,18 @@ public:
     void onReceive(void(*)(int));
     void onRequest(void(*)(void));
 
-    inline size_t write(unsigned long n) { return write((uint8_t)n); }
-    inline size_t write(long n) { return write((uint8_t)n); }
-    inline size_t write(unsigned int n) { return write((uint8_t)n); }
-    inline size_t write(int n) { return write((uint8_t)n); }
+    inline size_t write(unsigned long n) {
+        return write((uint8_t)n);
+    }
+    inline size_t write(long n) {
+        return write((uint8_t)n);
+    }
+    inline size_t write(unsigned int n) {
+        return write((uint8_t)n);
+    }
+    inline size_t write(int n) {
+        return write((uint8_t)n);
+    }
     using Print::write;
 
     // IRQ callback

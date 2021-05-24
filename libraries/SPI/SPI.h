@@ -1,22 +1,22 @@
 /*
- * SPI Master library for the Raspberry Pi Pico RP2040
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    SPI Master library for the Raspberry Pi Pico RP2040
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #pragma once
 
@@ -46,7 +46,9 @@ public:
     bool setTX(pin_size_t pin);
 
     // Call once to init/deinit SPI class, select pins, etc.
-    virtual void begin() override { begin(false); }
+    virtual void begin() override {
+        begin(false);
+    }
     void begin(bool hwCS);
     void end() override;
 
@@ -56,8 +58,12 @@ public:
     void setClockDivider(uint8_t uc_div) __attribute__((deprecated));
 
     // Unimplemented
-    virtual void usingInterrupt(int interruptNumber) override { (void) interruptNumber; }
-    virtual void notUsingInterrupt(int interruptNumber) override { (void) interruptNumber; }
+    virtual void usingInterrupt(int interruptNumber) override {
+        (void) interruptNumber;
+    }
+    virtual void notUsingInterrupt(int interruptNumber) override {
+        (void) interruptNumber;
+    }
     virtual void attachInterrupt() override { /* noop */ }
     virtual void detachInterrupt() override { /* noop */ }
 

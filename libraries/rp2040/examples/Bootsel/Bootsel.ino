@@ -12,6 +12,8 @@ void loop() {
   if (BOOTSEL) {
     Serial.printf("\a\aYou pressed BOOTSEL %d times!\n", ++c);
     // Wait for BOOTSEL to be released
-    while (BOOTSEL) { delay(1); }
+    while (BOOTSEL) {
+      delay(1);
+    }
   }
 }

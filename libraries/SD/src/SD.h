@@ -1,20 +1,20 @@
 /*
- SD.h - A thin shim for Arduino ESP8266 Filesystems
- Copyright (c) 2019 Earle F. Philhower, III.  All rights reserved.
+    SD.h - A thin shim for Arduino ESP8266 Filesystems
+    Copyright (c) 2019 Earle F. Philhower, III.  All rights reserved.
 
- This library is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #ifndef __SD_H__
@@ -33,7 +33,7 @@
 class SDClass {
 public:
     boolean begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED) {
-	SDFS.setConfig(SDFSConfig(csPin, cfg));
+        SDFS.setConfig(SDFSConfig(csPin, cfg));
         return (boolean)SDFS.begin();
     }
 
@@ -83,7 +83,7 @@ public:
     boolean mkdir(const String &filepath) {
         return (boolean)SDFS.mkdir(filepath.c_str());
     }
-  
+
     boolean remove(const char *filepath) {
         return (boolean)SDFS.remove(filepath);
     }
@@ -91,7 +91,7 @@ public:
     boolean remove(const String &filepath) {
         return remove(filepath.c_str());
     }
-  
+
     boolean rmdir(const char *filepath) {
         return (boolean)SDFS.rmdir(filepath);
     }
@@ -135,7 +135,7 @@ public:
     size_t size() {
         uint64_t sz = size64();
 #ifdef DEBUG_ESP_PORT
-	if (sz > (uint64_t)SIZE_MAX) {
+        if (sz > (uint64_t)SIZE_MAX) {
             DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld>= 4GB).  Please update source to use size64().\n"), sz);
         }
 #endif
@@ -154,7 +154,7 @@ public:
     void dateTimeCallback(void (*cb)(uint16_t*, uint16_t*)) {
         extern void (*__SD__userDateTimeCB)(uint16_t*, uint16_t*);
         __SD__userDateTimeCB = cb;
-	SDFS.setTimeCallback(wrapperTimeCB);
+        SDFS.setTimeCallback(wrapperTimeCB);
     }
 
 private:
@@ -162,12 +162,19 @@ private:
         bool read = (mode & O_READ) ? true : false;
         bool write = (mode & O_WRITE) ? true : false;
         bool append = (mode & O_APPEND) ? true : false;
-        if      (  read & !write )           { return "r";  }
-        else if ( !read &  write & !append ) { return "w+"; }
-        else if ( !read &  write &  append ) { return "a";  }
-        else if (  read &  write & !append ) { return "w+"; } // may be a bug in FS::mode interpretation, "r+" seems proper
-        else if (  read &  write &  append ) { return "a+"; }
-        else                                 { return "r";  }
+        if (read & !write)           {
+            return "r";
+        } else if (!read &  write & !append) {
+            return "w+";
+        } else if (!read &  write &  append) {
+            return "a";
+        } else if (read &  write & !append) {
+            return "w+";    // may be a bug in FS::mode interpretation, "r+" seems proper
+        } else if (read &  write &  append) {
+            return "a+";
+        } else                                 {
+            return "r";
+        }
     }
 
     static time_t wrapperTimeCB(void) {
@@ -185,28 +192,28 @@ private:
 
 // Expose FatStructs.h helpers for MS-DOS date/time for use with dateTimeCallback
 static inline uint16_t FAT_DATE(uint16_t year, uint8_t month, uint8_t day) {
-  return (year - 1980) << 9 | month << 5 | day;
+    return (year - 1980) << 9 | month << 5 | day;
 }
 static inline uint16_t FAT_YEAR(uint16_t fatDate) {
-  return 1980 + (fatDate >> 9);
+    return 1980 + (fatDate >> 9);
 }
 static inline uint8_t FAT_MONTH(uint16_t fatDate) {
-  return (fatDate >> 5) & 0XF;
+    return (fatDate >> 5) & 0XF;
 }
 static inline uint8_t FAT_DAY(uint16_t fatDate) {
-  return fatDate & 0X1F;
+    return fatDate & 0X1F;
 }
 static inline uint16_t FAT_TIME(uint8_t hour, uint8_t minute, uint8_t second) {
-  return hour << 11 | minute << 5 | second >> 1;
+    return hour << 11 | minute << 5 | second >> 1;
 }
 static inline uint8_t FAT_HOUR(uint16_t fatTime) {
-  return fatTime >> 11;
+    return fatTime >> 11;
 }
 static inline uint8_t FAT_MINUTE(uint16_t fatTime) {
-  return (fatTime >> 5) & 0X3F;
+    return (fatTime >> 5) & 0X3F;
 }
 static inline uint8_t FAT_SECOND(uint16_t fatTime) {
-  return 2*(fatTime & 0X1F);
+    return 2 * (fatTime & 0X1F);
 }
 
 

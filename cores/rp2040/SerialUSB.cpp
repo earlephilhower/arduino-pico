@@ -1,24 +1,24 @@
 /*
- * Serial-Over-USB for the Raspberry Pi Pico RP2040
- * Implements an ACM which will reboot into UF2 mode on a 1200bps DTR toggle.
- * Much of this was modified from the Raspberry Pi Pico SDK stdio_usb.c file.
- *
- * Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    Serial-Over-USB for the Raspberry Pi Pico RP2040
+    Implements an ACM which will reboot into UF2 mode on a 1200bps DTR toggle.
+    Much of this was modified from the Raspberry Pi Pico SDK stdio_usb.c file.
+
+    Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 
 #ifndef USE_TINYUSB
 
@@ -35,8 +35,8 @@
 #include "pico/unique_id.h"
 
 #ifndef DISABLE_USB_SERIAL
-    // Ensure we are installed in the USB chain
-    void __USBInstallSerial() { /* noop */ }
+// Ensure we are installed in the USB chain
+void __USBInstallSerial() { /* noop */ }
 #endif
 
 // SerialEvent functions are weak, so when the user doesn't define them,
@@ -128,7 +128,9 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
         for (size_t i = 0; i < length;) {
             int n = length - i;
             int avail = tud_cdc_write_available();
-            if (n > avail) n = avail;
+            if (n > avail) {
+                n = avail;
+            }
             if (n) {
                 int n2 = tud_cdc_write(buf + i, n);
                 tud_task();
@@ -139,7 +141,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
                 tud_task();
                 tud_cdc_write_flush();
                 if (!tud_cdc_connected() ||
-                    (!tud_cdc_write_available() && time_us_64() > last_avail_time + 1000000 /* 1 second */)) {
+                        (!tud_cdc_write_available() && time_us_64() > last_avail_time + 1000000 /* 1 second */)) {
                     break;
                 }
             }
@@ -167,8 +169,8 @@ static bool _rts = false;
 static int _bps = 115200;
 static void CheckSerialReset() {
     if ((_bps == 1200) && (!_dtr)) {
-        reset_usb_boot(0,0);
-	while (1); // WDT will fire here
+        reset_usb_boot(0, 0);
+        while (1); // WDT will fire here
     }
 }
 
@@ -187,10 +189,9 @@ extern "C" void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_l
 
 SerialUSB Serial;
 
-void arduino::serialEventRun(void)
-{
+void arduino::serialEventRun(void) {
     if (serialEvent && Serial.available()) {
-      serialEvent();
+        serialEvent();
     }
 }
 
