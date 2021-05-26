@@ -133,7 +133,9 @@ void SPIClassRP2040::transfer(void *buf, size_t count) {
 }
 
 void SPIClassRP2040::transfer(void *txbuf, void *rxbuf, size_t count) {
-    if (!_initted) return;
+    if (!_initted) {
+        return;
+    }
 
     DEBUGSPI("SPI::transfer(%p, %p, %d)\n", txbuf, rxbuf, count);
     uint8_t *txbuff = reinterpret_cast<uint8_t *>(txbuf);
