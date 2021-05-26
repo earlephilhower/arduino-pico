@@ -123,5 +123,7 @@ MakeBoard("rpipico", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", "RASPBERRY_PI_P
 MakeBoard("adafruit_feather", "Adafruit", "Feather RP2040", "0x239a", "0x80f1", "ADAFRUIT_FEATHER_RP2040", 8, "boot2_w25x10cl_4_padded_checksum")
 MakeBoard("adafruit_itsybitsy", "Adafruit", "ItsyBitsy RP2040", "0x239a", "0x80fd", "ADAFRUIT_ITSYBITSY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_qtpy", "Adafruit", "QT Py RP2040", "0x239a", "0x80f7", "ADAFRUIT_QTPY_RP2040", 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("adafruit_stemmafriend", "Adafruit", "STEMMA Friend RP2040", "0x239a", "0x80e3", "ADAFRUIT_STEMMAFRIEND_RP2040", 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_trinkeyrp2040qt", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", "ADAFRUIT_TRINKEYQT_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 
