@@ -69,7 +69,7 @@ extern "C" int main() {
 
 #ifndef DISABLE_USB_SERIAL
     // Enable serial port for reset/upload always
-    Serial.begin();
+    Serial.begin(115200);
 #endif
 #endif
 
