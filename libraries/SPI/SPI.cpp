@@ -159,7 +159,7 @@ void SPIClassRP2040::transfer(void *txbuf, void *rxbuf, size_t count) {
     }
 
     // If its LSB this isn't nearly as fun, we'll just let transfer(x) do it :(
-    for (ssize_t i = 0; i < count; i++) {
+    for (size_t i = 0; i < count; i++) {
         *rxbuff = transfer(*txbuff);
         *rxbuff = (_spis.getBitOrder() == MSBFIRST) ? *rxbuff : reverseByte(*rxbuff);
         txbuff++;
