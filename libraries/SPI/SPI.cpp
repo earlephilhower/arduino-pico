@@ -124,6 +124,40 @@ void SPIClassRP2040::transfer(void *buf, size_t count) {
     DEBUGSPI("SPI::transfer completed\n");
 }
 
+void SPIClassRP2040::transfer(void *txbuf, void *rxbuf, size_t count) {
+    if (!_initted) return;
+
+    DEBUGSPI("SPI::transfer(%p, %p, %d)\n", txbuf, rxbuf, count);
+    uint8_t *txbuff = reinterpret_cast<uint8_t *>(txbuf);
+    uint8_t *rxbuff = reinterpret_cast<uint8_t *>(rxbuf);
+
+    // MSB version is easy!
+    if (_spis.getBitOrder() == MSBFIRST) {
+      spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
+
+      if (rxbuf == NULL) { // transmit only!
+        spi_write_blocking(_spi, txbuff, count);
+        return;
+      }
+      if (txbuf == NULL) { // receive only!
+        spi_read_blocking(_spi, 0xFF, rxbuff, count);
+        return;
+      }
+      // transmit and receive!
+      spi_write_read_blocking(_spi, txbuff, rxbuff, count);
+      return;
+    }
+
+    // If its LSB this isnt nearly as fun, we'll just let transfer(x) do it :(
+    for (auto i = 0; i < count; i++) {
+        *rxbuff = transfer(*txbuff);
+        *rxbuff = (_spis.getBitOrder() == MSBFIRST) ? *rxbuff : reverseByte(*rxbuff);
+        txbuff++;
+        rxbuff++;
+    }
+    DEBUGSPI("SPI::transfer completed\n");
+}
+
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
     DEBUGSPI("SPI::beginTransaction(clk=%d, bo=%s\n", _spis.getClockFreq(), (_spis.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
     _spis = settings;
