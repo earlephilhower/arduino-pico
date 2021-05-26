@@ -25,7 +25,23 @@ Adafruit TinyUSB Arduino Support
 Examples are provided in the Adafruit_TinyUSB_Arduino for the more
 advanced USB stack.
 
-Please note that this stack requires sketches to manually call
+To use Serial with TinyUSB, you must include the TinyUSB header in your
+sketch to avoid a compile error.
+
+.. code:: cpp
+
+    #include <Adafruit_TinyUSB.h>
+
+If you need to be compatible with the
+other USB stack, you can use an ifdef:
+
+.. code:: cpp
+
+    #ifdef USE_TINYUSB
+    #include <Adafruit_TinyUSB.h>
+    #endif
+
+Also, this stack requires sketches to manually call
 ``Serial.begin(115200)`` to enable the USB serial port and automatic
 sketch upload from the IDE.  If a sketch is run without this command
 in ``setup()``, the user will need to use the standard "hold BOOTSEL
