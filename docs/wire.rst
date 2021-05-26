@@ -3,17 +3,19 @@ Wire (I2C Master and Slave)
 
 The RP2040 has two I2C devices, ``i2c0 (Wire)`` and ``i2c1 (Wire1)``.
 
-By default, `Wire` is connected to GPIO pins 4 and 5 and `Wire1` is connected
-to pins 26 and 27. You may change these pins **before calling Wire.begin() or Wire1.begin()** using:
+The default pins for `Wire` and `Wire1` vary depending on which board you're using.
+(Here are the pinout diagrams for `Pico <https://datasheets.raspberrypi.org/pico/Pico-R3-A4-Pinout.pdf>`_
+and `Adafruit <https://learn.adafruit.com/assets/100740>`_.)
+
+You may change these pins **before calling Wire.begin() or Wire1.begin()** using:
 
 .. code:: cpp
 
         bool setSDA(pin_size_t sda);
         bool setSCL(pin_size_t scl);
 
-Be sure to use pins labeled ``I2C0`` for Wire and ``I2C1`` for Wire1 on the
-`Pico pinout diagram <https://datasheets.raspberrypi.org/pico/Pico-R3-A4-Pinout.pdf>`_
-or it won't work.
+Be sure to use pins labeled ``I2C0`` for Wire and ``I2C1`` for Wire1 on the pinout
+diagram for your board, or it won't work.
 
 Other than that, the API is compatible with the Arduino standard.
 Both master and slave operation are supported.
