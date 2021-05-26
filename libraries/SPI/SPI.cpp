@@ -35,10 +35,14 @@ SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pi
 
 inline spi_cpol_t SPIClassRP2040::cpol() {
     switch (_spis.getDataMode()) {
-    case SPI_MODE0: return SPI_CPOL_0;
-    case SPI_MODE1: return SPI_CPOL_0;
-    case SPI_MODE2: return SPI_CPOL_1;
-    case SPI_MODE3: return SPI_CPOL_1;
+    case SPI_MODE0:
+        return SPI_CPOL_0;
+    case SPI_MODE1:
+        return SPI_CPOL_0;
+    case SPI_MODE2:
+        return SPI_CPOL_1;
+    case SPI_MODE3:
+        return SPI_CPOL_1;
     }
     // Error
     return SPI_CPOL_0;
@@ -46,10 +50,14 @@ inline spi_cpol_t SPIClassRP2040::cpol() {
 
 inline spi_cpha_t SPIClassRP2040::cpha() {
     switch (_spis.getDataMode()) {
-    case SPI_MODE0: return SPI_CPHA_0;
-    case SPI_MODE1: return SPI_CPHA_1;
-    case SPI_MODE2: return SPI_CPHA_0;
-    case SPI_MODE3: return SPI_CPHA_1;
+    case SPI_MODE0:
+        return SPI_CPHA_0;
+    case SPI_MODE1:
+        return SPI_CPHA_1;
+    case SPI_MODE2:
+        return SPI_CPHA_0;
+    case SPI_MODE3:
+        return SPI_CPHA_1;
     }
     // Error
     return SPI_CPHA_0;
@@ -133,22 +141,22 @@ void SPIClassRP2040::transfer(void *txbuf, void *rxbuf, size_t count) {
 
     // MSB version is easy!
     if (_spis.getBitOrder() == MSBFIRST) {
-      spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
+        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
 
-      if (rxbuf == NULL) { // transmit only!
-        spi_write_blocking(_spi, txbuff, count);
+        if (rxbuf == NULL) { // transmit only!
+            spi_write_blocking(_spi, txbuff, count);
+            return;
+        }
+        if (txbuf == NULL) { // receive only!
+            spi_read_blocking(_spi, 0xFF, rxbuff, count);
+            return;
+        }
+        // transmit and receive!
+        spi_write_read_blocking(_spi, txbuff, rxbuff, count);
         return;
-      }
-      if (txbuf == NULL) { // receive only!
-        spi_read_blocking(_spi, 0xFF, rxbuff, count);
-        return;
-      }
-      // transmit and receive!
-      spi_write_read_blocking(_spi, txbuff, rxbuff, count);
-      return;
     }
 
-    // If its LSB this isnt nearly as fun, we'll just let transfer(x) do it :(
+    // If its LSB this isn't nearly as fun, we'll just let transfer(x) do it :(
     for (auto i = 0; i < count; i++) {
         *rxbuff = transfer(*txbuff);
         *rxbuff = (_spis.getBitOrder() == MSBFIRST) ? *rxbuff : reverseByte(*rxbuff);
