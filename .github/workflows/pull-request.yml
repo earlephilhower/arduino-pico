@@ -31,14 +31,19 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: false
-    - run: |
+    - name: Check package references
+      run: |
         ./tests/ci/pkgrefs_test.sh
+    - name: Check boards.txt was not edited after makeboards.py
+      run: |
         ./tools/makeboards.py > boards.txt
+    - name: Run astyle on all code/examples
+      run: |
         sudo apt update
         sudo apt install astyle
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
-        git diff --quiet --exit-code
+        git diff --exit-code
 
 # Build all examples on linux (core and Arduino IDE)
   build-linux:
