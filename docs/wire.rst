@@ -5,7 +5,7 @@ The RP2040 has two I2C devices, ``i2c0 (Wire)`` and ``i2c1 (Wire1)``.
 
 The default pins for `Wire` and `Wire1` vary depending on which board you're using.
 (Here are the pinout diagrams for `Pico <https://datasheets.raspberrypi.org/pico/Pico-R3-A4-Pinout.pdf>`_
-and `Adafruit <https://learn.adafruit.com/assets/100740>`_.)
+and `Adafruit Feather <https://learn.adafruit.com/assets/100740>`_.)
 
 You may change these pins **before calling Wire.begin() or Wire1.begin()** using:
 
