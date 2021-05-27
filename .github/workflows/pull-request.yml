@@ -38,7 +38,7 @@ jobs:
         sudo apt install astyle
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
-        git diff --quiet --exit-code
+        git diff --exit-code
 
 # Build all examples on linux (core and Arduino IDE)
   build-linux:
