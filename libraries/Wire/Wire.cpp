@@ -29,13 +29,13 @@
 #include "Wire.h"
 
 TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
-  _sda = sda;
-  _scl = scl;
-  _i2c = i2c;
-  _clkHz = TWI_CLOCK;
-  _running = false;
-  _txBegun = false;
-  _buffLen = 0;
+    _sda = sda;
+    _scl = scl;
+    _i2c = i2c;
+    _clkHz = TWI_CLOCK;
+    _running = false;
+    _txBegun = false;
+    _buffLen = 0;
 }
 
 bool TwoWire::setSDA(pin_size_t pin) {
