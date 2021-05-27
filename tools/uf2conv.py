@@ -33,6 +33,7 @@ import os
 import os.path
 import argparse
 import time
+import glob
 
 toolspath = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/') # CWD in UNIX format
 try:
@@ -357,6 +358,13 @@ def main():
                 args.output = "flash." + ext
         else:
             drives = get_drives()
+            if (len(drives) == 0) and (sys.platform == "linux"):
+                rpidisk = glob.glob("/dev/disk/by-id/usb-RPI_RP2*-part1")
+                try:
+                    subprocess.run(["udisksctl", "mount", "--block-device", os.path.realpath(rpidisk[0])])
+                    drives = get_drives()
+                except:
+                    pass # If it fails, no problem since it was a heroic attempt
 
         if args.output:
             write_file(args.output, outbuf)
