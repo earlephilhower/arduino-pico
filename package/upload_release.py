@@ -2,6 +2,7 @@
 
 from github import Github
 import argparse
+import re
 
 parser = argparse.ArgumentParser(description='Upload a set of files to a new draft release')
 parser.add_argument('--user', help="Github username", type=str, required=True)
@@ -19,7 +20,9 @@ if len(args.files) == 0:
 
 if args.msg[0] == '@':
     with open(args.msg[1:], 'r') as f:
-        args.msg = f.read()
+        args.msg = re.sub(r'\n', '<br />', f.read())
+
+print("Upload message: " + args.msg)
 
 gh = Github(login_or_token=args.token)
 repo = gh.get_repo(str(args.repo))
