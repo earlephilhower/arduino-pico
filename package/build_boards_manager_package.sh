@@ -1,13 +1,14 @@
 #!/bin/bash
 set -o xtrace
 
+[ -z "${REMOTE_URL}" ] && REMOTE_URL=https://github.com/earlephilhower/arduino-pico/releases/download
+
 if [ ! -z "${manualversion}" ]; then
 
     # manual-made release based on $manualversion
     ver=${manualversion}
     plain_ver=${ver}
-    visiblever=${ver}
-    [ -z "${REMOTE_URL}" ] && REMOTE_URL=https://github.com/earlephilhower/arduino-pico/releases/download
+    visible_ver=${ver}
 
 else
 
@@ -23,8 +24,8 @@ else
     if [ "$ver" == "null" ]; then
         ver=$(git describe --tag)
     fi
-    visiblever=$ver
-    plainver=$ver
+    visible_ver=$ver
+    plain_ver=$ver
 
     # Match 0.0.* as special-case early-access builds
     if [ "${ver%.*}" = 0.0 ]; then
@@ -36,8 +37,8 @@ fi
 
 set -e
 
-package_name=rp2040-$visiblever
-echo "Version: $visiblever ($ver)"
+package_name=rp2040-$visible_ver
+echo "Version: $visible_ver ($ver)"
 echo "Package name: $package_name"
 
 # Set REMOTE_URL environment variable to the address where the package will be
@@ -50,18 +51,17 @@ echo "Remote: $REMOTE_URL"
 
 if [ -z "$PKG_URL" ]; then
     if [ -z "$PKG_URL_PREFIX" ]; then
-        PKG_URL_PREFIX="$REMOTE_URL/$visiblever"
+        PKG_URL_PREFIX="$REMOTE_URL/$visible_ver"
     fi
     PKG_URL="$PKG_URL_PREFIX/$package_name.zip"
 fi
 echo "Package: $PKG_URL"
-echo "Docs: $DOC_URL"
 
 pushd ..
 # Create directory for the package
-outdir=package/versions/$visiblever/$package_name
+outdir=package/versions/$visible_ver/$package_name
 srcdir=$PWD
-rm -rf package/versions/$visiblever
+rm -rf package/versions/$visible_ver
 mkdir -p $outdir
 
 # Some files should be excluded from the package
@@ -77,7 +77,7 @@ EOF
 git ls-files --other --directory >> exclude.txt
 # Now copy files to $outdir
 rsync -a -L -K --exclude-from 'exclude.txt' $srcdir/ $outdir/
-mv $outdir/ArduinoCore-API/api $outdir/cores/rp2040/api
+#mv $outdir/ArduinoCore-API/api $outdir/cores/rp2040/api
 rm -rf $outdir/ArduinoCore-API
 rm exclude.txt
 
@@ -108,10 +108,10 @@ echo \#define ARDUINO_RP2040_GIT_DESC `git describe --tags 2>/dev/null` >>$outdi
 echo \#define ARDUINO_RP2040_RELEASE_$ver_define >>$outdir/cores/rp2040/core_version.h
 echo \#define ARDUINO_RP2040_RELEASE \"$ver_define\" >>$outdir/cores/rp2040/core_version.h
 
-$SED -i 's/"version": .*/"version": "'$visiblever'"/' $outdir/package.json
+$SED -i 's/"version": .*/"version": "'$visible_ver'"/' $outdir/package.json
 
 # Zip the package
-pushd package/versions/$visiblever
+pushd package/versions/$visible_ver
 echo "Making $package_name.zip"
 zip -qr $package_name.zip $package_name
 rm -rf $package_name
@@ -124,7 +124,7 @@ echo SHA-256: $sha
 
 echo "Making package_rp2040_index.json"
 
-jq_arg=".packages[0].platforms[0].version = \"$visiblever\" | \
+jq_arg=".packages[0].platforms[0].version = \"$visible_ver\" | \
     .packages[0].platforms[0].url = \"$PKG_URL\" |\
     .packages[0].platforms[0].archiveFileName = \"$package_name.zip\""
 
@@ -134,10 +134,6 @@ if [ -z "$is_nightly" ]; then
         .packages[0].platforms[0].checksum = \"SHA-256:$sha\""
 fi
 
-if [ ! -z "$DOC_URL" ]; then
-    jq_arg="$jq_arg |\
-        .packages[0].platforms[0].help.online = \"$DOC_URL\""
-fi
 
 cat $srcdir/package/package_pico_index.template.json | \
     jq "$jq_arg" > package_rp2040_index.json
