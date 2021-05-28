@@ -99,6 +99,8 @@ base_ver=$prev_any_release
 new_log=$(mktemp)
 git fetch --all --tags
 git log $base_ver..HEAD --oneline | sed 's/\b / * /' | cut -f2- -d" " > $new_log
+new_tag=$(mktemp)
+git describe --exact-match --tags > $new_tag
 
 # Do some replacements in platform.txt file, which are required because IDE
 # handles tool paths differently when package is installed in hardware folder
@@ -176,7 +178,8 @@ set -e
 cat $new_json | jq empty
 
 cat $new_log > package_rp2040_index.log
-rm -f $new_log
+cat $new_tag > package_rp2040_index.tag
+rm -f $new_log $new_tag
 
 popd
 popd

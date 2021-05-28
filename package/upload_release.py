@@ -20,9 +20,7 @@ if len(args.files) == 0:
 
 if args.msg[0] == '@':
     with open(args.msg[1:], 'r') as f:
-        args.msg = re.sub(r'\n', '<br />', f.read())
-
-print("Upload message: " + args.msg)
+        args.msg = f.read()
 
 gh = Github(login_or_token=args.token)
 repo = gh.get_repo(str(args.repo))
