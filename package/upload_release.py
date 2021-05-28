@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#from github import Github
+from github import Github
 import argparse
 
 parser = argparse.ArgumentParser(description='Upload a set of files to a new draft release')
