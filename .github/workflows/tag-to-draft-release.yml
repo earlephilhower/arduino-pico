@@ -21,10 +21,6 @@ jobs:
     - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
-    - name: Set GIT tag name
-      run: |
-        # Sets an environment variable used in the next steps
-        echo "::set-env name=TRAVIS_TAG::$(git describe --exact-match --tags)"
     - name: Build package JSON
       env:
         TRAVIS_BUILD_DIR: ${{ github.workspace }}
@@ -40,4 +36,4 @@ jobs:
            json=$(find ./package/versions -name package_rp2040_index.json)
            log=$(find ./package/versions  -name package_rp2040_index.log)
            zip=$(find ./package/versions  -name rp2040*zip)
-           python3 ./package/upload_release.py --user "$GITHUB_ACTOR" --repo "$GITHUB_REPOSITORY" --token "$CI_GITHUB_API_KEY" --tag "$TRAVIS_TAG" --name "Release $TRAVIS_TAG" --msg "@$json" "$zip" "$json"
+           python3 ./package/upload_release.py --user "$GITHUB_ACTOR" --repo "$GITHUB_REPOSITORY" --token "$CI_GITHUB_API_KEY" --tag "$(git describe --exact-match --tags)" --name "Release $TRAVIS_TAG" --msg "@$json" "$zip" "$json"
