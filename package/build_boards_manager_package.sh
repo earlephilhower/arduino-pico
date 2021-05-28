@@ -97,6 +97,7 @@ echo "Previous pre-release: $prev_pre_release"
 base_ver=$prev_any_release
 
 new_log=$(mktemp)
+git fetch --all --tags
 git log $base_ver..HEAD --oneline | sed 's/\b / * /' | cut -f2- -d" " > $new_log
 
 # Do some replacements in platform.txt file, which are required because IDE
