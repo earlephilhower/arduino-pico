@@ -20,7 +20,7 @@ jobs:
     - name: Run codespell
       uses: codespell-project/actions-codespell@master
       with:
-        skip: ./pico-extras,./ArduinoCore-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst
+        skip: ./pico-extras,./ArduinoCore-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api
         ignore_words_list: ser,DOUT
 
 # Consistent style
@@ -44,6 +44,10 @@ jobs:
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
+    - name: Check Arduino API copy is clean
+      run: |
+        git submodule update --init ./ArduinoCore-API
+        diff -r ./cores/rp2040/api ./ArduinoCore-API/api
 
 # Build all examples on linux (core and Arduino IDE)
   build-linux:
