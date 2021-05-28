@@ -64,7 +64,6 @@ srcdir=$PWD
 rm -rf package/versions/$visible_ver
 mkdir -p $outdir
 
-new_log=$(mktemp)
 # Some files should be excluded from the package
 cat << EOF > exclude.txt
 .git
@@ -81,23 +80,35 @@ git ls-files --other --directory >> exclude.txt
 rsync -a -L -K --exclude-from 'exclude.txt' $srcdir/ $outdir/
 rm exclude.txt
 
-# For compatibility, on OS X we need GNU sed which is usually called 'gsed'
-if [ "$(uname)" == "Darwin" ]; then
-    SED=gsed
-else
-    SED=sed
-fi
+# Get previous release name
+curl --silent https://api.github.com/repos/earlephilhower/arduino-pico/releases > releases.json
+# Previous final release (prerelase == false)
+prev_release=$(jq -r '. | map(select(.draft == false and .prerelease == false)) | sort_by(.created_at | - fromdateiso8601) | .[0].tag_name' releases.json)
+# Previous release (possibly a pre-release)
+prev_any_release=$(jq -r '. | map(select(.draft == false)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
+# Previous pre-release
+prev_pre_release=$(jq -r '. | map(select(.draft == false and .prerelease == true)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
+
+echo "Previous release: $prev_release"
+echo "Previous (pre-?)release: $prev_any_release"
+echo "Previous pre-release: $prev_pre_release"
+
+# Make all released versions available in one package (i.e. don't separate stable/staging versions)
+base_ver=$prev_any_release
+
+new_log=$(mktemp)
+git log $base_ver..HEAD --oneline | sed 's/\b / * /' | cut -f2- -d" " > $new_log
 
 # Do some replacements in platform.txt file, which are required because IDE
 # handles tool paths differently when package is installed in hardware folder
 cat $srcdir/platform.txt | \
-$SED 's/^runtime.tools.pqt-.*.path=.*//g' | \
-$SED 's/^tools.uf2conv.cmd=.*//g' | \
-$SED 's/^#tools.uf2conv.cmd=/tools.uf2conv.cmd=/g' | \
-$SED 's/^tools.picoprobe.cmd=.*//g' | \
-$SED 's/^#tools.picoprobe.cmd=/tools.picoprobe.cmd=/g' | \
-$SED "s/version=.*/version=$ver/g" |\
-$SED -E "s/name=([a-zA-Z0-9\ -]+).*/name=\1($ver)/g"\
+sed 's/^runtime.tools.pqt-.*.path=.*//g' | \
+sed 's/^tools.uf2conv.cmd=.*//g' | \
+sed 's/^#tools.uf2conv.cmd=/tools.uf2conv.cmd=/g' | \
+sed 's/^tools.picoprobe.cmd=.*//g' | \
+sed 's/^#tools.picoprobe.cmd=/tools.picoprobe.cmd=/g' | \
+sed "s/version=.*/version=$ver/g" |\
+sed -E "s/name=([a-zA-Z0-9\ -]+).*/name=\1($ver)/g"\
  > $outdir/platform.txt
 
 # Put core version and short hash of git version into core_version.h
@@ -108,7 +119,7 @@ echo \#define ARDUINO_RP2040_GIT_DESC `git describe --tags 2>/dev/null` >>$outdi
 echo \#define ARDUINO_RP2040_RELEASE_$ver_define >>$outdir/cores/rp2040/core_version.h
 echo \#define ARDUINO_RP2040_RELEASE \"$ver_define\" >>$outdir/cores/rp2040/core_version.h
 
-$SED -i 's/"version": .*/"version": "'$visible_ver'"/' $outdir/package.json
+sed -i 's/"version": .*/"version": "'$visible_ver'"/' $outdir/package.json
 
 # Zip the package
 pushd package/versions/$visible_ver
@@ -136,22 +147,6 @@ fi
 
 cat $srcdir/package/package_pico_index.template.json | \
     jq "$jq_arg" > package_rp2040_index.json
-
-# Get previous release name
-curl --silent https://api.github.com/repos/earlephilhower/arduino-pico/releases > releases.json
-# Previous final release (prerelase == false)
-prev_release=$(jq -r '. | map(select(.draft == false and .prerelease == false)) | sort_by(.created_at | - fromdateiso8601) | .[0].tag_name' releases.json)
-# Previous release (possibly a pre-release)
-prev_any_release=$(jq -r '. | map(select(.draft == false)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
-# Previous pre-release
-prev_pre_release=$(jq -r '. | map(select(.draft == false and .prerelease == true)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)
-
-echo "Previous release: $prev_release"
-echo "Previous (pre-?)release: $prev_any_release"
-echo "Previous pre-release: $prev_pre_release"
-
-# Make all released versions available in one package (i.e. don't separate stable/staging versions)
-base_ver=$prev_any_release
 
 # Download previous release
 echo "Downloading base package: $base_ver"
