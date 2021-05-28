@@ -37,5 +37,5 @@ jobs:
            json=$(find ./package/versions -name package_rp2040_index.json)
            log=$(find ./package/versions  -name package_rp2040_index.log)
            zip=$(find ./package/versions  -name rp2040*zip)
-           tag=$(find ./package/versions  -name package_rp2040_index.tag -exec cat \{\} \;)git describe --exact-match --tags)
+           tag=$(find ./package/versions  -name package_rp2040_index.tag -exec cat \{\} \;)
            python3 ./package/upload_release.py --user "$GITHUB_ACTOR" --repo "$GITHUB_REPOSITORY" --token "$CI_GITHUB_API_KEY" --tag "$tag" --name "Release $tag" --msg "@$log" "$zip" "$json"
