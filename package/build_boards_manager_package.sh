@@ -174,6 +174,7 @@ echo "Downloading base package: $base_ver"
 old_json=package_rp2040_index_stable.json
 curl -L -o $old_json "https://github.com/earlephilhower/arduino-pico/releases/download/${base_ver}/package_rp2040_index.json"
 new_json=package_rp2040_index.json
+new_log=package_rp2040_index.log
 
 set +e
 # Merge the old and new
@@ -194,6 +195,8 @@ mv tmp $new_json
 # Verify the JSON file can be read, fail if it's not OK
 set -e
 cat $new_json | jq empty
+
+git log $base_ver..HEAD --oneline | sed 's/\b / * /' | cut -f2- -d" " > $new_log
 
 popd
 popd
