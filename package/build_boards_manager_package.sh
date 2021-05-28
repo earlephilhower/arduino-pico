@@ -64,6 +64,7 @@ srcdir=$PWD
 rm -rf package/versions/$visible_ver
 mkdir -p $outdir
 
+new_log=$(mktemp)
 # Some files should be excluded from the package
 cat << EOF > exclude.txt
 .git
@@ -72,13 +73,12 @@ cat << EOF > exclude.txt
 .travis.yml
 package
 doc
+ArduinoCore-API
 EOF
 # Also include all files which are ignored by git
 git ls-files --other --directory >> exclude.txt
 # Now copy files to $outdir
 rsync -a -L -K --exclude-from 'exclude.txt' $srcdir/ $outdir/
-#mv $outdir/ArduinoCore-API/api $outdir/cores/rp2040/api
-rm -rf $outdir/ArduinoCore-API
 rm exclude.txt
 
 # For compatibility, on OS X we need GNU sed which is usually called 'gsed'
@@ -158,7 +158,6 @@ echo "Downloading base package: $base_ver"
 old_json=package_rp2040_index_stable.json
 curl -L -o $old_json "https://github.com/earlephilhower/arduino-pico/releases/download/${base_ver}/package_rp2040_index.json"
 new_json=package_rp2040_index.json
-new_log=package_rp2040_index.log
 
 set +e
 # Merge the old and new
@@ -180,7 +179,8 @@ mv tmp $new_json
 set -e
 cat $new_json | jq empty
 
-git log $base_ver..HEAD --oneline | sed 's/\b / * /' | cut -f2- -d" " > $new_log
+cat $new_log > package_rp2040_index.log
+rm -f $new_log
 
 popd
 popd
