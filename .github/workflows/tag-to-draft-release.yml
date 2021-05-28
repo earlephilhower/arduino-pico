@@ -27,7 +27,7 @@ jobs:
         BUILD_TYPE: package
         CI_GITHUB_API_KEY: ${{ secrets.GITHUB_TOKEN }}
       run: |
-           bash ./tests/ci/build_package.sh
+           (cd ./package && bash ./build_boards_manager_package.sh)
            pip3 install PyGithub
            # Create a draft release and upload the ZIP and JSON files.
            # This draft is not visible to normal users and needs to be
