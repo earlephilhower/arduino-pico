@@ -21,6 +21,6 @@ jobs:
         BUILD_TYPE: package
         CI_GITHUB_API_KEY: ${{ secrets.GITHUB_TOKEN }}
       run: |
-           tag=$(git describe --exact-match --tags)
-           curl -L -o ./package_rp2040_index.json "https://github.com/earlephilhower/arduino-pico/releases/download/${tag}/package_rp2040_index.json"
-           ./package/update_release.py --token ${CI_GITHUB_API_KEY} --repo earlephilhower/arduino-pico --tag global ./package_rp2040_index.json
+           TAG=$(git describe --exact-match --tags)
+           curl -L -o ./package_rp2040_index.json "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$TAG/package_rp2040_index.json"
+           ./package/update_release.py --token ${CI_GITHUB_API_KEY} --repo "$GITHUB_REPOSITORY" --tag global ./package_rp2040_index.json
