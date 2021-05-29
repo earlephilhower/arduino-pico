@@ -28,6 +28,15 @@
 #include <hardware/regs/intctrl.h>
 #include "Wire.h"
 
+#ifdef USE_TINYUSB
+// For Serial when selecting TinyUSB.  Can't include in the core because Arduino IDE
+// will not link in libraries called from the core.  Instead, add the header to all
+// the standard libraries in the hope it will still catch some user cases where they
+// use these libraries.
+// See https://github.com/earlephilhower/arduino-pico/issues/167#issuecomment-848622174
+#include <Adafruit_TinyUSB.h>
+#endif
+
 TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _sda = sda;
     _scl = scl;

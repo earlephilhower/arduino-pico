@@ -22,6 +22,15 @@
 #include <hardware/spi.h>
 #include <hardware/gpio.h>
 
+#ifdef USE_TINYUSB
+// For Serial when selecting TinyUSB.  Can't include in the core because Arduino IDE
+// will not link in libraries called from the core.  Instead, add the header to all
+// the standard libraries in the hope it will still catch some user cases where they
+// use these libraries.
+// See https://github.com/earlephilhower/arduino-pico/issues/167#issuecomment-848622174
+#include <Adafruit_TinyUSB.h>
+#endif
+
 SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_size_t sck, pin_size_t tx) {
     _spi = spi;
     _running = false;
