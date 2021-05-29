@@ -202,56 +202,68 @@ bool SPIClassRP2040::setRX(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({0, 4, 16, 20}) /* SPI0 */,
                                     __bitset({8, 12, 24, 28})  /* SPI1 */
                                   };
-    if (_running) {
-        return false;
-    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
+    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
         _RX = pin;
         return true;
-    } else {
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set SPI%s.RX while running", spi_get_index(_spi) ? "1" : "");
+    } else {
+        panic("FATAL: Attempting to set SPI%s.RX to illegal pin %d", spi_get_index(_spi) ? "1" : "", pin);
+    }
+    return false;
 }
 
 bool SPIClassRP2040::setCS(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({1, 5, 17, 21}) /* SPI0 */,
                                     __bitset({9, 13, 25, 29})  /* SPI1 */
                                   };
-    if (_running) {
-        return false;
-    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
+    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
         _CS = pin;
         return true;
-    } else {
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set SPI%s.CS while running", spi_get_index(_spi) ? "1" : "");
+    } else {
+        panic("FATAL: Attempting to set SPI%s.CS to illegal pin %d", spi_get_index(_spi) ? "1" : "", pin);
+    }
+    return false;
 }
 
 bool SPIClassRP2040::setSCK(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({2, 6, 18, 22}) /* SPI0 */,
                                     __bitset({10, 14, 26})  /* SPI1 */
                                   };
-    if (_running) {
-        return false;
-    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
+    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
         _SCK = pin;
         return true;
-    } else {
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set SPI%s.SCK while running", spi_get_index(_spi) ? "1" : "");
+    } else {
+        panic("FATAL: Attempting to set SPI%s.SCK to illegal pin %d", spi_get_index(_spi) ? "1" : "", pin);
+    }
+    return false;
 }
 
 bool SPIClassRP2040::setTX(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({3, 7, 19, 23}) /* SPI0 */,
                                     __bitset({11, 15, 27})  /* SPI1 */
                                   };
-    if (_running) {
-        return false;
-    } else if ((1 << pin) & valid[spi_get_index(_spi)]) {
+    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
         _TX = pin;
         return true;
-    } else {
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set SPI%s.TX while running", spi_get_index(_spi) ? "1" : "");
+    } else {
+        panic("FATAL: Attempting to set SPI%s.TX to illegal pin %d", spi_get_index(_spi) ? "1" : "", pin);
+    }
+    return false;
 }
 
 void SPIClassRP2040::begin(bool hwCS) {

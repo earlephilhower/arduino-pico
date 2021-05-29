@@ -31,36 +31,38 @@
 extern void serialEvent1() __attribute__((weak));
 extern void serialEvent2() __attribute__((weak));
 
-bool SerialUART::setRX(pin_size_t rx) {
+bool SerialUART::setRX(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({1, 13, 17, 29}) /* UART0 */,
                                     __bitset({5, 9, 21, 25})  /* UART1 */
                                   };
-    if (_running) {
-        DEBUGCORE("ERROR: SerialUART setRX while running\n");
-        return false;
-    } else if ((1 << rx) & valid[uart_get_index(_uart)]) {
-        _rx = rx;
+    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+        _rx = pin;
         return true;
-    } else {
-        DEBUGCORE("ERROR: SerialUART setRX illegal pin (%d)\n", rx);
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set Serial%d.RX while running", uart_get_index(_uart) + 1);
+    } else {
+        panic("FATAL: Attempting to set Serial%d.RX to illegal pin %d", uart_get_index(_uart) + 1, pin);
+    }
+    return false;
 }
 
-bool SerialUART::setTX(pin_size_t tx) {
+bool SerialUART::setTX(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({0, 12, 16, 28}) /* UART0 */,
                                     __bitset({4, 8, 20, 24})  /* UART1 */
                                   };
-    if (_running) {
-        DEBUGCORE("ERROR: SerialUART setTX while running\n");
-        return false;
-    } else if ((1 << tx) & valid[uart_get_index(_uart)]) {
-        _tx = tx;
+    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+        _tx = pin;
         return true;
-    } else {
-        DEBUGCORE("ERROR: SerialUART setTX illegal pin (%d)\n", tx);
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set Serial%d.TX while running", uart_get_index(_uart) + 1);
+    } else {
+        panic("FATAL: Attempting to set Serial%d.TX to illegal pin %d", uart_get_index(_uart) + 1, pin);
+    }
+    return false;
 }
 
 SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
