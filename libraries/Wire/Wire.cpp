@@ -51,28 +51,34 @@ bool TwoWire::setSDA(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28}) /* I2C0 */,
                                     __bitset({2, 6, 10, 14, 18, 22, 26})  /* I2C1 */
                                   };
-    if (_running) {
-        return false;
-    } else if ((1 << pin) & valid[i2c_hw_index(_i2c)]) {
+    if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
         _sda = pin;
         return true;
-    } else {
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set Wire%s.SDA while running", i2c_hw_index(_i2c) ? "1" : "");
+    } else {
+        panic("FATAL: Attempting to set Wire%s.SDA to illegal pin %d", i2c_hw_index(_i2c) ? "1" : "", pin);
+    }
+    return false;
 }
 
 bool TwoWire::setSCL(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29}) /* I2C0 */,
                                     __bitset({3, 7, 11, 15, 19, 23, 27})  /* I2C1 */
                                   };
-    if (_running) {
-        return false;
-    } else if ((1 << pin) & valid[i2c_hw_index(_i2c)]) {
+    if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
         _scl = pin;
         return true;
-    } else {
-        return false;
     }
+
+    if (_running) {
+        panic("FATAL: Attempting to set Wire%s.SCL while running", i2c_hw_index(_i2c) ? "1" : "");
+    } else {
+        panic("FATAL: Attempting to set Wire%s.SCL to illegal pin %d", i2c_hw_index(_i2c) ? "1" : "", pin);
+    }
+    return false;
 }
 
 void TwoWire::setClock(uint32_t hz) {
