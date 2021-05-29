@@ -28,6 +28,8 @@ jobs:
         BUILD_TYPE: package
         CI_GITHUB_API_KEY: ${{ secrets.GITHUB_TOKEN }}
       run: |
+           (cd pico-sdk && git submodule update --init)
+           (cd pico-extras && git submodule update --init)
            (cd ./package && bash ./build_boards_manager_package.sh)
            pip3 install PyGithub
            # Create a draft release and upload the ZIP and JSON files.
