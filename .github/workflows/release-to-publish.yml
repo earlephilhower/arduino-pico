@@ -1,0 +1,27 @@
+name: Arduino-Pico Release Publisher
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  package:
+    name: Update master JSON file
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Deploy updated JSON
+      env:
+        TRAVIS_BUILD_DIR: ${{ github.workspace }}
+        BUILD_TYPE: package
+        CI_GITHUB_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+           pip3 install PyGithub
+           TAG=$(git describe --exact-match --tags)
+           curl -L -o package_rp2040_index.json "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$TAG/package_rp2040_index.json"
+           ./package/update_release.py --token ${CI_GITHUB_API_KEY} --repo "$GITHUB_REPOSITORY" --tag global package_rp2040_index.json

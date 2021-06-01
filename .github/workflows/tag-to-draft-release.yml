@@ -1,0 +1,43 @@
+# Whenever a tag of the form #.xxxx is pushed against master, generate a
+# draft release and upload the ZIP and JSON file to it.  Maintainers then
+# will manually add the changelist and publish it.
+
+name: Arduino-Pico Draft Release
+
+on:
+  push:
+    tags:
+      # Run for tags of the x.x.x* form (i.e. 3.0.0, 3.0.0-beta, etc.).
+      - '[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Build package JSON
+      env:
+        TRAVIS_BUILD_DIR: ${{ github.workspace }}
+        BUILD_TYPE: package
+        CI_GITHUB_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+           (cd pico-sdk && git submodule update --init)
+           (cd pico-extras && git submodule update --init)
+           (cd ./package && bash ./build_boards_manager_package.sh)
+           pip3 install PyGithub
+           # Create a draft release and upload the ZIP and JSON files.
+           # This draft is not visible to normal users and needs to be
+           # updated manually with release notes and published from the
+           # GitHub web interface.
+           json=$(find ./package/versions -name package_rp2040_index.json)
+           log=$(find ./package/versions  -name package_rp2040_index.log)
+           zip=$(find ./package/versions  -name rp2040*zip)
+           tag=$(find ./package/versions  -name package_rp2040_index.tag -exec cat \{\} \;)
+           python3 ./package/upload_release.py --repo "$GITHUB_REPOSITORY" --token "$CI_GITHUB_API_KEY" --tag "$tag" --name "Release $tag" --msg "@$log" "$zip" "$json"
