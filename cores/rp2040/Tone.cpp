@@ -48,6 +48,11 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         return;
     }
 
+    auto entry = _toneMap.find(pin);
+    if (entry != _toneMap.end()) {
+        noTone(pin);
+    }
+
     // Ensure only 1 core can start or stop at a time
     CoreMutex m(&_toneMutex);
     if (!m) {
@@ -60,10 +65,6 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     }
     // Even phases run forever, odd phases end after count...so ensure its odd
     int phases = duration ? (duration * 1000 / us) | 1 : 2;
-    auto entry = _toneMap.find(pin);
-    if (entry != _toneMap.end()) {
-        noTone(pin);
-    }
 
     auto newTone = new Tone();
     newTone->pin = pin;
