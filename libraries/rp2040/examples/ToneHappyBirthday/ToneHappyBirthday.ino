@@ -59,26 +59,25 @@ uint8_t const pin_buzzer = PIN_BUZZER;
 
 // Play a note of the specified frequency and for the specified duration.
 // Hold is an optional bool that specifies if this note should be held a
-// little longer, i.e. for eigth notes that are tied together.
+// little longer, i.e. for eighth notes that are tied together.
 // While waiting for a note to play the waitBreath delay function is used
 // so breath detection and pixel animation continues to run.  No tones
 // will play if the slide switch is in the -/off position or all the
 // candles have been blown out.
-void playNote(int frequency, int duration, bool hold=false, bool measure=true) {
+void playNote(int frequency, int duration, bool hold = false, bool measure = true) {
   (void) measure;
 
   if (hold) {
     // For a note that's held play it a little longer than the specified duration
     // so it blends into the next tone (but there's still a small delay to
     // hear the next note).
-    tone(pin_buzzer, frequency, duration + duration/32);
-  }
-  else {
+    tone(pin_buzzer, frequency, duration + duration / 32);
+  } else {
     // For a note that isn't held just play it for the specified duration.
     tone(pin_buzzer, frequency, duration);
   }
 
-  delay(duration + duration/16);
+  delay(duration + duration / 16);
 }
 
 // Song to play when the candles are blown out.
