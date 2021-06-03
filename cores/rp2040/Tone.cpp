@@ -94,7 +94,13 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     _toneMap.insert({pin, newTone});
 
     if (duration) {
-        newTone->alarm = add_alarm_in_ms(duration, _stopTonePIO, (void *)newTone, true);
+        auto ret = add_alarm_in_ms(duration, _stopTonePIO, (void *)newTone, true);
+        if (ret > 0) {
+            newTone->alarm = ret;
+        } else {
+            DEBUGCORE("ERROR: Unable to allocate timer for tone(%d, %d, %d)\n",
+                      pin, frequency, duration);
+        }
     }
 }
 
