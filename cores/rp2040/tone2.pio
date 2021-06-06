@@ -1,4 +1,4 @@
-; Tone for the Raspberry Pi Pico RP2040
+; Tone2 for the Raspberry Pi Pico RP2040
 ;
 ; Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
 ;
@@ -18,32 +18,35 @@
 
 ; Side-set pin 0 is used for Tone output
 
-.program tone
+; OSR == Halfcycle count
+
+.program tone2
 .side_set 1 opt
 
-    pull
-    mov x, osr
+    pull                     ; TXFIFO -> OSR, or X -> OSR if no new period
+    mov x, osr               ; OSR -> X
 
 high:
-    mov y, isr      side 1
+    pull noblock             ; Potentially grab new HALFCYCLECOUNT, OTW copy from backup in X
+    mov x, osr               ; OSR -> X
+    mov y, osr      side 1   ; HALFCYCLECOUNT -> Y
 highloop:
-    jmp y-- highloop
-
-    jmp x-- low
+    jmp y-- highloop         ; while (y--) { /* noop delay */ }
 
 low:
-    mov y, isr      side 0
+    mov y, osr      side 0   ; HALFCYCLECOUNT -> Y
 lowloop:
-    jmp y-- lowloop
+    jmp y-- lowloop          ; while (y--) { /* noop delay */ }
 
-    jmp x-- high
+    jmp high                 ; GOTO high
 
 % c-sdk {
-static inline void tone_program_init(PIO pio, uint sm, uint offset, uint pin) {
+static inline void tone2_program_init(PIO pio, uint sm, uint offset, uint pin) {
    pio_gpio_init(pio, pin);
    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, true);
-   pio_sm_config c = tone_program_get_default_config(offset);
+   pio_sm_config c = tone2_program_get_default_config(offset);
    sm_config_set_sideset_pins(&c, pin);
    pio_sm_init(pio, sm, offset, &c);
 }
 %}
+
