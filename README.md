@@ -11,6 +11,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Raspberry Pi Pico
 * Adafruit Feather RP2040
 * Adafruit ItsyBitsy RP2040
+* Adafruit Macropad RP2040
 * Adafruit QTPy RP2040
 * Adafruit STEMMA Friend RP2040
 * Adafruit Trinkey RP2040 QT
