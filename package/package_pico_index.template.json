@@ -24,6 +24,24 @@
                      "name": "Adafruit Feather RP2040"
                   },
                   {
+                     "name": "Adafruit ItsyBitsy RP2040"
+                  },
+                  {
+                     "name": "Adafruit Macropad RP2040"
+                  },
+                  {
+                     "name": "Adafruit QTPy RP2040"
+                  },
+                  {
+                     "name": "Adafruit STEMMA Friend RP2040"
+                  },
+                  {
+                     "name": "Adafruit Trinkey RP2040 QT"
+                  },
+                  {
+                     "name": "SparkFun ProMicro RP2040"
+                  },
+                  {
                      "name": "Generic RP2040 Module"
                   }
                ],
