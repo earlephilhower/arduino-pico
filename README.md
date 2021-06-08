@@ -1,4 +1,4 @@
-# Arduino-Pico [![Join the chat at https://gitter.im/arduino-pico/community](https://badges.gitter.im/arduino-pico/community.svg)](https://gitter.im/arduino-pico/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Arduino-Pico ![Release](https://img.shields.io/github/v/release/earlephilhower/arduino-pico?style=plastic) [![Join the chat at https://gitter.im/arduino-pico/community](https://badges.gitter.im/arduino-pico/community.svg)](https://gitter.im/arduino-pico/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Raspberry Pi Pico Arduino core, for all RP2040 boards
 
