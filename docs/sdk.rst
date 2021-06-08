@@ -38,3 +38,15 @@ using the SDK, the Arduino core may have issues running properly with
 them.  In particular, anything involving flash writes (i.e. EEPROM,
 filesystems) will probably crash due to CORE1 attempting to read from
 flash while CORE0 is writing to it.
+
+PIOASM (Compiling for the PIO processors)
+-----------------------------------------
+A precompiled version of the PIOASM tool is included in the download
+package and can be run from the CLI.
+
+There is also a fully online version of PIOASM that runs in a web
+browser without any CLI required, thanks to @jake653: https://wokwi.com/tools/pioasm
+(GitHub source: https://github.com/wokwi/pioasm-wasm)
+
+There is also Docker code available for the tool at:
+https://github.com/kahara/pioasm-docker
