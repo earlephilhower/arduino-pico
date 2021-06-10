@@ -63,6 +63,7 @@ extern "C" void digitalWrite(pin_size_t ulPin, PinStatus ulVal) {
         DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
         return;
     }
+    gpio_set_function(ulPin, GPIO_FUNC_SIO);
     if (_pm[ulPin] == INPUT_PULLDOWN) {
         if (ulVal == LOW) {
             gpio_set_dir(ulPin, false);
