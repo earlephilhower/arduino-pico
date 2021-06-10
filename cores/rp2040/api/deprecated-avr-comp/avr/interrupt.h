@@ -19,5 +19,5 @@
 /*
   Empty file.
   This file is here to allow compatibility with sketches (made for AVR)
-  that includes <AVR/interrupt.h>
+  that include <AVR/interrupt.h>
 */

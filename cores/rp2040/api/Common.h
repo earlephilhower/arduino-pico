@@ -85,7 +85,7 @@ int atexit(void (*func)()) __attribute__((weak));
 int main() __attribute__((weak));
 
 #ifdef EXTENDED_PIN_MODE
-// Platforms who wnat to declare more than 256 pins need to define EXTENDED_PIN_MODE globally
+// Platforms who want to declare more than 256 pins need to define EXTENDED_PIN_MODE globally
 typedef uint32_t pin_size_t;
 #else
 typedef uint8_t pin_size_t;

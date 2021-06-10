@@ -18,7 +18,7 @@
 
 // including IPAddress.h is deprecated, for all future projects use Arduino.h instead
 
-// This include is added for compatibility, it will be remove on the next
+// This include is added for compatibility, it will be removed on the next
 // major release of the API
 #include "../IPAddress.h"
 

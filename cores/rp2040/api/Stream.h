@@ -24,7 +24,7 @@
 #include <inttypes.h>
 #include "Print.h"
 
-// compatability macros for testing
+// compatibility macros for testing
 /*
 #define   getInt()            parseInt()
 #define   getInt(ignore)      parseInt(ignore)
@@ -129,3 +129,5 @@ class Stream : public Print
 #undef NO_IGNORE_CHAR
 
 }
+
+using arduino::Stream;

@@ -27,7 +27,7 @@
 
 extern "C" typedef struct uart_inst uart_inst_t;
 
-class SerialUART : public HardwareSerial {
+class SerialUART : public arduino::HardwareSerial {
 public:
     SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx);
 
