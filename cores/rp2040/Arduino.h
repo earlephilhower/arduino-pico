@@ -24,16 +24,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-// Wacky deprecated AVR compatibility functions
-#include "stdlib_noniso.h"
-
+#include "stdlib_noniso.h" // Wacky deprecated AVR compatibility functions
 #include "api/ArduinoAPI.h"
+#include "api/itoa.h" // ARM toolchain doesn't provide itoa etc, provide them
 #include <pins_arduino.h>
-
-
-// Required for the port*Register macros
-#include "hardware/gpio.h"
-
+#include "hardware/gpio.h" // Required for the port*Register macros
 #include "debug_internal.h"
 
 // Try and make the best of the old Arduino abs() macro.  When in C++, use
@@ -44,8 +39,10 @@
 #endif // abs
 #ifdef __cplusplus
 using std::abs;
+using std::round;
 #else
-#define abs(x) ((x)>0?(x):-(x))
+#define abs(x) ({ __typeof__(x) _x = (x); _x >= 0 ? _x : -_x; })
+#define round(x) ({ __typeof__(x) _x = (x); _x >= 0 ? (long)(_x + 0.5) : (long)(_x - 0.5); })
 #endif
 
 #ifdef __cplusplus
@@ -61,10 +58,6 @@ extern "C" {
 void interrupts();
 void noInterrupts();
 
-// GPIO change/value interrupts
-void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode);
-void detachInterrupt(pin_size_t pin);
-
 // AVR compatibility macros...naughty and accesses the HW directly
 #define digitalPinToPort(pin)       (0)
 #define digitalPinToBitMask(pin)    (1UL << (pin))
@@ -75,27 +68,13 @@ void detachInterrupt(pin_size_t pin);
 #define portInputRegister(port)     ((volatile uint32_t*) sio_hw->gpio_in)
 #define portModeRegister(port)      ((volatile uint32_t*) sio_hw->gpio_oe)
 
-// IO config
-void pinMode(pin_size_t pinNumber, PinMode pinMode);
-
-// SIO (GPIO)
-void digitalWrite(pin_size_t pinNumber, PinStatus status);
-PinStatus digitalRead(pin_size_t pinNumber);
-
-// ADC
-int analogRead(pin_size_t pinNumber);
+// ADC RP2040-specific calls
 float analogReadTemp();  // Returns core temp in Centigrade
 
-// PWM
-void analogWrite(pin_size_t pinNumber, int value);
+// PWM RP2040-specific calls
 void analogWriteFreq(uint32_t freq);
 void analogWriteRange(uint32_t range);
 void analogWriteResolution(int res);
-
-// Timing
-void delay(unsigned long);
-void delayMicroseconds(unsigned int us);
-unsigned long millis();
 
 #ifdef __cplusplus
 } // extern "C"
@@ -126,9 +105,5 @@ constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
     return i < N ? (1L << a[i]) | __bitset(a, i + 1) : 0;
 }
 #endif
-
-
-// ARM toolchain doesn't provide itoa etc, provide them
-#include "api/itoa.h"
 
 #endif // Arduino_h
