@@ -135,6 +135,7 @@ void Servo::writeMicroseconds(int value) {
     value = constrain(value, _minUs, _maxUs);
     _valueUs = value;
     if (_attached) {
+        pio_sm_clear_fifos(_pio, _smIdx); // Remove any old updates that haven't yet taken effect
         pio_sm_put_blocking(_pio, _smIdx, RP2040::usToPIOCycles(value) / 3);
     }
 }
