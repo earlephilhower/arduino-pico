@@ -153,7 +153,8 @@ static uint8_t *GetDescHIDReport(int *len) {
 // Invoked when received GET HID REPORT DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
-uint8_t const * tud_hid_descriptor_report_cb(void) {
+uint8_t const * tud_hid_descriptor_report_cb(uint8_t instance) {
+    (void) instance;
     return GetDescHIDReport(nullptr);
 }
 
@@ -177,7 +178,7 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
         uint8_t hid_itf = __USBInstallSerial ? 2 : 0;
         static uint8_t hid_desc[TUD_HID_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-            TUD_HID_DESCRIPTOR(hid_itf, 0, HID_PROTOCOL_NONE, hid_report_len, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 10)
+            TUD_HID_DESCRIPTOR(hid_itf, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 10)
         };
 
         uint8_t midi_itf = hid_itf + (hasHID ? 1 : 0);
@@ -230,15 +231,7 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
     };
 
     if (!idString[0]) {
-        // Get ID string into human readable serial number on the first pass
-        pico_unique_board_id_t id;
-        pico_get_unique_board_id(&id);
-        idString[0] = 0;
-        for (auto i = 0; i < PICO_UNIQUE_BOARD_ID_SIZE_BYTES; i++) {
-            char hx[3];
-            sprintf(hx, "%02X", id.id[i]);
-            strcat(idString, hx);
-        }
+        pico_get_unique_board_id_string(idString, sizeof(idString));
     }
 
     uint8_t len;
@@ -296,8 +289,9 @@ void __USBStart() {
 // Invoked when received GET_REPORT control request
 // Application must fill buffer report's content and return its length.
 // Return zero will cause the stack to STALL request
-uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen) {
-    // TODO not Implemented
+extern "C" uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen) {
+    // TODO not implemented
+    (void) instance;
     (void) report_id;
     (void) report_type;
     (void) buffer;
@@ -308,8 +302,9 @@ uint16_t tud_hid_get_report_cb(uint8_t report_id, hid_report_type_t report_type,
 
 // Invoked when received SET_REPORT control request or
 // received data on OUT endpoint ( Report ID = 0, Type = 0 )
-void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
+extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
     // TODO set LED based on CAPLOCK, NUMLOCK etc...
+    (void) instance;
     (void) report_id;
     (void) report_type;
     (void) buffer;
@@ -317,4 +312,3 @@ void tud_hid_set_report_cb(uint8_t report_id, hid_report_type_t report_type, uin
 }
 
 #endif
-

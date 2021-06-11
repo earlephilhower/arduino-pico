@@ -70,7 +70,7 @@ int SerialUSB::peek() {
     }
 
     uint8_t c;
-    return tud_cdc_peek(0, &c) ? (int) c : -1;
+    return tud_cdc_peek(&c) ? (int) c : -1;
 }
 
 int SerialUSB::read() {
