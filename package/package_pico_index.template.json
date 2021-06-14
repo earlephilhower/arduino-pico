@@ -39,6 +39,9 @@
                      "name": "Adafruit Trinkey RP2040 QT"
                   },
                   {
+                     "name": "Arduino Nano RP2040 Connect"
+                  },
+                  {
                      "name": "SparkFun ProMicro RP2040"
                   },
                   {
