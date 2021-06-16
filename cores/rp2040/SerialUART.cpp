@@ -161,7 +161,7 @@ void SerialUART::flush() {
     if (!_running || !m) {
         return;
     }
-    uart_default_tx_wait_blocking();
+    uart_tx_wait_blocking(_uart);
 }
 
 size_t SerialUART::write(uint8_t c) {
