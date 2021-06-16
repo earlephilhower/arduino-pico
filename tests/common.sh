@@ -26,6 +26,7 @@ function skip_ino()
 /p08_DigitalHourglass/
 /p13_TouchSensorLamp/
 /StringComparisonOperators/
+/PDMSerialPlotter/
 EOL
     echo $ino | grep -q -F "$skiplist"
     echo $(( 1 - $? ))
