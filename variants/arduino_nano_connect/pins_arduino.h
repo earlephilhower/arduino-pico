@@ -102,6 +102,11 @@ static const uint8_t SCK = PIN_SPI0_SCK;
 #define SPIWIFI_RESET	(NINA_RESETN)
 #define SPIWIFI 		(SPI1)
 
+// PDM Interfaces
+// ---------------
+#define PIN_PDM_CLK	 (D23)
+#define PIN_PDM_DIN	 (D22)
+
 //Cose copiate a caso
 
 #define SERIAL_PORT_USBVIRTUAL      SerialUSB
