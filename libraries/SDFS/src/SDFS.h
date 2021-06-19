@@ -234,8 +234,8 @@ protected:
     }
 
 
-    static uint8_t _getFlags(OpenMode openMode, AccessMode accessMode) {
-        uint8_t mode = 0;
+    static int _getFlags(OpenMode openMode, AccessMode accessMode) {
+        int mode = 0;
         if (openMode & OM_CREATE) {
             mode |= O_CREAT;
         }
