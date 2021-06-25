@@ -46,9 +46,9 @@ def BuildBoot(name):
 
 def BuildUSBStack(name):
     print("%s.menu.usbstack.picosdk=Pico SDK" % (name))
-    print("%s.menu.usbstack.picosdk.build.usbstack_flags=" % (name))
+    print('%s.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"' % (name))
     print("%s.menu.usbstack.tinyusb=Adafruit TinyUSB" % (name))
-    print('%s.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"' % (name))
+    print('%s.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"' % (name))
 
 def BuildHeader(name, vendor_name, product_name, pidtouse, vid, pid, boarddefine, variant, uploadtool, flashsize, boot2):
     prettyname = vendor_name + " " + product_name
