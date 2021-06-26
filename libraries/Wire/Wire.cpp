@@ -139,7 +139,6 @@ void TwoWire::begin(uint8_t addr) {
 }
 
 void TwoWire::onIRQ() {
-    Serial.printf("Wire.IRQ=%08x\n", _i2c->hw->intr_stat);
     if (_i2c->hw->intr_stat & (1 << 10)) {
         _buffLen = 0;
         _buffOff = 0;
