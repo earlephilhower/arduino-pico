@@ -123,7 +123,7 @@ void TwoWire::begin(uint8_t addr) {
     i2c_set_slave_mode(_i2c, true, addr);
 
     // Our callback IRQ
-    _i2c->hw->intr_mask = (1 << 10) | (1 << 9) | (1 << 5) | (1 << 2);
+    _i2c->hw->intr_mask = (1 << 10) | (1 << 9) | (1 << 6) | (1 << 5) | (1 << 2);
 
     int irqNo = I2C0_IRQ + i2c_hw_index(_i2c);
     irq_set_exclusive_handler(irqNo, i2c_hw_index(_i2c) == 0 ? _handler0 : _handler1);
@@ -139,6 +139,7 @@ void TwoWire::begin(uint8_t addr) {
 }
 
 void TwoWire::onIRQ() {
+    Serial.printf("Wire.IRQ=%08x\n", _i2c->hw->intr_stat);
     if (_i2c->hw->intr_stat & (1 << 10)) {
         _buffLen = 0;
         _buffOff = 0;
@@ -153,6 +154,10 @@ void TwoWire::onIRQ() {
         _buffOff = 0;
         _slaveStartDet = false;
         _i2c->hw->clr_stop_det;
+    }
+    if (_i2c->hw->intr_stat & (1 << 6)) {
+        // TX_ABRT
+        _i2c->hw->clr_tx_abrt;
     }
     if (_i2c->hw->intr_stat & (1 << 5)) {
         // RD_REQ
