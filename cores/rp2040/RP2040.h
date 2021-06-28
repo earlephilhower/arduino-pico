@@ -161,7 +161,7 @@ public:
             epoch = _epoch;
             ctr = systick_hw->cvr;
         } while (epoch != _epoch);
-        return epoch + (1 << 24) - ctr;
+        return epoch + (1LL << 24) - ctr;
     }
 
     void idleOtherCore() {
@@ -177,7 +177,7 @@ public:
 
 private:
     static void _SystickHandler() {
-        rp2040._epoch += 1LL<<24;
+        rp2040._epoch += 1LL << 24;
     }
 };
 
