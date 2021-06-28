@@ -161,7 +161,7 @@ uint8_t const * tud_hid_descriptor_report_cb(uint8_t instance) {
 
 const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
     (void)index;
-    static uint8_t *usbd_desc_cfg;
+    static uint8_t *usbd_desc_cfg = NULL;
 
     if (!usbd_desc_cfg) {
         bool hasHID = __USBInstallKeyboard || __USBInstallMouse;
