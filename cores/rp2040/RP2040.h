@@ -21,6 +21,8 @@
 #include <hardware/clocks.h>
 #include <hardware/irq.h>
 #include <hardware/pio.h>
+#include <hardware/exception.h>
+#include <hardware/structs/systick.h>
 #include <pico/multicore.h>
 #include <pico/util/queue.h>
 #include <CoreMutex.h>
@@ -114,8 +116,21 @@ private:
     static constexpr int _GOTOSLEEP = 0x66666666;
 };
 
+class RP2040;
+extern RP2040 rp2040;
 class RP2040 {
 public:
+    RP2040() {
+        _epoch = 0;
+        // Enable SYSTICK exception
+        exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
+        systick_hw->csr = 0x7;
+        systick_hw->rvr = 0x00FFFFFF;
+    }
+
+    ~RP2040() { /* noop */ }
+
+
     // Convert from microseconds to PIO clock cycles
     static int usToPIOCycles(int us) {
         // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
@@ -127,18 +142,44 @@ public:
         return clock_get_hz(clk_sys);
     }
 
+    // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
+    volatile uint64_t _epoch = 0;
+    inline uint32_t getCycleCount() {
+        uint32_t epoch;
+        uint32_t ctr;
+        do {
+            epoch = (uint32_t)_epoch;
+            ctr = systick_hw->cvr;
+        } while (epoch != (uint32_t)_epoch);
+        return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
+    }
+
+    inline uint64_t getCycleCount64() {
+        uint64_t epoch;
+        uint64_t ctr;
+        do {
+            epoch = _epoch;
+            ctr = systick_hw->cvr;
+        } while (epoch != _epoch);
+        return epoch + (1 << 24) - ctr;
+    }
+
     void idleOtherCore() {
         fifo.idleOtherCore();
     }
+
     void resumeOtherCore() {
         fifo.resumeOtherCore();
     }
 
     // Multicore comms FIFO
     _MFIFO fifo;
-};
 
-extern RP2040 rp2040;
+private:
+    static void _SystickHandler() {
+        rp2040._epoch += 1LL<<24;
+    }
+};
 
 // Wrapper class for PIO programs, abstracting common operations out
 // TODO - Add unload/destructor
