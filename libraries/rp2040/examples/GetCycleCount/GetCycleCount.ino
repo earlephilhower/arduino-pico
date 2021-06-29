@@ -9,7 +9,7 @@ void setup() {
   Serial.printf("There are %d cycles in one second.\n\n\n", b - a);
 
   delay(3000);
-  
+
   Serial.println("Note that the (32-bit) getCycleCount() will wraparound in ~30 seconds.");
   Serial.println("Using the 64-bit getCycleCount64() makes it practically infinite.");
   Serial.printf("\n%15s - %15s\n", "getCycleCount", "getCycleCount64");
