@@ -9,12 +9,27 @@
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-setup1  KEYWORD2
-loop2   KEYWORD2
+
+setup1	KEYWORD2
+loop2	KEYWORD2
+
 analogWriteFreq	KEYWORD2
 analogWriteRange	KEYWORD2
-analogWriteResolution KEYWORD2
+analogWriteResolution	KEYWORD2
 
-######################################
-# Constants (LITERAL1)
-#######################################
+push	KEYWORD2
+push_nb	KEYWORD2
+pop	KEYWORD2
+pop_nb	KEYWORD2
+
+rp2040	KEYWORD2
+RP2040	KEYWORD2
+usToPIOCycles	KEYWORD2
+f_cpu	KEYWORD2
+getCycleCount	KEYWORD2
+getCycleCount64	KEYWORD2
+idleOtherCore	KEYWORD2
+resumeOtherCore	KEYWORD2
+
+PIOProgram	KEYWORD2
+prepare	KEYWORD2
