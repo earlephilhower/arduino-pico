@@ -33,6 +33,7 @@ target_link_libraries(pico
 	hardware_clocks
 	hardware_divider
 	hardware_dma
+	hardware_exception
 	hardware_flash
 	hardware_gpio
 	hardware_i2c
@@ -73,12 +74,6 @@ target_link_libraries(pico
 	pico_audio_i2s
 )
 
-add_custom_command(TARGET pico PRE_BUILD
-	COMMAND arm-none-eabi-gcc -g -c ../../../assembly/crt0.S -I "${PICO_SDK_PATH}/src/rp2040/hardware_regs/include" -I "${PICO_SDK_PATH}/src/common/pico_binary_info/include/"
-)
-
 add_custom_command(TARGET pico POST_BUILD
-	COMMAND ar d libpico.a crt0.S.obj
-	COMMAND ar r libpico.a crt0.o
 	COMMAND ar d libpico.a stdio.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj
 )
