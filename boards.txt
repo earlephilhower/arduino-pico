@@ -112,9 +112,9 @@ rpipico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI
 rpipico.menu.dbglvl.NDEBUG=NDEBUG
 rpipico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipico.menu.usbstack.picosdk=Pico SDK
-rpipico.menu.usbstack.picosdk.build.usbstack_flags=
+rpipico.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 rpipico.menu.usbstack.tinyusb=Adafruit TinyUSB
-rpipico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Raspberry Pi Pico (Picoprobe)
@@ -222,9 +222,9 @@ rpipicopicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_R
 rpipicopicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 rpipicopicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipicopicoprobe.menu.usbstack.picosdk=Pico SDK
-rpipicopicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+rpipicopicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 rpipicopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-rpipicopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit Feather RP2040
@@ -368,9 +368,9 @@ adafruit_feather.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_R
 adafruit_feather.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather.menu.usbstack.picosdk=Pico SDK
-adafruit_feather.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_feather.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_feather.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_feather.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_feather.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit Feather RP2040 (Picoprobe)
@@ -514,9 +514,9 @@ adafruit_featherpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE 
 adafruit_featherpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_featherpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_featherpicoprobe.menu.usbstack.picosdk=Pico SDK
-adafruit_featherpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_featherpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_featherpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_featherpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_featherpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040
@@ -660,9 +660,9 @@ adafruit_itsybitsy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG
 adafruit_itsybitsy.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_itsybitsy.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_itsybitsy.menu.usbstack.picosdk=Pico SDK
-adafruit_itsybitsy.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_itsybitsy.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_itsybitsy.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_itsybitsy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_itsybitsy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040 (Picoprobe)
@@ -806,9 +806,9 @@ adafruit_itsybitsypicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIR
 adafruit_itsybitsypicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_itsybitsypicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_itsybitsypicoprobe.menu.usbstack.picosdk=Pico SDK
-adafruit_itsybitsypicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_itsybitsypicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit QT Py RP2040
@@ -952,9 +952,9 @@ adafruit_qtpy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP20
 adafruit_qtpy.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_qtpy.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_qtpy.menu.usbstack.picosdk=Pico SDK
-adafruit_qtpy.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_qtpy.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_qtpy.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_qtpy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_qtpy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit QT Py RP2040 (Picoprobe)
@@ -1098,9 +1098,9 @@ adafruit_qtpypicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DD
 adafruit_qtpypicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_qtpypicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_qtpypicoprobe.menu.usbstack.picosdk=Pico SDK
-adafruit_qtpypicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_qtpypicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_qtpypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_qtpypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_qtpypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040
@@ -1244,9 +1244,9 @@ adafruit_stemmafriend.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDE
 adafruit_stemmafriend.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_stemmafriend.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_stemmafriend.menu.usbstack.picosdk=Pico SDK
-adafruit_stemmafriend.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_stemmafriend.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_stemmafriend.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_stemmafriend.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_stemmafriend.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040 (Picoprobe)
@@ -1390,9 +1390,9 @@ adafruit_stemmafriendpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_
 adafruit_stemmafriendpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_stemmafriendpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_stemmafriendpicoprobe.menu.usbstack.picosdk=Pico SDK
-adafruit_stemmafriendpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_stemmafriendpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT
@@ -1536,9 +1536,9 @@ adafruit_trinkeyrp2040qt.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -
 adafruit_trinkeyrp2040qt.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_trinkeyrp2040qt.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_trinkeyrp2040qt.menu.usbstack.picosdk=Pico SDK
-adafruit_trinkeyrp2040qt.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_trinkeyrp2040qt.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT (Picoprobe)
@@ -1682,9 +1682,9 @@ adafruit_trinkeyrp2040qtpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP20
 adafruit_trinkeyrp2040qtpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_trinkeyrp2040qtpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdk=Pico SDK
-adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit MacroPad RP2040
@@ -1828,9 +1828,9 @@ adafruit_macropad2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDE
 adafruit_macropad2040.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_macropad2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_macropad2040.menu.usbstack.picosdk=Pico SDK
-adafruit_macropad2040.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_macropad2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_macropad2040.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_macropad2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_macropad2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Adafruit MacroPad RP2040 (Picoprobe)
@@ -1974,9 +1974,9 @@ adafruit_macropad2040picoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_
 adafruit_macropad2040picoprobe.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_macropad2040picoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_macropad2040picoprobe.menu.usbstack.picosdk=Pico SDK
-adafruit_macropad2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+adafruit_macropad2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_macropad2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-adafruit_macropad2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_macropad2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect
@@ -2168,9 +2168,9 @@ arduino_nano_connect.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEB
 arduino_nano_connect.menu.dbglvl.NDEBUG=NDEBUG
 arduino_nano_connect.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 arduino_nano_connect.menu.usbstack.picosdk=Pico SDK
-arduino_nano_connect.menu.usbstack.picosdk.build.usbstack_flags=
+arduino_nano_connect.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 arduino_nano_connect.menu.usbstack.tinyusb=Adafruit TinyUSB
-arduino_nano_connect.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+arduino_nano_connect.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect (Picoprobe)
@@ -2362,9 +2362,9 @@ arduino_nano_connectpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_W
 arduino_nano_connectpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 arduino_nano_connectpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 arduino_nano_connectpicoprobe.menu.usbstack.picosdk=Pico SDK
-arduino_nano_connectpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+arduino_nano_connectpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 arduino_nano_connectpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-arduino_nano_connectpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+arduino_nano_connectpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # SparkFun ProMicro RP2040
@@ -2556,9 +2556,9 @@ sparkfun_promicrorp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -D
 sparkfun_promicrorp2040.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_promicrorp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_promicrorp2040.menu.usbstack.picosdk=Pico SDK
-sparkfun_promicrorp2040.menu.usbstack.picosdk.build.usbstack_flags=
+sparkfun_promicrorp2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 sparkfun_promicrorp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
-sparkfun_promicrorp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_promicrorp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # SparkFun ProMicro RP2040 (Picoprobe)
@@ -2750,9 +2750,9 @@ sparkfun_promicrorp2040picoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP204
 sparkfun_promicrorp2040picoprobe.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_promicrorp2040picoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdk=Pico SDK
-sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 
 # -----------------------------------
 # Generic RP2040
@@ -2872,9 +2872,9 @@ generic.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI
 generic.menu.dbglvl.NDEBUG=NDEBUG
 generic.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 generic.menu.usbstack.picosdk=Pico SDK
-generic.menu.usbstack.picosdk.build.usbstack_flags=
+generic.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 generic.menu.usbstack.tinyusb=Adafruit TinyUSB
-generic.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+generic.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 generic.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4
@@ -3010,9 +3010,9 @@ genericpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_R
 genericpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
 genericpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 genericpicoprobe.menu.usbstack.picosdk=Pico SDK
-genericpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+genericpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 genericpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
-genericpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{build.core.path}/TinyUSB" "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+genericpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 genericpicoprobe.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 genericpicoprobe.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 genericpicoprobe.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4
