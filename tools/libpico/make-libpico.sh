@@ -42,4 +42,4 @@ for type in boot2_generic_03h boot2_is25lp080 boot2_w25q080 boot2_w25x10cl; do
                    -s 0xffffffff $type.$div.bin ${type}_${div}_padded_checksum.S
     done
 done
-mv *.S ../../../../assembly/.
+mv *.S ../../../../boot2/.
