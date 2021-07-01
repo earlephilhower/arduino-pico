@@ -61,16 +61,18 @@ extern "C" int main() {
     mutex_init(&_pioMutex);
     initVariant();
 
-#ifdef USE_TINYUSB
-    TinyUSB_Device_Init(0);
+#ifndef NO_USB
+	#ifdef USE_TINYUSB
+		TinyUSB_Device_Init(0);
 
-#else
-    __USBStart();
+	#else
+		__USBStart();
 
-#ifndef DISABLE_USB_SERIAL
-    // Enable serial port for reset/upload always
-    Serial.begin(115200);
-#endif
+	#ifndef DISABLE_USB_SERIAL
+		// Enable serial port for reset/upload always
+		Serial.begin(115200);
+	#endif
+	#endif
 #endif
 
 #if defined DEBUG_RP2040_PORT
