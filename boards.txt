@@ -117,8 +117,6 @@ rpipico.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 rpipico.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 rpipico.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-rpipico.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-rpipico.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 rpipico.menu.usbstack.nousb=No USB
 rpipico.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -233,8 +231,6 @@ rpipicopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipicopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 rpipicopicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 rpipicopicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-rpipicopicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-rpipicopicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 rpipicopicoprobe.menu.usbstack.nousb=No USB
 rpipicopicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -385,8 +381,6 @@ adafruit_feather.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_feather.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_feather.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_feather.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_feather.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_feather.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_feather.menu.usbstack.nousb=No USB
 adafruit_feather.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -537,8 +531,6 @@ adafruit_featherpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_featherpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_featherpicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_featherpicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_featherpicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_featherpicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_featherpicoprobe.menu.usbstack.nousb=No USB
 adafruit_featherpicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -689,8 +681,6 @@ adafruit_itsybitsy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_itsybitsy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_itsybitsy.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_itsybitsy.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_itsybitsy.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_itsybitsy.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_itsybitsy.menu.usbstack.nousb=No USB
 adafruit_itsybitsy.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -841,8 +831,6 @@ adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_itsybitsypicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_itsybitsypicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_itsybitsypicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_itsybitsypicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_itsybitsypicoprobe.menu.usbstack.nousb=No USB
 adafruit_itsybitsypicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -993,8 +981,6 @@ adafruit_qtpy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_qtpy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_qtpy.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_qtpy.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_qtpy.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_qtpy.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_qtpy.menu.usbstack.nousb=No USB
 adafruit_qtpy.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -1145,8 +1131,6 @@ adafruit_qtpypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_qtpypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_qtpypicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_qtpypicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_qtpypicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_qtpypicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_qtpypicoprobe.menu.usbstack.nousb=No USB
 adafruit_qtpypicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -1297,8 +1281,6 @@ adafruit_stemmafriend.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_stemmafriend.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_stemmafriend.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_stemmafriend.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_stemmafriend.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_stemmafriend.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_stemmafriend.menu.usbstack.nousb=No USB
 adafruit_stemmafriend.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -1449,8 +1431,6 @@ adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_stemmafriendpicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_stemmafriendpicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_stemmafriendpicoprobe.menu.usbstack.nousb=No USB
 adafruit_stemmafriendpicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -1601,8 +1581,6 @@ adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_trinkeyrp2040qt.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_trinkeyrp2040qt.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_trinkeyrp2040qt.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_trinkeyrp2040qt.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_trinkeyrp2040qt.menu.usbstack.nousb=No USB
 adafruit_trinkeyrp2040qt.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -1753,8 +1731,6 @@ adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.nousb=No USB
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -1905,8 +1881,6 @@ adafruit_macropad2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_macropad2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_macropad2040.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_macropad2040.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_macropad2040.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_macropad2040.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_macropad2040.menu.usbstack.nousb=No USB
 adafruit_macropad2040.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -2057,8 +2031,6 @@ adafruit_macropad2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_macropad2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_macropad2040picoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 adafruit_macropad2040picoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-adafruit_macropad2040picoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-adafruit_macropad2040picoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_macropad2040picoprobe.menu.usbstack.nousb=No USB
 adafruit_macropad2040picoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -2257,8 +2229,6 @@ arduino_nano_connect.menu.usbstack.tinyusb=Adafruit TinyUSB
 arduino_nano_connect.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 arduino_nano_connect.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 arduino_nano_connect.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-arduino_nano_connect.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-arduino_nano_connect.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 arduino_nano_connect.menu.usbstack.nousb=No USB
 arduino_nano_connect.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -2457,8 +2427,6 @@ arduino_nano_connectpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 arduino_nano_connectpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 arduino_nano_connectpicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 arduino_nano_connectpicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-arduino_nano_connectpicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-arduino_nano_connectpicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 arduino_nano_connectpicoprobe.menu.usbstack.nousb=No USB
 arduino_nano_connectpicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -2657,8 +2625,6 @@ sparkfun_promicrorp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_promicrorp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 sparkfun_promicrorp2040.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 sparkfun_promicrorp2040.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-sparkfun_promicrorp2040.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-sparkfun_promicrorp2040.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 sparkfun_promicrorp2040.menu.usbstack.nousb=No USB
 sparkfun_promicrorp2040.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -2857,8 +2823,6 @@ sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 sparkfun_promicrorp2040picoprobe.menu.usbstack.nousb=No USB
 sparkfun_promicrorp2040picoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 
@@ -2985,8 +2949,6 @@ generic.menu.usbstack.tinyusb=Adafruit TinyUSB
 generic.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 generic.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 generic.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-generic.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-generic.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 generic.menu.usbstack.nousb=No USB
 generic.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
@@ -3129,8 +3091,6 @@ genericpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 genericpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 genericpicoprobe.menu.usbstack.picosdknoser=Pico SDK (No Serial)
 genericpicoprobe.menu.usbstack.picosdknoser.build.usbstack_flags=-DDISABLE_USB_SERIAL "-I{runtime.platform.path}/tools/libpico"
-genericpicoprobe.menu.usbstack.tinyusbnoser=Adafruit TinyUSB (No Serial)
-genericpicoprobe.menu.usbstack.tinyusbnoser.build.usbstack_flags=-DDISABLE_USB_SERIAL -DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 genericpicoprobe.menu.usbstack.nousb=No USB
 genericpicoprobe.menu.usbstack.nousb.build.usbstack_flags=-DNO_USB "-I{runtime.platform.path}/tools/libpico"
 genericpicoprobe.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
