@@ -35,8 +35,8 @@ compiler.path={runtime.tools.pqt-gcc.path}/bin/
 compiler.warning_flags=-Werror=return-type
 compiler.warning_flags.none=-Werror=return-type
 compiler.warning_flags.default=-Werror=return-type
-compiler.warning_flags.more=-Wall -Werror=return-type
-compiler.warning_flags.all=-Wall -Wextra -Werror=return-type
+compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
+compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
 
 compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt"
