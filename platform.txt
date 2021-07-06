@@ -147,3 +147,9 @@ tools.picoprobe.upload.protocol=picoprobe
 tools.picoprobe.upload.params.verbose=
 tools.picoprobe.upload.params.quiet=
 tools.picoprobe.upload.pattern="{cmd}/bin/openocd" -f "interface/picoprobe.cfg" -f "target/rp2040.cfg" -s "{cmd}/share/openocd/scripts" -c "program {build.path}/{build.project_name}.elf verify reset exit"
+
+tools.picodebug.cmd={runtime.platform.path}/system/openocd
+tools.picodebug.upload.protocol=pico-debug
+tools.picodebug.upload.params.verbose=
+tools.picodebug.upload.params.quiet=
+tools.picodebug.upload.pattern="{cmd}/bin/openocd" -f "board/pico-debug.cfg" -s "{cmd}/share/openocd/scripts" -c "program {build.path}/{build.project_name}.elf verify reset exit"

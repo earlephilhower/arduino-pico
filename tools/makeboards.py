@@ -50,14 +50,18 @@ def BuildUSBStack(name):
     print("%s.menu.usbstack.tinyusb=Adafruit TinyUSB" % (name))
     print('%s.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"' % (name))
 
-def BuildHeader(name, vendor_name, product_name, pidtouse, vid, pid, boarddefine, variant, uploadtool, flashsize, boot2):
+def BuildWithoutUSBStack(name):
+    print("%s.menu.usbstack.nousb=No USB" % (name))
+    print('%s.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"' % (name))
+
+def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, boarddefine, variant, uploadtool, flashsize, boot2):
     prettyname = vendor_name + " " + product_name
     print()
     print("# -----------------------------------")
     print("# %s" % (prettyname))
     print("# -----------------------------------")
     print("%s.name=%s" % (name, prettyname))
-    print("%s.vid.0=%s" % (name, vid))
+    print("%s.vid.0=%s" % (name, vidtouse))
     print("%s.pid.0=%s" % (name, pidtouse))
     print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid))
     print("%s.build.board=%s" % (name, boarddefine))
@@ -92,17 +96,21 @@ def BuildGlobalMenuList():
 
 
 def MakeBoard(name, vendor_name, product_name, vid, pid, boarddefine, flashsizemb, boot2):
-    for a, b, c in [ ["", "", "uf2conv"], ["picoprobe", " (Picoprobe)", "picoprobe"]]:
+    for a, b, c in [ ["", "", "uf2conv"], ["picoprobe", " (Picoprobe)", "picoprobe"], ["picodebug", " (pico-debug)", "picodebug"]]:
         n = name + a
         p = product_name + b
         fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
         for i in range(1, flashsizemb):
             fssizelist.append(i * 1024 * 1024)
+        vidtouse = vid;
         if a == "picoprobe":
             pidtouse = '0x0004'
+        elif a == "picodebug":
+            vidtouse = '0x1209'
+            pidtouse = '0x2488'
         else:
             pidtouse = pid
-        BuildHeader(n, vendor_name, p, pidtouse, vid, pid, boarddefine, name, c, flashsizemb * 1024 * 1024, boot2)
+        BuildHeader(n, vendor_name, p, vidtouse, pidtouse, vid, pid, boarddefine, name, c, flashsizemb * 1024 * 1024, boot2)
         if name == "generic":
             BuildFlashMenu(n, 2*1024*1024, [0, 1*1024*1024])
             BuildFlashMenu(n, 4*1024*1024, [0, 2*1024*1024])
@@ -113,7 +121,10 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, boarddefine, flashsizem
         BuildFreq(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
-        BuildUSBStack(n)
+        if a == "picodebug":
+            BuildWithoutUSBStack(n)
+        else:
+            BuildUSBStack(n)
         if name == "generic":
             BuildBoot(n)
 
