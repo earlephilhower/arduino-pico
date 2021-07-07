@@ -61,6 +61,7 @@ extern "C" int main() {
     mutex_init(&_pioMutex);
     initVariant();
 
+#ifndef NO_USB
 #ifdef USE_TINYUSB
     TinyUSB_Device_Init(0);
 
@@ -72,11 +73,13 @@ extern "C" int main() {
     Serial.begin(115200);
 #endif
 #endif
+#endif
 
 #if defined DEBUG_RP2040_PORT
     DEBUG_RP2040_PORT.begin();
 #endif
 
+#ifndef NO_USB
     if (setup1 || loop1) {
         rp2040.fifo.begin(2);
         multicore_launch_core1(main1);
@@ -84,6 +87,7 @@ extern "C" int main() {
         rp2040.fifo.begin(1);
     }
     rp2040.fifo.registerCore();
+#endif
 
     setup();
     while (true) {

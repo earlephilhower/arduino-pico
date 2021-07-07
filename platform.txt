@@ -107,7 +107,7 @@ archive_file_path={build.path}/{archive_file}
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Generate the linker map with specific flash sizes/locations
-recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/tools/simplesub.py" --input "{runtime.platform.path}/lib/memmap_default.ld" --out "{build.path}/memmap_default.ld" --sub __FLASH_LENGTH__ {build.flash_length} --sub __EEPROM_START__ {build.eeprom_start} --sub __FS_START__ {build.fs_start} --sub __FS_END__ {build.fs_end}
+recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/tools/simplesub.py" --input "{runtime.platform.path}/lib/memmap_default.ld" --out "{build.path}/memmap_default.ld" --sub __FLASH_LENGTH__ {build.flash_length} --sub __EEPROM_START__ {build.eeprom_start} --sub __FS_START__ {build.fs_start} --sub __FS_END__ {build.fs_end} --sub __RAM_LENGTH__ {build.ram_length}
 
 ## Compile the boot stage 2 blob
 recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
@@ -147,3 +147,9 @@ tools.picoprobe.upload.protocol=picoprobe
 tools.picoprobe.upload.params.verbose=
 tools.picoprobe.upload.params.quiet=
 tools.picoprobe.upload.pattern="{cmd}/bin/openocd" -f "interface/picoprobe.cfg" -f "target/rp2040.cfg" -s "{cmd}/share/openocd/scripts" -c "program {build.path}/{build.project_name}.elf verify reset exit"
+
+tools.picodebug.cmd={runtime.platform.path}/system/openocd
+tools.picodebug.upload.protocol=pico-debug
+tools.picodebug.upload.params.verbose=
+tools.picodebug.upload.params.quiet=
+tools.picodebug.upload.pattern="{cmd}/bin/openocd" -f "board/pico-debug.cfg" -s "{cmd}/share/openocd/scripts" -c "program {build.path}/{build.project_name}.elf verify reset exit"

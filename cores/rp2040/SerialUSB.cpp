@@ -20,7 +20,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef USE_TINYUSB
+#if !defined(USE_TINYUSB) && !defined(NO_USB)
 
 #include <Arduino.h>
 #include "CoreMutex.h"
