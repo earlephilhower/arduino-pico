@@ -54,7 +54,7 @@ def BuildWithoutUSBStack(name):
     print("%s.menu.usbstack.nousb=No USB" % (name))
     print('%s.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"' % (name))
 
-def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, boarddefine, variant, uploadtool, flashsize, boot2):
+def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, boarddefine, variant, uploadtool, flashsize, ramsize, boot2):
     prettyname = vendor_name + " " + product_name
     print()
     print("# -----------------------------------")
@@ -69,7 +69,7 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, b
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.tool=%s" % (name, uploadtool))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
-    print("%s.upload.maximum_data_size=262144" % (name))
+    print("%s.upload.maximum_data_size=%d" % (name, ramsize))
     print("%s.upload.wait_for_upload_port=true" % (name))
     print("%s.upload.erase_cmd=" % (name))
     print("%s.serial.disableDTR=false" % (name))
@@ -78,7 +78,10 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, b
     print("%s.build.led=" % (name))
     print("%s.build.core=rp2040" % (name))
     print("%s.build.mcu=rp2040" % (name))
-    print("%s.build.ldscript=memmap_default.ld" % (name))
+    if ramsize == (256 * 1024):
+        print("%s.build.ldscript=memmap_default.ld" % (name))
+    else:
+        print("%s.build.ldscript=memmap_picodebug.ld" % (name))
     print("%s.build.boot2=%s" % (name, boot2))
     print("%s.build.vid=%s" % (name, vid))
     print("%s.build.pid=%s" % (name, pid))
@@ -103,14 +106,16 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, boarddefine, flashsizem
         for i in range(1, flashsizemb):
             fssizelist.append(i * 1024 * 1024)
         vidtouse = vid;
+        ramsizekb = 256;
         if a == "picoprobe":
             pidtouse = '0x0004'
         elif a == "picodebug":
             vidtouse = '0x1209'
             pidtouse = '0x2488'
+            ramsizekb = 240;
         else:
             pidtouse = pid
-        BuildHeader(n, vendor_name, p, vidtouse, pidtouse, vid, pid, boarddefine, name, c, flashsizemb * 1024 * 1024, boot2)
+        BuildHeader(n, vendor_name, p, vidtouse, pidtouse, vid, pid, boarddefine, name, c, flashsizemb * 1024 * 1024, ramsizekb * 1024, boot2)
         if name == "generic":
             BuildFlashMenu(n, 2*1024*1024, [0, 1*1024*1024])
             BuildFlashMenu(n, 4*1024*1024, [0, 2*1024*1024])
