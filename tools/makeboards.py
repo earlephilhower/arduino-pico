@@ -78,10 +78,8 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, b
     print("%s.build.led=" % (name))
     print("%s.build.core=rp2040" % (name))
     print("%s.build.mcu=rp2040" % (name))
-    if ramsize == (256 * 1024):
-        print("%s.build.ldscript=memmap_default.ld" % (name))
-    else:
-        print("%s.build.ldscript=memmap_picodebug.ld" % (name))
+    print("%s.build.ldscript=memmap_default.ld" % (name))
+    print("%s.build.ram_length=%dk" % (name, ramsize / 1024))
     print("%s.build.boot2=%s" % (name, boot2))
     print("%s.build.vid=%s" % (name, vid))
     print("%s.build.pid=%s" % (name, pid))
