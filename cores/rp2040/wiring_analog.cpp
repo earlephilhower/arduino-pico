@@ -30,6 +30,8 @@ static uint32_t analogScale = 255;
 static uint16_t analogFreq = 1000;
 static bool pwmInitted = false;
 static bool adcInitted = false;
+static uint16_t analogWritePseudoScale = 1;
+static uint16_t analogWriteSlowScale = 1;
 
 auto_init_mutex(_dacMutex);
 
@@ -77,6 +79,21 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         return;
     }
     if (!pwmInitted) {
+        // For low frequencies, we need to scale the output max value up to achieve lower periods
+        analogWritePseudoScale = 1;
+        while (((clock_get_hz(clk_sys) / (float)(analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
+            analogWritePseudoScale++;
+            analogScale *= 2;
+            DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%d\n", analogWritePseudoScale, analogScale);
+        }
+        // For high frequencies, we need to scale the output max value down to actually hit the frequency target
+        analogWriteSlowScale = 1;
+        while (((clock_get_hz(clk_sys) / (float)(analogScale * analogFreq)) < 2.0) && (analogScale > 32)) {
+            analogWriteSlowScale++;
+            analogScale /= 2;
+            DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%d\n", analogWriteSlowScale, analogScale);
+        }
+
         pwm_config c = pwm_get_default_config();
         pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / (float)(analogScale * analogFreq));
         pwm_config_set_wrap(&c, analogScale);
@@ -85,6 +102,9 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         }
         pwmInitted = true;
     }
+
+    val <<= analogWritePseudoScale;
+    val >>= analogWriteSlowScale;
 
     if (val < 0) {
         val = 0;
