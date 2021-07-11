@@ -43,6 +43,7 @@ compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/l
 compiler.flags=-Os -march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections -fno-exceptions
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
 compiler.libpico="{runtime.platform.path}/lib/libpico.a"
+compiler.libstdcpp="{runtime.platform.path}/lib/libstdc++.a"
 
 compiler.c.cmd=arm-none-eabi-gcc
 compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} {compiler.includes} -std=gnu17 -g
@@ -113,7 +114,7 @@ recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3
 recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
 
 ## Combine gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.ldflags} "-Wl,--script={build.path}/memmap_default.ld" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.elf" -Wl,--start-group {object_files} "{build.path}/{archive_file}" "{build.path}/boot2.o" {compiler.libpico} -lm -lc -lstdc++ -lc -Wl,--end-group
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.ldflags} "-Wl,--script={build.path}/memmap_default.ld" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.elf" -Wl,--start-group {object_files} "{build.path}/{archive_file}" "{build.path}/boot2.o" {compiler.libpico} -lm -lc {compiler.libstdcpp} -lc -Wl,--end-group
 
 ## Create output (UF2 file)
 recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2"
