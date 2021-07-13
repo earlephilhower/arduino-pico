@@ -1,6 +1,17 @@
 {
-    "name": "framework-arduinopico",
-    "description": "Arduino Wiring-based Framework (RPi Pico RP2040)",
-    "url": "https://github.com/esrlephilhower/arduino-pico",
-    "version": "0.9.2"
+  "name": "framework-arduino-pico-earlephilhower",
+  "version": "1.10902.0",
+  "description": "Raspberry Pi Pico Arduino core, for all RP2040 boards",
+  "keywords": [
+    "framework",
+    "arduino",
+    "Cortex-M",
+    "Raspberry Pi",
+	"RP2040"
+  ],
+  "homepage": "https://arduino-pico.readthedocs.io/en/latest/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/earlephilhower/arduino-pico"
+  }
 }
