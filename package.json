@@ -1,5 +1,5 @@
 {
-  "name": "framework-arduino-pico-earlephilhower",
+  "name": "framework-arduinopico",
   "version": "1.10902.0",
   "description": "Raspberry Pi Pico Arduino core, for all RP2040 boards",
   "keywords": [
