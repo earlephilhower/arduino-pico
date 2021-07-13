@@ -7,7 +7,7 @@
     "arduino",
     "Cortex-M",
     "Raspberry Pi",
-	"RP2040"
+    "RP2040"
   ],
   "homepage": "https://arduino-pico.readthedocs.io/en/latest/",
   "repository": {
