@@ -26,13 +26,28 @@ assert os.path.isdir(FRAMEWORK_DIR)
 # -std=gnu++17 -g -DSERIALUSB_PID=0x000a 
 # -DARDUINO_RASPBERRY_PI_PICO "-DBOARD_NAME=\"RASPBERRY_PI_PICO\"" 
 
+# todo 
+# # Compile the boot stage 2 blob
+#recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
+
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
 
     # Due to long path names "-iprefix" hook is required to avoid toolchain crashes
     CCFLAGS=[
+        "-march=armv6-m",
+        "-mcpu=cortex-m0plus",
+        "-mthumb",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-fno-exceptions",
+        "-fno-rtti",
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+    ],
+
+    CFLAGS=[
+        "-std=gnu17"
     ],
 
     CXXFLAGS=[
@@ -41,7 +56,8 @@ env.Append(
 
     CPPDEFINES=[
         ("ARDUINO", 10810),
-        "ARDUINO_ARCH_RP2040"
+        "ARDUINO_ARCH_RP2040",
+        ("F_CPU", "$BOARD_F_CPU"),
     ],
 
     CPPPATH=[
@@ -51,7 +67,9 @@ env.Append(
     ],
 
     LINKFLAGS=[
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_wrap.txt")
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_wrap.txt"),
+        "-u _printf_float",
+        "-u _scanf_float"
     ],
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
@@ -63,6 +81,21 @@ env.Append(
     # link lib/libpico.a
     LIBS=["pico"]
 )
+
+def configure_usb_flags(cpp_defines):
+    if "USE_TINYUSB" in cpp_defines:
+        env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "libraries", "Adafruit_TinyUSB_Arduino", "src", "arduino")])
+    else:
+        # standard Pico SDK USB stack used.
+        env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")])
+
+#
+# Process configuration flags
+#
+
+cpp_defines = env.Flatten(env.get("CPPDEFINES", []))
+
+configure_usb_flags(cpp_defines)
 
 # TODO:
 # dynamically generate linker script as the arduino core does
