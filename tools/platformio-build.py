@@ -57,6 +57,7 @@ env.Append(
         ("ARDUINO", 10810),
         "ARDUINO_ARCH_RP2040",
         ("F_CPU", "$BOARD_F_CPU"),
+        ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
     ],
 
     CPPPATH=[
@@ -68,8 +69,13 @@ env.Append(
 
     LINKFLAGS=[
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_wrap.txt"),
-        "-u _printf_float",
-        "-u _scanf_float"
+        "-u_printf_float",
+        "-u_scanf_float",
+         "-Wl,--cref",
+         "-Wl,--check-sections",
+         "-Wl,--gc-sections",
+         "-Wl,--unresolved-symbols=report-all",
+         "-Wl,--warn-common"
     ],
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
@@ -90,7 +96,15 @@ def configure_usb_flags(cpp_defines):
     else:
         # standard Pico SDK USB stack used.
         env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")])
-
+    # in any case, add standard flags
+    env.Append(CPPDEFINES=[
+        ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
+        ("USB_VID", board.get("build.hwids", [[0, 0]])[0][0]),
+        ("USB_PID", board.get("build.hwids", [[0, 0]])[0][1]),
+        ("USB_MANUFACTURER", '\\"%s\\"' % board.get("vendor", "Raspberry Pi")),
+        ("USB_PRODUCT", '\\"%s\\"' % board.get("build.usb_product", "Pico")), # ToDo: Add info to board manifest
+        ("SERIALUSB_PID", board.get("build.hwids", [[0, 0]])[0][1])
+    ])
 #
 # Process configuration flags
 #
