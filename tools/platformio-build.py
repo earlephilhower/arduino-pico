@@ -39,8 +39,6 @@ env.Append(
         "-mthumb",
         "-ffunction-sections",
         "-fdata-sections",
-        "-fno-exceptions",
-        "-fno-rtti",
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
     ],
@@ -50,7 +48,9 @@ env.Append(
     ],
 
     CXXFLAGS=[
-        "-std=gnu++17"
+        "-std=gnu++17",
+        "-fno-exceptions",
+        "-fno-rtti",
     ],
 
     CPPDEFINES=[
