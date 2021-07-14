@@ -75,11 +75,11 @@ env.Append(
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_wrap.txt"),
         "-u_printf_float",
         "-u_scanf_float",
-         "-Wl,--cref",
-         "-Wl,--check-sections",
-         "-Wl,--gc-sections",
-         "-Wl,--unresolved-symbols=report-all",
-         "-Wl,--warn-common"
+        "-Wl,--cref",
+        "-Wl,--check-sections",
+        "-Wl,--gc-sections",
+        "-Wl,--unresolved-symbols=report-all",
+        "-Wl,--warn-common"
     ],
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
@@ -106,9 +106,11 @@ def configure_usb_flags(cpp_defines):
         ("USB_VID", board.get("build.hwids", [[0, 0]])[0][0]),
         ("USB_PID", board.get("build.hwids", [[0, 0]])[0][1]),
         ("USB_MANUFACTURER", '\\"%s\\"' % board.get("vendor", "Raspberry Pi")),
-        ("USB_PRODUCT", '\\"%s\\"' % board.get("build.usb_product", "Pico")), # ToDo: Add info to board manifest
+        # ToDo: Add info to board manifest
+        ("USB_PRODUCT", '\\"%s\\"' % board.get("build.usb_product", "Pico")),
         ("SERIALUSB_PID", board.get("build.hwids", [[0, 0]])[0][1])
     ])
+
 #
 # Process configuration flags
 #
@@ -152,10 +154,11 @@ libs.append(
         os.path.join("$BUILD_DIR", "FrameworkArduino"),
         os.path.join(FRAMEWORK_DIR, "cores", "rp2040")))
 
-bootloader_src_file = board.get("build.arduino.boot2_source", "boot2_generic_03h_2_padded_checksum.S")
+bootloader_src_file = board.get(
+    "build.arduino.boot2_source", "boot2_generic_03h_2_padded_checksum.S")
 
 # Add bootloader file (boot2.o)
-# Only build the needed .S file, exclude all others via src_filter. 
+# Only build the needed .S file, exclude all others via src_filter.
 env.BuildSources(
     os.path.join("$BUILD_DIR", "FrameworkArduinoBootloader"),
     os.path.join(FRAMEWORK_DIR, "boot2"),
@@ -164,8 +167,10 @@ env.BuildSources(
 # Add include flags for all .S assembly file builds
 env.Append(
     ASFLAGS=[
-        "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src", "rp2040", "hardware_regs", "include"),
-        "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src", "common", "pico_binary_info", "include")
+        "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src",
+                           "rp2040", "hardware_regs", "include"),
+        "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src",
+                           "common", "pico_binary_info", "include")
     ]
 )
 
