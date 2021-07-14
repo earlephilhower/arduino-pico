@@ -18,6 +18,8 @@ from SCons.Script import DefaultEnvironment, Builder, AlwaysBuild
 env = DefaultEnvironment()
 platform = env.PioPlatform()
 board = env.BoardConfig()
+upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
+ram_size = board.get("upload.maximum_ram_size")
 
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
@@ -73,7 +75,7 @@ env.Append(
         "-u_printf_float",
         "-u_scanf_float",
         # no cross-reference table, heavily spams the output
-        #"-Wl,--cref",
+        # "-Wl,--cref",
         "-Wl,--check-sections",
         "-Wl,--gc-sections",
         "-Wl,--unresolved-symbols=report-all",
@@ -92,6 +94,7 @@ env.Append(
 
 
 def configure_usb_flags(cpp_defines):
+    global ram_size
     if "USE_TINYUSB" in cpp_defines:
         env.Append(CPPPATH=[os.path.join(
             FRAMEWORK_DIR, "libraries", "Adafruit_TinyUSB_Arduino", "src", "arduino")])
@@ -99,44 +102,76 @@ def configure_usb_flags(cpp_defines):
         # standard Pico SDK USB stack used.
         env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")])
     # in any case, add standard flags
+    # preferably use USB information from arduino.earlephilhower section,
+    # but fallback to sensible values derived from other parts otherwise.
+    usb_pid = board.get("build.arduino.earlephilhower.usb_pid",
+                        board.get("build.hwids", [[0, 0]])[0][1])
+    usb_vid = board.get("build.arduino.earlephilhower.usb_vid",
+                        board.get("build.hwids", [[0, 0]])[0][0])
+    usb_manufacturer = board.get(
+        "build.arduino.earlephilhower.usb_manufacturer", board.get("vendor", "Raspberry Pi"))
+    usb_product = board.get(
+        "build.arduino.earlephilhower.usb_product", board.get("name", "Pico"))
+
+    # Copy logic from makeboards.py. 
+    # Depending on whether a certain upload / debug method is used, change
+    # the PID/VID.
+    # https://github.com/earlephilhower/arduino-pico/blob/master/tools/makeboards.py
+    vidtouse = usb_vid
+    pidtouse = usb_pid
+    if upload_protocol == "picoprobe": 
+        pidtouse = '0x0004'
+    elif upload_protocol == "picodebug":
+        vidtouse = '0x1209'
+        pidtouse = '0x2488'
+        print("Trigger ram size update!!")
+        ram_size = 240 * 1024
+
     env.Append(CPPDEFINES=[
         ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
-        ("USB_VID", board.get("build.hwids", [[0, 0]])[0][0]),
-#        ("USB_PID", "0x000a"),
-        ("USB_PID", board.get("build.hwids", [[0, 0]])[0][1]),
-        ("USB_MANUFACTURER", '\\"%s\\"' % board.get("vendor", "Raspberry Pi")),
-        # ToDo: Add info to board manifest
-        ("USB_PRODUCT", '\\"%s\\"' % board.get("build.usb_product", "Pico")),
-        ("SERIALUSB_PID", board.get("build.hwids", [[0, 0]])[0][1])
-#        ("SERIALUSB_PID", "0x000a")
+        ("USB_VID", usb_vid),
+        ("USB_PID", usb_pid),
+        ("USB_MANUFACTURER", '\\"%s\\"' % usb_manufacturer),
+        ("USB_PRODUCT", '\\"%s\\"' % usb_product),
+        ("SERIALUSB_PID", usb_pid)
     ])
+
+    # use vidtouse and pidtouse 
+    # for USB PID/VID autodetection
+    hw_ids = board.get("build.hwids", [["0x2E8A", "0x00C0"]])
+    hw_ids[0][0] = vidtouse
+    hw_ids[0][1] = pidtouse
+    board.update("build.hwids", hw_ids)
+    board.update("upload.maximum_ram_size", ram_size)
 
 #
 # Process configuration flags
 #
-
-
 cpp_defines = env.Flatten(env.get("CPPDEFINES", []))
 
 configure_usb_flags(cpp_defines)
 
-# ToDo: Figure out how we can get the values of __FLASH_LENGTH__ etc 
+# ToDo: Figure out how we can get the values of __FLASH_LENGTH__ etc
 # and replace hardcoded values below.
+
+
 def get_sketch_partition_info(env):
     pass
 
+help(board)
 linkerscript_cmd = env.Command(
-    os.path.join("$BUILD_DIR", "memmap_default.ld"), # $TARGET
-    os.path.join(FRAMEWORK_DIR, "lib", "memmap_default.ld") , # $SOURCE 
+    os.path.join("$BUILD_DIR", "memmap_default.ld"),  # $TARGET
+    os.path.join(FRAMEWORK_DIR, "lib", "memmap_default.ld"),  # $SOURCE
     env.VerboseAction(" ".join([
-        '"$PYTHONEXE" "%s"' % os.path.join(FRAMEWORK_DIR, "tools", "simplesub.py"),
+        '"$PYTHONEXE" "%s"' % os.path.join(
+            FRAMEWORK_DIR, "tools", "simplesub.py"),
         "--input", "$SOURCE",
         "--out", "$TARGET",
         "--sub", "__FLASH_LENGTH__", "2093056",
         "--sub", "__EEPROM_START__", "270528512",
         "--sub", "__FS_START__", "270528512",
         "--sub", "__FS_END__", "270528512",
-        "--sub", "__RAM_LENGTH__", "256k",
+        "--sub", "__RAM_LENGTH__", "%dk" % (ram_size // 1024),
     ]), "Generating linkerscript $BUILD_DIR/memmap_default.ld")
 )
 
@@ -147,15 +182,17 @@ if not board.get("build.ldscript", ""):
 
 libs = []
 
-if "build.variant" in board:
+variant = board.get("build.arduino.earlephilhower.variant", board.get("build.variant", None))
+
+if variant is not None:
     env.Append(CPPPATH=[
-        os.path.join(FRAMEWORK_DIR, "variants", board.get("build.variant"))
+        os.path.join(FRAMEWORK_DIR, "variants", variant)
     ])
 
     libs.append(
         env.BuildLibrary(
             os.path.join("$BUILD_DIR", "FrameworkArduinoVariant"),
-            os.path.join(FRAMEWORK_DIR, "variants", board.get("build.variant"))))
+            os.path.join(FRAMEWORK_DIR, "variants", variant)))
 
 libs.append(
     env.BuildLibrary(
@@ -163,7 +200,7 @@ libs.append(
         os.path.join(FRAMEWORK_DIR, "cores", "rp2040")))
 
 bootloader_src_file = board.get(
-    "build.arduino.boot2_source", "boot2_generic_03h_2_padded_checksum.S")
+    "build.arduino.earlephilhower.boot2_source", "boot2_generic_03h_2_padded_checksum.S")
 
 # Add bootloader file (boot2.o)
 # Only build the needed .S file, exclude all others via src_filter.
