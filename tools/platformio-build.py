@@ -160,73 +160,9 @@ cpp_defines = env.Flatten(env.get("CPPDEFINES", []))
 
 configure_usb_flags(cpp_defines)
 
-# ToDo: Figure out how we can get the values of __FLASH_LENGTH__ etc
-# and replace hardcoded values below.
-
-def convert_size_expression_to_int(expression):
-    conversion_factors = {
-        "M": 1024*1024,
-        "MB": 1024*1024,
-        "K": 1024,
-        "KB": 1024,
-        "B": 1,
-        "": 1 # giving no conversion factor is factor 1.
-    }
-    # match <floating pointer number><conversion factor>.
-    extract_regex = r'^((?:[0-9]*[.])?[0-9]+)([mkbMKB]*)$'
-    res = re.findall(extract_regex, expression)
-    # unparsable expression? Warning.
-    if len(res) == 0:
-        sys.stderr.write(
-            "Error: Could not parse filesystem size expression '%s'."
-            " Will treat as size = 0.\n" % str(expression))
-        return 0
-    # access first result
-    number, factor = res[0]
-    number = float(number)
-    number *= conversion_factors[factor.upper()]
-    return int(number)
-
-def populate_sketch_partition_info():
-    # follow generation formulas from makeboards.py
-    # given the total flash size, a user can specify
-    # the amound for the filesystem (0MB, 2MB, 4MB, 8MB, 16MB)
-    # and we will calculate the flash size and eeprom size from that.
-    flash_size = board.get("upload.maximum_size")
-    filesystem_size = board.get("build.filesystem_size", "0MB")
-    filesystem_size_int = convert_size_expression_to_int(filesystem_size)
-
-    maximum_size = flash_size - 4096 - filesystem_size_int
-
-    print("Flash size: %.2fMB" % (flash_size / 1024.0 / 1024.0))
-    print("Sketch size: %.2fMB" % (maximum_size / 1024.0 / 1024.0))
-    print("Filesystem size: %.2fMB" % (filesystem_size_int / 1024.0 / 1024.0))
-
-    flash_length = maximum_size
-    eeprom_start = 0x10000000 + flash_size - 4096
-    fs_start = 0x10000000 + flash_size - 4096 - filesystem_size_int
-    fs_end = 0x10000000 + flash_size - 4096
-
-    if maximum_size <= 0:
-        sys.stderr.write(
-            "Error: Filesystem too large for given flash. "
-            "Can at max be flash size - 4096 bytes. "
-            "Available sketch size with current "
-            "config would be %d bytes.\n" % maximum_size)
-        sys.stderr.flush()
-        env.Exit(-1)
-
-    board.update("upload.maximum_size", maximum_size)
-    env["PICO_FLASH_LENGTH"] = flash_length
-    env["PICO_EEPROM_START"] = eeprom_start
-    env["PICO_FS_START"] = fs_start
-    env["PICO_FS_END"] = fs_end
-
-    print("Maximium size: %d Flash Length: %d "
-        "EEPROM Start: %d Filesystem start %d "
-        "Filesystem end %s" % 
-        (maximum_size,flash_length, eeprom_start, fs_start, fs_end))
-   
+# info about the filesystem is already parsed by the platform's main.py 
+# script. We can just use the info here
+ 
 linkerscript_cmd = env.Command(
     os.path.join("$BUILD_DIR", "memmap_default.ld"),  # $TARGET
     os.path.join(FRAMEWORK_DIR, "lib", "memmap_default.ld"),  # $SOURCE
@@ -237,15 +173,16 @@ linkerscript_cmd = env.Command(
         "--out", "$TARGET",
         "--sub", "__FLASH_LENGTH__", "$PICO_FLASH_LENGTH",
         "--sub", "__EEPROM_START__", "$PICO_EEPROM_START",
-        "--sub", "__FS_START__", "$PICO_FS_START",
-        "--sub", "__FS_END__", "$PICO_FS_END",
+        "--sub", "__FS_START__", "$FS_START",
+        "--sub", "__FS_END__", "$FS_END",
         "--sub", "__RAM_LENGTH__", "%dk" % (ram_size // 1024),
     ]), "Generating linkerscript $BUILD_DIR/memmap_default.ld")
 )
 
 # if no custom linker script is provided, we use the command that we prepared to generate one.
 if not board.get("build.ldscript", ""):
-    populate_sketch_partition_info()
+    # execute fetch filesystem info stored in env to alawys have that info ready
+    env["fetch_fs_size"](env)
     env.Depends("$BUILD_DIR/${PROGNAME}.elf", linkerscript_cmd)
     env.Replace(LDSCRIPT_PATH=os.path.join("$BUILD_DIR", "memmap_default.ld"))
 
