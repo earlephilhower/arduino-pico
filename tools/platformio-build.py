@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import os
-from SCons.Script import DefaultEnvironment
+from SCons.Script import DefaultEnvironment, Builder, AlwaysBuild
 
 env = DefaultEnvironment()
 platform = env.PioPlatform()
@@ -22,22 +22,16 @@ board = env.BoardConfig()
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
 
-# todo  -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID=0x2e8a -DUSB_PID=0x000a "-DUSB_MANUFACTURER=\"Raspberry Pi\"" "-DUSB_PRODUCT=\"Pico\""
-# -std=gnu++17 -g -DSERIALUSB_PID=0x000a
-# -DARDUINO_RASPBERRY_PI_PICO "-DBOARD_NAME=\"RASPBERRY_PI_PICO\""
-
-# update regex
-# recipe.size.regex=^(?:\.boot2|\.text|\.rodata|\.ARM\.extab|\.ARM\.exidx)\s+([0-9]+).*
-# and update partition table / size
-
-# todo
-# # Compile the boot stage 2 blob
-# recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
+# update progsize expression to also check for bootloader.
+env.Replace(
+    SIZEPROGREGEXP=r"^(?:\.boot2|\.text|\.data|\.rodata|\.text.align|\.ARM.exidx)\s+(\d+).*"
+)
 
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
 
     CCFLAGS=[
+        "-Werror=return-type",
         "-march=armv6-m",
         "-mcpu=cortex-m0plus",
         "-mthumb",
@@ -75,7 +69,8 @@ env.Append(
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_wrap.txt"),
         "-u_printf_float",
         "-u_scanf_float",
-        "-Wl,--cref",
+        # no cross-reference table, heavily spams the output
+        #"-Wl,--cref",
         "-Wl,--check-sections",
         "-Wl,--gc-sections",
         "-Wl,--unresolved-symbols=report-all",
@@ -89,7 +84,7 @@ env.Append(
     ],
 
     # link lib/libpico.a
-    LIBS=["pico"]
+    LIBS=["pico", "m", "c", "stdc++", "c"]
 )
 
 
@@ -120,22 +115,30 @@ cpp_defines = env.Flatten(env.get("CPPDEFINES", []))
 
 configure_usb_flags(cpp_defines)
 
-# TODO:
-# dynamically generate linker script as the arduino core does
-#"C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/system/python3/python3"
-# "C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/tools/simplesub.py"
-# --input "C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/lib/memmap_default.ld"
-# --out "C:\\Users\\Max\\AppData\\Local\\Temp\\arduino_build_520211/memmap_default.ld"
-# --sub __FLASH_LENGTH__ 2093056
-# --sub __EEPROM_START__ 270528512
-# --sub __FS_START__ 270528512
-# --sub __FS_END__ 270528512
-# --sub __RAM_LENGTH__ 256k
+# ToDo: Figure out how we can get the values of __FLASH_LENGTH__ etc 
+# and replace hardcoded values below.
+def get_sketch_partition_info(env):
+    pass
 
-# if no custom linker script is provided, we use the Arduino core's standard one.
+linkerscript_cmd = env.Command(
+    os.path.join("$BUILD_DIR", "memmap_default.ld"), # $TARGET
+    os.path.join(FRAMEWORK_DIR, "lib", "memmap_default.ld") , # $SOURCE 
+    env.VerboseAction(" ".join([
+        '"$PYTHONEXE" "%s"' % os.path.join(FRAMEWORK_DIR, "tools", "simplesub.py"),
+        "--input", "$SOURCE",
+        "--out", "$TARGET",
+        "--sub", "__FLASH_LENGTH__", "2093056",
+        "--sub", "__EEPROM_START__", "270528512",
+        "--sub", "__FS_START__", "270528512",
+        "--sub", "__FS_END__", "270528512",
+        "--sub", "__RAM_LENGTH__", "256k",
+    ]), "Generating linkerscript $BUILD_DIR/memmap_default.ld")
+)
+
+# if no custom linker script is provided, we use the command that we prepared to generate one.
 if not board.get("build.ldscript", ""):
-    env.Replace(LDSCRIPT_PATH=os.path.join(
-        FRAMEWORK_DIR, "lib", "memmap_default.ld"))
+    env.Depends("$BUILD_DIR/${PROGNAME}.elf", linkerscript_cmd)
+    env.Replace(LDSCRIPT_PATH=os.path.join("$BUILD_DIR", "memmap_default.ld"))
 
 libs = []
 
