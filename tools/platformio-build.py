@@ -26,6 +26,10 @@ assert os.path.isdir(FRAMEWORK_DIR)
 # -std=gnu++17 -g -DSERIALUSB_PID=0x000a
 # -DARDUINO_RASPBERRY_PI_PICO "-DBOARD_NAME=\"RASPBERRY_PI_PICO\""
 
+# update regex
+# recipe.size.regex=^(?:\.boot2|\.text|\.rodata|\.ARM\.extab|\.ARM\.exidx)\s+([0-9]+).*
+# and update partition table / size
+
 # todo
 # # Compile the boot stage 2 blob
 # recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
@@ -147,5 +151,22 @@ libs.append(
     env.BuildLibrary(
         os.path.join("$BUILD_DIR", "FrameworkArduino"),
         os.path.join(FRAMEWORK_DIR, "cores", "rp2040")))
+
+bootloader_src_file = board.get("build.arduino.boot2_source", "boot2_generic_03h_2_padded_checksum.S")
+
+# Add bootloader file (boot2.o)
+# Only build the needed .S file, exclude all others via src_filter. 
+env.BuildSources(
+    os.path.join("$BUILD_DIR", "FrameworkArduinoBootloader"),
+    os.path.join(FRAMEWORK_DIR, "boot2"),
+    "-<*> +<%s>" % bootloader_src_file,
+)
+# Add include flags for all .S assembly file builds
+env.Append(
+    ASFLAGS=[
+        "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src", "rp2040", "hardware_regs", "include"),
+        "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src", "common", "pico_binary_info", "include")
+    ]
+)
 
 env.Prepend(LIBS=libs)
