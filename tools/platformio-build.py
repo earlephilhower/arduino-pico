@@ -23,17 +23,16 @@ FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
 
 # todo  -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID=0x2e8a -DUSB_PID=0x000a "-DUSB_MANUFACTURER=\"Raspberry Pi\"" "-DUSB_PRODUCT=\"Pico\""
-# -std=gnu++17 -g -DSERIALUSB_PID=0x000a 
-# -DARDUINO_RASPBERRY_PI_PICO "-DBOARD_NAME=\"RASPBERRY_PI_PICO\"" 
+# -std=gnu++17 -g -DSERIALUSB_PID=0x000a
+# -DARDUINO_RASPBERRY_PI_PICO "-DBOARD_NAME=\"RASPBERRY_PI_PICO\""
 
-# todo 
+# todo
 # # Compile the boot stage 2 blob
-#recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
+# recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
 
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
 
-    # Due to long path names "-iprefix" hook is required to avoid toolchain crashes
     CCFLAGS=[
         "-march=armv6-m",
         "-mcpu=cortex-m0plus",
@@ -63,7 +62,8 @@ env.Append(
     CPPPATH=[
         os.path.join(FRAMEWORK_DIR, "cores", "rp2040"),
         os.path.join(FRAMEWORK_DIR, "cores", "rp2040", "api", "deprecated"),
-        os.path.join(FRAMEWORK_DIR, "cores", "rp2040", "api", "deprecated-avr-comp")
+        os.path.join(FRAMEWORK_DIR, "cores", "rp2040",
+                     "api", "deprecated-avr-comp")
     ],
 
     LINKFLAGS=[
@@ -82,9 +82,11 @@ env.Append(
     LIBS=["pico"]
 )
 
+
 def configure_usb_flags(cpp_defines):
     if "USE_TINYUSB" in cpp_defines:
-        env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "libraries", "Adafruit_TinyUSB_Arduino", "src", "arduino")])
+        env.Append(CPPPATH=[os.path.join(
+            FRAMEWORK_DIR, "libraries", "Adafruit_TinyUSB_Arduino", "src", "arduino")])
     else:
         # standard Pico SDK USB stack used.
         env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")])
@@ -93,6 +95,7 @@ def configure_usb_flags(cpp_defines):
 # Process configuration flags
 #
 
+
 cpp_defines = env.Flatten(env.get("CPPDEFINES", []))
 
 configure_usb_flags(cpp_defines)
@@ -100,18 +103,19 @@ configure_usb_flags(cpp_defines)
 # TODO:
 # dynamically generate linker script as the arduino core does
 #"C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/system/python3/python3"
-# "C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/tools/simplesub.py" 
-# --input "C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/lib/memmap_default.ld" 
-# --out "C:\\Users\\Max\\AppData\\Local\\Temp\\arduino_build_520211/memmap_default.ld" 
-# --sub __FLASH_LENGTH__ 2093056 
-# --sub __EEPROM_START__ 270528512 
-# --sub __FS_START__ 270528512 
-# --sub __FS_END__ 270528512 
+# "C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/tools/simplesub.py"
+# --input "C:\\Users\\Max\\Desktop\\Programming Stuff\\arduino-1.8.13\\hardware\\pico\\rp2040/lib/memmap_default.ld"
+# --out "C:\\Users\\Max\\AppData\\Local\\Temp\\arduino_build_520211/memmap_default.ld"
+# --sub __FLASH_LENGTH__ 2093056
+# --sub __EEPROM_START__ 270528512
+# --sub __FS_START__ 270528512
+# --sub __FS_END__ 270528512
 # --sub __RAM_LENGTH__ 256k
 
 # if no custom linker script is provided, we use the Arduino core's standard one.
 if not board.get("build.ldscript", ""):
-    env.Replace(LDSCRIPT_PATH=os.path.join(FRAMEWORK_DIR, "lib", "memmap_default.ld"))
+    env.Replace(LDSCRIPT_PATH=os.path.join(
+        FRAMEWORK_DIR, "lib", "memmap_default.ld"))
 
 libs = []
 
