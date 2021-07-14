@@ -66,6 +66,9 @@ env.Append(
     ],
 
     LINKFLAGS=[
+        "-march=armv6-m",
+        "-mcpu=cortex-m0plus",
+        "-mthumb",
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_wrap.txt"),
         "-u_printf_float",
         "-u_scanf_float",
@@ -99,11 +102,13 @@ def configure_usb_flags(cpp_defines):
     env.Append(CPPDEFINES=[
         ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
         ("USB_VID", board.get("build.hwids", [[0, 0]])[0][0]),
+#        ("USB_PID", "0x000a"),
         ("USB_PID", board.get("build.hwids", [[0, 0]])[0][1]),
         ("USB_MANUFACTURER", '\\"%s\\"' % board.get("vendor", "Raspberry Pi")),
         # ToDo: Add info to board manifest
         ("USB_PRODUCT", '\\"%s\\"' % board.get("build.usb_product", "Pico")),
         ("SERIALUSB_PID", board.get("build.hwids", [[0, 0]])[0][1])
+#        ("SERIALUSB_PID", "0x000a")
     ])
 
 #
