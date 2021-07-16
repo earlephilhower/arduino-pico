@@ -76,7 +76,7 @@ extern "C" int main() {
 #endif
 
 #if defined DEBUG_RP2040_PORT
-    DEBUG_RP2040_PORT.begin();
+    DEBUG_RP2040_PORT.begin(115200);
 #endif
 
 #ifndef NO_USB

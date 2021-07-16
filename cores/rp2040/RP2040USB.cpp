@@ -168,7 +168,7 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
 
         uint8_t interface_count = (__USBInstallSerial ? 2 : 0) + (hasHID ? 1 : 0) + (__USBInstallMIDI ? 2 : 0);
 
-        static uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
+        uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
             TUD_CDC_DESCRIPTOR(USBD_ITF_CDC, USBD_STR_CDC, USBD_CDC_EP_CMD, USBD_CDC_CMD_MAX_SIZE, USBD_CDC_EP_OUT, USBD_CDC_EP_IN, USBD_CDC_IN_OUT_MAX_SIZE)
         };
@@ -176,20 +176,20 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
         int hid_report_len;
         GetDescHIDReport(&hid_report_len);
         uint8_t hid_itf = __USBInstallSerial ? 2 : 0;
-        static uint8_t hid_desc[TUD_HID_DESC_LEN] = {
+        uint8_t hid_desc[TUD_HID_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
             TUD_HID_DESCRIPTOR(hid_itf, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 10)
         };
 
         uint8_t midi_itf = hid_itf + (hasHID ? 1 : 0);
-        static uint8_t midi_desc[TUD_MIDI_DESC_LEN] = {
+        uint8_t midi_desc[TUD_MIDI_DESC_LEN] = {
             // Interface number, string index, EP Out & EP In address, EP size
             TUD_MIDI_DESCRIPTOR(midi_itf, 0, EPNUM_MIDI, 0x80 | EPNUM_MIDI, 64)
         };
 
         int usbd_desc_len = TUD_CONFIG_DESC_LEN + (__USBInstallSerial ? sizeof(cdc_desc) : 0) + (hasHID ? sizeof(hid_desc) : 0) + (__USBInstallMIDI ? sizeof(midi_desc) : 0);
 
-        static uint8_t tud_cfg_desc[TUD_CONFIG_DESC_LEN] = {
+        uint8_t tud_cfg_desc[TUD_CONFIG_DESC_LEN] = {
             // Config number, interface count, string index, total length, attribute, power in mA
             TUD_CONFIG_DESCRIPTOR(1, interface_count, USBD_STR_0, usbd_desc_len, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA)
         };
@@ -277,6 +277,7 @@ void __USBStart() {
     }
 
     mutex_init(&__usb_mutex);
+
     tusb_init();
 
     irq_set_exclusive_handler(USB_TASK_IRQ, usb_irq);
