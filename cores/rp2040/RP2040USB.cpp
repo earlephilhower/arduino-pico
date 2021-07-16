@@ -122,32 +122,41 @@ int __USBGetMouseReportID() {
 }
 
 static uint8_t *GetDescHIDReport(int *len) {
+    static uint8_t *report = nullptr;
+    int report_len = 0;
+
+    if (report) {
+        free(report);
+    }
+
     if (__USBInstallKeyboard && __USBInstallMouse) {
-        static uint8_t desc_hid_report[] = {
+        uint8_t desc_hid_report[] = {
             TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)),
             TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(2))
         };
-        if (len) {
-            *len = sizeof(desc_hid_report);
-        }
-        return desc_hid_report;
+        report_len = sizeof(desc_hid_report);
+        report = (uint8_t *)malloc(report_len);
+        memcpy(report, desc_hid_report, report_len);
     } else if (__USBInstallKeyboard && ! __USBInstallMouse) {
-        static uint8_t desc_hid_report[] = {
+        uint8_t desc_hid_report[] = {
             TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1))
         };
-        if (len) {
-            *len = sizeof(desc_hid_report);
-        }
-        return desc_hid_report;
+        report_len = sizeof(desc_hid_report);
+        report = (uint8_t *)malloc(report_len);
+        memcpy(report, desc_hid_report, report_len);
     } else { // if (!__USBInstallKeyboard && __USBInstallMouse) {
-        static uint8_t desc_hid_report[] = {
+        uint8_t desc_hid_report[] = {
             TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1))
         };
-        if (len) {
-            *len = sizeof(desc_hid_report);
-        }
-        return desc_hid_report;
+        report_len = sizeof(desc_hid_report);
+        report = (uint8_t *)malloc(report_len);
+        memcpy(report, desc_hid_report, report_len);
     }
+
+    if (len) {
+        *len = report_len;
+    }
+    return report;
 }
 
 // Invoked when received GET HID REPORT DESCRIPTOR
@@ -161,7 +170,7 @@ uint8_t const * tud_hid_descriptor_report_cb(uint8_t instance) {
 
 const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
     (void)index;
-    static uint8_t *usbd_desc_cfg = NULL;
+    static uint8_t *usbd_desc_cfg = nullptr;
 
     if (!usbd_desc_cfg) {
         bool hasHID = __USBInstallKeyboard || __USBInstallMouse;
