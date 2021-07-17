@@ -158,4 +158,4 @@ and 0.5MByte filesystem.
 
 The initial project structure should be generated just creating a new
 project for the Pico and the Arduino framework, after which the
-auto-generated ``platformio.ini`` can be adapter per above.
+auto-generated ``platformio.ini`` can be adapted per above.
