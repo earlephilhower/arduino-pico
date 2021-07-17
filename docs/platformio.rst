@@ -13,7 +13,7 @@ for which this is not the default core (e.g. the standard
 
 .. code:: ini
 
-    boad_build.core = earlephilhower
+    board_build.core = earlephilhower
 
 must be added to the ``platformio.ini``. This controls the `core
 switching
@@ -76,7 +76,7 @@ Debug Level
 
 Done again by directly adding the needed `build
 flags <https://github.com/earlephilhower/arduino-pico/blob/05356da2c5552413a442f742e209c6fa92823666/boards.txt#L104-L114>`__.
-When wanting to define multiple buid flags, they must be accumulated in
+When wanting to define multiple build flags, they must be accumulated in
 either a sing line or a newline-separated expression.
 
 .. code:: ini
