@@ -87,7 +87,7 @@ build.usbstack_flags=
 build.boot2=boot2_generic_03h_4_padded_checksum
 
 # Allow Pico boards do be auto-discovered by the IDE
-discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/tools/discovery.py"
+discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/discovery.py"
 
 
 # Compile patterns
@@ -108,7 +108,7 @@ archive_file_path={build.path}/{archive_file}
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Generate the linker map with specific flash sizes/locations
-recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3" "{runtime.platform.path}/tools/simplesub.py" --input "{runtime.platform.path}/lib/memmap_default.ld" --out "{build.path}/memmap_default.ld" --sub __FLASH_LENGTH__ {build.flash_length} --sub __EEPROM_START__ {build.eeprom_start} --sub __FS_START__ {build.fs_start} --sub __FS_END__ {build.fs_end} --sub __RAM_LENGTH__ {build.ram_length}
+recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/simplesub.py" --input "{runtime.platform.path}/lib/memmap_default.ld" --out "{build.path}/memmap_default.ld" --sub __FLASH_LENGTH__ {build.flash_length} --sub __EEPROM_START__ {build.eeprom_start} --sub __FS_START__ {build.fs_start} --sub __FS_END__ {build.fs_end} --sub __RAM_LENGTH__ {build.ram_length}
 
 ## Compile the boot stage 2 blob
 recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
@@ -139,7 +139,7 @@ tools.uf2conv.cmd={runtime.platform.path}/system/python3/python3
 tools.uf2conv.upload.protocol=uf2
 tools.uf2conv.upload.params.verbose=
 tools.uf2conv.upload.params.quiet=
-tools.uf2conv.upload.pattern="{cmd}" "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
+tools.uf2conv.upload.pattern="{cmd}" -I "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
 
 
 #tools.picoprobe.cmd={runtime.tools.pqt-openocd.path}
