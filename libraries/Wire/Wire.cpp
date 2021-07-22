@@ -192,6 +192,7 @@ void TwoWire::beginTransmission(uint8_t addr) {
     }
     _addr = addr;
     _buffLen = 0;
+    _buffOff = 0;
     _txBegun = true;
 }
 
@@ -201,6 +202,9 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
     }
 
     _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(50));
+    if (_buffLen == PICO_ERROR_GENERIC) {
+        _buffLen = 0;
+    }
     _buffOff = 0;
     return _buffLen;
 }
