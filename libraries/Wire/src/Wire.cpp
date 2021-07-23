@@ -201,7 +201,7 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
         return 0;
     }
 
-    _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(50));
+    _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(_timeout));
     if (_buffLen == PICO_ERROR_GENERIC) {
         _buffLen = 0;
     }
@@ -292,7 +292,7 @@ uint8_t TwoWire::endTransmission(bool stopBit) {
         return _probe(_addr, _sda, _scl, _clkHz) ? 0 : 2;
     } else {
         auto len = _buffLen;
-        auto ret = i2c_write_blocking_until(_i2c, _addr, _buff, _buffLen, !stopBit, make_timeout_time_ms(50));
+        auto ret = i2c_write_blocking_until(_i2c, _addr, _buff, _buffLen, !stopBit, make_timeout_time_ms(_timeout));
         _buffLen = 0;
         return (ret == len) ? 0 : 4;
     }
