@@ -127,6 +127,7 @@ static uint8_t *GetDescHIDReport(int *len) {
 
     if (report) {
         free(report);
+        report = nullptr;
     }
 
     if (__USBInstallKeyboard && __USBInstallMouse) {
@@ -136,21 +137,27 @@ static uint8_t *GetDescHIDReport(int *len) {
         };
         report_len = sizeof(desc_hid_report);
         report = (uint8_t *)malloc(report_len);
-        memcpy(report, desc_hid_report, report_len);
+        if (report) {
+            memcpy(report, desc_hid_report, report_len);
+        }
     } else if (__USBInstallKeyboard && ! __USBInstallMouse) {
         uint8_t desc_hid_report[] = {
             TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1))
         };
         report_len = sizeof(desc_hid_report);
         report = (uint8_t *)malloc(report_len);
-        memcpy(report, desc_hid_report, report_len);
+        if (report) {
+            memcpy(report, desc_hid_report, report_len);
+        }
     } else { // if (!__USBInstallKeyboard && __USBInstallMouse) {
         uint8_t desc_hid_report[] = {
             TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1))
         };
         report_len = sizeof(desc_hid_report);
         report = (uint8_t *)malloc(report_len);
-        memcpy(report, desc_hid_report, report_len);
+        if (report) {
+            memcpy(report, desc_hid_report, report_len);
+        }
     }
 
     if (len) {
@@ -205,20 +212,22 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
 
         // Combine to one descriptor
         usbd_desc_cfg = (uint8_t *)malloc(usbd_desc_len);
-        bzero(usbd_desc_cfg, usbd_desc_len);
-        uint8_t *ptr = usbd_desc_cfg;
-        memcpy(ptr, tud_cfg_desc, sizeof(tud_cfg_desc));
-        ptr += sizeof(tud_cfg_desc);
-        if (__USBInstallSerial) {
-            memcpy(ptr, cdc_desc, sizeof(cdc_desc));
-            ptr += sizeof(cdc_desc);
-        }
-        if (hasHID) {
-            memcpy(ptr, hid_desc, sizeof(hid_desc));
-            ptr += sizeof(hid_desc);
-        }
-        if (__USBInstallMIDI) {
-            memcpy(ptr, midi_desc, sizeof(midi_desc));
+        if (usbd_desc_cfg) {
+            bzero(usbd_desc_cfg, usbd_desc_len);
+            uint8_t *ptr = usbd_desc_cfg;
+            memcpy(ptr, tud_cfg_desc, sizeof(tud_cfg_desc));
+            ptr += sizeof(tud_cfg_desc);
+            if (__USBInstallSerial) {
+                memcpy(ptr, cdc_desc, sizeof(cdc_desc));
+                ptr += sizeof(cdc_desc);
+            }
+            if (hasHID) {
+                memcpy(ptr, hid_desc, sizeof(hid_desc));
+                ptr += sizeof(hid_desc);
+            }
+            if (__USBInstallMIDI) {
+                memcpy(ptr, midi_desc, sizeof(midi_desc));
+            }
         }
     }
     return usbd_desc_cfg;
