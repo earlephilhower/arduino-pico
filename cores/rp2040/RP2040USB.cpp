@@ -214,20 +214,20 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
         usbd_desc_cfg = (uint8_t *)malloc(usbd_desc_len);
         if (usbd_desc_cfg) {
             bzero(usbd_desc_cfg, usbd_desc_len);
-                uint8_t *ptr = usbd_desc_cfg;
-                memcpy(ptr, tud_cfg_desc, sizeof(tud_cfg_desc));
-                ptr += sizeof(tud_cfg_desc);
-                if (__USBInstallSerial) {
-                    memcpy(ptr, cdc_desc, sizeof(cdc_desc));
-                    ptr += sizeof(cdc_desc);
-                }
-                if (hasHID) {
-                    memcpy(ptr, hid_desc, sizeof(hid_desc));
-                    ptr += sizeof(hid_desc);
-                }
-                if (__USBInstallMIDI) {
-                    memcpy(ptr, midi_desc, sizeof(midi_desc));
-                }
+            uint8_t *ptr = usbd_desc_cfg;
+            memcpy(ptr, tud_cfg_desc, sizeof(tud_cfg_desc));
+            ptr += sizeof(tud_cfg_desc);
+            if (__USBInstallSerial) {
+                memcpy(ptr, cdc_desc, sizeof(cdc_desc));
+                ptr += sizeof(cdc_desc);
+            }
+            if (hasHID) {
+                memcpy(ptr, hid_desc, sizeof(hid_desc));
+                ptr += sizeof(hid_desc);
+            }
+            if (__USBInstallMIDI) {
+                memcpy(ptr, midi_desc, sizeof(midi_desc));
+            }
         }
     }
     return usbd_desc_cfg;
