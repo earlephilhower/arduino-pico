@@ -37,6 +37,8 @@ jobs:
     - name: Check boards.txt was not edited after makeboards.py
       run: |
         ./tools/makeboards.py > boards.txt
+        # If anything changed, GIT should return an error and fail the test
+        git diff --exit-code
     - name: Run astyle on all code/examples
       run: |
         sudo apt update
