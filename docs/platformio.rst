@@ -1,6 +1,59 @@
 Using this core with PlatformIO
 ===============================
 
+What is PlatformIO? 
+-------------------
+
+`PlatformIO <https://platformio.org/>`__  is a free, open-source build-tool written in Python, which also integrates into VSCode code as an extension.
+
+PlatformIO significantly simplifies writing embedded software by offering a unified build system, yet being able to create project files for many different IDEs, including VSCode, Eclipse, CLion, etc. 
+Through this, PlatformIO can offer extensive features such as IntelliSense (autocomplete), debugging, unit testing etc., which not available in the standard Arduino IDE.
+
+The Arduino IDE experience:
+
+.. image:: images/the_arduinoide_experience.png
+
+The PlatformIO experience:
+
+.. image:: images/the_platformio_experience.png
+
+Refer to the general documentation at https://docs.platformio.org/.
+
+Especially useful is the `Getting started with VSCode + PlatformIO <https://docs.platformio.org/en/latest/integration/ide/vscode.html#installation), [CLI reference](https://docs.platformio.org/en/latest/core/index.html) and [platformio.ini options](https://docs.platformio.org/en/latest/projectconf/index.html)>`__ page.
+
+Hereafter it is assumed that you have a basic understanding of PlatformIO in regards to project creation, project file structure and building and uploading PlatformIO projects, through reading the above pages.
+
+Current state of development
+----------------------------
+
+At the time of writing, PlatformIO integration for this core is a work-in-progress and not yet merged into mainline PlatformIO. This is subject to change soon.
+
+If you want to use the PlatformIO integration right now, make sure you first create a standard Raspberry Pi Pico + Arduino project within PlatformIO. 
+This will give you a project with the ``platformio.ini`` 
+
+.. code:: ini
+
+    [env:pico]
+    platform = raspberrypi
+    board = pico
+    framework = arduino
+
+Here, you need to change the `platform` to take advantage of the features described hereunder. 
+You *also* need to inject two PlatformIO packages, one for the compiler toolchain and one for the Arduino core package.
+
+.. code:: ini
+
+    [env:pico]
+    platform = https://github.com/maxgerhardt/platform-raspberrypi.git
+    board = pico
+    framework = arduino
+    ; note that download link for toolchain is specific for OS. see https://github.com/earlephilhower/pico-quick-toolchain/releases.
+    platform_packages = 
+        maxgerhardt/framework-arduinopico@https://github.com/earlephilhower/arduino-pico.git
+        maxgerhardt/toolchain-pico@https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.1-a/x86_64-w64-mingw32.arm-none-eabi-7855b0c.210706.zip
+    
+When the support for this core has been merged into mainline PlatformIO, this notice will be removed and a standard `platformio.ini` as shown above will work as a base.
+
 Selecting the new core
 ----------------------
 
@@ -150,11 +203,16 @@ and 0.5MByte filesystem.
 .. code:: ini
 
     [env:pico]
-    platform = raspberrypi
+    platform = https://github.com/maxgerhardt/platform-raspberrypi.git
     board = pico
     framework = arduino
     build_board.core = earlephilhower
     board_build.filesystem_size = 0.5m
+    ; note that download link for toolchain is specific for OS. see https://github.com/earlephilhower/pico-quick-toolchain/releases.
+    platform_packages = 
+        maxgerhardt/framework-arduinopico@https://github.com/earlephilhower/arduino-pico.git
+        maxgerhardt/toolchain-pico@https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.1-a/x86_64-w64-mingw32.arm-none-eabi-7855b0c.210706.zip
+
 
 The initial project structure should be generated just creating a new
 project for the Pico and the Arduino framework, after which the

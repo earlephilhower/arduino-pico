@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Pin Assignments &#8212; Arduino-Pico 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Analog I/O" href="analog.html" />
+    <link rel="prev" title="Using this core with PlatformIO" href="platformio.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pin-assignments">
+<h1>Pin Assignments<a class="headerlink" href="#pin-assignments" title="Permalink to this headline">¶</a></h1>
+<p>The Raspberry Pi Pico has an incredibly flexible I/O configuration and most
+built-in peripherals (except for the ADC) can be used on multiple sets of
+pins.  Note, however, that not all peripherals can use all I/Os.  Refer to
+the RP2040 datasheet or an online pinout diagram for more details.</p>
+<p>Additional methods have been added to allow you to select a peripheral’s
+I/O pins <strong>before calling ::begin</strong>.  This is especially helpful when
+using third party libraries:  the library doesn’t need to be modified,
+only your own code in <cite>setup()</cite> is needed to adjust pinouts.</p>
+<section id="i2s">
+<h2>I2S<a class="headerlink" href="#i2s" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="o">::</span><span class="n">setBCLK</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+<span class="o">::</span><span class="n">setDOUT</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="serial1-uart0-serial2-uart1">
+<h2>Serial1 (UART0), Serial2 (UART1)<a class="headerlink" href="#serial1-uart0-serial2-uart1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="o">::</span><span class="n">setRX</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+<span class="o">::</span><span class="n">setTX</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="spi-spi0-spi1-spi1">
+<h2>SPI (SPI0), SPI1 (SPI1)<a class="headerlink" href="#spi-spi0-spi1-spi1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="o">::</span><span class="n">setSCK</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+<span class="o">::</span><span class="n">setCS</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+<span class="o">::</span><span class="n">setRX</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+<span class="o">::</span><span class="n">setTX</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="wire-i2c0-wire1-i2c1">
+<h2>Wire (I2C0), Wire1 (I2C1)<a class="headerlink" href="#wire-i2c0-wire1-i2c1" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="o">::</span><span class="n">setSDA</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+<span class="o">::</span><span class="n">setSCL</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For example, because the <cite>SD</cite> library uses the <cite>SPI</cite> library, we can make
+it use a non-default pinout with a simple call</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">SPI</span><span class="p">.</span><span class="n">setRX</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+    <span class="n">SPI</span><span class="p">.</span><span class="n">setTX</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+    <span class="n">SPI</span><span class="p">.</span><span class="n">setSCK</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+    <span class="n">SPI</span><span class="p">.</span><span class="n">setCS</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="n">SD</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="platformio.html" title="previous chapter">Using this core with PlatformIO</a></li>
+      <li>Next: <a href="analog.html" title="next chapter">Analog I/O</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Earle F. Philhower, III.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/pins.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

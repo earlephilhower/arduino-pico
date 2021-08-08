@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Installation &#8212; Arduino-Pico 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IDE Menus" href="ide.html" />
+    <link rel="prev" title="Getting Help and Contributing" href="help.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>The Arduino-Pico core can be installed using the Arduino IDE Boards Manager
+or using <cite>git</cite>.  If you want to simply write programs for your RP2040 board,
+the Boards Manager installation will suffice, but if you want to try the
+latest pre-release versions and submit improvements, you will need the <cite>git</cite>
+instllation.</p>
+<section id="installing-via-arduino-boards-manager">
+<h2>Installing via Arduino Boards Manager<a class="headerlink" href="#installing-via-arduino-boards-manager" title="Permalink to this headline">¶</a></h2>
+<p><strong>Note for Windows Users</strong>: Please do not use the Windows Store version of
+the actual Arduino application because it has issues detecting attached Pico
+boards.  Use the “Windows ZIP” or plain “Windows” executable (EXE) download
+direct from <a class="reference external" href="https://arduino.cc">https://arduino.cc</a>. and allow it to install any device drivers
+it suggests.  Otherwise the Pico board may not be detected.  Also, if trying
+out the 2.0 beta Arduino please install the release 1.8 version beforehand
+to ensure needed device drivers are present.</p>
+<ol class="arabic">
+<li><p>Open up the Arduino IDE and go to File-&gt;Preferences.</p></li>
+<li><p>In the dialog that pops up, enter the following URL in the “Additional Boards Manager URLs” field:  <a class="reference external" href="https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json">https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json</a></p>
+<img alt="_images/install1.png" src="_images/install1.png" />
+</li>
+<li><p>Hit OK to close the dialog.</p></li>
+<li><p>Go to Tools-&gt;Boards-&gt;Board Manager in the IDE</p></li>
+<li><p>Type “pico” in the search box and select “Add”:</p>
+<img alt="_images/install2.png" src="_images/install2.png" />
+</li>
+</ol>
+</section>
+<section id="installing-via-git">
+<h2>Installing via GIT<a class="headerlink" href="#installing-via-git" title="Permalink to this headline">¶</a></h2>
+<p>To install via GIT (for latest and greatest versions):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir -p ~/Arduino/hardware/pico
+git clone https://github.com/earlephilhower/arduino-pico.git ~/Arduino/hardware/pico/rp2040
+<span class="nb">cd</span> ~/Arduino/hardware/pico/rp2040
+git submodule update --init
+<span class="nb">cd</span> pico-sdk
+git submodule update --init
+<span class="nb">cd</span> pico-extras
+git submodule update --init
+<span class="nb">cd</span> ../tools
+python3 ./get.py
+</pre></div>
+</div>
+</section>
+<section id="installing-both-arduino-and-cmake">
+<h2>Installing both Arduino and CMake<a class="headerlink" href="#installing-both-arduino-and-cmake" title="Permalink to this headline">¶</a></h2>
+<p>Tom’s Hardware presented a very nice writeup on installing <cite>arduino-pico</cite> on
+both Windows and Linux, available at <a class="reference external" href="https://www.tomshardware.com/how-to/program-raspberry-pi-pico-with-arduino-ide">Tom’s Hardware</a> .</p>
+<p>If you follow their step-by-step you will also have a fully functional
+<cite>CMake</cite>-based environment to build Pico apps on if you outgrow the Arduino
+ecosystem.</p>
+</section>
+<section id="uploading-sketches">
+<h2>Uploading Sketches<a class="headerlink" href="#uploading-sketches" title="Permalink to this headline">¶</a></h2>
+<p>To upload your first sketch, you will need to hold the BOOTSEL button down while plugging in the Pico to your computer.
+Then hit the upload button and the sketch should be transferred and start to run.</p>
+<p>After the first upload, this should not be necessary as the <cite>arduino-pico</cite> core has auto-reset support.
+Select the appropriate serial port shown in the Arduino Tools-&gt;Port-&gt;Serial Port menu once (this setting will stick and does not need to be
+touched for multiple uploads).   This selection allows the auto-reset tool to identify the proper device to reset.
+Them hit the upload button and your sketch should upload and run.</p>
+<p>In some cases the Pico will encounter a hard hang and its USB port will not respond to the auto-reset request.  Should this happen, just
+follow the initial procedure of holding the BOOTSEL button down while plugging in the Pico to enter the ROM bootloader.</p>
+</section>
+<section id="windows-7-driver-notes">
+<h2>Windows 7 Driver Notes<a class="headerlink" href="#windows-7-driver-notes" title="Permalink to this headline">¶</a></h2>
+<p>Windows 10, Linux, and Mac will all support the Pico CDC/ACM USB serial port
+automatically.  However, Windows 7 may not include the proper driver and
+therefore no detect the Pico for automatic uploads or the Serial Monitor.</p>
+<p>For Windows 7, if this occurs, you can use <cite>Zadig &lt;https://zadig.akeo.ie/&gt;</cite>
+to install the appropriate driver.  Select the USB ID of <code class="docutils literal notranslate"><span class="pre">2E8A</span></code> and use
+the <code class="docutils literal notranslate"><span class="pre">USB</span> <span class="pre">Serial</span> <span class="pre">(CDC)</span></code> driver.</p>
+<blockquote>
+<div><img alt="_images/install_driver_old_win.png" src="_images/install_driver_old_win.png" />
+</div></blockquote>
+</section>
+<section id="windows-7-installation-problems">
+<h2>Windows 7 Installation Problems<a class="headerlink" href="#windows-7-installation-problems" title="Permalink to this headline">¶</a></h2>
+<p>When running MalwareBytes antivirus (or others) the scanner may lock the compiler or other toolchain executables, causing installation or build failures.  (Thanks to &#64;Andy2No)</p>
+<p>Symptoms include:</p>
+<p><a href="#id1"><span class="problematic" id="id2">*</span></a>Access denied during update in the boards manager - affects the .exe files, because MalwareBytes has locked them.
+* Access denied during compilation, to one of the .exe files - same reason.
+* Can’t delete the .exe files - they’re locked by MalwareBytes.</p>
+<p>A workaround is possible, involving setting the toolchain as an “excluded directory” and reinstalling.</p>
+<ol class="arabic simple">
+<li><p>In MalwareBytes Settings, click the Exclusions tab. Add an exclusion for the equivalent of this folder path:</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">C:\Users{YOUR_USERNAME_HERE}\AppData\Local\Arduino15\packages\rp2040\tools\pqt-gcc\1.1.0-a-81a1771</span></code></p>
+<ol class="arabic simple" start="2">
+<li><p>Reboot to unlock the files.</p></li>
+<li><p>Do the boards manager installation / upgrade again.</p></li>
+<li><p>Set the board type, e.g. to Raspberry Pi Pico and check it can compile.</p></li>
+</ol>
+</section>
+<section id="uploading-filesystem-images">
+<h2>Uploading Filesystem Images<a class="headerlink" href="#uploading-filesystem-images" title="Permalink to this headline">¶</a></h2>
+<p>The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases">https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases</a></p></li>
+</ul>
+<p>To install, follow the directions in</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md">https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md</a></p></li>
+</ul>
+<p>For detailed usage information, please check the repo documentation available at</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://arduino-pico.readthedocs.io/en/latest/fs.html">https://arduino-pico.readthedocs.io/en/latest/fs.html</a></p></li>
+</ul>
+</section>
+<section id="uploading-sketches-with-picoprobe">
+<h2>Uploading Sketches with Picoprobe<a class="headerlink" href="#uploading-sketches-with-picoprobe" title="Permalink to this headline">¶</a></h2>
+<p>If you have built a Raspberry Pi Picoprobe, you can use OpenOCD to handle your sketch uploads and for debugging with GDB.</p>
+<p>Under Windows a local admin user should be able to access the Picoprobe port automatically, but under Linux <cite>udev</cite> must be told about the device and to allow normal users access.</p>
+<p>To set up user-level access to Picoprobes on Ubuntu (and other OSes which use <cite>udev</cite>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;SUBSYSTEMS==&quot;usb&quot;, ATTRS</span><span class="si">{idVendor}</span><span class="s1">==&quot;2e8a&quot;, ATTRS</span><span class="si">{idProduct}</span><span class="s1">==&quot;0004&quot;, GROUP=&quot;users&quot;, MODE=&quot;0666&quot;&#39;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">-</span><span class="n">a</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">udev</span><span class="o">/</span><span class="n">rules</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="mi">98</span><span class="o">-</span><span class="n">PicoProbe</span><span class="o">.</span><span class="n">rules</span>
+<span class="n">sudo</span> <span class="n">udevadm</span> <span class="n">control</span> <span class="o">--</span><span class="n">reload</span>
+</pre></div>
+</div>
+<p>The first line creates a file with the USB vendor and ID of the Picoprobe and tells UDEV to give users full access to it.  The second causes <cite>udev</cite> to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.</p>
+<p>Once Picoprobe permissions are set up properly, then select the board “Raspberry Pi Pico (Picoprobe)” in the Tools menu and upload as normal.</p>
+</section>
+<section id="uploading-sketches-with-pico-debug">
+<h2>Uploading Sketches with pico-debug<a class="headerlink" href="#uploading-sketches-with-pico-debug" title="Permalink to this headline">¶</a></h2>
+<p>pico-debug differs from Picoprobe in that pico-debug is a virtual debug pod that runs side-by-side on the same RP2040 that you run your code on; so, you only need one RP2040 board instead of two.  pico-debug also differs from Picoprobe in that pico-debug is standards-based; it uses the CMSIS-DAP protocol, which means even software not specially written for the Raspberry Pi Pico can support it.  pico-debug uses OpenOCD to handle your sketch uploads, and debugging can be accomplished with CMSIS-DAP capable debuggers including GDB.</p>
+<p>Under Windows and macOS, any user should be able to access pico-debug automatically, but under Linux <cite>udev</cite> must be told about the device and to allow normal users access.</p>
+<p>To set up user-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes which use <cite>udev</cite>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;ATTRS</span><span class="si">{product}</span><span class="s1">==&quot;*CMSIS-DAP*&quot;, MODE=&quot;664&quot;, GROUP=&quot;plugdev&quot;&#39;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">-</span><span class="n">a</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">udev</span><span class="o">/</span><span class="n">rules</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="mi">98</span><span class="o">-</span><span class="n">CMSIS</span><span class="o">-</span><span class="n">DAP</span><span class="o">.</span><span class="n">rules</span>
+<span class="n">sudo</span> <span class="n">udevadm</span> <span class="n">control</span> <span class="o">--</span><span class="n">reload</span>
+</pre></div>
+</div>
+<p>The first line creates a file that recognizes all CMSIS-DAP adapters and tells UDEV to give users full access to it.  The second causes <cite>udev</cite> to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.</p>
+<p>Once CMSIS-DAP permissions are set up properly, then select the board “Raspberry Pi Pico (pico-debug)” in the Tools menu.</p>
+<p>When first connecting the USB port to your PC, you must copy pico-debug-gimmecache.uf2 to the Pi Pico to load pico-debug into RAM; after this, upload as normal.</p>
+</section>
+<section id="debugging-with-picoprobe-pico-debug-openocd-and-gdb">
+<h2>Debugging with Picoprobe/pico-debug, OpenOCD, and GDB<a class="headerlink" href="#debugging-with-picoprobe-pico-debug-openocd-and-gdb" title="Permalink to this headline">¶</a></h2>
+<p>The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.  For pico-debug, replace the raspberrypi-swd and picoprobe example OpenOCD arguments of “-f interface/raspberrypi-swd.cfg -f target/rp2040.cfg” or “-f interface/picoprobe.cfg -f target/rp2040.cfg” respectively in the Pico Getting Started manual with “-f board/pico-debug.cfg”.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="help.html" title="previous chapter">Getting Help and Contributing</a></li>
+      <li>Next: <a href="ide.html" title="next chapter">IDE Menus</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Earle F. Philhower, III.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/install.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
