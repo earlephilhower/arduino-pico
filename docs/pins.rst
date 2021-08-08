@@ -33,6 +33,7 @@ SPI (SPI0), SPI1 (SPI1)
 .. code:: cpp
 
         ::setSCK(pin)
+        ::setCS(pin)
         ::setRX(pin)
         ::setTX(pin)
 

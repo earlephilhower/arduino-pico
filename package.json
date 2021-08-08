@@ -1,7 +1,7 @@
 {
   "name": "framework-arduinopico",
-  "version": "1.10902.0",
-  "description": "Raspberry Pi Pico Arduino core, for all RP2040 boards",
+  "version": "1.10903.0",
+  "description": "Arduino Wiring-based Framework (RPi Pico RP2040)",
   "keywords": [
     "framework",
     "arduino",
