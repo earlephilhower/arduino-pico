@@ -4996,8 +4996,8 @@ challenger_2040_wifipicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB
 # -----------------------------------
 challenger_2040_lte.name=iLabs Challenger 2040 LTE
 challenger_2040_lte.vid.0=0x2e8a
-challenger_2040_lte.pid.0=0x1007
-challenger_2040_lte.build.usbpid=-DSERIALUSB_PID=0x1007
+challenger_2040_lte.pid.0=0x100b
+challenger_2040_lte.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_lte.build.board=CHALLENGER_2040_LTE_RP2040
 challenger_2040_lte.build.mcu=cortex-m0plus
 challenger_2040_lte.build.variant=challenger_2040_lte
@@ -5016,7 +5016,7 @@ challenger_2040_lte.build.ldscript=memmap_default.ld
 challenger_2040_lte.build.ram_length=256k
 challenger_2040_lte.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_2040_lte.build.vid=0x2e8a
-challenger_2040_lte.build.pid=0x1007
+challenger_2040_lte.build.pid=0x100b
 challenger_2040_lte.build.usb_manufacturer="iLabs"
 challenger_2040_lte.build.usb_product="Challenger 2040 LTE"
 challenger_2040_lte.menu.flash.8388608_0=8MB (no FS)
@@ -5144,7 +5144,7 @@ challenger_2040_lte.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I
 challenger_2040_ltepicoprobe.name=iLabs Challenger 2040 LTE (Picoprobe)
 challenger_2040_ltepicoprobe.vid.0=0x2e8a
 challenger_2040_ltepicoprobe.pid.0=0x0004
-challenger_2040_ltepicoprobe.build.usbpid=-DSERIALUSB_PID=0x1007
+challenger_2040_ltepicoprobe.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_ltepicoprobe.build.board=CHALLENGER_2040_LTE_RP2040
 challenger_2040_ltepicoprobe.build.mcu=cortex-m0plus
 challenger_2040_ltepicoprobe.build.variant=challenger_2040_lte
@@ -5163,7 +5163,7 @@ challenger_2040_ltepicoprobe.build.ldscript=memmap_default.ld
 challenger_2040_ltepicoprobe.build.ram_length=256k
 challenger_2040_ltepicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_2040_ltepicoprobe.build.vid=0x2e8a
-challenger_2040_ltepicoprobe.build.pid=0x1007
+challenger_2040_ltepicoprobe.build.pid=0x100b
 challenger_2040_ltepicoprobe.build.usb_manufacturer="iLabs"
 challenger_2040_ltepicoprobe.build.usb_product="Challenger 2040 LTE (Picoprobe)"
 challenger_2040_ltepicoprobe.menu.flash.8388608_0=8MB (no FS)
@@ -5291,7 +5291,7 @@ challenger_2040_ltepicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TI
 challenger_2040_ltepicodebug.name=iLabs Challenger 2040 LTE (pico-debug)
 challenger_2040_ltepicodebug.vid.0=0x1209
 challenger_2040_ltepicodebug.pid.0=0x2488
-challenger_2040_ltepicodebug.build.usbpid=-DSERIALUSB_PID=0x1007
+challenger_2040_ltepicodebug.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_ltepicodebug.build.board=CHALLENGER_2040_LTE_RP2040
 challenger_2040_ltepicodebug.build.mcu=cortex-m0plus
 challenger_2040_ltepicodebug.build.variant=challenger_2040_lte
@@ -5310,7 +5310,7 @@ challenger_2040_ltepicodebug.build.ldscript=memmap_default.ld
 challenger_2040_ltepicodebug.build.ram_length=240k
 challenger_2040_ltepicodebug.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_2040_ltepicodebug.build.vid=0x2e8a
-challenger_2040_ltepicodebug.build.pid=0x1007
+challenger_2040_ltepicodebug.build.pid=0x100b
 challenger_2040_ltepicodebug.build.usb_manufacturer="iLabs"
 challenger_2040_ltepicodebug.build.usb_product="Challenger 2040 LTE (pico-debug)"
 challenger_2040_ltepicodebug.menu.flash.8388608_0=8MB (no FS)
