@@ -43,7 +43,7 @@ compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/l
 compiler.flags=-Os -march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections -fno-exceptions
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
 compiler.libpico="{runtime.platform.path}/lib/libpico.a"
-compiler.libstdcpp="{runtime.platform.path}/lib/libstdc++.a"
+compiler.libstdcpp="-lstdc++"
 
 compiler.c.cmd=arm-none-eabi-gcc
 compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} {compiler.includes} -std=gnu17 -g
