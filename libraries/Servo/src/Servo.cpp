@@ -136,7 +136,7 @@ void Servo::writeMicroseconds(int value) {
     }
 }
 
-void Servo::writeMicroseconds(float value){
+void Servo::writeMicroseconds(double value){
     value = constrain(value, _minUs, _maxUs);
     _valueUs = value;
     if (_attached) {

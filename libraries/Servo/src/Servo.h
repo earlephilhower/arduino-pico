@@ -68,7 +68,7 @@ public:
     void detach();
     void write(int value);             // if value is < 200 its treated as an angle, otherwise as pulse width in microseconds
     void writeMicroseconds(int value); // Write pulse width in microseconds
-    void writeMicroseconds(float value); // Write pulse width in microseconds
+    void writeMicroseconds(double value); // Write pulse width in microseconds
     int read();                        // returns current pulse width as an angle between 0 and 180 degrees
     int readMicroseconds();            // returns current pulse width in microseconds for this servo (was read_us() in first release)
     bool attached();                   // return true if this servo is attached, otherwise false

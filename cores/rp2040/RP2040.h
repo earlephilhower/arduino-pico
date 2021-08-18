@@ -133,7 +133,7 @@ public:
         return (us * (clock_get_hz(clk_sys) / 1000000));
     }
 
-    static int usToPIOCycles(float us) {
+    static int usToPIOCycles(double us) {
         // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
        float x = (us * (clock_get_hz(clk_sys) / (float)1000000.0));
        return round(x); //increase accuracy
