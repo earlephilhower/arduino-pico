@@ -1,18 +1,14 @@
 /*
     RP2040 utility class
-
     Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
-
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
     version 2.1 of the License, or (at your option) any later version.
-
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
-
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -27,17 +23,14 @@
 #include <pico/util/queue.h>
 #include <CoreMutex.h>
 
-class _MFIFO
-{
+class _MFIFO {
 public:
-    _MFIFO(){/* noop */};
-    ~_MFIFO(){/* noop */};
+    _MFIFO() { /* noop */ };
+    ~_MFIFO() { /* noop */ };
 
-    void begin(int cores)
-    {
+    void begin(int cores) {
         constexpr int FIFOCNT = 8;
-        if (cores == 1)
-        {
+        if (cores == 1) {
             _multicore = false;
             return;
         }
@@ -47,64 +40,48 @@ public:
         _multicore = true;
     }
 
-    void registerCore()
-    {
+    void registerCore() {
         multicore_fifo_clear_irq();
         irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
         irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
     }
 
-    void push(uint32_t val)
-    {
-        while (!push_nb(val))
-        { /* noop */
-        }
+    void push(uint32_t val) {
+        while (!push_nb(val)) { /* noop */ }
     }
 
-    bool push_nb(uint32_t val)
-    {
+    bool push_nb(uint32_t val) {
         // Push to the other FIFO
         return queue_try_add(&_queue[get_core_num() ^ 1], &val);
     }
 
-    uint32_t pop()
-    {
+    uint32_t pop() {
         uint32_t ret;
-        while (!pop_nb(&ret))
-        { /* noop */
-        }
+        while (!pop_nb(&ret)) { /* noop */ }
         return ret;
     }
 
-    bool pop_nb(uint32_t *val)
-    {
+    bool pop_nb(uint32_t *val) {
         // Pop from my own FIFO
         return queue_try_remove(&_queue[get_core_num()], val);
     }
 
-    int available()
-    {
+    int available() {
         return queue_get_level(&_queue[get_core_num()]);
     }
 
-    void idleOtherCore()
-    {
-        if (!_multicore)
-        {
+    void idleOtherCore() {
+        if (!_multicore) {
             return;
         }
         mutex_enter_blocking(&_idleMutex);
         _otherIdled = false;
         multicore_fifo_push_blocking(_GOTOSLEEP);
-        while (!_otherIdled)
-        { /* noop */
-        }
+        while (!_otherIdled) { /* noop */ }
     }
 
-    void resumeOtherCore()
-    {
-        if (!_multicore)
-        {
+    void resumeOtherCore() {
+        if (!_multicore) {
             return;
         }
         mutex_exit(&_idleMutex);
@@ -114,18 +91,13 @@ public:
     }
 
 private:
-    static void __no_inline_not_in_flash_func(_irq)()
-    {
+    static void __no_inline_not_in_flash_func(_irq)() {
         multicore_fifo_clear_irq();
         noInterrupts(); // We need total control, can't run anything
-        while (multicore_fifo_rvalid())
-        {
-            if (_GOTOSLEEP == multicore_fifo_pop_blocking())
-            {
+        while (multicore_fifo_rvalid()) {
+            if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
                 _otherIdled = true;
-                while (_otherIdled)
-                { /* noop */
-                }
+                while (_otherIdled) { /* noop */ }
                 break;
             }
         }
@@ -142,11 +114,9 @@ private:
 
 class RP2040;
 extern RP2040 rp2040;
-class RP2040
-{
+class RP2040 {
 public:
-    RP2040()
-    {
+    RP2040() {
         _epoch = 0;
         // Enable SYSTICK exception
         exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
@@ -154,57 +124,53 @@ public:
         systick_hw->rvr = 0x00FFFFFF;
     }
 
-    ~RP2040()
-    { /* noop */
-    }
+    ~RP2040() { /* noop */ }
+
 
     // Convert from microseconds to PIO clock cycles
-    static int usToPIOCycles(float us)
-    {
+    static int usToPIOCycles(int us) {
+       // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
+        return (us * (clock_get_hz(clk_sys) / 1000000));
+    }
+
+    static int usToPIOCycles(float us) {
         // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
-        float x = (us * (clock_get_hz(clk_sys) / 1000000));
-        return round(x); //increase accuracy
+       float x = (us * (clock_get_hz(clk_sys) / (float)1000000.0));
+       return round(x); //increase accuracy
     }
 
     // Get current clock frequency
-    static int f_cpu()
-    {
+    static int f_cpu() {
         return clock_get_hz(clk_sys);
     }
 
     // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
     volatile uint64_t _epoch = 0;
-    inline uint32_t getCycleCount()
-    {
+    inline uint32_t getCycleCount() {
         uint32_t epoch;
         uint32_t ctr;
-        do
-        {
+        do {
             epoch = (uint32_t)_epoch;
             ctr = systick_hw->cvr;
         } while (epoch != (uint32_t)_epoch);
         return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
     }
 
-    inline uint64_t getCycleCount64()
-    {
+    inline uint64_t getCycleCount64() {
         uint64_t epoch;
         uint64_t ctr;
-        do
-        {
+        do {
             epoch = _epoch;
             ctr = systick_hw->cvr;
         } while (epoch != _epoch);
         return epoch + (1LL << 24) - ctr;
     }
 
-    void idleOtherCore()
-    {
+    void idleOtherCore() {
         fifo.idleOtherCore();
     }
 
-    void resumeOtherCore()
-    {
+    void resumeOtherCore() {
         fifo.resumeOtherCore();
     }
 
@@ -212,38 +178,31 @@ public:
     _MFIFO fifo;
 
 private:
-    static void _SystickHandler()
-    {
+    static void _SystickHandler() {
         rp2040._epoch += 1LL << 24;
     }
 };
 
 // Wrapper class for PIO programs, abstracting common operations out
 // TODO - Add unload/destructor
-class PIOProgram
-{
+class PIOProgram {
 public:
-    PIOProgram(const pio_program_t *pgm)
-    {
+    PIOProgram(const pio_program_t *pgm) {
         _pgm = pgm;
     }
 
     // Possibly load into a PIO and allocate a SM
-    bool prepare(PIO *pio, int *sm, int *offset)
-    {
+    bool prepare(PIO *pio, int *sm, int *offset) {
         extern mutex_t _pioMutex;
         CoreMutex m(&_pioMutex);
         // Is there an open slot to run in, first?
-        if (!_findFreeSM(pio, sm))
-        {
+        if (!_findFreeSM(pio, sm)) {
             return false;
         }
         // Is it loaded on that PIO?
-        if (_offset[pio_get_index(*pio)] < 0)
-        {
+        if (_offset[pio_get_index(*pio)] < 0) {
             // Nope, need to load it
-            if (!pio_can_add_program(*pio, _pgm))
-            {
+            if (!pio_can_add_program(*pio, _pgm)) {
                 return false;
             }
             _offset[pio_get_index(*pio)] = pio_add_program(*pio, _pgm);
@@ -256,18 +215,15 @@ public:
 
 private:
     // Find an unused PIO state machine to grab, returns false when none available
-    static bool _findFreeSM(PIO *pio, int *sm)
-    {
+    static bool _findFreeSM(PIO *pio, int *sm) {
         int idx = pio_claim_unused_sm(pio0, false);
-        if (idx >= 0)
-        {
+        if (idx >= 0) {
             *pio = pio0;
             *sm = idx;
             return true;
         }
         idx = pio_claim_unused_sm(pio1, false);
-        if (idx >= 0)
-        {
+        if (idx >= 0) {
             *pio = pio1;
             *sm = idx;
             return true;
@@ -275,7 +231,8 @@ private:
         return false;
     }
 
+
 private:
-    int _offset[2] = {-1, -1};
+    int _offset[2] = { -1, -1 };
     const pio_program_t *_pgm;
 };

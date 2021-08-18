@@ -1,18 +1,14 @@
 /*
     PIO-based Servo class for Rasperry Pi Pico RP2040
-
     Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
-
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
     version 2.1 of the License, or (at your option) any later version.
-
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
-
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -23,7 +19,6 @@
     the desired pin to the attach() method.
     The servos are pulsed in the background using the value most recently
     written using the write() method.
-
     The methods are:
      Servo - Class for manipulating servo motors connected to Arduino pins.
        attach(pin)  - Attaches a servo motor to an i/o pin.
@@ -49,15 +44,14 @@
 // of publicly available specifications. While this implies that many 180°
 // servos do not operate the full 0° to 180° sweep using these, it also prevents
 // unsuspecting damage. For Arduino AVR, the same change is being discussed.
+#define DEFAULT_MIN_PULSE_WIDTH      1000 // uncalibrated default, the shortest duty cycle sent to a servo
+#define DEFAULT_MAX_PULSE_WIDTH      2000 // uncalibrated default, the longest duty cycle sent to a servo 
+#define DEFAULT_NEUTRAL_PULSE_WIDTH  1500 // default duty cycle when servo is attached
+#define REFRESH_INTERVAL            20000 // classic default period to refresh servos in microseconds 
+#define MAX_SERVOS                      8 // number of PIO state machines available, assuming nobody else is using them
 
-#define DEFAULT_MIN_PULSE_WIDTH 1000     // uncalibrated default, the shortest duty cycle sent to a servo
-#define DEFAULT_MAX_PULSE_WIDTH 2000     // uncalibrated default, the longest duty cycle sent to a servo
-#define DEFAULT_NEUTRAL_PULSE_WIDTH 1500 // default duty cycle when servo is attached
-#define REFRESH_INTERVAL 20000           // classic default period to refresh servos in microseconds
-#define MAX_SERVOS 8                     // number of PIO state machines available, assuming nobody else is using them
 
-class Servo
-{
+class Servo {
 public:
     Servo();
     ~Servo();
@@ -72,21 +66,24 @@ public:
     // returns channel number or 0 if failure.
     int attach(pin_size_t pin, int min, int max, int value);
     void detach();
-    void write(int value);               // if value is < 200 its treated as an angle, otherwise as pulse width in microseconds
+    void write(int value);             // if value is < 200 its treated as an angle, otherwise as pulse width in microseconds
+    void writeMicroseconds(int value); // Write pulse width in microseconds
     void writeMicroseconds(float value); // Write pulse width in microseconds
-    int read();                          // returns current pulse width as an angle between 0 and 180 degrees
-    float readMicroseconds();            // returns current pulse width in microseconds for this servo (was read_us() in first release)
-    bool attached();                     // return true if this servo is attached, otherwise false
+    int read();                        // returns current pulse width as an angle between 0 and 180 degrees
+    int readMicroseconds();            // returns current pulse width in microseconds for this servo (was read_us() in first release)
+    bool attached();                   // return true if this servo is attached, otherwise false
 
 private:
-    bool _attached;
-    pin_size_t _pin;
-    PIO _pio;       // PIO0/1
-    int _smIdx;     // The state machine inside
-    int _pgmOffset; // Where in the SM the code lives
+    bool     _attached;
+    pin_size_t  _pin;
+    PIO      _pio; // PIO0/1
+    int      _smIdx;  // The state machine inside
+    int      _pgmOffset; // Where in the SM the code lives
     int _minUs;
     int _maxUs;
     float _valueUs;
+
+
 };
 
 #endif
