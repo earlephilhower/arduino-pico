@@ -129,7 +129,7 @@ public:
 
     // Convert from microseconds to PIO clock cycles
     static int usToPIOCycles(int us) {
-       // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
+        // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
         return (us * (clock_get_hz(clk_sys) / 1000000));
     }
 
