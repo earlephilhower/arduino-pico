@@ -67,9 +67,9 @@ static const uint8_t D15 =  (14u);
 static const uint8_t D16 =  (15u);
 static const uint8_t D17 =  (19u);
 
-static const uint8_t A0 =   (26u);
-static const uint8_t A1 =   (27u);
-static const uint8_t A2 =   (28u);
-static const uint8_t A3 =   (29u);
+static const uint8_t A0 =   (29u);
+static const uint8_t A1 =   (28u);
+static const uint8_t A2 =   (27u);
+static const uint8_t A3 =   (26u);
 static const uint8_t A4 =   (25u);
 static const uint8_t A5 =   (21u);
