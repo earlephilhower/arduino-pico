@@ -38,7 +38,7 @@ extern "C" unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeo
     }
 
     // Wait for assert
-    while ((!!gpio_get(pin) != !state) && (time_us_64() < abort));
+    while ((!!gpio_get(pin) != !!state) && (time_us_64() < abort));
     uint64_t begin = time_us_64();
     if (begin >= abort) {
         return 0;
