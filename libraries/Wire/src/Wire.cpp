@@ -181,6 +181,8 @@ void TwoWire::end() {
         return;
     }
     i2c_deinit(_i2c);
+    pinMode(_sda, INPUT);
+    pinMode(_scl, INPUT);
     _running = false;
     _txBegun = false;
 }
