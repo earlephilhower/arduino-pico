@@ -20,6 +20,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    Installation <install>
    IDE Menus <ide>
 
+   Platform.IO Integration <platformio>
+
    Pin (Re)Assignment <pins>
 
    Analog I/O <analog>
