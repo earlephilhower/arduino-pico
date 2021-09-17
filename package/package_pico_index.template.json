@@ -45,6 +45,9 @@
                      "name": "SparkFun ProMicro RP2040"
                   },
                   {
+                     "name": "Melopero Shake RP2040"
+                  },
+                  {
                      "name": "Generic RP2040 Module"
                   }
                ],
