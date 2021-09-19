@@ -13,9 +13,11 @@ pico_sdk_init()
 
 add_library(pico STATIC)
 
+# Use a longer XOSC startup time, to accomodate Adafruit and other boards that may need it.
 target_compile_definitions(pico PUBLIC
 	PICO_PRINTF_ALWAYS_INCLUDED=1
 	PICO_FLASH_SIZE_BYTES=16777216
+	PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
 )
 
 target_compile_options(pico PUBLIC
@@ -25,7 +27,7 @@ target_compile_options(pico PUBLIC
 
 include_directories(BEFORE ${PICO_SDK_PATH}/../tools/libpico)
 
-target_link_libraries(pico 
+target_link_libraries(pico
 	boot_stage2
 	hardware_adc
 	hardware_base
