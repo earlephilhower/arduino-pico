@@ -36,6 +36,12 @@ def BuildFreq(name):
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
+def BuildOptimize(name):
+    for l in [ ("Small", "Small", "-Os", "(standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
+               ("Optimize3", "Optimize Even More", "-O3", ""), ("Fast", "Fast", "-Ofast", "(maybe slower)"), ("Debug", "Debug", "-Og", "") ]:
+        print("%s.menu.opt.%s=%s (%s) %s" % (name, l[0], l[1], l[2], l[3]))
+        print("%s.menu.opt.%s.build.flags.optimize=%s" % (name, l[0], l[2]))
+
 def BuildBoot(name):
     for l in [ ("Generic SPI /2", "boot2_generic_03h_2_padded_checksum"),  ("Generic SPI /4", "boot2_generic_03h_4_padded_checksum"),
             ("IS25LP080 QSPI /2", "boot2_is25lp080_2_padded_checksum"), ("IS25LP080 QSPI /4", "boot2_is25lp080_4_padded_checksum"),
@@ -90,6 +96,7 @@ def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
     print("menu.flash=Flash Size")
     print("menu.freq=CPU Speed")
+    print("menu.opt=Optimize")
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
@@ -122,6 +129,7 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, boarddefine, flashsizem
         else:
             BuildFlashMenu(n, flashsizemb * 1024 * 1024, fssizelist)
         BuildFreq(n)
+        BuildOptimize(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
         if a == "picodebug":

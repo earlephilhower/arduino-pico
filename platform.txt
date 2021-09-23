@@ -40,7 +40,7 @@ compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualif
 
 compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt"
-compiler.flags=-Os -march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections -fno-exceptions
+compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections -fno-exceptions
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
 compiler.libpico="{runtime.platform.path}/lib/libpico.a"
 compiler.libstdcpp="-lstdc++"
@@ -48,7 +48,7 @@ compiler.libstdcpp="-lstdc++"
 compiler.c.cmd=arm-none-eabi-gcc
 compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} {compiler.includes} -std=gnu17 -g
 compiler.c.elf.cmd=arm-none-eabi-g++
-compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} -u _printf_float -u _scanf_float
+compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} -Os -u _printf_float -u _scanf_float
 compiler.S.cmd=arm-none-eabi-gcc
 compiler.S.flags=-c {compiler.warning_flags} -g -x assembler-with-cpp -MMD {compiler.includes} -g
 compiler.cpp.cmd=arm-none-eabi-g++
@@ -80,6 +80,7 @@ compiler.elf2hex.extra_flags=
 # Board configuration, set in boards.txt.  Present here to ensure substitution works
 build.flash_length=
 build.eeprom_start=
+build.flags.optimize=
 build.fs_start=
 build.fs_end=
 build.usbstack_flags=
@@ -94,10 +95,10 @@ discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime
 # ----------------
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile S files
 recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {build.usbpid} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
