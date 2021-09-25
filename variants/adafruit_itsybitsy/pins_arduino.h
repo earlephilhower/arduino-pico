@@ -26,13 +26,13 @@
 #define PIN_SPI1_SCK   (31u)
 #define PIN_SPI1_SS    (31u)
 
-// Wire
-#define PIN_WIRE0_SDA  (2u)
-#define PIN_WIRE0_SCL  (3u)
-
 // Not pinned out
-#define PIN_WIRE1_SDA  (31u)
-#define PIN_WIRE1_SCL  (31u)
+#define PIN_WIRE0_SDA  (31u)
+#define PIN_WIRE0_SCL  (31u)
+
+// Wire
+#define PIN_WIRE1_SDA  (2u)
+#define PIN_WIRE1_SCL  (3u)
 
 #define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (1u)
