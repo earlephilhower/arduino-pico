@@ -34,6 +34,6 @@
 
 #define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (1u)
-#define WIRE_HOWMANY   (1u)
+#define WIRE_HOWMANY   (2u)
 
 #include "../generic/common.h"
