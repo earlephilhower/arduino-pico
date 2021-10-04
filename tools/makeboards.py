@@ -36,6 +36,12 @@ def BuildFreq(name):
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
+def BuildOptimize(name):
+    for l in [ ("Small", "Small", "-Os", "(standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
+               ("Optimize3", "Optimize Even More", "-O3", ""), ("Fast", "Fast", "-Ofast", "(maybe slower)"), ("Debug", "Debug", "-Og", "") ]:
+        print("%s.menu.opt.%s=%s (%s) %s" % (name, l[0], l[1], l[2], l[3]))
+        print("%s.menu.opt.%s.build.flags.optimize=%s" % (name, l[0], l[2]))
+
 def BuildBoot(name):
     for l in [ ("Generic SPI /2", "boot2_generic_03h_2_padded_checksum"),  ("Generic SPI /4", "boot2_generic_03h_4_padded_checksum"),
             ("IS25LP080 QSPI /2", "boot2_is25lp080_2_padded_checksum"), ("IS25LP080 QSPI /4", "boot2_is25lp080_4_padded_checksum"),
@@ -90,6 +96,7 @@ def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
     print("menu.flash=Flash Size")
     print("menu.freq=CPU Speed")
+    print("menu.opt=Optimize")
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
@@ -122,6 +129,7 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, boarddefine, flashsizem
         else:
             BuildFlashMenu(n, flashsizemb * 1024 * 1024, fssizelist)
         BuildFreq(n)
+        BuildOptimize(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
         if a == "picodebug":
@@ -136,7 +144,7 @@ BuildGlobalMenuList()
 MakeBoard("rpipico", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_feather", "Adafruit", "Feather RP2040", "0x239a", "0x80f1", "ADAFRUIT_FEATHER_RP2040", 8, "boot2_w25x10cl_4_padded_checksum")
 MakeBoard("adafruit_itsybitsy", "Adafruit", "ItsyBitsy RP2040", "0x239a", "0x80fd", "ADAFRUIT_ITSYBITSY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_qtpy", "Adafruit", "QT Py RP2040", "0x239a", "0x80f7", "ADAFRUIT_QTPY_RP2040", 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("adafruit_qtpy", "Adafruit", "QT Py RP2040", "0x239a", "0x80f7", "ADAFRUIT_QTPY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_stemmafriend", "Adafruit", "STEMMA Friend RP2040", "0x239a", "0x80e3", "ADAFRUIT_STEMMAFRIEND_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_trinkeyrp2040qt", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", "ADAFRUIT_TRINKEYQT_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_macropad2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", "ADAFRUIT_MACROPAD_RP2040", 8, "boot2_w25q080_2_padded_checksum")
@@ -145,3 +153,4 @@ MakeBoard("sparkfun_promicrorp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("challenger_2040_wifi", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", "CHALLENGER_2040_WIFI_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_lte", "iLabs", "Challenger 2040 LTE", "0x2e8a", "0x100b", "CHALLENGER_2040_LTE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("melopero_shake_rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005", "MELOPERO_SHAKE_RP2040", 16, "boot2_w25q080_2_padded_checksum")
