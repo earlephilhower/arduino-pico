@@ -48,6 +48,9 @@
                      "name": "Melopero Shake RP2040"
                   },
                   {
+                     "name": "uPesy RP2040 DevKit"
+                  },
+                  {
                      "name": "Generic RP2040 Module"
                   }
                ],
