@@ -42,6 +42,12 @@ def BuildOptimize(name):
         print("%s.menu.opt.%s=%s (%s) %s" % (name, l[0], l[1], l[2], l[3]))
         print("%s.menu.opt.%s.build.flags.optimize=%s" % (name, l[0], l[2]))
 
+def BuildRTTI(name):
+    print("%s.menu.rtti.Disabled=Disabled" % (name))
+    print("%s.menu.rtti.Disabled.build.flags.rtti=-fno-rtti" % (name))
+    print("%s.menu.rtti.Enabled=Enabled" % (name))
+    print("%s.menu.rtti.Enabled.build.flags.rtti=" % (name))
+
 def BuildBoot(name):
     for l in [ ("Generic SPI /2", "boot2_generic_03h_2_padded_checksum"),  ("Generic SPI /4", "boot2_generic_03h_4_padded_checksum"),
             ("IS25LP080 QSPI /2", "boot2_is25lp080_2_padded_checksum"), ("IS25LP080 QSPI /4", "boot2_is25lp080_4_padded_checksum"),
@@ -97,6 +103,7 @@ def BuildGlobalMenuList():
     print("menu.flash=Flash Size")
     print("menu.freq=CPU Speed")
     print("menu.opt=Optimize")
+    print("menu.rtti=RTTI")
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
@@ -130,6 +137,7 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, boarddefine, flashsizem
             BuildFlashMenu(n, flashsizemb * 1024 * 1024, fssizelist)
         BuildFreq(n)
         BuildOptimize(n)
+        BuildRTTI(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
         if a == "picodebug":

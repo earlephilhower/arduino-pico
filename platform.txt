@@ -52,7 +52,7 @@ compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags
 compiler.S.cmd=arm-none-eabi-gcc
 compiler.S.flags=-c {compiler.warning_flags} -g -x assembler-with-cpp -MMD {compiler.includes} -g
 compiler.cpp.cmd=arm-none-eabi-g++
-compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} {compiler.includes} -fno-rtti -std=gnu++17 -g
+compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} {compiler.includes} {build.flags.rtti} -std=gnu++17 -g
 
 compiler.ar.cmd=arm-none-eabi-ar
 compiler.ar.flags=rcs
@@ -80,7 +80,8 @@ compiler.elf2hex.extra_flags=
 # Board configuration, set in boards.txt.  Present here to ensure substitution works
 build.flash_length=
 build.eeprom_start=
-build.flags.optimize=
+build.flags.optimize=-Os
+build.flags.rtti=-fno-rtti
 build.fs_start=
 build.fs_end=
 build.usbstack_flags=
