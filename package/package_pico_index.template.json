@@ -42,6 +42,9 @@
                      "name": "Arduino Nano RP2040 Connect"
                   },
                   {
+                     "name": "Cytron Maker Pi RP2040"
+                  },
+                  {
                      "name": "SparkFun ProMicro RP2040"
                   },
                   {
