@@ -23,6 +23,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Invector Labs Challenger RP2040 LTE
 * Melopero Shake RP2040
 * SparkFun ProMicro RP2040
+* uPesy RP2040 DevKit
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager
