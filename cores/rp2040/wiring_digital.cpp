@@ -28,6 +28,7 @@ extern "C" void pinMode(pin_size_t ulPin, PinMode ulMode) {
     case INPUT:
         gpio_init(ulPin);
         gpio_set_dir(ulPin, false);
+        gpio_disable_pulls(ulPin);
         break;
     case INPUT_PULLUP:
         gpio_init(ulPin);

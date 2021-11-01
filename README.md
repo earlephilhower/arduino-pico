@@ -18,10 +18,12 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Adafruit STEMMA Friend RP2040
 * Adafruit Trinkey RP2040 QT
 * Arduino Nano RP2040 Connect (preliminary)
+* Cytron Maker Pi RP2040
 * Invector Labs Challenger RP2040 WiFi
 * Invector Labs Challenger RP2040 LTE
 * Melopero Shake RP2040
 * SparkFun ProMicro RP2040
+* uPesy RP2040 DevKit
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager

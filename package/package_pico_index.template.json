@@ -42,10 +42,16 @@
                      "name": "Arduino Nano RP2040 Connect"
                   },
                   {
+                     "name": "Cytron Maker Pi RP2040"
+                  },
+                  {
                      "name": "SparkFun ProMicro RP2040"
                   },
                   {
                      "name": "Melopero Shake RP2040"
+                  },
+                  {
+                     "name": "uPesy RP2040 DevKit"
                   },
                   {
                      "name": "Generic RP2040 Module"
