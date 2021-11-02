@@ -206,7 +206,7 @@ and 0.5MByte filesystem.
     platform = https://github.com/maxgerhardt/platform-raspberrypi.git
     board = pico
     framework = arduino
-    build_board.core = earlephilhower
+    board_build.core = earlephilhower
     board_build.filesystem_size = 0.5m
     ; note that download link for toolchain is specific for OS. see https://github.com/earlephilhower/pico-quick-toolchain/releases.
     platform_packages = 
