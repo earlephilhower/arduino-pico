@@ -26,16 +26,16 @@
 #define PIN_SPI1_SCK   (31u)
 #define PIN_SPI1_SS    (31u)
 
-// Wire
+// Wire is on the STEMMA QT port
 #define PIN_WIRE0_SDA  (12u)
 #define PIN_WIRE0_SCL  (13u)
 
-// Wire1 is not pinned out
-#define PIN_WIRE1_SDA  (31u)
-#define PIN_WIRE1_SCL  (31u)
+// Wire1 is on the breakout pins
+#define PIN_WIRE1_SDA  (2u)
+#define PIN_WIRE1_SCL  (3u)
 
 #define SERIAL_HOWMANY (1u)
 #define SPI_HOWMANY    (1u)
-#define WIRE_HOWMANY   (1u)
+#define WIRE_HOWMANY   (2u)
 
 #include "../generic/common.h"
