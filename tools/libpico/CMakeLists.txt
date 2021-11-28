@@ -70,8 +70,9 @@ target_link_libraries(pico
 	pico_standard_link
 	pico_stdlib
 	pico_unique_id
+	pico_util
 	tinyusb
-        tinyusb_device_unmarked
+	tinyusb_device_unmarked
 	pico_audio
 	pico_audio_i2s
 )
