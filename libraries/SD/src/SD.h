@@ -136,7 +136,7 @@ public:
         uint64_t sz = size64();
 #ifdef DEBUG_ESP_PORT
         if (sz > std::numeric_limits<uint32_t>::max()) {
-             DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use size64().\n"), (long long)sz);
+            DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use size64().\n"), (long long)sz);
         }
 #endif
         return (size_t)sz;
