@@ -24,6 +24,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Melopero Shake RP2040
 * SparkFun ProMicro RP2040
 * uPesy RP2040 DevKit
+* WIZnet W5100S-EVB-Pico
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager
