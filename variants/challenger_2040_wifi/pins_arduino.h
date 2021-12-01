@@ -16,6 +16,8 @@
 // Connected to ESP8285
 #define PIN_SERIAL2_TX      (4u)
 #define PIN_SERIAL2_RX      (5u)
+#define PIN_ESP8285_RST     (19u)
+#define PIN_ESP8285_MODE    (13u)
 
 // SPI
 #define PIN_SPI0_MISO       (24u)
