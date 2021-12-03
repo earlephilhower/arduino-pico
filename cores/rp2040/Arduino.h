@@ -30,6 +30,7 @@
 #include <pins_arduino.h>
 #include "hardware/gpio.h" // Required for the port*Register macros
 #include "debug_internal.h"
+#include <RP2040.h> // CMSIS
 
 // Try and make the best of the old Arduino abs() macro.  When in C++, use
 // the sane std::abs() call, but for C code use their macro since stdlib abs()
