@@ -53,6 +53,7 @@ target_link_libraries(pico
 	hardware_vreg
 	hardware_watchdog
 	hardware_xosc
+	cmsis
 	pico_bit_ops
 	pico_bootrom
 	pico_bootsel_via_double_reset
