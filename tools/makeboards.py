@@ -164,7 +164,7 @@ MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", "GENERIC_RP2040", 
 MakeBoard("challenger_2040_wifi", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", "CHALLENGER_2040_WIFI_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_lte", "iLabs", "Challenger 2040 LTE", "0x2e8a", "0x100b", "CHALLENGER_2040_LTE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_nb_2040_wifi", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a", "0x100b", "CHALLENGER_2040_LTE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("ilabs_rpico32", "iLabs", "RPICO32", "0x2e8a", "0x1012", "ILABS_2040_RPICO32_RP2040", 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("ilabs_rpico32", "iLabs", "RPICO32", "0x2e8a", "0x1010", "ILABS_2040_RPICO32_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("melopero_shake_rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005", "MELOPERO_SHAKE_RP2040", 16, "boot2_w25q080_2_padded_checksum")
 MakeBoard("upesy_rp2040_devkit", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", "UPESY_RP2040_DEVKIT", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1008", "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
