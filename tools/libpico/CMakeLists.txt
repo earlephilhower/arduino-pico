@@ -53,6 +53,7 @@ target_link_libraries(pico
 	hardware_vreg
 	hardware_watchdog
 	hardware_xosc
+	cmsis
 	pico_bit_ops
 	pico_bootrom
 	pico_bootsel_via_double_reset
@@ -70,8 +71,9 @@ target_link_libraries(pico
 	pico_standard_link
 	pico_stdlib
 	pico_unique_id
+	pico_util
 	tinyusb
-        tinyusb_device_unmarked
+	tinyusb_device_unmarked
 	pico_audio
 	pico_audio_i2s
 )

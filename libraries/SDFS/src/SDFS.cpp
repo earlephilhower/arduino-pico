@@ -64,13 +64,13 @@ FileImplPtr SDFSImpl::open(const char* path, OpenMode openMode, AccessMode acces
         }
         free(pathStr);
     }
-    sdfat::File32 fd = _fs.open(path, flags);
+    File32 fd = _fs.open(path, flags);
     if (!fd) {
         DEBUGV("SDFSImpl::openFile: fd=%p path=`%s` openMode=%d accessMode=%d",
                &fd, path, openMode, accessMode);
         return FileImplPtr();
     }
-    auto sharedFd = std::make_shared<sdfat::File32>(fd);
+    auto sharedFd = std::make_shared<File32>(fd);
     return std::make_shared<SDFSFileImpl>(this, sharedFd, path);
 }
 
@@ -90,7 +90,7 @@ DirImplPtr SDFSImpl::openDir(const char* path)
     }
     // At this point we have a name of "/blah/blah/blah" or "blah" or ""
     // If that references a directory, just open it and we're done.
-    sdfat::File32 dirFile;
+    File32 dirFile;
     const char *filter = "";
     if (!pathStr[0]) {
         // openDir("") === openDir("/")
@@ -135,7 +135,7 @@ DirImplPtr SDFSImpl::openDir(const char* path)
         DEBUGV("SDFSImpl::openDir: path=`%s`\n", path);
         return DirImplPtr();
     }
-    auto sharedDir = std::make_shared<sdfat::File32>(dirFile);
+    auto sharedDir = std::make_shared<File32>(dirFile);
     auto ret = std::make_shared<SDFSDirImpl>(filter, this, sharedDir, pathStr);
     free(pathStr);
     return ret;
@@ -145,12 +145,12 @@ bool SDFSImpl::format() {
     if (_mounted) {
         return false;
     }
-    sdfat::SdCardFactory cardFactory;
-    sdfat::SdCard* card = cardFactory.newCard(sdfat::SdSpiConfig(_cfg._csPin, DEDICATED_SPI, _cfg._spiSettings));
+    SdCardFactory cardFactory;
+    SdCard* card = cardFactory.newCard(SdSpiConfig(_cfg._csPin, DEDICATED_SPI, _cfg._spiSettings));
     if (!card || card->errorCode()) {
         return false;
     }
-    sdfat::FatFormatter fatFormatter;
+    FatFormatter fatFormatter;
     uint8_t *sectorBuffer = new uint8_t[512];
     bool ret = fatFormatter.format(card, sectorBuffer, nullptr);
     delete[] sectorBuffer;
