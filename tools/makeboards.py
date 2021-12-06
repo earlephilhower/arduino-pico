@@ -37,9 +37,9 @@ def BuildFreq(name):
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
 def BuildOptimize(name):
-    for l in [ ("Small", "Small", "-Os", "(standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
-               ("Optimize3", "Optimize Even More", "-O3", ""), ("Fast", "Fast", "-Ofast", "(maybe slower)"), ("Debug", "Debug", "-Og", "") ]:
-        print("%s.menu.opt.%s=%s (%s) %s" % (name, l[0], l[1], l[2], l[3]))
+    for l in [ ("Small", "Small", "-Os", " (standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
+               ("Optimize3", "Optimize Even More", "-O3", ""), ("Fast", "Fast", "-Ofast", " (maybe slower)"), ("Debug", "Debug", "-Og", "") ]:
+        print("%s.menu.opt.%s=%s (%s)%s" % (name, l[0], l[1], l[2], l[3]))
         print("%s.menu.opt.%s.build.flags.optimize=%s" % (name, l[0], l[2]))
 
 def BuildRTTI(name):
@@ -157,6 +157,7 @@ MakeBoard("adafruit_stemmafriend", "Adafruit", "STEMMA Friend RP2040", "0x239a",
 MakeBoard("adafruit_trinkeyrp2040qt", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", "ADAFRUIT_TRINKEYQT_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_macropad2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", "ADAFRUIT_MACROPAD_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("arduino_nano_connect", "Arduino", "Nano RP2040 Connect", "0x2341", "0x0058", "ARDUINO_NANO_RP2040_CONNECT", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("cytron_maker_nano_rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", "CYTRON_MAKER_NANO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_pi_rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x1000", "CYTRON_MAKER_PI_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_promicrorp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", "SPARKFUN_PROMICRO_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
@@ -166,3 +167,4 @@ MakeBoard("challenger_nb_2040_wifi", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a
 MakeBoard("ilabs_rpico32", "iLabs", "RPICO32", "0x2e8a", "0x1012", "ILABS_2040_RPICO32_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("melopero_shake_rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005", "MELOPERO_SHAKE_RP2040", 16, "boot2_w25q080_2_padded_checksum")
 MakeBoard("upesy_rp2040_devkit", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", "UPESY_RP2040_DEVKIT", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1008", "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
