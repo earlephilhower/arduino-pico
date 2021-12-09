@@ -112,7 +112,7 @@ bool Challenger2040LTEClass::enablePS(bool enable) {
 
 // Get a response from SARA
 // A default serial timeout of 2 seconds allow for reading really slow
-// responses which should accomodate most replies. Replies are then trimmed
+// responses which should accommodate most replies. Replies are then trimmed
 // from control characters and appended with a tab character as a separator.
 //
 String Challenger2040LTEClass::getResponse(int timeout) {
