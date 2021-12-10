@@ -52,7 +52,6 @@ mutex_t __usb_mutex;
 #endif
 
 #define USBD_DESC_LEN (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN)
-#define USBD_MAX_POWER_MA (250)
 
 #define USBD_ITF_CDC (0) // needs 2 interfaces
 #define USBD_ITF_MAX (2)
