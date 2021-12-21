@@ -96,7 +96,9 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     gpio_set_function(_tx, GPIO_FUNC_UART);
     gpio_set_function(_rx, GPIO_FUNC_UART);
     _running = true;
-    _peek = -1;
+    while (!_swFIFO.empty()) {
+        (void)_swFIFO.pop(); // Just throw out anything in our old FIFO
+    }
 }
 
 void SerialUART::end() {
@@ -107,20 +109,30 @@ void SerialUART::end() {
     _running = false;
 }
 
+// Transfers any data in the HW FIFO into our SW one, up to 32 bytes
+void SerialUART::_pumpFIFO() {
+    while ((_swFIFO.size() < 32) && (uart_is_readable(_uart))) {
+        _swFIFO.push(uart_getc(_uart));
+    }
+}
+
 int SerialUART::peek() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return -1;
     }
-    if (_peek >= 0) {
-        return _peek;
+    _pumpFIFO();
+    // If there's something in the FIFO now, just peek at it
+    if (_swFIFO.size()) {
+        return _swFIFO.front();
     }
+    // The SW FIFO is empty, read the HW one until the timeout
     if (uart_is_readable_within_us(_uart, _timeout * 1000)) {
-        _peek = uart_getc(_uart);
-    } else {
-        _peek = -1; // Timeout
+        // We got one char, put it in the FIFO (which will now have exactly 1 byte) and return it
+        _swFIFO.push(uart_getc(_uart));
+        return _swFIFO.front();
     }
-    return _peek;
+    return -1; // Nothing available before timeout
 }
 
 int SerialUART::read() {
@@ -128,16 +140,18 @@ int SerialUART::read() {
     if (!_running || !m) {
         return -1;
     }
-    if (_peek >= 0) {
-        int ret = _peek;
-        _peek = -1;
+    _pumpFIFO();
+    if (_swFIFO.size()) {
+        auto ret = _swFIFO.front();
+        _swFIFO.pop();
         return ret;
     }
+    // The SW FIFO is empty, read the HW one until the timeout
     if (uart_is_readable_within_us(_uart, _timeout * 1000)) {
+        // We got one char, return it (FIFO will still be empty
         return uart_getc(_uart);
-    } else {
-        return -1; // Timeout
     }
+    return -1; // Timeout
 }
 
 int SerialUART::available() {
@@ -145,7 +159,8 @@ int SerialUART::available() {
     if (!_running || !m) {
         return 0;
     }
-    return (uart_is_readable(_uart)) ? 1 : 0;
+    _pumpFIFO();
+    return _swFIFO.size();
 }
 
 int SerialUART::availableForWrite() {
@@ -153,6 +168,7 @@ int SerialUART::availableForWrite() {
     if (!_running || !m) {
         return 0;
     }
+    _pumpFIFO();
     return (uart_is_writable(_uart)) ? 1 : 0;
 }
 
@@ -161,6 +177,7 @@ void SerialUART::flush() {
     if (!_running || !m) {
         return;
     }
+    _pumpFIFO();
     uart_tx_wait_blocking(_uart);
 }
 
@@ -169,6 +186,7 @@ size_t SerialUART::write(uint8_t c) {
     if (!_running || !m) {
         return 0;
     }
+    _pumpFIFO();
     uart_putc_raw(_uart, c);
     return 1;
 }
@@ -178,6 +196,7 @@ size_t SerialUART::write(const uint8_t *p, size_t len) {
     if (!_running || !m) {
         return 0;
     }
+    _pumpFIFO();
     size_t cnt = len;
     while (cnt) {
         uart_putc_raw(_uart, *p);
