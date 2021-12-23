@@ -90,7 +90,6 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("%s.build.f_cpu=125000000" % (name))
     print("%s.build.led=" % (name))
     print("%s.build.core=rp2040" % (name))
-    print("%s.build.mcu=rp2040" % (name))
     print("%s.build.ldscript=memmap_default.ld" % (name))
     print("%s.build.ram_length=%dk" % (name, ramsize / 1024))
     print("%s.build.boot2=%s" % (name, boot2))
