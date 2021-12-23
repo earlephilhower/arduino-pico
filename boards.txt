@@ -17,7 +17,7 @@ rpipico.pid.0=0x000a
 rpipico.build.usbpid=-DSERIALUSB_PID=0x000a
 rpipico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipico.build.board=RASPBERRY_PI_PICO
-rpipico.build.mcu=cortex-m0plus
+# rpipico.build.mcu=cortex-m0plus
 rpipico.build.variant=rpipico
 rpipico.upload.tool=uf2conv
 rpipico.upload.maximum_size=2097152
@@ -145,7 +145,7 @@ rpipicopicoprobe.pid.0=0x0004
 rpipicopicoprobe.build.usbpid=-DSERIALUSB_PID=0x000a
 rpipicopicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicopicoprobe.build.board=RASPBERRY_PI_PICO
-rpipicopicoprobe.build.mcu=cortex-m0plus
+# rpipicopicoprobe.build.mcu=cortex-m0plus
 rpipicopicoprobe.build.variant=rpipico
 rpipicopicoprobe.upload.tool=picoprobe
 rpipicopicoprobe.upload.maximum_size=2097152
@@ -273,7 +273,7 @@ rpipicopicodebug.pid.0=0x2488
 rpipicopicodebug.build.usbpid=-DSERIALUSB_PID=0x000a
 rpipicopicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicopicodebug.build.board=RASPBERRY_PI_PICO
-rpipicopicodebug.build.mcu=cortex-m0plus
+# rpipicopicodebug.build.mcu=cortex-m0plus
 rpipicopicodebug.build.variant=rpipico
 rpipicopicodebug.upload.tool=picodebug
 rpipicopicodebug.upload.maximum_size=2097152
@@ -399,7 +399,7 @@ adafruit_feather.pid.0=0x80f1
 adafruit_feather.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruit_feather.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather.build.board=ADAFRUIT_FEATHER_RP2040
-adafruit_feather.build.mcu=cortex-m0plus
+# adafruit_feather.build.mcu=cortex-m0plus
 adafruit_feather.build.variant=adafruit_feather
 adafruit_feather.upload.tool=uf2conv
 adafruit_feather.upload.maximum_size=8388608
@@ -563,7 +563,7 @@ adafruit_featherpicoprobe.pid.0=0x0004
 adafruit_featherpicoprobe.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruit_featherpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_featherpicoprobe.build.board=ADAFRUIT_FEATHER_RP2040
-adafruit_featherpicoprobe.build.mcu=cortex-m0plus
+# adafruit_featherpicoprobe.build.mcu=cortex-m0plus
 adafruit_featherpicoprobe.build.variant=adafruit_feather
 adafruit_featherpicoprobe.upload.tool=picoprobe
 adafruit_featherpicoprobe.upload.maximum_size=8388608
@@ -727,7 +727,7 @@ adafruit_featherpicodebug.pid.0=0x2488
 adafruit_featherpicodebug.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruit_featherpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_featherpicodebug.build.board=ADAFRUIT_FEATHER_RP2040
-adafruit_featherpicodebug.build.mcu=cortex-m0plus
+# adafruit_featherpicodebug.build.mcu=cortex-m0plus
 adafruit_featherpicodebug.build.variant=adafruit_feather
 adafruit_featherpicodebug.upload.tool=picodebug
 adafruit_featherpicodebug.upload.maximum_size=8388608
@@ -889,7 +889,7 @@ adafruit_itsybitsy.pid.0=0x80fd
 adafruit_itsybitsy.build.usbpid=-DSERIALUSB_PID=0x80fd
 adafruit_itsybitsy.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_itsybitsy.build.board=ADAFRUIT_ITSYBITSY_RP2040
-adafruit_itsybitsy.build.mcu=cortex-m0plus
+# adafruit_itsybitsy.build.mcu=cortex-m0plus
 adafruit_itsybitsy.build.variant=adafruit_itsybitsy
 adafruit_itsybitsy.upload.tool=uf2conv
 adafruit_itsybitsy.upload.maximum_size=8388608
@@ -1053,7 +1053,7 @@ adafruit_itsybitsypicoprobe.pid.0=0x0004
 adafruit_itsybitsypicoprobe.build.usbpid=-DSERIALUSB_PID=0x80fd
 adafruit_itsybitsypicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_itsybitsypicoprobe.build.board=ADAFRUIT_ITSYBITSY_RP2040
-adafruit_itsybitsypicoprobe.build.mcu=cortex-m0plus
+# adafruit_itsybitsypicoprobe.build.mcu=cortex-m0plus
 adafruit_itsybitsypicoprobe.build.variant=adafruit_itsybitsy
 adafruit_itsybitsypicoprobe.upload.tool=picoprobe
 adafruit_itsybitsypicoprobe.upload.maximum_size=8388608
@@ -1217,7 +1217,7 @@ adafruit_itsybitsypicodebug.pid.0=0x2488
 adafruit_itsybitsypicodebug.build.usbpid=-DSERIALUSB_PID=0x80fd
 adafruit_itsybitsypicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_itsybitsypicodebug.build.board=ADAFRUIT_ITSYBITSY_RP2040
-adafruit_itsybitsypicodebug.build.mcu=cortex-m0plus
+# adafruit_itsybitsypicodebug.build.mcu=cortex-m0plus
 adafruit_itsybitsypicodebug.build.variant=adafruit_itsybitsy
 adafruit_itsybitsypicodebug.upload.tool=picodebug
 adafruit_itsybitsypicodebug.upload.maximum_size=8388608
@@ -1379,7 +1379,7 @@ adafruit_qtpy.pid.0=0x80f7
 adafruit_qtpy.build.usbpid=-DSERIALUSB_PID=0x80f7
 adafruit_qtpy.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_qtpy.build.board=ADAFRUIT_QTPY_RP2040
-adafruit_qtpy.build.mcu=cortex-m0plus
+# adafruit_qtpy.build.mcu=cortex-m0plus
 adafruit_qtpy.build.variant=adafruit_qtpy
 adafruit_qtpy.upload.tool=uf2conv
 adafruit_qtpy.upload.maximum_size=8388608
@@ -1543,7 +1543,7 @@ adafruit_qtpypicoprobe.pid.0=0x0004
 adafruit_qtpypicoprobe.build.usbpid=-DSERIALUSB_PID=0x80f7
 adafruit_qtpypicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_qtpypicoprobe.build.board=ADAFRUIT_QTPY_RP2040
-adafruit_qtpypicoprobe.build.mcu=cortex-m0plus
+# adafruit_qtpypicoprobe.build.mcu=cortex-m0plus
 adafruit_qtpypicoprobe.build.variant=adafruit_qtpy
 adafruit_qtpypicoprobe.upload.tool=picoprobe
 adafruit_qtpypicoprobe.upload.maximum_size=8388608
@@ -1707,7 +1707,7 @@ adafruit_qtpypicodebug.pid.0=0x2488
 adafruit_qtpypicodebug.build.usbpid=-DSERIALUSB_PID=0x80f7
 adafruit_qtpypicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_qtpypicodebug.build.board=ADAFRUIT_QTPY_RP2040
-adafruit_qtpypicodebug.build.mcu=cortex-m0plus
+# adafruit_qtpypicodebug.build.mcu=cortex-m0plus
 adafruit_qtpypicodebug.build.variant=adafruit_qtpy
 adafruit_qtpypicodebug.upload.tool=picodebug
 adafruit_qtpypicodebug.upload.maximum_size=8388608
@@ -1869,7 +1869,7 @@ adafruit_stemmafriend.pid.0=0x80e3
 adafruit_stemmafriend.build.usbpid=-DSERIALUSB_PID=0x80e3
 adafruit_stemmafriend.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_stemmafriend.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
-adafruit_stemmafriend.build.mcu=cortex-m0plus
+# adafruit_stemmafriend.build.mcu=cortex-m0plus
 adafruit_stemmafriend.build.variant=adafruit_stemmafriend
 adafruit_stemmafriend.upload.tool=uf2conv
 adafruit_stemmafriend.upload.maximum_size=8388608
@@ -2033,7 +2033,7 @@ adafruit_stemmafriendpicoprobe.pid.0=0x0004
 adafruit_stemmafriendpicoprobe.build.usbpid=-DSERIALUSB_PID=0x80e3
 adafruit_stemmafriendpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_stemmafriendpicoprobe.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
-adafruit_stemmafriendpicoprobe.build.mcu=cortex-m0plus
+# adafruit_stemmafriendpicoprobe.build.mcu=cortex-m0plus
 adafruit_stemmafriendpicoprobe.build.variant=adafruit_stemmafriend
 adafruit_stemmafriendpicoprobe.upload.tool=picoprobe
 adafruit_stemmafriendpicoprobe.upload.maximum_size=8388608
@@ -2197,7 +2197,7 @@ adafruit_stemmafriendpicodebug.pid.0=0x2488
 adafruit_stemmafriendpicodebug.build.usbpid=-DSERIALUSB_PID=0x80e3
 adafruit_stemmafriendpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_stemmafriendpicodebug.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
-adafruit_stemmafriendpicodebug.build.mcu=cortex-m0plus
+# adafruit_stemmafriendpicodebug.build.mcu=cortex-m0plus
 adafruit_stemmafriendpicodebug.build.variant=adafruit_stemmafriend
 adafruit_stemmafriendpicodebug.upload.tool=picodebug
 adafruit_stemmafriendpicodebug.upload.maximum_size=8388608
@@ -2359,7 +2359,7 @@ adafruit_trinkeyrp2040qt.pid.0=0x8109
 adafruit_trinkeyrp2040qt.build.usbpid=-DSERIALUSB_PID=0x8109
 adafruit_trinkeyrp2040qt.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_trinkeyrp2040qt.build.board=ADAFRUIT_TRINKEYQT_RP2040
-adafruit_trinkeyrp2040qt.build.mcu=cortex-m0plus
+# adafruit_trinkeyrp2040qt.build.mcu=cortex-m0plus
 adafruit_trinkeyrp2040qt.build.variant=adafruit_trinkeyrp2040qt
 adafruit_trinkeyrp2040qt.upload.tool=uf2conv
 adafruit_trinkeyrp2040qt.upload.maximum_size=8388608
@@ -2523,7 +2523,7 @@ adafruit_trinkeyrp2040qtpicoprobe.pid.0=0x0004
 adafruit_trinkeyrp2040qtpicoprobe.build.usbpid=-DSERIALUSB_PID=0x8109
 adafruit_trinkeyrp2040qtpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_trinkeyrp2040qtpicoprobe.build.board=ADAFRUIT_TRINKEYQT_RP2040
-adafruit_trinkeyrp2040qtpicoprobe.build.mcu=cortex-m0plus
+# adafruit_trinkeyrp2040qtpicoprobe.build.mcu=cortex-m0plus
 adafruit_trinkeyrp2040qtpicoprobe.build.variant=adafruit_trinkeyrp2040qt
 adafruit_trinkeyrp2040qtpicoprobe.upload.tool=picoprobe
 adafruit_trinkeyrp2040qtpicoprobe.upload.maximum_size=8388608
@@ -2687,7 +2687,7 @@ adafruit_trinkeyrp2040qtpicodebug.pid.0=0x2488
 adafruit_trinkeyrp2040qtpicodebug.build.usbpid=-DSERIALUSB_PID=0x8109
 adafruit_trinkeyrp2040qtpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_trinkeyrp2040qtpicodebug.build.board=ADAFRUIT_TRINKEYQT_RP2040
-adafruit_trinkeyrp2040qtpicodebug.build.mcu=cortex-m0plus
+# adafruit_trinkeyrp2040qtpicodebug.build.mcu=cortex-m0plus
 adafruit_trinkeyrp2040qtpicodebug.build.variant=adafruit_trinkeyrp2040qt
 adafruit_trinkeyrp2040qtpicodebug.upload.tool=picodebug
 adafruit_trinkeyrp2040qtpicodebug.upload.maximum_size=8388608
@@ -2849,7 +2849,7 @@ adafruit_macropad2040.pid.0=0x8107
 adafruit_macropad2040.build.usbpid=-DSERIALUSB_PID=0x8107
 adafruit_macropad2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_macropad2040.build.board=ADAFRUIT_MACROPAD_RP2040
-adafruit_macropad2040.build.mcu=cortex-m0plus
+# adafruit_macropad2040.build.mcu=cortex-m0plus
 adafruit_macropad2040.build.variant=adafruit_macropad2040
 adafruit_macropad2040.upload.tool=uf2conv
 adafruit_macropad2040.upload.maximum_size=8388608
@@ -3013,7 +3013,7 @@ adafruit_macropad2040picoprobe.pid.0=0x0004
 adafruit_macropad2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x8107
 adafruit_macropad2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_macropad2040picoprobe.build.board=ADAFRUIT_MACROPAD_RP2040
-adafruit_macropad2040picoprobe.build.mcu=cortex-m0plus
+# adafruit_macropad2040picoprobe.build.mcu=cortex-m0plus
 adafruit_macropad2040picoprobe.build.variant=adafruit_macropad2040
 adafruit_macropad2040picoprobe.upload.tool=picoprobe
 adafruit_macropad2040picoprobe.upload.maximum_size=8388608
@@ -3177,7 +3177,7 @@ adafruit_macropad2040picodebug.pid.0=0x2488
 adafruit_macropad2040picodebug.build.usbpid=-DSERIALUSB_PID=0x8107
 adafruit_macropad2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_macropad2040picodebug.build.board=ADAFRUIT_MACROPAD_RP2040
-adafruit_macropad2040picodebug.build.mcu=cortex-m0plus
+# adafruit_macropad2040picodebug.build.mcu=cortex-m0plus
 adafruit_macropad2040picodebug.build.variant=adafruit_macropad2040
 adafruit_macropad2040picodebug.upload.tool=picodebug
 adafruit_macropad2040picodebug.upload.maximum_size=8388608
@@ -3339,7 +3339,7 @@ arduino_nano_connect.pid.0=0x0058
 arduino_nano_connect.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connect.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connect.build.board=ARDUINO_NANO_RP2040_CONNECT
-arduino_nano_connect.build.mcu=cortex-m0plus
+# arduino_nano_connect.build.mcu=cortex-m0plus
 arduino_nano_connect.build.variant=arduino_nano_connect
 arduino_nano_connect.upload.tool=uf2conv
 arduino_nano_connect.upload.maximum_size=16777216
@@ -3551,7 +3551,7 @@ arduino_nano_connectpicoprobe.pid.0=0x0004
 arduino_nano_connectpicoprobe.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connectpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connectpicoprobe.build.board=ARDUINO_NANO_RP2040_CONNECT
-arduino_nano_connectpicoprobe.build.mcu=cortex-m0plus
+# arduino_nano_connectpicoprobe.build.mcu=cortex-m0plus
 arduino_nano_connectpicoprobe.build.variant=arduino_nano_connect
 arduino_nano_connectpicoprobe.upload.tool=picoprobe
 arduino_nano_connectpicoprobe.upload.maximum_size=16777216
@@ -3763,7 +3763,7 @@ arduino_nano_connectpicodebug.pid.0=0x2488
 arduino_nano_connectpicodebug.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connectpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connectpicodebug.build.board=ARDUINO_NANO_RP2040_CONNECT
-arduino_nano_connectpicodebug.build.mcu=cortex-m0plus
+# arduino_nano_connectpicodebug.build.mcu=cortex-m0plus
 arduino_nano_connectpicodebug.build.variant=arduino_nano_connect
 arduino_nano_connectpicodebug.upload.tool=picodebug
 arduino_nano_connectpicodebug.upload.maximum_size=16777216
@@ -3973,7 +3973,7 @@ cytron_maker_nano_rp2040.pid.0=0x100f
 cytron_maker_nano_rp2040.build.usbpid=-DSERIALUSB_PID=0x100f
 cytron_maker_nano_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_nano_rp2040.build.board=CYTRON_MAKER_NANO_RP2040
-cytron_maker_nano_rp2040.build.mcu=cortex-m0plus
+# cytron_maker_nano_rp2040.build.mcu=cortex-m0plus
 cytron_maker_nano_rp2040.build.variant=cytron_maker_nano_rp2040
 cytron_maker_nano_rp2040.upload.tool=uf2conv
 cytron_maker_nano_rp2040.upload.maximum_size=2097152
@@ -4101,7 +4101,7 @@ cytron_maker_nano_rp2040picoprobe.pid.0=0x0004
 cytron_maker_nano_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x100f
 cytron_maker_nano_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_nano_rp2040picoprobe.build.board=CYTRON_MAKER_NANO_RP2040
-cytron_maker_nano_rp2040picoprobe.build.mcu=cortex-m0plus
+# cytron_maker_nano_rp2040picoprobe.build.mcu=cortex-m0plus
 cytron_maker_nano_rp2040picoprobe.build.variant=cytron_maker_nano_rp2040
 cytron_maker_nano_rp2040picoprobe.upload.tool=picoprobe
 cytron_maker_nano_rp2040picoprobe.upload.maximum_size=2097152
@@ -4229,7 +4229,7 @@ cytron_maker_nano_rp2040picodebug.pid.0=0x2488
 cytron_maker_nano_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x100f
 cytron_maker_nano_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_nano_rp2040picodebug.build.board=CYTRON_MAKER_NANO_RP2040
-cytron_maker_nano_rp2040picodebug.build.mcu=cortex-m0plus
+# cytron_maker_nano_rp2040picodebug.build.mcu=cortex-m0plus
 cytron_maker_nano_rp2040picodebug.build.variant=cytron_maker_nano_rp2040
 cytron_maker_nano_rp2040picodebug.upload.tool=picodebug
 cytron_maker_nano_rp2040picodebug.upload.maximum_size=2097152
@@ -4355,7 +4355,7 @@ cytron_maker_pi_rp2040.pid.0=0x1000
 cytron_maker_pi_rp2040.build.usbpid=-DSERIALUSB_PID=0x1000
 cytron_maker_pi_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_pi_rp2040.build.board=CYTRON_MAKER_PI_RP2040
-cytron_maker_pi_rp2040.build.mcu=cortex-m0plus
+# cytron_maker_pi_rp2040.build.mcu=cortex-m0plus
 cytron_maker_pi_rp2040.build.variant=cytron_maker_pi_rp2040
 cytron_maker_pi_rp2040.upload.tool=uf2conv
 cytron_maker_pi_rp2040.upload.maximum_size=2097152
@@ -4483,7 +4483,7 @@ cytron_maker_pi_rp2040picoprobe.pid.0=0x0004
 cytron_maker_pi_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x1000
 cytron_maker_pi_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_pi_rp2040picoprobe.build.board=CYTRON_MAKER_PI_RP2040
-cytron_maker_pi_rp2040picoprobe.build.mcu=cortex-m0plus
+# cytron_maker_pi_rp2040picoprobe.build.mcu=cortex-m0plus
 cytron_maker_pi_rp2040picoprobe.build.variant=cytron_maker_pi_rp2040
 cytron_maker_pi_rp2040picoprobe.upload.tool=picoprobe
 cytron_maker_pi_rp2040picoprobe.upload.maximum_size=2097152
@@ -4611,7 +4611,7 @@ cytron_maker_pi_rp2040picodebug.pid.0=0x2488
 cytron_maker_pi_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x1000
 cytron_maker_pi_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_pi_rp2040picodebug.build.board=CYTRON_MAKER_PI_RP2040
-cytron_maker_pi_rp2040picodebug.build.mcu=cortex-m0plus
+# cytron_maker_pi_rp2040picodebug.build.mcu=cortex-m0plus
 cytron_maker_pi_rp2040picodebug.build.variant=cytron_maker_pi_rp2040
 cytron_maker_pi_rp2040picodebug.upload.tool=picodebug
 cytron_maker_pi_rp2040picodebug.upload.maximum_size=2097152
@@ -4737,7 +4737,7 @@ sparkfun_promicrorp2040.pid.0=0x0026
 sparkfun_promicrorp2040.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_promicrorp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2040.build.board=SPARKFUN_PROMICRO_RP2040
-sparkfun_promicrorp2040.build.mcu=cortex-m0plus
+# sparkfun_promicrorp2040.build.mcu=cortex-m0plus
 sparkfun_promicrorp2040.build.variant=sparkfun_promicrorp2040
 sparkfun_promicrorp2040.upload.tool=uf2conv
 sparkfun_promicrorp2040.upload.maximum_size=16777216
@@ -4949,7 +4949,7 @@ sparkfun_promicrorp2040picoprobe.pid.0=0x0004
 sparkfun_promicrorp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_promicrorp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2040picoprobe.build.board=SPARKFUN_PROMICRO_RP2040
-sparkfun_promicrorp2040picoprobe.build.mcu=cortex-m0plus
+# sparkfun_promicrorp2040picoprobe.build.mcu=cortex-m0plus
 sparkfun_promicrorp2040picoprobe.build.variant=sparkfun_promicrorp2040
 sparkfun_promicrorp2040picoprobe.upload.tool=picoprobe
 sparkfun_promicrorp2040picoprobe.upload.maximum_size=16777216
@@ -5161,7 +5161,7 @@ sparkfun_promicrorp2040picodebug.pid.0=0x2488
 sparkfun_promicrorp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_promicrorp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2040picodebug.build.board=SPARKFUN_PROMICRO_RP2040
-sparkfun_promicrorp2040picodebug.build.mcu=cortex-m0plus
+# sparkfun_promicrorp2040picodebug.build.mcu=cortex-m0plus
 sparkfun_promicrorp2040picodebug.build.variant=sparkfun_promicrorp2040
 sparkfun_promicrorp2040picodebug.upload.tool=picodebug
 sparkfun_promicrorp2040picodebug.upload.maximum_size=16777216
@@ -5371,7 +5371,7 @@ generic.pid.0=0xf00a
 generic.build.usbpid=-DSERIALUSB_PID=0xf00a
 generic.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 generic.build.board=GENERIC_RP2040
-generic.build.mcu=cortex-m0plus
+# generic.build.mcu=cortex-m0plus
 generic.build.variant=generic
 generic.upload.tool=uf2conv
 generic.upload.maximum_size=16777216
@@ -5527,7 +5527,7 @@ genericpicoprobe.pid.0=0x0004
 genericpicoprobe.build.usbpid=-DSERIALUSB_PID=0xf00a
 genericpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 genericpicoprobe.build.board=GENERIC_RP2040
-genericpicoprobe.build.mcu=cortex-m0plus
+# genericpicoprobe.build.mcu=cortex-m0plus
 genericpicoprobe.build.variant=generic
 genericpicoprobe.upload.tool=picoprobe
 genericpicoprobe.upload.maximum_size=16777216
@@ -5683,7 +5683,7 @@ genericpicodebug.pid.0=0x2488
 genericpicodebug.build.usbpid=-DSERIALUSB_PID=0xf00a
 genericpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 genericpicodebug.build.board=GENERIC_RP2040
-genericpicodebug.build.mcu=cortex-m0plus
+# genericpicodebug.build.mcu=cortex-m0plus
 genericpicodebug.build.variant=generic
 genericpicodebug.upload.tool=picodebug
 genericpicodebug.upload.maximum_size=16777216
@@ -5837,7 +5837,7 @@ challenger_2040_wifi.pid.0=0x1006
 challenger_2040_wifi.build.usbpid=-DSERIALUSB_PID=0x1006
 challenger_2040_wifi.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_wifi.build.board=CHALLENGER_2040_WIFI_RP2040
-challenger_2040_wifi.build.mcu=cortex-m0plus
+# challenger_2040_wifi.build.mcu=cortex-m0plus
 challenger_2040_wifi.build.variant=challenger_2040_wifi
 challenger_2040_wifi.upload.tool=uf2conv
 challenger_2040_wifi.upload.maximum_size=8388608
@@ -6001,7 +6001,7 @@ challenger_2040_wifipicoprobe.pid.0=0x0004
 challenger_2040_wifipicoprobe.build.usbpid=-DSERIALUSB_PID=0x1006
 challenger_2040_wifipicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_wifipicoprobe.build.board=CHALLENGER_2040_WIFI_RP2040
-challenger_2040_wifipicoprobe.build.mcu=cortex-m0plus
+# challenger_2040_wifipicoprobe.build.mcu=cortex-m0plus
 challenger_2040_wifipicoprobe.build.variant=challenger_2040_wifi
 challenger_2040_wifipicoprobe.upload.tool=picoprobe
 challenger_2040_wifipicoprobe.upload.maximum_size=8388608
@@ -6165,7 +6165,7 @@ challenger_2040_wifipicodebug.pid.0=0x2488
 challenger_2040_wifipicodebug.build.usbpid=-DSERIALUSB_PID=0x1006
 challenger_2040_wifipicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_wifipicodebug.build.board=CHALLENGER_2040_WIFI_RP2040
-challenger_2040_wifipicodebug.build.mcu=cortex-m0plus
+# challenger_2040_wifipicodebug.build.mcu=cortex-m0plus
 challenger_2040_wifipicodebug.build.variant=challenger_2040_wifi
 challenger_2040_wifipicodebug.upload.tool=picodebug
 challenger_2040_wifipicodebug.upload.maximum_size=8388608
@@ -6327,7 +6327,7 @@ challenger_2040_lte.pid.0=0x100b
 challenger_2040_lte.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_lte.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_lte.build.board=CHALLENGER_2040_LTE_RP2040
-challenger_2040_lte.build.mcu=cortex-m0plus
+# challenger_2040_lte.build.mcu=cortex-m0plus
 challenger_2040_lte.build.variant=challenger_2040_lte
 challenger_2040_lte.upload.tool=uf2conv
 challenger_2040_lte.upload.maximum_size=8388608
@@ -6491,7 +6491,7 @@ challenger_2040_ltepicoprobe.pid.0=0x0004
 challenger_2040_ltepicoprobe.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_ltepicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_ltepicoprobe.build.board=CHALLENGER_2040_LTE_RP2040
-challenger_2040_ltepicoprobe.build.mcu=cortex-m0plus
+# challenger_2040_ltepicoprobe.build.mcu=cortex-m0plus
 challenger_2040_ltepicoprobe.build.variant=challenger_2040_lte
 challenger_2040_ltepicoprobe.upload.tool=picoprobe
 challenger_2040_ltepicoprobe.upload.maximum_size=8388608
@@ -6655,7 +6655,7 @@ challenger_2040_ltepicodebug.pid.0=0x2488
 challenger_2040_ltepicodebug.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_ltepicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_ltepicodebug.build.board=CHALLENGER_2040_LTE_RP2040
-challenger_2040_ltepicodebug.build.mcu=cortex-m0plus
+# challenger_2040_ltepicodebug.build.mcu=cortex-m0plus
 challenger_2040_ltepicodebug.build.variant=challenger_2040_lte
 challenger_2040_ltepicodebug.upload.tool=picodebug
 challenger_2040_ltepicodebug.upload.maximum_size=8388608
@@ -6817,7 +6817,7 @@ challenger_nb_2040_wifi.pid.0=0x100b
 challenger_nb_2040_wifi.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_nb_2040_wifi.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifi.build.board=CHALLENGER_NB_2040_WIFI_RP2040
-challenger_nb_2040_wifi.build.mcu=cortex-m0plus
+# challenger_nb_2040_wifi.build.mcu=cortex-m0plus
 challenger_nb_2040_wifi.build.variant=challenger_nb_2040_wifi
 challenger_nb_2040_wifi.upload.tool=uf2conv
 challenger_nb_2040_wifi.upload.maximum_size=8388608
@@ -6981,7 +6981,7 @@ challenger_nb_2040_wifipicoprobe.pid.0=0x0004
 challenger_nb_2040_wifipicoprobe.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_nb_2040_wifipicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifipicoprobe.build.board=CHALLENGER_NB_2040_WIFI_RP2040
-challenger_nb_2040_wifipicoprobe.build.mcu=cortex-m0plus
+# challenger_nb_2040_wifipicoprobe.build.mcu=cortex-m0plus
 challenger_nb_2040_wifipicoprobe.build.variant=challenger_nb_2040_wifi
 challenger_nb_2040_wifipicoprobe.upload.tool=picoprobe
 challenger_nb_2040_wifipicoprobe.upload.maximum_size=8388608
@@ -7145,7 +7145,7 @@ challenger_nb_2040_wifipicodebug.pid.0=0x2488
 challenger_nb_2040_wifipicodebug.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_nb_2040_wifipicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifipicodebug.build.board=CHALLENGER_NB_2040_WIFI_RP2040
-challenger_nb_2040_wifipicodebug.build.mcu=cortex-m0plus
+# challenger_nb_2040_wifipicodebug.build.mcu=cortex-m0plus
 challenger_nb_2040_wifipicodebug.build.variant=challenger_nb_2040_wifi
 challenger_nb_2040_wifipicodebug.upload.tool=picodebug
 challenger_nb_2040_wifipicodebug.upload.maximum_size=8388608
@@ -7307,7 +7307,7 @@ ilabs_rpico32.pid.0=0x1010
 ilabs_rpico32.build.usbpid=-DSERIALUSB_PID=0x1010
 ilabs_rpico32.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 ilabs_rpico32.build.board=ILABS_2040_RPICO32_RP2040
-ilabs_rpico32.build.mcu=cortex-m0plus
+# ilabs_rpico32.build.mcu=cortex-m0plus
 ilabs_rpico32.build.variant=ilabs_rpico32
 ilabs_rpico32.upload.tool=uf2conv
 ilabs_rpico32.upload.maximum_size=8388608
@@ -7471,7 +7471,7 @@ ilabs_rpico32picoprobe.pid.0=0x0004
 ilabs_rpico32picoprobe.build.usbpid=-DSERIALUSB_PID=0x1010
 ilabs_rpico32picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 ilabs_rpico32picoprobe.build.board=ILABS_2040_RPICO32_RP2040
-ilabs_rpico32picoprobe.build.mcu=cortex-m0plus
+# ilabs_rpico32picoprobe.build.mcu=cortex-m0plus
 ilabs_rpico32picoprobe.build.variant=ilabs_rpico32
 ilabs_rpico32picoprobe.upload.tool=picoprobe
 ilabs_rpico32picoprobe.upload.maximum_size=8388608
@@ -7635,7 +7635,7 @@ ilabs_rpico32picodebug.pid.0=0x2488
 ilabs_rpico32picodebug.build.usbpid=-DSERIALUSB_PID=0x1010
 ilabs_rpico32picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 ilabs_rpico32picodebug.build.board=ILABS_2040_RPICO32_RP2040
-ilabs_rpico32picodebug.build.mcu=cortex-m0plus
+# ilabs_rpico32picodebug.build.mcu=cortex-m0plus
 ilabs_rpico32picodebug.build.variant=ilabs_rpico32
 ilabs_rpico32picodebug.upload.tool=picodebug
 ilabs_rpico32picodebug.upload.maximum_size=8388608
@@ -7797,7 +7797,7 @@ melopero_shake_rp2040.pid.0=0x1005
 melopero_shake_rp2040.build.usbpid=-DSERIALUSB_PID=0x1005
 melopero_shake_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_shake_rp2040.build.board=MELOPERO_SHAKE_RP2040
-melopero_shake_rp2040.build.mcu=cortex-m0plus
+# melopero_shake_rp2040.build.mcu=cortex-m0plus
 melopero_shake_rp2040.build.variant=melopero_shake_rp2040
 melopero_shake_rp2040.upload.tool=uf2conv
 melopero_shake_rp2040.upload.maximum_size=16777216
@@ -8009,7 +8009,7 @@ melopero_shake_rp2040picoprobe.pid.0=0x0004
 melopero_shake_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x1005
 melopero_shake_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_shake_rp2040picoprobe.build.board=MELOPERO_SHAKE_RP2040
-melopero_shake_rp2040picoprobe.build.mcu=cortex-m0plus
+# melopero_shake_rp2040picoprobe.build.mcu=cortex-m0plus
 melopero_shake_rp2040picoprobe.build.variant=melopero_shake_rp2040
 melopero_shake_rp2040picoprobe.upload.tool=picoprobe
 melopero_shake_rp2040picoprobe.upload.maximum_size=16777216
@@ -8221,7 +8221,7 @@ melopero_shake_rp2040picodebug.pid.0=0x2488
 melopero_shake_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x1005
 melopero_shake_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_shake_rp2040picodebug.build.board=MELOPERO_SHAKE_RP2040
-melopero_shake_rp2040picodebug.build.mcu=cortex-m0plus
+# melopero_shake_rp2040picodebug.build.mcu=cortex-m0plus
 melopero_shake_rp2040picodebug.build.variant=melopero_shake_rp2040
 melopero_shake_rp2040picodebug.upload.tool=picodebug
 melopero_shake_rp2040picodebug.upload.maximum_size=16777216
@@ -8431,7 +8431,7 @@ upesy_rp2040_devkit.pid.0=0x1007
 upesy_rp2040_devkit.build.usbpid=-DSERIALUSB_PID=0x1007
 upesy_rp2040_devkit.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 upesy_rp2040_devkit.build.board=UPESY_RP2040_DEVKIT
-upesy_rp2040_devkit.build.mcu=cortex-m0plus
+# upesy_rp2040_devkit.build.mcu=cortex-m0plus
 upesy_rp2040_devkit.build.variant=upesy_rp2040_devkit
 upesy_rp2040_devkit.upload.tool=uf2conv
 upesy_rp2040_devkit.upload.maximum_size=2097152
@@ -8559,7 +8559,7 @@ upesy_rp2040_devkitpicoprobe.pid.0=0x0004
 upesy_rp2040_devkitpicoprobe.build.usbpid=-DSERIALUSB_PID=0x1007
 upesy_rp2040_devkitpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 upesy_rp2040_devkitpicoprobe.build.board=UPESY_RP2040_DEVKIT
-upesy_rp2040_devkitpicoprobe.build.mcu=cortex-m0plus
+# upesy_rp2040_devkitpicoprobe.build.mcu=cortex-m0plus
 upesy_rp2040_devkitpicoprobe.build.variant=upesy_rp2040_devkit
 upesy_rp2040_devkitpicoprobe.upload.tool=picoprobe
 upesy_rp2040_devkitpicoprobe.upload.maximum_size=2097152
@@ -8687,7 +8687,7 @@ upesy_rp2040_devkitpicodebug.pid.0=0x2488
 upesy_rp2040_devkitpicodebug.build.usbpid=-DSERIALUSB_PID=0x1007
 upesy_rp2040_devkitpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 upesy_rp2040_devkitpicodebug.build.board=UPESY_RP2040_DEVKIT
-upesy_rp2040_devkitpicodebug.build.mcu=cortex-m0plus
+# upesy_rp2040_devkitpicodebug.build.mcu=cortex-m0plus
 upesy_rp2040_devkitpicodebug.build.variant=upesy_rp2040_devkit
 upesy_rp2040_devkitpicodebug.upload.tool=picodebug
 upesy_rp2040_devkitpicodebug.upload.maximum_size=2097152
@@ -8813,7 +8813,7 @@ wiznet_5100s_evb_pico.pid.0=0x1008
 wiznet_5100s_evb_pico.build.usbpid=-DSERIALUSB_PID=0x1008
 wiznet_5100s_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5100s_evb_pico.build.board=WIZNET_5100S_EVB_PICO
-wiznet_5100s_evb_pico.build.mcu=cortex-m0plus
+# wiznet_5100s_evb_pico.build.mcu=cortex-m0plus
 wiznet_5100s_evb_pico.build.variant=wiznet_5100s_evb_pico
 wiznet_5100s_evb_pico.upload.tool=uf2conv
 wiznet_5100s_evb_pico.upload.maximum_size=2097152
@@ -8941,7 +8941,7 @@ wiznet_5100s_evb_picopicoprobe.pid.0=0x0004
 wiznet_5100s_evb_picopicoprobe.build.usbpid=-DSERIALUSB_PID=0x1008
 wiznet_5100s_evb_picopicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5100s_evb_picopicoprobe.build.board=WIZNET_5100S_EVB_PICO
-wiznet_5100s_evb_picopicoprobe.build.mcu=cortex-m0plus
+# wiznet_5100s_evb_picopicoprobe.build.mcu=cortex-m0plus
 wiznet_5100s_evb_picopicoprobe.build.variant=wiznet_5100s_evb_pico
 wiznet_5100s_evb_picopicoprobe.upload.tool=picoprobe
 wiznet_5100s_evb_picopicoprobe.upload.maximum_size=2097152
@@ -9069,7 +9069,7 @@ wiznet_5100s_evb_picopicodebug.pid.0=0x2488
 wiznet_5100s_evb_picopicodebug.build.usbpid=-DSERIALUSB_PID=0x1008
 wiznet_5100s_evb_picopicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5100s_evb_picopicodebug.build.board=WIZNET_5100S_EVB_PICO
-wiznet_5100s_evb_picopicodebug.build.mcu=cortex-m0plus
+# wiznet_5100s_evb_picopicodebug.build.mcu=cortex-m0plus
 wiznet_5100s_evb_picopicodebug.build.variant=wiznet_5100s_evb_pico
 wiznet_5100s_evb_picopicodebug.upload.tool=picodebug
 wiznet_5100s_evb_picopicodebug.upload.maximum_size=2097152

@@ -27,6 +27,8 @@ runtime.tools.pqt-mklittlefs.path={runtime.platform.path}/system/mklittlefs
 runtime.tools.pqt-pioasm.path={runtime.platform.path}/system/pioasm
 runtime.tools.pqt-elf2uf2.path={runtime.platform.path}/system/elf2uf2
 
+compiler.libraries.ldflags=
+
 compiler.path={runtime.tools.pqt-gcc.path}/bin/
 
 # Compile variables
@@ -116,7 +118,7 @@ recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3
 recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
 
 ## Combine gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.ldflags} "-Wl,--script={build.path}/memmap_default.ld" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.elf" -Wl,--start-group {object_files} "{build.path}/{archive_file}" "{build.path}/boot2.o" {compiler.libpico} -lm -lc {compiler.libstdcpp} -lc -Wl,--end-group
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.ldflags} "-Wl,--script={build.path}/memmap_default.ld" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.elf" -Wl,--start-group {object_files} "{build.path}/{archive_file}" "{build.path}/boot2.o" {compiler.libraries.ldflags} {compiler.libpico} -lm -lc {compiler.libstdcpp} -lc -Wl,--end-group
 
 ## Create output (UF2 file)
 recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2"
