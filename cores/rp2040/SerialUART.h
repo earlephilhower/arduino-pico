@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
+#include <queue>
 #include "CoreMutex.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
@@ -61,8 +62,10 @@ private:
     uart_inst_t *_uart;
     pin_size_t _tx, _rx;
     int _baud;
-    int _peek;
     mutex_t _mutex;
+
+    void _pumpFIFO();
+    std::queue<uint8_t> _swFIFO;
 };
 
 extern SerialUART Serial1; // HW UART 0
