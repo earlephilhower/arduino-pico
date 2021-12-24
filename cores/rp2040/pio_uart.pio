@@ -64,3 +64,70 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 
 %}
 
+
+; Push (# of clocks per phase - 1) per bit into the FIFO before starting
+.program pio_rx
+
+    pull ; Get clock divider into OSR
+
+.wrap_target  ; Don't re-pull the divider
+
+
+; Slightly more fleshed-out 8n1 UART receiver which handles framing errors and
+; break conditions more gracefully.
+; IN pin 0 and JMP pin are both mapped to the GPIO used as UART RX.
+
+start:
+    set x, 8            ; Preload bit counter...we'll shift in the start bit even though it's a don't care
+    wait 0 pin 0        ; Stall until start bit is asserted
+
+bitloop:
+; Delay until 1/2 way into the bit time
+    mov y, isr
+wait_half0:
+    jmp y-- wait_half0
+    in pins, 1          ; Shift data bit into ISR
+; Delay the rest of the bit time    
+    mov y, isr
+wait_half1:
+    jmp y-- wait_half1
+
+    jmp x-- bitloop ; Loop  bits
+    
+    jmp pin good_stop   ; Check stop bit (should be high)
+
+    irq 4 rel           ; Either a framing error or a break. Set a sticky flag,
+    wait 1 pin 0        ; and wait for line to return to idle state.
+    jmp start           ; Don't push data if we didn't see good framing.
+
+good_stop:              ; No delay before returning to start; a little slack is
+    push                ; important in case the TX clock is slightly too fast.
+
+
+% c-sdk {
+static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) {
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, false);
+    pio_gpio_init(pio, pin);
+    gpio_pull_up(pin);
+
+    pio_sm_config c = pio_rx_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, pin); // for WAIT, IN
+    sm_config_set_jmp_pin(&c, pin); // for JMP
+    // Shift to right, autopull disabled
+    sm_config_set_in_shift(&c, true, false, 32);
+    // Deeper FIFO as we're not doing any TX
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
+
+    pio_sm_init(pio, sm, offset, &c);
+}
+
+static inline char uart_rx_program_getc(PIO pio, uint sm) {
+    // 8-bit read from the uppermost byte of the FIFO, as data is left-justified
+    io_rw_8 *rxfifo_shift = (io_rw_8*)&pio->rxf[sm] + 3;
+    while (pio_sm_is_rx_fifo_empty(pio, sm))
+        tight_loop_contents();
+    return (char)*rxfifo_shift;
+}
+
+
+%}

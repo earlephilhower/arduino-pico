@@ -28,13 +28,14 @@ typedef struct {
     pin_size_t pin;
     PIO pio;
     int sm;
-} PIOTx;
+} PIOUART;
 
 
-static PIOTx *newTx;
+static PIOUART *newTx, *newRx;
 
 #include "pio_uart.pio.h"
 static PIOProgram _txPgm(&pio_tx_program);
+static PIOProgram _rxPgm(&pio_rx_program);
 
 void pio_tx_init(uint8_t pin, unsigned int baud) {
     if (pin > 29) {
@@ -42,7 +43,7 @@ void pio_tx_init(uint8_t pin, unsigned int baud) {
         return;
     }
 
-    newTx = new PIOTx();
+    newTx = new PIOUART();
     newTx->pin = pin;
     pinMode(pin, OUTPUT);
     int off;
@@ -61,5 +62,40 @@ void pio_tx_init(uint8_t pin, unsigned int baud) {
 
 void pio_tx_putc(char c) {
     pio_sm_put_blocking(newTx->pio, newTx->sm, (uint32_t)c);
+}
+
+void pio_rx_init(uint8_t pin, unsigned int baud) {
+    if (pin > 29) {
+        DEBUGCORE("ERROR: Illegal pin in pio_rx (%d)\n", pin);
+        return;
+    }
+
+    newRx = new PIOUART();
+    newRx->pin = pin;
+    pinMode(pin, INPUT);
+    int off;
+    if (!_rxPgm.prepare(&newRx->pio, &newRx->sm, &off)) {
+        DEBUGCORE("ERROR: tone unable to start, out of PIO resources\n");
+        // ERROR, no free slots
+        delete newRx;
+        return;
+    }
+    pio_rx_program_init(newRx->pio, newRx->sm, off, pin);
+
+    pio_sm_clear_fifos(newRx->pio, newRx->sm); // Remove any existing data
+    pio_sm_put_blocking(newRx->pio, newRx->sm, clock_get_hz(clk_sys) / baud - 2);
+    pio_sm_set_enabled(newRx->pio, newRx->sm, true);
+}
+
+int pio_rx_available() {
+    return pio_sm_is_rx_fifo_empty(newRx->pio, newRx->sm) ? 1 : 0;
+}
+
+char pio_rx_getc() {
+    // 8-bit read from the uppermost byte of the FIFO, as data is left-justified
+    io_rw_8 *rxfifo_shift = (io_rw_8*)&newRx->pio->rxf[newRx->sm] + 3;
+    while (pio_sm_is_rx_fifo_empty(newRx->pio, newRx->sm))
+        tight_loop_contents();
+    return (char)*rxfifo_shift;
 }
 
