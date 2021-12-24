@@ -71,7 +71,7 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 // ------ //
 
 #define pio_rx_wrap_target 1
-#define pio_rx_wrap 9
+#define pio_rx_wrap 11
 
 static const uint16_t pio_rx_program_instructions[] = {
     0x80a0, //  0: pull   block                      
@@ -84,14 +84,16 @@ static const uint16_t pio_rx_program_instructions[] = {
     0xa047, //  6: mov    y, osr                     
     0x0087, //  7: jmp    y--, 7                     
     0x0043, //  8: jmp    x--, 3                     
-    0x8020, //  9: push   block                      
+    0xa047, //  9: mov    y, osr                     
+    0x018a, // 10: jmp    y--, 10                [1] 
+    0x8020, // 11: push   block                      
             //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program pio_rx_program = {
     .instructions = pio_rx_program_instructions,
-    .length = 10,
+    .length = 12,
     .origin = -1,
 };
 
@@ -110,8 +112,6 @@ static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) 
     sm_config_set_jmp_pin(&c, pin); // for JMP
     // Shift to right, autopull disabled
     sm_config_set_in_shift(&c, true, false, 32);
-    // Deeper FIFO as we're not doing any TX
-//    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
     pio_sm_init(pio, sm, offset, &c);
 }
 
