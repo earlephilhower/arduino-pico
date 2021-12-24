@@ -103,10 +103,10 @@ int pio_rx_available() {
 }
 
 uint32_t pio_rx_getc() {
-    // 8-bit read from the uppermost byte of the FIFO, as data is left-justified
-    io_rw_8 *rxfifo_shift = (io_rw_8*)&newRx->pio->rxf[newRx->sm] + 3;
-    while (pio_sm_is_rx_fifo_empty(newRx->pio, newRx->sm))
-        tight_loop_contents();
-    return (char)*rxfifo_shift;
+    io_ro_32 data = *(&newRx->pio->rxf[newRx->sm]);
+    if (!(data & 1<<23)) {
+        // Stop bit missing, error!
+    }
+    return 0xff & (data >> 23);
 }
 

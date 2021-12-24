@@ -23,7 +23,6 @@ wait_bit:
     
 
 % c-sdk {
-#include "hardware/clocks.h"
 
 static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_tx) {
     // Tell PIO to initially drive output-high on the selected pin, then map PIO
@@ -58,7 +57,7 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 ; IN pin 0 and JMP pin are both mapped to the GPIO used as UART RX.
 
 start:
-    set x, 8            ; Preload bit counter...we'll shift in the start bit even though it's a don't care
+    set x, 9            ; Preload bit counter...we'll shift in the start bit even though it's a don't care and the stop bit too
     wait 0 pin 0        ; Stall until start bit is asserted
 
 bitloop:
@@ -66,7 +65,10 @@ bitloop:
     mov y, osr
 wait_half0:
     jmp y-- wait_half0
+
+; Read in the bit
     in pins, 1          ; Shift data bit into ISR
+
 ; Delay the rest of the bit time    
     mov y, osr
 wait_half1:
@@ -74,10 +76,6 @@ wait_half1:
 
     jmp x-- bitloop ; Loop all bits
     
-    mov y, osr
-wait_stop:
-    jmp y-- wait_stop [1]
-
     push ; stuff it and wait for next start
 
 
