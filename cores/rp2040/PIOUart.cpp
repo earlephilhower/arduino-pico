@@ -28,14 +28,32 @@ typedef struct {
     pin_size_t pin;
     PIO pio;
     int sm;
+    int databits;
+    enum { none, even, odd } parity;
+    int stopbits;
 } PIOUART;
 
+static std::map<int, PIOProgram*> _txMap;
+static std::map<int, PIOProgram*> _rxMap;
+
+
+// Duplicate a program and replace the first insn with a "set x, repl"
+static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
+    pio_program_t *p = new pio_program_t;
+    p->length = pg->length;
+    p->origin = pg->origin;
+    uint16_t *insn = (uint16_t *)malloc(p->length * 2);
+    memcpy(insn, pg->instructions, p->length * 2);
+    insn[0] = pio_encode_set(pio_x, repl);
+    p->instructions = insn;
+    return p;
+}
 
 static PIOUART *newTx, *newRx;
 
 #include "pio_uart.pio.h"
-static PIOProgram _txPgm(&pio_tx_program);
-static PIOProgram _rxPgm(&pio_rx_program);
+static PIOProgram _txPgm(pio_make_uart_prog(8+0+1, &pio_tx_program));
+static PIOProgram _rxPgm(pio_make_uart_prog(8*2+0*2+1*2, &pio_rx_program));
 
 void pio_tx_init(uint8_t pin, unsigned int baud) {
     if (pin > 29) {
