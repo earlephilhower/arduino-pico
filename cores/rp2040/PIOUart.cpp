@@ -55,12 +55,21 @@ void pio_tx_init(uint8_t pin, unsigned int baud) {
     }
     pio_tx_program_init(newTx->pio, newTx->sm, off, pin);
     pio_sm_clear_fifos(newTx->pio, newTx->sm); // Remove any existing data
+
+    // Put the divider into ISR w/o using up program space
     pio_sm_put_blocking(newTx->pio, newTx->sm, clock_get_hz(clk_sys) / baud - 2);
+    pio_sm_exec(newTx->pio, newTx->sm, pio_encode_pull(false, false));
+    pio_sm_exec(newTx->pio, newTx->sm, pio_encode_mov(pio_isr, pio_osr));
+
+    // Start running!
     pio_sm_set_enabled(newTx->pio, newTx->sm, true);
 }
 
 void pio_tx_putc(char c) {
-    pio_sm_put_blocking(newTx->pio, newTx->sm, (uint32_t)c);
+    uint32_t val = c;
+    val |= 256; // Stop bit = high
+    val <<= 1;  // Start bit = low
+    pio_sm_put_blocking(newTx->pio, newTx->sm, val);
 }
 
 void pio_rx_init(uint8_t pin, unsigned int baud) {
@@ -81,7 +90,11 @@ void pio_rx_init(uint8_t pin, unsigned int baud) {
     }
     pio_rx_program_init(newRx->pio, newRx->sm, off, pin);
     pio_sm_clear_fifos(newRx->pio, newRx->sm); // Remove any existing data
+
+    // Put phase divider into OSR w/o using add'l program memory
     pio_sm_put_blocking(newRx->pio, newRx->sm, clock_get_hz(clk_sys) / (baud * 2) - 2);
+    pio_sm_exec(newRx->pio, newRx->sm, pio_encode_pull(false, false));
+
     pio_sm_set_enabled(newRx->pio, newRx->sm, true);
 }
 

@@ -10,30 +10,24 @@
 // pio_tx //
 // ------ //
 
-#define pio_tx_wrap_target 2
-#define pio_tx_wrap 11
+#define pio_tx_wrap_target 0
+#define pio_tx_wrap 5
 
 static const uint16_t pio_tx_program_instructions[] = {
-    0x80a0, //  0: pull   block                      
-    0xa0c7, //  1: mov    isr, osr                   
             //     .wrap_target
-    0x98a0, //  2: pull   block           side 1     
+    0x98a0, //  0: pull   block           side 1     
+    0xe029, //  1: set    x, 9                       
+    0x6001, //  2: out    pins, 1                    
     0xa046, //  3: mov    y, isr                     
     0x0084, //  4: jmp    y--, 4                     
-    0xf027, //  5: set    x, 7            side 0     
-    0xa046, //  6: mov    y, isr                     
-    0x0087, //  7: jmp    y--, 7                     
-    0x6001, //  8: out    pins, 1                    
-    0xa046, //  9: mov    y, isr                     
-    0x008a, // 10: jmp    y--, 10                    
-    0x0048, // 11: jmp    x--, 8                     
+    0x0042, //  5: jmp    x--, 2                     
             //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program pio_tx_program = {
     .instructions = pio_tx_program_instructions,
-    .length = 12,
+    .length = 6,
     .origin = -1,
 };
 
@@ -70,30 +64,29 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 // pio_rx //
 // ------ //
 
-#define pio_rx_wrap_target 1
-#define pio_rx_wrap 11
+#define pio_rx_wrap_target 0
+#define pio_rx_wrap 10
 
 static const uint16_t pio_rx_program_instructions[] = {
-    0x80a0, //  0: pull   block                      
             //     .wrap_target
-    0xe028, //  1: set    x, 8                       
-    0x2020, //  2: wait   0 pin, 0                   
-    0xa047, //  3: mov    y, osr                     
-    0x0084, //  4: jmp    y--, 4                     
-    0x4001, //  5: in     pins, 1                    
-    0xa047, //  6: mov    y, osr                     
-    0x0087, //  7: jmp    y--, 7                     
-    0x0043, //  8: jmp    x--, 3                     
-    0xa047, //  9: mov    y, osr                     
-    0x018a, // 10: jmp    y--, 10                [1] 
-    0x8020, // 11: push   block                      
+    0xe028, //  0: set    x, 8                       
+    0x2020, //  1: wait   0 pin, 0                   
+    0xa047, //  2: mov    y, osr                     
+    0x0083, //  3: jmp    y--, 3                     
+    0x4001, //  4: in     pins, 1                    
+    0xa047, //  5: mov    y, osr                     
+    0x0086, //  6: jmp    y--, 6                     
+    0x0042, //  7: jmp    x--, 2                     
+    0xa047, //  8: mov    y, osr                     
+    0x0189, //  9: jmp    y--, 9                 [1] 
+    0x8020, // 10: push   block                      
             //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program pio_rx_program = {
     .instructions = pio_rx_program_instructions,
-    .length = 12,
+    .length = 11,
     .origin = -1,
 };
 

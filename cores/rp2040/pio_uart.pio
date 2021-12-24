@@ -5,25 +5,12 @@
 .program pio_tx
 .side_set 1 opt
 
-    pull ; Get clock divider
-    mov isr, osr
-
-.wrap_target  ; Don't re-pull the divider
-
 stop_state:
 ; Idle in stop state
     pull               side 1 ; stop bit
 
-; Generate a stop bit
-    mov y, isr
-wait_stop:
-    jmp y-- wait_stop
-
-; Generate the start bit
-    set x, 7           side 0
-    mov y, isr
-wait_start:
-    jmp y-- wait_start
+; We shift out the start and stop bit as part of the FIFO
+    set x, 9
 
 ; Send the bits
 bitloop:
@@ -67,10 +54,6 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 
 ; Push (# of clocks per phase - 2) per bit into the FIFO before starting
 .program pio_rx
-
-    pull ; Get clock divider into OSR
-
-.wrap_target  ; Don't re-pull the divider
 
 ; IN pin 0 and JMP pin are both mapped to the GPIO used as UART RX.
 
