@@ -103,10 +103,12 @@ int pio_rx_available() {
 }
 
 uint32_t pio_rx_getc() {
-    io_ro_32 data = *(&newRx->pio->rxf[newRx->sm]);
-    if (!(data & 1<<23)) {
-        // Stop bit missing, error!
+    uint32_t decode = newRx->pio->rxf[newRx->sm];
+    decode >>= 14;
+    uint32_t val = 0;
+    for (int b = 0; b < 8; b++) {
+        val |= (decode & (1<<(b*2))) ? 1<<b : 0;
     }
-    return 0xff & (data >> 23);
+    return val;
 }
 
