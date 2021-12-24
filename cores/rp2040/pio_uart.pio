@@ -5,12 +5,10 @@
 .program pio_tx
 .side_set 1 opt
 
-stop_state:
-; Idle in stop state
-    pull               side 1 ; stop bit
-
 ; We shift out the start and stop bit as part of the FIFO
     set x, 9
+
+    pull               side 1 ; Force stop bit
 
 ; Send the bits
 bitloop:

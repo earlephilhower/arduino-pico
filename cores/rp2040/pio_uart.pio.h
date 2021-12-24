@@ -15,8 +15,8 @@
 
 static const uint16_t pio_tx_program_instructions[] = {
             //     .wrap_target
-    0x98a0, //  0: pull   block           side 1     
-    0xe029, //  1: set    x, 9                       
+    0xe029, //  0: set    x, 9                       
+    0x98a0, //  1: pull   block           side 1     
     0x6001, //  2: out    pins, 1                    
     0xa046, //  3: mov    y, isr                     
     0x0084, //  4: jmp    y--, 4                     
