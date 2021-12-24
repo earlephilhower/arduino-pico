@@ -54,7 +54,6 @@ void pio_tx_init(uint8_t pin, unsigned int baud) {
         return;
     }
     pio_tx_program_init(newTx->pio, newTx->sm, off, pin);
-
     pio_sm_clear_fifos(newTx->pio, newTx->sm); // Remove any existing data
     pio_sm_put_blocking(newTx->pio, newTx->sm, clock_get_hz(clk_sys) / baud - 2);
     pio_sm_set_enabled(newTx->pio, newTx->sm, true);
@@ -81,17 +80,16 @@ void pio_rx_init(uint8_t pin, unsigned int baud) {
         return;
     }
     pio_rx_program_init(newRx->pio, newRx->sm, off, pin);
-
     pio_sm_clear_fifos(newRx->pio, newRx->sm); // Remove any existing data
-    pio_sm_put_blocking(newRx->pio, newRx->sm, clock_get_hz(clk_sys) / baud - 2);
+    pio_sm_put_blocking(newRx->pio, newRx->sm, clock_get_hz(clk_sys) / (baud * 2) - 2);
     pio_sm_set_enabled(newRx->pio, newRx->sm, true);
 }
 
 int pio_rx_available() {
-    return pio_sm_is_rx_fifo_empty(newRx->pio, newRx->sm) ? 1 : 0;
+    return pio_sm_is_rx_fifo_empty(newRx->pio, newRx->sm) ? 0 : 1;
 }
 
-char pio_rx_getc() {
+uint32_t pio_rx_getc() {
     // 8-bit read from the uppermost byte of the FIFO, as data is left-justified
     io_rw_8 *rxfifo_shift = (io_rw_8*)&newRx->pio->rxf[newRx->sm] + 3;
     while (pio_sm_is_rx_fifo_empty(newRx->pio, newRx->sm))

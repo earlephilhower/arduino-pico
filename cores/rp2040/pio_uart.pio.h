@@ -71,31 +71,27 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 // ------ //
 
 #define pio_rx_wrap_target 1
-#define pio_rx_wrap 13
+#define pio_rx_wrap 9
 
 static const uint16_t pio_rx_program_instructions[] = {
     0x80a0, //  0: pull   block                      
             //     .wrap_target
     0xe028, //  1: set    x, 8                       
     0x2020, //  2: wait   0 pin, 0                   
-    0xa046, //  3: mov    y, isr                     
+    0xa047, //  3: mov    y, osr                     
     0x0084, //  4: jmp    y--, 4                     
     0x4001, //  5: in     pins, 1                    
-    0xa046, //  6: mov    y, isr                     
+    0xa047, //  6: mov    y, osr                     
     0x0087, //  7: jmp    y--, 7                     
     0x0043, //  8: jmp    x--, 3                     
-    0x00cd, //  9: jmp    pin, 13                    
-    0xc014, // 10: irq    nowait 4 rel               
-    0x20a0, // 11: wait   1 pin, 0                   
-    0x0001, // 12: jmp    1                          
-    0x8020, // 13: push   block                      
+    0x8020, //  9: push   block                      
             //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program pio_rx_program = {
     .instructions = pio_rx_program_instructions,
-    .length = 14,
+    .length = 10,
     .origin = -1,
 };
 
@@ -115,15 +111,8 @@ static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) 
     // Shift to right, autopull disabled
     sm_config_set_in_shift(&c, true, false, 32);
     // Deeper FIFO as we're not doing any TX
-    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
+//    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
     pio_sm_init(pio, sm, offset, &c);
-}
-static inline char uart_rx_program_getc(PIO pio, uint sm) {
-    // 8-bit read from the uppermost byte of the FIFO, as data is left-justified
-    io_rw_8 *rxfifo_shift = (io_rw_8*)&pio->rxf[sm] + 3;
-    while (pio_sm_is_rx_fifo_empty(pio, sm))
-        tight_loop_contents();
-    return (char)*rxfifo_shift;
 }
 
 #endif
