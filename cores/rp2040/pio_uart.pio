@@ -1,0 +1,66 @@
+
+
+; Push (# of clocks per cycle - 1) per bit into the FIFO before starting
+
+.program pio_tx
+.side_set 1 opt
+
+    pull ; Get clock divider
+    mov isr, osr
+
+.wrap_target  ; Don't re-pull the divider
+
+stop_state:
+; Idle in stop state
+    pull               side 1 ; stop bit
+
+; Generate a stop bit
+    mov y, isr
+wait_stop:
+    jmp y-- wait_stop
+
+; Generate the start bit
+    set x, 7           side 0
+    mov y, isr
+wait_start:
+    jmp y-- wait_start
+
+; Send the bits
+bitloop:
+    out pins, 1
+    mov y, isr
+wait_bit:
+    jmp y-- wait_bit
+    jmp x-- bitloop
+
+    
+
+% c-sdk {
+#include "hardware/clocks.h"
+
+static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_tx) {
+    // Tell PIO to initially drive output-high on the selected pin, then map PIO
+    // onto that pin with the IO muxes.
+    pio_sm_set_pins_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
+    pio_sm_set_pindirs_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
+    pio_gpio_init(pio, pin_tx);
+
+    pio_sm_config c = pio_tx_program_get_default_config(offset);
+
+    // OUT shifts to right, no autopull
+    sm_config_set_out_shift(&c, true, false, 32);
+
+    // We are mapping both OUT and side-set to the same pin, because sometimes
+    // we need to assert user data onto the pin (with OUT) and sometimes
+    // assert constant values (start/stop bit)
+    sm_config_set_out_pins(&c, pin_tx, 1);
+    sm_config_set_sideset_pins(&c, pin_tx);
+
+    // We only need TX, so get an 8-deep FIFO!
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+
+    pio_sm_init(pio, sm, offset, &c);
+}
+
+%}
+
