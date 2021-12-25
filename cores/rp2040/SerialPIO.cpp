@@ -314,7 +314,7 @@ size_t SerialPIO::write(uint8_t c) {
 
 size_t SerialPIO::write(const uint8_t *p, size_t len) {
     CoreMutex m(&_mutex);
-    if (!_running || !m) {
+    if (!_running || !m || (_tx == -1)) {
         return 0;
     }
     size_t cnt = len;

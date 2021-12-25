@@ -33,3 +33,4 @@ resumeOtherCore	KEYWORD2
 
 PIOProgram	KEYWORD2
 prepare	KEYWORD2
+SerialPIO	KEYWORD2

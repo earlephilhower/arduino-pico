@@ -97,6 +97,7 @@ void analogWriteResolution(int res);
 
 #include "SerialUART.h"
 #include "RP2040Support.h"
+#include "SerialPIO.h"
 #include "Bootsel.h"
 
 // Template which will evaluate at *compile time* to a single 32b number
