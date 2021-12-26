@@ -31,6 +31,7 @@ extern "C" typedef struct uart_inst uart_inst_t;
 
 class SerialPIO : public HardwareSerial {
 public:
+    static const pin_size_t NOPIN = 0xff; // Use in constructor to disable RX or TX unit
     SerialPIO(pin_size_t tx, pin_size_t rx);
 
     void begin(unsigned long baud = 115200) override {

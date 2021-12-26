@@ -114,12 +114,12 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
             break;
     }
 
-    if ((_tx == -1) && (_rx == -1)) {
+    if ((_tx == NOPIN) && (_rx == NOPIN)) {
         DEBUGCORE("ERROR: No pins specified for SerialPIO\n");
         return;
     }
 
-    if (_tx != -1) {
+    if (_tx != NOPIN) {
         _txBits = _bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1/*start bit*/;
         _txPgm = _getTxProgram(_txBits);
         int off;
@@ -143,7 +143,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         // Start running!
         pio_sm_set_enabled(_txPIO, _txSM, true);
     }
-    if (_rx != -1) {
+    if (_rx != NOPIN) {
         _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1);
         _rxPgm = _getRxProgram(_rxBits);
         int off;
@@ -178,7 +178,7 @@ void SerialPIO::end() {
 
 // Transfers any data in the HW FIFO into our SW one, up to 32 bytes
 void SerialPIO::_pumpFIFO() {
-    if (_rx == -1) {
+    if (_rx == NOPIN) {
         return;
     }
     while ((_swFIFO.size() < 32) && (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM))) {
@@ -209,7 +209,7 @@ void SerialPIO::_pumpFIFO() {
 
 int SerialPIO::peek() {
     CoreMutex m(&_mutex);
-    if (!_running || !m || (_rx == -1)) {
+    if (!_running || !m || (_rx == NOPIN)) {
         return -1;
     }
     _pumpFIFO();
@@ -222,7 +222,7 @@ int SerialPIO::peek() {
 
 int SerialPIO::read() {
     CoreMutex m(&_mutex);
-    if (!_running || !m || (_rx == -1)) {
+    if (!_running || !m || (_rx == NOPIN)) {
         return -1;
     }
     unsigned int start = millis();
@@ -241,7 +241,7 @@ int SerialPIO::read() {
 
 int SerialPIO::available() {
     CoreMutex m(&_mutex);
-    if (!_running || !m || (_rx == -1)) {
+    if (!_running || !m || (_rx == NOPIN)) {
         return 0;
     }
     _pumpFIFO();
@@ -250,7 +250,7 @@ int SerialPIO::available() {
 
 int SerialPIO::availableForWrite() {
     CoreMutex m(&_mutex);
-    if (!_running || !m || (_tx == -1)) {
+    if (!_running || !m || (_tx == NOPIN)) {
         return 0;
     }
     _pumpFIFO();
@@ -259,7 +259,7 @@ int SerialPIO::availableForWrite() {
 
 void SerialPIO::flush() {
     CoreMutex m(&_mutex);
-    if (!_running || !m || (_tx == -1)) {
+    if (!_running || !m || (_tx == NOPIN)) {
         return;
     }
     _pumpFIFO();
@@ -272,7 +272,7 @@ void SerialPIO::flush() {
 
 size_t SerialPIO::write(uint8_t c) {
     CoreMutex m(&_mutex);
-    if (!_running || !m || (_tx == -1)) {
+    if (!_running || !m || (_tx == NOPIN)) {
         return 0;
     }
     _pumpFIFO();
