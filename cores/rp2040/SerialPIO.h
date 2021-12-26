@@ -33,15 +33,6 @@ class SerialPIO : public HardwareSerial {
 public:
     SerialPIO(pin_size_t tx, pin_size_t rx);
 
-    // Select the pinout.  Call before .begin()
-    bool setRX(pin_size_t pin);
-    bool setTX(pin_size_t pin);
-    bool setPinout(pin_size_t tx, pin_size_t rx) {
-        bool ret = setRX(rx);
-        ret &= setTX(tx);
-        return ret;
-    }
-
     void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
     };
@@ -54,7 +45,6 @@ public:
     virtual int availableForWrite() override;
     virtual void flush() override;
     virtual size_t write(uint8_t c) override;
-    virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
     operator bool() override;
 

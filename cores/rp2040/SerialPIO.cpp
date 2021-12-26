@@ -72,26 +72,6 @@ static int _parity(int bits, int data) {
 }
 
 
-bool SerialPIO::setRX(pin_size_t pin) {
-    if (!_running) {
-        _rx = pin;
-        return true;
-    }
-
-    panic("FATAL: Attempting to set SerialPIO.RX while running");
-    return false;
-}
-
-bool SerialPIO::setTX(pin_size_t pin) {
-    if (!_running) {
-        _tx = pin;
-        return true;
-    }
-
-    panic("FATAL: Attempting to set SerialPIO.TX while running");
-    return false;
-}
-
 SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx) {
     _tx = tx;
     _rx = rx;
@@ -149,6 +129,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
             return;
         }
 
+        digitalWrite(_tx, HIGH);
         pinMode(_tx, OUTPUT);
     
         pio_tx_program_init(_txPIO, _txSM, off, _tx);
@@ -298,33 +279,19 @@ size_t SerialPIO::write(uint8_t c) {
 
     uint32_t val = c;
     if (_parity == UART_PARITY_NONE) {
-        val |= 3 << _bits; // Set 2 stop bits, the HW will only transmit the required number
+        val |= 7 << _bits; // Set 2 stop bits, the HW will only transmit the required number
     } else if (_parity == UART_PARITY_EVEN) {
         val |= ::_parity(_bits, c) << _bits;
-        val |= 3 << (_bits + 1);
+        val |= 7 << (_bits + 1);
     } else {
         val |= (1 ^ ::_parity(_bits, c)) << _bits;
-        val |= 3 << (_bits + 1);
+        val |= 7 << (_bits + 1);
     }
     val <<= 1;  // Start bit = low
+
     pio_sm_put_blocking(_txPIO, _txSM, val);
 
     return 1;
-}
-
-size_t SerialPIO::write(const uint8_t *p, size_t len) {
-    CoreMutex m(&_mutex);
-    if (!_running || !m || (_tx == -1)) {
-        return 0;
-    }
-    size_t cnt = len;
-    while (cnt) {
-        _pumpFIFO();
-        write(*p);
-        cnt--;
-        p++;
-    }
-    return len;
 }
 
 SerialPIO::operator bool() {
