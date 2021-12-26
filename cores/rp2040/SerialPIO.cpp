@@ -66,7 +66,7 @@ static PIOProgram *_getRxProgram(int bits) {
 static int _parity(int bits, int data) {
     int p = 0;
     for (int b = 0; b < bits; b++) {
-        p ^= (data & (1<<b)) ? 1 : 0;
+        p ^= (data & (1 << b)) ? 1 : 0;
     }
     return p;
 }
@@ -81,37 +81,37 @@ SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx) {
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
     _baud = baud;
     switch (config & SERIAL_PARITY_MASK) {
-        case SERIAL_PARITY_EVEN:
-            _parity = UART_PARITY_EVEN;
-            break;
-        case SERIAL_PARITY_ODD:
-            _parity = UART_PARITY_ODD;
-            break;
-        default:
-            _parity = UART_PARITY_NONE;
-            break;
+    case SERIAL_PARITY_EVEN:
+        _parity = UART_PARITY_EVEN;
+        break;
+    case SERIAL_PARITY_ODD:
+        _parity = UART_PARITY_ODD;
+        break;
+    default:
+        _parity = UART_PARITY_NONE;
+        break;
     }
     switch (config & SERIAL_STOP_BIT_MASK) {
-        case SERIAL_STOP_BIT_1:
-            _stop = 1;
-            break;
-        default:
-            _stop = 2;
-            break;
+    case SERIAL_STOP_BIT_1:
+        _stop = 1;
+        break;
+    default:
+        _stop = 2;
+        break;
     }
     switch (config & SERIAL_DATA_MASK) {
-        case SERIAL_DATA_5:
-            _bits = 5;
-            break;
-        case SERIAL_DATA_6:
-            _bits = 6;
-            break;
-        case SERIAL_DATA_7:
-            _bits = 7;
-            break;
-        default:
-            _bits = 8;
-            break;
+    case SERIAL_DATA_5:
+        _bits = 5;
+        break;
+    case SERIAL_DATA_6:
+        _bits = 6;
+        break;
+    case SERIAL_DATA_7:
+        _bits = 7;
+        break;
+    default:
+        _bits = 8;
+        break;
     }
 
     if ((_tx == NOPIN) && (_rx == NOPIN)) {
@@ -131,7 +131,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
 
         digitalWrite(_tx, HIGH);
         pinMode(_tx, OUTPUT);
-    
+
         pio_tx_program_init(_txPIO, _txSM, off, _tx);
         pio_sm_clear_fifos(_txPIO, _txSM); // Remove any existing data
 
@@ -186,7 +186,7 @@ void SerialPIO::_pumpFIFO() {
         decode >>= 32 - _rxBits;
         uint32_t val = 0;
         for (int b = 0; b < _bits + 1; b++) {
-            val |= (decode & (1<<(b*2))) ? 1<<b : 0;
+            val |= (decode & (1 << (b * 2))) ? 1 << b : 0;
         }
         if (_parity == UART_PARITY_EVEN) {
             int p = ::_parity(_bits, val);
@@ -267,7 +267,7 @@ void SerialPIO::flush() {
         delay(1); // Wait for all FIFO to be read
     }
     // Could have 1 byte being transmitted, so wait for bit times
-   delay((1000 * (_txBits + 1)) / _baud);
+    delay((1000 * (_txBits + 1)) / _baud);
 }
 
 size_t SerialPIO::write(uint8_t c) {
