@@ -72,6 +72,9 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
     mutex_init(&_mutex);
 }
 
+static void _uart0IRQ();
+static void _uart1IRQ();
+
 void SerialUART::begin(unsigned long baud, uint16_t config) {
     _baud = baud;
     uart_init(_uart, baud);
@@ -95,10 +98,18 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     uart_set_format(_uart, bits, stop, parity);
     gpio_set_function(_tx, GPIO_FUNC_UART);
     gpio_set_function(_rx, GPIO_FUNC_UART);
-    _running = true;
-    while (!_swFIFO.empty()) {
-        (void)_swFIFO.pop(); // Just throw out anything in our old FIFO
+    _writer = 0;
+    _reader = 0;
+
+    if (_uart == uart0) {
+        irq_set_exclusive_handler(UART0_IRQ, _uart0IRQ);
+        irq_set_enabled(UART0_IRQ, true);
+    } else {
+        irq_set_exclusive_handler(UART1_IRQ, _uart1IRQ);
+        irq_set_enabled(UART1_IRQ, true);
     }
+    uart_get_hw(_uart)->imsc |= UART_UARTIMSC_RXIM_BITS | UART_UARTIMSC_RTIM_BITS;
+    _running = true;
 }
 
 void SerialUART::end() {
@@ -109,28 +120,19 @@ void SerialUART::end() {
     _running = false;
 }
 
-// Transfers any data in the HW FIFO into our SW one, up to 32 bytes
-void SerialUART::_pumpFIFO() {
-    while ((_swFIFO.size() < 32) && (uart_is_readable(_uart))) {
-        _swFIFO.push(uart_getc(_uart));
-    }
-}
-
 int SerialUART::peek() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return -1;
     }
-    _pumpFIFO();
-    // If there's something in the FIFO now, just peek at it
-    if (_swFIFO.size()) {
-        return _swFIFO.front();
-    }
-    // The SW FIFO is empty, read the HW one until the timeout
-    if (uart_is_readable_within_us(_uart, _timeout * 1000)) {
-        // We got one char, put it in the FIFO (which will now have exactly 1 byte) and return it
-        _swFIFO.push(uart_getc(_uart));
-        return _swFIFO.front();
+    uint32_t start = millis();
+    uint32_t now = millis();
+    while ((now - start) < _timeout) {
+        if (_writer != _reader) {
+            return _queue[_reader];
+        }
+        delay(1);
+        now = millis();
     }
     return -1; // Nothing available before timeout
 }
@@ -140,16 +142,16 @@ int SerialUART::read() {
     if (!_running || !m) {
         return -1;
     }
-    _pumpFIFO();
-    if (_swFIFO.size()) {
-        auto ret = _swFIFO.front();
-        _swFIFO.pop();
-        return ret;
-    }
-    // The SW FIFO is empty, read the HW one until the timeout
-    if (uart_is_readable_within_us(_uart, _timeout * 1000)) {
-        // We got one char, return it (FIFO will still be empty
-        return uart_getc(_uart);
+    uint32_t start = millis();
+    uint32_t now = millis();
+    while ((now - start) < _timeout) {
+        if (_writer != _reader) {
+            auto ret = _queue[_reader];
+            _reader = (_reader + 1) % sizeof(_queue);
+            return ret;
+        }
+        delay(1);
+        now = millis();
     }
     return -1; // Timeout
 }
@@ -159,8 +161,7 @@ int SerialUART::available() {
     if (!_running || !m) {
         return 0;
     }
-    _pumpFIFO();
-    return _swFIFO.size();
+    return (_writer - _reader) % sizeof(_queue);
 }
 
 int SerialUART::availableForWrite() {
@@ -168,7 +169,6 @@ int SerialUART::availableForWrite() {
     if (!_running || !m) {
         return 0;
     }
-    _pumpFIFO();
     return (uart_is_writable(_uart)) ? 1 : 0;
 }
 
@@ -177,7 +177,6 @@ void SerialUART::flush() {
     if (!_running || !m) {
         return;
     }
-    _pumpFIFO();
     uart_tx_wait_blocking(_uart);
 }
 
@@ -186,7 +185,6 @@ size_t SerialUART::write(uint8_t c) {
     if (!_running || !m) {
         return 0;
     }
-    _pumpFIFO();
     uart_putc_raw(_uart, c);
     return 1;
 }
@@ -196,7 +194,6 @@ size_t SerialUART::write(const uint8_t *p, size_t len) {
     if (!_running || !m) {
         return 0;
     }
-    _pumpFIFO();
     size_t cnt = len;
     while (cnt) {
         uart_putc_raw(_uart, *p);
@@ -223,4 +220,21 @@ void arduino::serialEvent2Run(void) {
     if (serialEvent2 && Serial2.available()) {
         serialEvent2();
     }
+}
+
+// IRQ handler, called when FIFO > 1/4 full or when it had held unread data for >32 bit times
+void __not_in_flash_func(SerialUART::_handleIRQ)() {
+    uart_get_hw(_uart)->icr |= UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
+    while ( (uart_is_readable(_uart)) && ((_writer + 1) % sizeof(_queue) != _reader) ) {
+        _queue[_writer] = uart_getc(_uart);
+        _writer = (_writer + 1) % sizeof(_queue);
+    }
+}
+
+static void __not_in_flash_func(_uart0IRQ)() {
+    Serial1._handleIRQ();
+}
+
+static void __not_in_flash_func(_uart1IRQ)() {
+    Serial2._handleIRQ();
 }
