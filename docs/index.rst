@@ -29,6 +29,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    EEPROM <eeprom>
    I2S Audio <i2s>
    Serial USB and UARTs <serial>
+   "Software Serial" PIO UART <piouart>
    Servo <servo>
    SPI <spi>
    Wire(I2C) <wire>
