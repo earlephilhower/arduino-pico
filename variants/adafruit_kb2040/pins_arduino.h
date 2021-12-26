@@ -38,4 +38,5 @@
 #define SPI_HOWMANY    (1u)
 #define WIRE_HOWMANY   (2u)
 
+#define PIN_NEOPIXEL   (17u)
 #include "../generic/common.h"
