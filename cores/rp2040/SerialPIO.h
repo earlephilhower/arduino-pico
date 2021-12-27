@@ -49,6 +49,9 @@ public:
     using Print::write;
     operator bool() override;
 
+    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
+    void _handleIRQ();
+
 private:
     bool _running = false;
     pin_size_t _tx, _rx;
@@ -68,6 +71,8 @@ private:
     int _rxSM;
     int _rxBits;
 
-    void _pumpFIFO();
-    std::queue<uint8_t> _swFIFO;
+    // Lockless, IRQ-handled circular queue
+    uint32_t _writer;
+    uint32_t _reader;
+    uint8_t  _queue[32];
 };

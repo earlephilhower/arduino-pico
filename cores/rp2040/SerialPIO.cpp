@@ -63,6 +63,7 @@ static PIOProgram *_getRxProgram(int bits) {
 }
 // ------------------------------------------------------------------------
 
+// TODO - this works, but there must be a faster/better way...
 static int _parity(int bits, int data) {
     int p = 0;
     for (int b = 0; b < bits; b++) {
@@ -71,6 +72,52 @@ static int _parity(int bits, int data) {
     return p;
 }
 
+// We need to cache generated SerialPIOs so we can add data to them from
+// the shared handler
+static SerialPIO *_pioSP[2][4];
+static void __not_in_flash_func(_fifoIRQ)() {
+    for (int p = 0; p < 2; p++) {
+        for (int sm = 0; sm < 4; sm++) {
+            SerialPIO *s = _pioSP[p][sm];
+            if (s) {
+                s->_handleIRQ();
+                pio_interrupt_clear((p == 0) ? pio0 : pio1, sm);
+            }
+        }
+    }
+}
+
+void __not_in_flash_func(SerialPIO::_handleIRQ)() {
+    if (_rx == NOPIN) {
+        return;
+    }
+    while ((!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM)) && ((_writer + 1) % sizeof(_queue) != _reader)) {
+        uint32_t decode = _rxPIO->rxf[_rxSM];
+        decode >>= 32 - _rxBits;
+        uint32_t val = 0;
+        for (int b = 0; b < _bits + 1; b++) {
+            val |= (decode & (1 << (b * 2))) ? 1 << b : 0;
+        }
+        if (_parity == UART_PARITY_EVEN) {
+            int p = ::_parity(_bits, val);
+            int r = (val & (1 << _bits)) ? 1 : 0;
+            if (p != r) {
+                // TODO - parity error
+                continue;
+            }
+        } else if (_parity == UART_PARITY_ODD) {
+            int p = ::_parity(_bits, val);
+            int r = (val & (1 << _bits)) ? 1 : 0;
+            if (p == r) {
+                // TODO - parity error
+                continue;
+            }
+        }
+
+        _queue[_writer] = val & ((1 << _bits) -  1);
+        _writer = (_writer + 1) % sizeof(_queue);
+    }
+}
 
 SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx) {
     _tx = tx;
@@ -144,6 +191,9 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         pio_sm_set_enabled(_txPIO, _txSM, true);
     }
     if (_rx != NOPIN) {
+        _writer = 0;
+        _reader = 0;
+
         _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1);
         _rxPgm = _getRxProgram(_rxBits);
         int off;
@@ -151,6 +201,9 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
             DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources\n");
             return;
         }
+        // Stash away the created RX port for the IRQ handler
+        _pioSP[pio_get_index(_rxPIO)][_rxSM] = this;
+
         pinMode(_rx, INPUT);
         pio_rx_program_init(_rxPIO, _rxSM, off, _rx);
         pio_sm_clear_fifos(_rxPIO, _rxSM); // Remove any existing data
@@ -159,13 +212,20 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         pio_sm_put_blocking(_rxPIO, _rxSM, clock_get_hz(clk_sys) / (_baud * 2) - 2);
         pio_sm_exec(_rxPIO, _rxSM, pio_encode_pull(false, false));
 
+        // Enable interrupts on rxfifo
+        switch (_rxSM) {
+        case 0: pio_set_irq0_source_enabled(_rxPIO, pis_sm0_rx_fifo_not_empty, true); break;
+        case 1: pio_set_irq0_source_enabled(_rxPIO, pis_sm1_rx_fifo_not_empty, true); break;
+        case 2: pio_set_irq0_source_enabled(_rxPIO, pis_sm2_rx_fifo_not_empty, true); break;
+        case 3: pio_set_irq0_source_enabled(_rxPIO, pis_sm3_rx_fifo_not_empty, true); break;
+        }
+        irq_set_exclusive_handler(PIO0_IRQ_0, _fifoIRQ);
+        irq_set_enabled(PIO0_IRQ_0, true);
+
         pio_sm_set_enabled(_rxPIO, _rxSM, true);
     }
 
     _running = true;
-    while (!_swFIFO.empty()) {
-        (void)_swFIFO.pop(); // Just throw out anything in our old FIFO
-    }
 }
 
 void SerialPIO::end() {
@@ -173,38 +233,8 @@ void SerialPIO::end() {
         return;
     }
     // TODO: Deallocate PIO resources, stop them
+    _pioSP[pio_get_index(_rxPIO)][_rxSM] = nullptr;
     _running = false;
-}
-
-// Transfers any data in the HW FIFO into our SW one, up to 32 bytes
-void SerialPIO::_pumpFIFO() {
-    if (_rx == NOPIN) {
-        return;
-    }
-    while ((_swFIFO.size() < 32) && (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM))) {
-        uint32_t decode = _rxPIO->rxf[_rxSM];
-        decode >>= 32 - _rxBits;
-        uint32_t val = 0;
-        for (int b = 0; b < _bits + 1; b++) {
-            val |= (decode & (1 << (b * 2))) ? 1 << b : 0;
-        }
-        if (_parity == UART_PARITY_EVEN) {
-            int p = ::_parity(_bits, val);
-            int r = (val & (1 << _bits)) ? 1 : 0;
-            if (p != r) {
-                // TODO - parity error
-                continue;
-            }
-        } else if (_parity == UART_PARITY_ODD) {
-            int p = ::_parity(_bits, val);
-            int r = (val & (1 << _bits)) ? 1 : 0;
-            if (p == r) {
-                // TODO - parity error
-                continue;
-            }
-        }
-        _swFIFO.push(val & ((1 << _bits) -  1));
-    }
 }
 
 int SerialPIO::peek() {
@@ -212,10 +242,15 @@ int SerialPIO::peek() {
     if (!_running || !m || (_rx == NOPIN)) {
         return -1;
     }
-    _pumpFIFO();
     // If there's something in the FIFO now, just peek at it
-    if (_swFIFO.size()) {
-        return _swFIFO.front();
+    uint32_t start = millis();
+    uint32_t now = millis();
+    while ((now - start) < _timeout) {
+        if (_writer != _reader) {
+            return _queue[_reader];
+        }
+        delay(1);
+        now = millis();
     }
     return -1; // Nothing available before timeout
 }
@@ -225,16 +260,16 @@ int SerialPIO::read() {
     if (!_running || !m || (_rx == NOPIN)) {
         return -1;
     }
-    unsigned int start = millis();
-    unsigned int end = millis();
-    while ((end - start) < _timeout) {
-        _pumpFIFO();
-        if (_swFIFO.size()) {
-            auto ret = _swFIFO.front();
-            _swFIFO.pop();
+    uint32_t start = millis();
+    uint32_t now = millis();
+    while ((now - start) < _timeout) {
+        if (_writer != _reader) {
+            auto ret = _queue[_reader];
+            _reader = (_reader + 1) % sizeof(_queue);
             return ret;
         }
-        end = millis();
+        delay(1);
+        now = millis();
     }
     return -1; // Timeout
 }
@@ -244,8 +279,7 @@ int SerialPIO::available() {
     if (!_running || !m || (_rx == NOPIN)) {
         return 0;
     }
-    _pumpFIFO();
-    return _swFIFO.size();
+    return (_writer - _reader) % sizeof(_queue);
 }
 
 int SerialPIO::availableForWrite() {
@@ -253,7 +287,6 @@ int SerialPIO::availableForWrite() {
     if (!_running || !m || (_tx == NOPIN)) {
         return 0;
     }
-    _pumpFIFO();
     return 8 - pio_sm_get_tx_fifo_level(_txPIO, _txSM);
 }
 
@@ -262,7 +295,6 @@ void SerialPIO::flush() {
     if (!_running || !m || (_tx == NOPIN)) {
         return;
     }
-    _pumpFIFO();
     while (!pio_sm_is_tx_fifo_empty(_txPIO, _txSM)) {
         delay(1); // Wait for all FIFO to be read
     }
@@ -275,7 +307,6 @@ size_t SerialPIO::write(uint8_t c) {
     if (!_running || !m || (_tx == NOPIN)) {
         return 0;
     }
-    _pumpFIFO();
 
     uint32_t val = c;
     if (_parity == UART_PARITY_NONE) {
