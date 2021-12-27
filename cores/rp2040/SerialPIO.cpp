@@ -115,6 +115,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
         }
 
         _queue[_writer] = val & ((1 << _bits) -  1);
+        asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
         _writer = (_writer + 1) % sizeof(_queue);
     }
 }
