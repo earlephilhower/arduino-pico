@@ -179,23 +179,22 @@ void SPIClassRP2040::transfer(void *txbuf, void *rxbuf, size_t count) {
 
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
     DEBUGSPI("SPI::beginTransaction(clk=%d, bo=%s\n", _spis.getClockFreq(), (_spis.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
-    _spis = settings;
-    if (_initted) {
-        DEBUGSPI("SPI: deinitting currently active SPI\n");
-        spi_deinit(_spi);
+    if (_initted && settings == _spis) {
+        DEBUGSPI("SPI: Reusing existing initted SPI\n");
+    } else {
+        _spis = settings;
+        if (_initted) {
+            DEBUGSPI("SPI: deinitting currently active SPI\n");
+            spi_deinit(_spi);
+        }
+        DEBUGSPI("SPI: initting SPI\n");
+        spi_init(_spi, _spis.getClockFreq());
+        _initted = true;
     }
-    DEBUGSPI("SPI: initting SPI\n");
-    spi_init(_spi, _spis.getClockFreq());
-    _initted = true;
 }
 
 void SPIClassRP2040::endTransaction(void) {
     DEBUGSPI("SPI::endTransaction()\n");
-    if (_initted) {
-        DEBUGSPI("SPI: deinitting currently active SPI\n");
-        spi_deinit(_spi);
-    }
-    _initted = false;
 }
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
@@ -281,6 +280,11 @@ void SPIClassRP2040::begin(bool hwCS) {
 
 void SPIClassRP2040::end() {
     DEBUGSPI("SPI::end()\n");
+    if (_initted) {
+        DEBUGSPI("SPI: deinitting currently active SPI\n");
+        _initted = false;
+        spi_deinit(_spi);
+    }
     gpio_set_function(_RX, GPIO_FUNC_SIO);
     if (_hwCS) {
         gpio_set_function(_CS, GPIO_FUNC_SIO);
