@@ -81,19 +81,37 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     int bits, stop;
     uart_parity_t parity;
     switch (config & SERIAL_PARITY_MASK) {
-    case SERIAL_PARITY_EVEN: parity = UART_PARITY_EVEN; break;
-    case SERIAL_PARITY_ODD: parity = UART_PARITY_ODD; break;
-    default: parity = UART_PARITY_NONE; break;
+    case SERIAL_PARITY_EVEN:
+        parity = UART_PARITY_EVEN;
+        break;
+    case SERIAL_PARITY_ODD:
+        parity = UART_PARITY_ODD;
+        break;
+    default:
+        parity = UART_PARITY_NONE;
+        break;
     }
     switch (config & SERIAL_STOP_BIT_MASK) {
-    case SERIAL_STOP_BIT_1: stop = 1; break;
-    default: stop = 2; break;
+    case SERIAL_STOP_BIT_1:
+        stop = 1;
+        break;
+    default:
+        stop = 2;
+        break;
     }
     switch (config & SERIAL_DATA_MASK) {
-    case SERIAL_DATA_5: bits = 5; break;
-    case SERIAL_DATA_6: bits = 6; break;
-    case SERIAL_DATA_7: bits = 7; break;
-    default: bits = 8; break;
+    case SERIAL_DATA_5:
+        bits = 5;
+        break;
+    case SERIAL_DATA_6:
+        bits = 6;
+        break;
+    case SERIAL_DATA_7:
+        bits = 7;
+        break;
+    default:
+        bits = 8;
+        break;
     }
     uart_set_format(_uart, bits, stop, parity);
     gpio_set_function(_tx, GPIO_FUNC_UART);
@@ -115,6 +133,11 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
 void SerialUART::end() {
     if (!_running) {
         return;
+    }
+    if (_uart == uart0) {
+        irq_set_enabled(UART0_IRQ, false);
+    } else {
+        irq_set_enabled(UART1_IRQ, false);
     }
     uart_deinit(_uart);
     _running = false;
