@@ -142,7 +142,8 @@ def configure_usb_flags(cpp_defines):
         ("USB_PID", usb_pid),
         ("USB_MANUFACTURER", '\\"%s\\"' % usb_manufacturer),
         ("USB_PRODUCT", '\\"%s\\"' % usb_product),
-        ("SERIALUSB_PID", usb_pid)
+        ("SERIALUSB_PID", usb_pid),
+        ("USBD_MAX_POWER_MA", 250)
     ])
 
     # use vidtouse and pidtouse 
