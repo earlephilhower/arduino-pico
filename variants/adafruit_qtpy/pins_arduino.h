@@ -38,4 +38,10 @@
 #define SPI_HOWMANY    (1u)
 #define WIRE_HOWMANY   (2u)
 
+// Pin overrides specific to the QT Py RP2040
+#define __PIN_A0 (29u)
+#define __PIN_A1 (28u)
+#define __PIN_A2 (27u)
+#define __PIN_A3 (26u)
+
 #include "../generic/common.h"
