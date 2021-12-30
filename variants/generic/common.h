@@ -67,3 +67,6 @@ static const uint8_t SS = PIN_SPI0_SS;
 static const uint8_t MOSI = PIN_SPI0_MOSI;
 static const uint8_t MISO = PIN_SPI0_MISO;
 static const uint8_t SCK = PIN_SPI0_SCK;
+
+static const uint8_t SDA = PIN_WIRE0_SDA;
+static const uint8_t SCL = PIN_WIRE0_SCL;
