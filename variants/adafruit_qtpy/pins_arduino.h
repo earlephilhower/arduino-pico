@@ -39,3 +39,10 @@
 #define WIRE_HOWMANY   (2u)
 
 #include "../generic/common.h"
+
+// Pin overrides specific to the QT Py RP2040
+// Note, these must go below the common.h include to work correctly
+#define A0 (29u)
+#define A1 (28u)
+#define A2 (27u)
+#define A3 (26u)
