@@ -146,6 +146,7 @@ The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
 * Tones
 * I2S Output
+* Software UARTs (Serial ports)
 
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`
