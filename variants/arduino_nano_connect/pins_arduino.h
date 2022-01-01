@@ -56,19 +56,19 @@ static const uint8_t A5 = (13u);
 #define PIN_SPI0_MISO  (D12)
 #define PIN_SPI0_MOSI  (D11)
 #define PIN_SPI0_SCK   (D13)
-#define PIN_SPI0_SS    (D10)    //(13u)
+#define PIN_SPI0_SS    (D10)
 
 #define PIN_SPI1_MISO  (D25)
 #define PIN_SPI1_MOSI  (D28)
 #define PIN_SPI1_SCK   (D29)
-#define PIN_SPI1_SS    (D10)    //(13u), To fix
+#define PIN_SPI1_SS    (D10)
 
 // Wire
 #define PIN_WIRE0_SDA  (D18)
 #define PIN_WIRE0_SCL  (D19)
 
-#define PIN_WIRE1_SDA  (D14)    //(26u) //Non c'è
-#define PIN_WIRE1_SCL  (D15)    //(27u) //Non c'è
+#define PIN_WIRE1_SDA  (D14)
+#define PIN_WIRE1_SCL  (D15)
 
 #define SERIAL_HOWMANY (3u)
 #define SPI_HOWMANY    (2u)
