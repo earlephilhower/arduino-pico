@@ -248,10 +248,15 @@ void arduino::serialEvent2Run(void) {
 // IRQ handler, called when FIFO > 1/4 full or when it had held unread data for >32 bit times
 void __not_in_flash_func(SerialUART::_handleIRQ)() {
     uart_get_hw(_uart)->icr |= UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
-    while ((uart_is_readable(_uart)) && ((_writer + 1) % sizeof(_queue) != _reader)) {
-        _queue[_writer] = uart_getc(_uart);
-        asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-        _writer = (_writer + 1) % sizeof(_queue);
+    while (uart_is_readable(_uart)) {
+        auto val = uart_getc(_uart);
+        if ((_writer + 1) % sizeof(_queue) != _reader) {
+            _queue[_writer] = val;
+            asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
+            _writer = (_writer + 1) % sizeof(_queue);
+        } else {
+            // TODO: Overflow
+        }
     }
 }
 
