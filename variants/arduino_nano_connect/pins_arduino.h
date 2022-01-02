@@ -39,8 +39,6 @@ static const uint8_t A0 = (26u);
 static const uint8_t A1 = (27u);
 static const uint8_t A2 = (28u);
 static const uint8_t A3 = (29u);
-static const uint8_t A4 = (12u);
-static const uint8_t A5 = (13u);
 
 // LEDs
 #define PIN_LED        (D13)

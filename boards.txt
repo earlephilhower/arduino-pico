@@ -3808,7 +3808,7 @@ arduino_nano_connect.vid.0=0x2341
 arduino_nano_connect.pid.0=0x0058
 arduino_nano_connect.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connect.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-arduino_nano_connect.build.board=ARDUINO_NANO_RP2040_CONNECT
+arduino_nano_connect.build.board=NANO_RP2040_CONNECT
 arduino_nano_connect.build.mcu=cortex-m0plus
 arduino_nano_connect.build.variant=arduino_nano_connect
 arduino_nano_connect.upload.tool=uf2conv
@@ -4019,7 +4019,7 @@ arduino_nano_connectpicoprobe.vid.0=0x2341
 arduino_nano_connectpicoprobe.pid.0=0x0004
 arduino_nano_connectpicoprobe.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connectpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-arduino_nano_connectpicoprobe.build.board=ARDUINO_NANO_RP2040_CONNECT
+arduino_nano_connectpicoprobe.build.board=NANO_RP2040_CONNECT
 arduino_nano_connectpicoprobe.build.mcu=cortex-m0plus
 arduino_nano_connectpicoprobe.build.variant=arduino_nano_connect
 arduino_nano_connectpicoprobe.upload.tool=picoprobe
@@ -4230,7 +4230,7 @@ arduino_nano_connectpicodebug.vid.0=0x1209
 arduino_nano_connectpicodebug.pid.0=0x2488
 arduino_nano_connectpicodebug.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connectpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-arduino_nano_connectpicodebug.build.board=ARDUINO_NANO_RP2040_CONNECT
+arduino_nano_connectpicodebug.build.board=NANO_RP2040_CONNECT
 arduino_nano_connectpicodebug.build.mcu=cortex-m0plus
 arduino_nano_connectpicodebug.build.variant=arduino_nano_connect
 arduino_nano_connectpicodebug.upload.tool=picodebug

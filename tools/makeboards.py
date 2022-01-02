@@ -163,7 +163,7 @@ MakeBoard("adafruit_stemmafriend", "Adafruit", "STEMMA Friend RP2040", "0x239a",
 MakeBoard("adafruit_trinkeyrp2040qt", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", 250, "ADAFRUIT_TRINKEYQT_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_macropad2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", 250, "ADAFRUIT_MACROPAD_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_kb2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("arduino_nano_connect", "Arduino", "Nano RP2040 Connect", "0x2341", "0x0058", 250, "ARDUINO_NANO_RP2040_CONNECT", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("arduino_nano_connect", "Arduino", "Nano RP2040 Connect", "0x2341", "0x0058", 250, "NANO_RP2040_CONNECT", 16, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_nano_rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_pi_rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x1000", 250, "CYTRON_MAKER_PI_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_promicrorp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
