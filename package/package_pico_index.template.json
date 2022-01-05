@@ -27,6 +27,9 @@
                      "name": "Adafruit ItsyBitsy RP2040"
                   },
                   {
+                     "name": "Adafruit KB2040"
+                  },
+                  {
                      "name": "Adafruit Macropad RP2040"
                   },
                   {
@@ -48,6 +51,21 @@
                      "name": "Cytron Maker Pi RP2040"
                   },
                   {
+                     "name": "Invector Labs Challenger RP2040 WiFi"
+                  },
+                  {
+                     "name": "Invector Labs Challenger NB RP2040 WiFi"
+                  },
+                  {
+                     "name": "Invector Labs Challenger RP2040 LTE"
+                  },
+                  {
+                     "name": "Invector Labs RPICO32"
+                  },
+                  {
+                     "name": "Solder Party RP2040 Stamp"
+                  },
+                  {
                      "name": "SparkFun ProMicro RP2040"
                   },
                   {
@@ -55,6 +73,9 @@
                   },
                   {
                      "name": "uPesy RP2040 DevKit"
+                  },
+                  {
+                     "name": "WIZnet W5100S-EVB-Pico"
                   },
                   {
                      "name": "Generic RP2040 Module"
