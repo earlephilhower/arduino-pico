@@ -24,5 +24,12 @@ Configure their pins using the ``setXXX`` calls prior to calling ``begin()``
         Serial1.setTX(pin);
         Serial1.begin(baud);
 
+The size of the receive FIFO may also be adjusted from the default 32 bytes by
+using the ``setFIFOSize`` call prior to calling ``begin()``
+
+.. code:: cpp
+        Serial1.setFIFOSize(128);
+        Serial1.begin(baud);
+
 For detailed information about the Serial ports, see the
 Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/functions/communication/serial/>`_ .
