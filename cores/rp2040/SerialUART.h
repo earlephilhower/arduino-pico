@@ -40,6 +40,7 @@ public:
         ret &= setTX(tx);
         return ret;
     }
+    bool setFIFOSize(size_t size);
 
     void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
@@ -70,7 +71,8 @@ private:
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;
     uint32_t _reader;
-    uint8_t  _queue[32];
+    size_t   _fifoSize = 32;
+    uint8_t  *_queue;
 };
 
 extern SerialUART Serial1; // HW UART 0

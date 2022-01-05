@@ -65,6 +65,14 @@ bool SerialUART::setTX(pin_size_t pin) {
     return false;
 }
 
+bool SerialUART::setFIFOSize(size_t size) {
+    if (!size || _running) {
+        return false;
+    }
+    _fifoSize = size + 1; // Always 1 unused entry
+    return true;
+}
+
 SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
     _uart = uart;
     _tx = tx;
@@ -76,6 +84,7 @@ static void _uart0IRQ();
 static void _uart1IRQ();
 
 void SerialUART::begin(unsigned long baud, uint16_t config) {
+    _queue = new uint8_t[_fifoSize];
     _baud = baud;
     uart_init(_uart, baud);
     int bits, stop;
@@ -140,6 +149,7 @@ void SerialUART::end() {
         irq_set_enabled(UART1_IRQ, false);
     }
     uart_deinit(_uart);
+    delete[] _queue;
     _running = false;
 }
 
@@ -170,7 +180,7 @@ int SerialUART::read() {
     while ((now - start) < _timeout) {
         if (_writer != _reader) {
             auto ret = _queue[_reader];
-            _reader = (_reader + 1) % sizeof(_queue);
+            _reader = (_reader + 1) % _fifoSize;
             return ret;
         }
         delay(1);
@@ -184,7 +194,7 @@ int SerialUART::available() {
     if (!_running || !m) {
         return 0;
     }
-    return (_writer - _reader) % sizeof(_queue);
+    return (_writer - _reader) % _fifoSize;
 }
 
 int SerialUART::availableForWrite() {
@@ -250,10 +260,10 @@ void __not_in_flash_func(SerialUART::_handleIRQ)() {
     uart_get_hw(_uart)->icr |= UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
     while (uart_is_readable(_uart)) {
         auto val = uart_getc(_uart);
-        if ((_writer + 1) % sizeof(_queue) != _reader) {
+        if ((_writer + 1) % _fifoSize != _reader) {
             _queue[_writer] = val;
             asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            _writer = (_writer + 1) % sizeof(_queue);
+            _writer = (_writer + 1) % _fifoSize;
         } else {
             // TODO: Overflow
         }

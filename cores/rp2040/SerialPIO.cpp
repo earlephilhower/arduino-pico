@@ -127,7 +127,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
 SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifosize) {
     _tx = tx;
     _rx = rx;
-    _fifosize = fifosize;
+    _fifosize = fifosize + 1; // Always one unused entry
     _queue = new uint8_t[_fifosize];
     mutex_init(&_mutex);
 }
