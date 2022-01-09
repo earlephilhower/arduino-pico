@@ -114,20 +114,27 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
             }
         }
 
-        if ((_writer + 1) % sizeof(_queue) != _reader) {
+        if ((_writer + 1) % _fifosize != _reader) {
             _queue[_writer] = val & ((1 << _bits) -  1);
             asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            _writer = (_writer + 1) % sizeof(_queue);
+            _writer = (_writer + 1) % _fifosize;
         } else {
             // TODO: Overflow
         }
     }
 }
 
-SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx) {
+SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifosize) {
     _tx = tx;
     _rx = rx;
+    _fifosize = fifosize + 1; // Always one unused entry
+    _queue = new uint8_t[_fifosize];
     mutex_init(&_mutex);
+}
+
+SerialPIO::~SerialPIO() {
+    end();
+    delete[] _queue;
 }
 
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
@@ -273,7 +280,7 @@ int SerialPIO::read() {
     while ((now - start) < _timeout) {
         if (_writer != _reader) {
             auto ret = _queue[_reader];
-            _reader = (_reader + 1) % sizeof(_queue);
+            _reader = (_reader + 1) % _fifosize;
             return ret;
         }
         delay(1);
@@ -287,7 +294,7 @@ int SerialPIO::available() {
     if (!_running || !m || (_rx == NOPIN)) {
         return 0;
     }
-    return (_writer - _reader) % sizeof(_queue);
+    return (_writer - _reader) % _fifosize;
 }
 
 int SerialPIO::availableForWrite() {

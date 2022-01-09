@@ -32,7 +32,8 @@ extern "C" typedef struct uart_inst uart_inst_t;
 class SerialPIO : public HardwareSerial {
 public:
     static const pin_size_t NOPIN = 0xff; // Use in constructor to disable RX or TX unit
-    SerialPIO(pin_size_t tx, pin_size_t rx);
+    SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifosize = 32);
+    ~SerialPIO();
 
     void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
@@ -72,7 +73,8 @@ private:
     int _rxBits;
 
     // Lockless, IRQ-handled circular queue
+    size_t   _fifosize;
     uint32_t _writer;
     uint32_t _reader;
-    uint8_t  _queue[32];
+    uint8_t  *_queue;
 };

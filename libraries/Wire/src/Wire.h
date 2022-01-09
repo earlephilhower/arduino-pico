@@ -31,7 +31,7 @@
 #define WIRE_HAS_END 1
 
 #ifndef WIRE_BUFFER_SIZE
-#define WIRE_BUFFER_SIZE 128
+#define WIRE_BUFFER_SIZE 256
 #endif
 
 class TwoWire : public HardwareI2C {
