@@ -152,6 +152,65 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
             BuildUSBStack(n)
         if name == "generic":
             BuildBoot(n)
+    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2)
+
+def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):
+    json = """{
+  "build": {
+    "core": "earlephilhower",
+    "cpu": "cortex-m0plus",
+    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040",
+    "f_cpu": "133000000L",
+    "hwids": [
+      [
+        "0x2E8A",
+        "0x00C0"
+      ]
+    ],
+    "mcu": "rp2040",
+    "variant": "BOARDDEFINE",
+    "arduino": {
+      "earlephilhower": {
+        "variant": "rpipico",
+        "boot2_source": "BOOT2",
+        "usb_vid": "VID"
+        "usb_pid": "PID",
+        "usb_manufacturer": "VENDORNAME",
+        "usb_product": "PRODUCTNAME"
+      }
+    }
+  },
+  "debug": {
+    "jlink_device": "RP2040_M0_0",
+    "openocd_target": "rp2040.cfg",
+    "svd_path": "rp2040.svd"
+  },
+  "frameworks": [
+    "arduino"
+  ],
+  "name": "PRODUCTNAME",
+  "upload": {
+    "maximum_ram_size": 270336,
+    "maximum_size": FLASHSIZE,
+    "require_upload_port": true,
+    "native_usb": true,
+    "use_1200bps_touch": true,
+    "wait_for_upload_port": false,
+    "protocol": "picotool",
+    "protocols": [
+      "cmsis-dap",
+      "jlink",
+      "raspberrypi-swd",
+      "picotool",
+      "picoprobe"
+    ]
+  },
+  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+  "vendor": "VENDORNAME"
+}""".replace('BOARDDEFINE', boarddefine).replace('BOOT2', boot2).replace('VID', vid).replace('PID', pid).replace('VENDORNAME', vendor_name).replace('PRODUCTNAME', product_name).replace('FLASHSIZE', str(1024*1024*flashsizemb))
+    f = open("json/" + name + ".json", "w")
+    f.write(json)
+    f.close()
 
 WriteWarning()
 BuildGlobalMenuList()
