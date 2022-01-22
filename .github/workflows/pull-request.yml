@@ -36,7 +36,7 @@ jobs:
         ./tests/ci/pkgrefs_test.sh
     - name: Check boards.txt was not edited after makeboards.py
       run: |
-        ./tools/makeboards.py > boards.txt
+        ./tools/makeboards.py
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
     - name: Run astyle on all code/examples
