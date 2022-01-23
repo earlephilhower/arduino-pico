@@ -11,12 +11,11 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "MELOPERO_SHAKE_RP2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "rpipico",
-        "boot2_source": "boot2_w25q080_2_padded_checksum",
-        "usb_vid": "0x2e8a"
+        "variant": "melopero_shake_rp2040",
+        "boot2_source": "boot2_w25q080_2_padded_checksum.S",
+        "usb_vid": "0x2e8a",
         "usb_pid": "0x1005",
         "usb_manufacturer": "Melopero",
         "usb_product": "Shake RP2040"

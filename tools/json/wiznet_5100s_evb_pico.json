@@ -11,12 +11,11 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "WIZNET_5100S_EVB_PICO",
     "arduino": {
       "earlephilhower": {
-        "variant": "rpipico",
-        "boot2_source": "boot2_w25q080_2_padded_checksum",
-        "usb_vid": "0x2e8a"
+        "variant": "wiznet_5100s_evb_pico",
+        "boot2_source": "boot2_w25q080_2_padded_checksum.S",
+        "usb_vid": "0x2e8a",
         "usb_pid": "0x1008",
         "usb_manufacturer": "WIZnet",
         "usb_product": "W5100S-EVB-Pico"

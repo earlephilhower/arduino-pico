@@ -11,12 +11,11 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "SOLDERPARTY_RP2040_STAMP",
     "arduino": {
       "earlephilhower": {
-        "variant": "rpipico",
-        "boot2_source": "boot2_generic_03h_4_padded_checksum",
-        "usb_vid": "0x1209"
+        "variant": "solderparty_rp2040_stamp",
+        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
+        "usb_vid": "0x1209",
         "usb_pid": "0xa182",
         "usb_manufacturer": "Solder Party",
         "usb_product": "RP2040 Stamp"

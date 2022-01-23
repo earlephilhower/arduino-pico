@@ -11,12 +11,11 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "ADAFRUIT_FEATHER_RP2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "rpipico",
-        "boot2_source": "boot2_w25x10cl_4_padded_checksum",
-        "usb_vid": "0x239a"
+        "variant": "adafruit_feather",
+        "boot2_source": "boot2_w25x10cl_4_padded_checksum.S",
+        "usb_vid": "0x239a",
         "usb_pid": "0x80f1",
         "usb_manufacturer": "Adafruit",
         "usb_product": "Feather RP2040"

@@ -11,12 +11,11 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "CHALLENGER_2040_LTE_RP2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "rpipico",
-        "boot2_source": "boot2_w25q080_2_padded_checksum",
-        "usb_vid": "0x2e8a"
+        "variant": "challenger_2040_lte",
+        "boot2_source": "boot2_w25q080_2_padded_checksum.S",
+        "usb_vid": "0x2e8a",
         "usb_pid": "0x100b",
         "usb_manufacturer": "iLabs",
         "usb_product": "Challenger 2040 LTE"

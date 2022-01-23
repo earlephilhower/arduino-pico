@@ -11,12 +11,11 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "SPARKFUN_PROMICRO_RP2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "rpipico",
-        "boot2_source": "boot2_generic_03h_4_padded_checksum",
-        "usb_vid": "0x1b4f"
+        "variant": "sparkfun_promicrorp2040",
+        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
+        "usb_vid": "0x1b4f",
         "usb_pid": "0x0026",
         "usb_manufacturer": "SparkFun",
         "usb_product": "ProMicro RP2040"
