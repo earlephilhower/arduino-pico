@@ -20,7 +20,7 @@ jobs:
     - name: Run codespell
       uses: codespell-project/actions-codespell@master
       with:
-        skip: ./pico-extras,./ArduinoCore-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api
+        skip: ./pico-extras,./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api
         ignore_words_list: ser,DOUT
 
 # Consistent style
