@@ -11,7 +11,7 @@
 	path = libraries/LittleFS/lib/littlefs
 	url = https://github.com/littlefs-project/littlefs.git
 [submodule "libraries/SdFat"]
-	path = libraries/SdFat
+	path = libraries/ESP8266SdFat
 	url = https://github.com/earlephilhower/ESP8266SdFat.git
 [submodule "pico-extras"]
 	path = pico-extras
