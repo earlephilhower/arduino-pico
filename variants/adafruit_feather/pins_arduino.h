@@ -6,6 +6,9 @@
 // LEDs
 #define PIN_LED        (13u)
 
+// NeoPixel
+#define PIN_NEOPIXEL   (16u)
+
 // Serial
 #define PIN_SERIAL1_TX (0u)
 #define PIN_SERIAL1_RX (1u)
