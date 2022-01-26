@@ -176,3 +176,4 @@ MakeBoard("melopero_shake_rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005
 MakeBoard("solderparty_rp2040_stamp", "Solder Party", "RP2040 Stamp", "0x1209", "0xa182", 500, "SOLDERPARTY_RP2040_STAMP", 8, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("upesy_rp2040_devkit", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1008", 250, "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("flyboard2040_core", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a", 500, "FLYBOARD2040_CORE", 4, "boot2_generic_03h_4_padded_checksum")
