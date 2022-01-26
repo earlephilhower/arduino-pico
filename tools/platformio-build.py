@@ -87,7 +87,7 @@ env.Append(
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
 
     # do **NOT** Add lib to LIBPATH, otherwise 
-    # erronous libstdc++.a will be found that crashes! 
+    # erroneous libstdc++.a will be found that crashes! 
     #LIBPATH=[
     #    os.path.join(FRAMEWORK_DIR, "lib")
     #],
