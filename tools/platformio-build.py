@@ -19,7 +19,9 @@ env = DefaultEnvironment()
 platform = env.PioPlatform()
 board = env.BoardConfig()
 upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
-ram_size = board.get("upload.maximum_ram_size")
+#ram_size = board.get("upload.maximum_ram_size") # PlatformIO gives 264K here
+# override to correct 256K for RAM section in linkerscript
+ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y). 
 
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
@@ -84,12 +86,16 @@ env.Append(
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
 
-    LIBPATH=[
-        os.path.join(FRAMEWORK_DIR, "lib")
-    ],
+    # do **NOT** Add lib to LIBPATH, otherwise 
+    # erroneous libstdc++.a will be found that crashes! 
+    #LIBPATH=[
+    #    os.path.join(FRAMEWORK_DIR, "lib")
+    #],
 
-    # link lib/libpico.a
-    LIBS=["pico", "m", "c", "stdc++", "c"]
+    # link lib/libpico.a by full path, ignore libstdc++
+    LIBS=[
+        File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")), 
+        "m", "c", "stdc++", "c"]
 )
 
 
