@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import os
+import sys
 
 def BuildFlashMenu(name, flashsize, fssizelist):
     for fssize in fssizelist:
@@ -152,7 +154,67 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
             BuildUSBStack(n)
         if name == "generic":
             BuildBoot(n)
+    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2)
 
+def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):
+    json = """{
+  "build": {
+    "core": "earlephilhower",
+    "cpu": "cortex-m0plus",
+    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR",
+    "f_cpu": "133000000L",
+    "hwids": [
+      [
+        "0x2E8A",
+        "0x00C0"
+      ]
+    ],
+    "mcu": "rp2040",
+    "arduino": {
+      "earlephilhower": {
+        "variant": "VARIANTNAME",
+        "boot2_source": "BOOT2.S",
+        "usb_vid": "VID",
+        "usb_pid": "PID",
+        "usb_manufacturer": "VENDORNAME",
+        "usb_product": "PRODUCTNAME"
+      }
+    }
+  },
+  "debug": {
+    "jlink_device": "RP2040_M0_0",
+    "openocd_target": "rp2040.cfg",
+    "svd_path": "rp2040.svd"
+  },
+  "frameworks": [
+    "arduino"
+  ],
+  "name": "PRODUCTNAME",
+  "upload": {
+    "maximum_ram_size": 270336,
+    "maximum_size": FLASHSIZE,
+    "require_upload_port": true,
+    "native_usb": true,
+    "use_1200bps_touch": true,
+    "wait_for_upload_port": false,
+    "protocol": "picotool",
+    "protocols": [
+      "cmsis-dap",
+      "jlink",
+      "raspberrypi-swd",
+      "picotool",
+      "picoprobe"
+    ]
+  },
+  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+  "vendor": "VENDORNAME"
+}""".replace('VARIANTNAME', name).replace('BOARDDEFINE', boarddefine).replace('BOOT2', boot2).replace('VID', vid).replace('PID', pid).replace('VENDORNAME', vendor_name).replace('PRODUCTNAME', product_name).replace('FLASHSIZE', str(1024*1024*flashsizemb)).replace('USBPWR', str(pwr))
+    jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
+    f = open(jsondir + "/" + name + ".json", "w")
+    f.write(json)
+    f.close()
+
+sys.stdout = open(os.path.abspath(os.path.dirname(__file__)) + "/../boards.txt", "w")
 WriteWarning()
 BuildGlobalMenuList()
 MakeBoard("rpipico", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
@@ -177,3 +239,4 @@ MakeBoard("solderparty_rp2040_stamp", "Solder Party", "RP2040 Stamp", "0x1209", 
 MakeBoard("upesy_rp2040_devkit", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1008", 250, "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("flyboard2040_core", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a", 500, "FLYBOARD2040_CORE", 4, "boot2_generic_03h_4_padded_checksum")
+sys.stdout.close()
