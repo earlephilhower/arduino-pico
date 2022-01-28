@@ -148,9 +148,12 @@ def configure_usb_flags(cpp_defines):
         ("USB_PID", usb_pid),
         ("USB_MANUFACTURER", '\\"%s\\"' % usb_manufacturer),
         ("USB_PRODUCT", '\\"%s\\"' % usb_product),
-        ("SERIALUSB_PID", usb_pid),
-        ("USBD_MAX_POWER_MA", 250)
+        ("SERIALUSB_PID", usb_pid)
     ])
+
+    if "USBD_MAX_POWER_MA" not in env.Flatten(env.get("CPPDEFINES", [])):
+        env.Append(CPPDEFINES=[("USBD_MAX_POWER_MA", 500)])
+        print("Warning: Undefined USBD_MAX_OWER_MA, assuming 500mA")
 
     # use vidtouse and pidtouse 
     # for USB PID/VID autodetection
@@ -195,9 +198,9 @@ if not board.get("build.ldscript", ""):
 
 libs = []
 
-variant = board.get("build.arduino.earlephilhower.variant", board.get("build.variant", None))
+variant = board.get("build.arduino.earlephilhower.variant", board.get("build.variant", ""))
 
-if variant is not None:
+if variant != "":
     env.Append(CPPPATH=[
         os.path.join(FRAMEWORK_DIR, "variants", variant)
     ])
