@@ -16,10 +16,11 @@ typedef enum {
 } PinStatus;
 
 typedef enum {
-  INPUT           = 0x0,
-  OUTPUT          = 0x1,
-  INPUT_PULLUP    = 0x2,
-  INPUT_PULLDOWN  = 0x3,
+  INPUT            = 0x0,
+  OUTPUT           = 0x1,
+  INPUT_PULLUP     = 0x2,
+  INPUT_PULLDOWN   = 0x3,
+  OUTPUT_OPENDRAIN = 0x4,
 } PinMode;
 
 typedef enum {
@@ -65,7 +66,7 @@ typedef void (*voidFuncPtrParam)(void*);
 #define bitSet(value, bit) ((value) |= (1UL << (bit)))
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitToggle(value, bit) ((value) ^= (1UL << (bit)))
-#define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
+#define bitWrite(value, bit, bitvalue) ((bitvalue) ? bitSet((value), (bit)) : bitClear((value), (bit)))
 
 #ifndef bit
 #define bit(b) (1UL << (b))
@@ -85,7 +86,7 @@ int atexit(void (*func)()) __attribute__((weak));
 int main() __attribute__((weak));
 
 #ifdef EXTENDED_PIN_MODE
-// Platforms who wnat to declare more than 256 pins need to define EXTENDED_PIN_MODE globally
+// Platforms who want to declare more than 256 pins need to define EXTENDED_PIN_MODE globally
 typedef uint32_t pin_size_t;
 #else
 typedef uint8_t pin_size_t;

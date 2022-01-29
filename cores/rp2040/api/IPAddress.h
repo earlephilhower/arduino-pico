@@ -23,7 +23,7 @@
 #include "Printable.h"
 #include "String.h"
 
-// forward declartions of global name space friend classes
+// forward declarations of global name space friend classes
 class EthernetClass;
 class DhcpClass;
 class DNSClient;
@@ -83,3 +83,5 @@ public:
 
 extern const IPAddress INADDR_NONE;
 }
+
+using arduino::IPAddress;

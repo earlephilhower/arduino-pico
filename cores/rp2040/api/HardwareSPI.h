@@ -124,7 +124,7 @@ class HardwareSPI
     virtual void end() = 0;
 };
 
-// Alias SPIClass to HardwareSPI since it's already the defacto standard for SPI classe name
+// Alias SPIClass to HardwareSPI since it's already the defacto standard for SPI class name
 typedef HardwareSPI SPIClass;
 
 }

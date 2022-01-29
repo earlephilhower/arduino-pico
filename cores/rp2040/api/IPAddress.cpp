@@ -66,7 +66,7 @@ bool IPAddress::fromString(const char *address)
         else if (c == '.')
         {
             if (dots == 3) {
-                // Too much dots (there must be 3 dots)
+                // Too many dots (there must be 3 dots)
                 return false;
             }
             if (acc < 0) {
