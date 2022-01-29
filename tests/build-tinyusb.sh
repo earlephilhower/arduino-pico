@@ -19,8 +19,9 @@ function skip_ino()
 /hid_keyboard/
 /msc_external_flash/
 /msc_external_flash_sdcard/
-/msc_sdfat/
+/msc_internal_flash_samd/
 /msc_sd/
+/msc_sdfat/
 /midi_pizza_box_dj/
 EOL
         echo $ino | grep -q -F "$skiplist"
