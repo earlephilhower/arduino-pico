@@ -83,6 +83,9 @@ bool TwoWire::setSCL(pin_size_t pin) {
 
 void TwoWire::setClock(uint32_t hz) {
     _clkHz = hz;
+    if (_running) {
+        i2c_set_baudrate(_i2c, hz);
+    }
 }
 
 // Master mode
