@@ -317,23 +317,17 @@ def main():
 
     if args.serial:
         if str(args.serial).startswith("/dev/tty") or str(args.serial).startswith("COM") or str(args.serial).startswith("/dev/cu"):
-            print("Entering serial port reset")
-            for tries in range(5):
+            try:
+                print("Resetting " + str(args.serial))
                 try:
-                    print("Resetting " + str(args.serial) + " try " + str(tries))
-                    try:
-                        ser = serial.Serial(args.serial, 1200)
-                        ser.dtr = False
-                        print("Reset succeeded. Sleeping 10s")
-                        time.sleep(10)
-                        break
-                    except:
-                        print("Caught exception during reset!")
-                    # Probably should be smart and check for device appearance or something
-                    print("Sleeping 30 seconds")
-                    time.sleep(30)
+                    ser = serial.Serial(args.serial, 1200)
+                    ser.dtr = False
                 except:
-                    pass
+                    print("Caught exception during reset!")
+                # Probably should be smart and check for device appearance or something
+                time.sleep(10)
+            except:
+                pass
     if args.list:
         list_drives()
     else:
