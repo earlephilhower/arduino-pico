@@ -158,6 +158,11 @@ int SerialUART::peek() {
     if (!_running || !m) {
         return -1;
     }
+
+    if (!_timeout && (_writer != _reader)) {
+        return _queue[_reader];
+    } // OTW, fallthru while and return -1
+
     uint32_t start = millis();
     uint32_t now = millis();
     while ((now - start) < _timeout) {
@@ -175,6 +180,13 @@ int SerialUART::read() {
     if (!_running || !m) {
         return -1;
     }
+
+    if (!_timeout && (_writer != _reader)) {
+        auto ret = _queue[_reader];
+        _reader = (_reader + 1) % _fifoSize;
+        return ret;
+    } // OTW, fallthru while and return -1
+
     uint32_t start = millis();
     uint32_t now = millis();
     while ((now - start) < _timeout) {
