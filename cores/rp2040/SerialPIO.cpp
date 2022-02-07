@@ -258,16 +258,10 @@ int SerialPIO::peek() {
         return -1;
     }
     // If there's something in the FIFO now, just peek at it
-    uint32_t start = millis();
-    uint32_t now = millis();
-    while ((now - start) < _timeout) {
-        if (_writer != _reader) {
-            return _queue[_reader];
-        }
-        delay(1);
-        now = millis();
+    if (_writer != _reader) {
+        return _queue[_reader];
     }
-    return -1; // Nothing available before timeout
+    return -1;
 }
 
 int SerialPIO::read() {
@@ -275,18 +269,12 @@ int SerialPIO::read() {
     if (!_running || !m || (_rx == NOPIN)) {
         return -1;
     }
-    uint32_t start = millis();
-    uint32_t now = millis();
-    while ((now - start) < _timeout) {
-        if (_writer != _reader) {
-            auto ret = _queue[_reader];
-            _reader = (_reader + 1) % _fifosize;
-            return ret;
-        }
-        delay(1);
-        now = millis();
+    if (_writer != _reader) {
+        auto ret = _queue[_reader];
+        _reader = (_reader + 1) % _fifosize;
+        return ret;
     }
-    return -1; // Timeout
+    return -1;
 }
 
 int SerialPIO::available() {
