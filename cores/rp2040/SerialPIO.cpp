@@ -122,7 +122,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
             if (next_writer == _fifosize) {
                 next_writer = 0;
             }
-            asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
+            asm volatile("" ::: "memory"); // Ensure the writer value is only written once, correctly
             _writer = next_writer;
         } else {
             // TODO: Overflow

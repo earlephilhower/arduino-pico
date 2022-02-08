@@ -65,6 +65,14 @@ bool SerialUART::setTX(pin_size_t pin) {
     return false;
 }
 
+bool SerialUART::setPollingMode(bool mode) {
+    if (_running) {
+        return false;
+    }
+    _polling = mode;
+    return true;
+}
+
 bool SerialUART::setFIFOSize(size_t size) {
     if (!size || _running) {
         return false;
@@ -128,15 +136,19 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     _writer = 0;
     _reader = 0;
 
-    if (_uart == uart0) {
-        irq_set_exclusive_handler(UART0_IRQ, _uart0IRQ);
-        irq_set_enabled(UART0_IRQ, true);
+    if (!_polling) {
+        if (_uart == uart0) {
+            irq_set_exclusive_handler(UART0_IRQ, _uart0IRQ);
+            irq_set_enabled(UART0_IRQ, true);
+        } else {
+            irq_set_exclusive_handler(UART1_IRQ, _uart1IRQ);
+            irq_set_enabled(UART1_IRQ, true);
+        }
+        // Set the IRQ enables and FIFO level to minimum
+        uart_set_irq_enables(_uart, true, false);
     } else {
-        irq_set_exclusive_handler(UART1_IRQ, _uart1IRQ);
-        irq_set_enabled(UART1_IRQ, true);
+        // Polling mode has no IRQs used
     }
-    // Set the IRQ enables and FIFO level to minimum
-    uart_set_irq_enables(_uart, true, false);
     _running = true;
 }
 
@@ -144,10 +156,12 @@ void SerialUART::end() {
     if (!_running) {
         return;
     }
-    if (_uart == uart0) {
-        irq_set_enabled(UART0_IRQ, false);
-    } else {
-        irq_set_enabled(UART1_IRQ, false);
+    if (!_polling) {
+        if (_uart == uart0) {
+            irq_set_enabled(UART0_IRQ, false);
+        } else {
+            irq_set_enabled(UART1_IRQ, false);
+        }
     }
     uart_deinit(_uart);
     delete[] _queue;
@@ -159,6 +173,9 @@ int SerialUART::peek() {
     if (!_running || !m) {
         return -1;
     }
+    if (_polling) {
+        _handleIRQ();
+    }
     if (_writer != _reader) {
         return _queue[_reader];
     }
@@ -169,6 +186,9 @@ int SerialUART::read() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return -1;
+    }
+    if (_polling) {
+        _handleIRQ();
     }
     if (_writer != _reader) {
         auto ret = _queue[_reader];
@@ -185,6 +205,9 @@ int SerialUART::available() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return 0;
+    }
+    if (_polling) {
+        _handleIRQ();
     }
     return (_writer - _reader) % _fifoSize;
 }
@@ -261,7 +284,7 @@ void __not_in_flash_func(SerialUART::_handleIRQ)() {
             if (next_writer == _fifoSize) {
                 next_writer = 0;
             }
-            asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
+            asm volatile("" ::: "memory"); // Ensure the writer value is only written once, correctly
             _writer = next_writer;
         } else {
             // TODO: Overflow
