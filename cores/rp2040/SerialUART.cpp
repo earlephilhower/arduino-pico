@@ -217,6 +217,9 @@ int SerialUART::availableForWrite() {
     if (!_running || !m) {
         return 0;
     }
+    if (_polling) {
+        _handleIRQ();
+    }
     return (uart_is_writable(_uart)) ? 1 : 0;
 }
 
@@ -224,6 +227,9 @@ void SerialUART::flush() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return;
+    }
+    if (_polling) {
+        _handleIRQ();
     }
     uart_tx_wait_blocking(_uart);
 }
@@ -233,6 +239,9 @@ size_t SerialUART::write(uint8_t c) {
     if (!_running || !m) {
         return 0;
     }
+    if (_polling) {
+        _handleIRQ();
+    }
     uart_putc_raw(_uart, c);
     return 1;
 }
@@ -241,6 +250,9 @@ size_t SerialUART::write(const uint8_t *p, size_t len) {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return 0;
+    }
+    if (_polling) {
+        _handleIRQ();
     }
     size_t cnt = len;
     while (cnt) {
