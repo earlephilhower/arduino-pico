@@ -135,7 +135,8 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         irq_set_exclusive_handler(UART1_IRQ, _uart1IRQ);
         irq_set_enabled(UART1_IRQ, true);
     }
-    uart_get_hw(_uart)->imsc |= UART_UARTIMSC_RXIM_BITS | UART_UARTIMSC_RTIM_BITS;
+    // Set the IRQ enables and FIFO level to minimum
+    uart_set_irq_enables(_uart, true, false);
     _running = true;
 }
 
@@ -171,7 +172,10 @@ int SerialUART::read() {
     }
     if (_writer != _reader) {
         auto ret = _queue[_reader];
-        _reader = (_reader + 1) % _fifoSize;
+        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
+        auto next_reader = (_reader + 1) % _fifoSize;
+        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
+        _reader = next_reader;
         return ret;
     }
     return -1;
@@ -245,13 +249,20 @@ void arduino::serialEvent2Run(void) {
 
 // IRQ handler, called when FIFO > 1/4 full or when it had held unread data for >32 bit times
 void __not_in_flash_func(SerialUART::_handleIRQ)() {
-    uart_get_hw(_uart)->icr |= UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
+    // ICR is write-to-clear
+    uart_get_hw(_uart)->icr = UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
     while (uart_is_readable(_uart)) {
         auto val = uart_getc(_uart);
         if ((_writer + 1) % _fifoSize != _reader) {
             _queue[_writer] = val;
             asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            _writer = (_writer + 1) % _fifoSize;
+            // Avoid using division or mod because the HW divider could be in use
+            auto next_writer = _writer + 1;
+            if (next_writer == _fifoSize) {
+                next_writer = 0;
+            }
+            asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
+            _writer = next_writer;
         } else {
             // TODO: Overflow
         }
