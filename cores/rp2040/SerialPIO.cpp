@@ -117,7 +117,13 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
         if ((_writer + 1) % _fifosize != _reader) {
             _queue[_writer] = val & ((1 << _bits) -  1);
             asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            _writer = (_writer + 1) % _fifosize;
+            // Avoid using division or mod because the HW divider could be in use
+            auto next_writer = _writer + 1;
+            if (next_writer == _fifosize) {
+                next_writer = 0;
+            }
+            asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
+            _writer = next_writer;
         } else {
             // TODO: Overflow
         }
@@ -271,7 +277,10 @@ int SerialPIO::read() {
     }
     if (_writer != _reader) {
         auto ret = _queue[_reader];
-        _reader = (_reader + 1) % _fifosize;
+        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
+        auto next_reader = (_reader + 1) % _fifosize;
+        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
+        _reader = next_reader;
         return ret;
     }
     return -1;
