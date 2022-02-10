@@ -114,15 +114,13 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
             }
         }
 
-        if ((_writer + 1) % _fifosize != _reader) {
+        auto next_writer = _writer + 1;
+        if (next_writer == _fifoSize) {
+            next_writer = 0;
+        }
+        if (next_writer != _reader) {
             _queue[_writer] = val & ((1 << _bits) -  1);
             asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            // Avoid using division or mod because the HW divider could be in use
-            auto next_writer = _writer + 1;
-            if (next_writer == _fifosize) {
-                next_writer = 0;
-            }
-            asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
             _writer = next_writer;
         } else {
             // TODO: Overflow
@@ -130,11 +128,11 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
     }
 }
 
-SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifosize) {
+SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifoSize) {
     _tx = tx;
     _rx = rx;
-    _fifosize = fifosize + 1; // Always one unused entry
-    _queue = new uint8_t[_fifosize];
+    _fifoSize = fifoSize + 1; // Always one unused entry
+    _queue = new uint8_t[_fifoSize];
     mutex_init(&_mutex);
 }
 
@@ -278,7 +276,7 @@ int SerialPIO::read() {
     if (_writer != _reader) {
         auto ret = _queue[_reader];
         asm volatile("" ::: "memory"); // Ensure the value is read before advancing
-        auto next_reader = (_reader + 1) % _fifosize;
+        auto next_reader = (_reader + 1) % _fifoSize;
         asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
         _reader = next_reader;
         return ret;
@@ -291,7 +289,7 @@ int SerialPIO::available() {
     if (!_running || !m || (_rx == NOPIN)) {
         return 0;
     }
-    return (_writer - _reader) % _fifosize;
+    return (_writer - _reader) % _fifoSize;
 }
 
 int SerialPIO::availableForWrite() {

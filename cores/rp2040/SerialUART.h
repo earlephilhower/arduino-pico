@@ -41,6 +41,7 @@ public:
         return ret;
     }
     bool setFIFOSize(size_t size);
+    bool setPollingMode(bool mode = true);
 
     void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
@@ -67,6 +68,7 @@ private:
     pin_size_t _tx, _rx;
     int _baud;
     mutex_t _mutex;
+    bool _polling = false;
 
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;

@@ -31,5 +31,16 @@ using the ``setFIFOSize`` call prior to calling ``begin()``
         Serial1.setFIFOSize(128);
         Serial1.begin(baud);
 
+The FIFO is normally handled via an interrupt, which reduced CPU load and
+makes it less likely to lose characters.  However, the FIFO introduces up
+to 32 bit-times of delay before serial data is available to the application.
+
+For applications where this is an issue (i.e. very low baud), use
+``setPollingMode(true)`` before calling ``begin()``
+
+.. code:: cpp
+        Serial1.setPollingMode(true);
+        Serial1.begin(110)
+
 For detailed information about the Serial ports, see the
 Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/functions/communication/serial/>`_ .
