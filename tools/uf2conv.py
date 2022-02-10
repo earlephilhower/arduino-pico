@@ -228,9 +228,13 @@ def to_str(b):
 def get_drives():
     drives = []
     if sys.platform == "win32":
-        r = subprocess.check_output(["wmic", "PATH", "Win32_LogicalDisk",
-                                     "get", "DeviceID,", "VolumeName,",
-                                     "FileSystem,", "DriveType"])
+        try:
+            r = subprocess.check_output(["wmic", "PATH", "Win32_LogicalDisk",
+                                         "get", "DeviceID,", "VolumeName,",
+                                         "FileSystem,", "DriveType"])
+        except:
+            r = subprocess.check_output(["powershell",
+                                         "Get-WmiObject -class Win32_LogicalDisk | Format-Table -Property DeviceID, DriveType, Filesystem, VolumeName"])
         for line in to_str(r).split('\n'):
             words = re.split('\s+', line)
             if len(words) >= 3 and words[1] == "2" and words[2] == "FAT":
