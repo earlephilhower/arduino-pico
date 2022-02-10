@@ -233,8 +233,16 @@ def get_drives():
                                          "get", "DeviceID,", "VolumeName,",
                                          "FileSystem,", "DriveType"])
         except:
-            r = subprocess.check_output(["powershell",
-                                         "Get-WmiObject -class Win32_LogicalDisk | Format-Table -Property DeviceID, DriveType, Filesystem, VolumeName"])
+            try:
+                nul = open("nul:", "r")
+                r = subprocess.check_output(["powershell", "-NonInteractive", "-Command",
+                                            "Get-WmiObject -class Win32_LogicalDisk | "
+                                            "Format-Table -Property DeviceID, DriveType, Filesystem, VolumeName"],
+                                            stdin = nul)
+                nul.close()
+            except:
+                print("Unable to build drive list");
+                sys.exit(1)
         for line in to_str(r).split('\n'):
             words = re.split('\s+', line)
             if len(words) >= 3 and words[1] == "2" and words[2] == "FAT":
