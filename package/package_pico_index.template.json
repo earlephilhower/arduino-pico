@@ -149,10 +149,10 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.3-a/i686-w64-mingw32.openocd-e3428fadb.220212.zip",
-                     "archiveFileName": "i686-w64-mingw32.openocd-e3428fadb.220212.zip",
-                     "checksum": "SHA-256:aa6e242e6a2855ed7550ce2025dddd4c13683f2c5f68efb935c9157b3054c881",
-                     "size": "2276391"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.3-a/x86_64-w64-mingw32.openocd-e3428fadb.220212.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.openocd-e3428fadb.220212.zip",
+                     "checksum": "SHA-256:0643903fcd887a8423cb4ba5329565b499c206921f77ad2e59ae32c472a26dd7",
+                     "size": "2156820"
                   },
                   {
                      "host": "x86_64-apple-darwin",
