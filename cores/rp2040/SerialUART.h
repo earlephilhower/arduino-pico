@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
+#include <queue>
 #include "CoreMutex.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
@@ -39,6 +40,8 @@ public:
         ret &= setTX(tx);
         return ret;
     }
+    bool setFIFOSize(size_t size);
+    bool setPollingMode(bool mode = true);
 
     void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
@@ -56,13 +59,22 @@ public:
     using Print::write;
     operator bool() override;
 
+    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
+    void _handleIRQ();
+
 private:
     bool _running = false;
     uart_inst_t *_uart;
     pin_size_t _tx, _rx;
     int _baud;
-    int _peek;
     mutex_t _mutex;
+    bool _polling = false;
+
+    // Lockless, IRQ-handled circular queue
+    uint32_t _writer;
+    uint32_t _reader;
+    size_t   _fifoSize = 32;
+    uint8_t  *_queue;
 };
 
 extern SerialUART Serial1; // HW UART 0

@@ -70,6 +70,7 @@ void noInterrupts();
 #define portModeRegister(port)      ((volatile uint32_t*) sio_hw->gpio_oe)
 
 // ADC RP2040-specific calls
+void analogReadResolution(int bits);
 float analogReadTemp();  // Returns core temp in Centigrade
 
 // PWM RP2040-specific calls
@@ -97,6 +98,7 @@ void analogWriteResolution(int res);
 
 #include "SerialUART.h"
 #include "RP2040Support.h"
+#include "SerialPIO.h"
 #include "Bootsel.h"
 
 // Template which will evaluate at *compile time* to a single 32b number

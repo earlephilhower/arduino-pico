@@ -33,3 +33,6 @@ resumeOtherCore	KEYWORD2
 
 PIOProgram	KEYWORD2
 prepare	KEYWORD2
+SerialPIO	KEYWORD2
+setFIFOSize	KEYWORD2
+setPollingMode	KEYWORD2

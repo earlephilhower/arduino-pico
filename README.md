@@ -13,6 +13,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Raspberry Pi Pico
 * Adafruit Feather RP2040
 * Adafruit ItsyBitsy RP2040
+* Adafruit KB2040
 * Adafruit Macropad RP2040
 * Adafruit QTPy RP2040
 * Adafruit STEMMA Friend RP2040
@@ -20,11 +21,13 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Arduino Nano RP2040 Connect (preliminary)
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
+* DeRuiLab FlyBoard2040 Core
 * Invector Labs Challenger RP2040 WiFi
 * Invector Labs Challenger NB RP2040 WiFi
 * Invector Labs Challenger RP2040 LTE
 * Invector Labs RPICO32
 * Melopero Shake RP2040
+* Solder Party RP2040 Stamp
 * SparkFun ProMicro RP2040
 * uPesy RP2040 DevKit
 * WIZnet W5100S-EVB-Pico
@@ -145,6 +148,7 @@ The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
 * Tones
 * I2S Output
+* Software UARTs (Serial ports)
 
 # Tutorials from Across the Web
 Here are some links to coverage and additional tutorials for using `arduino-pico`

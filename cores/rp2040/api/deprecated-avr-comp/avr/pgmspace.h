@@ -110,11 +110,23 @@ typedef const void* uint_farptr_t;
 #define pgm_read_ptr(addr) (*(void *const *)(addr))
 #else
 // Supports misaligned addresses
-#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
-#define pgm_read_word(addr) ((unsigned short)(pgm_read_byte((intptr_t)addr) | (pgm_read_byte((intptr_t)addr + 1) << 8)))
-#define pgm_read_dword(addr) ((unsigned long)(pgm_read_byte((intptr_t)addr) | (pgm_read_byte((intptr_t)addr + 1) << 8)) | \
-                                             (pgm_read_byte((intptr_t)addr + 2) << 16) | (pgm_read_byte((intptr_t)addr + 3) << 24))
-#define pgm_read_ptr(addr) ((void *)pgm_read_dword(addr))
+#ifdef __cplusplus
+extern "C"{
+#endif
+static inline unsigned char pgm_read_byte(const void *addr) {
+    return *(const unsigned char *)(addr);
+}
+static inline unsigned short pgm_read_word(const void *addr) {
+    const unsigned char *a = (const unsigned char *)addr;
+    return pgm_read_byte(a) | ( pgm_read_byte(a + 1) << 8 );
+}
+static inline unsigned long pgm_read_dword(const void *addr) {
+    const unsigned char *a = (const unsigned char *)addr;
+    return pgm_read_byte(a) | ( pgm_read_byte(a + 1) << 8 ) | ( pgm_read_byte(a + 2) << 16 ) | ( pgm_read_byte(a + 3) << 24 );
+}
+static inline void *pgm_read_ptr(const void *addr) {
+    return (void*) pgm_read_dword(addr);
+}
 static inline float pgm_read_float(const void *addr) {
     union {
         void *p;
@@ -123,6 +135,10 @@ static inline float pgm_read_float(const void *addr) {
     x.p = pgm_read_ptr(addr);
     return x.f;
 }
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
 #define pgm_read_byte_near(addr) pgm_read_byte(addr)
