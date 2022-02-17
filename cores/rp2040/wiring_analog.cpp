@@ -117,6 +117,7 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
 }
 
 auto_init_mutex(_adcMutex);
+static int _readBits = 10;
 
 extern "C" int analogRead(pin_size_t pin) {
     CoreMutex m(&_adcMutex);
@@ -133,7 +134,7 @@ extern "C" int analogRead(pin_size_t pin) {
     }
     adc_gpio_init(pin);
     adc_select_input(pin - minPin);
-    return adc_read();
+    return (_readBits < 12) ? adc_read() >> (12 - _readBits) : adc_read() << (_readBits - 12);
 }
 
 extern "C" float analogReadTemp() {
@@ -152,4 +153,11 @@ extern "C" float analogReadTemp() {
     adc_set_temp_sensor_enabled(false);
     float t = 27.0f - ((v * 3.3f / 4096.0f) - 0.706f) / 0.001721f; // From the datasheet
     return t;
+}
+
+extern "C" void analogReadResolution(int bits) {
+    CoreMutex m(&_adcMutex);
+    if (m && ((bits > 0) && (bits < 32))) {
+        _readBits = bits;
+    }
 }

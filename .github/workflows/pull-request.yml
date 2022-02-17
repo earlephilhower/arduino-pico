@@ -20,7 +20,7 @@ jobs:
     - name: Run codespell
       uses: codespell-project/actions-codespell@master
       with:
-        skip: ./pico-extras,./ArduinoCore-API,./libraries/SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api
+        skip: ./pico-extras,./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api
         ignore_words_list: ser,DOUT
 
 # Consistent style
@@ -36,7 +36,7 @@ jobs:
         ./tests/ci/pkgrefs_test.sh
     - name: Check boards.txt was not edited after makeboards.py
       run: |
-        ./tools/makeboards.py > boards.txt
+        ./tools/makeboards.py
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
     - name: Run astyle on all code/examples

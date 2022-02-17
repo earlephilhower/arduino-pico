@@ -1,0 +1,109 @@
+; pio_uart for the Raspberry Pi Pico RP2040
+;
+; Based loosely off of the uart_rx/_tx examples in the pico-examples repo,
+; but heavily modified and optimized to not require changing the PIO
+; clocks so that Tone and Servo won't be affected, and multiple different
+; PIO ports can be run at different baud at the same time.
+;
+; Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
+;
+; This library is free software; you can redistribute it and/or
+; modify it under the terms of the GNU Lesser General Public
+; License as published by the Free Software Foundation; either
+; version 2.1 of the License, or (at your option) any later version.
+;
+; This library is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+; Lesser General Public License for more details.
+;
+; You should have received a copy of the GNU Lesser General Public
+; License along with this library; if not, write to the Free Software
+; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+
+.program pio_tx
+.side_set 1 opt
+
+; We shift out the start and stop bit as part of the FIFO
+    set x, 9
+
+    pull               side 1 ; Force stop bit
+
+; Send the bits
+bitloop:
+    out pins, 1
+    mov y, isr                ; ISR is loaded by the setup routine with the period-1 count
+wait_bit:
+    jmp y-- wait_bit
+    jmp x-- bitloop
+
+    
+
+% c-sdk {
+
+static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_tx) {
+    // Tell PIO to initially drive output-high on the selected pin, then map PIO
+    // onto that pin with the IO muxes.
+    pio_sm_set_pins_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
+    pio_sm_set_pindirs_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
+    pio_gpio_init(pio, pin_tx);
+
+    pio_sm_config c = pio_tx_program_get_default_config(offset);
+
+    // OUT shifts to right, no autopull
+    sm_config_set_out_shift(&c, true, false, 32);
+
+    // We are mapping both OUT and side-set to the same pin, because sometimes
+    // we need to assert user data onto the pin (with OUT) and sometimes
+    // assert constant values (start/stop bit)
+    sm_config_set_out_pins(&c, pin_tx, 1);
+    sm_config_set_sideset_pins(&c, pin_tx);
+
+    // We only need TX, so get an 8-deep FIFO!
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+
+    pio_sm_init(pio, sm, offset, &c);
+}
+
+%}
+
+
+.program pio_rx
+
+; IN pin 0 and JMP pin are both mapped to the GPIO used as UART RX.
+
+start:
+    set x, 18           ; Preload bit counter...we'll shift in the start bit and stop bit, and each bit will be double-recorded (to be fixed by RP2040 code)
+    wait 0 pin 0        ; Stall until start bit is asserted
+
+bitloop:
+   ; Delay until 1/2 way into the bit time
+    mov y, osr
+wait_half:
+    jmp y-- wait_half
+
+    ; Read in the bit
+    in pins, 1          ; Shift data bit into ISR
+    jmp x-- bitloop     ; Loop all bits
+    
+    push                ; Stuff it and wait for next start
+
+
+% c-sdk {
+static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) {
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, false);
+    pio_gpio_init(pio, pin);
+    gpio_pull_up(pin);
+
+    pio_sm_config c = pio_rx_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, pin); // for WAIT, IN
+    sm_config_set_jmp_pin(&c, pin); // for JMP
+    // Shift to right, autopull disabled
+    sm_config_set_in_shift(&c, true, false, 32);
+
+    pio_sm_init(pio, sm, offset, &c);
+}
+
+%}

@@ -65,6 +65,22 @@ bool SerialUART::setTX(pin_size_t pin) {
     return false;
 }
 
+bool SerialUART::setPollingMode(bool mode) {
+    if (_running) {
+        return false;
+    }
+    _polling = mode;
+    return true;
+}
+
+bool SerialUART::setFIFOSize(size_t size) {
+    if (!size || _running) {
+        return false;
+    }
+    _fifoSize = size + 1; // Always 1 unused entry
+    return true;
+}
+
 SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
     _uart = uart;
     _tx = tx;
@@ -72,38 +88,83 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
     mutex_init(&_mutex);
 }
 
+static void _uart0IRQ();
+static void _uart1IRQ();
+
 void SerialUART::begin(unsigned long baud, uint16_t config) {
+    _queue = new uint8_t[_fifoSize];
     _baud = baud;
     uart_init(_uart, baud);
     int bits, stop;
     uart_parity_t parity;
     switch (config & SERIAL_PARITY_MASK) {
-    case SERIAL_PARITY_EVEN: parity = UART_PARITY_EVEN; break;
-    case SERIAL_PARITY_ODD: parity = UART_PARITY_ODD; break;
-    default: parity = UART_PARITY_NONE; break;
+    case SERIAL_PARITY_EVEN:
+        parity = UART_PARITY_EVEN;
+        break;
+    case SERIAL_PARITY_ODD:
+        parity = UART_PARITY_ODD;
+        break;
+    default:
+        parity = UART_PARITY_NONE;
+        break;
     }
     switch (config & SERIAL_STOP_BIT_MASK) {
-    case SERIAL_STOP_BIT_1: stop = 1; break;
-    default: stop = 2; break;
+    case SERIAL_STOP_BIT_1:
+        stop = 1;
+        break;
+    default:
+        stop = 2;
+        break;
     }
     switch (config & SERIAL_DATA_MASK) {
-    case SERIAL_DATA_5: bits = 5; break;
-    case SERIAL_DATA_6: bits = 6; break;
-    case SERIAL_DATA_7: bits = 7; break;
-    default: bits = 8; break;
+    case SERIAL_DATA_5:
+        bits = 5;
+        break;
+    case SERIAL_DATA_6:
+        bits = 6;
+        break;
+    case SERIAL_DATA_7:
+        bits = 7;
+        break;
+    default:
+        bits = 8;
+        break;
     }
     uart_set_format(_uart, bits, stop, parity);
     gpio_set_function(_tx, GPIO_FUNC_UART);
     gpio_set_function(_rx, GPIO_FUNC_UART);
+    _writer = 0;
+    _reader = 0;
+
+    if (!_polling) {
+        if (_uart == uart0) {
+            irq_set_exclusive_handler(UART0_IRQ, _uart0IRQ);
+            irq_set_enabled(UART0_IRQ, true);
+        } else {
+            irq_set_exclusive_handler(UART1_IRQ, _uart1IRQ);
+            irq_set_enabled(UART1_IRQ, true);
+        }
+        // Set the IRQ enables and FIFO level to minimum
+        uart_set_irq_enables(_uart, true, false);
+    } else {
+        // Polling mode has no IRQs used
+    }
     _running = true;
-    _peek = -1;
 }
 
 void SerialUART::end() {
     if (!_running) {
         return;
     }
+    if (!_polling) {
+        if (_uart == uart0) {
+            irq_set_enabled(UART0_IRQ, false);
+        } else {
+            irq_set_enabled(UART1_IRQ, false);
+        }
+    }
     uart_deinit(_uart);
+    delete[] _queue;
     _running = false;
 }
 
@@ -112,15 +173,13 @@ int SerialUART::peek() {
     if (!_running || !m) {
         return -1;
     }
-    if (_peek >= 0) {
-        return _peek;
+    if (_polling) {
+        _handleIRQ();
     }
-    if (uart_is_readable_within_us(_uart, _timeout * 1000)) {
-        _peek = uart_getc(_uart);
-    } else {
-        _peek = -1; // Timeout
+    if (_writer != _reader) {
+        return _queue[_reader];
     }
-    return _peek;
+    return -1;
 }
 
 int SerialUART::read() {
@@ -128,16 +187,18 @@ int SerialUART::read() {
     if (!_running || !m) {
         return -1;
     }
-    if (_peek >= 0) {
-        int ret = _peek;
-        _peek = -1;
+    if (_polling) {
+        _handleIRQ();
+    }
+    if (_writer != _reader) {
+        auto ret = _queue[_reader];
+        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
+        auto next_reader = (_reader + 1) % _fifoSize;
+        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
+        _reader = next_reader;
         return ret;
     }
-    if (uart_is_readable_within_us(_uart, _timeout * 1000)) {
-        return uart_getc(_uart);
-    } else {
-        return -1; // Timeout
-    }
+    return -1;
 }
 
 int SerialUART::available() {
@@ -145,13 +206,19 @@ int SerialUART::available() {
     if (!_running || !m) {
         return 0;
     }
-    return (uart_is_readable(_uart)) ? 1 : 0;
+    if (_polling) {
+        _handleIRQ();
+    }
+    return (_writer - _reader) % _fifoSize;
 }
 
 int SerialUART::availableForWrite() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return 0;
+    }
+    if (_polling) {
+        _handleIRQ();
     }
     return (uart_is_writable(_uart)) ? 1 : 0;
 }
@@ -161,6 +228,9 @@ void SerialUART::flush() {
     if (!_running || !m) {
         return;
     }
+    if (_polling) {
+        _handleIRQ();
+    }
     uart_tx_wait_blocking(_uart);
 }
 
@@ -168,6 +238,9 @@ size_t SerialUART::write(uint8_t c) {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return 0;
+    }
+    if (_polling) {
+        _handleIRQ();
     }
     uart_putc_raw(_uart, c);
     return 1;
@@ -177,6 +250,9 @@ size_t SerialUART::write(const uint8_t *p, size_t len) {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return 0;
+    }
+    if (_polling) {
+        _handleIRQ();
     }
     size_t cnt = len;
     while (cnt) {
@@ -204,4 +280,33 @@ void arduino::serialEvent2Run(void) {
     if (serialEvent2 && Serial2.available()) {
         serialEvent2();
     }
+}
+
+// IRQ handler, called when FIFO > 1/8 full or when it had held unread data for >32 bit times
+void __not_in_flash_func(SerialUART::_handleIRQ)() {
+    // ICR is write-to-clear
+    uart_get_hw(_uart)->icr = UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
+    while (uart_is_readable(_uart)) {
+        auto val = uart_getc(_uart);
+        auto next_writer = _writer + 1;
+        if (next_writer == _fifoSize) {
+            next_writer = 0;
+        }
+        if (next_writer != _reader) {
+            _queue[_writer] = val;
+            asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
+            // Avoid using division or mod because the HW divider could be in use
+            _writer = next_writer;
+        } else {
+            // TODO: Overflow
+        }
+    }
+}
+
+static void __not_in_flash_func(_uart0IRQ)() {
+    Serial1._handleIRQ();
+}
+
+static void __not_in_flash_func(_uart1IRQ)() {
+    Serial2._handleIRQ();
 }
