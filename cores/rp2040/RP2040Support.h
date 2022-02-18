@@ -172,6 +172,11 @@ public:
         fifo.resumeOtherCore();
     }
 
+    void restartCore1() {
+        multicore_reset_core1();
+        multicore_launch_core1(main1);
+    }
+
     // Multicore comms FIFO
     _MFIFO fifo;
 
