@@ -118,6 +118,8 @@ private:
 
 class RP2040;
 extern RP2040 rp2040;
+extern "C" void main1();
+
 class RP2040 {
 public:
     RP2040() {
