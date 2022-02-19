@@ -25,6 +25,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Invector Labs Challenger RP2040 WiFi
 * Invector Labs Challenger NB RP2040 WiFi
 * Invector Labs Challenger RP2040 LTE
+* Invector Labs Challenger RP2040 LoRa
 * Invector Labs RPICO32
 * Melopero Shake RP2040
 * Solder Party RP2040 Stamp
@@ -81,7 +82,7 @@ If you follow Les' step-by-step you will also have a fully functional `CMake`-ba
 To upload your first sketch, you will need to hold the BOOTSEL button down while plugging in the Pico to your computer.
 Then hit the upload button and the sketch should be transferred and start to run.
 
-After the first upload, this should not be necessary as the `arduino-pico` core has auto-reset support. 
+After the first upload, this should not be necessary as the `arduino-pico` core has auto-reset support.
 Select the appropriate serial port shown in the Arduino Tools->Port->Serial Port menu once (this setting will stick and does not need to be
 touched for multiple uploads).   This selection allows the auto-reset tool to identify the proper device to reset.
 Them hit the upload button and your sketch should upload and run.
@@ -93,8 +94,8 @@ follow the initial procedure of holding the BOOTSEL button down while plugging i
 The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
 * https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
 
-To install, follow the directions in 
-* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
+To install, follow the directions in
+* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md
 
 For detailed usage information, please check the ESP8266 repo documentation (ignore SPIFFS related notes) available at
 * https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
@@ -142,7 +143,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * Overclocking and underclocking from the menus
 * digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
 * Peripherals:  SPI master, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio output, Servo
-* printf (i.e. debug) output over USB serial 
+* printf (i.e. debug) output over USB serial
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos

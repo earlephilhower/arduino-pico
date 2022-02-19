@@ -1,0 +1,52 @@
+{
+  "build": {
+    "core": "earlephilhower",
+    "cpu": "cortex-m0plus",
+    "extra_flags": "-D ARDUINO_FLYBOARD2040_CORE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
+    "f_cpu": "133000000L",
+    "hwids": [
+      [
+        "0x2E8A",
+        "0x00C0"
+      ]
+    ],
+    "mcu": "rp2040",
+    "arduino": {
+      "earlephilhower": {
+        "variant": "flyboard2040_core",
+        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
+        "usb_vid": "0x2e8a",
+        "usb_pid": "0x008a",
+        "usb_manufacturer": "DeRuiLab",
+        "usb_product": "FlyBoard2040Core"
+      }
+    }
+  },
+  "debug": {
+    "jlink_device": "RP2040_M0_0",
+    "openocd_target": "rp2040.cfg",
+    "svd_path": "rp2040.svd"
+  },
+  "frameworks": [
+    "arduino"
+  ],
+  "name": "FlyBoard2040Core",
+  "upload": {
+    "maximum_ram_size": 270336,
+    "maximum_size": 4194304,
+    "require_upload_port": true,
+    "native_usb": true,
+    "use_1200bps_touch": true,
+    "wait_for_upload_port": false,
+    "protocol": "picotool",
+    "protocols": [
+      "cmsis-dap",
+      "jlink",
+      "raspberrypi-swd",
+      "picotool",
+      "picoprobe"
+    ]
+  },
+  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+  "vendor": "DeRuiLab"
+}
