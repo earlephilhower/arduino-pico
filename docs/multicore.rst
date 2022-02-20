@@ -41,6 +41,12 @@ void rp2040.resumeOtherCore()
 
 Resumes processing in the other core, where it left off.
 
+
+void rp2040.restartCore1()
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Hard resets Core1 from Core 0 and restarts its operation from ``setup1()``.
+
 Communicating Between Cores
 ---------------------------
 
@@ -50,23 +56,23 @@ use the following functions to access a software-managed, multicore safe
 FIFO.
 
 void rp2040.fifo.push(uint32_t)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pushes a value to the other core.  Will block if the FIFO is full.
 
 bool rp2040.fifo.push_nb(uint32_t)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pushes a value to the other core.  If the FIFO is full, returns ``false``
 immediately and doesn't block.  If the push is successful, returns ``true``.
 
 uint32_t rp2040.fifo.pop()
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Reads a value from this core's FIFO.  Blocks until one is available.
 
 bool rp2040.fifo.pop_nb(uint32_t *dest)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Reads a value from this core's FIFO and places it in dest.  Will return
 ``true`` if successful, or ``false`` if the pop would block.
