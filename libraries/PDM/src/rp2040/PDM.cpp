@@ -11,11 +11,7 @@ extern "C" {
 }
 #include "hardware/sync.h" 
 #include "pdm.pio.h"
-
-// Hardware peripherals used
-uint dmaChannel = 0;
-PIO pio = pio0;
-uint sm = 0;
+static PIOProgram _pdmPgm(&pdm_pio_program);
 
 // raw buffers contain PDM data
 #define RAW_BUFFER_SIZE 512 // should be a multiple of (decimation / 8)
@@ -49,7 +45,11 @@ PDMClass::PDMClass(int dinPin, int clkPin, int pwrPin) :
   _gain(-1),
   _channels(-1),
   _samplerate(-1),
-  _init(-1)
+  _init(-1),
+  _dmaChannel(0),
+  _pio(nullptr),
+  _smIdx(-1),
+  _pgmOffset(-1)
 {
 }
 
@@ -89,29 +89,35 @@ int PDMClass::begin(int channels, int sampleRate)
 
   // Configure PIO state machine
   float clkDiv = (float)clock_get_hz(clk_sys) / sampleRate / decimation / 2; 
-  uint offset = pio_add_program(pio, &pdm_pio_program);
-  pdm_pio_program_init(pio, sm, offset, _clkPin, _dinPin, clkDiv);
+
+  if (!_pdmPgm.prepare(&_pio, &_smIdx, &_pgmOffset)) {
+      // ERROR, no free slots
+      return -1;
+  }
+  pdm_pio_program_init(_pio, _smIdx, _pgmOffset, _clkPin, _dinPin, clkDiv);
 
   // Wait for microphone 
   delay(100);
 
   // Configure DMA for transferring PIO rx buffer to raw buffers
-  dma_channel_config c = dma_channel_get_default_config(dmaChannel);
+  _dmaChannel = dma_claim_unused_channel(false);
+  dma_channel_config c = dma_channel_get_default_config(_dmaChannel);
   channel_config_set_read_increment(&c, false);
   channel_config_set_write_increment(&c, true);
-  channel_config_set_dreq(&c, pio_get_dreq(pio, sm, false));
+  channel_config_set_dreq(&c, pio_get_dreq(_pio, _smIdx, false));
   channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
 
   // Clear DMA interrupts
-  dma_hw->ints0 = 1u << dmaChannel; 
+  dma_hw->ints0 = 1u << _dmaChannel; 
   // Enable DMA interrupts
-  dma_channel_set_irq0_enabled(dmaChannel, true);
-  irq_set_exclusive_handler(DMA_IRQ_0, dmaHandler);
+  dma_channel_set_irq0_enabled(_dmaChannel, true);
+  // Share but allocate a high priority to the interrupt
+  irq_add_shared_handler(DMA_IRQ_0, dmaHandler, 0);
   irq_set_enabled(DMA_IRQ_0, true);
 
-  dma_channel_configure(dmaChannel, &c,
+  dma_channel_configure(_dmaChannel, &c,
     rawBuffer[rawBufferIndex],        // Destinatinon pointer
-    &pio->rxf[sm],      // Source pointer
+    &_pio->rxf[_smIdx],      // Source pointer
     RAW_BUFFER_SIZE, // Number of transfers
     true                // Start immediately
   );
@@ -123,7 +129,7 @@ int PDMClass::begin(int channels, int sampleRate)
 
 void PDMClass::end()
 {
-  dma_channel_abort(dmaChannel);
+  dma_channel_abort(_dmaChannel);
   pinMode(_clkPin, INPUT);
 }
 
@@ -171,10 +177,10 @@ void PDMClass::IrqHandler(bool halftranfer)
   static int cutSamples = 100;
 
   // Clear the interrupt request.
-  dma_hw->ints0 = 1u << dmaChannel; 
+  dma_hw->ints0 = 1u << _dmaChannel; 
   // Restart dma pointing to the other buffer 
   int shadowIndex = rawBufferIndex ^ 1;
-  dma_channel_set_write_addr(dmaChannel, rawBuffer[shadowIndex], true);
+  dma_channel_set_write_addr(_dmaChannel, rawBuffer[shadowIndex], true);
 
   if (_doubleBuffer.available()) {
     // buffer overflow, stop
