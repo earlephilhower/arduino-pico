@@ -58,6 +58,12 @@ private:
   int _gain;
   int _init;
 
+// Hardware peripherals used
+  uint _dmaChannel;
+  PIO _pio;
+  int _smIdx;
+  int _pgmOffset;
+
   PDMDoubleBuffer _doubleBuffer;
 
   void (*_onReceive)(void);
