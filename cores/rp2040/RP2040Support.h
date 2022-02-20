@@ -94,6 +94,18 @@ public:
         // once otherIdled == false.
     }
 
+    void clear() {
+        uint32_t val;
+
+        while (queue_try_remove(&_queue[0], &val)) {
+            tight_loop_contents();
+        }
+
+        while (queue_try_remove(&_queue[1], &val)) {
+            tight_loop_contents();
+        }
+    }
+
 private:
     static void __no_inline_not_in_flash_func(_irq)() {
         multicore_fifo_clear_irq();
@@ -176,6 +188,7 @@ public:
 
     void restartCore1() {
         multicore_reset_core1();
+        fifo.clear();
         multicore_launch_core1(main1);
     }
 
