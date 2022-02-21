@@ -169,10 +169,10 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     gpio_set_function(_tx, GPIO_FUNC_UART);
     gpio_set_function(_rx, GPIO_FUNC_UART);
     if (_rts != UART_PIN_NOT_DEFINED) {
-      gpio_set_function(_rts, GPIO_FUNC_UART);
+        gpio_set_function(_rts, GPIO_FUNC_UART);
     }
     if (_cts != UART_PIN_NOT_DEFINED) {
-      gpio_set_function(_cts, GPIO_FUNC_UART);
+        gpio_set_function(_cts, GPIO_FUNC_UART);
     }
     uart_set_hw_flow(_uart, _rts != UART_PIN_NOT_DEFINED, _cts != UART_PIN_NOT_DEFINED);
     _writer = 0;
