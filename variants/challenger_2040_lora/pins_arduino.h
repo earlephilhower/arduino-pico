@@ -24,6 +24,12 @@
 #define PIN_SPI1_MOSI       (11u)
 #define PIN_SPI1_SCK        (10u)
 #define PIN_SPI1_SS         (9u)
+#define RFM95W_SS           (9u)
+#define RFM95W_DIO0         (14u)
+#define RFM95W_DIO1         (15u)
+#define RFM95W_DIO2         (18u)
+#define RFM95W_RST          (13u)
+#define RFM95W_SPI          SPI1
 
 // Wire
 #define PIN_WIRE0_SDA       (0u)
@@ -32,6 +38,8 @@
 // Not pinned out
 #define PIN_WIRE1_SDA       (31u)
 #define PIN_WIRE1_SCL       (31u)
+#define PIN_SERIAL2_RX      (31u)
+#define PIN_SERIAL2_TX      (31u)
 
 #define SERIAL_HOWMANY      (1u)
 #define SPI_HOWMANY         (2u)
