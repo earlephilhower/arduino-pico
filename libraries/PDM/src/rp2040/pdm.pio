@@ -26,6 +26,7 @@ static inline void pdm_pio_program_init(PIO pio, uint sm, uint offset, uint clkP
   sm_config_set_in_pins(&c, dataPin);
   sm_config_set_sideset_pins(&c, clkPin);
   sm_config_set_clkdiv(&c, clkDiv);
+  sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
 
   pio_sm_set_consecutive_pindirs(pio, sm, dataPin, 1, false);
   pio_sm_set_consecutive_pindirs(pio, sm, clkPin, 1, true);

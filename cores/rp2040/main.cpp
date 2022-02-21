@@ -41,7 +41,7 @@ void initVariant() { }
 // Optional 2nd core setup and loop
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
-static void main1() {
+extern "C" void main1() {
     rp2040.fifo.registerCore();
     if (setup1) {
         setup1();
