@@ -65,6 +65,39 @@ bool SerialUART::setTX(pin_size_t pin) {
     return false;
 }
 
+bool SerialUART::setRTS(pin_size_t pin) {
+    constexpr uint32_t valid[2] = { __bitset({3, 15, 19}) /* UART0 */,
+                                    __bitset({7, 11, 23, 27})  /* UART1 */
+                                  };
+    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+        _rts = pin;
+        return true;
+    }
+
+    if (_running) {
+        panic("FATAL: Attempting to set Serial%d.TX while running", uart_get_index(_uart) + 1);
+    } else {
+        panic("FATAL: Attempting to set Serial%d.TX to illegal pin %d", uart_get_index(_uart) + 1, pin);
+    }
+    return false;
+}
+
+bool SerialUART::setCTS(pin_size_t pin) {
+    constexpr uint32_t valid[2] = { __bitset({2, 14, 18}) /* UART0 */,
+                                    __bitset({6, 10, 22, 26})  /* UART1 */
+                                  };
+    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+        _cts = pin;
+        return true;
+    }
+
+    if (_running) {
+        panic("FATAL: Attempting to set Serial%d.TX while running", uart_get_index(_uart) + 1);
+    } else {
+        panic("FATAL: Attempting to set Serial%d.TX to illegal pin %d", uart_get_index(_uart) + 1, pin);
+    }
+    return false;
+}
 bool SerialUART::setPollingMode(bool mode) {
     if (_running) {
         return false;
@@ -85,6 +118,8 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
     _uart = uart;
     _tx = tx;
     _rx = rx;
+    _rts = UART_PIN_NOT_DEFINED;
+    _cts = UART_PIN_NOT_DEFINED;
     mutex_init(&_mutex);
 }
 
@@ -133,6 +168,13 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     uart_set_format(_uart, bits, stop, parity);
     gpio_set_function(_tx, GPIO_FUNC_UART);
     gpio_set_function(_rx, GPIO_FUNC_UART);
+    if (_rts != UART_PIN_NOT_DEFINED) {
+      gpio_set_function(_rts, GPIO_FUNC_UART);
+    }
+    if (_cts != UART_PIN_NOT_DEFINED) {
+      gpio_set_function(_cts, GPIO_FUNC_UART);
+    }
+    uart_set_hw_flow(_uart, _rts != UART_PIN_NOT_DEFINED, _cts != UART_PIN_NOT_DEFINED);
     _writer = 0;
     _reader = 0;
 
