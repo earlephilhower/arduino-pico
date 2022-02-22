@@ -75,9 +75,9 @@ bool SerialUART::setRTS(pin_size_t pin) {
     }
 
     if (_running) {
-        panic("FATAL: Attempting to set Serial%d.TX while running", uart_get_index(_uart) + 1);
+        panic("FATAL: Attempting to set Serial%d.RTS while running", uart_get_index(_uart) + 1);
     } else {
-        panic("FATAL: Attempting to set Serial%d.TX to illegal pin %d", uart_get_index(_uart) + 1, pin);
+        panic("FATAL: Attempting to set Serial%d.RTS to illegal pin %d", uart_get_index(_uart) + 1, pin);
     }
     return false;
 }
@@ -92,9 +92,9 @@ bool SerialUART::setCTS(pin_size_t pin) {
     }
 
     if (_running) {
-        panic("FATAL: Attempting to set Serial%d.TX while running", uart_get_index(_uart) + 1);
+        panic("FATAL: Attempting to set Serial%d.CTS while running", uart_get_index(_uart) + 1);
     } else {
-        panic("FATAL: Attempting to set Serial%d.TX to illegal pin %d", uart_get_index(_uart) + 1, pin);
+        panic("FATAL: Attempting to set Serial%d.CTS to illegal pin %d", uart_get_index(_uart) + 1, pin);
     }
     return false;
 }
