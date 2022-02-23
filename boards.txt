@@ -392,6 +392,133 @@ rpipicopicodebug.menu.usbstack.nousb=No USB
 rpipicopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
 
 # -----------------------------------
+# DFRobot Beetle RP2040
+# -----------------------------------
+dfrobot_beetle_rp2040.name=DFRobot Beetle RP2040
+dfrobot_beetle_rp2040.vid.0=0x3343
+dfrobot_beetle_rp2040.pid.0=0x4253
+dfrobot_beetle_rp2040.build.usbpid=-DSERIALUSB_PID=0x4253
+dfrobot_beetle_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+dfrobot_beetle_rp2040.build.board=DFROBOT_BEETLE_RP2040
+dfrobot_beetle_rp2040.build.mcu=cortex-m0plus
+dfrobot_beetle_rp2040.build.variant=dfrobot_beetle_rp2040
+dfrobot_beetle_rp2040.upload.tool=uf2conv
+dfrobot_beetle_rp2040.upload.maximum_size=2097152
+dfrobot_beetle_rp2040.upload.maximum_data_size=262144
+dfrobot_beetle_rp2040.upload.wait_for_upload_port=true
+dfrobot_beetle_rp2040.upload.erase_cmd=
+dfrobot_beetle_rp2040.serial.disableDTR=false
+dfrobot_beetle_rp2040.serial.disableRTS=false
+dfrobot_beetle_rp2040.build.f_cpu=125000000
+dfrobot_beetle_rp2040.build.led=
+dfrobot_beetle_rp2040.build.core=rp2040
+dfrobot_beetle_rp2040.build.ldscript=memmap_default.ld
+dfrobot_beetle_rp2040.build.ram_length=256k
+dfrobot_beetle_rp2040.build.boot2=boot2_w25q080_2_padded_checksum
+dfrobot_beetle_rp2040.build.vid=0x3343
+dfrobot_beetle_rp2040.build.pid=0x4253
+dfrobot_beetle_rp2040.build.usb_manufacturer="DFRobot"
+dfrobot_beetle_rp2040.build.usb_product="Beetle RP2040"
+dfrobot_beetle_rp2040.menu.flash.2097152_0=2MB (no FS)
+dfrobot_beetle_rp2040.menu.flash.2097152_0.upload.maximum_size=2093056
+dfrobot_beetle_rp2040.menu.flash.2097152_0.build.flash_length=2093056
+dfrobot_beetle_rp2040.menu.flash.2097152_0.build.eeprom_start=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_0.build.fs_start=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_0.build.fs_end=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+dfrobot_beetle_rp2040.menu.flash.2097152_65536.upload.maximum_size=2027520
+dfrobot_beetle_rp2040.menu.flash.2097152_65536.build.flash_length=2027520
+dfrobot_beetle_rp2040.menu.flash.2097152_65536.build.eeprom_start=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_65536.build.fs_start=270462976
+dfrobot_beetle_rp2040.menu.flash.2097152_65536.build.fs_end=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+dfrobot_beetle_rp2040.menu.flash.2097152_131072.upload.maximum_size=1961984
+dfrobot_beetle_rp2040.menu.flash.2097152_131072.build.flash_length=1961984
+dfrobot_beetle_rp2040.menu.flash.2097152_131072.build.eeprom_start=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_131072.build.fs_start=270397440
+dfrobot_beetle_rp2040.menu.flash.2097152_131072.build.fs_end=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+dfrobot_beetle_rp2040.menu.flash.2097152_262144.upload.maximum_size=1830912
+dfrobot_beetle_rp2040.menu.flash.2097152_262144.build.flash_length=1830912
+dfrobot_beetle_rp2040.menu.flash.2097152_262144.build.eeprom_start=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_262144.build.fs_start=270266368
+dfrobot_beetle_rp2040.menu.flash.2097152_262144.build.fs_end=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+dfrobot_beetle_rp2040.menu.flash.2097152_524288.upload.maximum_size=1568768
+dfrobot_beetle_rp2040.menu.flash.2097152_524288.build.flash_length=1568768
+dfrobot_beetle_rp2040.menu.flash.2097152_524288.build.eeprom_start=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_524288.build.fs_start=270004224
+dfrobot_beetle_rp2040.menu.flash.2097152_524288.build.fs_end=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+dfrobot_beetle_rp2040.menu.flash.2097152_1048576.upload.maximum_size=1044480
+dfrobot_beetle_rp2040.menu.flash.2097152_1048576.build.flash_length=1044480
+dfrobot_beetle_rp2040.menu.flash.2097152_1048576.build.eeprom_start=270528512
+dfrobot_beetle_rp2040.menu.flash.2097152_1048576.build.fs_start=269479936
+dfrobot_beetle_rp2040.menu.flash.2097152_1048576.build.fs_end=270528512
+dfrobot_beetle_rp2040.menu.freq.125=125 MHz
+dfrobot_beetle_rp2040.menu.freq.125.build.f_cpu=125000000L
+dfrobot_beetle_rp2040.menu.freq.50=50 MHz
+dfrobot_beetle_rp2040.menu.freq.50.build.f_cpu=50000000L
+dfrobot_beetle_rp2040.menu.freq.100=100 MHz
+dfrobot_beetle_rp2040.menu.freq.100.build.f_cpu=100000000L
+dfrobot_beetle_rp2040.menu.freq.133=133 MHz
+dfrobot_beetle_rp2040.menu.freq.133.build.f_cpu=133000000L
+dfrobot_beetle_rp2040.menu.freq.150=150 MHz (Overclock)
+dfrobot_beetle_rp2040.menu.freq.150.build.f_cpu=150000000L
+dfrobot_beetle_rp2040.menu.freq.175=175 MHz (Overclock)
+dfrobot_beetle_rp2040.menu.freq.175.build.f_cpu=175000000L
+dfrobot_beetle_rp2040.menu.freq.200=200 MHz (Overclock)
+dfrobot_beetle_rp2040.menu.freq.200.build.f_cpu=200000000L
+dfrobot_beetle_rp2040.menu.freq.225=225 MHz (Overclock)
+dfrobot_beetle_rp2040.menu.freq.225.build.f_cpu=225000000L
+dfrobot_beetle_rp2040.menu.freq.250=250 MHz (Overclock)
+dfrobot_beetle_rp2040.menu.freq.250.build.f_cpu=250000000L
+dfrobot_beetle_rp2040.menu.freq.275=275 MHz (Overclock)
+dfrobot_beetle_rp2040.menu.freq.275.build.f_cpu=275000000L
+dfrobot_beetle_rp2040.menu.freq.300=300 MHz (Overclock)
+dfrobot_beetle_rp2040.menu.freq.300.build.f_cpu=300000000L
+dfrobot_beetle_rp2040.menu.opt.Small=Small (-Os) (standard)
+dfrobot_beetle_rp2040.menu.opt.Small.build.flags.optimize=-Os
+dfrobot_beetle_rp2040.menu.opt.Optimize=Optimize (-O)
+dfrobot_beetle_rp2040.menu.opt.Optimize.build.flags.optimize=-O
+dfrobot_beetle_rp2040.menu.opt.Optimize2=Optimize More (-O2)
+dfrobot_beetle_rp2040.menu.opt.Optimize2.build.flags.optimize=-O2
+dfrobot_beetle_rp2040.menu.opt.Optimize3=Optimize Even More (-O3)
+dfrobot_beetle_rp2040.menu.opt.Optimize3.build.flags.optimize=-O3
+dfrobot_beetle_rp2040.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+dfrobot_beetle_rp2040.menu.opt.Fast.build.flags.optimize=-Ofast
+dfrobot_beetle_rp2040.menu.opt.Debug=Debug (-Og)
+dfrobot_beetle_rp2040.menu.opt.Debug.build.flags.optimize=-Og
+dfrobot_beetle_rp2040.menu.rtti.Disabled=Disabled
+dfrobot_beetle_rp2040.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+dfrobot_beetle_rp2040.menu.rtti.Enabled=Enabled
+dfrobot_beetle_rp2040.menu.rtti.Enabled.build.flags.rtti=
+dfrobot_beetle_rp2040.menu.dbgport.Disabled=Disabled
+dfrobot_beetle_rp2040.menu.dbgport.Disabled.build.debug_port=
+dfrobot_beetle_rp2040.menu.dbgport.Serial=Serial
+dfrobot_beetle_rp2040.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+dfrobot_beetle_rp2040.menu.dbgport.Serial1=Serial1
+dfrobot_beetle_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+dfrobot_beetle_rp2040.menu.dbgport.Serial2=Serial2
+dfrobot_beetle_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+dfrobot_beetle_rp2040.menu.dbglvl.None=None
+dfrobot_beetle_rp2040.menu.dbglvl.None.build.debug_level=
+dfrobot_beetle_rp2040.menu.dbglvl.Core=Core
+dfrobot_beetle_rp2040.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+dfrobot_beetle_rp2040.menu.dbglvl.SPI=SPI
+dfrobot_beetle_rp2040.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+dfrobot_beetle_rp2040.menu.dbglvl.Wire=Wire
+dfrobot_beetle_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+dfrobot_beetle_rp2040.menu.dbglvl.All=All
+dfrobot_beetle_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+dfrobot_beetle_rp2040.menu.dbglvl.NDEBUG=NDEBUG
+dfrobot_beetle_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+dfrobot_beetle_rp2040.menu.usbstack.picosdk=Pico SDK
+dfrobot_beetle_rp2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
+dfrobot_beetle_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
+dfrobot_beetle_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+
+# -----------------------------------
 # Adafruit Feather RP2040
 # -----------------------------------
 adafruit_feather.name=Adafruit Feather RP2040
