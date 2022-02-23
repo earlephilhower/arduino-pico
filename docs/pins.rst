@@ -26,6 +26,8 @@ Serial1 (UART0), Serial2 (UART1)
 
         ::setRX(pin)
         ::setTX(pin)
+        ::setRTS(pin)
+        ::setCTS(pin)
 
 SPI (SPI0), SPI1 (SPI1)
 -----------------------
@@ -58,4 +60,3 @@ it use a non-default pinout with a simple call
         SPI.setCS(5);
         SD.begin(5);
     }
-
