@@ -54,6 +54,9 @@
                      "name": "DeRuiLab FlyBoard2040 Core"
                   },
                   {
+                     "name": "DFRobot Beetle RP2040"
+                  },
+                  {
                      "name": "Invector Labs Challenger RP2040 WiFi"
                   },
                   {
