@@ -1,6 +1,12 @@
 Publishing New Releases
 =======================
 
+First, update the version number throughout the repo and push the change:
+
+    ./tools/makever.py --version X.Y.Z
+    git commit -a -m "Update version"
+    git push
+
 GitHub CI Actions are used to automatically build a draft package whenever a tag is pushed to repo:
 
     git tag X.Y.Z
