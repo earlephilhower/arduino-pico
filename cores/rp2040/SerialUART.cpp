@@ -121,6 +121,7 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
     _rts = UART_PIN_NOT_DEFINED;
     _cts = UART_PIN_NOT_DEFINED;
     mutex_init(&_mutex);
+    mutex_init(&_fifoMutex);
 }
 
 static void _uart0IRQ();
@@ -128,11 +129,9 @@ static void _uart1IRQ();
 
 void SerialUART::begin(unsigned long baud, uint16_t config) {
     if (_running) {
-        return; // Already going, must stop to change anything
+        end();
     }
     _queue = new uint8_t[_fifoSize];
-    mutex_init(&_mutex);
-    mutex_init(&_fifoMutex);
     _baud = baud;
     uart_init(_uart, baud);
     int bits, stop;
@@ -203,6 +202,7 @@ void SerialUART::end() {
     if (!_running) {
         return;
     }
+    _running = false;
     if (!_polling) {
         if (_uart == uart0) {
             irq_set_enabled(UART0_IRQ, false);
@@ -210,9 +210,14 @@ void SerialUART::end() {
             irq_set_enabled(UART1_IRQ, false);
         }
     }
+    // Paranoia - ensure nobody else is using anything here at the same time
+    mutex_enter_blocking(&_mutex);
+    mutex_enter_blocking(&_fifoMutex);
     uart_deinit(_uart);
     delete[] _queue;
-    _running = false;
+    // Reset the mutexes once all is off/cleaned up
+    mutex_exit(&_fifoMutex);
+    mutex_exit(&_mutex);
 }
 
 void SerialUART::_pumpFIFO() {
@@ -235,7 +240,7 @@ int SerialUART::peek() {
         return -1;
     }
     if (_polling) {
-        _handleIRQ();
+        _handleIRQ(false);
     } else {
         _pumpFIFO();
     }
@@ -251,7 +256,7 @@ int SerialUART::read() {
         return -1;
     }
     if (_polling) {
-        _handleIRQ();
+        _handleIRQ(false);
     } else {
         _pumpFIFO();
     }
@@ -272,7 +277,7 @@ int SerialUART::available() {
         return 0;
     }
     if (_polling) {
-        _handleIRQ();
+        _handleIRQ(false);
     } else {
         _pumpFIFO();
     }
@@ -285,7 +290,7 @@ int SerialUART::availableForWrite() {
         return 0;
     }
     if (_polling) {
-        _handleIRQ();
+        _handleIRQ(false);
     }
     return (uart_is_writable(_uart)) ? 1 : 0;
 }
@@ -296,7 +301,7 @@ void SerialUART::flush() {
         return;
     }
     if (_polling) {
-        _handleIRQ();
+        _handleIRQ(false);
     }
     uart_tx_wait_blocking(_uart);
 }
@@ -307,7 +312,7 @@ size_t SerialUART::write(uint8_t c) {
         return 0;
     }
     if (_polling) {
-        _handleIRQ();
+        _handleIRQ(false);
     }
     uart_putc_raw(_uart, c);
     return 1;
@@ -319,7 +324,7 @@ size_t SerialUART::write(const uint8_t *p, size_t len) {
         return 0;
     }
     if (_polling) {
-        _handleIRQ();
+        _handleIRQ(false);
     }
     size_t cnt = len;
     while (cnt) {
