@@ -36,6 +36,10 @@ static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
     p->length = pg->length;
     p->origin = pg->origin;
     uint16_t *insn = (uint16_t *)malloc(p->length * 2);
+    if (!insn) {
+        delete p;
+        return nullptr;
+    }
     memcpy(insn, pg->instructions, p->length * 2);
     insn[0] = pio_encode_set(pio_x, repl);
     p->instructions = insn;

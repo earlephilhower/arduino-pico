@@ -63,7 +63,7 @@ public:
     operator bool() override;
 
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
-    void _handleIRQ();
+    void _handleIRQ(bool inIRQ = true);
 
 private:
     bool _running = false;
@@ -78,7 +78,9 @@ private:
     uint32_t _writer;
     uint32_t _reader;
     size_t   _fifoSize = 32;
-    uint8_t  *_queue;
+    uint8_t *_queue;
+    mutex_t  _fifoMutex; // Only needed when non-IRQ updates _writer
+    void _pumpFIFO(); // User space FIFO transfer
 };
 
 extern SerialUART Serial1; // HW UART 0

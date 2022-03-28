@@ -10,13 +10,13 @@
 #define PIN_NEOPIXEL   (12u)
 #define NEOPIXEL_POWER (11u)
 
-// Serial
-#define PIN_SERIAL1_TX (20u)
-#define PIN_SERIAL1_RX (5u)
+// Serial1 not pinned out
+#define PIN_SERIAL1_TX (31u)
+#define PIN_SERIAL1_RX (31u)
 
-// Not pinned out
-#define PIN_SERIAL2_TX (31u)
-#define PIN_SERIAL2_RX (31u)
+// Serial2 is the only one labelled
+#define PIN_SERIAL2_TX (20u)
+#define PIN_SERIAL2_RX (5u)
 
 // SPI
 #define PIN_SPI0_MISO  (4u)

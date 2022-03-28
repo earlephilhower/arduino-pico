@@ -380,7 +380,7 @@ def main():
                         proc_out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                         if proc_out.returncode == 0:
                             stdoutput = proc_out.stdout.decode("UTF-8")
-                            match = re.search(r'Mounted\s+.*\s+at\s+([^\.]*)', stdoutput)
+                            match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
                             if match is None:
                                 print("Warn: {} did not print mount point. Attempting to locate mounted drive in file system. StdOut={}".format(cmd[0], stdoutput))
                                 drives = get_drives()
