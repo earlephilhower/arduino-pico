@@ -47,8 +47,10 @@ static const uint8_t A3 = (29u);
 #define PIN_SERIAL1_TX (D1)
 #define PIN_SERIAL1_RX (D0)
 
-#define PIN_SERIAL2_TX (D25)
-#define PIN_SERIAL2_RX (D26)
+#define PIN_SERIAL2_TX  (D25)
+#define PIN_SERIAL2_RX  (D26)
+#define PIN_SERIAL2_CTS (D27)
+#define PIN_SERIAL2_RTS (D28)
 
 // SPI
 #define PIN_SPI0_MISO  (D12)

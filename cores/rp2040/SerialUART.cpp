@@ -114,12 +114,12 @@ bool SerialUART::setFIFOSize(size_t size) {
     return true;
 }
 
-SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
+SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size_t rts, pin_size_t cts) {
     _uart = uart;
     _tx = tx;
     _rx = rx;
-    _rts = UART_PIN_NOT_DEFINED;
-    _cts = UART_PIN_NOT_DEFINED;
+    _rts = rts;
+    _cts = cts;
     mutex_init(&_mutex);
     mutex_init(&_fifoMutex);
 }
@@ -339,8 +339,17 @@ SerialUART::operator bool() {
     return _running;
 }
 
+#if defined(PIN_SERIAL1_RTS)
+SerialUART Serial1(uart0, PIN_SERIAL1_TX, PIN_SERIAL1_RX, PIN_SERIAL1_RTS, PIN_SERIAL1_CTS);
+#else
 SerialUART Serial1(uart0, PIN_SERIAL1_TX, PIN_SERIAL1_RX);
+#endif
+
+#if defined(PIN_SERIAL2_RTS)
+SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX, PIN_SERIAL2_RTS, PIN_SERIAL2_CTS);
+#else
 SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
+#endif
 
 void arduino::serialEvent1Run(void) {
     if (serialEvent1 && Serial1.available()) {
