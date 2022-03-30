@@ -31,7 +31,7 @@ extern "C" typedef struct uart_inst uart_inst_t;
 #define UART_PIN_NOT_DEFINED      (255u)
 class SerialUART : public HardwareSerial {
 public:
-    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx);
+    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size_t rts = UART_PIN_NOT_DEFINED, pin_size_t cts = UART_PIN_NOT_DEFINED);
 
     // Select the pinout.  Call before .begin()
     bool setRX(pin_size_t pin);
