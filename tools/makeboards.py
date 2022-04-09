@@ -64,6 +64,13 @@ def BuildUSBStack(name):
     print("%s.menu.usbstack.tinyusb=Adafruit TinyUSB" % (name))
     print('%s.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"' % (name))
 
+def BuildFreeRTOS(name):
+    print("%s.menu.freertos.Disabled=Disabled" % (name))
+    print("%s.menu.freertos.Disabled.build.flags.freertos=" % (name))
+    print("%s.menu.freertos.Enabled=Enabled" % (name))
+    print("%s.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS" % (name))
+
+
 def BuildWithoutUSBStack(name):
     print("%s.menu.usbstack.nousb=No USB" % (name))
     print('%s.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"' % (name))
@@ -116,6 +123,7 @@ def BuildGlobalMenuList():
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
     print("menu.usbstack=USB Stack")
+    print("menu.freertos=Use FreeRTOS")
 
 
 def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):
@@ -154,6 +162,7 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
             BuildUSBStack(n)
         if name == "generic":
             BuildBoot(n)
+        BuildFreeRTOS(n)
     MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2)
 
 def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):

@@ -25,7 +25,9 @@
 #include <hardware/structs/systick.h>
 #include <pico/multicore.h>
 #include <pico/util/queue.h>
-#include <CoreMutex.h>
+#include "CoreMutex.h"
+
+#ifndef USE_FREERTOS
 
 class _MFIFO {
 public:
@@ -132,18 +134,21 @@ class RP2040;
 extern RP2040 rp2040;
 extern "C" void main1();
 
+#endif
+
 class RP2040 {
 public:
+#ifndef USE_FREERTOS
     RP2040() {
         _epoch = 0;
-        // Enable SYSTICK exception
-        exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
-        systick_hw->csr = 0x7;
-        systick_hw->rvr = 0x00FFFFFF;
+		// Enable SYSTICK exception
+		exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
+		systick_hw->csr = 0x7;
+		systick_hw->rvr = 0x00FFFFFF;
     }
 
     ~RP2040() { /* noop */ }
-
+#endif
 
     // Convert from microseconds to PIO clock cycles
     static int usToPIOCycles(int us) {
@@ -156,6 +161,7 @@ public:
         return clock_get_hz(clk_sys);
     }
 
+#ifndef USE_FREERTOS
     // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
     volatile uint64_t _epoch = 0;
     inline uint32_t getCycleCount() {
@@ -199,6 +205,7 @@ private:
     static void _SystickHandler() {
         rp2040._epoch += 1LL << 24;
     }
+#endif
 };
 
 // Wrapper class for PIO programs, abstracting common operations out
@@ -254,4 +261,3 @@ private:
     int _offset[2] = { -1, -1 };
     const pio_program_t *_pgm;
 };
-

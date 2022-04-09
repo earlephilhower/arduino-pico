@@ -116,12 +116,16 @@ bool EEPROMClass::commit() {
         return false;
     }
 
-    noInterrupts();
-    rp2040.idleOtherCore();
+#ifndef USE_FREERTOS
+	noInterrupts();
+	rp2040.idleOtherCore();
+#endif
     flash_range_erase((intptr_t)_sector - (intptr_t)XIP_BASE, 4096);
     flash_range_program((intptr_t)_sector - (intptr_t)XIP_BASE, _data, _size);
-    rp2040.resumeOtherCore();
-    interrupts();
+#ifndef USE_FREERTOS
+	rp2040.resumeOtherCore();
+	interrupts();
+#endif
 
     return true;
 }

@@ -11,6 +11,7 @@ menu.dbgport=Debug Port
 menu.dbglvl=Debug Level
 menu.boot2=Boot Stage 2
 menu.usbstack=USB Stack
+menu.freertos=Use FreeRTOS
 
 # -----------------------------------
 # Raspberry Pi Pico
@@ -138,6 +139,10 @@ rpipico.menu.usbstack.picosdk=Pico SDK
 rpipico.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 rpipico.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipico.menu.freertos.Disabled=Disabled
+rpipico.menu.freertos.Disabled.build.flags.freertos=
+rpipico.menu.freertos.Enabled=Enabled
+rpipico.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Raspberry Pi Pico (Picoprobe)
@@ -265,6 +270,10 @@ rpipicopicoprobe.menu.usbstack.picosdk=Pico SDK
 rpipicopicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 rpipicopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipicopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicopicoprobe.menu.freertos.Disabled=Disabled
+rpipicopicoprobe.menu.freertos.Disabled.build.flags.freertos=
+rpipicopicoprobe.menu.freertos.Enabled=Enabled
+rpipicopicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Raspberry Pi Pico (pico-debug)
@@ -390,6 +399,10 @@ rpipicopicodebug.menu.dbglvl.NDEBUG=NDEBUG
 rpipicopicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipicopicodebug.menu.usbstack.nousb=No USB
 rpipicopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+rpipicopicodebug.menu.freertos.Disabled=Disabled
+rpipicopicodebug.menu.freertos.Disabled.build.flags.freertos=
+rpipicopicodebug.menu.freertos.Enabled=Enabled
+rpipicopicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit Feather RP2040
@@ -553,6 +566,10 @@ adafruit_feather.menu.usbstack.picosdk=Pico SDK
 adafruit_feather.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_feather.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_feather.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_feather.menu.freertos.Disabled=Disabled
+adafruit_feather.menu.freertos.Disabled.build.flags.freertos=
+adafruit_feather.menu.freertos.Enabled=Enabled
+adafruit_feather.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit Feather RP2040 (Picoprobe)
@@ -716,6 +733,10 @@ adafruit_featherpicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_featherpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_featherpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_featherpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_featherpicoprobe.menu.freertos.Disabled=Disabled
+adafruit_featherpicoprobe.menu.freertos.Disabled.build.flags.freertos=
+adafruit_featherpicoprobe.menu.freertos.Enabled=Enabled
+adafruit_featherpicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit Feather RP2040 (pico-debug)
@@ -877,6 +898,10 @@ adafruit_featherpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_featherpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_featherpicodebug.menu.usbstack.nousb=No USB
 adafruit_featherpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_featherpicodebug.menu.freertos.Disabled=Disabled
+adafruit_featherpicodebug.menu.freertos.Disabled.build.flags.freertos=
+adafruit_featherpicodebug.menu.freertos.Enabled=Enabled
+adafruit_featherpicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040
@@ -1040,6 +1065,10 @@ adafruit_itsybitsy.menu.usbstack.picosdk=Pico SDK
 adafruit_itsybitsy.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_itsybitsy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_itsybitsy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_itsybitsy.menu.freertos.Disabled=Disabled
+adafruit_itsybitsy.menu.freertos.Disabled.build.flags.freertos=
+adafruit_itsybitsy.menu.freertos.Enabled=Enabled
+adafruit_itsybitsy.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040 (Picoprobe)
@@ -1203,6 +1232,10 @@ adafruit_itsybitsypicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_itsybitsypicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_itsybitsypicoprobe.menu.freertos.Disabled=Disabled
+adafruit_itsybitsypicoprobe.menu.freertos.Disabled.build.flags.freertos=
+adafruit_itsybitsypicoprobe.menu.freertos.Enabled=Enabled
+adafruit_itsybitsypicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040 (pico-debug)
@@ -1364,6 +1397,10 @@ adafruit_itsybitsypicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_itsybitsypicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_itsybitsypicodebug.menu.usbstack.nousb=No USB
 adafruit_itsybitsypicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_itsybitsypicodebug.menu.freertos.Disabled=Disabled
+adafruit_itsybitsypicodebug.menu.freertos.Disabled.build.flags.freertos=
+adafruit_itsybitsypicodebug.menu.freertos.Enabled=Enabled
+adafruit_itsybitsypicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit QT Py RP2040
@@ -1527,6 +1564,10 @@ adafruit_qtpy.menu.usbstack.picosdk=Pico SDK
 adafruit_qtpy.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_qtpy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_qtpy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_qtpy.menu.freertos.Disabled=Disabled
+adafruit_qtpy.menu.freertos.Disabled.build.flags.freertos=
+adafruit_qtpy.menu.freertos.Enabled=Enabled
+adafruit_qtpy.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit QT Py RP2040 (Picoprobe)
@@ -1690,6 +1731,10 @@ adafruit_qtpypicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_qtpypicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_qtpypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_qtpypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_qtpypicoprobe.menu.freertos.Disabled=Disabled
+adafruit_qtpypicoprobe.menu.freertos.Disabled.build.flags.freertos=
+adafruit_qtpypicoprobe.menu.freertos.Enabled=Enabled
+adafruit_qtpypicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit QT Py RP2040 (pico-debug)
@@ -1851,6 +1896,10 @@ adafruit_qtpypicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_qtpypicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_qtpypicodebug.menu.usbstack.nousb=No USB
 adafruit_qtpypicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_qtpypicodebug.menu.freertos.Disabled=Disabled
+adafruit_qtpypicodebug.menu.freertos.Disabled.build.flags.freertos=
+adafruit_qtpypicodebug.menu.freertos.Enabled=Enabled
+adafruit_qtpypicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040
@@ -2014,6 +2063,10 @@ adafruit_stemmafriend.menu.usbstack.picosdk=Pico SDK
 adafruit_stemmafriend.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_stemmafriend.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_stemmafriend.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_stemmafriend.menu.freertos.Disabled=Disabled
+adafruit_stemmafriend.menu.freertos.Disabled.build.flags.freertos=
+adafruit_stemmafriend.menu.freertos.Enabled=Enabled
+adafruit_stemmafriend.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040 (Picoprobe)
@@ -2177,6 +2230,10 @@ adafruit_stemmafriendpicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_stemmafriendpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_stemmafriendpicoprobe.menu.freertos.Disabled=Disabled
+adafruit_stemmafriendpicoprobe.menu.freertos.Disabled.build.flags.freertos=
+adafruit_stemmafriendpicoprobe.menu.freertos.Enabled=Enabled
+adafruit_stemmafriendpicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040 (pico-debug)
@@ -2338,6 +2395,10 @@ adafruit_stemmafriendpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_stemmafriendpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_stemmafriendpicodebug.menu.usbstack.nousb=No USB
 adafruit_stemmafriendpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_stemmafriendpicodebug.menu.freertos.Disabled=Disabled
+adafruit_stemmafriendpicodebug.menu.freertos.Disabled.build.flags.freertos=
+adafruit_stemmafriendpicodebug.menu.freertos.Enabled=Enabled
+adafruit_stemmafriendpicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT
@@ -2501,6 +2562,10 @@ adafruit_trinkeyrp2040qt.menu.usbstack.picosdk=Pico SDK
 adafruit_trinkeyrp2040qt.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_trinkeyrp2040qt.menu.freertos.Disabled=Disabled
+adafruit_trinkeyrp2040qt.menu.freertos.Disabled.build.flags.freertos=
+adafruit_trinkeyrp2040qt.menu.freertos.Enabled=Enabled
+adafruit_trinkeyrp2040qt.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT (Picoprobe)
@@ -2664,6 +2729,10 @@ adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_trinkeyrp2040qtpicoprobe.menu.freertos.Disabled=Disabled
+adafruit_trinkeyrp2040qtpicoprobe.menu.freertos.Disabled.build.flags.freertos=
+adafruit_trinkeyrp2040qtpicoprobe.menu.freertos.Enabled=Enabled
+adafruit_trinkeyrp2040qtpicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT (pico-debug)
@@ -2825,6 +2894,10 @@ adafruit_trinkeyrp2040qtpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_trinkeyrp2040qtpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_trinkeyrp2040qtpicodebug.menu.usbstack.nousb=No USB
 adafruit_trinkeyrp2040qtpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_trinkeyrp2040qtpicodebug.menu.freertos.Disabled=Disabled
+adafruit_trinkeyrp2040qtpicodebug.menu.freertos.Disabled.build.flags.freertos=
+adafruit_trinkeyrp2040qtpicodebug.menu.freertos.Enabled=Enabled
+adafruit_trinkeyrp2040qtpicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit MacroPad RP2040
@@ -2988,6 +3061,10 @@ adafruit_macropad2040.menu.usbstack.picosdk=Pico SDK
 adafruit_macropad2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_macropad2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_macropad2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_macropad2040.menu.freertos.Disabled=Disabled
+adafruit_macropad2040.menu.freertos.Disabled.build.flags.freertos=
+adafruit_macropad2040.menu.freertos.Enabled=Enabled
+adafruit_macropad2040.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit MacroPad RP2040 (Picoprobe)
@@ -3151,6 +3228,10 @@ adafruit_macropad2040picoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_macropad2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_macropad2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_macropad2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_macropad2040picoprobe.menu.freertos.Disabled=Disabled
+adafruit_macropad2040picoprobe.menu.freertos.Disabled.build.flags.freertos=
+adafruit_macropad2040picoprobe.menu.freertos.Enabled=Enabled
+adafruit_macropad2040picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit MacroPad RP2040 (pico-debug)
@@ -3312,6 +3393,10 @@ adafruit_macropad2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_macropad2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_macropad2040picodebug.menu.usbstack.nousb=No USB
 adafruit_macropad2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_macropad2040picodebug.menu.freertos.Disabled=Disabled
+adafruit_macropad2040picodebug.menu.freertos.Disabled.build.flags.freertos=
+adafruit_macropad2040picodebug.menu.freertos.Enabled=Enabled
+adafruit_macropad2040picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit KB2040
@@ -3475,6 +3560,10 @@ adafruit_kb2040.menu.usbstack.picosdk=Pico SDK
 adafruit_kb2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_kb2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_kb2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_kb2040.menu.freertos.Disabled=Disabled
+adafruit_kb2040.menu.freertos.Disabled.build.flags.freertos=
+adafruit_kb2040.menu.freertos.Enabled=Enabled
+adafruit_kb2040.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit KB2040 (Picoprobe)
@@ -3638,6 +3727,10 @@ adafruit_kb2040picoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_kb2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 adafruit_kb2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_kb2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_kb2040picoprobe.menu.freertos.Disabled=Disabled
+adafruit_kb2040picoprobe.menu.freertos.Disabled.build.flags.freertos=
+adafruit_kb2040picoprobe.menu.freertos.Enabled=Enabled
+adafruit_kb2040picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Adafruit KB2040 (pico-debug)
@@ -3799,6 +3892,10 @@ adafruit_kb2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_kb2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_kb2040picodebug.menu.usbstack.nousb=No USB
 adafruit_kb2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_kb2040picodebug.menu.freertos.Disabled=Disabled
+adafruit_kb2040picodebug.menu.freertos.Disabled.build.flags.freertos=
+adafruit_kb2040picodebug.menu.freertos.Enabled=Enabled
+adafruit_kb2040picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect
@@ -4010,6 +4107,10 @@ arduino_nano_connect.menu.usbstack.picosdk=Pico SDK
 arduino_nano_connect.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 arduino_nano_connect.menu.usbstack.tinyusb=Adafruit TinyUSB
 arduino_nano_connect.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+arduino_nano_connect.menu.freertos.Disabled=Disabled
+arduino_nano_connect.menu.freertos.Disabled.build.flags.freertos=
+arduino_nano_connect.menu.freertos.Enabled=Enabled
+arduino_nano_connect.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect (Picoprobe)
@@ -4221,6 +4322,10 @@ arduino_nano_connectpicoprobe.menu.usbstack.picosdk=Pico SDK
 arduino_nano_connectpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 arduino_nano_connectpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 arduino_nano_connectpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+arduino_nano_connectpicoprobe.menu.freertos.Disabled=Disabled
+arduino_nano_connectpicoprobe.menu.freertos.Disabled.build.flags.freertos=
+arduino_nano_connectpicoprobe.menu.freertos.Enabled=Enabled
+arduino_nano_connectpicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect (pico-debug)
@@ -4430,6 +4535,10 @@ arduino_nano_connectpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 arduino_nano_connectpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 arduino_nano_connectpicodebug.menu.usbstack.nousb=No USB
 arduino_nano_connectpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+arduino_nano_connectpicodebug.menu.freertos.Disabled=Disabled
+arduino_nano_connectpicodebug.menu.freertos.Disabled.build.flags.freertos=
+arduino_nano_connectpicodebug.menu.freertos.Enabled=Enabled
+arduino_nano_connectpicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Cytron Maker Nano RP2040
@@ -4557,6 +4666,10 @@ cytron_maker_nano_rp2040.menu.usbstack.picosdk=Pico SDK
 cytron_maker_nano_rp2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 cytron_maker_nano_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_nano_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_nano_rp2040.menu.freertos.Disabled=Disabled
+cytron_maker_nano_rp2040.menu.freertos.Disabled.build.flags.freertos=
+cytron_maker_nano_rp2040.menu.freertos.Enabled=Enabled
+cytron_maker_nano_rp2040.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Cytron Maker Nano RP2040 (Picoprobe)
@@ -4684,6 +4797,10 @@ cytron_maker_nano_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 cytron_maker_nano_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 cytron_maker_nano_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_nano_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_nano_rp2040picoprobe.menu.freertos.Disabled=Disabled
+cytron_maker_nano_rp2040picoprobe.menu.freertos.Disabled.build.flags.freertos=
+cytron_maker_nano_rp2040picoprobe.menu.freertos.Enabled=Enabled
+cytron_maker_nano_rp2040picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Cytron Maker Nano RP2040 (pico-debug)
@@ -4809,6 +4926,10 @@ cytron_maker_nano_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 cytron_maker_nano_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_maker_nano_rp2040picodebug.menu.usbstack.nousb=No USB
 cytron_maker_nano_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+cytron_maker_nano_rp2040picodebug.menu.freertos.Disabled=Disabled
+cytron_maker_nano_rp2040picodebug.menu.freertos.Disabled.build.flags.freertos=
+cytron_maker_nano_rp2040picodebug.menu.freertos.Enabled=Enabled
+cytron_maker_nano_rp2040picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Cytron Maker Pi RP2040
@@ -4936,6 +5057,10 @@ cytron_maker_pi_rp2040.menu.usbstack.picosdk=Pico SDK
 cytron_maker_pi_rp2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 cytron_maker_pi_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_pi_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_pi_rp2040.menu.freertos.Disabled=Disabled
+cytron_maker_pi_rp2040.menu.freertos.Disabled.build.flags.freertos=
+cytron_maker_pi_rp2040.menu.freertos.Enabled=Enabled
+cytron_maker_pi_rp2040.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Cytron Maker Pi RP2040 (Picoprobe)
@@ -5063,6 +5188,10 @@ cytron_maker_pi_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 cytron_maker_pi_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 cytron_maker_pi_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_pi_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_pi_rp2040picoprobe.menu.freertos.Disabled=Disabled
+cytron_maker_pi_rp2040picoprobe.menu.freertos.Disabled.build.flags.freertos=
+cytron_maker_pi_rp2040picoprobe.menu.freertos.Enabled=Enabled
+cytron_maker_pi_rp2040picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Cytron Maker Pi RP2040 (pico-debug)
@@ -5188,6 +5317,10 @@ cytron_maker_pi_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 cytron_maker_pi_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_maker_pi_rp2040picodebug.menu.usbstack.nousb=No USB
 cytron_maker_pi_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+cytron_maker_pi_rp2040picodebug.menu.freertos.Disabled=Disabled
+cytron_maker_pi_rp2040picodebug.menu.freertos.Disabled.build.flags.freertos=
+cytron_maker_pi_rp2040picodebug.menu.freertos.Enabled=Enabled
+cytron_maker_pi_rp2040picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # DeRuiLab FlyBoard2040Core
@@ -5327,6 +5460,10 @@ flyboard2040_core.menu.usbstack.picosdk=Pico SDK
 flyboard2040_core.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 flyboard2040_core.menu.usbstack.tinyusb=Adafruit TinyUSB
 flyboard2040_core.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+flyboard2040_core.menu.freertos.Disabled=Disabled
+flyboard2040_core.menu.freertos.Disabled.build.flags.freertos=
+flyboard2040_core.menu.freertos.Enabled=Enabled
+flyboard2040_core.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # DeRuiLab FlyBoard2040Core (Picoprobe)
@@ -5466,6 +5603,10 @@ flyboard2040_corepicoprobe.menu.usbstack.picosdk=Pico SDK
 flyboard2040_corepicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 flyboard2040_corepicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 flyboard2040_corepicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+flyboard2040_corepicoprobe.menu.freertos.Disabled=Disabled
+flyboard2040_corepicoprobe.menu.freertos.Disabled.build.flags.freertos=
+flyboard2040_corepicoprobe.menu.freertos.Enabled=Enabled
+flyboard2040_corepicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # DeRuiLab FlyBoard2040Core (pico-debug)
@@ -5603,6 +5744,10 @@ flyboard2040_corepicodebug.menu.dbglvl.NDEBUG=NDEBUG
 flyboard2040_corepicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 flyboard2040_corepicodebug.menu.usbstack.nousb=No USB
 flyboard2040_corepicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+flyboard2040_corepicodebug.menu.freertos.Disabled=Disabled
+flyboard2040_corepicodebug.menu.freertos.Disabled.build.flags.freertos=
+flyboard2040_corepicodebug.menu.freertos.Enabled=Enabled
+flyboard2040_corepicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # DFRobot Beetle RP2040
@@ -5730,6 +5875,10 @@ dfrobot_beetle_rp2040.menu.usbstack.picosdk=Pico SDK
 dfrobot_beetle_rp2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 dfrobot_beetle_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 dfrobot_beetle_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+dfrobot_beetle_rp2040.menu.freertos.Disabled=Disabled
+dfrobot_beetle_rp2040.menu.freertos.Disabled.build.flags.freertos=
+dfrobot_beetle_rp2040.menu.freertos.Enabled=Enabled
+dfrobot_beetle_rp2040.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # DFRobot Beetle RP2040 (Picoprobe)
@@ -5857,6 +6006,10 @@ dfrobot_beetle_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 dfrobot_beetle_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 dfrobot_beetle_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 dfrobot_beetle_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+dfrobot_beetle_rp2040picoprobe.menu.freertos.Disabled=Disabled
+dfrobot_beetle_rp2040picoprobe.menu.freertos.Disabled.build.flags.freertos=
+dfrobot_beetle_rp2040picoprobe.menu.freertos.Enabled=Enabled
+dfrobot_beetle_rp2040picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # DFRobot Beetle RP2040 (pico-debug)
@@ -5982,6 +6135,10 @@ dfrobot_beetle_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 dfrobot_beetle_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 dfrobot_beetle_rp2040picodebug.menu.usbstack.nousb=No USB
 dfrobot_beetle_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+dfrobot_beetle_rp2040picodebug.menu.freertos.Disabled=Disabled
+dfrobot_beetle_rp2040picodebug.menu.freertos.Disabled.build.flags.freertos=
+dfrobot_beetle_rp2040picodebug.menu.freertos.Enabled=Enabled
+dfrobot_beetle_rp2040picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 LoRa
@@ -6145,6 +6302,10 @@ challenger_2040_lora.menu.usbstack.picosdk=Pico SDK
 challenger_2040_lora.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_2040_lora.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lora.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_lora.menu.freertos.Disabled=Disabled
+challenger_2040_lora.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_lora.menu.freertos.Enabled=Enabled
+challenger_2040_lora.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 LoRa (Picoprobe)
@@ -6308,6 +6469,10 @@ challenger_2040_lorapicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_lorapicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_2040_lorapicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lorapicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_lorapicoprobe.menu.freertos.Disabled=Disabled
+challenger_2040_lorapicoprobe.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_lorapicoprobe.menu.freertos.Enabled=Enabled
+challenger_2040_lorapicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 LoRa (pico-debug)
@@ -6469,6 +6634,10 @@ challenger_2040_lorapicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_lorapicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_lorapicodebug.menu.usbstack.nousb=No USB
 challenger_2040_lorapicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_lorapicodebug.menu.freertos.Disabled=Disabled
+challenger_2040_lorapicodebug.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_lorapicodebug.menu.freertos.Enabled=Enabled
+challenger_2040_lorapicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi
@@ -6632,6 +6801,10 @@ challenger_2040_wifi.menu.usbstack.picosdk=Pico SDK
 challenger_2040_wifi.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_2040_wifi.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifi.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_wifi.menu.freertos.Disabled=Disabled
+challenger_2040_wifi.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_wifi.menu.freertos.Enabled=Enabled
+challenger_2040_wifi.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi (Picoprobe)
@@ -6795,6 +6968,10 @@ challenger_2040_wifipicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_wifipicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_2040_wifipicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifipicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_wifipicoprobe.menu.freertos.Disabled=Disabled
+challenger_2040_wifipicoprobe.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_wifipicoprobe.menu.freertos.Enabled=Enabled
+challenger_2040_wifipicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi (pico-debug)
@@ -6956,6 +7133,10 @@ challenger_2040_wifipicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_wifipicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_wifipicodebug.menu.usbstack.nousb=No USB
 challenger_2040_wifipicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_wifipicodebug.menu.freertos.Disabled=Disabled
+challenger_2040_wifipicodebug.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_wifipicodebug.menu.freertos.Enabled=Enabled
+challenger_2040_wifipicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 LTE
@@ -7119,6 +7300,10 @@ challenger_2040_lte.menu.usbstack.picosdk=Pico SDK
 challenger_2040_lte.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_2040_lte.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lte.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_lte.menu.freertos.Disabled=Disabled
+challenger_2040_lte.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_lte.menu.freertos.Enabled=Enabled
+challenger_2040_lte.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 LTE (Picoprobe)
@@ -7282,6 +7467,10 @@ challenger_2040_ltepicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_ltepicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_2040_ltepicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_ltepicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_ltepicoprobe.menu.freertos.Disabled=Disabled
+challenger_2040_ltepicoprobe.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_ltepicoprobe.menu.freertos.Enabled=Enabled
+challenger_2040_ltepicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger 2040 LTE (pico-debug)
@@ -7443,6 +7632,10 @@ challenger_2040_ltepicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_ltepicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_ltepicodebug.menu.usbstack.nousb=No USB
 challenger_2040_ltepicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_ltepicodebug.menu.freertos.Disabled=Disabled
+challenger_2040_ltepicodebug.menu.freertos.Disabled.build.flags.freertos=
+challenger_2040_ltepicodebug.menu.freertos.Enabled=Enabled
+challenger_2040_ltepicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger NB 2040 WiFi
@@ -7606,6 +7799,10 @@ challenger_nb_2040_wifi.menu.usbstack.picosdk=Pico SDK
 challenger_nb_2040_wifi.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_nb_2040_wifi.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_nb_2040_wifi.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_nb_2040_wifi.menu.freertos.Disabled=Disabled
+challenger_nb_2040_wifi.menu.freertos.Disabled.build.flags.freertos=
+challenger_nb_2040_wifi.menu.freertos.Enabled=Enabled
+challenger_nb_2040_wifi.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger NB 2040 WiFi (Picoprobe)
@@ -7769,6 +7966,10 @@ challenger_nb_2040_wifipicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_nb_2040_wifipicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 challenger_nb_2040_wifipicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_nb_2040_wifipicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_nb_2040_wifipicoprobe.menu.freertos.Disabled=Disabled
+challenger_nb_2040_wifipicoprobe.menu.freertos.Disabled.build.flags.freertos=
+challenger_nb_2040_wifipicoprobe.menu.freertos.Enabled=Enabled
+challenger_nb_2040_wifipicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs Challenger NB 2040 WiFi (pico-debug)
@@ -7930,6 +8131,10 @@ challenger_nb_2040_wifipicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_nb_2040_wifipicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_nb_2040_wifipicodebug.menu.usbstack.nousb=No USB
 challenger_nb_2040_wifipicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_nb_2040_wifipicodebug.menu.freertos.Disabled=Disabled
+challenger_nb_2040_wifipicodebug.menu.freertos.Disabled.build.flags.freertos=
+challenger_nb_2040_wifipicodebug.menu.freertos.Enabled=Enabled
+challenger_nb_2040_wifipicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs RPICO32
@@ -8093,6 +8298,10 @@ ilabs_rpico32.menu.usbstack.picosdk=Pico SDK
 ilabs_rpico32.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 ilabs_rpico32.menu.usbstack.tinyusb=Adafruit TinyUSB
 ilabs_rpico32.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+ilabs_rpico32.menu.freertos.Disabled=Disabled
+ilabs_rpico32.menu.freertos.Disabled.build.flags.freertos=
+ilabs_rpico32.menu.freertos.Enabled=Enabled
+ilabs_rpico32.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs RPICO32 (Picoprobe)
@@ -8256,6 +8465,10 @@ ilabs_rpico32picoprobe.menu.usbstack.picosdk=Pico SDK
 ilabs_rpico32picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 ilabs_rpico32picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 ilabs_rpico32picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+ilabs_rpico32picoprobe.menu.freertos.Disabled=Disabled
+ilabs_rpico32picoprobe.menu.freertos.Disabled.build.flags.freertos=
+ilabs_rpico32picoprobe.menu.freertos.Enabled=Enabled
+ilabs_rpico32picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # iLabs RPICO32 (pico-debug)
@@ -8417,6 +8630,10 @@ ilabs_rpico32picodebug.menu.dbglvl.NDEBUG=NDEBUG
 ilabs_rpico32picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 ilabs_rpico32picodebug.menu.usbstack.nousb=No USB
 ilabs_rpico32picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+ilabs_rpico32picodebug.menu.freertos.Disabled=Disabled
+ilabs_rpico32picodebug.menu.freertos.Disabled.build.flags.freertos=
+ilabs_rpico32picodebug.menu.freertos.Enabled=Enabled
+ilabs_rpico32picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Melopero Shake RP2040
@@ -8628,6 +8845,10 @@ melopero_shake_rp2040.menu.usbstack.picosdk=Pico SDK
 melopero_shake_rp2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 melopero_shake_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 melopero_shake_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+melopero_shake_rp2040.menu.freertos.Disabled=Disabled
+melopero_shake_rp2040.menu.freertos.Disabled.build.flags.freertos=
+melopero_shake_rp2040.menu.freertos.Enabled=Enabled
+melopero_shake_rp2040.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Melopero Shake RP2040 (Picoprobe)
@@ -8839,6 +9060,10 @@ melopero_shake_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 melopero_shake_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 melopero_shake_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 melopero_shake_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+melopero_shake_rp2040picoprobe.menu.freertos.Disabled=Disabled
+melopero_shake_rp2040picoprobe.menu.freertos.Disabled.build.flags.freertos=
+melopero_shake_rp2040picoprobe.menu.freertos.Enabled=Enabled
+melopero_shake_rp2040picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Melopero Shake RP2040 (pico-debug)
@@ -9048,6 +9273,10 @@ melopero_shake_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 melopero_shake_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 melopero_shake_rp2040picodebug.menu.usbstack.nousb=No USB
 melopero_shake_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+melopero_shake_rp2040picodebug.menu.freertos.Disabled=Disabled
+melopero_shake_rp2040picodebug.menu.freertos.Disabled.build.flags.freertos=
+melopero_shake_rp2040picodebug.menu.freertos.Enabled=Enabled
+melopero_shake_rp2040picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Solder Party RP2040 Stamp
@@ -9211,6 +9440,10 @@ solderparty_rp2040_stamp.menu.usbstack.picosdk=Pico SDK
 solderparty_rp2040_stamp.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 solderparty_rp2040_stamp.menu.usbstack.tinyusb=Adafruit TinyUSB
 solderparty_rp2040_stamp.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+solderparty_rp2040_stamp.menu.freertos.Disabled=Disabled
+solderparty_rp2040_stamp.menu.freertos.Disabled.build.flags.freertos=
+solderparty_rp2040_stamp.menu.freertos.Enabled=Enabled
+solderparty_rp2040_stamp.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Solder Party RP2040 Stamp (Picoprobe)
@@ -9374,6 +9607,10 @@ solderparty_rp2040_stamppicoprobe.menu.usbstack.picosdk=Pico SDK
 solderparty_rp2040_stamppicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 solderparty_rp2040_stamppicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 solderparty_rp2040_stamppicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+solderparty_rp2040_stamppicoprobe.menu.freertos.Disabled=Disabled
+solderparty_rp2040_stamppicoprobe.menu.freertos.Disabled.build.flags.freertos=
+solderparty_rp2040_stamppicoprobe.menu.freertos.Enabled=Enabled
+solderparty_rp2040_stamppicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Solder Party RP2040 Stamp (pico-debug)
@@ -9535,6 +9772,10 @@ solderparty_rp2040_stamppicodebug.menu.dbglvl.NDEBUG=NDEBUG
 solderparty_rp2040_stamppicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 solderparty_rp2040_stamppicodebug.menu.usbstack.nousb=No USB
 solderparty_rp2040_stamppicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+solderparty_rp2040_stamppicodebug.menu.freertos.Disabled=Disabled
+solderparty_rp2040_stamppicodebug.menu.freertos.Disabled.build.flags.freertos=
+solderparty_rp2040_stamppicodebug.menu.freertos.Enabled=Enabled
+solderparty_rp2040_stamppicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # SparkFun ProMicro RP2040
@@ -9746,6 +9987,10 @@ sparkfun_promicrorp2040.menu.usbstack.picosdk=Pico SDK
 sparkfun_promicrorp2040.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 sparkfun_promicrorp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_promicrorp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_promicrorp2040.menu.freertos.Disabled=Disabled
+sparkfun_promicrorp2040.menu.freertos.Disabled.build.flags.freertos=
+sparkfun_promicrorp2040.menu.freertos.Enabled=Enabled
+sparkfun_promicrorp2040.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # SparkFun ProMicro RP2040 (Picoprobe)
@@ -9957,6 +10202,10 @@ sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_promicrorp2040picoprobe.menu.freertos.Disabled=Disabled
+sparkfun_promicrorp2040picoprobe.menu.freertos.Disabled.build.flags.freertos=
+sparkfun_promicrorp2040picoprobe.menu.freertos.Enabled=Enabled
+sparkfun_promicrorp2040picoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # SparkFun ProMicro RP2040 (pico-debug)
@@ -10166,6 +10415,10 @@ sparkfun_promicrorp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_promicrorp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_promicrorp2040picodebug.menu.usbstack.nousb=No USB
 sparkfun_promicrorp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+sparkfun_promicrorp2040picodebug.menu.freertos.Disabled=Disabled
+sparkfun_promicrorp2040picodebug.menu.freertos.Disabled.build.flags.freertos=
+sparkfun_promicrorp2040picodebug.menu.freertos.Enabled=Enabled
+sparkfun_promicrorp2040picodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # uPesy RP2040 DevKit
@@ -10293,6 +10546,10 @@ upesy_rp2040_devkit.menu.usbstack.picosdk=Pico SDK
 upesy_rp2040_devkit.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 upesy_rp2040_devkit.menu.usbstack.tinyusb=Adafruit TinyUSB
 upesy_rp2040_devkit.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+upesy_rp2040_devkit.menu.freertos.Disabled=Disabled
+upesy_rp2040_devkit.menu.freertos.Disabled.build.flags.freertos=
+upesy_rp2040_devkit.menu.freertos.Enabled=Enabled
+upesy_rp2040_devkit.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # uPesy RP2040 DevKit (Picoprobe)
@@ -10420,6 +10677,10 @@ upesy_rp2040_devkitpicoprobe.menu.usbstack.picosdk=Pico SDK
 upesy_rp2040_devkitpicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 upesy_rp2040_devkitpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 upesy_rp2040_devkitpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+upesy_rp2040_devkitpicoprobe.menu.freertos.Disabled=Disabled
+upesy_rp2040_devkitpicoprobe.menu.freertos.Disabled.build.flags.freertos=
+upesy_rp2040_devkitpicoprobe.menu.freertos.Enabled=Enabled
+upesy_rp2040_devkitpicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # uPesy RP2040 DevKit (pico-debug)
@@ -10545,6 +10806,10 @@ upesy_rp2040_devkitpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 upesy_rp2040_devkitpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 upesy_rp2040_devkitpicodebug.menu.usbstack.nousb=No USB
 upesy_rp2040_devkitpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+upesy_rp2040_devkitpicodebug.menu.freertos.Disabled=Disabled
+upesy_rp2040_devkitpicodebug.menu.freertos.Disabled.build.flags.freertos=
+upesy_rp2040_devkitpicodebug.menu.freertos.Enabled=Enabled
+upesy_rp2040_devkitpicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # WIZnet W5100S-EVB-Pico
@@ -10672,6 +10937,10 @@ wiznet_5100s_evb_pico.menu.usbstack.picosdk=Pico SDK
 wiznet_5100s_evb_pico.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 wiznet_5100s_evb_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5100s_evb_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_5100s_evb_pico.menu.freertos.Disabled=Disabled
+wiznet_5100s_evb_pico.menu.freertos.Disabled.build.flags.freertos=
+wiznet_5100s_evb_pico.menu.freertos.Enabled=Enabled
+wiznet_5100s_evb_pico.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # WIZnet W5100S-EVB-Pico (Picoprobe)
@@ -10799,6 +11068,10 @@ wiznet_5100s_evb_picopicoprobe.menu.usbstack.picosdk=Pico SDK
 wiznet_5100s_evb_picopicoprobe.menu.usbstack.picosdk.build.usbstack_flags="-I{runtime.platform.path}/tools/libpico"
 wiznet_5100s_evb_picopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5100s_evb_picopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_5100s_evb_picopicoprobe.menu.freertos.Disabled=Disabled
+wiznet_5100s_evb_picopicoprobe.menu.freertos.Disabled.build.flags.freertos=
+wiznet_5100s_evb_picopicoprobe.menu.freertos.Enabled=Enabled
+wiznet_5100s_evb_picopicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # WIZnet W5100S-EVB-Pico (pico-debug)
@@ -10924,6 +11197,10 @@ wiznet_5100s_evb_picopicodebug.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_5100s_evb_picopicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_5100s_evb_picopicodebug.menu.usbstack.nousb=No USB
 wiznet_5100s_evb_picopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+wiznet_5100s_evb_picopicodebug.menu.freertos.Disabled=Disabled
+wiznet_5100s_evb_picopicodebug.menu.freertos.Disabled.build.flags.freertos=
+wiznet_5100s_evb_picopicodebug.menu.freertos.Enabled=Enabled
+wiznet_5100s_evb_picopicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Generic RP2040
@@ -11079,6 +11356,10 @@ generic.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 generic.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 generic.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 generic.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
+generic.menu.freertos.Disabled=Disabled
+generic.menu.freertos.Disabled.build.flags.freertos=
+generic.menu.freertos.Enabled=Enabled
+generic.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Generic RP2040 (Picoprobe)
@@ -11234,6 +11515,10 @@ genericpicoprobe.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 genericpicoprobe.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 genericpicoprobe.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 genericpicoprobe.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
+genericpicoprobe.menu.freertos.Disabled=Disabled
+genericpicoprobe.menu.freertos.Disabled.build.flags.freertos=
+genericpicoprobe.menu.freertos.Enabled=Enabled
+genericpicoprobe.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
 
 # -----------------------------------
 # Generic RP2040 (pico-debug)
@@ -11387,3 +11672,7 @@ genericpicodebug.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 genericpicodebug.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 genericpicodebug.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 genericpicodebug.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
+genericpicodebug.menu.freertos.Disabled=Disabled
+genericpicodebug.menu.freertos.Disabled.build.flags.freertos=
+genericpicodebug.menu.freertos.Enabled=Enabled
+genericpicodebug.menu.freertos.Enabled.build.flags.freertos=-DUSE_FREERTOS
