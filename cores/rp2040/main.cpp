@@ -49,7 +49,7 @@ void initVariant() { }
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 extern "C" void main1() {
-	rp2040.fifo.registerCore();
+    rp2040.fifo.registerCore();
     if (setup1) {
         setup1();
     }
@@ -61,21 +61,20 @@ extern "C" void main1() {
 }
 #endif
 
-extern void __loop()
-{
+extern void __loop() {
 #ifdef USE_TINYUSB
-	yield();
+    yield();
 #endif
 
-	if (arduino::serialEventRun) {
-		arduino::serialEventRun();
-	}
-	if (arduino::serialEvent1Run) {
-		arduino::serialEvent1Run();
-	}
-	if (arduino::serialEvent2Run) {
-		arduino::serialEvent2Run();
-	}
+    if (arduino::serialEventRun) {
+        arduino::serialEventRun();
+    }
+    if (arduino::serialEvent1Run) {
+        arduino::serialEvent1Run();
+    }
+    if (arduino::serialEvent2Run) {
+        arduino::serialEvent2Run();
+    }
 }
 
 extern "C" int main() {
@@ -87,19 +86,19 @@ extern "C" int main() {
     initVariant();
 
 #ifdef USE_FREERTOS
-	initFreeRTOS();
+    initFreeRTOS();
 #endif
 
 #ifndef NO_USB
 #ifdef USE_TINYUSB
-	TinyUSB_Device_Init(0);
+    TinyUSB_Device_Init(0);
 
 #else
-	__USBStart();
+    __USBStart();
 
 #ifndef DISABLE_USB_SERIAL
-	// Enable serial port for reset/upload always
-	Serial.begin(115200);
+    // Enable serial port for reset/upload always
+    Serial.begin(115200);
 #endif
 #endif
 #endif
@@ -110,25 +109,25 @@ extern "C" int main() {
 
 #ifndef USE_FREERTOS
 #ifndef NO_USB
-	if (setup1 || loop1) {
-		rp2040.fifo.begin(2);
-		multicore_launch_core1(main1);
-	} else {
-		rp2040.fifo.begin(1);
-	}
-	rp2040.fifo.registerCore();
+    if (setup1 || loop1) {
+        rp2040.fifo.begin(2);
+        multicore_launch_core1(main1);
+    } else {
+        rp2040.fifo.begin(1);
+    }
+    rp2040.fifo.registerCore();
 #endif
 #endif
 
     setup();
-    
+
 #ifndef USE_FREERTOS
-	while (true) {
-		loop();
-		__loop();
-	}
+    while (true) {
+        loop();
+        __loop();
+    }
 #else
-	startFreeRTOS();
+    startFreeRTOS();
 #endif
-	return 0;
+    return 0;
 }

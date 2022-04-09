@@ -141,10 +141,10 @@ public:
 #ifndef USE_FREERTOS
     RP2040() {
         _epoch = 0;
-		// Enable SYSTICK exception
-		exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
-		systick_hw->csr = 0x7;
-		systick_hw->rvr = 0x00FFFFFF;
+        // Enable SYSTICK exception
+        exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
+        systick_hw->csr = 0x7;
+        systick_hw->rvr = 0x00FFFFFF;
     }
 
     ~RP2040() { /* noop */ }

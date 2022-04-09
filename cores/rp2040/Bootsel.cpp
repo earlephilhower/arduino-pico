@@ -27,10 +27,10 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
     // Must disable interrupts, as interrupt handlers may be in flash, and we
     // are about to temporarily disable flash access!
 #ifndef USE_FREERTOS
-	noInterrupts();
-	rp2040.idleOtherCore();
+    noInterrupts();
+    rp2040.idleOtherCore();
 #else
-	return false; // There is no simple way of supporting this function with FreeRTOS running
+    return false; // There is no simple way of supporting this function with FreeRTOS running
 #endif
 
     // Set chip select to Hi-Z
@@ -52,8 +52,8 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
                     IO_QSPI_GPIO_QSPI_SS_CTRL_OEOVER_BITS);
 
 #ifndef USE_FREERTOS
-	interrupts();
-	rp2040.resumeOtherCore();
+    interrupts();
+    rp2040.resumeOtherCore();
 #endif
 
     return button_state;
