@@ -25,6 +25,8 @@
 #include "Adafruit_TinyUSB_API.h"
 #endif
 
+extern "C" void delay(unsigned long ms) __attribute__((weak));
+
 extern "C"
 {
 
