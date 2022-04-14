@@ -36,10 +36,16 @@ extern "C" void interrupts() {
     auto oldIrqs = _irqStack[get_core_num()].top();
     _irqStack[get_core_num()].pop();
     restore_interrupts(oldIrqs);
+#ifdef USE_FREERTOS
+    portENABLE_INTERRUPTS();
+#endif
 }
 
 extern "C" void noInterrupts() {
     _irqStack[get_core_num()].push(save_and_disable_interrupts());
+#ifdef USE_FREERTOS
+    portDISABLE_INTERRUPTS();
+#endif
 }
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and

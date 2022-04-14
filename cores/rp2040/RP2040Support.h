@@ -47,9 +47,13 @@ public:
     }
 
     void registerCore() {
+#ifndef USE_FREERTOS
         multicore_fifo_clear_irq();
         irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
         irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
+#else
+        // FreeRTOS port.c will axtuall handle the IRQ hooking
+#endif
     }
 
     void push(uint32_t val) {
@@ -127,7 +131,7 @@ private:
     static volatile bool _otherIdled;
     queue_t _queue[2];
 
-    static constexpr int _GOTOSLEEP = 0x66666666;
+    static constexpr int _GOTOSLEEP = 0xC0DED02E;
 };
 
 class RP2040;

@@ -182,16 +182,12 @@ int LittleFSImpl::lfs_flash_prog(const struct lfs_config *c,
                                  lfs_block_t block, lfs_off_t off, const void *buffer, lfs_size_t size) {
     LittleFSImpl *me = reinterpret_cast<LittleFSImpl*>(c->context);
     uint8_t *addr = me->_start + (block * me->_blockSize) + off;
-#ifndef USE_FREERTOS
     noInterrupts();
     rp2040.idleOtherCore();
-#endif
     //    Serial.printf("WRITE: %p, $d\n", (intptr_t)addr - (intptr_t)XIP_BASE, size);
     flash_range_program((intptr_t)addr - (intptr_t)XIP_BASE, (const uint8_t *)buffer, size);
-#ifndef USE_FREERTOS
     rp2040.resumeOtherCore();
     interrupts();
-#endif
     return 0;
 }
 
@@ -199,15 +195,11 @@ int LittleFSImpl::lfs_flash_erase(const struct lfs_config *c, lfs_block_t block)
     LittleFSImpl *me = reinterpret_cast<LittleFSImpl*>(c->context);
     uint8_t *addr = me->_start + (block * me->_blockSize);
     //    Serial.printf("ERASE: %p, %d\n", (intptr_t)addr - (intptr_t)XIP_BASE, me->_blockSize);
-#ifndef USE_FREERTOS
     noInterrupts();
     rp2040.idleOtherCore();
-#endif
     flash_range_erase((intptr_t)addr - (intptr_t)XIP_BASE, me->_blockSize);
-#ifndef USE_FREERTOS
     rp2040.resumeOtherCore();
     interrupts();
-#endif
     return 0;
 }
 
