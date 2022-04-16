@@ -26,6 +26,7 @@
 #endif
 
 extern "C" void delay(unsigned long ms) __attribute__((weak));
+extern "C" void yield() __attribute__((weak));
 
 extern "C"
 {

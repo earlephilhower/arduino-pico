@@ -23,28 +23,23 @@
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 
-#ifndef USE_FREERTOS
 RP2040 rp2040;
-
-volatile bool _MFIFO::_otherIdled = false;
-#endif
+volatile bool __otherCoreIdled = false;
 
 mutex_t _pioMutex;
-
 
 extern void setup();
 extern void loop();
 
-#ifdef USE_FREERTOS
-void initFreeRTOS();
-void startFreeRTOS();
-#endif
+// FreeRTOS potential includes
+extern void initFreeRTOS() __attribute__((weak));
+extern void startFreeRTOS() __attribute__((weak));
+bool __isFreeRTOS;
 
 // Weak empty variant initialization. May be redefined by variant files.
 void initVariant() __attribute__((weak));
 void initVariant() { }
 
-#ifndef USE_FREERTOS
 // Optional 2nd core setup and loop
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
@@ -59,7 +54,6 @@ extern "C" void main1() {
         }
     }
 }
-#endif
 
 extern void __loop() {
 #ifdef USE_TINYUSB
@@ -82,12 +76,18 @@ extern "C" int main() {
     set_sys_clock_khz(F_CPU / 1000, true);
 #endif
 
+    // Let rest of core know if we're using FreeRTOS
+    __isFreeRTOS = initFreeRTOS ? true : false;
+
     mutex_init(&_pioMutex);
+
+    rp2040.begin();
+
     initVariant();
 
-#ifdef USE_FREERTOS
-    initFreeRTOS();
-#endif
+    if (initFreeRTOS) {
+        initFreeRTOS();
+    }
 
 #ifndef NO_USB
 #ifdef USE_TINYUSB
@@ -107,27 +107,27 @@ extern "C" int main() {
     DEBUG_RP2040_PORT.begin(115200);
 #endif
 
-#ifndef USE_FREERTOS
 #ifndef NO_USB
-    if (setup1 || loop1) {
-        rp2040.fifo.begin(2);
-        multicore_launch_core1(main1);
-    } else {
-        rp2040.fifo.begin(1);
+    if (!initFreeRTOS) {
+        if (setup1 || loop1) {
+            rp2040.fifo.begin(2);
+            multicore_launch_core1(main1);
+        } else {
+            rp2040.fifo.begin(1);
+        }
+        rp2040.fifo.registerCore();
     }
-    rp2040.fifo.registerCore();
-#endif
 #endif
 
     setup();
 
-#ifndef USE_FREERTOS
-    while (true) {
-        loop();
-        __loop();
+    if (!startFreeRTOS) {
+        while (true) {
+            loop();
+            __loop();
+        }
+    } else {
+        startFreeRTOS();
     }
-#else
-    startFreeRTOS();
-#endif
     return 0;
 }

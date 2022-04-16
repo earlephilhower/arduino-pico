@@ -28,6 +28,12 @@
 // Support nested IRQ disable/re-enable
 static std::stack<uint32_t> _irqStack[2];
 
+// FreeRTOS imports (possibly)
+extern void prvEnableInterrupts(void) __attribute__((weak));
+extern void prvDisableInterrupts(void) __attribute__((weak));
+extern bool __isFreeRTOS;
+
+
 extern "C" void interrupts() {
     if (_irqStack[get_core_num()].empty()) {
         // ERROR
@@ -36,16 +42,16 @@ extern "C" void interrupts() {
     auto oldIrqs = _irqStack[get_core_num()].top();
     _irqStack[get_core_num()].pop();
     restore_interrupts(oldIrqs);
-#ifdef USE_FREERTOS
-    portENABLE_INTERRUPTS();
-#endif
+    if (__isFreeRTOS) {
+        prvEnableInterrupts();
+    }
 }
 
 extern "C" void noInterrupts() {
     _irqStack[get_core_num()].push(save_and_disable_interrupts());
-#ifdef USE_FREERTOS
-    portDISABLE_INTERRUPTS();
-#endif
+    if (__isFreeRTOS) {
+        prvDisableInterrupts();
+    }
 }
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
