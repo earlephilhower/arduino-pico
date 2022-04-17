@@ -32,6 +32,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Seeed XIAO RP2040
 * Solder Party RP2040 Stamp
 * SparkFun ProMicro RP2040
+* SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
 * WIZnet W5100S-EVB-Pico
 * Generic (configurable flash, I/O pins)
