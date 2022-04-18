@@ -85,7 +85,7 @@ extern "C" int main() {
 
     initVariant();
 
-    if (initFreeRTOS) {
+    if (__isFreeRTOS) {
         initFreeRTOS();
     }
 
@@ -108,7 +108,7 @@ extern "C" int main() {
 #endif
 
 #ifndef NO_USB
-    if (!initFreeRTOS) {
+    if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             rp2040.fifo.begin(2);
             multicore_launch_core1(main1);
@@ -119,9 +119,8 @@ extern "C" int main() {
     }
 #endif
 
-    setup();
-
-    if (!startFreeRTOS) {
+    if (!__isFreeRTOS) {
+        setup();
         while (true) {
             loop();
             __loop();
