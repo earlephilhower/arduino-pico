@@ -162,7 +162,7 @@ public:
             _ccountPgm.prepare(&_pio, &_sm, &off);
             ccount_program_init(_pio, _sm, off);
             pio_sm_set_enabled(_pio, _sm, true);
-        }            
+        }
     }
 
     // Convert from microseconds to PIO clock cycles

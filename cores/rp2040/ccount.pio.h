@@ -16,10 +16,10 @@
 #define ccount_wrap 1
 
 static const uint16_t ccount_program_instructions[] = {
-            //     .wrap_target
-    0x0040, //  0: jmp    x--, 0                     
-    0x0080, //  1: jmp    y--, 0                     
-            //     .wrap
+    //     .wrap_target
+    0x0040, //  0: jmp    x--, 0
+    0x0080, //  1: jmp    y--, 0
+    //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
