@@ -136,7 +136,7 @@ private:
     mutex_t _idleMutex;
     queue_t _queue[2];
 
-    static constexpr int _GOTOSLEEP = 0xC0DED02E;
+    static constexpr uint32_t _GOTOSLEEP = 0xC0DED02E;
 };
 
 
@@ -212,7 +212,7 @@ public:
             systick_hw->csr = 0x7;
             systick_hw->rvr = 0x00FFFFFF;
         } else {
-            int off;
+            int off = 0;
             _ccountPgm = new PIOProgram(&ccount_program);
             _ccountPgm->prepare(&_pio, &_sm, &off);
             ccount_program_init(_pio, _sm, off);
