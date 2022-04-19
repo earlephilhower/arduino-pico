@@ -51,9 +51,9 @@ static inline uint64_t ccount_read(PIO pio, uint sm) {
     uint32_t x2 = -((int)pio_sm_get_blocking(pio, sm));
     uint64_t val;
     if (y2 != y1) {
-        val = (((uint64_t)y2) << 32LL) | x2;
+        val = ((((uint64_t)y2) << 32LL) | x2) + y2 /* adjust for missed cycle every epoch increment */;
     } else {
-        val = (((uint64_t)y1) << 32LL) | x1;
+        val = ((((uint64_t)y1) << 32LL) | x1) + y1 /* adjust for missed cycle every epoch increment */;
     }
     return val + extra;
 }

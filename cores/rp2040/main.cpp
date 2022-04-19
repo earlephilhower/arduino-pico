@@ -130,3 +130,7 @@ extern "C" int main() {
     }
     return 0;
 }
+
+extern "C" unsigned long ulMainGetRunTimeCounterValue() {
+    return rp2040.getCycleCount64();
+}

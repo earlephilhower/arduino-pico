@@ -143,7 +143,61 @@ private:
 class RP2040;
 extern RP2040 rp2040;
 extern "C" void main1();
+class PIOProgram;
 
+// Wrapper class for PIO programs, abstracting common operations out
+// TODO - Add unload/destructor
+class PIOProgram {
+public:
+    PIOProgram(const pio_program_t *pgm) {
+        _pgm = pgm;
+    }
+
+    // Possibly load into a PIO and allocate a SM
+    bool prepare(PIO *pio, int *sm, int *offset) {
+        extern mutex_t _pioMutex;
+        CoreMutex m(&_pioMutex);
+        // Is there an open slot to run in, first?
+        if (!_findFreeSM(pio, sm)) {
+            return false;
+        }
+        // Is it loaded on that PIO?
+        if (_offset[pio_get_index(*pio)] < 0) {
+            // Nope, need to load it
+            if (!pio_can_add_program(*pio, _pgm)) {
+                return false;
+            }
+            _offset[pio_get_index(*pio)] = pio_add_program(*pio, _pgm);
+        }
+        // Here it's guaranteed loaded, return values
+        // PIO and SM already set
+        *offset = _offset[pio_get_index(*pio)];
+        return true;
+    }
+
+private:
+    // Find an unused PIO state machine to grab, returns false when none available
+    static bool _findFreeSM(PIO *pio, int *sm) {
+        int idx = pio_claim_unused_sm(pio0, false);
+        if (idx >= 0) {
+            *pio = pio0;
+            *sm = idx;
+            return true;
+        }
+        idx = pio_claim_unused_sm(pio1, false);
+        if (idx >= 0) {
+            *pio = pio1;
+            *sm = idx;
+            return true;
+        }
+        return false;
+    }
+
+
+private:
+    int _offset[2] = { -1, -1 };
+    const pio_program_t *_pgm;
+};
 
 class RP2040 {
 public:
@@ -159,7 +213,8 @@ public:
             systick_hw->rvr = 0x00FFFFFF;
         } else {
             int off;
-            _ccountPgm.prepare(&_pio, &_sm, &off);
+            _ccountPgm = new PIOProgram(&ccount_program);
+            _ccountPgm->prepare(&_pio, &_sm, &off);
             ccount_program_init(_pio, _sm, off);
             pio_sm_set_enabled(_pio, _sm, true);
         }
@@ -229,58 +284,5 @@ private:
     }
     PIO _pio;
     int _sm;
-};
-
-// Wrapper class for PIO programs, abstracting common operations out
-// TODO - Add unload/destructor
-class PIOProgram {
-public:
-    PIOProgram(const pio_program_t *pgm) {
-        _pgm = pgm;
-    }
-
-    // Possibly load into a PIO and allocate a SM
-    bool prepare(PIO *pio, int *sm, int *offset) {
-        extern mutex_t _pioMutex;
-        CoreMutex m(&_pioMutex);
-        // Is there an open slot to run in, first?
-        if (!_findFreeSM(pio, sm)) {
-            return false;
-        }
-        // Is it loaded on that PIO?
-        if (_offset[pio_get_index(*pio)] < 0) {
-            // Nope, need to load it
-            if (!pio_can_add_program(*pio, _pgm)) {
-                return false;
-            }
-            _offset[pio_get_index(*pio)] = pio_add_program(*pio, _pgm);
-        }
-        // Here it's guaranteed loaded, return values
-        // PIO and SM already set
-        *offset = _offset[pio_get_index(*pio)];
-        return true;
-    }
-
-private:
-    // Find an unused PIO state machine to grab, returns false when none available
-    static bool _findFreeSM(PIO *pio, int *sm) {
-        int idx = pio_claim_unused_sm(pio0, false);
-        if (idx >= 0) {
-            *pio = pio0;
-            *sm = idx;
-            return true;
-        }
-        idx = pio_claim_unused_sm(pio1, false);
-        if (idx >= 0) {
-            *pio = pio1;
-            *sm = idx;
-            return true;
-        }
-        return false;
-    }
-
-
-private:
-    int _offset[2] = { -1, -1 };
-    const pio_program_t *_pgm;
+    PIOProgram *_ccountPgm;
 };
