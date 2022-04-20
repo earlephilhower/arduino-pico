@@ -131,11 +131,10 @@ private:
         }
         interrupts();
     }
-    bool _multicore = false;
 
+    bool _multicore = false;
     mutex_t _idleMutex;
     queue_t _queue[2];
-
     static constexpr uint32_t _GOTOSLEEP = 0xC0DED02E;
 };
 

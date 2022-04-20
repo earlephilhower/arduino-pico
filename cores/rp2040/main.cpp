@@ -126,6 +126,7 @@ extern "C" int main() {
             __loop();
         }
     } else {
+        rp2040.fifo.begin(2);
         startFreeRTOS();
     }
     return 0;
