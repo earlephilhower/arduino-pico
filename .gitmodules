@@ -25,6 +25,6 @@
 [submodule "libraries/Adafruit_TinyUSB_Arduino"]
 	path = libraries/Adafruit_TinyUSB_Arduino
 	url = https://github.com/adafruit/Adafruit_TinyUSB_Arduino.git
-[submodule "libraries/FreeRTOS"]
-	path = libraries/FreeRTOS
-	url = https://github.com/earlephilhower/RP2040_FreeRTOS.git
+[submodule "libraries/FreeRTOS/lib/FreeRTOS-Kernel"]
+	path = libraries/FreeRTOS/lib/FreeRTOS-Kernel
+	url = https://github.com/earlephilhower/FreeRTOS-Kernel.git
