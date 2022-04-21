@@ -37,6 +37,7 @@ void ps() {
 
 
 void blink(void *param) {
+  (void) param;
   pinMode(LED_BUILTIN, OUTPUT);
   while (true) {
     digitalWrite(LED_BUILTIN, LOW);
@@ -64,12 +65,12 @@ void loop() {
 // Running on core1
 void setup1() {
   delay(5000);
-  //Serial.printf("C1: Red leader standing by...\n");
+  Serial.printf("C1: Red leader standing by...\n");
 }
 
 void loop1() {
   static int x = 0;
-  //Serial.printf("C1: Stay on target...\n");
+  Serial.printf("C1: Stay on target...\n");
   val++;
   if (++x < 10) {
     EEPROM.begin(512);
