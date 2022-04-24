@@ -31,5 +31,7 @@ public:
         }
     }
     void listen() { /* noop */ }
-    bool isListening() { return true; }
+    bool isListening() {
+        return true;
+    }
 };
