@@ -30,11 +30,6 @@
 
 
 extern "C" volatile bool __otherCoreIdled;
-extern bool __isFreeRTOS;
-
-// FreeRTOS imports (possibly)
-extern void prvDisableInterrupts(void) __attribute__((weak));
-extern void prvEnableInterrupts(void) __attribute__((weak));
 
 class _MFIFO {
 public:

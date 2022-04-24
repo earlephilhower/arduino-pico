@@ -1,21 +1,12 @@
 **ATTENTION**  
 Please be aware that this library was copied from the original Arduino AVR FreeRTOS library and may still contain files from that library that have no meaning in the context of this package, i.e. the licensing and code of conduct file! Each file retains the license and copyright from where it was taken (FreeRTOS repository or AVR FreeRTOS library, respectively.)
 
-________________________________________________________________________________________________
+______
 
 This is a copy of the RP2040 port of the FreeRTOS SMP branch, packaged as an Arduino library.
 
 It has been created to provide access to FreeRTOS capabilities, with full compatibility to the Arduino environment.
 It does this by keeping hands off almost everything, and only touching the minimum of hardware to be successful.
-
-This library right now will not work with any RP2040 Arduino core out of the box:
-* Earle F. Philhower's [arduino-pico core](https://github.com/earlephilhower/arduino-pico)  
-  This initializes the second MCU core during startup, causing FreeRTOS to crash during initialization. These initializations can easily be commented
-  out, but this means the core has to be modified manually after each update.
-* Arduino Mbed RP2040 core  
-  Does not contain the Raspberry Pi Pico SDK, and as such is not able to compile FreeRTOS, as it uses the Pico SDK.
-* Seeedstudio RP2040 XIAO  
-  This isn't really an Arduino core by itself, as it is just a clone of Earle F. Philhower's Arduino core release 1.9.3 as the time of this writing.
 
 ## General
 
