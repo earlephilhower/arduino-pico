@@ -127,7 +127,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
             asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
             _writer = next_writer;
         } else {
-            // TODO: Overflow
+            _overflow = true;
         }
     }
 }
@@ -146,6 +146,7 @@ SerialPIO::~SerialPIO() {
 }
 
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
+    _overflow = false;
     _baud = baud;
     switch (config & SERIAL_PARITY_MASK) {
     case SERIAL_PARITY_EVEN:
@@ -287,6 +288,17 @@ int SerialPIO::read() {
         return ret;
     }
     return -1;
+}
+
+bool SerialPIO::overflow() {
+    CoreMutex m(&_mutex);
+    if (!_running || !m || (_rx == NOPIN)) {
+        return false;
+    }
+
+    bool hold = _overflow;
+    _overflow = false;
+    return hold;
 }
 
 int SerialPIO::available() {

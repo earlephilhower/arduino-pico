@@ -47,6 +47,7 @@ public:
     virtual int availableForWrite() override;
     virtual void flush() override;
     virtual size_t write(uint8_t c) override;
+    bool overflow();
     using Print::write;
     operator bool() override;
 
@@ -60,6 +61,7 @@ private:
     int _bits;
     uart_parity_t _parity;
     int _stop;
+    bool _overflow;
     mutex_t _mutex;
 
     PIOProgram *_txPgm;
