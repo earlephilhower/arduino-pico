@@ -11,7 +11,7 @@
 Only 16 bitsPerSample are allowed by the PIO code.  Only write, no read.
 
     bool setBCLK(pin_size_t pin);	// Must be 28 or less.  Default is 26
-	// This assigns two adjacent pins - the pin after this one (one greater) is the WS (word select) signal, 
+	// This assigns two adjacent pins - the pin after this one (one greater) is the WS (word select) signal,
 	// which toggles before the sample for each channel is sent
 
     bool setDOUT(pin_size_t pin);	// Must be 29 or less.  Default is 28
@@ -43,12 +43,12 @@ int count = 0;
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, 1);
-  
+
   Serial.begin(9600);
   Serial.println("I2S simple tone");
 
   I2S.setBCLK(pBCLK);  // Must be 28 or less.  Default is 26
-  // This assigns two adjacent pins - the pin after this one (one greater) is the WS (word select) signal, 
+  // This assigns two adjacent pins - the pin after this one (one greater) is the WS (word select) signal,
   // which toggles before the sample for each channel is sent
 
   I2S.setDOUT(pDOUT); // Must be 29 or less.  Default is 28
@@ -57,7 +57,7 @@ void setup() {
   if (!I2S.begin(sampleRate)) {
     Serial.println("Failed to initialize I2S!");
     while (1); // do nothing
-   }
+  }
 
 }
 
