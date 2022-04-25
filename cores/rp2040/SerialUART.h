@@ -60,6 +60,7 @@ public:
     virtual size_t write(uint8_t c) override;
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
+    bool overflow();
     operator bool() override;
 
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
@@ -73,6 +74,7 @@ private:
     int _baud;
     mutex_t _mutex;
     bool _polling = false;
+    bool _overflow;
 
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;

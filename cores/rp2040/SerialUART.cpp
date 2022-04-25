@@ -131,6 +131,7 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     if (_running) {
         end();
     }
+    _overflow = false;
     _queue = new uint8_t[_fifoSize];
     _baud = baud;
     uart_init(_uart, baud);
@@ -271,6 +272,16 @@ int SerialUART::read() {
     return -1;
 }
 
+bool SerialUART::overflow() {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
+        return false;
+    }
+    bool hold = _overflow;
+    _overflow = false;
+    return hold;
+}
+
 int SerialUART::available() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
@@ -387,7 +398,7 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
             // Avoid using division or mod because the HW divider could be in use
             _writer = next_writer;
         } else {
-            // TODO: Overflow
+            _overflow = true;
         }
     }
     if (inIRQ) {

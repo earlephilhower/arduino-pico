@@ -46,10 +46,10 @@ jobs:
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
-    - name: Check Arduino API copy is clean
-      run: |
-        git submodule update --init ./ArduinoCore-API
-        diff -r ./cores/rp2040/api ./ArduinoCore-API/api
+#    - name: Check Arduino API copy is clean
+#      run: |
+#        git submodule update --init ./ArduinoCore-API
+#        diff -r ./cores/rp2040/api ./ArduinoCore-API/api
 
 # Build all examples on linux (core and Arduino IDE)
   build-linux:
