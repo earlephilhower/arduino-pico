@@ -287,6 +287,8 @@ static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
     return USB_TASK_INTERVAL;
 }
 
+void __USBStart() __attribute__((weak));
+
 void __USBStart() {
     if (tusb_inited()) {
         // Already called
