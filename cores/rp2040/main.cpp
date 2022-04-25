@@ -24,7 +24,9 @@
 #include <pico/multicore.h>
 
 RP2040 rp2040;
-volatile bool __otherCoreIdled = false;
+extern "C" {
+    volatile bool __otherCoreIdled = false;
+};
 
 mutex_t _pioMutex;
 
@@ -97,14 +99,19 @@ extern "C" int main() {
     __USBStart();
 
 #ifndef DISABLE_USB_SERIAL
-    // Enable serial port for reset/upload always
-    Serial.begin(115200);
+
+    if (!__isFreeRTOS) {
+        // Enable serial port for reset/upload always
+        Serial.begin(115200);
+    }
 #endif
 #endif
 #endif
 
 #if defined DEBUG_RP2040_PORT
-    DEBUG_RP2040_PORT.begin(115200);
+    if (!__isFreeRTOS) {
+        DEBUG_RP2040_PORT.begin(115200);
+    }
 #endif
 
 #ifndef NO_USB

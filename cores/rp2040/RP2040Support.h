@@ -115,16 +115,18 @@ public:
 
 private:
     static void __no_inline_not_in_flash_func(_irq)() {
-        multicore_fifo_clear_irq();
-        noInterrupts(); // We need total control, can't run anything
-        while (multicore_fifo_rvalid()) {
-            if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
-                __otherCoreIdled = true;
-                while (__otherCoreIdled) { /* noop */ }
-                break;
+        if (!__isFreeRTOS) {
+            multicore_fifo_clear_irq();
+            noInterrupts(); // We need total control, can't run anything
+            while (multicore_fifo_rvalid()) {
+                if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
+                    __otherCoreIdled = true;
+                    while (__otherCoreIdled) { /* noop */ }
+                    break;
+                }
             }
+            interrupts();
         }
-        interrupts();
     }
 
     bool _multicore = false;

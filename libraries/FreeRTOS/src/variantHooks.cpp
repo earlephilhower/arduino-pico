@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2021 Phillip Stevens  All Rights Reserved.
+ * Modifications by Earle F. Philhower, III, for Arduino-Pico
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -27,6 +28,9 @@
 /* Arduino Core includes */
 #include <Arduino.h>
 #include <RP2040USB.h>
+#include "tusb.h"
+#define USB_TASK_IRQ 31
+
 
 /* Raspberry PI Pico includes */
 #include <pico.h>
@@ -49,10 +53,16 @@ extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 // Idle functions (USB, events, ...) from the core
 extern void __loop();
+volatile bool __usbInitted = false;
 
 static void __core0(void *params)
 {
     (void) params;
+#ifndef NO_USB
+    while (!__usbInitted) {
+        delay(1);
+    }
+#endif
     if (setup) {
         setup();
     }
@@ -71,6 +81,11 @@ static void __core0(void *params)
 static void __core1(void *params)
 {
     (void) params;
+#ifndef NO_USB
+    while (!__usbInitted) {
+        delay(1);
+    }
+#endif
     if (setup1) {
         setup1();
     }
@@ -92,6 +107,10 @@ extern "C" void delay(unsigned long ms) {
 extern "C" void yield() {
     taskYIELD();
 }
+
+extern mutex_t __usb_mutex;
+static TaskHandle_t __usbTask;
+static void __usb(void *param);
 
 void startFreeRTOS(void)
 {
@@ -361,3 +380,40 @@ void vApplicationAssertHook() {
     }
 }
 #endif
+
+
+static void __usb_irq() {
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    vTaskNotifyGiveFromISR( __usbTask, &xHigherPriorityTaskWoken );
+    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+}
+
+static void __usb(void *param)
+{
+    (void) param;
+
+    tusb_init();
+    irq_set_exclusive_handler(USB_TASK_IRQ, __usb_irq);
+    irq_set_enabled(USB_TASK_IRQ, true);
+
+    Serial.begin(115200);
+
+    __usbInitted = true;
+
+    while (true) {
+        if (mutex_try_enter(&__usb_mutex, NULL)) {
+            tud_task();
+            mutex_exit(&__usb_mutex);
+        }
+        vTaskDelay(1 / portTICK_PERIOD_MS);
+    }
+}
+
+
+void __USBStart()
+{
+    mutex_init(&__usb_mutex);
+    // Make highest prio and locked to core 0
+    xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 1, &__usbTask);
+    vTaskCoreAffinitySet( __usbTask, 1 << 0 );
+}
