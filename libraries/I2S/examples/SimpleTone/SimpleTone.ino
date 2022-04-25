@@ -8,7 +8,7 @@
   modified for ESP8266 by Earle F. Philhower, III <earlephilhower@yahoo.com>
 
 
-Only 16 bitsPerSample are allowed by the PIO code.  Only write, no read.
+  Only 16 bitsPerSample are allowed by the PIO code.  Only write, no read.
 
     bool setBCLK(pin_size_t pin);	// Must be 28 or less.  Default is 26
 	// This assigns two adjacent pins - the pin after this one (one greater) is the WS (word select) signal,
