@@ -1,9 +1,10 @@
-FreeRTOS
-========
+FreeRTOS SMP
+============
 
-The SMP port of FreeRTOS is included with the core.  This allows complex task operations
-and real preemptive multithreading in your sketches.  While the ``setup1`` and ``loop1``
-way of multitasking is simplest for most folks, FreeRTOS is much more powerful.
+The SMP (multicore) port of FreeRTOS is included with the core.  This allows complex
+task operations and real preemptive multithreading in your sketches.  While the
+``setup1`` and ``loop1`` way of multitasking is simplest for most folks, FreeRTOS
+is much more powerful.
 
 Enabling FreeRTOS
 -----------------
