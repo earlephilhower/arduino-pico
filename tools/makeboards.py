@@ -32,7 +32,7 @@ def BuildDebugLevel(name):
         print("%s.menu.dbglvl.%s.build.debug_level=%s" % (name, l[0], l[1]))
 
 def BuildFreq(name):
-    for f in [ 125, 50, 100, 133, 150, 175, 200, 225, 250, 275, 300]:
+    for f in [ 133,  50, 100, 125, 150, 175, 200, 225, 250, 275, 300]:
         warn = ""
         if f > 133: warn = " (Overclock)"
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
