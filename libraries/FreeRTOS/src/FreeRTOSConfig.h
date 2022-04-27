@@ -113,7 +113,7 @@ command interpreter running. */
 #define configCOMMAND_INT_MAX_OUTPUT_SIZE 2048
 
 
-#define configUSE_DYNAMIC_EXCEPTION_HANDLERS 1
+#define configUSE_DYNAMIC_EXCEPTION_HANDLERS 0
 #define configSUPPORT_PICO_SYNC_INTEROP 1
 #define configSUPPORT_PICO_TIME_INTEROP 1
 
