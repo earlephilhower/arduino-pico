@@ -29,5 +29,8 @@ A ``SoftwareSerial`` wrapper is included to provide plug-and-play compatibility
 with the Arduino `Software Serial <https://docs.arduino.cc/learn/built-in-libraries/software-serial>`_
 library.  Use the normal ``#include <SoftwareSerial.h>`` to include it.   The following
 differences from the Arduino standard are present:
+
 * Inverted mode is not supported
-* All ports are always listening.  The ``listen`` call is a no-op, and ``isListening()`` always returns ``true`` .
+* All ports are always listening
+* ``listen`` call is a no-op
+* ``isListening()`` always returns ``true``
