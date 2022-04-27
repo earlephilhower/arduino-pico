@@ -163,7 +163,7 @@ void vApplicationIdleHook( void ) __attribute__((weak));
 
 void vApplicationIdleHook( void )
 {
-    //__wfe(); // Low power idle if nothing to do...
+    __wfe(); // Low power idle if nothing to do...
 }
 
 #endif /* configUSE_IDLE_HOOK == 1 */
