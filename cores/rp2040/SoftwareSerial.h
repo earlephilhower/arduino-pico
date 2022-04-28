@@ -26,12 +26,34 @@ class SoftwareSerial : public SerialPIO {
 public:
     // Note the rx/tx pins are swapped in PIO vs SWSerial
     SoftwareSerial(pin_size_t rx, pin_size_t tx, bool invert = false) : SerialPIO(tx, rx) {
-        if (invert) {
-            panic("SoftwareSerial inverted operation not supported\n");
+        _invert = invert;
+    }
+
+    ~SoftwareSerial() {
+        if (_invert) {
+            gpio_set_outover(_tx, 0);
+            gpio_set_outover(_rx, 0);
         }
     }
+
+    virtual void begin(unsigned long baud = 115200) override {
+        begin(baud, SERIAL_8N1);
+    };
+
+    void begin(unsigned long baud, uint16_t config) override {
+        SerialPIO::begin(baud, config);
+        if (_invert) {
+            gpio_set_outover(_tx, GPIO_OVERRIDE_INVERT);
+            gpio_set_inover(_rx, GPIO_OVERRIDE_INVERT);
+        }
+    }
+
     void listen() { /* noop */ }
+
     bool isListening() {
         return true;
     }
+
+private:
+    bool _invert;
 };

@@ -54,7 +54,7 @@ public:
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
     void _handleIRQ();
 
-private:
+protected:
     bool _running = false;
     pin_size_t _tx, _rx;
     int _baud;
