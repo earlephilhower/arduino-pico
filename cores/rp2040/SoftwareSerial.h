@@ -25,7 +25,7 @@
 class SoftwareSerial : public SerialPIO {
 public:
     // Note the rx/tx pins are swapped in PIO vs SWSerial
-    SoftwareSerial(pin_size_t rx, pin_size_t tx, bool invert = true) : SerialPIO(tx, rx) {
+    SoftwareSerial(pin_size_t rx, pin_size_t tx, bool invert = false) : SerialPIO(tx, rx) {
         if (invert) {
             panic("SoftwareSerial inverted operation not supported\n");
         }
