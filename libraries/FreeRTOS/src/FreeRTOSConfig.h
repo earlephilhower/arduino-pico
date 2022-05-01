@@ -25,6 +25,7 @@
 #define configUSE_QUEUE_SETS			1
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
 #define configSUPPORT_STATIC_ALLOCATION 0
+#define configSTACK_DEPTH_TYPE			uint32_t
 
 /* Run time stats related definitions. */
 void vMainConfigureTimerForRunTimeStats( void );
