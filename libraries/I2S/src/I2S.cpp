@@ -32,6 +32,7 @@ I2S::I2S(PinMode direction) {
     _freq = 48000;
     _arb = nullptr;
     _isOutput = direction == OUTPUT;
+    _cb = nullptr;
 }
 
 I2S::~I2S() {
@@ -70,6 +71,24 @@ bool I2S::setFrequency(int newFreq) {
     return true;
 }
 
+void I2S::onTransmit(void(*fn)(void)) {
+    if (_isOutput) {
+        _cb = fn;
+        if (_running) {
+            _arb->setCallback(_cb);
+        }
+    }
+}
+
+void I2S::onReceive(void(*fn)(void)) {
+    if (!_isOutput) {
+        _cb = fn;
+        if (_running) {
+            _arb->setCallback(_cb);
+        }
+    }
+}
+
 bool I2S::begin() {
     _running = true;
     int off = 0;
@@ -83,6 +102,7 @@ bool I2S::begin() {
     setFrequency(_freq);
     _arb = new AudioRingBuffer(8, 8, 32, 0, _isOutput ? OUTPUT : INPUT);
     _arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm]);
+    _arb->setCallback(_cb);
     pio_sm_set_enabled(_pio, _sm, true);
 
     return true;

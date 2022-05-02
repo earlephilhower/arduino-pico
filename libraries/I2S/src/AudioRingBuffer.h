@@ -28,6 +28,8 @@ public:
     AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, int bitsPerSample, uint32_t silenceSample, PinMode direction = OUTPUT);
     ~AudioRingBuffer();
 
+    void setCallback(void (*fn)());
+
     bool begin(int dreq, volatile void *pioFIFOAddr);
 
     bool write(uint32_t v, bool sync = true);
@@ -55,6 +57,7 @@ private:
     bool _isOutput;
     uint32_t _silenceSample;
     int _channelDMA[2];
+    void (*_callback)();
 
     bool _overunderflow;
 

@@ -1,5 +1,5 @@
 /*
-    AudioRingBuffer for Rasperry Pi Pico
+    AudioRingBuffer for Raspnerry Pi Pico RP2040
     Implements a ring buffer for PIO DMA for I2S read or write
 
     Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
@@ -19,7 +19,6 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #include <Arduino.h>
 #include <vector>
 #include "hardware/dma.h"
@@ -28,9 +27,8 @@
 #include "pio_i2s.pio.h"
 #include "AudioRingBuffer.h"
 
-
-static int              __channelCount = 0; // # of channels left.  When we hit 0, then remove our handler
-static AudioRingBuffer* __channelMap[12];   // Lets the IRQ handler figure out where to dispatch to
+static int              __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
+static AudioRingBuffer* __channelMap[12];      // Lets the IRQ handler figure out where to dispatch to
 
 AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, int bitsPerSample, uint32_t silenceSample, PinMode direction) {
     _running = false;
@@ -40,6 +38,7 @@ AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, i
     _wordsPerBuffer = (bitsPerSample == 32 || bitsPerSample == 24) ? bufferSampleCount : (bitsPerSample == 16) ? bufferSampleCount / 2 : bufferSampleCount / 4;
     _isOutput = direction == OUTPUT;
     _overunderflow = false;
+    _callback = nullptr;
     _userBuff = -1;
     _userOff = 0;
     for (size_t i = 0; i < bufferCount; i++) {
@@ -70,6 +69,10 @@ AudioRingBuffer::~AudioRingBuffer() {
             irq_remove_handler(DMA_IRQ_0, _irq);
         }
     }
+}
+
+void AudioRingBuffer::setCallback(void (*fn)()) {
+    _callback = fn;
 }
 
 bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
@@ -201,7 +204,6 @@ bool AudioRingBuffer::read(uint32_t *v, bool sync) {
     return true;
 }
 
-
 bool AudioRingBuffer::getOverUnderflow() {
     bool hold = _overunderflow;
     _overunderflow = false;
@@ -225,6 +227,9 @@ void __not_in_flash_func(AudioRingBuffer::_dmaIRQ)(int channel) {
     _curBuffer = (_curBuffer + 1) % _bufferCount;
     _nextBuffer = (_nextBuffer + 1) % _bufferCount;
     dma_channel_acknowledge_irq0(channel);
+    if (_callback) {
+        _callback();
+    }
 }
 
 void __not_in_flash_func(AudioRingBuffer::_irq)() {

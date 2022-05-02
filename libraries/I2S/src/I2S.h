@@ -26,7 +26,7 @@
 
 class I2S : public Stream {
 public:
-    I2S(PinMode direction);
+    I2S(PinMode direction = OUTPUT);
     virtual ~I2S();
 
     bool setBCLK(pin_size_t pin);
@@ -72,10 +72,9 @@ public:
     bool read32(uint32_t *l, uint32_t *r);
 
     // Note that these callback are called from **INTERRUPT CONTEXT** and hence
-    // must be both stored in IRAM and not perform anything that's not legal in
-    // an interrupt
-    //void onTransmit(void(*)(void)); -- Not yet implemented, need to edit pico-extra to get callback
-    //void onReceive(void(*)(void)); -- no I2S input yet
+    // should be in RAM, not FLASH, and should be quick to execute.
+    void onTransmit(void(*)(void));
+    void onReceive(void(*)(void));
 
 private:
     pin_size_t _pinBCLK;
@@ -93,6 +92,7 @@ private:
     uint32_t _holdWord = 0;
     bool _wasHolding = false;
 
+    void (*_cb)();
 
     AudioRingBuffer *_arb;
     PIOProgram *_i2s;
