@@ -35,7 +35,7 @@ static AudioRingBuffer* __channelMap[12];   // Lets the IRQ handler figure out w
 AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, int bitsPerSample, uint32_t silenceSample, PinMode direction) {
     _running = false;
     _bitsPerSample = bitsPerSample;
-    _silenceSample = (bitsPerSample == 32 || bitsPerSample == 24) ? silenceSample : (bitsPerSample == 16) ? (silenceSample << 16) | silenceSample : (silenceSample << 24) |(silenceSample << 16) | (silenceSample << 8) | silenceSample ;
+    _silenceSample = (bitsPerSample == 32 || bitsPerSample == 24) ? silenceSample : (bitsPerSample == 16) ? (silenceSample << 16) | silenceSample : (silenceSample << 24) | (silenceSample << 16) | (silenceSample << 8) | silenceSample ;
     _bufferCount = bufferCount;
     _wordsPerBuffer = (bitsPerSample == 32 || bitsPerSample == 24) ? bufferSampleCount : (bitsPerSample == 16) ? bufferSampleCount / 2 : bufferSampleCount / 4;
     _isOutput = direction == OUTPUT;
@@ -57,7 +57,7 @@ AudioRingBuffer::~AudioRingBuffer() {
             dma_channel_unclaim(_channelDMA[i]);
             __channelMap[_channelDMA[i]] = nullptr;
         }
-        while ( _buffers.size() ) {
+        while (_buffers.size()) {
             auto ab = _buffers.back();
             _buffers.pop_back();
             delete[] ab->buff;
@@ -120,7 +120,8 @@ bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
     }
     if (needSetIRQ) {
         irq_add_shared_handler(DMA_IRQ_0, _irq, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
-        irq_set_enabled(DMA_IRQ_0, true);}
+        irq_set_enabled(DMA_IRQ_0, true);
+    }
     _curBuffer = 0;
     _nextBuffer = 2 % _bufferCount;
     dma_channel_start(_channelDMA[0]);
@@ -140,7 +141,7 @@ bool AudioRingBuffer::write(uint32_t v, bool sync) {
         if (!sync) {
             return false;
         } else {
-            while(!_buffers[_userBuff]->empty) {
+            while (!_buffers[_userBuff]->empty) {
                 /* noop busy wait */
             }
         }
@@ -149,7 +150,7 @@ bool AudioRingBuffer::write(uint32_t v, bool sync) {
         if (!sync) {
             return false;
         } else {
-            while(_userBuff == _curBuffer) {
+            while (_userBuff == _curBuffer) {
                 /* noop busy wait */
             }
         }
@@ -176,7 +177,7 @@ bool AudioRingBuffer::read(uint32_t *v, bool sync) {
         if (!sync) {
             return false;
         } else {
-            while(_buffers[_userBuff]->empty) {
+            while (_buffers[_userBuff]->empty) {
                 /* noop busy wait */
             }
         }
@@ -185,7 +186,7 @@ bool AudioRingBuffer::read(uint32_t *v, bool sync) {
         if (!sync) {
             return false;
         } else {
-            while(_userBuff == _curBuffer) {
+            while (_userBuff == _curBuffer) {
                 /* noop busy wait */
             }
         }

@@ -188,7 +188,7 @@ bool I2S::read16(uint16_t *l, uint16_t *r) {
 }
 
 bool I2S::read24(uint32_t *l, uint32_t *r) {
-   if (!_running || _isOutput) {
+    if (!_running || _isOutput) {
         return false;
     }
     read32(l, r);

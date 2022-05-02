@@ -25,7 +25,7 @@
 
 class AudioRingBuffer {
 public:
-    AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, int bitsPerSample, uint32_t silenceSample, PinMode direction = OUTPUT );
+    AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, int bitsPerSample, uint32_t silenceSample, PinMode direction = OUTPUT);
     ~AudioRingBuffer();
 
     bool begin(int dreq, volatile void *pioFIFOAddr);

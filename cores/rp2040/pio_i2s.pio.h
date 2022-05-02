@@ -16,16 +16,16 @@
 #define pio_i2s_out_wrap 7
 
 static const uint16_t pio_i2s_out_program_instructions[] = {
-            //     .wrap_target
-    0xa822, //  0: mov    x, y            side 1     
-    0x6001, //  1: out    pins, 1         side 0     
-    0x0841, //  2: jmp    x--, 1          side 1     
-    0x7001, //  3: out    pins, 1         side 2     
-    0xb822, //  4: mov    x, y            side 3     
-    0x7001, //  5: out    pins, 1         side 2     
-    0x1845, //  6: jmp    x--, 5          side 3     
-    0x6001, //  7: out    pins, 1         side 0     
-            //     .wrap
+    //     .wrap_target
+    0xa822, //  0: mov    x, y            side 1
+    0x6001, //  1: out    pins, 1         side 0
+    0x0841, //  2: jmp    x--, 1          side 1
+    0x7001, //  3: out    pins, 1         side 2
+    0xb822, //  4: mov    x, y            side 3
+    0x7001, //  5: out    pins, 1         side 2
+    0x1845, //  6: jmp    x--, 5          side 3
+    0x6001, //  7: out    pins, 1         side 0
+    //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
@@ -51,16 +51,16 @@ static inline pio_sm_config pio_i2s_out_program_get_default_config(uint offset) 
 #define pio_i2s_in_wrap 7
 
 static const uint16_t pio_i2s_in_program_instructions[] = {
-            //     .wrap_target
-    0xa822, //  0: mov    x, y            side 1     
-    0x4001, //  1: in     pins, 1         side 0     
-    0x0841, //  2: jmp    x--, 1          side 1     
-    0x5001, //  3: in     pins, 1         side 2     
-    0xb822, //  4: mov    x, y            side 3     
-    0x5001, //  5: in     pins, 1         side 2     
-    0x1845, //  6: jmp    x--, 5          side 3     
-    0x4001, //  7: in     pins, 1         side 0     
-            //     .wrap
+    //     .wrap_target
+    0xa822, //  0: mov    x, y            side 1
+    0x4001, //  1: in     pins, 1         side 0
+    0x0841, //  2: jmp    x--, 1          side 1
+    0x5001, //  3: in     pins, 1         side 2
+    0xb822, //  4: mov    x, y            side 3
+    0x5001, //  5: in     pins, 1         side 2
+    0x1845, //  6: jmp    x--, 5          side 3
+    0x4001, //  7: in     pins, 1         side 0
+    //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
