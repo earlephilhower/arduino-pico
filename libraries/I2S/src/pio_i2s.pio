@@ -1,6 +1,6 @@
 ; pio_i2s for the Raspberry Pi Pico RP2040
 ;
-; Based off of the MicroPython I2S code in 
+; Based loosely off of the MicroPython I2S code in
 ; https://github.com/micropython/micropython/blob/master/ports/rp2/machine_i2s.c
 ;
 ; Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
