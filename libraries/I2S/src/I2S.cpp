@@ -131,23 +131,23 @@ int I2S::read() {
     }
 
     int ret;
-    switch(_bps) {
-        case 8:
-            ret = _holdWord >> 24;
-            _holdWord <<= 8;
-            _wasHolding -= 8;
-            return ret;
-        case 16:
-            ret = _holdWord >> 16;
-            _holdWord <<=  16;
-            _wasHolding -= 32;
-            return ret;
-        case 24:
-        case 32:
-        default:
-            ret = _holdWord;
-            _wasHolding = 0;
-            return ret;
+    switch (_bps) {
+    case 8:
+        ret = _holdWord >> 24;
+        _holdWord <<= 8;
+        _wasHolding -= 8;
+        return ret;
+    case 16:
+        ret = _holdWord >> 16;
+        _holdWord <<=  16;
+        _wasHolding -= 32;
+        return ret;
+    case 24:
+    case 32:
+    default:
+        ret = _holdWord;
+        _wasHolding = 0;
+        return ret;
     }
 }
 
@@ -162,35 +162,35 @@ size_t I2S::_writeNatural(uint32_t s) {
     if (!_running || !_isOutput) {
         return 0;
     }
-    switch(_bps) {
-        case 8:
-            _holdWord |= s & 0xff;
-            if (_wasHolding >= 24) {
-                auto ret = write(_holdWord, true);
-                _holdWord = 0;
-                _wasHolding = 0;
-                return ret;
-            } else {
-                _holdWord <<= 8;
-                _wasHolding += 8;
-                return 1;
-            }
-        case 16:
-            _holdWord |= s & 0xffff;
-            if (_wasHolding) {
-                auto ret = write(_holdWord, true);
-                _holdWord = 0;
-                _wasHolding = 0;
-                return ret;
-            } else {
-                _holdWord <<= 16;
-                _wasHolding = 16;
-                return 1;
-            }
-        case 24:
-        case 32:
-        default:
-            return write(s, true);
+    switch (_bps) {
+    case 8:
+        _holdWord |= s & 0xff;
+        if (_wasHolding >= 24) {
+            auto ret = write(_holdWord, true);
+            _holdWord = 0;
+            _wasHolding = 0;
+            return ret;
+        } else {
+            _holdWord <<= 8;
+            _wasHolding += 8;
+            return 1;
+        }
+    case 16:
+        _holdWord |= s & 0xffff;
+        if (_wasHolding) {
+            auto ret = write(_holdWord, true);
+            _holdWord = 0;
+            _wasHolding = 0;
+            return ret;
+        } else {
+            _holdWord <<= 16;
+            _wasHolding = 16;
+            return 1;
+        }
+    case 24:
+    case 32:
+    default:
+        return write(s, true);
     }
 }
 
