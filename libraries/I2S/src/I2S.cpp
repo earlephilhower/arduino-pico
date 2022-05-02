@@ -119,14 +119,81 @@ void I2S::end() {
 int I2S::available() {
     return -1;
 }
+
 int I2S::read() {
-    return -1;
+    if (!_running || _isOutput) {
+        return 0;
+    }
+
+    if (_wasHolding <= 0) {
+        read(&_holdWord, true);
+        _wasHolding = 32;
+    }
+
+    int ret;
+    switch(_bps) {
+        case 8:
+            ret = _holdWord >> 24;
+            _holdWord <<= 8;
+            _wasHolding -= 8;
+            return ret;
+        case 16:
+            ret = _holdWord >> 16;
+            _holdWord <<=  16;
+            _wasHolding -= 32;
+            return ret;
+        case 24:
+        case 32:
+        default:
+            ret = _holdWord;
+            _wasHolding = 0;
+            return ret;
+    }
 }
+
 int I2S::peek() {
     return -1;
 }
+
 void I2S::flush() {
 }
+
+size_t I2S::_writeNatural(uint32_t s) {
+    if (!_running || !_isOutput) {
+        return 0;
+    }
+    switch(_bps) {
+        case 8:
+            _holdWord |= s & 0xff;
+            if (_wasHolding >= 24) {
+                auto ret = write(_holdWord, true);
+                _holdWord = 0;
+                _wasHolding = 0;
+                return ret;
+            } else {
+                _holdWord <<= 8;
+                _wasHolding += 8;
+                return 1;
+            }
+        case 16:
+            _holdWord |= s & 0xffff;
+            if (_wasHolding) {
+                auto ret = write(_holdWord, true);
+                _holdWord = 0;
+                _wasHolding = 0;
+                return ret;
+            } else {
+                _holdWord <<= 16;
+                _wasHolding = 16;
+                return 1;
+            }
+        case 24:
+        case 32:
+        default:
+            return write(s, true);
+    }
+}
+
 
 size_t I2S::write(uint32_t val, bool sync) {
     if (!_running || !_isOutput) {
@@ -140,15 +207,7 @@ size_t I2S::write8(uint8_t l, uint8_t r) {
         return 0;
     }
     uint16_t o = (l << 8) | r;
-    _holdWord <<= 16;
-    _holdWord |= o;
-    if (_wasHolding) {
-        _wasHolding = false;
-        write((uint32_t)_holdWord, true);
-    } else {
-        _wasHolding = true;
-    }
-    return 1;
+    return write((uint16_t) o);
 }
 
 size_t I2S::write16(uint16_t l, uint16_t r) {
@@ -186,10 +245,10 @@ bool I2S::read8(uint8_t *l, uint8_t *r) {
     if (_wasHolding) {
         *l = (_holdWord >> 8) & 0xff;
         *r = (_holdWord >> 0) & 0xff;
-        _wasHolding = false;
+        _wasHolding = 0;
     } else {
         read(&_holdWord, true);
-        _wasHolding = true;
+        _wasHolding = 16;
         *l = (_holdWord >> 24) & 0xff;
         *r = (_holdWord >> 16) & 0xff;
     }
@@ -228,9 +287,6 @@ bool I2S::read32(uint32_t *l, uint32_t *r) {
 }
 
 
-size_t I2S::write(uint8_t) {
-    return 0;
-}
 size_t I2S::write(const uint8_t *buffer, size_t size) {
     (void) buffer;
     (void) size;

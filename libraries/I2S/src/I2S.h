@@ -49,12 +49,21 @@ public:
     virtual void flush() override;
 
     // from Print (see notes on write() methods below)
-    virtual size_t write(uint8_t) override;
     virtual size_t write(const uint8_t *buffer, size_t size) override;
     virtual int availableForWrite() override;
 
+    // Try and make I2S::write() do what makes sense, namely write 1 sample (L or R) at the I2S configured bit width
+    virtual size_t write(uint8_t s) override { return _writeNatural(s & 0xff); }
+    size_t write(int8_t s) { return write((uint8_t)s); }
+
+    size_t write(uint16_t s) { return _writeNatural(s & 0xffff); }
+    size_t write(int16_t s) { return write((uint16_t)s); }
+
+    size_t write(uint32_t s) { return _writeNatural(s); }
+    size_t write(int32_t s) { return write((uint32_t)s); }
+
     // Write 32 bit value to port, user responsbile for packing/alignment, etc.
-    size_t write(uint32_t val, bool sync = true);
+    size_t write(uint32_t val, bool sync);
 
     // Write sample to I2S port, will block until completed
     size_t write8(uint8_t l, uint8_t r);
@@ -63,7 +72,7 @@ public:
     size_t write32(uint32_t l, uint32_t r);
 
     // Read 32 bit value to port, user responsbile for packing/alignment, etc.
-    size_t read(uint32_t *val, bool sync = true);
+    size_t read(uint32_t *val, bool sync);
 
     // Read samples from I2S port, will block until data available
     bool read8(uint8_t *l, uint8_t *r);
@@ -86,11 +95,12 @@ private:
     bool _running;
 
     // Support for ::write(x) on 16b quantities
+    size_t _writeNatural(uint32_t s);
     uint32_t _writtenData;
     bool _writtenHalf;
 
     uint32_t _holdWord = 0;
-    bool _wasHolding = false;
+    int _wasHolding = 0;
 
     void (*_cb)();
 
