@@ -39,7 +39,7 @@ AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, i
     _isOutput = direction == OUTPUT;
     _overunderflow = false;
     _callback = nullptr;
-    _userBuff = -1;
+    _userBuffer = -1;
     _userOff = 0;
     for (size_t i = 0; i < bufferCount; i++) {
         auto ab = new AudioBuffer;
@@ -135,33 +135,33 @@ bool AudioRingBuffer::write(uint32_t v, bool sync) {
     if (!_running || !_isOutput) {
         return false;
     }
-    if (_userBuff == -1) {
+    if (_userBuffer == -1) {
         // First write or overflow, pick spot 2 buffers out
-        _userBuff = (_nextBuffer + 2) % _bufferCount;
+        _userBuffer = (_nextBuffer + 2) % _bufferCount;
         _userOff = 0;
     }
-    if (!_buffers[_userBuff]->empty) {
+    if (!_buffers[_userBuffer]->empty) {
         if (!sync) {
             return false;
         } else {
-            while (!_buffers[_userBuff]->empty) {
+            while (!_buffers[_userBuffer]->empty) {
                 /* noop busy wait */
             }
         }
     }
-    if (_userBuff == _curBuffer) {
+    if (_userBuffer == _curBuffer) {
         if (!sync) {
             return false;
         } else {
-            while (_userBuff == _curBuffer) {
+            while (_userBuffer == _curBuffer) {
                 /* noop busy wait */
             }
         }
     }
-    _buffers[_userBuff]->buff[_userOff++] = v;
+    _buffers[_userBuffer]->buff[_userOff++] = v;
     if (_userOff == _wordsPerBuffer) {
-        _buffers[_userBuff]->empty = false;
-        _userBuff = (_userBuff + 1) % _bufferCount;
+        _buffers[_userBuffer]->empty = false;
+        _userBuffer = (_userBuffer + 1) % _bufferCount;
         _userOff = 0;
     }
     return true;
@@ -171,33 +171,33 @@ bool AudioRingBuffer::read(uint32_t *v, bool sync) {
     if (!_running || _isOutput) {
         return false;
     }
-    if (_userBuff == -1) {
+    if (_userBuffer == -1) {
         // First write or overflow, pick last filled buffer
-        _userBuff = (_curBuffer - 1 + _bufferCount) % _bufferCount;
+        _userBuffer = (_curBuffer - 1 + _bufferCount) % _bufferCount;
         _userOff = 0;
     }
-    if (_buffers[_userBuff]->empty) {
+    if (_buffers[_userBuffer]->empty) {
         if (!sync) {
             return false;
         } else {
-            while (_buffers[_userBuff]->empty) {
+            while (_buffers[_userBuffer]->empty) {
                 /* noop busy wait */
             }
         }
     }
-    if (_userBuff == _curBuffer) {
+    if (_userBuffer == _curBuffer) {
         if (!sync) {
             return false;
         } else {
-            while (_userBuff == _curBuffer) {
+            while (_userBuffer == _curBuffer) {
                 /* noop busy wait */
             }
         }
     }
-    auto ret = _buffers[_userBuff]->buff[_userOff++];
+    auto ret = _buffers[_userBuffer]->buff[_userOff++];
     if (_userOff == _wordsPerBuffer) {
-        _buffers[_userBuff]->empty = true;
-        _userBuff = (_userBuff + 1) % _bufferCount;
+        _buffers[_userBuffer]->empty = true;
+        _userBuffer = (_userBuffer + 1) % _bufferCount;
         _userOff = 0;
     }
     *v = ret;
@@ -208,6 +208,22 @@ bool AudioRingBuffer::getOverUnderflow() {
     bool hold = _overunderflow;
     _overunderflow = false;
     return hold;
+}
+
+int AudioRingBuffer::available() {
+    if (!_running) {
+        return 0;
+    }
+    int avail;
+    avail = _wordsPerBuffer - _userOff;
+    avail += ((_bufferCount + _curBuffer - _userBuffer) % _bufferCount) * _wordsPerBuffer;
+    return avail;
+}
+
+void AudioRingBuffer::flush() {
+    while (_curBuffer != _userBuffer) {
+        // busy wait
+    }
 }
 
 void __not_in_flash_func(AudioRingBuffer::_dmaIRQ)(int channel) {

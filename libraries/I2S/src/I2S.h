@@ -106,6 +106,9 @@ private:
 
     bool _running;
 
+    bool _hasPeeked;
+    int32_t _peekSaved;
+
     // Support for ::write(x) on 16b quantities
     size_t _writeNatural(int32_t s);
     uint32_t _writtenData;

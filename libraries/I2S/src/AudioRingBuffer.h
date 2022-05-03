@@ -34,8 +34,10 @@ public:
 
     bool write(uint32_t v, bool sync = true);
     bool read(uint32_t *v, bool sync = true);
+    void flush();
 
     bool getOverUnderflow();
+    int available();
 
 private:
     void _dmaIRQ(int channel);
@@ -62,6 +64,6 @@ private:
     bool _overunderflow;
 
     // User buffer pointer
-    int _userBuff = -1;
+    int _userBuffer = -1;
     size_t _userOff = 0;
 };

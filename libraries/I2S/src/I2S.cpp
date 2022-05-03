@@ -91,6 +91,7 @@ void I2S::onReceive(void(*fn)(void)) {
 
 bool I2S::begin() {
     _running = true;
+    _hasPeeked = false;
     int off = 0;
     _i2s = new PIOProgram(_isOutput ? &pio_i2s_out_program : &pio_i2s_in_program);
     _i2s->prepare(&_pio, &_sm, &off);
@@ -117,12 +118,20 @@ void I2S::end() {
 }
 
 int I2S::available() {
-    return -1;
+    if (!_running || _isOutput) {
+        return 0;
+    }
+    return _arb->available();
 }
 
 int I2S::read() {
     if (!_running || _isOutput) {
         return 0;
+    }
+
+    if (_hasPeeked) {
+        _hasPeeked = false;
+        return _peekSaved;
     }
 
     if (_wasHolding <= 0) {
@@ -152,10 +161,20 @@ int I2S::read() {
 }
 
 int I2S::peek() {
-    return -1;
+    if (!_running || _isOutput) {
+        return 0;
+    }
+    if (!_hasPeeked) {
+        _peekSaved = read();
+        _hasPeeked = true;
+    }
+    return _peekSaved;
 }
 
 void I2S::flush() {
+    if (_running) {
+        _arb->flush();
+    }
 }
 
 size_t I2S::_writeNatural(int32_t s) {
@@ -193,7 +212,6 @@ size_t I2S::_writeNatural(int32_t s) {
         return write(s, true);
     }
 }
-
 
 size_t I2S::write(int32_t val, bool sync) {
     if (!_running || !_isOutput) {
@@ -290,8 +308,28 @@ bool I2S::read32(int32_t *l, int32_t *r) {
 size_t I2S::write(const uint8_t *buffer, size_t size) {
     (void) buffer;
     (void) size;
-    return 0;
+    // We can only write 32-bit chunks here
+    if (size & 0x3) {
+        return 0;
+    }
+    size_t writtenSize = 0;
+    int32_t *p = (int32_t *)buffer;
+    while (size) {
+        if (!write((int32_t)*p)) {
+            // Blocked, stop write here
+            return writtenSize;
+        } else {
+            p++;
+            size -= 4;
+            writtenSize += 4;
+        }
+    }
+    return writtenSize;
 }
+
 int I2S::availableForWrite() {
-    return 1;
+    if (!_running || !_isOutput) {
+        return 0;
+    }
+    return _arb->available();
 }
