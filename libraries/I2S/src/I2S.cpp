@@ -158,7 +158,7 @@ int I2S::peek() {
 void I2S::flush() {
 }
 
-size_t I2S::_writeNatural(uint32_t s) {
+size_t I2S::_writeNatural(int32_t s) {
     if (!_running || !_isOutput) {
         return 0;
     }
@@ -195,50 +195,50 @@ size_t I2S::_writeNatural(uint32_t s) {
 }
 
 
-size_t I2S::write(uint32_t val, bool sync) {
+size_t I2S::write(int32_t val, bool sync) {
     if (!_running || !_isOutput) {
         return 0;
     }
     return _arb->write(val, sync);
 }
 
-size_t I2S::write8(uint8_t l, uint8_t r) {
+size_t I2S::write8(int8_t l, int8_t r) {
     if (!_running || !_isOutput) {
         return 0;
     }
-    uint16_t o = (l << 8) | r;
-    return write((uint16_t) o);
+    int16_t o = (l << 8) | (r & 0xff);
+    return write((int16_t) o);
 }
 
-size_t I2S::write16(uint16_t l, uint16_t r) {
+size_t I2S::write16(int16_t l, int16_t r) {
     if (!_running || !_isOutput) {
         return 0;
     }
-    uint32_t o = (l << 16) | r;
-    return write((uint32_t)o, true);
+    int32_t o = (l << 16) | (r & 0xffff);
+    return write((int32_t)o, true);
 }
 
-size_t I2S::write24(uint32_t l, uint32_t r) {
+size_t I2S::write24(int32_t l, int32_t r) {
     return write32(l, r);
 }
 
-size_t I2S::write32(uint32_t l, uint32_t r) {
+size_t I2S::write32(int32_t l, int32_t r) {
     if (!_running || !_isOutput) {
         return 0;
     }
-    write((uint32_t)l);
-    write((uint32_t)r);
+    write((int32_t)l);
+    write((int32_t)r);
     return 1;
 }
 
-size_t I2S::read(uint32_t *val, bool sync) {
+size_t I2S::read(int32_t *val, bool sync) {
     if (!_running || _isOutput) {
         return 0;
     }
-    return _arb->read(val, sync);
+    return _arb->read((uint32_t *)val, sync);
 }
 
-bool I2S::read8(uint8_t *l, uint8_t *r) {
+bool I2S::read8(int8_t *l, int8_t *r) {
     if (!_running || _isOutput) {
         return false;
     }
@@ -255,18 +255,18 @@ bool I2S::read8(uint8_t *l, uint8_t *r) {
     return true;
 }
 
-bool I2S::read16(uint16_t *l, uint16_t *r) {
+bool I2S::read16(int16_t *l, int16_t *r) {
     if (!_running || _isOutput) {
         return false;
     }
-    uint32_t o;
+    int32_t o;
     read(&o, true);
     *l = (o >> 16) & 0xffff;
     *r = (o >> 0) & 0xffff;
     return true;
 }
 
-bool I2S::read24(uint32_t *l, uint32_t *r) {
+bool I2S::read24(int32_t *l, int32_t *r) {
     if (!_running || _isOutput) {
         return false;
     }
@@ -277,7 +277,7 @@ bool I2S::read24(uint32_t *l, uint32_t *r) {
     return true;
 }
 
-bool I2S::read32(uint32_t *l, uint32_t *r) {
+bool I2S::read32(int32_t *l, int32_t *r) {
     if (!_running || _isOutput) {
         return false;
     }

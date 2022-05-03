@@ -75,22 +75,22 @@ public:
     }
 
     // Write 32 bit value to port, user responsbile for packing/alignment, etc.
-    size_t write(uint32_t val, bool sync);
+    size_t write(int32_t val, bool sync);
 
     // Write sample to I2S port, will block until completed
-    size_t write8(uint8_t l, uint8_t r);
-    size_t write16(uint16_t l, uint16_t r);
-    size_t write24(uint32_t l, uint32_t r); // Note that 24b must have values left-aligned (i.e. 0xABCDEF00)
-    size_t write32(uint32_t l, uint32_t r);
+    size_t write8(int8_t l, int8_t r);
+    size_t write16(int16_t l, int16_t r);
+    size_t write24(int32_t l, int32_t r); // Note that 24b must have values left-aligned (i.e. 0xABCDEF00)
+    size_t write32(int32_t l, int32_t r);
 
     // Read 32 bit value to port, user responsbile for packing/alignment, etc.
-    size_t read(uint32_t *val, bool sync);
+    size_t read(int32_t *val, bool sync);
 
     // Read samples from I2S port, will block until data available
-    bool read8(uint8_t *l, uint8_t *r);
-    bool read16(uint16_t *l, uint16_t *r);
-    bool read24(uint32_t *l, uint32_t *r); // Note that 24b reads will be left-aligned (see above)
-    bool read32(uint32_t *l, uint32_t *r);
+    bool read8(int8_t *l, int8_t *r);
+    bool read16(int16_t *l, int16_t *r);
+    bool read24(int32_t *l, int32_t *r); // Note that 24b reads will be left-aligned (see above)
+    bool read32(int32_t *l, int32_t *r);
 
     // Note that these callback are called from **INTERRUPT CONTEXT** and hence
     // should be in RAM, not FLASH, and should be quick to execute.
@@ -107,11 +107,11 @@ private:
     bool _running;
 
     // Support for ::write(x) on 16b quantities
-    size_t _writeNatural(uint32_t s);
+    size_t _writeNatural(int32_t s);
     uint32_t _writtenData;
     bool _writtenHalf;
 
-    uint32_t _holdWord = 0;
+    int32_t _holdWord = 0;
     int _wasHolding = 0;
 
     void (*_cb)();

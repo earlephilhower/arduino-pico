@@ -18,18 +18,16 @@ I2S i2s(INPUT);
 
 void setup() {
   Serial.begin(115200);
-  delay(500);
+
   i2s.setDATA(0);
   i2s.setBCLK(1); // WCLK = GP2
-  i2s.setBitsPerSample(32);
-  i2s.setFrequency(11025);
+  i2s.setBitsPerSample(16);
+  i2s.setFrequency(22050);
   i2s.begin();
 
-  delay(1000);
-
   while (1) {
-    int32_t l, r;
-    i2s.read32((uint32_t*)&l, (uint32_t*)&r);
+    int16_t l, r;
+    i2s.read16(&l, &r);
     Serial.printf("%d %d\n", l, r);
   }
 }

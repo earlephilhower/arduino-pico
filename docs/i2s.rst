@@ -1,49 +1,70 @@
-I2S (Digital Audio) Output Library
-==================================
+I2S (Digital Audio) Audio Library
+=================================
 
 While the RP2040 chip on the Raspberry Pi Pico does not include a hardware
 I2S device, it is possible to use the PIO (Programmable I/O) state machines
 to implement one dynamically.
 
-This I2S library uses the ``pico-extras`` I2S audio library and wraps it in
-an Arduino I2S library.  It supports 16 bits/sample and frequencies of up
-to 48kHZ, with configurable BCLK, LRCLK(always pin "BCLK + 1"), and DOUT pins.
+Digital audio input and output are supported at 8, 16, 24, and 32 bits per
+sample.
 
-**Note:** This I2S device takes over the entire PIO1 (second) unit and adjusts
-its clock frequency to meet the I2S needs.  That means when only 4 Tones
-or only 4 Servos may be used when the I2S device is used.
+Theoretically up to 6 I2S ports may be created, but in practice there
+may not be enough resources (DMA, PIO SM) to actually create and use so
+many.
+
+Create an I2S port by instantiating a variable of the I2S class
+specifying the direction.  Configure it using API calls below before
+using it.
+
 
 I2S Class API
 -------------
 
+I2S(OUTPUT)
+~~~~~~~~~~~
+Creates an I2S output port.  Needs to be connected up to the
+desired pins (see below) and started before any output can happen.
+
+
+I2S(INPUT)
+~~~~~~~~~~
+Creates an I2S input port.  Needs to be connected up to the
+desired pins (see below) and started before any output can happen.
+
 bool setBCLK(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the BCLK pin of the I2S device.  The LRCLK/word clock will be ``pin + 1``
-due to limitations of the PIO state machines.  Call this before ``I2S.begin()``
-Default BCLK = 26, LRCLK = 27
+due to limitations of the PIO state machines.  Call this before ``I2S::begin()``
 
-bool setDOUT(pin_size_t pin)
+bool setDATA(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sets the DOUT pin of the I2S device.  Any pin may be used.  Default DOUT = 28
-Call before ``I2S.begin()``
+Sets the DOUT or DIN pin of the I2S device.  Any pin may be used.
+Call before ``I2S::begin()``
+
+bool setBitsPerSample(int bits)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Specify how many bits per audio sample to read or write.  Note that
+for 24-bit samples, audio samples must be left-aligned (i.e. bits 31...8).
+Call before ``I2S::begin()``
+
+bool setFrequency(ong sampleRate)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the word clock frequency, but does not start the I2S device if not
+already running.  May be called after ``I2S::begin()`` to change the
+sample rate on-the-fly.
 
 bool begin(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Start the I2S device up with the given sample rate.  The pins selected above
-will be turned to output and the I2S will begin to drive silence frames (all
-zero) out.
+Start the I2S device up with the given sample rate.  Can be called without
+parameters if ``I2S::setFrequency`` has already been set.
 
 void end()
 ~~~~~~~~~~
-Stops the I2S device.  **Note, at present the memory allocated for I2S buffers
-is not freed leading to a memory leak when ``end()`` is called.  This is due
-to the state of the ``pico-extras`` release which this code uses.**
+Stops the I2S device.
 
 void flush()
 ~~~~~~~~~~~~
-Sends any partial frames in memory to the I2S output device.  They may NOT play
-immediately.  Potential use case for this call would be when the frequency of
-the output will be changing.
+Not implemented
 
 size_t write(uint8_t)
 ~~~~~~~~~~~~~~~~~~~~~
@@ -84,6 +105,3 @@ handles partial writes (i.e. by ``yield()`` ing and then retrying to write the
 remaining data.)
 
 The ``onTransmit`` callback is not supported.
-
-See the `ESP8266Audio <https://github.com/earlephilhower/ESP8266Audio>`_ library
-for a working example, or look at the included sample tone generator.
