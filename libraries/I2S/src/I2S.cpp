@@ -304,10 +304,7 @@ bool I2S::read32(int32_t *l, int32_t *r) {
     return true;
 }
 
-
 size_t I2S::write(const uint8_t *buffer, size_t size) {
-    (void) buffer;
-    (void) size;
     // We can only write 32-bit chunks here
     if (size & 0x3) {
         return 0;

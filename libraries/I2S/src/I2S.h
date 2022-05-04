@@ -52,21 +52,20 @@ public:
     virtual size_t write(const uint8_t *buffer, size_t size) override;
     virtual int availableForWrite() override;
 
-    // Try and make I2S::write() do what makes sense, namely write 1 sample (L or R) at the I2S configured bit width
+    // Try and make I2S::write() do what makes sense, namely write
+    // one sample (L or R) at the I2S configured bit width
     virtual size_t write(uint8_t s) override {
         return _writeNatural(s & 0xff);
     }
     size_t write(int8_t s) {
         return write((uint8_t)s);
     }
-
     size_t write(uint16_t s) {
         return _writeNatural(s & 0xffff);
     }
     size_t write(int16_t s) {
         return write((uint16_t)s);
     }
-
     size_t write(uint32_t s) {
         return _writeNatural(s);
     }
@@ -109,7 +108,6 @@ private:
     bool _hasPeeked;
     int32_t _peekSaved;
 
-    // Support for ::write(x) on 16b quantities
     size_t _writeNatural(int32_t s);
     uint32_t _writtenData;
     bool _writtenHalf;
