@@ -37,9 +37,7 @@
 #define SPI_HOWMANY    (1u)
 #define WIRE_HOWMANY   (2u)
 
-#define __PIN_A0 (29u)
-#define __PIN_A1 (28u)
-#define __PIN_A2 (31u)
-#define __PIN_A3 (31u)
+#define __PIN_A0 (31u)
+#define __PIN_A1 (31u)
 
 #include "../generic/common.h"
