@@ -47,8 +47,8 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
                     GPIO_OVERRIDE_NORMAL << IO_QSPI_GPIO_QSPI_SS_CTRL_OEOVER_LSB,
                     IO_QSPI_GPIO_QSPI_SS_CTRL_OEOVER_BITS);
 
-    interrupts();
     rp2040.resumeOtherCore();
+    interrupts();
 
     return button_state;
 }
