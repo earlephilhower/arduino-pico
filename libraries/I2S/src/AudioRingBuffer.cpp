@@ -30,12 +30,11 @@
 static int              __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
 static AudioRingBuffer* __channelMap[12];      // Lets the IRQ handler figure out where to dispatch to
 
-AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, int bitsPerSample, uint32_t silenceSample, PinMode direction) {
+AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction) {
     _running = false;
-    _bitsPerSample = bitsPerSample;
-    _silenceSample = (bitsPerSample == 32 || bitsPerSample == 24) ? silenceSample : (bitsPerSample == 16) ? (silenceSample << 16) | silenceSample : (silenceSample << 24) | (silenceSample << 16) | (silenceSample << 8) | silenceSample ;
+    _silenceSample = silenceSample;
     _bufferCount = bufferCount;
-    _wordsPerBuffer = (bitsPerSample == 32 || bitsPerSample == 24) ? bufferSampleCount : (bitsPerSample == 16) ? bufferSampleCount / 2 : bufferSampleCount / 4;
+    _wordsPerBuffer = bufferWords;
     _isOutput = direction == OUTPUT;
     _overunderflow = false;
     _callback = nullptr;

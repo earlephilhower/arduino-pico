@@ -32,6 +32,7 @@ public:
     bool setBCLK(pin_size_t pin);
     bool setDATA(pin_size_t pin);
     bool setBitsPerSample(int bps);
+    bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0);
     bool setFrequency(int newFreq);
 
     bool begin(long sampleRate) {
@@ -101,6 +102,9 @@ private:
     pin_size_t _pinDOUT;
     int _bps;
     int _freq;
+    size_t _buffers;
+    size_t _bufferWords;
+    int32_t _silenceSample;
     bool _isOutput;
 
     bool _running;

@@ -33,6 +33,9 @@ I2S::I2S(PinMode direction) {
     _arb = nullptr;
     _isOutput = direction == OUTPUT;
     _cb = nullptr;
+    _buffers = 8;
+    _bufferWords = 16;
+    _silenceSample = 0;
 }
 
 I2S::~I2S() {
@@ -59,6 +62,16 @@ bool I2S::setBitsPerSample(int bps) {
         return false;
     }
     _bps = bps;
+    return true;
+}
+
+bool I2S::setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample) {
+    if (_running || (buffers < 3) || (bufferWords < 8)) {
+        return false;
+    }
+    _buffers = buffers;
+    _bufferWords = bufferWords;
+    _silenceSample = silenceSample;
     return true;
 }
 
@@ -101,7 +114,14 @@ bool I2S::begin() {
         pio_i2s_in_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps);
     }
     setFrequency(_freq);
-    _arb = new AudioRingBuffer(8, 8, 32, 0, _isOutput ? OUTPUT : INPUT);
+    if (_bps == 8) {
+        uint8_t a = _silenceSample & 0xff;
+        _silenceSample = (a << 24) | (a << 16) | (a << 8) | a;
+    } else if (_bps == 16) {
+        uint16_t a = _silenceSample & 0xffff;
+        _silenceSample = (a << 16) | a;
+    }
+    _arb = new AudioRingBuffer(_buffers, _bufferWords, _silenceSample, _isOutput ? OUTPUT : INPUT);
     _arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm]);
     _arb->setCallback(_cb);
     pio_sm_set_enabled(_pio, _sm, true);

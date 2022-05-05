@@ -25,7 +25,7 @@
 
 class AudioRingBuffer {
 public:
-    AudioRingBuffer(size_t bufferCount, size_t bufferSampleCount, int bitsPerSample, uint32_t silenceSample, PinMode direction = OUTPUT);
+    AudioRingBuffer(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction = OUTPUT);
     ~AudioRingBuffer();
 
     void setCallback(void (*fn)());
@@ -57,7 +57,7 @@ private:
     size_t _wordsPerBuffer;
     size_t _bufferCount;
     bool _isOutput;
-    uint32_t _silenceSample;
+    int32_t _silenceSample;
     int _channelDMA[2];
     void (*_callback)();
 

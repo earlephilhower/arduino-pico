@@ -9,7 +9,7 @@
    side:
             +--   ------------------------------------  --+
    left RPI | (1) GND (2) DIN (3) BCLK (4) LRCLK (5) 3.3V | AIY right
-            +---------------------------------------------+
+       logo +---------------------------------------------+ logo
 */
 
 #include <I2S.h>
@@ -20,7 +20,7 @@ void setup() {
   Serial.begin(115200);
 
   i2s.setDATA(0);
-  i2s.setBCLK(1); // WCLK = GP2
+  i2s.setBCLK(1); // LRCLK = GP2
   i2s.setBitsPerSample(16);
   i2s.setFrequency(22050);
   i2s.begin();

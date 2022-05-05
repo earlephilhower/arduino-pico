@@ -46,6 +46,12 @@ Specify how many bits per audio sample to read or write.  Note that
 for 24-bit samples, audio samples must be left-aligned (i.e. bits 31...8).
 Call before ``I2S::begin()``
 
+bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Set the number of DMA buffers and their size in 32-bit words as well as
+the word to fill when no data is available to send to the I2S hardware.
+Call before ``I2S::begin()``.
+
 bool setFrequency(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the word clock frequency, but does not start the I2S device if not
