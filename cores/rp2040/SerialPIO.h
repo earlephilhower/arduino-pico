@@ -47,19 +47,21 @@ public:
     virtual int availableForWrite() override;
     virtual void flush() override;
     virtual size_t write(uint8_t c) override;
+    bool overflow();
     using Print::write;
     operator bool() override;
 
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
     void _handleIRQ();
 
-private:
+protected:
     bool _running = false;
     pin_size_t _tx, _rx;
     int _baud;
     int _bits;
     uart_parity_t _parity;
     int _stop;
+    bool _overflow;
     mutex_t _mutex;
 
     PIOProgram *_txPgm;

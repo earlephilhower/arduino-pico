@@ -31,7 +31,7 @@ extern "C" typedef struct uart_inst uart_inst_t;
 #define UART_PIN_NOT_DEFINED      (255u)
 class SerialUART : public HardwareSerial {
 public:
-    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx);
+    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size_t rts = UART_PIN_NOT_DEFINED, pin_size_t cts = UART_PIN_NOT_DEFINED);
 
     // Select the pinout.  Call before .begin()
     bool setRX(pin_size_t pin);
@@ -60,6 +60,7 @@ public:
     virtual size_t write(uint8_t c) override;
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
+    bool overflow();
     operator bool() override;
 
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
@@ -73,6 +74,7 @@ private:
     int _baud;
     mutex_t _mutex;
     bool _polling = false;
+    bool _overflow;
 
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;

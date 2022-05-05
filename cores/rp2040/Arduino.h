@@ -79,6 +79,9 @@ void analogWriteFreq(uint32_t freq);
 void analogWriteRange(uint32_t range);
 void analogWriteResolution(int res);
 
+// FreeRTOS potential calls
+extern bool __isFreeRTOS;
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

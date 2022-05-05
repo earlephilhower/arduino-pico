@@ -37,6 +37,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
 
+   FreeRTOS SMP (multicore) <freertos>
+
    Ported/Optimized Libraries <libraries>
    Using Pico-SDK <sdk>
 

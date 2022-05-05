@@ -114,12 +114,12 @@ bool SerialUART::setFIFOSize(size_t size) {
     return true;
 }
 
-SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx) {
+SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size_t rts, pin_size_t cts) {
     _uart = uart;
     _tx = tx;
     _rx = rx;
-    _rts = UART_PIN_NOT_DEFINED;
-    _cts = UART_PIN_NOT_DEFINED;
+    _rts = rts;
+    _cts = cts;
     mutex_init(&_mutex);
     mutex_init(&_fifoMutex);
 }
@@ -131,6 +131,7 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     if (_running) {
         end();
     }
+    _overflow = false;
     _queue = new uint8_t[_fifoSize];
     _baud = baud;
     uart_init(_uart, baud);
@@ -271,6 +272,16 @@ int SerialUART::read() {
     return -1;
 }
 
+bool SerialUART::overflow() {
+    CoreMutex m(&_mutex);
+    if (!_running || !m) {
+        return false;
+    }
+    bool hold = _overflow;
+    _overflow = false;
+    return hold;
+}
+
 int SerialUART::available() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
@@ -339,8 +350,17 @@ SerialUART::operator bool() {
     return _running;
 }
 
+#if defined(PIN_SERIAL1_RTS)
+SerialUART Serial1(uart0, PIN_SERIAL1_TX, PIN_SERIAL1_RX, PIN_SERIAL1_RTS, PIN_SERIAL1_CTS);
+#else
 SerialUART Serial1(uart0, PIN_SERIAL1_TX, PIN_SERIAL1_RX);
+#endif
+
+#if defined(PIN_SERIAL2_RTS)
+SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX, PIN_SERIAL2_RTS, PIN_SERIAL2_CTS);
+#else
 SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
+#endif
 
 void arduino::serialEvent1Run(void) {
     if (serialEvent1 && Serial1.available()) {
@@ -378,7 +398,7 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
             // Avoid using division or mod because the HW divider could be in use
             _writer = next_writer;
         } else {
-            // TODO: Overflow
+            _overflow = true;
         }
     }
     if (inIRQ) {

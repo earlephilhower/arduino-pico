@@ -18,7 +18,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Adafruit QTPy RP2040
 * Adafruit STEMMA Friend RP2040
 * Adafruit Trinkey RP2040 QT
-* Arduino Nano RP2040 Connect (preliminary)
+* Arduino Nano RP2040 Connect
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
 * DeRuiLab FlyBoard2040 Core
@@ -29,8 +29,10 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Invector Labs Challenger RP2040 LoRa
 * Invector Labs RPICO32
 * Melopero Shake RP2040
+* Seeed XIAO RP2040
 * Solder Party RP2040 Stamp
 * SparkFun ProMicro RP2040
+* SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
 * WIZnet W5100S-EVB-Pico
 * Generic (configurable flash, I/O pins)
@@ -67,8 +69,6 @@ git clone https://github.com/earlephilhower/arduino-pico.git ~/Arduino/hardware/
 cd ~/Arduino/hardware/pico/rp2040
 git submodule update --init
 cd pico-sdk
-git submodule update --init
-cd ../pico-extras
 git submodule update --init
 cd ../tools
 python3 ./get.py
@@ -143,12 +143,13 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * Multicore support (setup1() and loop1())
 * Overclocking and underclocking from the menus
 * digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
-* Peripherals:  SPI master, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio output, Servo
+* Peripherals:  SPI master, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input, I2S audio output, Servo
 * printf (i.e. debug) output over USB serial
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
 * Tones
+* I2S Input
 * I2S Output
 * Software UARTs (Serial ports)
 
@@ -166,11 +167,12 @@ If you want to contribute or have bugfixes, drop me a note at <earlephilhower@ya
 # Licensing and Credits
 * The [Arduino IDE and ArduinoCore-API](https://arduino.cc) are developed and maintained by the Arduino team. The IDE is licensed under GPL.
 * The [RP2040 GCC-based toolchain](https://github.com/earlephilhower/pico-quick-toolchain) is licensed under under the GPL.
-* The [Pico-SDK](https://github.com/raspberrypi/pico-sdk) and [Pico-Extras](https://github.com/raspberrypi/pico-extras) are by Raspberry Pi (Trading) Ltd and licensed under the BSD 3-Clause license.
+* The [Pico-SDK](https://github.com/raspberrypi/pico-sdk) is by Raspberry Pi (Trading) Ltd and licensed under the BSD 3-Clause license.
 * [Arduino-Pico](https://github.com/earlephilhower/arduino-pico) core files are licensed under the LGPL.
 * [LittleFS](https://github.com/ARMmbed/littlefs) library written by ARM Limited and released under the [BSD 3-clause license](https://github.com/ARMmbed/littlefs/blob/master/LICENSE.md).
 * [UF2CONV.PY](https://github.com/microsoft/uf2) is by Microsoft Corporation and licensed under the MIT license.
 * Some filesystem code taken from the [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) and licensed under the LGPL.
+* [FreeRTOS](https://freertos.org) is Copyright Amazon.com, Inc. or its affiliates, and distributed under the MIT license.
 
 -Earle F. Philhower, III
  earlephilhower@yahoo.com
