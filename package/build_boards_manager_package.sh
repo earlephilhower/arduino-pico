@@ -110,6 +110,8 @@ sed 's/^tools.uf2conv.cmd=.*//g' | \
 sed 's/^#tools.uf2conv.cmd=/tools.uf2conv.cmd=/g' | \
 sed 's/^tools.picoprobe.cmd=.*//g' | \
 sed 's/^#tools.picoprobe.cmd=/tools.picoprobe.cmd=/g' | \
+sed 's/^tools.picodebug.cmd=.*//g' | \
+sed 's/^#tools.picodebug.cmd=/tools.picodebug.cmd=/g' | \
 sed "s/version=.*/version=$ver/g" |\
 sed -E "s/name=([a-zA-Z0-9\ -]+).*/name=\1($ver)/g"\
  > $outdir/platform.txt
