@@ -7,11 +7,11 @@
 #define PIN_LED        (13u)
 
 
-// UART0
+// UART1
 #define PIN_SERIAL1_TX (28u)
 #define PIN_SERIAL1_RX (29u)
 
-// UART1
+// UART2
 #define PIN_SERIAL2_TX      (4u)
 #define PIN_SERIAL2_RX      (5u)
 
