@@ -40,8 +40,6 @@ To install via GIT (for latest and greatest versions):
         git submodule update --init
         cd pico-sdk
         git submodule update --init
-        cd pico-extras
-        git submodule update --init
         cd ../tools
         python3 ./get.py
 
