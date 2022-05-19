@@ -149,7 +149,7 @@ void TwoWire::onIRQ() {
         _buffLen = 0;
         _buffOff = 0;
         _slaveStartDet = false;
-        _i2c->hw->clr_reset_det;
+        _i2c->hw->clr_restart_det;
     }
     if (_i2c->hw->intr_stat & (1 << 10)) {
         _buffLen = 0;
