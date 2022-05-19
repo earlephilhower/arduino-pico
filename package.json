@@ -1,6 +1,6 @@
 {
   "name": "framework-arduinopico",
-  "version": "1.20001.0",
+  "version": "1.20100.0",
   "description": "Arduino Wiring-based Framework (RPi Pico RP2040)",
   "keywords": [
     "framework",
@@ -12,6 +12,6 @@
   "homepage": "https://arduino-pico.readthedocs.io/en/latest/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/earlephilhower/arduino-pico"
+    "url": "https://github.com/suraj022/arduino-pico"
   }
 }

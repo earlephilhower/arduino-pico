@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o xtrace
 
-[ -z "${REMOTE_URL}" ] && REMOTE_URL=https://github.com/earlephilhower/arduino-pico/releases/download
+[ -z "${REMOTE_URL}" ] && REMOTE_URL=https://github.com/suraj022/arduino-pico/releases/download
 
 if [ ! -z "${manualversion}" ]; then
 
