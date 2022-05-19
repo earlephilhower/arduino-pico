@@ -161,7 +161,7 @@ function install_libraries()
 function install_ide()
 {
     local idever='nightly'
-    local ideurl='https://www.arduino.cc/download.php?f=/arduino-nightly'
+    local ideurl='https://downloads.arduino.cc/arduino-nightly' #'https://www.arduino.cc/download.php?f=/arduino-nightly'
 
     #local idever='1.8.10'
     #local ideurl="https://downloads.arduino.cc/arduino-$idever"
