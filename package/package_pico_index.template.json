@@ -2,9 +2,9 @@
    "packages": [
       {
          "name": "rp2040",
-         "maintainer": "Earle F. Philhower, III",
-         "websiteURL": "https://github.com/earlephilhower/arduino-pico",
-         "email": "earlephilhower@yahoo.com",
+         "maintainer": "Suraj Bhawal",
+         "websiteURL": "https://github.com/suraj022/arduino-pico",
+         "email": "suraj@sysis.in",
          "help": {
             "online": "https://arduino-pico.readthedocs.io/en/latest/"
          },
@@ -21,79 +21,7 @@
                      "name": "Raspberry Pi Pico"
                   },
                   {
-                     "name": "Adafruit Feather RP2040"
-                  },
-                  {
-                     "name": "Adafruit ItsyBitsy RP2040"
-                  },
-                  {
-                     "name": "Adafruit KB2040"
-                  },
-                  {
-                     "name": "Adafruit Macropad RP2040"
-                  },
-                  {
-                     "name": "Adafruit QTPy RP2040"
-                  },
-                  {
-                     "name": "Adafruit STEMMA Friend RP2040"
-                  },
-                  {
-                     "name": "Adafruit Trinkey RP2040 QT"
-                  },
-                  {
-                     "name": "Arduino Nano RP2040 Connect"
-                  },
-                  {
-                     "name": "Cytron Maker Nano RP2040"
-                  },
-                  {
-                     "name": "Cytron Maker Pi RP2040"
-                  },
-                  {
-                     "name": "DeRuiLab FlyBoard2040 Core"
-                  },
-                  {
-                     "name": "DFRobot Beetle RP2040"
-                  },
-                  {
-                     "name": "Invector Labs Challenger RP2040 WiFi"
-                  },
-                  {
-                     "name": "Invector Labs Challenger NB RP2040 WiFi"
-                  },
-                  {
-                     "name": "Invector Labs Challenger RP2040 LTE"
-                  },
-                  {
-                     "name": "Invector Labs Challenger RP2040 LoRa"
-                  },
-                  {
-                     "name": "Invector Labs RPICO32"
-                  },
-                  {
-                     "name": "Seeed XIAO RP2040"
-                  },
-                  {
-                     "name": "Solder Party RP2040 Stamp"
-                  },
-                  {
-                     "name": "SparkFun ProMicro RP2040"
-                  },
-                  {
-                     "name": "SparkFun Thing Plus RP2040"
-                  },
-                  {
-                     "name": "Melopero Shake RP2040"
-                  },
-                  {
-                     "name": "uPesy RP2040 DevKit"
-                  },
-                  {
-                     "name": "WIZnet W5100S-EVB-Pico"
-                  },
-                  {
-                     "name": "Generic RP2040 Module"
+                     "name": "Sysis uno2040"
                   }
                ],
                "toolsDependencies": [

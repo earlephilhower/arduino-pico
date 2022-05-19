@@ -16,7 +16,7 @@
         "variant": "seuno2040",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2e8a",
-        "usb_pid": "0x000a",
+        "usb_pid": "0x0a0a",
         "usb_manufacturer": "Sysis",
         "usb_product": "uno2040"
       }

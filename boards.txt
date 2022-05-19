@@ -396,8 +396,8 @@ rpipicopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_US
 # -----------------------------------
 seuno2040.name=Sysis uno2040
 seuno2040.vid.0=0x2e8a
-seuno2040.pid.0=0x000a
-seuno2040.build.usbpid=-DSERIALUSB_PID=0x000a
+seuno2040.pid.0=0x0a0a
+seuno2040.build.usbpid=-DSERIALUSB_PID=0x0a0a
 seuno2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 seuno2040.build.board=SYSIS_UNO_2040
 seuno2040.build.mcu=cortex-m0plus
@@ -416,7 +416,7 @@ seuno2040.build.ldscript=memmap_default.ld
 seuno2040.build.ram_length=256k
 seuno2040.build.boot2=boot2_w25q080_2_padded_checksum
 seuno2040.build.vid=0x2e8a
-seuno2040.build.pid=0x000a
+seuno2040.build.pid=0x0a0a
 seuno2040.build.usb_manufacturer="Sysis"
 seuno2040.build.usb_product="uno2040"
 seuno2040.menu.flash.2097152_0=2MB (no FS)
@@ -524,7 +524,7 @@ seuno2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.p
 seuno2040picoprobe.name=Sysis uno2040 (Picoprobe)
 seuno2040picoprobe.vid.0=0x2e8a
 seuno2040picoprobe.pid.0=0x0004
-seuno2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x000a
+seuno2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x0a0a
 seuno2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 seuno2040picoprobe.build.board=SYSIS_UNO_2040
 seuno2040picoprobe.build.mcu=cortex-m0plus
@@ -543,7 +543,7 @@ seuno2040picoprobe.build.ldscript=memmap_default.ld
 seuno2040picoprobe.build.ram_length=256k
 seuno2040picoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 seuno2040picoprobe.build.vid=0x2e8a
-seuno2040picoprobe.build.pid=0x000a
+seuno2040picoprobe.build.pid=0x0a0a
 seuno2040picoprobe.build.usb_manufacturer="Sysis"
 seuno2040picoprobe.build.usb_product="uno2040 (Picoprobe)"
 seuno2040picoprobe.menu.flash.2097152_0=2MB (no FS)
@@ -651,7 +651,7 @@ seuno2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{
 seuno2040picodebug.name=Sysis uno2040 (pico-debug)
 seuno2040picodebug.vid.0=0x1209
 seuno2040picodebug.pid.0=0x2488
-seuno2040picodebug.build.usbpid=-DSERIALUSB_PID=0x000a
+seuno2040picodebug.build.usbpid=-DSERIALUSB_PID=0x0a0a
 seuno2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 seuno2040picodebug.build.board=SYSIS_UNO_2040
 seuno2040picodebug.build.mcu=cortex-m0plus
@@ -670,7 +670,7 @@ seuno2040picodebug.build.ldscript=memmap_default.ld
 seuno2040picodebug.build.ram_length=240k
 seuno2040picodebug.build.boot2=boot2_w25q080_2_padded_checksum
 seuno2040picodebug.build.vid=0x2e8a
-seuno2040picodebug.build.pid=0x000a
+seuno2040picodebug.build.pid=0x0a0a
 seuno2040picodebug.build.usb_manufacturer="Sysis"
 seuno2040picodebug.build.usb_product="uno2040 (pico-debug)"
 seuno2040picodebug.menu.flash.2097152_0=2MB (no FS)
