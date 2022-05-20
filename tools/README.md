@@ -30,6 +30,10 @@ as necessary to add any add'l fields or menus required.  Used because the
 `boards.txt` file is very repetitive and it's safer to generate with code
 than by hand.
 
+## makever.py
+Updates the version info prior to a release in platform.txt, package.json,
+and the version header.   Run from root of the repo.
+
 ## libpico/make-libpico.sh
 Builds the libpico.a file as well as the bootloader stage2 binaries.
 Run whenever the pico-sdk is updated.

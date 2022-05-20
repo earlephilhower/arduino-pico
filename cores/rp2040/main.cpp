@@ -24,19 +24,23 @@
 #include <pico/multicore.h>
 
 RP2040 rp2040;
+extern "C" {
+    volatile bool __otherCoreIdled = false;
+};
 
-volatile bool _MFIFO::_otherIdled = false;
 mutex_t _pioMutex;
-
 
 extern void setup();
 extern void loop();
 
+// FreeRTOS potential includes
+extern void initFreeRTOS() __attribute__((weak));
+extern void startFreeRTOS() __attribute__((weak));
+bool __isFreeRTOS;
 
 // Weak empty variant initialization. May be redefined by variant files.
 void initVariant() __attribute__((weak));
 void initVariant() { }
-
 
 // Optional 2nd core setup and loop
 extern void setup1() __attribute__((weak));
@@ -53,13 +57,39 @@ extern "C" void main1() {
     }
 }
 
+extern void __loop() {
+#ifdef USE_TINYUSB
+    yield();
+#endif
+
+    if (arduino::serialEventRun) {
+        arduino::serialEventRun();
+    }
+    if (arduino::serialEvent1Run) {
+        arduino::serialEvent1Run();
+    }
+    if (arduino::serialEvent2Run) {
+        arduino::serialEvent2Run();
+    }
+}
+
 extern "C" int main() {
 #if F_CPU != 125000000
     set_sys_clock_khz(F_CPU / 1000, true);
 #endif
 
+    // Let rest of core know if we're using FreeRTOS
+    __isFreeRTOS = initFreeRTOS ? true : false;
+
     mutex_init(&_pioMutex);
+
+    rp2040.begin();
+
     initVariant();
+
+    if (__isFreeRTOS) {
+        initFreeRTOS();
+    }
 
 #ifndef NO_USB
 #ifdef USE_TINYUSB
@@ -69,43 +99,46 @@ extern "C" int main() {
     __USBStart();
 
 #ifndef DISABLE_USB_SERIAL
-    // Enable serial port for reset/upload always
-    Serial.begin(115200);
+
+    if (!__isFreeRTOS) {
+        // Enable serial port for reset/upload always
+        Serial.begin(115200);
+    }
 #endif
 #endif
 #endif
 
 #if defined DEBUG_RP2040_PORT
-    DEBUG_RP2040_PORT.begin(115200);
+    if (!__isFreeRTOS) {
+        DEBUG_RP2040_PORT.begin(115200);
+    }
 #endif
 
 #ifndef NO_USB
-    if (setup1 || loop1) {
-        rp2040.fifo.begin(2);
-        multicore_launch_core1(main1);
-    } else {
-        rp2040.fifo.begin(1);
+    if (!__isFreeRTOS) {
+        if (setup1 || loop1) {
+            rp2040.fifo.begin(2);
+            multicore_launch_core1(main1);
+        } else {
+            rp2040.fifo.begin(1);
+        }
+        rp2040.fifo.registerCore();
     }
-    rp2040.fifo.registerCore();
 #endif
 
-    setup();
-    while (true) {
-        loop();
-
-#ifdef USE_TINYUSB
-        yield();
-#endif
-
-        if (arduino::serialEventRun) {
-            arduino::serialEventRun();
+    if (!__isFreeRTOS) {
+        setup();
+        while (true) {
+            loop();
+            __loop();
         }
-        if (arduino::serialEvent1Run) {
-            arduino::serialEvent1Run();
-        }
-        if (arduino::serialEvent2Run) {
-            arduino::serialEvent2Run();
-        }
+    } else {
+        rp2040.fifo.begin(2);
+        startFreeRTOS();
     }
     return 0;
+}
+
+extern "C" unsigned long ulMainGetRunTimeCounterValue() {
+    return rp2040.getCycleCount64();
 }

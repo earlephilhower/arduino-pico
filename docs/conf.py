@@ -19,7 +19,7 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
-
+import sphinx_rtd_theme
 
 # -- General configuration ------------------------------------------------
 
@@ -30,7 +30,7 @@
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = []
+extensions = ['sphinx_rtd_theme']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -46,7 +46,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Arduino-Pico'
-copyright = u'2021, Earle F. Philhower, III'
+copyright = u'2022, Earle F. Philhower, III'
 author = u'Earle F. Philhower, III'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -82,7 +82,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

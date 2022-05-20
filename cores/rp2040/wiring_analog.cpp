@@ -27,7 +27,7 @@
 #include <hardware/adc.h>
 
 static uint32_t analogScale = 255;
-static uint16_t analogFreq = 1000;
+static uint32_t analogFreq = 1000;
 static bool pwmInitted = false;
 static bool adcInitted = false;
 static uint16_t analogWritePseudoScale = 1;
@@ -42,9 +42,9 @@ extern "C" void analogWriteFreq(uint32_t freq) {
     if (freq < 100) {
         DEBUGCORE("ERROR: analogWriteFreq too low (%d)\n", freq);
         analogFreq = 100;
-    } else if (freq > 60000) {
+    } else if (freq > 1000000) {
         DEBUGCORE("ERROR: analogWriteFreq too high (%d)\n", freq);
-        analogFreq = 60000;
+        analogFreq = 1000000;
     } else {
         analogFreq = freq;
     }

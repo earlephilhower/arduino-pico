@@ -54,6 +54,9 @@
                      "name": "DeRuiLab FlyBoard2040 Core"
                   },
                   {
+                     "name": "DFRobot Beetle RP2040"
+                  },
+                  {
                      "name": "Invector Labs Challenger RP2040 WiFi"
                   },
                   {
@@ -69,10 +72,16 @@
                      "name": "Invector Labs RPICO32"
                   },
                   {
+                     "name": "Seeed XIAO RP2040"
+                  },
+                  {
                      "name": "Solder Party RP2040 Stamp"
                   },
                   {
                      "name": "SparkFun ProMicro RP2040"
+                  },
+                  {
+                     "name": "SparkFun Thing Plus RP2040"
                   },
                   {
                      "name": "Melopero Shake RP2040"

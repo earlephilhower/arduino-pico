@@ -1,4 +1,5 @@
 # Copyright 2021-present Maximilian Gerhardt <maximilian.gerhardt@rub.de>
+# TinyUSB ignore snippet from https://github.com/episource/
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -168,6 +169,18 @@ def configure_usb_flags(cpp_defines):
 #
 cpp_defines = env.Flatten(env.get("CPPDEFINES", []))
 
+# Ignore TinyUSB automatically if not active without requiring ldf_mode = chain+
+if not "USE_TINYUSB" in cpp_defines:
+    env_section = "env:" + env["PIOENV"]
+    ignored_libs = platform.config.get(
+            env_section, "lib_ignore", []
+        )
+    if not "Adafruit TinyUSB Library" in ignored_libs:
+        ignored_libs.append("Adafruit TinyUSB Library")
+    platform.config.set(
+            env_section, "lib_ignore", ignored_libs
+        )
+# configure USB stuff
 configure_usb_flags(cpp_defines)
 
 # info about the filesystem is already parsed by the platform's main.py 

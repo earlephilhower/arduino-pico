@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "stdlib_noniso.h" // Wacky deprecated AVR compatibility functions
+#include "RP2040Version.h"
 #include "api/ArduinoAPI.h"
 #include "api/itoa.h" // ARM toolchain doesn't provide itoa etc, provide them
 #include <pins_arduino.h>
@@ -77,6 +78,9 @@ float analogReadTemp();  // Returns core temp in Centigrade
 void analogWriteFreq(uint32_t freq);
 void analogWriteRange(uint32_t range);
 void analogWriteResolution(int res);
+
+// FreeRTOS potential calls
+extern bool __isFreeRTOS;
 
 #ifdef __cplusplus
 } // extern "C"
