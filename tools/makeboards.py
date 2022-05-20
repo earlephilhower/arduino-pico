@@ -251,6 +251,7 @@ MakeBoard("dfrobot_beetle_rp2040", "DFRobot", "Beetle RP2040", "0x3343", "0x4253
 MakeBoard("challenger_2040_lora", "iLabs", "Challenger 2040 LoRa", "0x2e8a", "0x1023", 250, "CHALLENGER_2040_LORA_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_wifi", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", 250, "CHALLENGER_2040_WIFI_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_lte", "iLabs", "Challenger 2040 LTE", "0x2e8a", "0x100b", 500, "CHALLENGER_2040_LTE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("challenger_2040_wifi_ble", "iLabs", "Challenger 2040 WiFi/BLE", "0x2e8a", "0x1101", 500, "CHALLENGER_2040_WIFI_BLE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_nb_2040_wifi", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a", "0x100b", 500, "CHALLENGER_NB_2040_WIFI_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("ilabs_rpico32", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 
