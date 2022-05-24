@@ -18,7 +18,13 @@
 #define PIN_SERIAL2_RX      (5u)
 #define PIN_ESP32_RST       (19u)
 #define PIN_ESP32_MODE      (24u)
-#define ESP32_SERIAL        1
+#define ESP32_SERIAL        Serial2
+// Uart define esp serial abstraction pins
+#define PIN_ESP_TX          PIN_SERIAL2_TX
+#define PIN_ESP_RX          PIN_SERIAL2_RX
+#define PIN_ESP_RST         PIN_ESP32_RST
+#define PIN_ESP_MODE        PIN_ESP32_MODE
+#define ESP_SERIAL_PORT     ESP32_SERIAL
 
 // SPI
 #define PIN_SPI0_MISO       (24u)
@@ -33,7 +39,7 @@
 #define PIN_SPI1_SS         (13u)
 // Handshake signal from ESP32C3
 #define ESP32_HS            (18u)
-#define ESP32_SPI           1
+#define ESP32_SPI           SPI1
 
 // Wire
 #define PIN_WIRE0_SDA       (0u)
