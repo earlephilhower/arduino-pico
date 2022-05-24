@@ -1,7 +1,7 @@
 /*
-    ESP8285 helper class for the Challenger RP2040 WiFi boards
+    ESP8285/ESP32C3 helper class for the Challenger RP2040 WiFi enabled boards
 
-    Copyright (c) 2021 P. Oldberg <pontus@ilabs.se>
+    Copyright (c) 2021,2022 P. Oldberg <pontus@ilabs.se>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -17,20 +17,27 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
 #pragma once
 
-#define DEFAULT_ESP8285_BAUDRATE      115200
+#define DEFAULT_ESP32_BAUDRATE      115200
+#define DEFAULT_ESP_BAUDRATE        DEFAULT_ESP32_BAUDRATE
 
 class Challenger2040WiFiClass {
   public:
-    Challenger2040WiFiClass();
+    Challenger2040WiFiClass(HardwareSerial* = &ESP_SERIAL_PORT);
     void doHWReset();
     void runReset();
     void flashReset();
     bool waitForReady();
     bool reset();
     bool isAlive();
-    bool changeBaudRate(int baud);
+    bool changeBaudRate(int);
+    void release();
+    void setSerial(HardwareSerial*);
+    HardwareSerial* getSerial();
+  private:
+    HardwareSerial* _serial;
 };
 
 extern Challenger2040WiFiClass Challenger2040WiFi;

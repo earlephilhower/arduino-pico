@@ -18,6 +18,13 @@
 #define PIN_SERIAL2_RX      (5u)
 #define PIN_ESP8285_RST     (19u)
 #define PIN_ESP8285_MODE    (13u)
+#define ESP8285_SERIAL      Serial2
+// Uart define esp serial abstraction pins
+#define PIN_ESP_TX          PIN_SERIAL2_TX
+#define PIN_ESP_RX          PIN_SERIAL2_RX
+#define PIN_ESP_RST         PIN_ESP8285_RST
+#define PIN_ESP_MODE        PIN_ESP8285_MODE
+#define ESP_SERIAL_PORT     ESP8285_SERIAL
 
 // SPI
 #define PIN_SPI0_MISO       (24u)

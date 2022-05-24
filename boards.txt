@@ -7449,8 +7449,8 @@ challenger_2040_ltepicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB 
 # -----------------------------------
 challenger_2040_wifi_ble.name=iLabs Challenger 2040 WiFi/BLE
 challenger_2040_wifi_ble.vid.0=0x2e8a
-challenger_2040_wifi_ble.pid.0=0x1101
-challenger_2040_wifi_ble.build.usbpid=-DSERIALUSB_PID=0x1101
+challenger_2040_wifi_ble.pid.0=0x102C
+challenger_2040_wifi_ble.build.usbpid=-DSERIALUSB_PID=0x102C
 challenger_2040_wifi_ble.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi_ble.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
 challenger_2040_wifi_ble.build.mcu=cortex-m0plus
@@ -7469,7 +7469,7 @@ challenger_2040_wifi_ble.build.ldscript=memmap_default.ld
 challenger_2040_wifi_ble.build.ram_length=256k
 challenger_2040_wifi_ble.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_2040_wifi_ble.build.vid=0x2e8a
-challenger_2040_wifi_ble.build.pid=0x1101
+challenger_2040_wifi_ble.build.pid=0x102C
 challenger_2040_wifi_ble.build.usb_manufacturer="iLabs"
 challenger_2040_wifi_ble.build.usb_product="Challenger 2040 WiFi/BLE"
 challenger_2040_wifi_ble.menu.flash.8388608_0=8MB (no FS)
@@ -7613,7 +7613,7 @@ challenger_2040_wifi_ble.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUS
 challenger_2040_wifi_blepicoprobe.name=iLabs Challenger 2040 WiFi/BLE (Picoprobe)
 challenger_2040_wifi_blepicoprobe.vid.0=0x2e8a
 challenger_2040_wifi_blepicoprobe.pid.0=0x0004
-challenger_2040_wifi_blepicoprobe.build.usbpid=-DSERIALUSB_PID=0x1101
+challenger_2040_wifi_blepicoprobe.build.usbpid=-DSERIALUSB_PID=0x102C
 challenger_2040_wifi_blepicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi_blepicoprobe.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
 challenger_2040_wifi_blepicoprobe.build.mcu=cortex-m0plus
@@ -7632,7 +7632,7 @@ challenger_2040_wifi_blepicoprobe.build.ldscript=memmap_default.ld
 challenger_2040_wifi_blepicoprobe.build.ram_length=256k
 challenger_2040_wifi_blepicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_2040_wifi_blepicoprobe.build.vid=0x2e8a
-challenger_2040_wifi_blepicoprobe.build.pid=0x1101
+challenger_2040_wifi_blepicoprobe.build.pid=0x102C
 challenger_2040_wifi_blepicoprobe.build.usb_manufacturer="iLabs"
 challenger_2040_wifi_blepicoprobe.build.usb_product="Challenger 2040 WiFi/BLE (Picoprobe)"
 challenger_2040_wifi_blepicoprobe.menu.flash.8388608_0=8MB (no FS)
@@ -7776,7 +7776,7 @@ challenger_2040_wifi_blepicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DU
 challenger_2040_wifi_blepicodebug.name=iLabs Challenger 2040 WiFi/BLE (pico-debug)
 challenger_2040_wifi_blepicodebug.vid.0=0x1209
 challenger_2040_wifi_blepicodebug.pid.0=0x2488
-challenger_2040_wifi_blepicodebug.build.usbpid=-DSERIALUSB_PID=0x1101
+challenger_2040_wifi_blepicodebug.build.usbpid=-DSERIALUSB_PID=0x102C
 challenger_2040_wifi_blepicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi_blepicodebug.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
 challenger_2040_wifi_blepicodebug.build.mcu=cortex-m0plus
@@ -7795,7 +7795,7 @@ challenger_2040_wifi_blepicodebug.build.ldscript=memmap_default.ld
 challenger_2040_wifi_blepicodebug.build.ram_length=240k
 challenger_2040_wifi_blepicodebug.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_2040_wifi_blepicodebug.build.vid=0x2e8a
-challenger_2040_wifi_blepicodebug.build.pid=0x1101
+challenger_2040_wifi_blepicodebug.build.pid=0x102C
 challenger_2040_wifi_blepicodebug.build.usb_manufacturer="iLabs"
 challenger_2040_wifi_blepicodebug.build.usb_product="Challenger 2040 WiFi/BLE (pico-debug)"
 challenger_2040_wifi_blepicodebug.menu.flash.8388608_0=8MB (no FS)
