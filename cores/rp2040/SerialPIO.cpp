@@ -257,8 +257,23 @@ void SerialPIO::end() {
     if (!_running) {
         return;
     }
-    // TODO: Deallocate PIO resources, stop them
-    _pioSP[pio_get_index(_rxPIO)][_rxSM] = nullptr;
+    if (_tx != NOPIN) {
+        pio_sm_set_enabled(_txPIO, _txSM, false);
+    }
+    if (_rx != NOPIN) {
+        pio_sm_set_enabled(_rxPIO, _rxSM, false);
+        _pioSP[pio_get_index(_rxPIO)][_rxSM] = nullptr;
+        // If no more active, disable the IRQ
+        auto pioNum = pio_get_index(_rxPIO);
+        bool used = false;
+        for (int i = 0; i < 4; i++) {
+            used = used || !!_pioSP[pioNum][i];
+        }
+        if (!used) {
+            auto irqno = pioNum == 0 ? PIO0_IRQ_0 : PIO1_IRQ_0;
+            irq_set_enabled(irqno, false);
+        }
+    }
     _running = false;
 }
 
