@@ -113,11 +113,11 @@ void Challenger2040WiFiClass::release() {
   _serial->end();
 }
 
-// We can assign a new hardware serial port to accomodate the ESP device here.
+// We can assign a new hardware serial port to accommodate the ESP device here.
 // The function will release the previously used serial port and assign the
 // new port. The ESP will be left in a reset state ready to start normal
 // operation when exiting the function.
-// This function is usefull for when using the PIO serial ports to communicate
+// This function is useful for when using the PIO serial ports to communicate
 // with the ESP instead of the built in hardware serial port.
 void Challenger2040WiFiClass::setSerial(HardwareSerial* serial) {
 
