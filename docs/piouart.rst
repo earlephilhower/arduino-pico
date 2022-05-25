@@ -3,8 +3,8 @@
 
 Equivalent to the Arduino SoftwareSerial library, an emulated UART using
 one or two PIO state machines is included in the Arduino-Pico core.  This
-allows for up to 8 additional serial ports to be run from the RP2040 without
-requiring additional CPU resources.
+allows for up to 4 bidirectional or up to 8 unidirectional serial ports to
+be run from the RP2040 without requiring additional CPU resources.
 
 Instantiate a ``SerialPIO(txpin, rxpin, fifosize)`` object in your sketch and then
 use it the same as any other serial port.  Even, odd, and no parity modes
