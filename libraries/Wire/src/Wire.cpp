@@ -216,7 +216,7 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
     }
 
     _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(_timeout));
-    if (_buffLen == PICO_ERROR_GENERIC) {
+    if ((_buffLen == PICO_ERROR_GENERIC) || (_buffLen == PICO_ERROR_TIMEOUT)) {
         _buffLen = 0;
     }
     _buffOff = 0;
