@@ -2,7 +2,7 @@
   "build": {
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_WIZNET_5100S_EVB_PICO -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250",
+    "extra_flags": "-D ARDUINO_WIZNET_WIZFI360_EVB_PICO -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250",
     "f_cpu": "133000000L",
     "hwids": [
       [
@@ -13,12 +13,12 @@
     "mcu": "rp2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "wiznet_5100s_evb_pico",
+        "variant": "wiznet_wizfi360_evb_pico",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2e8a",
-        "usb_pid": "0x1027",
+        "usb_pid": "0x1028",
         "usb_manufacturer": "WIZnet",
-        "usb_product": "W5100S-EVB-Pico"
+        "usb_product": "WizFi360-EVB-Pico"
       }
     }
   },
@@ -30,7 +30,7 @@
   "frameworks": [
     "arduino"
   ],
-  "name": "W5100S-EVB-Pico",
+  "name": "WizFi360-EVB-Pico",
   "upload": {
     "maximum_ram_size": 270336,
     "maximum_size": 2097152,
