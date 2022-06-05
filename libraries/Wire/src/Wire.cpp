@@ -377,5 +377,12 @@ void TwoWire::onRequest(void(*function)(void)) {
     _onRequestCallback = function;
 }
 
-TwoWire Wire(i2c0, PIN_WIRE0_SDA, PIN_WIRE0_SCL);
-TwoWire Wire1(i2c1, PIN_WIRE1_SDA, PIN_WIRE1_SCL);
+#ifndef __WIRE0_DEVICE
+#define __WIRE0_DEVICE i2c0
+#endif
+#ifndef __WIRE1_DEVICE
+#define __WIRE1_DEVICE i2c1
+#endif
+
+TwoWire Wire(__WIRE0_DEVICE, PIN_WIRE0_SDA, PIN_WIRE0_SCL);
+TwoWire Wire1(__WIRE1_DEVICE, PIN_WIRE1_SDA, PIN_WIRE1_SCL);
