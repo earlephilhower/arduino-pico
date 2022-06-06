@@ -36,6 +36,8 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
 * WIZnet W5100S-EVB-Pico
+* WIZnet W5500-EVB-Pico
+* WIZnet WizFi360-EVB-Pico
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager

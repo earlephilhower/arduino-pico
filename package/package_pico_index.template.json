@@ -96,6 +96,12 @@
                      "name": "WIZnet W5100S-EVB-Pico"
                   },
                   {
+                     "name": "WIZnet 5500-EVB-Pico"
+                  },
+                  {
+                     "name": "WIZnet WizFi360-EVB-Pico"
+                  },
+                  {
                      "name": "Generic RP2040 Module"
                   }
                ],
