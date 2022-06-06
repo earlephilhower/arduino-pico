@@ -262,6 +262,21 @@ def get_drives():
         for d in os.listdir(rootpath):
             drives.append(os.path.join(rootpath, d))
 
+        if (len(drives) == 0) and (sys.platform == "linux"):
+            globexpr = "/dev/disk/by-id/usb-RPI_RP2*-part1"
+            rpidisk = glob.glob(globexpr)
+            if len(rpidisk) > 0:
+                try:
+                    cmd = ["udisksctl", "mount", "--block-device", os.path.realpath(rpidisk[0])]
+                    proc_out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    if proc_out.returncode == 0:
+                        stdoutput = proc_out.stdout.decode("UTF-8")
+                        match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
+                        if match:
+                            drives = [match.group(1)]
+                except Exception as ex:
+                    print("Exception executing udisksctl. Exception: {}".format(ex))
+                    # If it fails, no problem since it was a heroic attempt
 
     def has_info(d):
         try:
@@ -336,8 +351,6 @@ def main():
                     ser.dtr = False
                 except:
                     print("Caught exception during reset!")
-                # Probably should be smart and check for device appearance or something
-                time.sleep(10)
             except:
                 pass
     if args.list:
@@ -368,33 +381,10 @@ def main():
             if args.output == None:
                 args.output = "flash." + ext
         else:
-            drives = get_drives()
-            if (len(drives) == 0) and (sys.platform == "linux"):
-                globexpr = "/dev/disk/by-id/usb-RPI_RP2*-part1"
-                rpidisk = glob.glob(globexpr)
-                if len(rpidisk) == 0:
-                    print("Unable to find disk by ID using expression: {}".format(globexpr))
-                else:
-                    try:
-                        cmd = ["udisksctl", "mount", "--block-device", os.path.realpath(rpidisk[0])]
-                        proc_out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                        if proc_out.returncode == 0:
-                            stdoutput = proc_out.stdout.decode("UTF-8")
-                            match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
-                            if match is None:
-                                print("Warn: {} did not print mount point. Attempting to locate mounted drive in file system. StdOut={}".format(cmd[0], stdoutput))
-                                drives = get_drives()
-                            else:
-                                drives = [match.group(1)]
-                        else:
-                            print("Error executing command {}. Return Code: {} Std Output: {} StdError: {}".format(" ".join(cmd), 
-                                                                                                                   proc_out.returncode,
-                                                                                                                   proc_out.stdout.decode("UTF-8"),
-                                                                                                                   proc_out.stderr.decode("UTF-8")))
-
-                    except Exception as ex:
-                        print("Exception executing udisksctl. Exception: {}".format(ex))
-                        # If it fails, no problem since it was a heroic attempt
+            now = time.time()
+            drives = []
+            while (time.time() - now < 10.0) and (len(drives) == 0):
+                drives = get_drives()
 
         if args.output:
             write_file(args.output, outbuf)
