@@ -384,6 +384,7 @@ def main():
             now = time.time()
             drives = []
             while (time.time() - now < 10.0) and (len(drives) == 0):
+                time.sleep(0.5) # Avoid 100% CPU use while waiting for drive to appear
                 drives = get_drives()
 
         if args.output:
