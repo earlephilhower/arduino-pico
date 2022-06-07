@@ -50,6 +50,12 @@ def BuildRTTI(name):
     print("%s.menu.rtti.Enabled=Enabled" % (name))
     print("%s.menu.rtti.Enabled.build.flags.rtti=" % (name))
 
+def BuildStackProtect(name):
+    print("%s.menu.stackprotect.Disabled=Disabled" % (name))
+    print("%s.menu.stackprotect.Disabled.build.flags.stackprotect=" % (name))
+    print("%s.menu.stackprotect.Enabled=Enabled" % (name))
+    print("%s.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector" % (name))
+
 def BuildExceptions(name):
     print("%s.menu.exceptions.Disabled=Disabled" % (name))
     print("%s.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions" % (name))
@@ -120,6 +126,7 @@ def BuildGlobalMenuList():
     print("menu.freq=CPU Speed")
     print("menu.opt=Optimize")
     print("menu.rtti=RTTI")
+    print("menu.stackprotect=Stack Protector")
     print("menu.exceptions=C++ Exceptions")
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
@@ -155,6 +162,7 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
         BuildFreq(n)
         BuildOptimize(n)
         BuildRTTI(n)
+        BuildStackProtect(n)
         BuildExceptions(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
