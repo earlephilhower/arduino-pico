@@ -1,8 +1,5 @@
 -iwithprefixbefore/cores/rp2040/api/deprecated-avr-comp/
 -iwithprefixbefore/lib/pico_base/
--iwithprefixbefore/pico-extras/src/common/pico_audio/include
--iwithprefixbefore/pico-extras/src/common/pico_util_buffer/include
--iwithprefixbefore/pico-extras/src/rp2_common/pico_audio_i2s/include
 -iwithprefixbefore/pico-sdk/lib/tinyusb/src/
 -iwithprefixbefore/pico-sdk/src/boards/include
 -iwithprefixbefore/pico-sdk/src/common/pico_base/include
