@@ -27,6 +27,21 @@ ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y).
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
 
+# read includes from this file to add them into CPPPATH later
+includes_file = os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+file_lines = []
+includes = []
+with open(includes_file, "r") as fp:
+    file_lines = fp.readlines()
+for l in file_lines:
+    path = l.strip().replace("-iwithprefixbefore/", "").replace("/", os.sep)
+    # emulate -iprefix <framework path>.
+    path = os.path.join(FRAMEWORK_DIR, path)
+    # prevent non-existant paths from being added
+    # looking at you here, pico-extras/src/common/pico_audio and co.
+    if os.path.isdir(path):
+        includes.append(path)
+
 # update progsize expression to also check for bootloader.
 env.Replace(
     SIZEPROGREGEXP=r"^(?:\.boot2|\.text|\.data|\.rodata|\.text.align|\.ARM.exidx)\s+(\d+).*"
@@ -42,8 +57,10 @@ env.Append(
         "-mthumb",
         "-ffunction-sections",
         "-fdata-sections",
-        "-iprefix" + os.path.join(FRAMEWORK_DIR),
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+        # use explicit include (-I) paths, otherwise it's
+        # not visible in the IDE's intellisense.
+        #"-iprefix" + os.path.join(FRAMEWORK_DIR),
+        #"@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
     ],
 
     CFLAGS=[
@@ -98,7 +115,8 @@ env.Append(
         File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")), 
         "m", "c", "stdc++", "c"]
 )
-
+# expand with read includes
+env.Append(CPPPATH=includes)
 
 def configure_usb_flags(cpp_defines):
     global ram_size
