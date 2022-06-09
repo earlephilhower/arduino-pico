@@ -37,7 +37,7 @@ for l in file_lines:
     path = l.strip().replace("-iwithprefixbefore/", "").replace("/", os.sep)
     # emulate -iprefix <framework path>.
     path = os.path.join(FRAMEWORK_DIR, path)
-    # prevent non-existant paths from being added
+    # prevent non-existent paths from being added
     # looking at you here, pico-extras/src/common/pico_audio and co.
     if os.path.isdir(path):
         includes.append(path)
