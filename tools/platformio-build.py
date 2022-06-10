@@ -51,6 +51,7 @@ env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
 
     CCFLAGS=[
+        "-Os", # Optimize for size by default
         "-Werror=return-type",
         "-march=armv6-m",
         "-mcpu=cortex-m0plus",
