@@ -350,18 +350,6 @@ SerialUART::operator bool() {
     return _running;
 }
 
-#if defined(PIN_SERIAL1_RTS)
-SerialUART Serial1(uart0, PIN_SERIAL1_TX, PIN_SERIAL1_RX, PIN_SERIAL1_RTS, PIN_SERIAL1_CTS);
-#else
-SerialUART Serial1(uart0, PIN_SERIAL1_TX, PIN_SERIAL1_RX);
-#endif
-
-#if defined(PIN_SERIAL2_RTS)
-SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX, PIN_SERIAL2_RTS, PIN_SERIAL2_CTS);
-#else
-SerialUART Serial2(uart1, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
-#endif
-
 void arduino::serialEvent1Run(void) {
     if (serialEvent1 && Serial1.available()) {
         serialEvent1();
@@ -406,10 +394,38 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
     }
 }
 
+#ifndef __SERIAL1_DEVICE
+#define __SERIAL1_DEVICE uart0
+#endif
+#ifndef __SERIAL2_DEVICE
+#define __SERIAL2_DEVICE uart1
+#endif
+
+#if defined(PIN_SERIAL1_RTS)
+SerialUART Serial1(__SERIAL1_DEVICE, PIN_SERIAL1_TX, PIN_SERIAL1_RX, PIN_SERIAL1_RTS, PIN_SERIAL1_CTS);
+#else
+SerialUART Serial1(__SERIAL1_DEVICE, PIN_SERIAL1_TX, PIN_SERIAL1_RX);
+#endif
+
+#if defined(PIN_SERIAL2_RTS)
+SerialUART Serial2(__SERIAL2_DEVICE, PIN_SERIAL2_TX, PIN_SERIAL2_RX, PIN_SERIAL2_RTS, PIN_SERIAL2_CTS);
+#else
+SerialUART Serial2(__SERIAL2_DEVICE, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
+#endif
+
+
 static void __not_in_flash_func(_uart0IRQ)() {
-    Serial1._handleIRQ();
+    if (__SERIAL1_DEVICE == uart0) {
+        Serial1._handleIRQ();
+    } else {
+        Serial2._handleIRQ();
+    }
 }
 
 static void __not_in_flash_func(_uart1IRQ)() {
-    Serial2._handleIRQ();
+    if (__SERIAL2_DEVICE == uart1) {
+        Serial2._handleIRQ();
+    } else {
+        Serial1._handleIRQ();
+    }
 }

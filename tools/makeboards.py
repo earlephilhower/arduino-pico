@@ -50,6 +50,20 @@ def BuildRTTI(name):
     print("%s.menu.rtti.Enabled=Enabled" % (name))
     print("%s.menu.rtti.Enabled.build.flags.rtti=" % (name))
 
+def BuildStackProtect(name):
+    print("%s.menu.stackprotect.Disabled=Disabled" % (name))
+    print("%s.menu.stackprotect.Disabled.build.flags.stackprotect=" % (name))
+    print("%s.menu.stackprotect.Enabled=Enabled" % (name))
+    print("%s.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector" % (name))
+
+def BuildExceptions(name):
+    print("%s.menu.exceptions.Disabled=Disabled" % (name))
+    print("%s.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions" % (name))
+    print("%s.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++" % (name))
+    print("%s.menu.exceptions.Enabled=Enabled" % (name))
+    print("%s.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions" % (name))
+    print("%s.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc" % (name))
+
 def BuildBoot(name):
     for l in [ ("Generic SPI /2", "boot2_generic_03h_2_padded_checksum"),  ("Generic SPI /4", "boot2_generic_03h_4_padded_checksum"),
             ("IS25LP080 QSPI /2", "boot2_is25lp080_2_padded_checksum"), ("IS25LP080 QSPI /4", "boot2_is25lp080_4_padded_checksum"),
@@ -112,6 +126,8 @@ def BuildGlobalMenuList():
     print("menu.freq=CPU Speed")
     print("menu.opt=Optimize")
     print("menu.rtti=RTTI")
+    print("menu.stackprotect=Stack Protector")
+    print("menu.exceptions=C++ Exceptions")
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
@@ -146,6 +162,8 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
         BuildFreq(n)
         BuildOptimize(n)
         BuildRTTI(n)
+        BuildStackProtect(n)
+        BuildExceptions(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
         if a == "picodebug":
@@ -272,7 +290,9 @@ MakeBoard("upesy_rp2040_devkit", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 2
 MakeBoard("seeed_xiao_rp2040", "Seeed", "XAIO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XAIO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 
 # WIZnet
-MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1008", 250, "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_wizfi360_evb_pico", "WIZnet", "WizFi360-EVB-Pico", "0x2e8a", "0x1028", 250, "WIZNET_WIZFI360_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_5500_evb_pico", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
 
 # Generic
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
