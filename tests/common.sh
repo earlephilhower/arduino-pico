@@ -212,7 +212,7 @@ function install_ide()
     cat rp2040/platform.local.txt
     echo -e "\n----\n"
     cd rp2040/tools
-    python3 get.py -q
+    python3 get.py
     if [ "$WINDOWS" = "1" ]; then
         # Because the symlinks don't work well under Win32, we need to add the path to this copy, not the original...
         relbin=$(realpath $PWD/../system/arm-none-eabi/bin)
