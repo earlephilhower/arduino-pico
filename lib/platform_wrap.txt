@@ -127,6 +127,7 @@
 -Wl,--wrap=powf
 -Wl,--wrap=powint
 -Wl,--wrap=powintf
+-Wl,--wrap=realloc
 -Wl,--wrap=remainder
 -Wl,--wrap=remainderf
 -Wl,--wrap=remquo
