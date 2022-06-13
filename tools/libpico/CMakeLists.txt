@@ -21,6 +21,7 @@ target_compile_definitions(pico PUBLIC
 
 target_compile_options(pico PUBLIC
 	-fno-exceptions
+	-Os
 	$<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 )
 
