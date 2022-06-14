@@ -116,16 +116,6 @@ sed "s/version=.*/version=$ver/g" |\
 sed -E "s/name=([a-zA-Z0-9\ -]+).*/name=\1($ver)/g"\
  > $outdir/platform.txt
 
-# Put core version and short hash of git version into core_version.h
-ver_define=`echo $plain_ver | tr "[:lower:].\055" "[:upper:]_"`
-echo Ver define: $ver_define
-echo \#define ARDUINO_RP2040_GIT_VER 0x`git rev-parse --short=8 HEAD 2>/dev/null` >$outdir/cores/rp2040/core_version.h
-echo \#define ARDUINO_RP2040_GIT_DESC `git describe --tags 2>/dev/null` >>$outdir/cores/rp2040/core_version.h
-echo \#define ARDUINO_RP2040_RELEASE_$ver_define >>$outdir/cores/rp2040/core_version.h
-echo \#define ARDUINO_RP2040_RELEASE \"$ver_define\" >>$outdir/cores/rp2040/core_version.h
-
-sed -i 's/"version": .*/"version": "'$visible_ver'"/' $outdir/package.json
-
 # Zip the package
 pushd package/versions/$visible_ver
 echo "Making $package_name.zip"
