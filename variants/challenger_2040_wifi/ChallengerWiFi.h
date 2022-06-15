@@ -20,8 +20,8 @@
 
 #pragma once
 
-#define DEFAULT_ESP32_BAUDRATE      115200
-#define DEFAULT_ESP_BAUDRATE        DEFAULT_ESP32_BAUDRATE
+#define DEFAULT_ESP8285_BAUDRATE    115200
+#define DEFAULT_ESP_BAUDRATE        DEFAULT_ESP8285_BAUDRATE
 
 class Challenger2040WiFiClass {
   public:
