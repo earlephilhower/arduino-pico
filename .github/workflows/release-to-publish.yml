@@ -25,3 +25,8 @@ jobs:
            TAG=$(git describe --exact-match --tags)
            curl -L -o package_rp2040_index.json "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$TAG/package_rp2040_index.json"
            ./package/update_release.py --token ${CI_GITHUB_API_KEY} --repo "$GITHUB_REPOSITORY" --tag global package_rp2040_index.json
+           # Upload to Platform.IO
+           apt-get install -y python3-pip
+           pip3 install platformio
+           curl -LO $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$TAG/rp2040-$TAG.zip
+           pio package publish rp2040-$TAG.zip --non-interactive

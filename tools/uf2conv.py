@@ -350,7 +350,7 @@ def main():
                     ser = serial.Serial(args.serial, 1200)
                     ser.dtr = False
                 except:
-                    print("Caught exception during reset!")
+                    pass # Ignore error in the case it is already in upload mode
             except:
                 pass
     if args.list:

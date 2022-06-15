@@ -132,7 +132,6 @@ void TwoWire::begin(uint8_t addr) {
     irq_set_exclusive_handler(irqNo, i2c_hw_index(_i2c) == 0 ? _handler0 : _handler1);
     irq_set_enabled(irqNo, true);
 
-
     gpio_set_function(_sda, GPIO_FUNC_I2C);
     gpio_pull_up(_sda);
     gpio_set_function(_scl, GPIO_FUNC_I2C);
@@ -192,7 +191,15 @@ void TwoWire::end() {
         // ERROR
         return;
     }
+
+    if (_slave) {
+        int irqNo = I2C0_IRQ + i2c_hw_index(_i2c);
+        irq_remove_handler(irqNo, i2c_hw_index(_i2c) == 0 ? _handler0 : _handler1);
+        irq_set_enabled(irqNo, false);
+    }
+
     i2c_deinit(_i2c);
+
     pinMode(_sda, INPUT);
     pinMode(_scl, INPUT);
     _running = false;
