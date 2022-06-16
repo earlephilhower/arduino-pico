@@ -67,7 +67,7 @@ This is now **deprecated** and should not be done anymore. Users should delete t
 
 .. code:: ini
 
-    pio pkg update https://github.com/maxgerhardt/platform-raspberrypi.git
+    pio pkg update -g -p https://github.com/maxgerhardt/platform-raspberrypi.git
 
 in the `PlatformIO CLI <https://docs.platformio.org/en/latest/integration/ide/vscode.html#platformio-core-cli>`_. The same can be achieved by using the VSCode PIO Home -> Platforms -> Updates GUI.
 
