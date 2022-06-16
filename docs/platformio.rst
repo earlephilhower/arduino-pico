@@ -19,14 +19,14 @@ The PlatformIO experience:
 
 Refer to the general documentation at https://docs.platformio.org/.
 
-Especially useful is the `Getting started with VSCode + PlatformIO <https://docs.platformio.org/en/latest/integration/ide/vscode.html#installation), [CLI reference](https://docs.platformio.org/en/latest/core/index.html) and [platformio.ini options](https://docs.platformio.org/en/latest/projectconf/index.html)>`__ page.
+Especially useful is the `Getting started with VSCode + PlatformIO <https://docs.platformio.org/en/latest/integration/ide/vscode.html#installation>`_, `CLI reference <https://docs.platformio.org/en/latest/core/index.html>`_ and the `platformio.ini options <https://docs.platformio.org/en/latest/projectconf/index.html>`_ page.
 
 Hereafter it is assumed that you have a basic understanding of PlatformIO in regards to project creation, project file structure and building and uploading PlatformIO projects, through reading the above pages.
 
 Current state of development
 ----------------------------
 
-At the time of writing, PlatformIO integration for this core is a work-in-progress and not yet merged into mainline PlatformIO. This is subject to change soon.
+At the time of writing, PlatformIO integration for this core is a work-in-progress and not yet merged into mainline PlatformIO. This is subject to change once `this pull request <https://github.com/platformio/platform-raspberrypi/pull/36>`_ is merged.
 
 If you want to use the PlatformIO integration right now, make sure you first create a standard Raspberry Pi Pico + Arduino project within PlatformIO. 
 This will give you a project with the ``platformio.ini`` 
@@ -47,12 +47,34 @@ You *also* need to inject two PlatformIO packages, one for the compiler toolchai
     platform = https://github.com/maxgerhardt/platform-raspberrypi.git
     board = pico
     framework = arduino
+
+    
+When the support for this core has been merged into mainline PlatformIO, this notice will be removed and a standard `platformio.ini` as shown above will work as a base.
+
+Deprectation warnings
+---------------------
+
+Previous versions of this documentation told users to inject the framework and toolchain package into the project by using
+
+.. code:: ini
+
     ; note that download link for toolchain is specific for OS. see https://github.com/earlephilhower/pico-quick-toolchain/releases.
     platform_packages = 
         maxgerhardt/framework-arduinopico@https://github.com/earlephilhower/arduino-pico.git
         maxgerhardt/toolchain-pico@https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.1-a/x86_64-w64-mingw32.arm-none-eabi-7855b0c.210706.zip
-    
-When the support for this core has been merged into mainline PlatformIO, this notice will be removed and a standard `platformio.ini` as shown above will work as a base.
+
+This is now **deprecated** and should not be done anymore. Users should delete these ``platform_packages`` lines and update the platform integration by issuing the commands 
+
+.. code:: ini
+
+    pio pkg update https://github.com/maxgerhardt/platform-raspberrypi.git
+
+in the `PlatformIO CLI <https://docs.platformio.org/en/latest/integration/ide/vscode.html#platformio-core-cli>`_. The same can be achieved by using the VSCode PIO Home -> Platforms -> Updates GUI.
+
+The toolchain, which was also renamed to ``toolchain-rp2040-earlephilhower`` is downloaded automatically from the registry. The same goes for the ``framework-arduinopico`` toolchain package, which points directly to the Arduino-Pico Github repository.
+However, users can still select a custom fork or branch of the core if desired so, as detailed in a chapter below.
+
+As the pull req
 
 Selecting the new core
 ----------------------
@@ -61,8 +83,8 @@ Prerequisite for using this core is to tell PlatformIO to switch to it.
 There will be board definition files where the Earle-Philhower core will
 be the default since it's a board that only exists in this core (and not
 the other https://github.com/arduino/ArduinoCore-mbed). To switch boards
-for which this is not the default core (e.g. the standard
-``board = pico``), the directive
+for which this is not the default core (which are only
+``board = pico`` and ``board = nanorp2040connect``), the directive
 
 .. code:: ini
 
@@ -71,6 +93,8 @@ for which this is not the default core (e.g. the standard
 must be added to the ``platformio.ini``. This controls the `core
 switching
 logic <https://github.com/maxgerhardt/platform-raspberrypi/blob/77e0d3a29d1dbf00fd3ec3271104e3bf4820869c/builder/frameworks/arduino/arduino.py#L27-L32>`__.
+
+When using Arduino-Pico-only boards like ``board = rpipico`` or ``board = adafruit_feather``, this is not needed.
 
 Flash size
 ----------
@@ -188,8 +212,8 @@ directive to do so. Simply specify that the framework package
 Whereas the ``#master`` can also be replaced by a ``#branchname`` or a
 ``#commithash``. If left out, it will pull the default branch, which is ``master``.
 
-The ``file://`` pseudo-protocol can also be used instead of ``https://`` to point to a
-local copy of the core (with e.g. some modifications) on disk.
+The ``file://`` and ``symlink://`` pseudo-protocols can also be used instead of ``https://`` to point to a
+local copy of the core (with e.g. some modifications) on disk (`see documentation <https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_install.html?#local-folder>_`).
 
 Note that this can only be done for versions that have the PlatformIO
 builder script it in, so versions before 1.9.2 are not supported.
@@ -206,12 +230,9 @@ and 0.5MByte filesystem.
     platform = https://github.com/maxgerhardt/platform-raspberrypi.git
     board = pico
     framework = arduino
+    ; board can use both Arduino cores -- we select Arduino-Pico here
     board_build.core = earlephilhower
     board_build.filesystem_size = 0.5m
-    ; note that download link for toolchain is specific for OS. see https://github.com/earlephilhower/pico-quick-toolchain/releases.
-    platform_packages = 
-        maxgerhardt/framework-arduinopico@https://github.com/earlephilhower/arduino-pico.git
-        maxgerhardt/toolchain-pico@https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.1-a/x86_64-w64-mingw32.arm-none-eabi-7855b0c.210706.zip
 
 
 The initial project structure should be generated just creating a new
