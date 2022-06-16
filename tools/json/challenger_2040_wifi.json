@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "challenger_2040_wifi",
     "arduino": {
       "earlephilhower": {
-        "variant": "challenger_2040_wifi",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2e8a",
-        "usb_pid": "0x1006",
-        "usb_manufacturer": "iLabs",
-        "usb_product": "Challenger 2040 WiFi"
+        "usb_pid": "0x1006"
       }
     }
   },

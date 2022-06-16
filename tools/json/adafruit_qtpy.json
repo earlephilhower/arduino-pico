@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "adafruit_qtpy",
     "arduino": {
       "earlephilhower": {
-        "variant": "adafruit_qtpy",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x239a",
-        "usb_pid": "0x80f7",
-        "usb_manufacturer": "Adafruit",
-        "usb_product": "QT Py RP2040"
+        "usb_pid": "0x80f7"
       }
     }
   },

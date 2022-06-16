@@ -223,8 +223,8 @@ linkerscript_cmd = env.Command(
 
 # if no custom linker script is provided, we use the command that we prepared to generate one.
 if not board.get("build.ldscript", ""):
-    # execute fetch filesystem info stored in env to alawys have that info ready
-    env["fetch_fs_size"](env)
+    # execute fetch filesystem info stored in env to always have that info ready
+    env["__fetch_fs_size"](env)
     env.Depends("$BUILD_DIR/${PROGNAME}.elf", linkerscript_cmd)
     env.Replace(LDSCRIPT_PATH=os.path.join("$BUILD_DIR", "memmap_default.ld"))
 

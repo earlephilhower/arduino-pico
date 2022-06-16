@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "upesy_rp2040_devkit",
     "arduino": {
       "earlephilhower": {
-        "variant": "upesy_rp2040_devkit",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2e8a",
-        "usb_pid": "0x1007",
-        "usb_manufacturer": "uPesy",
-        "usb_product": "RP2040 DevKit"
+        "usb_pid": "0x1007"
       }
     }
   },

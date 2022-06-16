@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "adafruit_trinkeyrp2040qt",
     "arduino": {
       "earlephilhower": {
-        "variant": "adafruit_trinkeyrp2040qt",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x239a",
-        "usb_pid": "0x8109",
-        "usb_manufacturer": "Adafruit",
-        "usb_product": "Trinkey RP2040 QT"
+        "usb_pid": "0x8109"
       }
     }
   },
