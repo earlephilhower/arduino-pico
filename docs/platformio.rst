@@ -63,7 +63,7 @@ Previous versions of this documentation told users to inject the framework and t
         maxgerhardt/framework-arduinopico@https://github.com/earlephilhower/arduino-pico.git
         maxgerhardt/toolchain-pico@https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.1-a/x86_64-w64-mingw32.arm-none-eabi-7855b0c.210706.zip
 
-This is now **deprecated** and should not be done anymore. Users should delete these ``platform_packages`` lines and update the platform integration by issuing the commands 
+This is now **deprecated** and should not be done anymore. Users should delete these ``platform_packages`` lines and update the platform integration by issuing the command
 
 .. code:: bash
 
