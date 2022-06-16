@@ -65,7 +65,7 @@ Previous versions of this documentation told users to inject the framework and t
 
 This is now **deprecated** and should not be done anymore. Users should delete these ``platform_packages`` lines and update the platform integration by issuing the commands 
 
-.. code:: ini
+.. code:: bash
 
     pio pkg update -g -p https://github.com/maxgerhardt/platform-raspberrypi.git
 
