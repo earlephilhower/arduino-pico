@@ -181,9 +181,12 @@ jobs:
 
 # Build a few examples with PlatformIO to test if integration works
   build-platformio:
+    name: Build PlatformIO Examples
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    - with:
+        submodules: 'recursive'
     - name: Cache pip
       uses: actions/cache@v2
       with:
@@ -205,6 +208,6 @@ jobs:
         pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
         pio pkg install --global --tool symlink://.
     - name: Build Multicore Example
-      run: pio ci --board=rpipico --board=adafruit_feather libraries/rp2040/examples/Multicore/Multicore.ino
+      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Multicore/Multicore.ino
     - name: Build Fade Example
-      run: pio ci --board=rpipico --board=adafruit_feather libraries/rp2040/examples/Fade/Fade.ino
+      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Fade/Fade.ino
