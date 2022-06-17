@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "generic",
     "arduino": {
       "earlephilhower": {
-        "variant": "generic",
         "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
         "usb_vid": "0x2e8a",
-        "usb_pid": "0xf00a",
-        "usb_manufacturer": "Generic",
-        "usb_product": "RP2040"
+        "usb_pid": "0xf00a"
       }
     }
   },

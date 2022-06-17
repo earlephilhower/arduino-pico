@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "cytron_maker_nano_rp2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "cytron_maker_nano_rp2040",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2e8a",
-        "usb_pid": "0x100f",
-        "usb_manufacturer": "Cytron",
-        "usb_product": "Maker Nano RP2040"
+        "usb_pid": "0x100f"
       }
     }
   },
