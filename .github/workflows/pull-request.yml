@@ -184,9 +184,9 @@ jobs:
     name: Build PlatformIO Examples
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
       with:
-        submodules: 'recursive'
+        submodules: true
     - name: Cache pip
       uses: actions/cache@v2
       with:
@@ -208,6 +208,8 @@ jobs:
         pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
         pio pkg install --global --tool symlink://.
     - name: Build Multicore Example
-      run: pio ci -v --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Multicore/Multicore.ino
+      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Multicore/Multicore.ino
     - name: Build Fade Example
-      run: pio ci -v --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Fade/Fade.ino
+      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Fade/Fade.ino
+    - name: Build TinyUSB Example
+      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" -O "build_flags=-DUSE_TINYUSB" libraries/rp2040/examples/Adafruit_TinyUSB_Arduino/examples/CDC/cdc_multi/cdc_multi.ino
