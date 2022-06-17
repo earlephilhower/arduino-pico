@@ -179,7 +179,7 @@ jobs:
         cd ..
         bash ./tests/build.sh
 
-# Build a few examples with PlatformIO to test if integration still works
+# Build a few examples with PlatformIO to test if integration works
   build-platformio:
     runs-on: ubuntu-latest
     steps:
