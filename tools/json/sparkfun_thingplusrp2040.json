@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "sparkfun_thingplusrp2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "sparkfun_thingplusrp2040",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x1b4f",
-        "usb_pid": "0x0026",
-        "usb_manufacturer": "SparkFun",
-        "usb_product": "Thing Plus RP2040"
+        "usb_pid": "0x0026"
       }
     }
   },

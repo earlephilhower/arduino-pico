@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "dfrobot_beetle_rp2040",
     "arduino": {
       "earlephilhower": {
-        "variant": "dfrobot_beetle_rp2040",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x3343",
-        "usb_pid": "0x4253",
-        "usb_manufacturer": "DFRobot",
-        "usb_product": "Beetle RP2040"
+        "usb_pid": "0x4253"
       }
     }
   },

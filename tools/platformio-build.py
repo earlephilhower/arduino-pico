@@ -27,7 +27,8 @@ ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y).
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
 
-# read includes from this file to add them into CPPPATH later
+# read includes from this file to add them into CPPPATH later for good IDE intellisense
+# will use original -iprefix <prefix> @<file> for compilation though.
 includes_file = os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
 file_lines = []
 includes = []
@@ -38,9 +39,40 @@ for l in file_lines:
     # emulate -iprefix <framework path>.
     path = os.path.join(FRAMEWORK_DIR, path)
     # prevent non-existent paths from being added
-    # looking at you here, pico-extras/src/common/pico_audio and co.
     if os.path.isdir(path):
         includes.append(path)
+
+def is_pio_build():
+	from SCons.Script import COMMAND_LINE_TARGETS
+	return "idedata" not in COMMAND_LINE_TARGETS and "_idedata" not in COMMAND_LINE_TARGETS
+
+# get all activated macros
+flatten_cppdefines = env.Flatten(env['CPPDEFINES'])
+
+#
+# Exceptions
+#
+stdcpp_lib = None
+if "PIO_FRAMEWORK_ARDUINO_ENABLE_EXCEPTIONS" in flatten_cppdefines:
+    env.Append(
+        CXXFLAGS=["-fexceptions"]
+    )
+    stdcpp_lib = "stdc++-exc"
+else:
+    env.Append(
+        CXXFLAGS=["-fno-exceptions"]
+    )
+    stdcpp_lib = "stdc++"
+
+#
+# RTTI
+#
+# standard is -fno-rtti flag. If special macro is present, don't 
+# add that flag.
+if not "PIO_FRAMEWORK_ARDUINO_ENABLE_RTTI" in flatten_cppdefines:
+    env.Append(
+        CXXFLAGS=["-fno-rtti"]
+    )
 
 # update progsize expression to also check for bootloader.
 env.Replace(
@@ -57,11 +89,8 @@ env.Append(
         "-mcpu=cortex-m0plus",
         "-mthumb",
         "-ffunction-sections",
-        "-fdata-sections",
-        # use explicit include (-I) paths, otherwise it's
-        # not visible in the IDE's intellisense.
-        #"-iprefix" + os.path.join(FRAMEWORK_DIR),
-        #"@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+        "-fdata-sections"
+        # -iprefix etc. added lader if in build mode
     ],
 
     CFLAGS=[
@@ -70,8 +99,6 @@ env.Append(
 
     CXXFLAGS=[
         "-std=gnu++17",
-        "-fno-exceptions",
-        "-fno-rtti",
     ],
 
     CPPDEFINES=[
@@ -114,10 +141,18 @@ env.Append(
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
         File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")), 
-        "m", "c", "stdc++", "c"]
+        "m", "c", stdcpp_lib, "c"]
 )
-# expand with read includes
-env.Append(CPPPATH=includes)
+
+# expand with read includes for IDE, but use -iprefix command for actual building
+if not is_pio_build():
+    env.Append(CPPPATH=includes)
+else:
+    env.Append(CCFLAGS=[
+        "-iprefix" + os.path.join(FRAMEWORK_DIR),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+    ])
+
 
 def configure_usb_flags(cpp_defines):
     global ram_size
@@ -223,8 +258,8 @@ linkerscript_cmd = env.Command(
 
 # if no custom linker script is provided, we use the command that we prepared to generate one.
 if not board.get("build.ldscript", ""):
-    # execute fetch filesystem info stored in env to alawys have that info ready
-    env["fetch_fs_size"](env)
+    # execute fetch filesystem info stored in env to always have that info ready
+    env["__fetch_fs_size"](env)
     env.Depends("$BUILD_DIR/${PROGNAME}.elf", linkerscript_cmd)
     env.Replace(LDSCRIPT_PATH=os.path.join("$BUILD_DIR", "memmap_default.ld"))
 

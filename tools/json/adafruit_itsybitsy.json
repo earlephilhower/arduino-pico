@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "adafruit_itsybitsy",
     "arduino": {
       "earlephilhower": {
-        "variant": "adafruit_itsybitsy",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x239a",
-        "usb_pid": "0x80fd",
-        "usb_manufacturer": "Adafruit",
-        "usb_product": "ItsyBitsy RP2040"
+        "usb_pid": "0x80fd"
       }
     }
   },

@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "flyboard2040_core",
     "arduino": {
       "earlephilhower": {
-        "variant": "flyboard2040_core",
         "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
         "usb_vid": "0x2e8a",
-        "usb_pid": "0x008a",
-        "usb_manufacturer": "DeRuiLab",
-        "usb_product": "FlyBoard2040Core"
+        "usb_pid": "0x008a"
       }
     }
   },

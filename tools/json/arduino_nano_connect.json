@@ -11,14 +11,12 @@
       ]
     ],
     "mcu": "rp2040",
+    "variant": "arduino_nano_connect",
     "arduino": {
       "earlephilhower": {
-        "variant": "arduino_nano_connect",
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2341",
-        "usb_pid": "0x0058",
-        "usb_manufacturer": "Arduino",
-        "usb_product": "Nano RP2040 Connect"
+        "usb_pid": "0x0058"
       }
     }
   },
