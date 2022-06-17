@@ -1,5 +1,12 @@
 {
   "build": {
+    "arduino": {
+      "earlephilhower": {
+        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
+        "usb_vid": "0x2e8a",
+        "usb_pid": "0x008a"
+      }
+    },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
     "extra_flags": "-D ARDUINO_FLYBOARD2040_CORE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
@@ -11,14 +18,7 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "flyboard2040_core",
-    "arduino": {
-      "earlephilhower": {
-        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
-        "usb_vid": "0x2e8a",
-        "usb_pid": "0x008a"
-      }
-    }
+    "variant": "flyboard2040_core"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",
