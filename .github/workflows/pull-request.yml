@@ -185,7 +185,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - with:
+      with:
         submodules: 'recursive'
     - name: Cache pip
       uses: actions/cache@v2
