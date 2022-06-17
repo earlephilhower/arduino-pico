@@ -5,7 +5,6 @@ name: Arduino-Pico CI
 
 on:
   pull_request:
-  push:
 
 
 jobs:
