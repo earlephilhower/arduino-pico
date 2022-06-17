@@ -15,7 +15,7 @@ jobs:
     name: Check spelling
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Run codespell
@@ -29,7 +29,7 @@ jobs:
     name: Style, Boards, Package
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: false
     - name: Check package references
@@ -60,7 +60,7 @@ jobs:
       matrix:
         chunk: [0, 1, 2, 3]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - uses: actions/setup-python@v2
@@ -90,7 +90,7 @@ jobs:
     name: Build TinyUSB Examples
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - uses: actions/setup-python@v2
@@ -118,7 +118,7 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - uses: actions/setup-python@v2
@@ -153,7 +153,7 @@ jobs:
     name: Mac
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - uses: actions/setup-python@v2
@@ -184,7 +184,7 @@ jobs:
     name: Build PlatformIO Examples
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
     - name: Cache pip
@@ -212,4 +212,4 @@ jobs:
     - name: Build Fade Example
       run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Fade/Fade.ino
     - name: Build TinyUSB Example
-      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" -O "build_flags=-DUSE_TINYUSB" -O "lib_deps=symlink:///home/runner/work/arduino-pico/arduino-pico/libraries/Adafruit_TinyUSB_Arduino" libraries/rp2040/examples/Adafruit_TinyUSB_Arduino/examples/CDC/cdc_multi/cdc_multi.ino
+      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" -O "build_flags=-DUSE_TINYUSB" libraries/Adafruit_TinyUSB_Arduino/examples/CDC/cdc_multi/cdc_multi.ino
