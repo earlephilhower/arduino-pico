@@ -46,6 +46,34 @@ def is_pio_build():
 	from SCons.Script import COMMAND_LINE_TARGETS
 	return "idedata" not in COMMAND_LINE_TARGETS and "_idedata" not in COMMAND_LINE_TARGETS
 
+# get all activated macros
+flatten_cppdefines = env.Flatten(env['CPPDEFINES'])
+
+#
+# Exceptions
+#
+stdcpp_lib = None
+if "PIO_FRAMEWORK_ARDUINO_ENABLE_EXCEPTIONS" in flatten_cppdefines:
+    env.Append(
+        CXXFLAGS=["-fexceptions"]
+    )
+    stdcpp_lib = "stdc++-exc"
+else:
+    env.Append(
+        CXXFLAGS=["-fno-exceptions"]
+    )
+    stdcpp_lib = "stdc++"
+
+#
+# RTTI
+#
+# standard is -fno-rtti flag. If special macro is present, don't 
+# add that flag.
+if not "PIO_FRAMEWORK_ARDUINO_ENABLE_RTTI" in flatten_cppdefines:
+    env.Append(
+        CXXFLAGS=["-fno-rtti"]
+    )
+
 # update progsize expression to also check for bootloader.
 env.Replace(
     SIZEPROGREGEXP=r"^(?:\.boot2|\.text|\.data|\.rodata|\.text.align|\.ARM.exidx)\s+(\d+).*"
@@ -71,8 +99,6 @@ env.Append(
 
     CXXFLAGS=[
         "-std=gnu++17",
-        "-fno-exceptions",
-        "-fno-rtti",
     ],
 
     CPPDEFINES=[
@@ -115,7 +141,7 @@ env.Append(
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
         File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")), 
-        "m", "c", "stdc++", "c"]
+        "m", "c", stdcpp_lib, "c"]
 )
 
 # expand with read includes for IDE, but use -iprefix command for actual building

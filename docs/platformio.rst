@@ -177,6 +177,37 @@ either a sing line or a newline-separated expression.
        -DDEBUG_RP2040_CORE
        -DDEBUG_RP2040_PORT=Serial2
 
+C++ Exceptions
+--------------
+
+Exceptions are disabled by default. To enable them, use
+
+.. code:: ini
+
+    ; Enable Exceptions
+    build_flags = -DPIO_FRAMEWORK_ARDUINO_ENABLE_EXCEPTIONS
+
+Stack Protector
+---------------
+
+To enable GCC's stack protection feature, use
+
+.. code:: ini
+
+    ; Enable Stack Protector
+    build_flags = -fstack-protector
+
+
+RTTI
+----
+
+RTTI (run-time type information) is disabled by default. To enable it, use
+
+.. code:: ini
+
+    ; Enable RTTI
+    build_flags = -DPIO_FRAMEWORK_ARDUINO_ENABLE_RTTI
+
 USB Stack
 ---------
 
