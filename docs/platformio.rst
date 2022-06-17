@@ -238,3 +238,25 @@ and 0.5MByte filesystem.
 The initial project structure should be generated just creating a new
 project for the Pico and the Arduino framework, after which the
 auto-generated ``platformio.ini`` can be adapted per above.
+
+Debugging
+---------
+
+With recent updates to the toolchain and OpenOCD, debugging firmwares is also possible.
+
+To specify the debugging adapter, use ``debug_tool`` (`documentation <https://docs.platformio.org/en/latest/projectconf/section_env_debug.html#debug-tool>`_). Supported values are:
+
+* ``picoprobe``
+* ``cmsis-dap``
+* ``jlink``
+* ``raspberrypi-swd``
+
+These values can also be used in ``upload_protocol`` if you want PlatformIO to upload the regular firmware through this method, which you likely want.
+
+Especially the PicoProbe method is convenient when you have two Raspberry Pi Pico boards. One of them can be flashed with the PicoProbe firmware (`documentation <https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html#debugging-using-another-raspberry-pi-pico>`_) and is then connected to the target Raspberry Pi Pico board (see `documentation <https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf>`_ chapter "Picoprobe Wiring"). Remember that on Windows, you have to use `Zadig <https://zadig.akeo.ie/>`_ to also load "WinUSB" drivers for the "Picoprobe (Interface 2)" device so that OpenOCD can speak to it.
+
+With that set up, debugging works nicely: Setup breakpoints, inspect the value of variables in the code, step through the code line by line. When a breakpoint is hit or execution is halted, you can even see the execution state both Cortex-M0+ cores of the RP2040.
+
+.. image:: images/pio_debugging.png
+
+For further information on customizing debug options, like the initial breakpoint or debugging / SWD speed, consult `the documentation <https://docs.platformio.org/en/latest/projectconf/section_env_debug.html>`_.
