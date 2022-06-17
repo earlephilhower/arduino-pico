@@ -186,7 +186,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: 'recursive'
     - name: Cache pip
       uses: actions/cache@v2
       with:
