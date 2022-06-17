@@ -5,6 +5,7 @@ name: Arduino-Pico CI
 
 on:
   pull_request:
+  push:
 
 
 jobs:
@@ -178,3 +179,32 @@ jobs:
         cd ..
         bash ./tests/build.sh
 
+# Build a few examples with PlatformIO to test if integration still works
+  build-platformio:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Cache PlatformIO
+      uses: actions/cache@v2
+      with:
+        path: ~/.platformio
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade platformio
+        pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
+        pio pkg install --global --tool symlink://.
+    - name: Build Multicore Example
+      run: pio ci --board=rpipico --board=adafruit_feather libraries/rp2040/examples/Multicore/Multicore.ino
+    - name: Build Fade Example
+      run: pio ci --board=rpipico --board=adafruit_feather libraries/rp2040/examples/Fade/Fade.ino
