@@ -212,4 +212,4 @@ jobs:
     - name: Build Fade Example
       run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Fade/Fade.ino
     - name: Build TinyUSB Example
-      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" -O "build_flags=-DUSE_TINYUSB" libraries/rp2040/examples/Adafruit_TinyUSB_Arduino/examples/CDC/cdc_multi/cdc_multi.ino
+      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" -O "build_flags=-DUSE_TINYUSB" -O "lib_deps=symlink:///home/runner/work/arduino-pico/arduino-pico/libraries/Adafruit_TinyUSB_Arduino" libraries/rp2040/examples/Adafruit_TinyUSB_Arduino/examples/CDC/cdc_multi/cdc_multi.ino
