@@ -38,8 +38,7 @@ This will give you a project with the ``platformio.ini``
     board = pico
     framework = arduino
 
-Here, you need to change the `platform` to take advantage of the features described hereunder. 
-You *also* need to inject two PlatformIO packages, one for the compiler toolchain and one for the Arduino core package.
+Here, you need to change the `platform` to take advantage of the features described hereunder and switch to the new core.
 
 .. code:: ini
 
@@ -47,7 +46,7 @@ You *also* need to inject two PlatformIO packages, one for the compiler toolchai
     platform = https://github.com/maxgerhardt/platform-raspberrypi.git
     board = pico
     framework = arduino
-
+    board_build.core = earlephilhower
     
 When the support for this core has been merged into mainline PlatformIO, this notice will be removed and a standard `platformio.ini` as shown above will work as a base.
 
@@ -255,8 +254,25 @@ These values can also be used in ``upload_protocol`` if you want PlatformIO to u
 
 Especially the PicoProbe method is convenient when you have two Raspberry Pi Pico boards. One of them can be flashed with the PicoProbe firmware (`documentation <https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html#debugging-using-another-raspberry-pi-pico>`_) and is then connected to the target Raspberry Pi Pico board (see `documentation <https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf>`_ chapter "Picoprobe Wiring"). Remember that on Windows, you have to use `Zadig <https://zadig.akeo.ie/>`_ to also load "WinUSB" drivers for the "Picoprobe (Interface 2)" device so that OpenOCD can speak to it.
 
-With that set up, debugging works nicely: Setup breakpoints, inspect the value of variables in the code, step through the code line by line. When a breakpoint is hit or execution is halted, you can even see the execution state both Cortex-M0+ cores of the RP2040.
+With that set up, debugging can be started via the left debugging sidebar and works nicely: Setup breakpoints, inspect the value of variables in the code, step through the code line by line. When a breakpoint is hit or execution is halted, you can even see the execution state both Cortex-M0+ cores of the RP2040.
 
 .. image:: images/pio_debugging.png
 
 For further information on customizing debug options, like the initial breakpoint or debugging / SWD speed, consult `the documentation <https://docs.platformio.org/en/latest/projectconf/section_env_debug.html>`_.
+
+Filesystem Uploading
+--------------------
+
+For the Arduino IDE, `a plugin <https://github.com/earlephilhower/arduino-pico#uploading-filesystem-images>`_ is available that enables a data folder to be packed as a LittleFS filesystem binary and uploaded to the Pico.
+
+This functionality is also built-in in the PlatformIO integration. Open the `project tasks <https://docs.platformio.org/en/latest/integration/ide/vscode.html#project-tasks>`_ and expand the "Platform" tasks: 
+
+.. image:: images/pio_fs_upload.png
+
+The files you want to upload should be placed in a folder called ``data`` inside the project. This can be customized `if needed <https://docs.platformio.org/en/latest/projectconf/section_platformio.html#data-dir>`_.
+
+The task "Build Filesystem Image" will take all files in the data directory and create a ``littlefs.bin`` file from it using the ``mklittlefs`` tool.
+
+The task "Upload Filesystem Image" will upload the filesystem image to the Pico via the specified ``upload_protocol``. 
+
+**Note:** Currently only the default ``picotool`` (regular direct USB upload) and the OpenOCD-based debug methods (meaning all but ``jlink``) can transport the filesystem to the Pico.
