@@ -27,7 +27,8 @@ ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y).
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
 
-# read includes from this file to add them into CPPPATH later
+# read includes from this file to add them into CPPPATH later for good IDE intellisense
+# will use original -iprefix <prefix> @<file> for compilation though.
 includes_file = os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
 file_lines = []
 includes = []
@@ -38,9 +39,12 @@ for l in file_lines:
     # emulate -iprefix <framework path>.
     path = os.path.join(FRAMEWORK_DIR, path)
     # prevent non-existent paths from being added
-    # looking at you here, pico-extras/src/common/pico_audio and co.
     if os.path.isdir(path):
         includes.append(path)
+
+def is_pio_build():
+	from SCons.Script import COMMAND_LINE_TARGETS
+	return "idedata" not in COMMAND_LINE_TARGETS and "_idedata" not in COMMAND_LINE_TARGETS
 
 # update progsize expression to also check for bootloader.
 env.Replace(
@@ -57,11 +61,8 @@ env.Append(
         "-mcpu=cortex-m0plus",
         "-mthumb",
         "-ffunction-sections",
-        "-fdata-sections",
-        # use explicit include (-I) paths, otherwise it's
-        # not visible in the IDE's intellisense.
-        #"-iprefix" + os.path.join(FRAMEWORK_DIR),
-        #"@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+        "-fdata-sections"
+        # -iprefix etc. added lader if in build mode
     ],
 
     CFLAGS=[
@@ -116,8 +117,16 @@ env.Append(
         File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")), 
         "m", "c", "stdc++", "c"]
 )
-# expand with read includes
-env.Append(CPPPATH=includes)
+
+# expand with read includes for IDE, but use -iprefix command for actual building
+if not is_pio_build():
+    env.Append(CPPPATH=includes)
+else:
+    env.Append(CCFLAGS=[
+        "-iprefix" + os.path.join(FRAMEWORK_DIR),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+    ])
+
 
 def configure_usb_flags(cpp_defines):
     global ram_size
