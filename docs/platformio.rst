@@ -73,8 +73,6 @@ in the `PlatformIO CLI <https://docs.platformio.org/en/latest/integration/ide/vs
 The toolchain, which was also renamed to ``toolchain-rp2040-earlephilhower`` is downloaded automatically from the registry. The same goes for the ``framework-arduinopico`` toolchain package, which points directly to the Arduino-Pico Github repository.
 However, users can still select a custom fork or branch of the core if desired so, as detailed in a chapter below.
 
-As the pull req
-
 Selecting the new core
 ----------------------
 
