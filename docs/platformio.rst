@@ -243,7 +243,7 @@ Whereas the ``#master`` can also be replaced by a ``#branchname`` or a
 ``#commithash``. If left out, it will pull the default branch, which is ``master``.
 
 The ``file://`` and ``symlink://`` pseudo-protocols can also be used instead of ``https://`` to point to a
-local copy of the core (with e.g. some modifications) on disk (`see documentation <https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_install.html?#local-folder>_`).
+local copy of the core (with e.g. some modifications) on disk (`see documentation <https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_install.html?#local-folder>`_).
 
 Note that this can only be done for versions that have the PlatformIO
 builder script it in, so versions before 1.9.2 are not supported.
@@ -305,5 +305,3 @@ The files you want to upload should be placed in a folder called ``data`` inside
 The task "Build Filesystem Image" will take all files in the data directory and create a ``littlefs.bin`` file from it using the ``mklittlefs`` tool.
 
 The task "Upload Filesystem Image" will upload the filesystem image to the Pico via the specified ``upload_protocol``. 
-
-**Note:** Currently only the default ``picotool`` (regular direct USB upload) and the OpenOCD-based debug methods (meaning all but ``jlink``) can transport the filesystem to the Pico.
