@@ -50,7 +50,7 @@ Here, you need to change the `platform` to take advantage of the features descri
     
 When the support for this core has been merged into mainline PlatformIO, this notice will be removed and a standard `platformio.ini` as shown above will work as a base.
 
-Deprectation warnings
+Deprecation warnings
 ---------------------
 
 Previous versions of this documentation told users to inject the framework and toolchain package into the project by using
