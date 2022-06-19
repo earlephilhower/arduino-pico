@@ -142,3 +142,21 @@ extern "C" int main() {
 extern "C" unsigned long ulMainGetRunTimeCounterValue() {
     return rp2040.getCycleCount64();
 }
+
+// For some reason printf_float is not multi core safe, at least as present incl
+// my built Newlib, even with all the retargetable locks implemented.  So, wrap
+// it and mutex protect it.
+extern "C" {
+
+auto_init_mutex(__printf_float_mutex);
+
+extern int __real__printf_float(struct _reent *data, struct _prt_data_t *pdata, FILE *fp, int (*pfunc)(struct _reent *, FILE *, const char *, size_t len), va_list *ap);
+
+int __wrap__printf_float(struct _reent *data, struct _prt_data_t *pdata, FILE *fp, int (*pfunc)(struct _reent *, FILE *, const char *, size_t len), va_list *ap) {
+    mutex_enter_blocking(&__printf_float_mutex);
+    int rc = __real__printf_float(data, pdata, fp, pfunc, ap);
+    mutex_exit(&__printf_float_mutex);
+    return rc;
+}
+
+};

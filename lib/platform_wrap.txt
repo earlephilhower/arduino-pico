@@ -144,3 +144,4 @@
 -Wl,--wrap=tanhf
 -Wl,--wrap=trunc
 -Wl,--wrap=truncf
+-Wl,--wrap=_printf_float
