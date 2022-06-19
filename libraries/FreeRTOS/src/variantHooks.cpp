@@ -409,10 +409,16 @@ static void __usb(void *param)
     }
 }
 
+extern void __SetupDescHIDReport();
+extern void __SetupUSBDescriptor();
 
 void __USBStart()
 {
     mutex_init(&__usb_mutex);
+
+    __SetupDescHIDReport();
+    __SetupUSBDescriptor();
+
     // Make highest prio and locked to core 0
     xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 1, &__usbTask);
     vTaskCoreAffinitySet( __usbTask, 1 << 0 );

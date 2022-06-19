@@ -151,6 +151,15 @@ extern "C" unsigned long ulMainGetRunTimeCounterValue() {
     return rp2040.getCycleCount64();
 }
 
+extern "C" void __register_impure_ptr(struct _reent *p) {
+    if (get_core_num() == 0) {
+        _impure_ptr = p;
+    } else {
+        _impure_ptr1 = p;
+    }
+}
+
+
 // TODO:  FreeRTOS should implement this based on thread ID (and each thread should have its own struct _reent
 extern "C" struct _reent *__wrap___getreent() {
     if (get_core_num() == 0) {
