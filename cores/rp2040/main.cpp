@@ -22,6 +22,7 @@
 #include "RP2040USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
+#include <reent.h>
 
 RP2040 rp2040;
 extern "C" {
@@ -72,6 +73,7 @@ extern void __loop() {
         arduino::serialEvent2Run();
     }
 }
+static struct _reent *_impure_ptr1 = nullptr;
 
 extern "C" int main() {
 #if F_CPU != 125000000
@@ -80,6 +82,12 @@ extern "C" int main() {
 
     // Let rest of core know if we're using FreeRTOS
     __isFreeRTOS = initFreeRTOS ? true : false;
+
+    // Allocate impure_ptr (newlib temps) if there is a 2nd core running
+    if (!__isFreeRTOS && (setup1 || loop1)) {
+        _impure_ptr1 = (struct _reent*)calloc(sizeof(struct _reent), 1);
+        _REENT_INIT_PTR(_impure_ptr1);
+    }
 
     mutex_init(&_pioMutex);
 
@@ -141,4 +149,22 @@ extern "C" int main() {
 
 extern "C" unsigned long ulMainGetRunTimeCounterValue() {
     return rp2040.getCycleCount64();
+}
+
+extern "C" void __register_impure_ptr(struct _reent *p) {
+    if (get_core_num() == 0) {
+        _impure_ptr = p;
+    } else {
+        _impure_ptr1 = p;
+    }
+}
+
+
+// TODO:  FreeRTOS should implement this based on thread ID (and each thread should have its own struct _reent
+extern "C" struct _reent *__wrap___getreent() {
+    if (get_core_num() == 0) {
+        return _impure_ptr;
+    } else {
+        return _impure_ptr1;
+    }
 }
