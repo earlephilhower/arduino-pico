@@ -25,28 +25,22 @@
 #include <pico/mutex.h>
 #include <sys/lock.h>
 
-recursive_mutex_t __lock___sinit_recursive_mutex;
-recursive_mutex_t __lock___sfp_recursive_mutex;
-recursive_mutex_t __lock___atexit_recursive_mutex;
-mutex_t __lock___at_quick_exit_mutex;
-recursive_mutex_t __lock___malloc_recursive_mutex;
-recursive_mutex_t __lock___env_recursive_mutex;
-mutex_t __lock___tz_mutex;
-mutex_t __lock___dd_hash_mutex;
-mutex_t __lock___arc4random_mutex;
+// HACK ALERT
+// Pico-SDK defines mutex which can be at global scope, but when the auto_init_
+// macros are used they are defined as static.  Newlib needs global access to
+// these mutextes, so instead of hacking pico-sdk just make "static" a no-op.
 
-
-__attribute__((constructor)) void __init_all_newlib_mutexes() {
-    recursive_mutex_init(&__lock___sinit_recursive_mutex);
-    recursive_mutex_init(&__lock___sfp_recursive_mutex);
-    recursive_mutex_init(&__lock___atexit_recursive_mutex);
-    mutex_init(&__lock___at_quick_exit_mutex);
-    recursive_mutex_init(&__lock___malloc_recursive_mutex);
-    recursive_mutex_init(&__lock___env_recursive_mutex);
-    mutex_init(&__lock___tz_mutex);
-    mutex_init(&__lock___dd_hash_mutex);
-    mutex_init(&__lock___arc4random_mutex);
-}
+#define static
+auto_init_recursive_mutex(__lock___sinit_recursive_mutex);
+auto_init_recursive_mutex(__lock___sfp_recursive_mutex);
+auto_init_recursive_mutex(__lock___atexit_recursive_mutex);
+auto_init_mutex(__lock___at_quick_exit_mutex);
+auto_init_recursive_mutex(__lock___malloc_recursive_mutex);
+auto_init_recursive_mutex(__lock___env_recursive_mutex);
+auto_init_mutex(__lock___tz_mutex);
+auto_init_mutex(__lock___dd_hash_mutex);
+auto_init_mutex(__lock___arc4random_mutex);
+#undef static
 
 void __retarget_lock_init(_LOCK_T *lock) {
     mutex_init((mutex_t*) lock);
