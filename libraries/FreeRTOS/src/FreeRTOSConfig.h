@@ -28,6 +28,7 @@
 #define configSTACK_DEPTH_TYPE			uint32_t
 
 #define configUSE_NEWLIB_REENTRANT 1
+#define configNEWLIB_REENTRANT_IS_DYNAMIC 0 /* Note that we have a different config option, portSET_IMPURE_PTR */
 #include <reent.h>
 extern void __register_impure_ptr(struct _reent *p);
 #define portSET_IMPURE_PTR(x) __register_impure_ptr(x)
