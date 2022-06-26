@@ -159,6 +159,9 @@ def configure_usb_flags(cpp_defines):
     if "USE_TINYUSB" in cpp_defines:
         env.Append(CPPPATH=[os.path.join(
             FRAMEWORK_DIR, "libraries", "Adafruit_TinyUSB_Arduino", "src", "arduino")])
+        # automatically build with lib_archive = no to make weak linking work, needed for TinyUSB
+        env_section = "env:" + env["PIOENV"]
+        platform.config.set(env_section, "lib_archive", False)
     elif "PIO_FRAMEWORK_ARDUINO_NO_USB" in cpp_defines:
         env.Append(
             CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")],
