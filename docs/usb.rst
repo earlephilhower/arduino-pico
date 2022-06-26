@@ -63,11 +63,11 @@ In some cases it is important to know what TinyUSB is configured with. For examp
     #define CFG_TUD_MIDI 1
     #define CFG_TUD_VENDOR 1
 
-This configuration file for example defines the maximum number of USB CDC
-(serial) devices as 1. Hence, the example sketch `cdc_multi.ino <https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/master/examples/CDC/cdc_multi/cdc_multi.ino>`__
+this configuration file defines the maximum number of USB CDC (serial)
+devices as 1. Hence, the example sketch `cdc_multi.ino <https://github.com/adafruit/Adafruit_TinyUSB_Arduino/blob/master/examples/CDC/cdc_multi/cdc_multi.ino>`__
 that is delivered with the library will not work, it will only create one
-USB CDC device instead of two. It will however work when the above macro
-is defined to 2 instead of 1.
+USB CDC device instead of two. It will however work when the above
+``CFG_TUD_CDC`` macro is defined to 2 instead of 1.
 
 To do such a modification when using the Arduino IDE, the file can be
 locally modified in the Arduino core's package files. The base path can
