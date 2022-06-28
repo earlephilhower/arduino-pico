@@ -123,7 +123,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
     }
 
     static uint64_t last_avail_time;
-    int i = 0;
+    int written = 0;
     if (tud_cdc_connected()) {
         for (size_t i = 0; i < length;) {
             int n = length - i;
@@ -136,6 +136,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
                 tud_task();
                 tud_cdc_write_flush();
                 i += n2;
+                written += n2;
                 last_avail_time = time_us_64();
             } else {
                 tud_task();
@@ -150,7 +151,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
         // reset our timeout
         last_avail_time = 0;
     }
-    return i;
+    return written;
 }
 
 SerialUSB::operator bool() {
