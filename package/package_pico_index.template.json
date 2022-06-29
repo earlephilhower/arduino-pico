@@ -27,19 +27,19 @@
                      "name": "Adafruit ItsyBitsy RP2040"
                   },
                   {
-                     "name": "Adafruit KB2040"
-                  },
-                  {
-                     "name": "Adafruit Macropad RP2040"
-                  },
-                  {
-                     "name": "Adafruit QTPy RP2040"
+                     "name": "Adafruit QT Py RP2040"
                   },
                   {
                      "name": "Adafruit STEMMA Friend RP2040"
                   },
                   {
                      "name": "Adafruit Trinkey RP2040 QT"
+                  },
+                  {
+                     "name": "Adafruit MacroPad RP2040"
+                  },
+                  {
+                     "name": "Adafruit KB2040"
                   },
                   {
                      "name": "Arduino Nano RP2040 Connect"
@@ -51,31 +51,31 @@
                      "name": "Cytron Maker Pi RP2040"
                   },
                   {
-                     "name": "DeRuiLab FlyBoard2040 Core"
+                     "name": "DeRuiLab FlyBoard2040Core"
                   },
                   {
                      "name": "DFRobot Beetle RP2040"
                   },
                   {
-                     "name": "Invector Labs Challenger RP2040 WiFi"
+                     "name": "iLabs Challenger 2040 LoRa"
                   },
                   {
-                     "name": "Invector Labs Challenger RP2040 WiFi/BLE"
+                     "name": "iLabs Challenger 2040 WiFi"
                   },
                   {
-                     "name": "Invector Labs Challenger NB RP2040 WiFi"
+                     "name": "iLabs Challenger 2040 LTE"
                   },
                   {
-                     "name": "Invector Labs Challenger RP2040 LTE"
+                     "name": "iLabs Challenger 2040 WiFi/BLE"
                   },
                   {
-                     "name": "Invector Labs Challenger RP2040 LoRa"
+                     "name": "iLabs Challenger NB 2040 WiFi"
                   },
                   {
-                     "name": "Invector Labs RPICO32"
+                     "name": "iLabs RPICO32"
                   },
                   {
-                     "name": "Seeed XIAO RP2040"
+                     "name": "Melopero Shake RP2040"
                   },
                   {
                      "name": "Solder Party RP2040 Stamp"
@@ -87,22 +87,22 @@
                      "name": "SparkFun Thing Plus RP2040"
                   },
                   {
-                     "name": "Melopero Shake RP2040"
+                     "name": "uPesy RP2040 DevKit"
                   },
                   {
-                     "name": "uPesy RP2040 DevKit"
+                     "name": "Seeed XAIO RP2040"
                   },
                   {
                      "name": "WIZnet W5100S-EVB-Pico"
                   },
                   {
-                     "name": "WIZnet 5500-EVB-Pico"
-                  },
-                  {
                      "name": "WIZnet WizFi360-EVB-Pico"
                   },
                   {
-                     "name": "Generic RP2040 Module"
+                     "name": "WIZnet W5500-EVB-Pico"
+                  },
+                  {
+                     "name": "Generic RP2040"
                   }
                ],
                "toolsDependencies": [

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import json
 
 def BuildFlashMenu(name, flashsize, fssizelist):
     for fssize in fssizelist:
@@ -173,6 +174,10 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
         if name == "generic":
             BuildBoot(n)
     MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2)
+    global pkgjson
+    thisbrd = {}
+    thisbrd['name'] = "%s %s" % (vendor_name, product_name)
+    pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
 def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):
     json = """{
@@ -229,6 +234,9 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
     f = open(jsondir + "/" + name + ".json", "w")
     f.write(json)
     f.close()
+
+pkgjson = json.load(open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json'))
+pkgjson['packages'][0]['platforms'][0]['boards'] = []
 
 sys.stdout = open(os.path.abspath(os.path.dirname(__file__)) + "/../boards.txt", "w")
 WriteWarning()
@@ -295,5 +303,6 @@ MakeBoard("wiznet_5500_evb_pico", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029"
 # Generic
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 
-
 sys.stdout.close()
+with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w') as f:
+    f.write(json.dumps(pkgjson, indent=3))
