@@ -1,5 +1,12 @@
 {
   "build": {
+    "arduino": {
+      "earlephilhower": {
+        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
+        "usb_vid": "0x1209",
+        "usb_pid": "0xa182"
+      }
+    },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
     "extra_flags": "-D ARDUINO_SOLDERPARTY_RP2040_STAMP -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
@@ -11,14 +18,7 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "solderparty_rp2040_stamp",
-    "arduino": {
-      "earlephilhower": {
-        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
-        "usb_vid": "0x1209",
-        "usb_pid": "0xa182"
-      }
-    }
+    "variant": "solderparty_rp2040_stamp"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",

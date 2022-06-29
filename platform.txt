@@ -20,7 +20,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=Raspberry Pi RP2040 Boards
-version=2.1.1
+version=2.2.2
 
 runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
@@ -48,13 +48,13 @@ compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
 compiler.libpico="{runtime.platform.path}/lib/libpico.a"
 
 compiler.c.cmd=arm-none-eabi-gcc
-compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} {compiler.includes} -std=gnu17 -g
+compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} -std=gnu17 -g
 compiler.c.elf.cmd=arm-none-eabi-g++
 compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize} -u _printf_float -u _scanf_float
 compiler.S.cmd=arm-none-eabi-gcc
 compiler.S.flags=-c {compiler.warning_flags} -g -x assembler-with-cpp -MMD {compiler.includes} -g
 compiler.cpp.cmd=arm-none-eabi-g++
-compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} {compiler.includes} {build.flags.rtti} -std=gnu++17 -g
+compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} -std=gnu++17 -g
 
 compiler.ar.cmd=arm-none-eabi-ar
 compiler.ar.flags=rcs
