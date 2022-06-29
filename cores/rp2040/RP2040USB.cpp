@@ -130,7 +130,7 @@ static uint8_t *GetDescHIDReport(int *len) {
     return __hid_report;
 }
 
-static void __SetupDescHIDReport() {
+void __SetupDescHIDReport() {
     if (__USBInstallKeyboard && __USBInstallMouse) {
         uint8_t desc_hid_report[] = {
             TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)),
@@ -179,7 +179,7 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
     return usbd_desc_cfg;
 }
 
-static void __SetupUSBDescriptor() {
+void __SetupUSBDescriptor() {
     if (!usbd_desc_cfg) {
         bool hasHID = __USBInstallKeyboard || __USBInstallMouse;
 

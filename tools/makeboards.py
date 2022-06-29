@@ -177,6 +177,13 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
 def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):
     json = """{
   "build": {
+    "arduino": {
+      "earlephilhower": {
+        "boot2_source": "BOOT2.S",
+        "usb_vid": "VID",
+        "usb_pid": "PID"
+      }
+    },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
     "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR",
@@ -188,14 +195,7 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
       ]
     ],
     "mcu": "rp2040",
-    "variant": "VARIANTNAME",
-    "arduino": {
-      "earlephilhower": {
-        "boot2_source": "BOOT2.S",
-        "usb_vid": "VID",
-        "usb_pid": "PID"
-      }
-    }
+    "variant": "VARIANTNAME"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",

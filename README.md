@@ -144,6 +144,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * Generic Arduino USB Serial, Keyboard, and Mouse emulation
 * Filesystems (LittleFS and SD/SDFS)
 * Multicore support (setup1() and loop1())
+* FreeRTOS SMP support
 * Overclocking and underclocking from the menus
 * digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
 * Peripherals:  SPI master, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input, I2S audio output, Servo

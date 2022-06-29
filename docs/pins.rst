@@ -60,8 +60,3 @@ it use a non-default pinout with a simple call
         SPI.setCS(5);
         SD.begin(5);
     }
-
-Pad Strength
-============
-
-The Raspberry Pi Pico has the ability to set the current that a pin (actually the pad associated with it) is capable of supplying. The current can be set to values of 2mA, 4mA, 8mA and 12mA. By default, on a reset, the setting is 4mA. A `pinMode(x, OUTPUT)`, where `x` is the pin number, is also the default setting. 4 settings have been added for use with `pinMode`: `OUTPUT_2MA`, `OUTPUT_4MA`, which has the same behavior as `OUTPUT`, `OUTPUT_8MA` and `OUTPUT_12MA`.
