@@ -235,7 +235,7 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
     f.write(json)
     f.close()
 
-pkgjson = json.load(open('../package/package_pico_index.template.json'))
+pkgjson = json.load(open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json'))
 pkgjson['packages'][0]['platforms'][0]['boards'] = []
 
 sys.stdout = open(os.path.abspath(os.path.dirname(__file__)) + "/../boards.txt", "w")
@@ -304,5 +304,5 @@ MakeBoard("wiznet_5500_evb_pico", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029"
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 
 sys.stdout.close()
-with open('../package/package_pico_index.template.json', 'w') as f:
+with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w') as f:
     f.write(json.dumps(pkgjson, indent=3))
