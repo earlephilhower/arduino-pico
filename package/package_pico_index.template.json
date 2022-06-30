@@ -60,6 +60,9 @@
                      "name": "iLabs Challenger 2040 LoRa"
                   },
                   {
+                     "name": "iLabs Challenger 2040 SubGHz"
+                  },
+                  {
                      "name": "iLabs Challenger 2040 WiFi"
                   },
                   {
@@ -70,6 +73,9 @@
                   },
                   {
                      "name": "iLabs Challenger NB 2040 WiFi"
+                  },
+                  {
+                     "name": "iLabs Challenger 2040 SD/RTC"
                   },
                   {
                      "name": "iLabs RPICO32"
