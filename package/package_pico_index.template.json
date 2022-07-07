@@ -21,6 +21,9 @@
                      "name": "Raspberry Pi Pico"
                   },
                   {
+                     "name": "Raspberry Pi Pico W"
+                  },
+                  {
                      "name": "Adafruit Feather RP2040"
                   },
                   {

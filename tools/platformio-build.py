@@ -106,6 +106,13 @@ env.Append(
         "ARDUINO_ARCH_RP2040",
         ("F_CPU", "$BOARD_F_CPU"),
         ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
+        # LWIP-related
+        ("PICO_CYW43_ARCH_THREADSAFE_BACKGROUND", 1),
+        ("CYW43_LWIP", 0),
+        ("LWIP_IPV6", 1),
+        ("LWIP_IPV4", 1),
+        ("LWIP_IGMP", 1),
+        ("LWIP_LWIP_CHECKSUM_CTRL_PER_NETIF", 1),
     ],
 
     CPPPATH=[
@@ -164,7 +171,6 @@ def configure_usb_flags(cpp_defines):
         platform.config.set(env_section, "lib_archive", False)
     elif "PIO_FRAMEWORK_ARDUINO_NO_USB" in cpp_defines:
         env.Append(
-            CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")],
             CPPDEFINES=[
                 "NO_USB",
                 "DISABLE_USB_SERIAL" 
@@ -173,8 +179,8 @@ def configure_usb_flags(cpp_defines):
         # do not further add more USB flags or update sizes. no USB used.
         return
     else:
-        # standard Pico SDK USB stack used.
-        env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")])
+        # standard Pico SDK USB stack used, will get include path later on
+        pass
     # in any case, add standard flags
     # preferably use USB information from arduino.earlephilhower section,
     # but fallback to sensible values derived from other parts otherwise.
@@ -239,6 +245,9 @@ if not "USE_TINYUSB" in cpp_defines:
         )
 # configure USB stuff
 configure_usb_flags(cpp_defines)
+
+# ensure LWIP headers are in path after any TINYUSB distributed versions, also PicoSDK USB path headers
+env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")])
 
 # info about the filesystem is already parsed by the platform's main.py 
 # script. We can just use the info here
