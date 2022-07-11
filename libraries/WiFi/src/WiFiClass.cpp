@@ -65,12 +65,59 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
     _password = passphrase;
     _wifi.setSSID(ssid);
     _wifi.setPassword(passphrase);
-    _wifi.setSTA();
     _wifi.setTimeout(_timeout);
-    _wifiHWInitted = true;
+    _wifi.setSTA();
+    _apMode = false;
     if (!_wifi.begin()) {
         return WL_IDLE_STATUS;
     }
+    _wifiHWInitted = true;
+    return WL_CONNECTED;
+}
+
+uint8_t WiFiClass::beginAP(const char *ssid) {
+    return beginAP(ssid, nullptr);
+}
+
+uint8_t WiFiClass::beginAP(const char *ssid, uint8_t channel) {
+    (void) channel;
+    return beginAP(ssid, nullptr);
+}
+
+uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
+    (void) channel;
+    return beginAP(ssid, passphrase);
+}
+
+uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
+    _ssid = ssid;
+    _password = passphrase;
+    _wifi.setSSID(ssid);
+    _wifi.setPassword(passphrase);
+    _wifi.setTimeout(_timeout);
+    _wifi.setAP();
+    _apMode = true;
+    if (!_wifi.begin()) {
+        return WL_IDLE_STATUS;
+    }
+    IPAddress gw = _wifi.gatewayIP();
+    if (!gw.isSet()) {
+        gw = IPAddress(192, 168, 42, 1);
+    }
+    IPAddress mask = _wifi.subnetMask();
+    if (!mask.isSet()) {
+        mask = IPAddress(255, 255, 255, 0);
+    }
+    config(gw);
+    _dhcpServer = (dhcp_server_t *)malloc(sizeof(dhcp_server_t));
+    if (!_dhcpServer) {
+        // OOM
+        return WL_IDLE_STATUS;
+    }
+    dhcp_server_init(_dhcpServer, gw, mask);
+
+    _wifiHWInitted = true;
+
     return WL_CONNECTED;
 }
 
@@ -153,7 +200,13 @@ void WiFiClass::setHostname(const char* name) {
     return: one value of wl_status_t enum
 */
 int WiFiClass::disconnect(void) {
-    cyw43_wifi_leave(&cyw43_state, 0);
+    cyw43_wifi_leave(&cyw43_state, _apMode ? 1 : 0);
+    _wifiHWInitted = false;
+    if (_dhcpServer) {
+        dhcp_server_deinit(_dhcpServer);
+        free(_dhcpServer);
+        _dhcpServer = nullptr;
+    }
     return WL_DISCONNECTED;
 }
 
@@ -168,9 +221,10 @@ void WiFiClass::end(void) {
 */
 uint8_t* WiFiClass::macAddress(uint8_t* mac) {
     if (!_wifiHWInitted) {
-        cyw43_wifi_set_up(&cyw43_state, 0, true, CYW43_COUNTRY_WORLDWIDE);
+        _apMode = false;
+        cyw43_wifi_set_up(&cyw43_state, _apMode ? 1 : 0, true, CYW43_COUNTRY_WORLDWIDE);
     }
-    cyw43_wifi_get_mac(&cyw43_state, 0, mac);
+    cyw43_wifi_get_mac(&cyw43_state, _apMode ? 1 : 0, mac);
     return mac;
 }
 
@@ -276,6 +330,7 @@ int8_t WiFiClass::scanNetworks() {
     memset(&scan_options, 0, sizeof(scan_options));
     _scan.clear();
     if (!_wifiHWInitted) {
+        _apMode = false;
         cyw43_arch_enable_sta_mode();
         _wifiHWInitted = true;
     }
@@ -380,7 +435,7 @@ int32_t WiFiClass::RSSI(uint8_t networkItem) {
     return: one of the value defined in wl_status_t
 */
 uint8_t WiFiClass::status() {
-    switch (cyw43_wifi_link_status(&cyw43_state, 0)) {
+    switch (cyw43_wifi_link_status(&cyw43_state, _apMode ? 1 : 0)) {
     case CYW43_LINK_DOWN: return WL_IDLE_STATUS;
     case CYW43_LINK_JOIN: return WL_CONNECTED;
     case CYW43_LINK_FAIL: return WL_CONNECT_FAILED;

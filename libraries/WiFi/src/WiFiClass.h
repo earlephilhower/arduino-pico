@@ -27,7 +27,7 @@
 #include "wl_definitions.h"
 #include "wl_types.h"
 #include <cyw43.h>
-
+#include "dhcpserver/dhcpserver.h"
 #include <Arduino.h>
 #include <map>
 
@@ -73,12 +73,10 @@ public:
 
     bool connected();
 
-#if 0 // TODO - not implemented yet
     uint8_t beginAP(const char *ssid);
     uint8_t beginAP(const char *ssid, uint8_t channel);
     uint8_t beginAP(const char *ssid, const char* passphrase);
     uint8_t beginAP(const char *ssid, const char* passphrase, uint8_t channel);
-#endif
 
     // TODO - EAP is not supported by the driver.  Maybe some way of user-level wap-supplicant in the future?
     //uint8_t beginEnterprise(const char* ssid, const char* username, const char* password);
@@ -286,10 +284,14 @@ private:
     const char * _ssid = nullptr;
     const char * _password = nullptr;
     bool _wifiHWInitted = false;
+    bool _apMode = false;
 
     // WiFi Scan callback
     std::map<uint64_t, cyw43_ev_scan_result_t> _scan;
     static int _scanCB(void *env, const cyw43_ev_scan_result_t *result);
+
+    // DHCP for AP mode
+    dhcp_server_t *_dhcpServer = nullptr;
 };
 
 extern WiFiClass WiFi;

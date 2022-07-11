@@ -141,6 +141,7 @@ class IPAddress: public Printable {
         static bool isValid(const String& arg);
         static bool isValid(const char* arg);
 
+        friend class WiFiClass;
         friend class EthernetClass;
         friend class UDP;
         friend class Client;

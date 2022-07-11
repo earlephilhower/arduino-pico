@@ -39,11 +39,11 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
     (void) address;
     _netif = netif;
     _self = &cyw43_state;
-    _itf = 0;
 
     if (!_ap) {
+        _itf = 0;
         cyw43_arch_enable_sta_mode();
-        cyw43_wifi_get_mac(_self, 0, netif->hwaddr);
+        cyw43_wifi_get_mac(_self, _itf, netif->hwaddr);
 
         auto authmode = CYW43_AUTH_WPA2_AES_PSK;
         if (_password == nullptr) {
@@ -56,8 +56,10 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
             return true;
         }
     } else {
-        // AP mode not here yet
-        return false;
+        _itf = 1;
+        cyw43_arch_enable_ap_mode(_ssid, _password, _password ? CYW43_AUTH_WPA2_AES_PSK : CYW43_AUTH_OPEN);
+        cyw43_wifi_get_mac(_self, _itf, netif->hwaddr);
+        return true;
     }
 }
 
@@ -126,6 +128,7 @@ extern "C" int cyw43_tcpip_link_status(cyw43_t *self, int itf) {
     }
 }
 
+// CBs from the SDK, not needed here as we do TCP later in the game
 extern "C" void cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
