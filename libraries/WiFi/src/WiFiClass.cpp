@@ -45,6 +45,21 @@ const char* WiFiClass::firmwareVersion() {
     return PICO_SDK_VERSION_STRING;
 }
 
+void WiFiClass::mode(_wifiModeESP m) {
+    switch (m) {
+    case WIFI_OFF:
+        end();
+        break;
+    case WIFI_AP:
+        _modeESP = WIFI_AP;
+        break;
+    case WIFI_STA:
+        _modeESP = WIFI_STA;
+        break;
+    }
+}
+
+
 /*  Start WiFi connection for OPEN networks
 
     param ssid: Pointer to the SSID string.
@@ -61,6 +76,11 @@ int WiFiClass::begin(const char* ssid) {
           must be between ASCII 32-126 (decimal).
 */
 int WiFiClass::begin(const char* ssid, const char *passphrase) {
+    // Simple ESP8266 compatibility hack
+    if (_modeESP == WIFI_AP) {
+        return beginAP(ssid, passphrase);
+    }
+
     _ssid = ssid;
     _password = passphrase;
     _wifi.setSSID(ssid);
@@ -122,7 +142,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 }
 
 bool WiFiClass::connected() {
-    return _wifi.connected();
+    return _wifi.connected() && localIP().isSet();
 }
 
 /*  Change Ip configuration settings disabling the dhcp client
@@ -437,7 +457,7 @@ int32_t WiFiClass::RSSI(uint8_t networkItem) {
 uint8_t WiFiClass::status() {
     switch (cyw43_wifi_link_status(&cyw43_state, _apMode ? 1 : 0)) {
     case CYW43_LINK_DOWN: return WL_IDLE_STATUS;
-    case CYW43_LINK_JOIN: return WL_CONNECTED;
+    case CYW43_LINK_JOIN: return localIP().isSet() ? WL_CONNECTED : WL_CONNECTING;
     case CYW43_LINK_FAIL: return WL_CONNECT_FAILED;
     case CYW43_LINK_NONET: return WL_CONNECT_FAILED;
     case CYW43_LINK_BADAUTH: return WL_CONNECT_FAILED;

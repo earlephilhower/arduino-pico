@@ -35,6 +35,8 @@
 
 typedef void(*FeedHostProcessorWatchdogFuncPointer)();
 
+typedef enum { WIFI_STA, WIFI_AP, WIFI_OFF } _wifiModeESP; // For ESP8266 compatibility
+
 class WiFiClass {
 public:
     WiFiClass();
@@ -44,6 +46,7 @@ public:
     */
     static const char* firmwareVersion();
 
+    void mode(_wifiModeESP m); // For ESP8266 compatibility
 
     /*  Start WiFi connection for OPEN networks
 
@@ -292,6 +295,9 @@ private:
 
     // DHCP for AP mode
     dhcp_server_t *_dhcpServer = nullptr;
+
+    // ESP compat
+    _wifiModeESP _modeESP = WIFI_STA;
 };
 
 extern WiFiClass WiFi;
