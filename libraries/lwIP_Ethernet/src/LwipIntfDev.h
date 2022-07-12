@@ -283,7 +283,7 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
     }
     return true;
 }
-
+extern char wifi_station_hostname[];
 template<class RawDev>
 boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     if (mtu) {
@@ -323,6 +323,8 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
     ip_addr_copy(ip_addr, _netif.ip_addr);
     ip_addr_copy(netmask, _netif.netmask);
     ip_addr_copy(gw, _netif.gw);
+
+    _netif.hostname = wifi_station_hostname;
 
     if (!netif_add(&_netif, ip_2_ip4(&ip_addr), ip_2_ip4(&netmask), ip_2_ip4(&gw), this,
                    netif_init_s, ethernet_input)) {
