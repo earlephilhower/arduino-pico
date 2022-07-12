@@ -88,10 +88,14 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
     _wifi.setTimeout(_timeout);
     _wifi.setSTA();
     _apMode = false;
+    uint32_t start = millis(); // The timeout starts from network init, not network link up
     if (!_wifi.begin()) {
         return WL_IDLE_STATUS;
     }
     _wifiHWInitted = true;
+    while ((millis() - start < (uint32_t)_timeout) && !connected()) {
+        delay(1);
+    }
     return WL_CONNECTED;
 }
 
