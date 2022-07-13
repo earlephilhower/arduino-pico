@@ -96,7 +96,7 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
     while ((millis() - start < (uint32_t)_timeout) && !connected()) {
         delay(1);
     }
-    return WL_CONNECTED;
+    return connected();
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid) {
