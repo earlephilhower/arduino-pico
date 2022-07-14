@@ -65,9 +65,9 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
 
 uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {
     if (0 == cyw43_send_ethernet(_self, _itf, datalen, data, false)) {
-        return ERR_OK;
+        return datalen;
     }
-    return ERR_IF;
+    return 0;
 }
 
 uint16_t CYW43::readFrame(uint8_t* buffer, uint16_t bufsize) {
@@ -103,7 +103,6 @@ extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, co
 extern "C" void cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
-    //    netif_set_link_up(&self->netif[itf]);
     if (CYW43::_netif) {
         netif_set_link_up(CYW43::_netif);
     }
@@ -112,7 +111,6 @@ extern "C" void cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
 extern "C" void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
-    //    netif_set_link_down(&self->netif[itf]);
     if (CYW43::_netif) {
         netif_set_link_down(CYW43::_netif);
     }
