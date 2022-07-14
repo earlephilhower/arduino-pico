@@ -126,7 +126,6 @@ extern "C" int main() {
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             rp2040.fifo.begin(2);
-            multicore_launch_core1(main1);
         } else {
             rp2040.fifo.begin(1);
         }
@@ -135,6 +134,10 @@ extern "C" int main() {
 #endif
 
     if (!__isFreeRTOS) {
+        if (setup1 || loop1) {
+            delay(1); // Needed to make Picoprobe upload start 2nd core
+            multicore_launch_core1(main1);
+        }
         setup();
         while (true) {
             loop();
