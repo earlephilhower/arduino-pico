@@ -95,7 +95,7 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
     if (!_wifi.begin()) {
         return WL_IDLE_STATUS;
     }
-    while (!_calledESP && ((millis() - start < (uint32_t)2*_timeout)) && !connected()) {
+    while (!_calledESP && ((millis() - start < (uint32_t)2 * _timeout)) && !connected()) {
         delay(10);
     }
     return status();
