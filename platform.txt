@@ -41,8 +41,9 @@ compiler.warning_flags.default=-Werror=return-type
 compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
 compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
 
-compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
-compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt"
+compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=0 -DLWIP_IPV6=1 -DLWIP_IPV4=1 -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines}
+compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/tools/libpico"
 compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect}
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
 compiler.libpico="{runtime.platform.path}/lib/libpico.a"

@@ -18,8 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef FS_H
-#define FS_H
+#pragma once
 
 #include <memory>
 #include <Arduino.h>
@@ -264,5 +263,3 @@ using fs::SeekEnd;
 using fs::FSInfo;
 using fs::FSConfig;
 #endif //FS_NO_GLOBALS
-
-#endif //FS_H
