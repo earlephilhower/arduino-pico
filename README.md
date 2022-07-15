@@ -181,6 +181,7 @@ If you want to contribute or have bugfixes, drop me a note at <earlephilhower@ya
 * Networking and filesystem code taken from the [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) and licensed under the LGPL.
 * DHCP server for AP host mode from the [Micropython Project](https://micropython.org), distributed under the MIT License.
 * [FreeRTOS](https://freertos.org) is Copyright Amazon.com, Inc. or its affiliates, and distributed under the MIT license.
+* [lwIP](https://savannah.nongnu.org/projects/lwip/) is (c) the Swedish Institute of Computer Science and licenced under the BSD license.
 
 -Earle F. Philhower, III
  earlephilhower@yahoo.com
