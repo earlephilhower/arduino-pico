@@ -24,16 +24,13 @@
         Author: dlafauci
 */
 
-
-#ifndef	_WL_TYPES_H_
-#define	_WL_TYPES_H_
+#pragma once
 
 #include <inttypes.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 typedef enum {
     WL_FAILURE = -1,
@@ -62,5 +59,3 @@ typedef enum {
 #ifdef __cplusplus
 }
 #endif
-
-#endif //_WL_TYPES_H_

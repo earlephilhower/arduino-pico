@@ -26,6 +26,8 @@
 // TODO:
 // unchain pbufs
 
+#include <LWIPMutex.h>
+
 #include <netif/ethernet.h>
 #include <lwip/init.h>
 #include <lwip/netif.h>
@@ -34,6 +36,7 @@
 #include <lwip/dns.h>
 #include <lwip/raw.h>
 #include <lwip/icmp.h>
+#include <lwip/timeouts.h>
 #include <lwip/inet_chksum.h>
 #include <lwip/apps/sntp.h>
 
@@ -169,6 +172,7 @@ int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, i
         return 1;
     }
 
+    LWIPMutex m;
     _dns_cb_t cb = { &aResult, this };
 #if LWIP_IPV4 && LWIP_IPV6
     err_t err = dns_gethostbyname_addrtype(aHostname, &addr, &_dns_found_callback, &cb, LWIP_DNS_ADDRTYPE_DEFAULT);
@@ -181,6 +185,7 @@ int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, i
         _dns_lookup_pending = true;
         uint32_t now = millis();
         while ((millis() - now < (uint32_t)timeout_ms) && _dns_lookup_pending) {
+            sys_check_timeouts();
             delay(10);
         }
         _dns_lookup_pending = false;
@@ -220,6 +225,9 @@ int LwipIntfDev<RawDev>::ping(IPAddress host, uint8_t ttl, uint32_t _timeout) {
 
     auto ping_pcb = raw_new(IP_PROTO_ICMP);
     ping_pcb->ttl = ttl;
+
+    LWIPMutex m;
+
     raw_recv(ping_pcb, _pingCB, this);
     raw_bind(ping_pcb, IP_ADDR_ANY);
 
@@ -243,6 +251,7 @@ int LwipIntfDev<RawDev>::ping(IPAddress host, uint8_t ttl, uint32_t _timeout) {
         raw_sendto(ping_pcb, p, host);
         uint32_t now = millis();
         while ((millis() - now < _timeout) && (_ping_ttl < 0)) {
+            sys_check_timeouts();
             delay(10);
         }
         pbuf_free(p);
@@ -498,7 +507,6 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
             // tot_len is given by readFrameSize()
             // and is supposed to be honoured by readFrameData()
             // todo: ensure this test is unneeded, remove the print
-            Serial.println("read error?\r\n");
             pbuf_free(pbuf);
             return ERR_BUF;
         }

@@ -19,8 +19,7 @@
     Modified by Ivan Grokhotkov, January 2015 - esp8266 support
 */
 
-#ifndef WIFIUDP_H
-#define WIFIUDP_H
+#pragma once
 
 #include <Udp.h>
 #include <include/slist.h>
@@ -112,6 +111,3 @@ public:
     static void stopAllExcept(WiFiUDP * exC);
 
 };
-
-#endif //WIFIUDP_H
-

@@ -1,24 +1,28 @@
 #ifndef _LWIPOPTS_EXAMPLE_COMMONH_H
 #define _LWIPOPTS_EXAMPLE_COMMONH_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+
+// Critical section protection
+extern void noInterrupts();
+extern void interrupts();
+//static int lwipNoInterrupts() { noInterrupts(); return 0; }
+//static void lwipInterrupts(int ign) { interrupts(); }
+#define SYS_ARCH_DECL_PROTECT int
+#define SYS_ARCH_PROTECT(lev) noInterrupts
+#define SYS_ARCH_UNPROTECT(lev) interrupts
 
 // Common settings used in most of the pico_w examples
 // (see https://www.nongnu.org/lwip/2_1_x/group__lwip__opts.html for details)
 
-// allow override in some examples
-#ifndef NO_SYS
 #define NO_SYS                      1
-#endif
-// allow override in some examples
-#ifndef LWIP_SOCKET
 #define LWIP_SOCKET                 0
-#endif
-#if PICO_CYW43_ARCH_POLL
-#define MEM_LIBC_MALLOC             1
-#else
-// MEM_LIBC_MALLOC is incompatible with non polling versions
 #define MEM_LIBC_MALLOC             0
-#endif
+
+
 #define MEM_ALIGNMENT               4
 #define MEM_SIZE                    4000
 #define MEMP_NUM_TCP_SEG            32
@@ -86,5 +90,10 @@
 #define PPP_DEBUG                   LWIP_DBG_OFF
 #define SLIP_DEBUG                  LWIP_DBG_OFF
 #define DHCP_DEBUG                  LWIP_DBG_OFF
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
 
 #endif /* __LWIPOPTS_H__ */

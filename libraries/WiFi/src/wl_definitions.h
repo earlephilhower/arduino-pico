@@ -24,8 +24,7 @@
         Author: dlafauci
 */
 
-#ifndef WL_DEFINITIONS_H_
-#define WL_DEFINITIONS_H_
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -82,6 +81,3 @@ enum wl_enc_type {  /* Values map to 802.11 encryption suites... */
 #ifdef __cplusplus
 }
 #endif
-
-
-#endif /* WL_DEFINITIONS_H_ */

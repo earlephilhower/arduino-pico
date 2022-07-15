@@ -37,6 +37,7 @@
 #endif
 
 
+volatile bool __inLWIP = false;
 
 // note same code
 #if PICO_CYW43_ARCH_THREADSAFE_BACKGROUND
@@ -97,7 +98,9 @@ static void periodic_worker(void) {
 
     CYW43_STAT_INC(LWIP_RUN_COUNT);
     //#if CYW43_LWIP
-    sys_check_timeouts();
+    if (!__inLWIP) {
+        sys_check_timeouts();
+    }
     //#endif
     if (cyw43_poll) {
         if (cyw43_sleep > 0) {

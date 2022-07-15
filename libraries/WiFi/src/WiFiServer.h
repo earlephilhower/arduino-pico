@@ -19,15 +19,12 @@
     Modified by Ivan Grokhotkov, December 2014 - esp8266 support
 */
 
-#ifndef wifiserver_h
-#define wifiserver_h
+#pragma once
 
-extern "C" {
 #include <wl_definitions.h>
+struct tcp_pcb;
 
-    struct tcp_pcb;
-}
-
+#include <LWIPMutex.h>
 #include <Server.h>
 #include <IPAddress.h>
 #include <lwip/err.h>
@@ -110,5 +107,3 @@ protected:
     static err_t _s_accept(void *arg, tcp_pcb* newpcb, err_t err);
     static void _s_discard(void* server, ClientContext* ctx);
 };
-
-#endif

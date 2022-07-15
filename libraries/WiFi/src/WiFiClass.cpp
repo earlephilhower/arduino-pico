@@ -29,7 +29,6 @@
 #include <map>
 #include "WiFi.h"
 
-
 // This is the real WiFi network object, we just tickle it to do our magic
 #include <LwipEthernet.h>
 static CYW43lwIP _wifi(1);
