@@ -22,14 +22,14 @@
 
 #pragma once
 
-#include <inttypes.h>
+#include <Arduino.h>
+#include "WiFi.h"
 
-#include "wl_definitions.h"
-#include "wl_types.h"
+#include <inttypes.h>
+#include <map>
+
 #include <cyw43.h>
 #include "dhcpserver/dhcpserver.h"
-#include <Arduino.h>
-#include <map>
 
 #define WIFI_FIRMWARE_LATEST_VERSION PICO_SDK_VERSION_STRING
 
@@ -297,6 +297,7 @@ private:
     dhcp_server_t *_dhcpServer = nullptr;
 
     // ESP compat
+    bool _calledESP = false; // Should we behave like the ESP8266 for connect?
     _wifiModeESP _modeESP = WIFI_STA;
 };
 

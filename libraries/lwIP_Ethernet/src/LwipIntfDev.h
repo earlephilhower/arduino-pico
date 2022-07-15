@@ -67,6 +67,8 @@ public:
     // default mac-address is inferred from esp8266's STA interface
     bool begin(const uint8_t* macAddress = nullptr, const uint16_t mtu = DEFAULT_MTU);
 
+    void end();
+
     netif* getNetIf() {
         return &_netif;
     }
@@ -390,6 +392,14 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
 #endif
     return true;
 }
+
+template<class RawDev>
+void LwipIntfDev<RawDev>::end() {
+    RawDev::end();
+    netif_remove(&_netif);
+    memset(&_netif, 0, sizeof(_netif));
+}
+
 
 template<class RawDev>
 wl_status_t LwipIntfDev<RawDev>::status() {

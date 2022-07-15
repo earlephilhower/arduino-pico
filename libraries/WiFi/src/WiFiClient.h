@@ -23,11 +23,10 @@
 #pragma once
 
 #include <memory>
-#include "Arduino.h"
+#include "WiFi.h"
 #include "Print.h"
 #include "Client.h"
 #include "IPAddress.h"
-#include "WiFi.h"
 #include "include/slist.h"
 
 #ifndef TCP_MSS

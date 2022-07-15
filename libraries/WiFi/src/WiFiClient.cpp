@@ -20,20 +20,14 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "wl_definitions.h"
+#include "WiFi.h"
 
-//#include "debug.h"
-//#include "ESP8266WiFi.h"
-#include "WiFiClass.h"
-#include "WiFiClient.h"
-//#include "WiFiServer.h"
 #include "lwip/opt.h"
 #include "lwip/ip.h"
 #include "lwip/tcp.h"
 #include "lwip/inet.h"
 #include "lwip/netif.h"
 #include <include/ClientContext.h>
-//#include "c_types.h"
 //#include <StreamDev.h>
 
 uint16_t WiFiClient::_localPort = 0;

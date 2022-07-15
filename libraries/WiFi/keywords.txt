@@ -46,6 +46,7 @@ endPacket	KEYWORD2
 parsePacket	KEYWORD2
 remoteIP	KEYWORD2
 remotePort	KEYWORD2
+mode	KEYWORD2
 
 beginAP	KEYWORD2
 beginEnterprise	KEYWORD2
@@ -62,4 +63,5 @@ setTimeout	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
-
+WIFI_STA	LITERAL1
+WIFI_AP	LITERAL1

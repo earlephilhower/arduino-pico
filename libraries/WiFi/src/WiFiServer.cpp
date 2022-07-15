@@ -21,10 +21,7 @@
 */
 
 
-//#include "debug.h"
 #include "WiFi.h"
-#include "WiFiClient.h"
-#include "WiFiServer.h"
 #include "lwip/opt.h"
 #include "lwip/tcp.h"
 #include "lwip/inet.h"

@@ -45,6 +45,7 @@ const char* WiFiClass::firmwareVersion() {
 }
 
 void WiFiClass::mode(_wifiModeESP m) {
+    _calledESP = true;
     switch (m) {
     case WIFI_OFF:
         end();
@@ -80,6 +81,8 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
         return beginAP(ssid, passphrase);
     }
 
+    end();
+
     _ssid = ssid;
     _password = passphrase;
     _wifi.setSSID(ssid);
@@ -87,15 +90,15 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
     _wifi.setTimeout(_timeout);
     _wifi.setSTA();
     _apMode = false;
+    _wifiHWInitted = true;
     uint32_t start = millis(); // The timeout starts from network init, not network link up
     if (!_wifi.begin()) {
         return WL_IDLE_STATUS;
     }
-    _wifiHWInitted = true;
-    while ((millis() - start < (uint32_t)_timeout) && !connected()) {
-        delay(1);
+    while (!_calledESP && ((millis() - start < (uint32_t)2*_timeout)) && !connected()) {
+        delay(10);
     }
-    return connected();
+    return status();
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid) {
@@ -113,6 +116,8 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
+    end();
+
     _ssid = ssid;
     _password = passphrase;
     _wifi.setSSID(ssid);
@@ -223,18 +228,23 @@ void WiFiClass::setHostname(const char* name) {
     return: one value of wl_status_t enum
 */
 int WiFiClass::disconnect(void) {
-    cyw43_wifi_leave(&cyw43_state, _apMode ? 1 : 0);
+    if (_wifiHWInitted) {
+        cyw43_wifi_leave(&cyw43_state, _apMode ? 1 : 0);
+    }
     _wifiHWInitted = false;
     if (_dhcpServer) {
         dhcp_server_deinit(_dhcpServer);
         free(_dhcpServer);
         _dhcpServer = nullptr;
     }
+    _wifi.end();
     return WL_DISCONNECTED;
 }
 
 void WiFiClass::end(void) {
-    disconnect();
+    if (_wifiHWInitted) {
+        disconnect();
+    }
 }
 
 /*
