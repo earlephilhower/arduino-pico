@@ -316,28 +316,34 @@ void cyw43_arch_poll() {
     //    }
 }
 
-
-static void no_lwip_fail() {
-    panic("You cannot use IP with pico_cyw43_arch_none");
-}
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
 void __attribute__((weak)) cyw43_cb_tcpip_init(cyw43_t *self, int itf);
 void cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
+    (void) self;
+    (void) itf;
 }
 void __attribute__((weak)) cyw43_cb_tcpip_deinit(cyw43_t *self, int itf);
 void cyw43_cb_tcpip_deinit(cyw43_t *self, int itf) {
+    (void) self;
+    (void) itf;
 }
 void __attribute__((weak)) cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf);
 void cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
-    no_lwip_fail();
+    (void) self;
+    (void) itf;
 }
 void __attribute__((weak)) cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf);
 void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
-    no_lwip_fail();
+    (void) self;
+    (void) itf;
 }
 void __attribute__((weak)) cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf);
 void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
-    no_lwip_fail();
+    (void) cb_data;
+    (void) itf;
+    (void) len;
+    (void) buf;
 }
-
+#endif
 
 #endif
