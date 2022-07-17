@@ -68,6 +68,7 @@ int WiFiClass::begin(const char* ssid) {
     return begin(ssid, nullptr);
 }
 
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
 /*  Start WiFi connection with passphrase
     the most secure supported mode will be automatically selected
 
@@ -148,6 +149,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 
     return WL_CONNECTED;
 }
+#endif
 
 bool WiFiClass::connected() {
     return _wifi.connected() && localIP().isSet();
