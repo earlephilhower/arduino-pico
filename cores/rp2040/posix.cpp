@@ -108,6 +108,13 @@ extern "C" int settimeofday(const struct timeval *tv, const struct timezone *tz)
     return 0;
 }
 
+// For NTP
+extern "C" void __setSystemTime(unsigned long long sec, unsigned long usec) {
+    uint64_t now_us = to_us_since_boot(get_absolute_time());
+    uint64_t newnow_us = sec * 1000000LL + usec;
+    __timedelta_us = newnow_us - now_us;
+}
+
 extern "C" int _isatty(int file) {
     (void) file;
     errno = ENOSYS;

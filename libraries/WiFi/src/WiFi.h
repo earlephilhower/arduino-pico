@@ -11,3 +11,5 @@
 #include "WiFiClientSecure.h"
 #include "WiFiServerSecure.h"
 #include "WiFiUdp.h"
+
+#include "WiFiNTP.h"

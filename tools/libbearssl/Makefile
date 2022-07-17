@@ -3,7 +3,7 @@
 VER_H=../../include/bearssl/bearssl_git.h
 
 all T0 clean: bearssl/README.txt
-	PATH="$(PATH):$(PWD)/../../system/arm-none-eabi/bin/" && cd bearssl && make CONF=pico $@
+	PATH="$(PATH):$(PWD)/../../system/arm-none-eabi/bin/" && cd bearssl && $(MAKE) CONF=pico $@
 
 install: all version-header
 	cp bearssl/pico/libbearssl.a ../../lib/.

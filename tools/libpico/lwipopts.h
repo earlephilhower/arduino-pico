@@ -9,8 +9,6 @@ extern "C" {
 // Critical section protection
 extern void noInterrupts();
 extern void interrupts();
-//static int lwipNoInterrupts() { noInterrupts(); return 0; }
-//static void lwipInterrupts(int ign) { interrupts(); }
 #define SYS_ARCH_DECL_PROTECT int
 #define SYS_ARCH_PROTECT(lev) noInterrupts
 #define SYS_ARCH_UNPROTECT(lev) interrupts
@@ -21,7 +19,6 @@ extern void interrupts();
 #define NO_SYS                      1
 #define LWIP_SOCKET                 0
 #define MEM_LIBC_MALLOC             0
-
 
 #define MEM_ALIGNMENT               4
 #define MEM_SIZE                    4000
@@ -55,6 +52,13 @@ extern void interrupts();
 #define LWIP_NETIF_TX_SINGLE_PBUF   1
 #define DHCP_DOES_ARP_CHECK         0
 #define LWIP_DHCP_DOES_ACD_CHECK    0
+
+// NTP
+extern void __setSystemTime(unsigned long long sec, unsigned long us);
+#define SNTP_SET_SYSTEM_TIME_US(sec, us)  __setSystemTime(sec, us)
+#define SNTP_MAX_SERVERS                  1
+//#define SNTP_SERVER_ADDRESS               "pool.ntp.org"
+#define SNTP_SERVER_DNS                   1
 
 #ifndef NDEBUG
 #define LWIP_DEBUG                  1
