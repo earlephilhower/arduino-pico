@@ -28,7 +28,7 @@
 #include <pico/util/queue.h>
 #include "CoreMutex.h"
 #include "ccount.pio.h"
-
+#include <malloc.h>
 
 extern "C" volatile bool __otherCoreIdled;
 
@@ -141,6 +141,9 @@ class RP2040;
 extern RP2040 rp2040;
 extern "C" void main1();
 class PIOProgram;
+
+extern "C" char __StackLimit;
+extern "C" char __bss_end__;
 
 // Wrapper class for PIO programs, abstracting common operations out
 // TODO - Add unload/destructor
@@ -256,6 +259,19 @@ public:
         } else {
             return ccount_read(_pio, _sm);
         }
+    }
+
+    inline int getFreeHeap() {
+        return getTotalHeap() - getUsedHeap();
+    }
+
+    inline int getUsedHeap() {
+        struct mallinfo m = mallinfo();
+        return m.uordblks;
+    }
+
+    inline int getTotalHeap() {
+        return &__StackLimit  - &__bss_end__;
     }
 
     void idleOtherCore() {
