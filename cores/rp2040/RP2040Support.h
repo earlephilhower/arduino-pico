@@ -284,7 +284,9 @@ public:
             unsigned long int b;
             do {
                 b = rosc_hw->randombit & 1;
-                if (b != (rosc_hw->randombit & 1)) break;
+                if (b != (rosc_hw->randombit & 1)) {
+                    break;
+                }
             } while (true);
             r <<= 1;
             r |= b;
