@@ -10,8 +10,12 @@ mkdir build
 cd build
 cmake ..
 make -j
+
+# Put everything in its place
 mv libpico.a ../../../lib/.
-mv generated/pico_base/pico/version.h ../../../lib/pico_base/pico/.
+mv generated/pico_base/pico/version.h ../../../include/pico_base/pico/.
+cp ../lwipopts.h ../../../include/.
+cp ../tusb_config.h ../../../include/.
 
 rm -rf boot
 mkdir boot
