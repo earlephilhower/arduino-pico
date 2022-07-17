@@ -43,7 +43,7 @@
 //#include <mmu_iram.h>
 //#include <umm_malloc/umm_malloc.h>
 //#include <umm_malloc/umm_heap_select.h>
-#if 0
+#if 1
 #if !CORE_MOCK
 
 // The BearSSL thunks in use for now
@@ -68,9 +68,6 @@
 extern "C" uint32_t __picoRand() {
     return rp2040.hwrand32();
 }
-
-extern "C" void stack_thunk_add_ref() {}
-extern "C" void stack_thunk_del_ref() {}
 
 namespace BearSSL {
 

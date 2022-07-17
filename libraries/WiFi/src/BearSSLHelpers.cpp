@@ -969,21 +969,9 @@ bool SigningVerifier::verify(UpdaterHashClass *hash, const void *signature, uint
 #endif
 }
 
-#if !CORE_MOCK
-
-// Second stack thunked helpers
-make_stack_thunk(br_ssl_engine_recvapp_ack);
-make_stack_thunk(br_ssl_engine_recvapp_buf);
-make_stack_thunk(br_ssl_engine_recvrec_ack);
-make_stack_thunk(br_ssl_engine_recvrec_buf);
-make_stack_thunk(br_ssl_engine_sendapp_ack);
-make_stack_thunk(br_ssl_engine_sendapp_buf);
-make_stack_thunk(br_ssl_engine_sendrec_ack);
-make_stack_thunk(br_ssl_engine_sendrec_buf);
 
 #endif
 
-#endif
 };
 
 #if ARDUINO_SIGNING
@@ -999,4 +987,14 @@ UpdaterVerifyClass& updaterSigningVerifier = __signingVerifier;
 };
 #endif
 
-
+#pragma GCC push_options
+#pragma GCC optimize("O0")
+make_stack_thunk_void(br_ssl_engine_recvapp_ack, (br_ssl_engine_context *cc, size_t len), (cc, len));
+make_stack_thunk_unsigned_char_ptr(br_ssl_engine_recvapp_buf, (const br_ssl_engine_context *cc, size_t *len), (cc, len));
+make_stack_thunk_void(br_ssl_engine_recvrec_ack, (br_ssl_engine_context *cc, size_t len), (cc, len));
+make_stack_thunk_unsigned_char_ptr(br_ssl_engine_recvrec_buf, (const br_ssl_engine_context *cc, size_t *len), (cc, len));
+make_stack_thunk_void(br_ssl_engine_sendapp_ack, (br_ssl_engine_context *cc, size_t len), (cc, len));
+make_stack_thunk_unsigned_char_ptr(br_ssl_engine_sendapp_buf, (const br_ssl_engine_context *cc, size_t *len), (cc, len));
+make_stack_thunk_void(br_ssl_engine_sendrec_ack, (br_ssl_engine_context *cc, size_t len), (cc, len));
+make_stack_thunk_unsigned_char_ptr(br_ssl_engine_sendrec_buf, (const br_ssl_engine_context *cc, size_t *len), (cc, len));
+#pragma GCC pop_options
