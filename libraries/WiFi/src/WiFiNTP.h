@@ -40,12 +40,39 @@ public:
         }
     }
 
+    void begin(IPAddress s1, IPAddress s2, int timeout = 3600) {
+        (void) timeout;
+        sntp_stop();
+        if (s1.isSet()) {
+            sntp_setserver(0, s1);
+        }
+        if (s2.isSet()) {
+            sntp_setserver(1, s2);
+        }
+        sntp_setoperatingmode(SNTP_OPMODE_POLL);
+        sntp_init();
+    }
+
+
     void begin(const char *server, int timeout = 3600) {
         IPAddress addr;
         if (WiFi.hostByName(server, addr)) {
             begin(addr, timeout);
         }
     }
+    void begin(const char *s1, const char *s2, int timeout = 3600) {
+        IPAddress a1, a2;
+        if (WiFi.hostByName(s1, a1)) {
+            if (WiFi.hostByName(s2, a2)) {
+                begin(a1, a2, timeout);
+            } else {
+                begin(a1, timeout);
+            }
+        }
+    }
 };
+
+// ESP8266 compat
+#define configTime(timeout, tzoffsec, server1, server2) NTP.begin(server1, server2, timeout)
 
 extern NTPClass NTP;
