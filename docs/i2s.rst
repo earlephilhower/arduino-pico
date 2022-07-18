@@ -53,7 +53,7 @@ the word to fill when no data is available to send to the I2S hardware.
 Call before ``I2S::begin()``.
 
 bool setFrequency(long sampleRate)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the word clock frequency, but does not start the I2S device if not
 already running.  May be called after ``I2S::begin()`` to change the
 sample rate on-the-fly.
@@ -158,17 +158,17 @@ Reads a left and right 8-bit sample and returns ``true`` on success.  Will block
 until data is available.
 
 bool read16(int16_t \*l, int16_t \*r)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Reads a left and right 16-bit sample and returns ``true`` on success.  Will block
 until data is available.
 
 bool read24(int32_t \*l, int32_t \*r)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Reads a left and right 24-bit sample and returns ``true`` on success.  See note below
 about 24-bit mode.  Will block until data is available.
 
 bool read32(int32_t \*l, int32_t \*r)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Reads a left and right 32-bit sample and returns ``true`` on success.  Will block
 until data is available.
 

@@ -1,7 +1,7 @@
-:orphan:
+.. _HeaderTag:
 
-Client Class
-------------
+WiFiClient
+==========
 
 Methods documented for `Client <https://www.arduino.cc/en/Reference/WiFiClientConstructor>`__ in `Arduino <https://github.com/arduino/Arduino>`__
 

@@ -41,7 +41,11 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    FreeRTOS SMP (multicore) <freertos>
 
-   WiFi (Raspberry Pi Pico-W Support) <wifi>
+   WiFi (Pico-W Support) <wifi>
+   WiFiClient <wificlient>
+   WiFiServer <wifiserver>
+   WiFiUDP <wifiudp>
+   NTP client <wifintp>
 
    Ported/Optimized Libraries <libraries>
    Using Pico-SDK <sdk>

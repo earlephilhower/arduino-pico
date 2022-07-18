@@ -52,21 +52,3 @@ int rp2040.getTotalHeap()
 Returns the total heap that was available to this program at compile time (i.e.
 the Pico RAM size minus things like the ``.data`` and ``.bss`` sections and other
 overhead).
-
-
-Multicore Operations
---------------------
-
-void rp2040.idleOtherCore()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Causes the other core to freeze in a tight RAM loop.  Required if flash memory is
-being written.  In the case where the other core was not used, this is a no-op.
-
-void rp2040.resumeOtherCore()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Restart a frozen core, opposite of ``idleOtherCore``.
-
-void rp2040.restartCore1()
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-Restart operation of CORE 1 (i.e. the second core).  The user is required to use
-the standard Pico SDK calls to start it up again.

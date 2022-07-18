@@ -71,8 +71,8 @@ uint32_t rp2040.fifo.pop()
 
 Reads a value from this core's FIFO.  Blocks until one is available.
 
-bool rp2040.fifo.pop_nb(uint32_t *dest)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool rp2040.fifo.pop_nb(uint32_t \*dest)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Reads a value from this core's FIFO and places it in dest.  Will return
 ``true`` if successful, or ``false`` if the pop would block.
