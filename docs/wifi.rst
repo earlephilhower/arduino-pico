@@ -13,13 +13,13 @@ Supported Features
   * Access Point Mode (AP, creates its own wireless network) with 4 clients
 * WiFi Scanning and Reporting
   * See the ``ScanNetworks.ino`` example to better understand the process.
-* `WiFiClient (TCP/IP client) <wificlient.rst>`_
+* `WiFiClient (TCP/IP client) <wificlient>`_
   * See the ``WiFiClient.ino`` example which connects the Pico W to a remote internet service and retrieves some data
-* `WiFiServer (TCP/IP server) <wifiserver.rst>`_
+* `WiFiServer (TCP/IP server) <wifiserver>`_
   * See the ``WiFiServer.ino`` example which implements a frientdy TCP/IP server 
-* `WiFiUDP (UDP packet input/output) <wifiudp.rst>`_
+* `WiFiUDP (UDP packet input/output) <wifiudp>`_
   * See the ``UDP.ino`` example for a simple send/receive UDP application
-* `NTP (Netwok Time Protocol) <ntp.rst>`_
+* `NTP (Netwok Time Protocol) <ntp>`_
   * Use ``NTP.begin(server)`` where ``server`` can be a host name or an IP address
 
 In the near future TLS (SSL/https) encryption is planned, but is not yet implemented.

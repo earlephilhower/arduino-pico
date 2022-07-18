@@ -24,6 +24,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    Pin (Re)Assignment <pins>
 
+   RP2040 Helper <rp2040>
+
    Analog I/O <analog>
    Digital I/O <digital>
    EEPROM <eeprom>
