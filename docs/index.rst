@@ -24,6 +24,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    Pin (Re)Assignment <pins>
 
+   RP2040 Helper <rp2040>
+
    Analog I/O <analog>
    Digital I/O <digital>
    EEPROM <eeprom>
@@ -39,7 +41,14 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    FreeRTOS SMP (multicore) <freertos>
 
-   WiFi (Raspberry Pi Pico-W Support) <wifi>
+   WiFi (Pico-W Support) <wifi>
+   WiFiClient <wificlient>
+   WiFiServer <wifiserver>
+   WiFiUDP <wifiudp>
+   NTP client <wifintp>
+   BearSSL Encrypted TLS <bearssl>
+   WiFiClientSecure (TLS/SSL/HTTPS) <bearssl-client-secure-class>
+   WiFiServerSecure (TLS/SSL/HTTPS) <bearssl-server-secure-class>
 
    Ported/Optimized Libraries <libraries>
    Using Pico-SDK <sdk>

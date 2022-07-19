@@ -55,4 +55,4 @@ Returns the length of the EEPROM (i.e. the value specified in
 
 EEPROM Examples
 ---------------
-Three EEPROM `examples<https://github.com/earlephilhower/arduino-pico/tree/master/libraries/EEPROM>`_ are included.
+Three EEPROM `examples <https://github.com/earlephilhower/arduino-pico/tree/master/libraries/EEPROM>`_ are included.

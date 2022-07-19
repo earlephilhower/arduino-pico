@@ -47,4 +47,15 @@ def main():
         fout.write("#define ARDUINO_PICO_REVISION " + str(sub) + "\n")
         fout.write('#define ARDUINO_PICO_VERSION_STR "' + str(args.version) + '"' + "\n")
 
+    # docs/conf.py
+    with open("docs/conf.py", "r") as fin:
+        with open("docs/conf.py.new", "w") as fout:
+            for l in fin:
+                if l.startswith("version = "):
+                    l = "version = u'" + str(args.version) + "'\n"
+                if l.startswith("release = "):
+                    l = "release = u'" + str(args.version) + "'\n"
+                fout.write(l);
+    shutil.move("docs/conf.py.new", "docs/conf.py")
+
 main()

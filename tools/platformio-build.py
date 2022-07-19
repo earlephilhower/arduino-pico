@@ -147,7 +147,8 @@ env.Append(
 
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
-        File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")), 
+        File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")),
+        File(os.path.join(FRAMEWORK_DIR, "lib", "libbearssl.a")),
         "m", "c", stdcpp_lib, "c"]
 )
 
@@ -247,7 +248,7 @@ if not "USE_TINYUSB" in cpp_defines:
 configure_usb_flags(cpp_defines)
 
 # ensure LWIP headers are in path after any TINYUSB distributed versions, also PicoSDK USB path headers
-env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "tools", "libpico")])
+env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "include")])
 
 # info about the filesystem is already parsed by the platform's main.py 
 # script. We can just use the info here

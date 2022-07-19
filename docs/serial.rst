@@ -28,6 +28,7 @@ The size of the receive FIFO may also be adjusted from the default 32 bytes by
 using the ``setFIFOSize`` call prior to calling ``begin()``
 
 .. code:: cpp
+
         Serial1.setFIFOSize(128);
         Serial1.begin(baud);
 
@@ -38,6 +39,7 @@ For applications where an IRQ driven serial port is not appropriate, use
 ``setPollingMode(true)`` before calling ``begin()``
 
 .. code:: cpp
+
         Serial1.setPollingMode(true);
         Serial1.begin(300)
 

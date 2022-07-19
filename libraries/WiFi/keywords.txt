@@ -13,6 +13,7 @@ WiFiClient	KEYWORD1
 WiFiSSLClient	KEYWORD1
 WiFiServer	KEYWORD1
 WiFiUDP	KEYWORD1
+NTP	KEYWORD1
 
 
 #######################################
