@@ -27,6 +27,11 @@
 #include <lwip/ip_addr.h>
 #include <lwip/ip4_addr.h>
 
+// forward declarations of global name space friend classes
+class EthernetClass;
+class DhcpClass;
+class DNSClient;
+
 namespace arduino {
 
 #if !LWIP_IPV6
@@ -148,6 +153,10 @@ class IPAddress: public Printable {
         friend class Server;
         friend class DhcpClass;
         friend class DNSClient;
+
+        friend ::EthernetClass;
+        friend ::DhcpClass;
+        friend ::DNSClient;
 
         /*
                lwIP address compatibility

@@ -1,10 +1,7 @@
 /*
-    WiFiMutex.h - Ensure the timer-driven sys_check_timeouts doesn't
+    LWIPMutex.h - Ensure the timer-driven sys_check_timeouts doesn't
                   get executed while we're in the user-level TCP stack.
     Copyright (c) 2022 Earle F. Philhower, III.  All rights reserved.
-
-    Implements the API defined by the Arduino WiFiNINA library,
-    copyright (c) 2018 Arduino SA. All rights reserved.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
