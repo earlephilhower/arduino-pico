@@ -228,6 +228,15 @@ def configure_usb_flags(cpp_defines):
     board.update("build.hwids", hw_ids)
     board.update("upload.maximum_ram_size", ram_size)
 
+def configure_network_flags():
+    env.Append(CPPDEFINES=[
+        ("PICO_CYW43_ARCH_THREADSAFE_BACKGROUND", 1),
+        ("CYW43_LWIP", 0),
+        ("LWIP_IPV6", 1),
+        ("LWIP_IPV4", 1),
+        ("LWIP_IGMP", 1),
+        ("LWIP_CHECKSUM_CTRL_PER_NETIF", 1)
+    ])
 #
 # Process configuration flags
 #
@@ -246,6 +255,7 @@ if not "USE_TINYUSB" in cpp_defines:
         )
 # configure USB stuff
 configure_usb_flags(cpp_defines)
+configure_network_flags()
 
 # ensure LWIP headers are in path after any TINYUSB distributed versions, also PicoSDK USB path headers
 env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "include")])
