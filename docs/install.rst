@@ -85,7 +85,7 @@ When running MalwareBytes antivirus (or others) the scanner may lock the compile
 
 Symptoms include:
 
-*Access denied during update in the boards manager - affects the .exe files, because MalwareBytes has locked them.
+* Access denied during update in the boards manager - affects the .exe files, because MalwareBytes has locked them.
 * Access denied during compilation, to one of the .exe files - same reason.
 * Can't delete the .exe files - they're locked by MalwareBytes.
 

@@ -22,6 +22,7 @@
 #include "RP2040USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
+#include "LWIPMutex.h"
 #include <reent.h>
 
 RP2040 rp2040;
@@ -30,6 +31,8 @@ extern "C" {
 };
 
 mutex_t _pioMutex;
+
+int LWIPMutex::_ref = 0;
 
 extern void setup();
 extern void loop();
@@ -126,7 +129,6 @@ extern "C" int main() {
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             rp2040.fifo.begin(2);
-            multicore_launch_core1(main1);
         } else {
             rp2040.fifo.begin(1);
         }
@@ -135,6 +137,10 @@ extern "C" int main() {
 #endif
 
     if (!__isFreeRTOS) {
+        if (setup1 || loop1) {
+            delay(1); // Needed to make Picoprobe upload start 2nd core
+            multicore_launch_core1(main1);
+        }
         setup();
         while (true) {
             loop();

@@ -19,8 +19,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef STDLIB_NONISO_H
-#define STDLIB_NONISO_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,7 +52,4 @@ const char* strrstr(const char*__restrict p_pcString,
 
 #ifdef __cplusplus
 } // extern "C"
-#endif
-
-
 #endif

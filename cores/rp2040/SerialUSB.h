@@ -18,8 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef __SERIALUSB_H__
-#define __SERIALUSB_H__
+#pragma once
 
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
@@ -54,5 +53,3 @@ extern SerialUSB Serial;
 namespace arduino {
 extern void serialEventRun(void) __attribute__((weak));
 };
-
-#endif

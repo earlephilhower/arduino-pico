@@ -25,3 +25,6 @@
 [submodule "libraries/FreeRTOS/lib/FreeRTOS-Kernel"]
 	path = libraries/FreeRTOS/lib/FreeRTOS-Kernel
 	url = https://github.com/earlephilhower/FreeRTOS-Kernel.git
+[submodule "tools/libbearssl/bearssl"]
+	path = tools/libbearssl/bearssl
+	url = https://github.com/earlephilhower/bearssl-esp8266.git

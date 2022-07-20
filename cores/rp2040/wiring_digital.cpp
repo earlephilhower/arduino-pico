@@ -23,7 +23,8 @@
 
 static PinMode _pm[30];
 
-extern "C" void pinMode(pin_size_t ulPin, PinMode ulMode) {
+extern "C" void pinMode(pin_size_t ulPin, PinMode ulMode) __attribute__((weak, alias("__pinMode")));
+extern "C" void __pinMode(pin_size_t ulPin, PinMode ulMode) {
     switch (ulMode) {
     case INPUT:
         gpio_init(ulPin);
@@ -76,7 +77,8 @@ extern "C" void pinMode(pin_size_t ulPin, PinMode ulMode) {
     _pm[ulPin] = ulMode;
 }
 
-extern "C" void digitalWrite(pin_size_t ulPin, PinStatus ulVal) {
+extern "C" void digitalWrite(pin_size_t ulPin, PinStatus ulVal) __attribute__((weak, alias("__digitalWrite")));
+extern "C" void __digitalWrite(pin_size_t ulPin, PinStatus ulVal) {
     if (ulPin > 29) {
         DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
         return;
@@ -99,7 +101,8 @@ extern "C" void digitalWrite(pin_size_t ulPin, PinStatus ulVal) {
     }
 }
 
-extern "C" PinStatus digitalRead(pin_size_t ulPin) {
+extern "C" PinStatus digitalRead(pin_size_t ulPin) __attribute__((weak, alias("__digitalRead")));
+extern "C" PinStatus __digitalRead(pin_size_t ulPin) {
     if (ulPin > 29) {
         DEBUGCORE("ERROR: Illegal pin in digitalRead (%d)\n", ulPin);
         return LOW;

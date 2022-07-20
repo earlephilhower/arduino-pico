@@ -7,7 +7,7 @@ Arduino-Pico.  Arduino-Pico is a community port of the RP2040
 to make it easier and more fun to use and program the Raspberry Pi
 Pico / RP2040 based boards.
 
-This Arduino core uses a custom toolset with GCC 10.2 and Newlib 4.0.0
+This Arduino core uses a custom toolset with GCC 10.3 and Newlib 4.0.0
 and doesn't require any system-installed prerequisites.
 
 For the latest version, always check https://github.com/earlephilhower/arduino-pico
@@ -24,6 +24,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    Pin (Re)Assignment <pins>
 
+   RP2040 Helper <rp2040>
+
    Analog I/O <analog>
    Digital I/O <digital>
    EEPROM <eeprom>
@@ -38,6 +40,15 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    Multicore Processing <multicore>
 
    FreeRTOS SMP (multicore) <freertos>
+
+   WiFi (Pico-W Support) <wifi>
+   WiFiClient <wificlient>
+   WiFiServer <wifiserver>
+   WiFiUDP <wifiudp>
+   NTP client <wifintp>
+   BearSSL Encrypted TLS <bearssl>
+   WiFiClientSecure (TLS/SSL/HTTPS) <bearssl-client-secure-class>
+   WiFiServerSecure (TLS/SSL/HTTPS) <bearssl-server-secure-class>
 
    Ported/Optimized Libraries <libraries>
    Using Pico-SDK <sdk>
