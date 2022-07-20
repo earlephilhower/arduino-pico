@@ -83,6 +83,14 @@ def BuildWithoutUSBStack(name):
     print("%s.menu.usbstack.nousb=No USB" % (name))
     print('%s.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"' % (name))
 
+def BuildIPStack(name):
+    print("%s.menu.ipstack.ipv4only=IPv4 Only" % (name))
+    print('%s.menu.ipstack.ipv4only.build.libpico=libpico.a' % (name))
+    print('%s.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1' % (name))
+    print("%s.menu.ipstack.ipv4ipv6=IPv4 and IPv6" % (name))
+    print('%s.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a' % (name))
+    print('%s.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1' % (name))
+
 def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, pwr, boarddefine, variant, uploadtool, flashsize, ramsize, boot2):
     prettyname = vendor_name + " " + product_name
     print()
@@ -133,7 +141,7 @@ def BuildGlobalMenuList():
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
     print("menu.usbstack=USB Stack")
-
+    print("menu.ipstack=IP Stack")
 
 def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):
     for a, b, c in [ ["", "", "uf2conv"], ["picoprobe", " (Picoprobe)", "picoprobe"], ["picodebug", " (pico-debug)", "picodebug"]]:
@@ -171,6 +179,7 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
             BuildWithoutUSBStack(n)
         else:
             BuildUSBStack(n)
+        BuildIPStack(n)
         if name == "generic":
             BuildBoot(n)
     MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2)

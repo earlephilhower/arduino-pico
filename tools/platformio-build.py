@@ -109,7 +109,6 @@ env.Append(
         # LWIP-related
         ("PICO_CYW43_ARCH_THREADSAFE_BACKGROUND", 1),
         ("CYW43_LWIP", 0),
-        ("LWIP_IPV6", 1),
         ("LWIP_IPV4", 1),
         ("LWIP_IGMP", 1),
         ("LWIP_LWIP_CHECKSUM_CTRL_PER_NETIF", 1),

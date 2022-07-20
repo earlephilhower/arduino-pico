@@ -179,8 +179,10 @@ bool IPAddress::isValid(const char* arg) {
 	return IPAddress().fromString(arg);
 }
 
+namespace arduino {
 const IPAddress INADDR_ANY; // generic "0.0.0.0" for IPv4 & IPv6
 const IPAddress INADDR_NONE(255,255,255,255);
+};
 
 void IPAddress::clear() {
     (*this) = INADDR_ANY;

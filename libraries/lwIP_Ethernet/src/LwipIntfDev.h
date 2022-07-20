@@ -179,7 +179,7 @@ int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, i
 #if LWIP_IPV4 && LWIP_IPV6
     err_t err = dns_gethostbyname_addrtype(aHostname, &addr, &_dns_found_callback, &cb, LWIP_DNS_ADDRTYPE_DEFAULT);
 #else
-    err_t err = dns_gethostbyname(aHostname, &addr, &wifi_dns_found_callback, &cb);
+    err_t err = dns_gethostbyname(aHostname, &addr, &_dns_found_callback, &cb);
 #endif
     if (err == ERR_OK) {
         aResult = IPAddress(&addr);
