@@ -27,11 +27,14 @@
 #include <lwip/ip_addr.h>
 #include <lwip/ip4_addr.h>
 
-namespace arduino {
 
-#if !LWIP_IPV6
-struct ip_addr: ipv4_addr { };
-#endif // !LWIP_IPV6
+// forward declarations of global name space friend classes
+class EthernetClass;
+class DhcpClass;
+class DNSClient;
+
+
+namespace arduino {
 
 // to display a netif id with printf:
 #define NETIFID_STR        "%c%c%u"
@@ -48,8 +51,19 @@ struct ip_addr: ipv4_addr { };
 
 class IPAddress: public Printable {
     private:
-
+#if !LWIP_IPV6
+        // Ugly hack to allow Arduino Ethernet library to twiddle internal bits.
+        // This can only work in IPv4-only mode, of course.
+        union {
+            ip_addr_t _ip;
+            struct {
+                uint8_t bytes[4];
+            } _address;
+        };
+        static_assert(sizeof(_ip) == sizeof(_address), "IP_ADDR_T size != _ADDRESS size");
+#else
         ip_addr_t _ip;
+#endif
 
         // Access the raw byte array containing the address.  Because this returns a pointer
         // to the internal structure rather than a copy of the address this function should only
@@ -149,6 +163,10 @@ class IPAddress: public Printable {
         friend class DhcpClass;
         friend class DNSClient;
 
+        friend ::EthernetClass;
+        friend ::DhcpClass;
+        friend ::DNSClient;
+
         /*
                lwIP address compatibility
         */
@@ -167,7 +185,6 @@ class IPAddress: public Printable {
 
         bool isLocal () const { return ip_addr_islinklocal(&_ip); }
 
-#if LWIP_IPV6
 
         IPAddress(const ip_addr_t& lwip_addr) { ip_addr_copy(_ip, lwip_addr); }
         IPAddress(const ip_addr_t* lwip_addr) { ip_addr_copy(_ip, *lwip_addr); }
@@ -175,6 +192,7 @@ class IPAddress: public Printable {
         IPAddress& operator=(const ip_addr_t& lwip_addr) { ip_addr_copy(_ip, lwip_addr); return *this; }
         IPAddress& operator=(const ip_addr_t* lwip_addr) { ip_addr_copy(_ip, *lwip_addr); return *this; }
 
+#if LWIP_IPV6
         uint16_t* raw6()
         {
             setV6();
