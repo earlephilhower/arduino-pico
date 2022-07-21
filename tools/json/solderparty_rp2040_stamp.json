@@ -4,7 +4,7 @@
       "earlephilhower": {
         "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
         "usb_vid": "0x1209",
-        "usb_pid": "0xa182"
+        "usb_pid": "0xA182"
       }
     },
     "core": "earlephilhower",
@@ -18,7 +18,7 @@
       ],
       [
         "0x1209",
-        "0xa182"
+        "0xA182"
       ]
     ],
     "mcu": "rp2040",

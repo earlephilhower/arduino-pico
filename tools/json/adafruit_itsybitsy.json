@@ -3,8 +3,8 @@
     "arduino": {
       "earlephilhower": {
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
-        "usb_vid": "0x239a",
-        "usb_pid": "0x80fd"
+        "usb_vid": "0x239A",
+        "usb_pid": "0x80FD"
       }
     },
     "core": "earlephilhower",
@@ -17,8 +17,8 @@
         "0x00C0"
       ],
       [
-        "0x239a",
-        "0x80fd"
+        "0x239A",
+        "0x80FD"
       ]
     ],
     "mcu": "rp2040",
