@@ -222,6 +222,18 @@ default Pico SDK USB stack. To change it, add
 Note that the special "No USB" setting is also supported, through the
 shortcut-define ``PIO_FRAMEWORK_ARDUINO_NO_USB``.
 
+IP Stack
+---------
+
+The lwIP stack can be configured to support only IPv4 (default) or additionally IPv6. To activate IPv6 support, add 
+
+.. code:: ini
+
+    ; IPv6
+    build_flags = -DPIO_FRAMEWORK_ARDUINO_ENABLE_IPV6
+
+to the ``platformio.ini``.
+
 
 Selecting a different core version
 ----------------------------------
