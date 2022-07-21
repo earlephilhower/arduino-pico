@@ -79,6 +79,12 @@ env.Replace(
     SIZEPROGREGEXP=r"^(?:\.boot2|\.text|\.data|\.rodata|\.text.align|\.ARM.exidx)\s+(\d+).*"
 )
 
+# pico support library depends on ipv6 enable/disable
+if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
+    libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico-ipv6.a"))
+else:
+    libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))
+
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
 
@@ -140,7 +146,7 @@ env.Append(
 
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
-        File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a")),
+        libpico,
         File(os.path.join(FRAMEWORK_DIR, "lib", "libbearssl.a")),
         "m", "c", stdcpp_lib, "c"]
 )
@@ -229,12 +235,10 @@ def configure_network_flags(cpp_defines):
         ("LWIP_IGMP", 1),
         ("LWIP_CHECKSUM_CTRL_PER_NETIF", 1)
     ])
-    if "LWIP_IPv6" in cpp_defines:
-        env.Append(CPPDEFINES=[("LWIP_IPV6", 1)],
-                   LIBS=[File(os.path.join(FRAMEWORK_DIR, "lib", "libpico-ipv6.a"))])
+    if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in cppdefines:
+        env.Append(CPPDEFINES=[("LWIP_IPV6", 1)])
     else:
-        env.Append(CPPDEFINES=[("LWIP_IPV6",0)],
-                   LIBS=[File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))])
+        env.Append(CPPDEFINES=[("LWIP_IPV6", 0)])
 
 #
 # Process configuration flags
