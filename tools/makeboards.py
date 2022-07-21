@@ -206,6 +206,10 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
       [
         "0x2E8A",
         "0x00C0"
+      ],
+      [
+        "VID",
+        "PID"
       ]
     ],
     "mcu": "rp2040",
@@ -238,7 +242,16 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
   },
   "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
   "vendor": "VENDORNAME"
-}\n""".replace('VARIANTNAME', name).replace('BOARDDEFINE', boarddefine).replace('BOOT2', boot2).replace('VID', vid).replace('PID', pid).replace('VENDORNAME', vendor_name).replace('PRODUCTNAME', product_name).replace('FLASHSIZE', str(1024*1024*flashsizemb)).replace('USBPWR', str(pwr))
+}\n"""\
+.replace('VARIANTNAME', name)\
+.replace('BOARDDEFINE', boarddefine)\
+.replace('BOOT2', boot2)\
+.replace('VID', vid.upper().replace("X", "x"))\
+.replace('PID', pid.upper().replace("X", "x"))\
+.replace('VENDORNAME', vendor_name)\
+.replace('PRODUCTNAME', product_name)\
+.replace('FLASHSIZE', str(1024*1024*flashsizemb))\
+.replace('USBPWR', str(pwr))
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
     f = open(jsondir + "/" + name + ".json", "w")
     f.write(json)
