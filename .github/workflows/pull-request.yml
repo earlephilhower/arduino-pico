@@ -185,7 +185,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        submodules: 'recursive'
+        submodules: 'true'
+    - name: Init needed submodules
+        cd pico-sdk
+        git submodule update --init
+        cd ../libraries/Adafruit_TinyUSB_Arduino
+        git submodule update --init
+        cd ../..
     - name: Cache pip
       uses: actions/cache@v2
       with:
