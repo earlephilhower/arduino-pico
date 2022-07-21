@@ -197,6 +197,10 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
       [
         "0x2E8A",
         "0x00C0"
+      ],
+      [
+        "VID",
+        "PID"
       ]
     ],
     "mcu": "rp2040",
