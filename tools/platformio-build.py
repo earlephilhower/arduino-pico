@@ -106,12 +106,6 @@ env.Append(
         "ARDUINO_ARCH_RP2040",
         ("F_CPU", "$BOARD_F_CPU"),
         ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
-        # LWIP-related
-        ("PICO_CYW43_ARCH_THREADSAFE_BACKGROUND", 1),
-        ("CYW43_LWIP", 0),
-        ("LWIP_IPV4", 1),
-        ("LWIP_IGMP", 1),
-        ("LWIP_LWIP_CHECKSUM_CTRL_PER_NETIF", 1),
     ],
 
     CPPPATH=[
@@ -227,15 +221,21 @@ def configure_usb_flags(cpp_defines):
     board.update("build.hwids", hw_ids)
     board.update("upload.maximum_ram_size", ram_size)
 
-def configure_network_flags():
+def configure_network_flags(cpp_defines):
     env.Append(CPPDEFINES=[
         ("PICO_CYW43_ARCH_THREADSAFE_BACKGROUND", 1),
         ("CYW43_LWIP", 0),
-        ("LWIP_IPV6", 1),
         ("LWIP_IPV4", 1),
         ("LWIP_IGMP", 1),
         ("LWIP_CHECKSUM_CTRL_PER_NETIF", 1)
     ])
+    if "LWIP_IPv6" in cpp_defines:
+        env.Append(CPPDEFINES=[("LWIP_IPV6", 1)],
+                   LIBS=[File(os.path.join(FRAMEWORK_DIR, "lib", "libpico-ipv6.a"))])
+    else:
+        env.Append(CPPDEFINES=[("LWIP_IPV6",0)],
+                   LIBS=[File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))])
+
 #
 # Process configuration flags
 #
@@ -254,7 +254,7 @@ if not "USE_TINYUSB" in cpp_defines:
         )
 # configure USB stuff
 configure_usb_flags(cpp_defines)
-configure_network_flags()
+configure_network_flags(cpp_defines)
 
 # ensure LWIP headers are in path after any TINYUSB distributed versions, also PicoSDK USB path headers
 env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "include")])
