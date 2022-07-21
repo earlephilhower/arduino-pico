@@ -235,7 +235,7 @@ def configure_network_flags(cpp_defines):
         ("LWIP_IGMP", 1),
         ("LWIP_CHECKSUM_CTRL_PER_NETIF", 1)
     ])
-    if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in cppdefines:
+    if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in cpp_defines:
         env.Append(CPPDEFINES=[("LWIP_IPV6", 1)])
     else:
         env.Append(CPPDEFINES=[("LWIP_IPV6", 0)])
@@ -298,10 +298,11 @@ if variant != "":
         os.path.join(FRAMEWORK_DIR, "variants", variant)
     ])
 
-    libs.append(
-        env.BuildLibrary(
-            os.path.join("$BUILD_DIR", "FrameworkArduinoVariant"),
-            os.path.join(FRAMEWORK_DIR, "variants", variant)))
+    # link variant's source files as object files into the binary.
+    # otherwise weak function overriding won't work in the linking stage.
+    env.BuildSources(
+        os.path.join("$BUILD_DIR", "FrameworkArduinoVariant"),
+        os.path.join(FRAMEWORK_DIR, "variants", variant))
 
 libs.append(
     env.BuildLibrary(

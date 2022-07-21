@@ -12,8 +12,9 @@ serial port, ``Serial`` as well as supporting automatic reset-to-upload
 from the IDE.
 
 The Arduino-Pico core includes ported versions of the basic Arduino
-``Keyboard`` and ``Mouse`` libraries.  These libraries allow you to
-emulate a keyboard or mouse with the Pico in your sketches.
+``Keyboard``, ``Mouse`` and ``Joystick`` libraries.  These libraries 
+allow you to emulate a keyboard, a gamepad or mouse (or all together) 
+with the Pico in your sketches.
 
 See the examples and Arduino Reference at
 https://www.arduino.cc/reference/en/language/functions/usb/keyboard/
