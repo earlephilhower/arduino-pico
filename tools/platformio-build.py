@@ -295,10 +295,11 @@ if variant != "":
         os.path.join(FRAMEWORK_DIR, "variants", variant)
     ])
 
-    libs.append(
-        env.BuildLibrary(
-            os.path.join("$BUILD_DIR", "FrameworkArduinoVariant"),
-            os.path.join(FRAMEWORK_DIR, "variants", variant)))
+    # link variant's source files as object files into the binary.
+    # otherwise weak function overriding won't work in the linking stage.
+    env.BuildSources(
+        os.path.join("$BUILD_DIR", "FrameworkArduinoVariant"),
+        os.path.join(FRAMEWORK_DIR, "variants", variant))
 
 libs.append(
     env.BuildLibrary(
