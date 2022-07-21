@@ -26,6 +26,11 @@ target_compile_definitions(pico PUBLIC
         LWIP_IGMP=1
         LWIP_CHECKSUM_CTRL_PER_NETIF=1
         CYW43_WARN=//
+        PICO_FLOAT_SUPPORT_ROM_V1=1
+        PICO_DOUBLE_SUPPORT_ROM_V1=1
+        PICO_RP2040_B0_SUPPORTED=1
+        PICO_RP2040_B1_SUPPORTED=1
+        PICO_RP2040_B2_SUPPORTED=1
 )
 
 target_compile_options(pico PUBLIC
