@@ -182,6 +182,7 @@ If you want to contribute or have bugfixes, drop me a note at <earlephilhower@ya
 * DHCP server for AP host mode from the [Micropython Project](https://micropython.org), distributed under the MIT License.
 * [FreeRTOS](https://freertos.org) is Copyright Amazon.com, Inc. or its affiliates, and distributed under the MIT license.
 * [lwIP](https://savannah.nongnu.org/projects/lwip/) is (c) the Swedish Institute of Computer Science and licenced under the BSD license.
+* [BearSSL](https://bearssl.org) library written by Thomas Pornin, is distributed under the [MIT License](https://bearssl.org/#legal-details).
 
--Earle F. Philhower, III
+-Earle F. Philhower, III  
  earlephilhower@yahoo.com
