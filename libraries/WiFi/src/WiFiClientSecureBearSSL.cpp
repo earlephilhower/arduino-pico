@@ -23,15 +23,11 @@
 #include <list>
 #include <errno.h>
 #include <algorithm>
-//#include <Esp.h>
 
-
-
-//#include "debug.h"
 #include "WiFi.h"
-//#include "PolledTimeout.h"
 #include "WiFiClient.h"
 #include "WiFiClientSecureBearSSL.h"
+#include "WiFiNTP.h"
 #include "StackThunk.h"
 #include "lwip/opt.h"
 #include "lwip/ip.h"
@@ -95,6 +91,10 @@ void WiFiClientSecureCtx::_clear() {
     _cipher_cnt = 0;
     _tls_min = BR_TLS10;
     _tls_max = BR_TLS12;
+    if (_esp32_ta) {
+        delete _esp32_ta;
+        _esp32_ta = nullptr;
+    }
 }
 
 void WiFiClientSecureCtx::_clearAuthenticationSettings() {
@@ -103,6 +103,10 @@ void WiFiClientSecureCtx::_clearAuthenticationSettings() {
     _use_self_signed = false;
     _knownkey = nullptr;
     _ta = nullptr;
+    if (_esp32_ta) {
+        delete _esp32_ta;
+        _esp32_ta = nullptr;
+    }
 }
 
 
@@ -166,12 +170,28 @@ WiFiClientSecureCtx::WiFiClientSecureCtx(ClientContext *client,
 }
 
 void WiFiClientSecureCtx::setClientRSACert(const X509List *chain, const PrivateKey *sk) {
+    if (_esp32_chain) {
+        delete _esp32_chain;
+        _esp32_chain = nullptr;
+    }
+    if (_esp32_sk) {
+        delete _esp32_sk;
+        _esp32_sk = nullptr;
+    }
     _chain = chain;
     _sk = sk;
 }
 
 void WiFiClientSecureCtx::setClientECCert(const X509List *chain,
         const PrivateKey *sk, unsigned allowed_usages, unsigned cert_issuer_key_type) {
+    if (_esp32_chain) {
+        delete _esp32_chain;
+        _esp32_chain = nullptr;
+    }
+    if (_esp32_sk) {
+        delete _esp32_sk;
+        _esp32_sk = nullptr;
+    }
     _chain = chain;
     _sk = sk;
     _allowed_usages = allowed_usages;
@@ -1071,7 +1091,11 @@ bool WiFiClientSecureCtx::_installClientX509Validator() {
             DEBUG_BSSL("_installClientX509Validator: OOM for _x509_minimal\n");
             return false;
         }
-        br_x509_minimal_init(_x509_minimal.get(), &br_sha256_vtable, _ta ? _ta->getTrustAnchors() : nullptr, _ta ? _ta->getCount() : 0);
+        if (_esp32_ta) {
+            br_x509_minimal_init(_x509_minimal.get(), &br_sha256_vtable, _esp32_ta->getTrustAnchors(), _esp32_ta->getCount());
+        } else {
+            br_x509_minimal_init(_x509_minimal.get(), &br_sha256_vtable, _ta ? _ta->getTrustAnchors() : nullptr, _ta ? _ta->getCount() : 0);
+        }
         br_x509_minimal_set_rsa(_x509_minimal.get(), br_ssl_engine_get_rsavrfy(_eng));
 #ifndef BEARSSL_SSL_BASIC
         br_x509_minimal_set_ecdsa(_x509_minimal.get(), br_ssl_engine_get_ec(_eng), br_ssl_engine_get_ecdsa(_eng));
@@ -1106,6 +1130,14 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
     DEBUG_BSSL("_connectSSL: start connection\n");
     _freeSSL();
     _oom_err = false;
+
+    // The ESP32 doesn't check cert time, but we do.  So enable NTP silently
+    if (_esp32_ta || _esp32_chain || _esp32_sk) {
+        if (!NTP.running()) {
+            NTP.begin("pool.ntp.org");
+            NTP.waitSet();
+        }
+    }
 
 #ifdef DEBUG_ESP_SSL
     // BearSSL will reject all connections unless an authentication option is set, warn in DEBUG builds
@@ -1160,6 +1192,9 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
         DEBUG_BSSL("_connectSSL: Attempting to use EC cert in minimal cipher mode (no EC)\n");
         return false;
 #endif
+    } else if (_esp32_sk && _esp32_chain) {
+        br_ssl_client_set_single_rsa(_sc.get(), _esp32_chain->getX509Certs(), _esp32_chain->getCount(),
+                                     _esp32_sk->getRSA(), br_rsa_pkcs1_sign_get_default());
     }
 
     // Restore session from the storage spot, if present

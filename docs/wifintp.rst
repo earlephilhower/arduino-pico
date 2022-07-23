@@ -39,3 +39,20 @@ returns a sane value before continuing a sketch:
       Serial.print("Current time: ");
       Serial.print(asctime(&timeinfo));
     }
+
+bool NTP.waitSet(uint32_t timeout)
+----------------------------------
+This call will wait up to timeout milliseconds for the time to be set, and returns
+success or failure.  It will also begin NTP with a default "pool.ntp.org" server if
+it is not already running.  Using this method, the above code becomes:
+
+.. code :: cpp
+
+    void setClock() {
+      NTP.begin("pool.ntp.org", "time.nist.gov");
+      NTP.waitSet();
+      struct tm timeinfo;
+      gmtime_r(&now, &timeinfo);
+      Serial.print("Current time: ");
+      Serial.print(asctime(&timeinfo));
+    }

@@ -159,6 +159,101 @@ public:
     // consume bytes after use (see peekBuffer)
     virtual void peekConsume(size_t consume) override;
 #endif
+
+    // ESP32 compatibility
+    void setCACert(const char *rootCA) {
+        if (_esp32_ta) {
+            delete _esp32_ta;
+        }
+        _esp32_ta = new X509List(rootCA);
+    }
+    void setCertificate(const char *client_ca) {
+        if (_esp32_chain) {
+            delete _esp32_chain;
+        }
+        _esp32_chain = new X509List(client_ca);
+    }
+    void setPrivateKey(const char *private_key) {
+        if (_esp32_sk) {
+            delete _esp32_sk;
+        }
+        _esp32_sk = new PrivateKey(private_key);
+    }
+    bool loadCACert(Stream& stream, size_t size) {
+        bool ret = false;
+        auto buff = new char[size];
+        if (size == stream.readBytes(buff, size)) {
+            setCACert(buff);
+            ret = true;
+        }
+        delete[] buff;
+        return ret;
+    }
+    bool loadCertificate(Stream& stream, size_t size) {
+        bool ret = false;
+        auto buff = new char[size];
+        if (size == stream.readBytes(buff, size)) {
+            setCertificate(buff);
+            ret = true;
+        }
+        delete[] buff;
+        return ret;
+    }
+    bool loadPrivateKey(Stream& stream, size_t size) {
+        bool ret = false;
+        auto buff = new char[size];
+        if (size == stream.readBytes(buff, size)) {
+            setPrivateKey(buff);
+            ret = true;
+        }
+        delete[] buff;
+        return ret;
+    }
+    int connect(IPAddress ip, uint16_t port, int32_t timeout) {
+        auto save = _timeout;
+        _timeout = timeout * 1000; // timeout is in secs, _timeout in milliseconds
+        auto ret = connect(ip, port);
+        _timeout = save;
+        return ret;
+    }
+    int connect(const char *host, uint16_t port, int32_t timeout) {
+        auto save = _timeout;
+        _timeout = timeout * 1000; // timeout is in secs, _timeout in milliseconds
+        auto ret = connect(host, port);
+        _timeout = save;
+        return ret;
+    }
+    int connect(IPAddress ip, uint16_t port, const char *rootCABuff, const char *cli_cert, const char *cli_key) {
+        if (_esp32_ta) {
+            delete _esp32_ta;
+            _esp32_ta = nullptr;
+        }
+        if (_esp32_chain) {
+            delete _esp32_chain;
+            _esp32_chain = nullptr;
+        }
+        if (_esp32_sk) {
+            delete _esp32_sk;
+            _esp32_sk = nullptr;
+        }
+        if (rootCABuff) {
+            setCertificate(rootCABuff);
+        }
+        if (cli_cert && cli_key) {
+            setCertificate(cli_cert);
+            setPrivateKey(cli_key);
+        }
+        return connect(ip, port);
+    }
+    int connect(const char *host, uint16_t port, const char *rootCABuff, const char *cli_cert, const char *cli_key) {
+        IPAddress ip;
+        if (WiFi.hostByName(host, ip, _timeout)) {
+            return connect(ip, port, rootCABuff, cli_cert, cli_key);
+        } else {
+            return 0;
+        }
+    }
+
 protected:
     bool _connectSSL(const char *hostName); // Do initial SSL handshake
 
@@ -241,6 +336,11 @@ private:
     bool _installServerX509Validator(const X509List *client_CA_ta); // Setup X509 client cert validation, if supplied
 
     uint8_t *_streamLoad(Stream& stream, size_t size);
+
+    // ESP32 compatibility
+    X509List *_esp32_ta = nullptr;
+    X509List *_esp32_chain = nullptr;
+    PrivateKey *_esp32_sk = nullptr;
 }; // class WiFiClientSecureCtx
 
 
@@ -443,6 +543,40 @@ public:
         return _ctx->peekConsume(consume);
     }
 #endif
+
+    // ESP32 compatibility
+    void setCACert(const char *rootCA) {
+        return _ctx->setCACert(rootCA);
+    }
+    void setCertificate(const char *client_ca) {
+        return _ctx->setCertificate(client_ca);
+    }
+    void setPrivateKey(const char *private_key) {
+        return _ctx->setPrivateKey(private_key);
+    }
+    bool loadCACert(Stream& stream, size_t size) {
+        return _ctx->loadCACert(stream, size);
+    }
+    bool loadCertificate(Stream& stream, size_t size) {
+        return _ctx->loadCertificate(stream, size);
+    }
+    bool loadPrivateKey(Stream& stream, size_t size) {
+        return _ctx->loadPrivateKey(stream, size);
+    }
+
+    int connect(IPAddress ip, uint16_t port, int32_t timeout) {
+        return _ctx->connect(ip, port, timeout);
+    }
+    int connect(const char *host, uint16_t port, int32_t timeout) {
+        return _ctx->connect(host, port, timeout);
+    }
+    int connect(IPAddress ip, uint16_t port, const char *rootCABuff, const char *cli_cert, const char *cli_key) {
+        return _ctx->connect(ip, port, rootCABuff, cli_cert, cli_key);
+    }
+    int connect(const char *host, uint16_t port, const char *rootCABuff, const char *cli_cert, const char *cli_key) {
+        return _ctx->connect(host, port, rootCABuff, cli_cert, cli_key);
+    }
+
 private:
     std::shared_ptr<WiFiClientSecureCtx> _ctx;
 
