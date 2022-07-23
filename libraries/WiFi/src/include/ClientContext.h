@@ -187,6 +187,10 @@ public:
     }
 
     void setTimeout(int timeout_ms) {
+        if (timeout_ms < 100) {
+            // Crude logic to allow for seconds or milliseconds to work.  Timeouts of < 100ms don't make much sense, so assume the user meant seconds, not milliseconds
+            timeout_ms *= 1000;
+        }
         _timeout_ms = timeout_ms;
     }
 
