@@ -77,12 +77,19 @@ public:
     }
 
     bool waitSet(uint32_t timeout = 10000) {
+        return waitSet(nullptr, timeout);
+    }
+
+    bool waitSet(void (*cb)(), uint32_t timeout = 10000) {
         if (!running()) {
             begin("pool.ntp.org");
         }
         uint32_t start = millis();
         while ((time(nullptr) < 10000000) && (millis() - start < timeout)) {
-            delay(10);
+            delay(100);
+            if (cb) {
+                cb();
+            }
         }
         return time(nullptr) < 10000000;
     }
