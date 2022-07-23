@@ -51,6 +51,24 @@ it is not already running.  Using this method, the above code becomes:
     void setClock() {
       NTP.begin("pool.ntp.org", "time.nist.gov");
       NTP.waitSet();
+      time_t now = time(nullptr);
+      struct tm timeinfo;
+      gmtime_r(&now, &timeinfo);
+      Serial.print("Current time: ");
+      Serial.print(asctime(&timeinfo));
+    }
+
+bool NTP.waitSet(void (\*cb)(), uint32_t timeout)
+-------------------------------------------------
+Allows for a callback that will be called every 1/10th of a second while waiting for
+NTP sync.  For example, using lambdas you can simply print "."s:"
+
+.. code :: cpp
+
+    void setClock() {
+      NTP.begin("pool.ntp.org", "time.nist.gov");
+      NTP.waitSet([]() { Serial.print("."); });
+      time_t now = time(nullptr);
       struct tm timeinfo;
       gmtime_r(&now, &timeinfo);
       Serial.print("Current time: ");
