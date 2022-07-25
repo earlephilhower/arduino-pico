@@ -15,8 +15,11 @@ pico_sdk_init()
 
 add_executable(ota
         ota.c
+        ota_lfs.c
         ../libraries/LittleFS/lib/littlefs/lfs.c
         ../libraries/LittleFS/lib/littlefs/lfs_util.c
+        ./uzlib/src/tinflate.c
+        ./uzlib/src/tinfgzip.c
 )
 pico_add_extra_outputs(ota)
 
@@ -30,6 +33,11 @@ target_compile_definitions(ota PUBLIC
         PICO_PRINTF_SUPPORT_FLOAT=0
         PICO_PRINTF_SUPPORT_LONG_LONG=0
         LFS_READONLY=1
+        LFS_NO_DEBUG=1
+        LFS_NO_WARN=1
+        LFS_NO_ERROR=1
+        LFS_NO_ASSERT=1
+        LFS_NO_MALLOC=1
         PICO_TARGET_LINKER_SCRIPT=memmap_ota.ld
 )
 
@@ -50,7 +58,8 @@ set_target_properties(ota PROPERTIES PICO_TARGET_LINKER_SCRIPT
 target_link_libraries(ota
         pico_platform
         pico_standard_link
-        pico_stdlib
+#        pico_stdlib
+        hardware_irq
         hardware_flash
 )
 

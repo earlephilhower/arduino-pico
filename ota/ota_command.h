@@ -1,6 +1,7 @@
 #include <stdint.h>
 
 #define _OTA_WRITE 1
+#define _OTA_VERIFY 1
 
 typedef struct {
     uint32_t command;
@@ -8,11 +9,13 @@ typedef struct {
         struct {
             char filename[64];
             uint32_t fileOffset;
+            uint32_t fileLength;
             uint32_t flashAddress;
         } write;
     };
 } commandEntry;
 
+// Must fit within 4K page
 typedef struct {
     uint8_t sign[8]; // "Pico OTA Format\0"
 
@@ -23,7 +26,9 @@ typedef struct {
 
     // List of operations
     uint32_t count;
-    commandEntry cmd[32];
+    commandEntry cmd[8];
 
     uint32_t crc32;
 } OTACmdPage;
+
+static const OTACmdPage *_ota_command = (const OTACmdPage*) 0x10003000;
