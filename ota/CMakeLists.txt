@@ -7,8 +7,8 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-
 set(PICO_BOARD pico)
+set(PICO_COPY_TO_RAM 1)
 
 # Initialize the SDK
 pico_sdk_init()
