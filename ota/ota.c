@@ -1,48 +1,47 @@
-#include <stdlib.h>
 #include <stdint.h>
-//#include "pico/stdlib.h"
+#include <string.h>
 #include "hardware/irq.h"
-#include "hardware/irq.h"
-#include "hardware/regs/m0plus.h"
-#include "hardware/platform_defs.h"
 #include "hardware/structs/scb.h"
-#include "hardware/claim.h"
 #include "hardware/sync.h"
 #include "hardware/flash.h"
 
-#include "pico/mutex.h"
-#include "pico/assert.h"
 
 #include "ota_lfs.h"
-
 #include "ota_command.h"
-#include <string.h>
+
+static OTACmdPage _ota_cmd;
 
 void do_ota() {
-    if (memcmp(_ota_command->sign, "Pico OTA Format\0", 8)) {
+    if (memcmp(_ota_command_rom->sign, "Pico OTA Format\0", 8)) {
         return; // No signature
     }
 
     // TODO - check CRC
 
-    if (!_ota_command->count) {
+    if (!_ota_command_rom->count) {
         return;
     }
 
-    if (!lfsMount(_ota_command->_start, _ota_command->_blockSize, _ota_command->_size)) {
+    // Copy to RAM and erase so we don't program  over and over
+    memcpy(&_ota_cmd, _ota_command_rom, sizeof(_ota_cmd));
+    int save = save_and_disable_interrupts();
+    flash_range_erase((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, 4096);
+    restore_interrupts(save);
+
+    if (!lfsMount(_ota_cmd._start, _ota_cmd._blockSize, _ota_cmd._size)) {
         return;
     }
-    for (uint32_t i = 0; i < _ota_command->count; i++) {
-        switch (_ota_command->cmd[i].command) {
+    for (uint32_t i = 0; i < _ota_cmd.count; i++) {
+        switch (_ota_cmd.cmd[i].command) {
             case _OTA_WRITE:
-                if (!lfsOpen(_ota_command->cmd[i].write.filename)) {
+                if (!lfsOpen(_ota_cmd.cmd[i].write.filename)) {
                     return;
                 }
-                if (!lfsSeek(_ota_command->cmd[i].write.fileOffset)) {
+                if (!lfsSeek(_ota_cmd.cmd[i].write.fileOffset)) {
                     return;
                 }
-                uint32_t toRead = _ota_command->cmd[i].write.fileLength;
-                uint32_t toWrite = _ota_command->cmd[i].write.flashAddress;
+                uint32_t toRead = _ota_cmd.cmd[i].write.fileLength;
+                uint32_t toWrite = _ota_cmd.cmd[i].write.flashAddress;
                 while (toRead) {
                     uint32_t len = (toRead < 4096) ? toRead : 4096;
                     uint8_t *p = lfsRead(len);

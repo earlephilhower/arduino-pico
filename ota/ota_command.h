@@ -31,4 +31,4 @@ typedef struct {
     uint32_t crc32;
 } OTACmdPage;
 
-static const OTACmdPage *_ota_command = (const OTACmdPage*) 0x10003000;
+static const OTACmdPage *_ota_command_rom = (const OTACmdPage*) 0x10003000;
