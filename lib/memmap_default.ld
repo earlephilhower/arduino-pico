@@ -46,6 +46,12 @@ SECTIONS
         __flash_binary_start = .;
     } > FLASH
 
+    .ota : {
+        /* Start image with OTA */
+        KEEP (*(.OTA))
+        . = ALIGN(16384);
+    } > FLASH
+/*
     .boot2 : {
         __boot2_start__ = .;
         KEEP (*(.boot2))
@@ -54,7 +60,7 @@ SECTIONS
 
     ASSERT(__boot2_end__ - __boot2_start__ == 256,
         "ERROR: Pico second stage bootloader must be 256 bytes in size")
-
+*/
     /* The second stage will always enter the image at the start of .text.
        The debugger will use the ELF entry point, which is the _entry_point
        symbol if present, otherwise defaults to start of .text.
