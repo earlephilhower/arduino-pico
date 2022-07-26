@@ -85,7 +85,7 @@ bool lfsMount(uint8_t *start, uint32_t blockSize, uint32_t size) {
     _lfs_cfg.name_max = 0;
     _lfs_cfg.file_max = 0;
     _lfs_cfg.attr_max = 0;
-    return lfs_mount(&_lfs, &_lfs_cfg);
+    return lfs_mount(&_lfs, &_lfs_cfg) < 0 ? false : true;
 }
 
 static bool _gzip = false;

@@ -22,6 +22,8 @@ add_executable(ota
         ./uzlib/src/tinfgzip.c
 )
 pico_add_extra_outputs(ota)
+pico_enable_stdio_usb(ota 0)
+pico_enable_stdio_uart(ota 0)
 
 # Use a longer XOSC startup time, to accommodate Adafruit and other boards that may need it.
 target_compile_definitions(ota PUBLIC
@@ -32,13 +34,13 @@ target_compile_definitions(ota PUBLIC
         PICO_RP2040_B2_SUPPORTED=1
         PICO_PRINTF_SUPPORT_FLOAT=0
         PICO_PRINTF_SUPPORT_LONG_LONG=0
+        LIB_PICO_PRINTF_NONE=1
         LFS_READONLY=1
         LFS_NO_DEBUG=1
         LFS_NO_WARN=1
         LFS_NO_ERROR=1
         LFS_NO_ASSERT=1
         LFS_NO_MALLOC=1
-        PICO_TARGET_LINKER_SCRIPT=memmap_ota.ld
 )
 
 target_compile_options(ota PUBLIC
@@ -58,9 +60,14 @@ set_target_properties(ota PROPERTIES PICO_TARGET_LINKER_SCRIPT
 target_link_libraries(ota
         pico_platform
         pico_standard_link
-#        pico_stdlib
         hardware_irq
         hardware_flash
+        pico_time
+        hardware_gpio
+        hardware_uart
+        hardware_resets
+        hardware_clocks
+        pico_stdlib
 )
 
 add_custom_command(TARGET ota POST_BUILD
