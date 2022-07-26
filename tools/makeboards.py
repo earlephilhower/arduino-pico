@@ -184,13 +184,17 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
         BuildIPStack(n)
         if name == "generic":
             BuildBoot(n)
-    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2)
+    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra)
     global pkgjson
     thisbrd = {}
     thisbrd['name'] = "%s %s" % (vendor_name, product_name)
     pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
-def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2):
+def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra):
+    if extra != None:
+        m_extra = ' -D' + extra
+    else:
+        m_extra = ''
     json = """{
   "build": {
     "arduino": {
@@ -202,7 +206,7 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
     },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR",
+    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR EXTRA_INFO",
     "f_cpu": "133000000L",
     "hwids": [
       [
@@ -253,7 +257,8 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
 .replace('VENDORNAME', vendor_name)\
 .replace('PRODUCTNAME', product_name)\
 .replace('FLASHSIZE', str(1024*1024*flashsizemb))\
-.replace('USBPWR', str(pwr))
+.replace('USBPWR', str(pwr))\
+.replace(' EXTRA_INFO', m_extra)
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
     f = open(jsondir + "/" + name + ".json", "w")
     f.write(json)
