@@ -115,7 +115,7 @@ bool lfsOpen(const char *filename) {
         return false;
     }
     char b[2];
-    if (!lfs_file_read(&_lfs, &_file, b, sizeof(b))) {
+    if (sizeof(b) != lfs_file_read(&_lfs, &_file, b, sizeof(b))) {
         return false;
     }
     lfs_file_rewind(&_lfs, &_file);
@@ -128,7 +128,7 @@ bool lfsOpen(const char *filename) {
         int res = uzlib_gzip_parse_header(&m_uncomp);
         if (res != TINF_OK) {
             lfs_file_rewind(&_lfs, &_file);
-            return 0; // Error uncompress header read, could have been false alarm
+            return false; // Error uncompress header read, could have been false alarm
         }
         _gzip = true;
 
@@ -138,7 +138,7 @@ bool lfsOpen(const char *filename) {
 
 bool lfsSeek(uint32_t offset) {
     if (!_gzip) {
-        return lfs_file_seek(&_lfs, &_file, offset, LFS_SEEK_SET) ? true : false;
+        return lfs_file_seek(&_lfs, &_file, offset, LFS_SEEK_SET) == offset;
     }
     while (offset) {
         m_uncomp.dest_start = _flash_buff;

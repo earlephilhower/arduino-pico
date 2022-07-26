@@ -31,7 +31,7 @@
 static OTACmdPage _ota_cmd;
 
 void do_ota() {
-    if (memcmp(_ota_command_rom->sign, "Pico OTA Format\0", 8)) {
+    if (memcmp(_ota_command_rom->sign, "Pico OTA", 8)) {
         return; // No signature
     }
 

@@ -22,6 +22,7 @@
 #include <hardware/irq.h>
 #include <hardware/pio.h>
 #include <hardware/exception.h>
+#include <hardware/watchdog.h>
 #include <hardware/structs/rosc.h>
 #include <hardware/structs/systick.h>
 #include <pico/multicore.h>
@@ -286,6 +287,10 @@ public:
         multicore_reset_core1();
         fifo.clear();
         multicore_launch_core1(main1);
+    }
+
+    void reboot() {
+        watchdog_reboot(0, 0, 100);
     }
 
     // Multicore comms FIFO
