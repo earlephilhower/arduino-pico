@@ -20,6 +20,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <time.h>
 #include <lwip/apps/sntp.h>
 
 class NTPClass {
@@ -37,6 +38,7 @@ public:
             sntp_setserver(0, server);
             sntp_setoperatingmode(SNTP_OPMODE_POLL);
             sntp_init();
+            _running = true;
         }
     }
 
@@ -51,15 +53,17 @@ public:
         }
         sntp_setoperatingmode(SNTP_OPMODE_POLL);
         sntp_init();
+        _running = true;
     }
-
 
     void begin(const char *server, int timeout = 3600) {
         IPAddress addr;
         if (WiFi.hostByName(server, addr)) {
             begin(addr, timeout);
         }
+        _running = true;
     }
+
     void begin(const char *s1, const char *s2, int timeout = 3600) {
         IPAddress a1, a2;
         if (WiFi.hostByName(s1, a1)) {
@@ -69,7 +73,33 @@ public:
                 begin(a1, timeout);
             }
         }
+        _running = true;
     }
+
+    bool waitSet(uint32_t timeout = 10000) {
+        return waitSet(nullptr, timeout);
+    }
+
+    bool waitSet(void (*cb)(), uint32_t timeout = 10000) {
+        if (!running()) {
+            begin("pool.ntp.org");
+        }
+        uint32_t start = millis();
+        while ((time(nullptr) < 10000000) && (millis() - start < timeout)) {
+            delay(100);
+            if (cb) {
+                cb();
+            }
+        }
+        return time(nullptr) < 10000000;
+    }
+
+    bool running() {
+        return _running;
+    }
+
+private:
+    bool _running = false;
 };
 
 // ESP8266 compat

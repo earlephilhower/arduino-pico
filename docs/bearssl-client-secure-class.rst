@@ -1,7 +1,7 @@
 :orphan:
 
 WiFiClientSecure Class
-----------------------
+======================
 
 `BearSSL::WiFiClientSecure` is the object which actually handles TLS encrypted WiFi connections to a remote server or client.  It extends `WiFiClient` and so can be used with minimal changes to code that does unsecured communications.
 
@@ -117,3 +117,30 @@ setSSLVersion(uint32_t min, uint32_t max)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Valid values for min and max are `BR_TLS10`, `BR_TLS11`, `BR_TLS12`.  Min and max may be set to the same value if only a single TLS version is desired.
+
+
+ESP32 Compatibility
+===================
+Simple ESP32 ``WiFiClientSecure`` compatibility is built-in, allow for some sketches to run without any modification.
+The following methods are implemented:
+
+.. code :: cpp
+
+    void setCACert(const char *rootCA);
+    void setCertificate(const char *client_ca);
+    void setPrivateKey(const char *private_key);
+    bool loadCACert(Stream& stream, size_t size);
+    bool loadCertificate(Stream& stream, size_t size);
+    bool loadPrivateKey(Stream& stream, size_t size);
+    int connect(IPAddress ip, uint16_t port, int32_t timeout);
+    int connect(const char *host, uint16_t port, int32_t timeout);
+    int connect(IPAddress ip, uint16_t port, const char *rootCABuff, const char *cli_cert, const char *cli_key);
+    int connect(const char *host, uint16_t port, const char *rootCABuff, const char *cli_cert, const char *cli_key);
+
+Note that the SSL backend is very different between Arduino-Pico and ESP32-Arduino (BearSSL vs. mbedTLS).  This means
+that, for instance, the SSL connection will check valid dates of certificates (and hence require system time to be
+set on the Pico, which is automatically done in this case).
+
+TLS-Pre Shared Keys (PSK) is not supported by BearSSL, and hence not implemented here.  Neither is ALPN.
+
+For more advanced control, it is recommended to port to the native Pico calls which allows much more flexibility and control.

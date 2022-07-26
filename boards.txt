@@ -13,6 +13,7 @@ menu.dbgport=Debug Port
 menu.dbglvl=Debug Level
 menu.boot2=Boot Stage 2
 menu.usbstack=USB Stack
+menu.ipstack=IP Stack
 
 # -----------------------------------
 # Raspberry Pi Pico
@@ -154,6 +155,12 @@ rpipico.menu.usbstack.picosdk=Pico SDK
 rpipico.menu.usbstack.picosdk.build.usbstack_flags=
 rpipico.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipico.menu.ipstack.ipv4only=IPv4 Only
+rpipico.menu.ipstack.ipv4only.build.libpico=libpico.a
+rpipico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+rpipico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+rpipico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Raspberry Pi Pico (Picoprobe)
@@ -295,6 +302,12 @@ rpipicopicoprobe.menu.usbstack.picosdk=Pico SDK
 rpipicopicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 rpipicopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipicopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicopicoprobe.menu.ipstack.ipv4only=IPv4 Only
+rpipicopicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+rpipicopicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipicopicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+rpipicopicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+rpipicopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Raspberry Pi Pico (pico-debug)
@@ -434,6 +447,12 @@ rpipicopicodebug.menu.dbglvl.NDEBUG=NDEBUG
 rpipicopicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipicopicodebug.menu.usbstack.nousb=No USB
 rpipicopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+rpipicopicodebug.menu.ipstack.ipv4only=IPv4 Only
+rpipicopicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+rpipicopicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipicopicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+rpipicopicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+rpipicopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Raspberry Pi Pico W
@@ -575,6 +594,12 @@ rpipicow.menu.usbstack.picosdk=Pico SDK
 rpipicow.menu.usbstack.picosdk.build.usbstack_flags=
 rpipicow.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipicow.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicow.menu.ipstack.ipv4only=IPv4 Only
+rpipicow.menu.ipstack.ipv4only.build.libpico=libpico.a
+rpipicow.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipicow.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+rpipicow.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+rpipicow.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Raspberry Pi Pico W (Picoprobe)
@@ -716,6 +741,12 @@ rpipicowpicoprobe.menu.usbstack.picosdk=Pico SDK
 rpipicowpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 rpipicowpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipicowpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicowpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+rpipicowpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+rpipicowpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipicowpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+rpipicowpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+rpipicowpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Raspberry Pi Pico W (pico-debug)
@@ -855,6 +886,12 @@ rpipicowpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 rpipicowpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipicowpicodebug.menu.usbstack.nousb=No USB
 rpipicowpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+rpipicowpicodebug.menu.ipstack.ipv4only=IPv4 Only
+rpipicowpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+rpipicowpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipicowpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+rpipicowpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+rpipicowpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit Feather RP2040
@@ -1032,6 +1069,12 @@ adafruit_feather.menu.usbstack.picosdk=Pico SDK
 adafruit_feather.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_feather.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_feather.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_feather.menu.ipstack.ipv4only=IPv4 Only
+adafruit_feather.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_feather.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_feather.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_feather.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_feather.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit Feather RP2040 (Picoprobe)
@@ -1209,6 +1252,12 @@ adafruit_featherpicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_featherpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_featherpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_featherpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_featherpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+adafruit_featherpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_featherpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_featherpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_featherpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_featherpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit Feather RP2040 (pico-debug)
@@ -1384,6 +1433,12 @@ adafruit_featherpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_featherpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_featherpicodebug.menu.usbstack.nousb=No USB
 adafruit_featherpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_featherpicodebug.menu.ipstack.ipv4only=IPv4 Only
+adafruit_featherpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_featherpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_featherpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_featherpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_featherpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040
@@ -1561,6 +1616,12 @@ adafruit_itsybitsy.menu.usbstack.picosdk=Pico SDK
 adafruit_itsybitsy.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_itsybitsy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_itsybitsy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_itsybitsy.menu.ipstack.ipv4only=IPv4 Only
+adafruit_itsybitsy.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_itsybitsy.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_itsybitsy.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_itsybitsy.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_itsybitsy.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040 (Picoprobe)
@@ -1738,6 +1799,12 @@ adafruit_itsybitsypicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_itsybitsypicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_itsybitsypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_itsybitsypicoprobe.menu.ipstack.ipv4only=IPv4 Only
+adafruit_itsybitsypicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_itsybitsypicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_itsybitsypicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_itsybitsypicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_itsybitsypicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040 (pico-debug)
@@ -1913,6 +1980,12 @@ adafruit_itsybitsypicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_itsybitsypicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_itsybitsypicodebug.menu.usbstack.nousb=No USB
 adafruit_itsybitsypicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_itsybitsypicodebug.menu.ipstack.ipv4only=IPv4 Only
+adafruit_itsybitsypicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_itsybitsypicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_itsybitsypicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_itsybitsypicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_itsybitsypicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit QT Py RP2040
@@ -2090,6 +2163,12 @@ adafruit_qtpy.menu.usbstack.picosdk=Pico SDK
 adafruit_qtpy.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_qtpy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_qtpy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_qtpy.menu.ipstack.ipv4only=IPv4 Only
+adafruit_qtpy.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_qtpy.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_qtpy.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_qtpy.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_qtpy.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit QT Py RP2040 (Picoprobe)
@@ -2267,6 +2346,12 @@ adafruit_qtpypicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_qtpypicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_qtpypicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_qtpypicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_qtpypicoprobe.menu.ipstack.ipv4only=IPv4 Only
+adafruit_qtpypicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_qtpypicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_qtpypicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_qtpypicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_qtpypicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit QT Py RP2040 (pico-debug)
@@ -2442,6 +2527,12 @@ adafruit_qtpypicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_qtpypicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_qtpypicodebug.menu.usbstack.nousb=No USB
 adafruit_qtpypicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_qtpypicodebug.menu.ipstack.ipv4only=IPv4 Only
+adafruit_qtpypicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_qtpypicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_qtpypicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_qtpypicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_qtpypicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040
@@ -2619,6 +2710,12 @@ adafruit_stemmafriend.menu.usbstack.picosdk=Pico SDK
 adafruit_stemmafriend.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_stemmafriend.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_stemmafriend.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_stemmafriend.menu.ipstack.ipv4only=IPv4 Only
+adafruit_stemmafriend.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_stemmafriend.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_stemmafriend.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_stemmafriend.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_stemmafriend.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040 (Picoprobe)
@@ -2796,6 +2893,12 @@ adafruit_stemmafriendpicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_stemmafriendpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_stemmafriendpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_stemmafriendpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+adafruit_stemmafriendpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_stemmafriendpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_stemmafriendpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_stemmafriendpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_stemmafriendpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040 (pico-debug)
@@ -2971,6 +3074,12 @@ adafruit_stemmafriendpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_stemmafriendpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_stemmafriendpicodebug.menu.usbstack.nousb=No USB
 adafruit_stemmafriendpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_stemmafriendpicodebug.menu.ipstack.ipv4only=IPv4 Only
+adafruit_stemmafriendpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_stemmafriendpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_stemmafriendpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_stemmafriendpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_stemmafriendpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT
@@ -3148,6 +3257,12 @@ adafruit_trinkeyrp2040qt.menu.usbstack.picosdk=Pico SDK
 adafruit_trinkeyrp2040qt.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_trinkeyrp2040qt.menu.ipstack.ipv4only=IPv4 Only
+adafruit_trinkeyrp2040qt.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_trinkeyrp2040qt.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_trinkeyrp2040qt.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_trinkeyrp2040qt.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_trinkeyrp2040qt.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT (Picoprobe)
@@ -3325,6 +3440,12 @@ adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_trinkeyrp2040qtpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_trinkeyrp2040qtpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+adafruit_trinkeyrp2040qtpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_trinkeyrp2040qtpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_trinkeyrp2040qtpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_trinkeyrp2040qtpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_trinkeyrp2040qtpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT (pico-debug)
@@ -3500,6 +3621,12 @@ adafruit_trinkeyrp2040qtpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_trinkeyrp2040qtpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_trinkeyrp2040qtpicodebug.menu.usbstack.nousb=No USB
 adafruit_trinkeyrp2040qtpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_trinkeyrp2040qtpicodebug.menu.ipstack.ipv4only=IPv4 Only
+adafruit_trinkeyrp2040qtpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_trinkeyrp2040qtpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_trinkeyrp2040qtpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_trinkeyrp2040qtpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_trinkeyrp2040qtpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit MacroPad RP2040
@@ -3677,6 +3804,12 @@ adafruit_macropad2040.menu.usbstack.picosdk=Pico SDK
 adafruit_macropad2040.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_macropad2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_macropad2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_macropad2040.menu.ipstack.ipv4only=IPv4 Only
+adafruit_macropad2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_macropad2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_macropad2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_macropad2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_macropad2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit MacroPad RP2040 (Picoprobe)
@@ -3854,6 +3987,12 @@ adafruit_macropad2040picoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_macropad2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_macropad2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_macropad2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_macropad2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+adafruit_macropad2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_macropad2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_macropad2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_macropad2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_macropad2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit MacroPad RP2040 (pico-debug)
@@ -4029,6 +4168,12 @@ adafruit_macropad2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_macropad2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_macropad2040picodebug.menu.usbstack.nousb=No USB
 adafruit_macropad2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_macropad2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+adafruit_macropad2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_macropad2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_macropad2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_macropad2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_macropad2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit KB2040
@@ -4206,6 +4351,12 @@ adafruit_kb2040.menu.usbstack.picosdk=Pico SDK
 adafruit_kb2040.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_kb2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_kb2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_kb2040.menu.ipstack.ipv4only=IPv4 Only
+adafruit_kb2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_kb2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_kb2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_kb2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_kb2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit KB2040 (Picoprobe)
@@ -4383,6 +4534,12 @@ adafruit_kb2040picoprobe.menu.usbstack.picosdk=Pico SDK
 adafruit_kb2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 adafruit_kb2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_kb2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+adafruit_kb2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+adafruit_kb2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_kb2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_kb2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_kb2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_kb2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Adafruit KB2040 (pico-debug)
@@ -4558,6 +4715,12 @@ adafruit_kb2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_kb2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_kb2040picodebug.menu.usbstack.nousb=No USB
 adafruit_kb2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+adafruit_kb2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+adafruit_kb2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+adafruit_kb2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_kb2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+adafruit_kb2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+adafruit_kb2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect
@@ -4783,6 +4946,12 @@ arduino_nano_connect.menu.usbstack.picosdk=Pico SDK
 arduino_nano_connect.menu.usbstack.picosdk.build.usbstack_flags=
 arduino_nano_connect.menu.usbstack.tinyusb=Adafruit TinyUSB
 arduino_nano_connect.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+arduino_nano_connect.menu.ipstack.ipv4only=IPv4 Only
+arduino_nano_connect.menu.ipstack.ipv4only.build.libpico=libpico.a
+arduino_nano_connect.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+arduino_nano_connect.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+arduino_nano_connect.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+arduino_nano_connect.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect (Picoprobe)
@@ -5008,6 +5177,12 @@ arduino_nano_connectpicoprobe.menu.usbstack.picosdk=Pico SDK
 arduino_nano_connectpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 arduino_nano_connectpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 arduino_nano_connectpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+arduino_nano_connectpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+arduino_nano_connectpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+arduino_nano_connectpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+arduino_nano_connectpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+arduino_nano_connectpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+arduino_nano_connectpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect (pico-debug)
@@ -5231,6 +5406,12 @@ arduino_nano_connectpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 arduino_nano_connectpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 arduino_nano_connectpicodebug.menu.usbstack.nousb=No USB
 arduino_nano_connectpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+arduino_nano_connectpicodebug.menu.ipstack.ipv4only=IPv4 Only
+arduino_nano_connectpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+arduino_nano_connectpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+arduino_nano_connectpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+arduino_nano_connectpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+arduino_nano_connectpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Cytron Maker Nano RP2040
@@ -5372,6 +5553,12 @@ cytron_maker_nano_rp2040.menu.usbstack.picosdk=Pico SDK
 cytron_maker_nano_rp2040.menu.usbstack.picosdk.build.usbstack_flags=
 cytron_maker_nano_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_nano_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_nano_rp2040.menu.ipstack.ipv4only=IPv4 Only
+cytron_maker_nano_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+cytron_maker_nano_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_nano_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+cytron_maker_nano_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+cytron_maker_nano_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Cytron Maker Nano RP2040 (Picoprobe)
@@ -5513,6 +5700,12 @@ cytron_maker_nano_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 cytron_maker_nano_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 cytron_maker_nano_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_nano_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_nano_rp2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+cytron_maker_nano_rp2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+cytron_maker_nano_rp2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_nano_rp2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+cytron_maker_nano_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+cytron_maker_nano_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Cytron Maker Nano RP2040 (pico-debug)
@@ -5652,6 +5845,12 @@ cytron_maker_nano_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 cytron_maker_nano_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_maker_nano_rp2040picodebug.menu.usbstack.nousb=No USB
 cytron_maker_nano_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+cytron_maker_nano_rp2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+cytron_maker_nano_rp2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+cytron_maker_nano_rp2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_nano_rp2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+cytron_maker_nano_rp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+cytron_maker_nano_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Cytron Maker Pi RP2040
@@ -5793,6 +5992,12 @@ cytron_maker_pi_rp2040.menu.usbstack.picosdk=Pico SDK
 cytron_maker_pi_rp2040.menu.usbstack.picosdk.build.usbstack_flags=
 cytron_maker_pi_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_pi_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_pi_rp2040.menu.ipstack.ipv4only=IPv4 Only
+cytron_maker_pi_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+cytron_maker_pi_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_pi_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+cytron_maker_pi_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+cytron_maker_pi_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Cytron Maker Pi RP2040 (Picoprobe)
@@ -5934,6 +6139,12 @@ cytron_maker_pi_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 cytron_maker_pi_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 cytron_maker_pi_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_pi_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_maker_pi_rp2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+cytron_maker_pi_rp2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+cytron_maker_pi_rp2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_pi_rp2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+cytron_maker_pi_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+cytron_maker_pi_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Cytron Maker Pi RP2040 (pico-debug)
@@ -6073,6 +6284,12 @@ cytron_maker_pi_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 cytron_maker_pi_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_maker_pi_rp2040picodebug.menu.usbstack.nousb=No USB
 cytron_maker_pi_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+cytron_maker_pi_rp2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+cytron_maker_pi_rp2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+cytron_maker_pi_rp2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_pi_rp2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+cytron_maker_pi_rp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+cytron_maker_pi_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # DeRuiLab FlyBoard2040Core
@@ -6226,6 +6443,12 @@ flyboard2040_core.menu.usbstack.picosdk=Pico SDK
 flyboard2040_core.menu.usbstack.picosdk.build.usbstack_flags=
 flyboard2040_core.menu.usbstack.tinyusb=Adafruit TinyUSB
 flyboard2040_core.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+flyboard2040_core.menu.ipstack.ipv4only=IPv4 Only
+flyboard2040_core.menu.ipstack.ipv4only.build.libpico=libpico.a
+flyboard2040_core.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+flyboard2040_core.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+flyboard2040_core.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+flyboard2040_core.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # DeRuiLab FlyBoard2040Core (Picoprobe)
@@ -6379,6 +6602,12 @@ flyboard2040_corepicoprobe.menu.usbstack.picosdk=Pico SDK
 flyboard2040_corepicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 flyboard2040_corepicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 flyboard2040_corepicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+flyboard2040_corepicoprobe.menu.ipstack.ipv4only=IPv4 Only
+flyboard2040_corepicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+flyboard2040_corepicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+flyboard2040_corepicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+flyboard2040_corepicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+flyboard2040_corepicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # DeRuiLab FlyBoard2040Core (pico-debug)
@@ -6530,6 +6759,12 @@ flyboard2040_corepicodebug.menu.dbglvl.NDEBUG=NDEBUG
 flyboard2040_corepicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 flyboard2040_corepicodebug.menu.usbstack.nousb=No USB
 flyboard2040_corepicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+flyboard2040_corepicodebug.menu.ipstack.ipv4only=IPv4 Only
+flyboard2040_corepicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+flyboard2040_corepicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+flyboard2040_corepicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+flyboard2040_corepicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+flyboard2040_corepicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # DFRobot Beetle RP2040
@@ -6671,6 +6906,12 @@ dfrobot_beetle_rp2040.menu.usbstack.picosdk=Pico SDK
 dfrobot_beetle_rp2040.menu.usbstack.picosdk.build.usbstack_flags=
 dfrobot_beetle_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 dfrobot_beetle_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+dfrobot_beetle_rp2040.menu.ipstack.ipv4only=IPv4 Only
+dfrobot_beetle_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+dfrobot_beetle_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+dfrobot_beetle_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+dfrobot_beetle_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+dfrobot_beetle_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # DFRobot Beetle RP2040 (Picoprobe)
@@ -6812,6 +7053,12 @@ dfrobot_beetle_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 dfrobot_beetle_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 dfrobot_beetle_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 dfrobot_beetle_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+dfrobot_beetle_rp2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+dfrobot_beetle_rp2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+dfrobot_beetle_rp2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+dfrobot_beetle_rp2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+dfrobot_beetle_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+dfrobot_beetle_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # DFRobot Beetle RP2040 (pico-debug)
@@ -6951,6 +7198,12 @@ dfrobot_beetle_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 dfrobot_beetle_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 dfrobot_beetle_rp2040picodebug.menu.usbstack.nousb=No USB
 dfrobot_beetle_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 LoRa
@@ -7128,6 +7381,12 @@ challenger_2040_lora.menu.usbstack.picosdk=Pico SDK
 challenger_2040_lora.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_lora.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lora.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_lora.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_lora.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_lora.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_lora.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_lora.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_lora.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 LoRa (Picoprobe)
@@ -7305,6 +7564,12 @@ challenger_2040_lorapicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_lorapicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_lorapicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lorapicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_lorapicoprobe.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_lorapicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_lorapicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_lorapicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_lorapicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_lorapicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 LoRa (pico-debug)
@@ -7480,6 +7745,12 @@ challenger_2040_lorapicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_lorapicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_lorapicodebug.menu.usbstack.nousb=No USB
 challenger_2040_lorapicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_lorapicodebug.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_lorapicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_lorapicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_lorapicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_lorapicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_lorapicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 SubGHz
@@ -7657,6 +7928,12 @@ challenger_2040_subghz.menu.usbstack.picosdk=Pico SDK
 challenger_2040_subghz.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_subghz.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_subghz.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_subghz.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_subghz.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_subghz.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_subghz.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_subghz.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_subghz.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 SubGHz (Picoprobe)
@@ -7834,6 +8111,12 @@ challenger_2040_subghzpicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_subghzpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_subghzpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_subghzpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_subghzpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_subghzpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_subghzpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_subghzpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_subghzpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_subghzpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 SubGHz (pico-debug)
@@ -8009,6 +8292,12 @@ challenger_2040_subghzpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_subghzpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_subghzpicodebug.menu.usbstack.nousb=No USB
 challenger_2040_subghzpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_subghzpicodebug.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_subghzpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_subghzpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_subghzpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_subghzpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_subghzpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi
@@ -8186,6 +8475,12 @@ challenger_2040_wifi.menu.usbstack.picosdk=Pico SDK
 challenger_2040_wifi.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_wifi.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifi.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_wifi.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_wifi.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_wifi.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifi.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_wifi.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_wifi.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi (Picoprobe)
@@ -8363,6 +8658,12 @@ challenger_2040_wifipicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_wifipicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_wifipicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifipicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_wifipicoprobe.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_wifipicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_wifipicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifipicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_wifipicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_wifipicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi (pico-debug)
@@ -8538,6 +8839,12 @@ challenger_2040_wifipicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_wifipicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_wifipicodebug.menu.usbstack.nousb=No USB
 challenger_2040_wifipicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_wifipicodebug.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_wifipicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_wifipicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifipicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_wifipicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_wifipicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 LTE
@@ -8715,6 +9022,12 @@ challenger_2040_lte.menu.usbstack.picosdk=Pico SDK
 challenger_2040_lte.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_lte.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lte.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_lte.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_lte.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_lte.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_lte.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_lte.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_lte.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 LTE (Picoprobe)
@@ -8892,6 +9205,12 @@ challenger_2040_ltepicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_ltepicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_ltepicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_ltepicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_ltepicoprobe.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_ltepicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_ltepicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_ltepicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_ltepicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_ltepicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 LTE (pico-debug)
@@ -9067,6 +9386,12 @@ challenger_2040_ltepicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_ltepicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_ltepicodebug.menu.usbstack.nousb=No USB
 challenger_2040_ltepicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_ltepicodebug.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_ltepicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_ltepicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_ltepicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_ltepicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_ltepicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi/BLE
@@ -9244,6 +9569,12 @@ challenger_2040_wifi_ble.menu.usbstack.picosdk=Pico SDK
 challenger_2040_wifi_ble.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_wifi_ble.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifi_ble.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_wifi_ble.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_wifi_ble.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_wifi_ble.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifi_ble.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_wifi_ble.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_wifi_ble.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi/BLE (Picoprobe)
@@ -9421,6 +9752,12 @@ challenger_2040_wifi_blepicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_wifi_blepicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_wifi_blepicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifi_blepicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_wifi_blepicoprobe.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_wifi_blepicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_wifi_blepicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifi_blepicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_wifi_blepicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_wifi_blepicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi/BLE (pico-debug)
@@ -9596,6 +9933,12 @@ challenger_2040_wifi_blepicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_wifi_blepicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_wifi_blepicodebug.menu.usbstack.nousb=No USB
 challenger_2040_wifi_blepicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger NB 2040 WiFi
@@ -9773,6 +10116,12 @@ challenger_nb_2040_wifi.menu.usbstack.picosdk=Pico SDK
 challenger_nb_2040_wifi.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_nb_2040_wifi.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_nb_2040_wifi.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_nb_2040_wifi.menu.ipstack.ipv4only=IPv4 Only
+challenger_nb_2040_wifi.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_nb_2040_wifi.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger NB 2040 WiFi (Picoprobe)
@@ -9950,6 +10299,12 @@ challenger_nb_2040_wifipicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_nb_2040_wifipicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_nb_2040_wifipicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_nb_2040_wifipicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4only=IPv4 Only
+challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger NB 2040 WiFi (pico-debug)
@@ -10125,6 +10480,12 @@ challenger_nb_2040_wifipicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_nb_2040_wifipicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_nb_2040_wifipicodebug.menu.usbstack.nousb=No USB
 challenger_nb_2040_wifipicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_nb_2040_wifipicodebug.menu.ipstack.ipv4only=IPv4 Only
+challenger_nb_2040_wifipicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_nb_2040_wifipicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_nb_2040_wifipicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_nb_2040_wifipicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_nb_2040_wifipicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 SD/RTC
@@ -10302,6 +10663,12 @@ challenger_2040_sdrtc.menu.usbstack.picosdk=Pico SDK
 challenger_2040_sdrtc.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_sdrtc.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_sdrtc.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_sdrtc.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_sdrtc.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_sdrtc.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_sdrtc.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_sdrtc.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_sdrtc.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 SD/RTC (Picoprobe)
@@ -10479,6 +10846,12 @@ challenger_2040_sdrtcpicoprobe.menu.usbstack.picosdk=Pico SDK
 challenger_2040_sdrtcpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 challenger_2040_sdrtcpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_sdrtcpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2040_sdrtcpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_sdrtcpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_sdrtcpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_sdrtcpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_sdrtcpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_sdrtcpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs Challenger 2040 SD/RTC (pico-debug)
@@ -10654,6 +11027,12 @@ challenger_2040_sdrtcpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_sdrtcpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_sdrtcpicodebug.menu.usbstack.nousb=No USB
 challenger_2040_sdrtcpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2040_sdrtcpicodebug.menu.ipstack.ipv4only=IPv4 Only
+challenger_2040_sdrtcpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+challenger_2040_sdrtcpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_sdrtcpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+challenger_2040_sdrtcpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+challenger_2040_sdrtcpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs RPICO32
@@ -10831,6 +11210,12 @@ ilabs_rpico32.menu.usbstack.picosdk=Pico SDK
 ilabs_rpico32.menu.usbstack.picosdk.build.usbstack_flags=
 ilabs_rpico32.menu.usbstack.tinyusb=Adafruit TinyUSB
 ilabs_rpico32.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+ilabs_rpico32.menu.ipstack.ipv4only=IPv4 Only
+ilabs_rpico32.menu.ipstack.ipv4only.build.libpico=libpico.a
+ilabs_rpico32.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+ilabs_rpico32.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+ilabs_rpico32.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+ilabs_rpico32.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs RPICO32 (Picoprobe)
@@ -11008,6 +11393,12 @@ ilabs_rpico32picoprobe.menu.usbstack.picosdk=Pico SDK
 ilabs_rpico32picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 ilabs_rpico32picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 ilabs_rpico32picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+ilabs_rpico32picoprobe.menu.ipstack.ipv4only=IPv4 Only
+ilabs_rpico32picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+ilabs_rpico32picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+ilabs_rpico32picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+ilabs_rpico32picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+ilabs_rpico32picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # iLabs RPICO32 (pico-debug)
@@ -11183,6 +11574,12 @@ ilabs_rpico32picodebug.menu.dbglvl.NDEBUG=NDEBUG
 ilabs_rpico32picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 ilabs_rpico32picodebug.menu.usbstack.nousb=No USB
 ilabs_rpico32picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+ilabs_rpico32picodebug.menu.ipstack.ipv4only=IPv4 Only
+ilabs_rpico32picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+ilabs_rpico32picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+ilabs_rpico32picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+ilabs_rpico32picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+ilabs_rpico32picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Melopero Shake RP2040
@@ -11408,6 +11805,12 @@ melopero_shake_rp2040.menu.usbstack.picosdk=Pico SDK
 melopero_shake_rp2040.menu.usbstack.picosdk.build.usbstack_flags=
 melopero_shake_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 melopero_shake_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+melopero_shake_rp2040.menu.ipstack.ipv4only=IPv4 Only
+melopero_shake_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+melopero_shake_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+melopero_shake_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+melopero_shake_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+melopero_shake_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Melopero Shake RP2040 (Picoprobe)
@@ -11633,6 +12036,12 @@ melopero_shake_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 melopero_shake_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 melopero_shake_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 melopero_shake_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+melopero_shake_rp2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+melopero_shake_rp2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+melopero_shake_rp2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+melopero_shake_rp2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+melopero_shake_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+melopero_shake_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Melopero Shake RP2040 (pico-debug)
@@ -11856,6 +12265,12 @@ melopero_shake_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 melopero_shake_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 melopero_shake_rp2040picodebug.menu.usbstack.nousb=No USB
 melopero_shake_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+melopero_shake_rp2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+melopero_shake_rp2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+melopero_shake_rp2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+melopero_shake_rp2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+melopero_shake_rp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+melopero_shake_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Solder Party RP2040 Stamp
@@ -12033,6 +12448,12 @@ solderparty_rp2040_stamp.menu.usbstack.picosdk=Pico SDK
 solderparty_rp2040_stamp.menu.usbstack.picosdk.build.usbstack_flags=
 solderparty_rp2040_stamp.menu.usbstack.tinyusb=Adafruit TinyUSB
 solderparty_rp2040_stamp.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+solderparty_rp2040_stamp.menu.ipstack.ipv4only=IPv4 Only
+solderparty_rp2040_stamp.menu.ipstack.ipv4only.build.libpico=libpico.a
+solderparty_rp2040_stamp.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+solderparty_rp2040_stamp.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+solderparty_rp2040_stamp.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+solderparty_rp2040_stamp.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Solder Party RP2040 Stamp (Picoprobe)
@@ -12210,6 +12631,12 @@ solderparty_rp2040_stamppicoprobe.menu.usbstack.picosdk=Pico SDK
 solderparty_rp2040_stamppicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 solderparty_rp2040_stamppicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 solderparty_rp2040_stamppicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+solderparty_rp2040_stamppicoprobe.menu.ipstack.ipv4only=IPv4 Only
+solderparty_rp2040_stamppicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+solderparty_rp2040_stamppicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+solderparty_rp2040_stamppicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+solderparty_rp2040_stamppicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+solderparty_rp2040_stamppicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Solder Party RP2040 Stamp (pico-debug)
@@ -12385,6 +12812,12 @@ solderparty_rp2040_stamppicodebug.menu.dbglvl.NDEBUG=NDEBUG
 solderparty_rp2040_stamppicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 solderparty_rp2040_stamppicodebug.menu.usbstack.nousb=No USB
 solderparty_rp2040_stamppicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+solderparty_rp2040_stamppicodebug.menu.ipstack.ipv4only=IPv4 Only
+solderparty_rp2040_stamppicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+solderparty_rp2040_stamppicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+solderparty_rp2040_stamppicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+solderparty_rp2040_stamppicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+solderparty_rp2040_stamppicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # SparkFun ProMicro RP2040
@@ -12610,6 +13043,12 @@ sparkfun_promicrorp2040.menu.usbstack.picosdk=Pico SDK
 sparkfun_promicrorp2040.menu.usbstack.picosdk.build.usbstack_flags=
 sparkfun_promicrorp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_promicrorp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_promicrorp2040.menu.ipstack.ipv4only=IPv4 Only
+sparkfun_promicrorp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+sparkfun_promicrorp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_promicrorp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+sparkfun_promicrorp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+sparkfun_promicrorp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # SparkFun ProMicro RP2040 (Picoprobe)
@@ -12835,6 +13274,12 @@ sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 sparkfun_promicrorp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_promicrorp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_promicrorp2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+sparkfun_promicrorp2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+sparkfun_promicrorp2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_promicrorp2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+sparkfun_promicrorp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+sparkfun_promicrorp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # SparkFun ProMicro RP2040 (pico-debug)
@@ -13058,6 +13503,12 @@ sparkfun_promicrorp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_promicrorp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_promicrorp2040picodebug.menu.usbstack.nousb=No USB
 sparkfun_promicrorp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+sparkfun_promicrorp2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+sparkfun_promicrorp2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+sparkfun_promicrorp2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_promicrorp2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+sparkfun_promicrorp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+sparkfun_promicrorp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # SparkFun Thing Plus RP2040
@@ -13283,6 +13734,12 @@ sparkfun_thingplusrp2040.menu.usbstack.picosdk=Pico SDK
 sparkfun_thingplusrp2040.menu.usbstack.picosdk.build.usbstack_flags=
 sparkfun_thingplusrp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_thingplusrp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_thingplusrp2040.menu.ipstack.ipv4only=IPv4 Only
+sparkfun_thingplusrp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+sparkfun_thingplusrp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_thingplusrp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+sparkfun_thingplusrp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+sparkfun_thingplusrp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # SparkFun Thing Plus RP2040 (Picoprobe)
@@ -13508,6 +13965,12 @@ sparkfun_thingplusrp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 sparkfun_thingplusrp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 sparkfun_thingplusrp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_thingplusrp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+sparkfun_thingplusrp2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+sparkfun_thingplusrp2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+sparkfun_thingplusrp2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_thingplusrp2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+sparkfun_thingplusrp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+sparkfun_thingplusrp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # SparkFun Thing Plus RP2040 (pico-debug)
@@ -13731,6 +14194,12 @@ sparkfun_thingplusrp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_thingplusrp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_thingplusrp2040picodebug.menu.usbstack.nousb=No USB
 sparkfun_thingplusrp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+sparkfun_thingplusrp2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+sparkfun_thingplusrp2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+sparkfun_thingplusrp2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_thingplusrp2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+sparkfun_thingplusrp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+sparkfun_thingplusrp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # uPesy RP2040 DevKit
@@ -13872,6 +14341,12 @@ upesy_rp2040_devkit.menu.usbstack.picosdk=Pico SDK
 upesy_rp2040_devkit.menu.usbstack.picosdk.build.usbstack_flags=
 upesy_rp2040_devkit.menu.usbstack.tinyusb=Adafruit TinyUSB
 upesy_rp2040_devkit.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+upesy_rp2040_devkit.menu.ipstack.ipv4only=IPv4 Only
+upesy_rp2040_devkit.menu.ipstack.ipv4only.build.libpico=libpico.a
+upesy_rp2040_devkit.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+upesy_rp2040_devkit.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+upesy_rp2040_devkit.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+upesy_rp2040_devkit.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # uPesy RP2040 DevKit (Picoprobe)
@@ -14013,6 +14488,12 @@ upesy_rp2040_devkitpicoprobe.menu.usbstack.picosdk=Pico SDK
 upesy_rp2040_devkitpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 upesy_rp2040_devkitpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 upesy_rp2040_devkitpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+upesy_rp2040_devkitpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+upesy_rp2040_devkitpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+upesy_rp2040_devkitpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+upesy_rp2040_devkitpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+upesy_rp2040_devkitpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+upesy_rp2040_devkitpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # uPesy RP2040 DevKit (pico-debug)
@@ -14152,6 +14633,12 @@ upesy_rp2040_devkitpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 upesy_rp2040_devkitpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 upesy_rp2040_devkitpicodebug.menu.usbstack.nousb=No USB
 upesy_rp2040_devkitpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4only=IPv4 Only
+upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Seeed XAIO RP2040
@@ -14293,6 +14780,12 @@ seeed_xiao_rp2040.menu.usbstack.picosdk=Pico SDK
 seeed_xiao_rp2040.menu.usbstack.picosdk.build.usbstack_flags=
 seeed_xiao_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 seeed_xiao_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+seeed_xiao_rp2040.menu.ipstack.ipv4only=IPv4 Only
+seeed_xiao_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+seeed_xiao_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+seeed_xiao_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Seeed XAIO RP2040 (Picoprobe)
@@ -14434,6 +14927,12 @@ seeed_xiao_rp2040picoprobe.menu.usbstack.picosdk=Pico SDK
 seeed_xiao_rp2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 seeed_xiao_rp2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 seeed_xiao_rp2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Seeed XAIO RP2040 (pico-debug)
@@ -14573,6 +15072,12 @@ seeed_xiao_rp2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
 seeed_xiao_rp2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 seeed_xiao_rp2040picodebug.menu.usbstack.nousb=No USB
 seeed_xiao_rp2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+seeed_xiao_rp2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+seeed_xiao_rp2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+seeed_xiao_rp2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+seeed_xiao_rp2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+seeed_xiao_rp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+seeed_xiao_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet W5100S-EVB-Pico
@@ -14714,6 +15219,12 @@ wiznet_5100s_evb_pico.menu.usbstack.picosdk=Pico SDK
 wiznet_5100s_evb_pico.menu.usbstack.picosdk.build.usbstack_flags=
 wiznet_5100s_evb_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5100s_evb_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_5100s_evb_pico.menu.ipstack.ipv4only=IPv4 Only
+wiznet_5100s_evb_pico.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_5100s_evb_pico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5100s_evb_pico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_5100s_evb_pico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_5100s_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet W5100S-EVB-Pico (Picoprobe)
@@ -14855,6 +15366,12 @@ wiznet_5100s_evb_picopicoprobe.menu.usbstack.picosdk=Pico SDK
 wiznet_5100s_evb_picopicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 wiznet_5100s_evb_picopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5100s_evb_picopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_5100s_evb_picopicoprobe.menu.ipstack.ipv4only=IPv4 Only
+wiznet_5100s_evb_picopicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_5100s_evb_picopicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5100s_evb_picopicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_5100s_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_5100s_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet W5100S-EVB-Pico (pico-debug)
@@ -14994,6 +15511,12 @@ wiznet_5100s_evb_picopicodebug.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_5100s_evb_picopicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_5100s_evb_picopicodebug.menu.usbstack.nousb=No USB
 wiznet_5100s_evb_picopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+wiznet_5100s_evb_picopicodebug.menu.ipstack.ipv4only=IPv4 Only
+wiznet_5100s_evb_picopicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_5100s_evb_picopicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5100s_evb_picopicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_5100s_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_5100s_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet WizFi360-EVB-Pico
@@ -15135,6 +15658,12 @@ wiznet_wizfi360_evb_pico.menu.usbstack.picosdk=Pico SDK
 wiznet_wizfi360_evb_pico.menu.usbstack.picosdk.build.usbstack_flags=
 wiznet_wizfi360_evb_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_wizfi360_evb_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_wizfi360_evb_pico.menu.ipstack.ipv4only=IPv4 Only
+wiznet_wizfi360_evb_pico.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_wizfi360_evb_pico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_wizfi360_evb_pico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_wizfi360_evb_pico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_wizfi360_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet WizFi360-EVB-Pico (Picoprobe)
@@ -15276,6 +15805,12 @@ wiznet_wizfi360_evb_picopicoprobe.menu.usbstack.picosdk=Pico SDK
 wiznet_wizfi360_evb_picopicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 wiznet_wizfi360_evb_picopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_wizfi360_evb_picopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_wizfi360_evb_picopicoprobe.menu.ipstack.ipv4only=IPv4 Only
+wiznet_wizfi360_evb_picopicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_wizfi360_evb_picopicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_wizfi360_evb_picopicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_wizfi360_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_wizfi360_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet WizFi360-EVB-Pico (pico-debug)
@@ -15415,6 +15950,12 @@ wiznet_wizfi360_evb_picopicodebug.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_wizfi360_evb_picopicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_wizfi360_evb_picopicodebug.menu.usbstack.nousb=No USB
 wiznet_wizfi360_evb_picopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+wiznet_wizfi360_evb_picopicodebug.menu.ipstack.ipv4only=IPv4 Only
+wiznet_wizfi360_evb_picopicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_wizfi360_evb_picopicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_wizfi360_evb_picopicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_wizfi360_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_wizfi360_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet W5500-EVB-Pico
@@ -15556,6 +16097,12 @@ wiznet_5500_evb_pico.menu.usbstack.picosdk=Pico SDK
 wiznet_5500_evb_pico.menu.usbstack.picosdk.build.usbstack_flags=
 wiznet_5500_evb_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5500_evb_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_5500_evb_pico.menu.ipstack.ipv4only=IPv4 Only
+wiznet_5500_evb_pico.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_5500_evb_pico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5500_evb_pico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_5500_evb_pico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_5500_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet W5500-EVB-Pico (Picoprobe)
@@ -15697,6 +16244,12 @@ wiznet_5500_evb_picopicoprobe.menu.usbstack.picosdk=Pico SDK
 wiznet_5500_evb_picopicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 wiznet_5500_evb_picopicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5500_evb_picopicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+wiznet_5500_evb_picopicoprobe.menu.ipstack.ipv4only=IPv4 Only
+wiznet_5500_evb_picopicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_5500_evb_picopicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5500_evb_picopicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_5500_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_5500_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # WIZnet W5500-EVB-Pico (pico-debug)
@@ -15836,6 +16389,12 @@ wiznet_5500_evb_picopicodebug.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_5500_evb_picopicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_5500_evb_picopicodebug.menu.usbstack.nousb=No USB
 wiznet_5500_evb_picopicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+wiznet_5500_evb_picopicodebug.menu.ipstack.ipv4only=IPv4 Only
+wiznet_5500_evb_picopicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+wiznet_5500_evb_picopicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5500_evb_picopicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+wiznet_5500_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+wiznet_5500_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
 # Generic RP2040
@@ -15989,6 +16548,12 @@ generic.menu.usbstack.picosdk=Pico SDK
 generic.menu.usbstack.picosdk.build.usbstack_flags=
 generic.menu.usbstack.tinyusb=Adafruit TinyUSB
 generic.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+generic.menu.ipstack.ipv4only=IPv4 Only
+generic.menu.ipstack.ipv4only.build.libpico=libpico.a
+generic.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+generic.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+generic.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+generic.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 generic.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4
@@ -16158,6 +16723,12 @@ genericpicoprobe.menu.usbstack.picosdk=Pico SDK
 genericpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 genericpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 genericpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+genericpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+genericpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+genericpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+genericpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+genericpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+genericpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 genericpicoprobe.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 genericpicoprobe.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 genericpicoprobe.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4
@@ -16325,6 +16896,12 @@ genericpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 genericpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 genericpicodebug.menu.usbstack.nousb=No USB
 genericpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+genericpicodebug.menu.ipstack.ipv4only=IPv4 Only
+genericpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+genericpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+genericpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+genericpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+genericpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 genericpicodebug.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 genericpicodebug.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 genericpicodebug.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4
