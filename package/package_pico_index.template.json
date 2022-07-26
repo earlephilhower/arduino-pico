@@ -60,6 +60,9 @@
                      "name": "DFRobot Beetle RP2040"
                   },
                   {
+                     "name": "iLabs Challenger 2040 LTE"
+                  },
+                  {
                      "name": "iLabs Challenger 2040 LoRa"
                   },
                   {
@@ -67,9 +70,6 @@
                   },
                   {
                      "name": "iLabs Challenger 2040 WiFi"
-                  },
-                  {
-                     "name": "iLabs Challenger 2040 LTE"
                   },
                   {
                      "name": "iLabs Challenger 2040 WiFi/BLE"
