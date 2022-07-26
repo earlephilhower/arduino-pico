@@ -73,12 +73,8 @@ int main(unsigned char **a, int b) {
 
     do_ota();
 
-    // Reset the interrupt/etc. vectors to the real app
-    uint32_t *vecsrc = (uint32_t*)0x10004000;
-    uint32_t *vecdst = (uint32_t*)0x20000000;
-    for (int i=0; i<48; i++) {
-        *vecdst++ = *vecsrc++;
-    }
+    // Reset the interrupt/etc. vectors to the real app.  Will be copied to RAM in app's runtime_init
+    scb_hw->vtor = (uint32_t)0x10004000;
 
     // Jump to it
     register uint32_t* sp asm("sp");
