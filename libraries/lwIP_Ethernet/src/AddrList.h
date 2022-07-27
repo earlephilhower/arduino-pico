@@ -76,6 +76,9 @@
 #define __ADDRLIST_H
 
 #include <IPAddress.h>
+#include <api/String.h>
+using IPAddress = arduino::IPAddress;
+using String = arduino::String;
 #include <lwip/netif.h>
 
 #if LWIP_IPV6
