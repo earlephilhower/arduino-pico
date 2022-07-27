@@ -19,16 +19,19 @@
 
 #include <stdint.h>
 #include <string.h>
-#include "hardware/irq.h"
-#include "hardware/structs/scb.h"
-#include "hardware/sync.h"
-#include "hardware/flash.h"
-#include "pico/time.h"
-#include "hardware/gpio.h"
-#include "hardware/uart.h"
+#include <hardware/irq.h>
+#include <hardware/structs/scb.h>
+#include <hardware/sync.h>
+#include <hardware/flash.h>
+#include <pico/time.h>
+#include <hardware/gpio.h>
+#include <hardware/uart.h>
+#include <hardware/watchdog.h>
 
 #include "ota_lfs.h"
 #include "ota_command.h"
+
+
 
 void dumphex(uint32_t x) {
     uart_puts(uart0, "0x");
@@ -38,7 +41,6 @@ void dumphex(uint32_t x) {
         uart_putc(uart0, c);
     }
 }
-
 
 static OTACmdPage _ota_cmd;
 
@@ -55,11 +57,10 @@ void do_ota() {
         return;
     }
 
-    // Copy to RAM and erase so we don't program  over and over
+    uart_puts(uart0, "\nstarting ota\n");
+
+    // Copy to RAM since theoretically it could be erased by embedded commands
     memcpy(&_ota_cmd, _ota_command_rom, sizeof(_ota_cmd));
-    int save = save_and_disable_interrupts();
-    flash_range_erase((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, 4096);
-    restore_interrupts(save);
 
     uart_puts(uart0, "\nlfsmount(");
     dumphex((uint32_t)_ota_cmd._start);
@@ -121,6 +122,18 @@ void do_ota() {
                 break;
         }
     }
+
+    uart_puts(uart0, "\nota completed\n");
+
+    // Work completed, erase record.  If we lose power while updating, as long as the bootloader
+    // wasn't being updated, then we can retry on the next power up
+    int save = save_and_disable_interrupts();
+    flash_range_erase((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, 4096);
+    restore_interrupts(save);
+
+
+    // Do a hard reset just in case the start up sequence is not the same
+    watchdog_reboot(0, 0, 100);
 }
 
 
@@ -130,32 +143,13 @@ int main(unsigned char **a, int b) {
     (void) a;
     (void) b;
 
-//    gpio_init(0);
-//    gpio_init(1);
     uart_init(uart0, 115200);
     gpio_set_function(0, GPIO_FUNC_UART);
     gpio_set_function(1, GPIO_FUNC_UART);
     uart_set_hw_flow(uart0, false, false);
     uart_set_format(uart0, 8, 1, UART_PARITY_NONE);
-#if 0
-const uint LED_PIN = PICO_DEFAULT_LED_PIN;
-    gpio_init(LED_PIN);
-    gpio_set_dir(LED_PIN, GPIO_OUT);
 
-    for (int i=0; i<100; i++) {
-        uart_puts(uart0, "\ni am at loop\n");
-        gpio_put(LED_PIN, 1);
-        sleep_ms(250);
-        gpio_put(LED_PIN, 0);
-        sleep_ms(250);
-    }
-goto xxx;
-#endif
-
-    uart_puts(uart0, "\nstarting ota\n");
     do_ota();
-    uart_puts(uart0, "\nota completed\n");
-
 
     // Reset the interrupt/etc. vectors to the real app.  Will be copied to RAM in app's runtime_init
     scb_hw->vtor = (uint32_t)0x10005000;
@@ -183,8 +177,3 @@ void __wrap_exit(int status) {
     (void) status;
     while (1) continue;
 }
-
-// Hard assert, avoid puts/etc.
-//void hard_assertion_failure() {
-//    while (1) continue;
-//}
