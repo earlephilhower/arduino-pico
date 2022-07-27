@@ -53,7 +53,28 @@ public:
             return false;
         }
         if (!len) {
-            len = f.size() - offset;
+            // Check for GZIP header, and if so read real length from file 
+            uint8_t hdr[4];
+            if (2 != f.read(hdr, 2)) {
+                // Error, this can't be valid
+                f.close();
+                return false;
+            }
+            if ((hdr[0] == 0x1f) && (hdr[1] == 0x8b)) {
+                // GZIP signature matched.  Find real size as encoded at the end
+                f.seek(f.size() - 4);
+                if (4 != f.read(hdr, 4)) {
+                    f.close();
+                    return false;
+                }
+                len = hdr[0];
+                len += hdr[1]<<8;
+                len += hdr[2]<<16;
+                len += hdr[3]<<24;
+            } else {
+                len = f.size();
+            }
+            len -= offset;
         }
         f.close();
         _page->cmd[_page->count].command = _OTA_WRITE;
