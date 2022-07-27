@@ -44,7 +44,7 @@ compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualif
 compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=0 {build.lwipdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
 compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines}
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/include"
-compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect}
+compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.flags.cmsis}
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
 compiler.libbearssl="{runtime.platform.path}/lib/libbearssl.a"
 
@@ -53,7 +53,7 @@ compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags}
 compiler.c.elf.cmd=arm-none-eabi-g++
 compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize} -u _printf_float -u _scanf_float
 compiler.S.cmd=arm-none-eabi-gcc
-compiler.S.flags=-c {compiler.warning_flags} -g -x assembler-with-cpp -MMD {compiler.includes} -g
+compiler.S.flags=-c {compiler.warning_flags} -g -x assembler-with-cpp -MMD {compiler.includes} -g {build.flags.cmsis}
 compiler.cpp.cmd=arm-none-eabi-g++
 compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} -std=gnu++17 -g
 
@@ -88,6 +88,7 @@ build.flags.rtti=-fno-rtti
 build.fs_start=
 build.fs_end=
 build.usbstack_flags=
+build.flags.cmsis=-DARM_MATH_CM0_FAMILY -DARM_MATH_CM0_PLUS
 build.flags.libstdcpp=-lstdc++
 build.flags.exceptions=-fno-exceptions
 build.flags.stackprotect=
