@@ -9951,8 +9951,8 @@ challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 # -----------------------------------
 challenger_nb_2040_wifi.name=iLabs Challenger NB 2040 WiFi
 challenger_nb_2040_wifi.vid.0=0x2e8a
-challenger_nb_2040_wifi.pid.0=0x100b
-challenger_nb_2040_wifi.build.usbpid=-DSERIALUSB_PID=0x100b
+challenger_nb_2040_wifi.pid.0=0x100d
+challenger_nb_2040_wifi.build.usbpid=-DSERIALUSB_PID=0x100d
 challenger_nb_2040_wifi.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifi.build.board=CHALLENGER_NB_2040_WIFI_RP2040
 challenger_nb_2040_wifi.build.mcu=cortex-m0plus
@@ -9971,7 +9971,7 @@ challenger_nb_2040_wifi.build.ldscript=memmap_default.ld
 challenger_nb_2040_wifi.build.ram_length=256k
 challenger_nb_2040_wifi.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_nb_2040_wifi.build.vid=0x2e8a
-challenger_nb_2040_wifi.build.pid=0x100b
+challenger_nb_2040_wifi.build.pid=0x100d
 challenger_nb_2040_wifi.build.usb_manufacturer="iLabs"
 challenger_nb_2040_wifi.build.usb_product="Challenger NB 2040 WiFi"
 challenger_nb_2040_wifi.build.extra_flags=-DWIFIESPAT2
@@ -10136,7 +10136,7 @@ challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWI
 challenger_nb_2040_wifipicoprobe.name=iLabs Challenger NB 2040 WiFi (Picoprobe)
 challenger_nb_2040_wifipicoprobe.vid.0=0x2e8a
 challenger_nb_2040_wifipicoprobe.pid.0=0x0004
-challenger_nb_2040_wifipicoprobe.build.usbpid=-DSERIALUSB_PID=0x100b
+challenger_nb_2040_wifipicoprobe.build.usbpid=-DSERIALUSB_PID=0x100d
 challenger_nb_2040_wifipicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifipicoprobe.build.board=CHALLENGER_NB_2040_WIFI_RP2040
 challenger_nb_2040_wifipicoprobe.build.mcu=cortex-m0plus
@@ -10155,7 +10155,7 @@ challenger_nb_2040_wifipicoprobe.build.ldscript=memmap_default.ld
 challenger_nb_2040_wifipicoprobe.build.ram_length=256k
 challenger_nb_2040_wifipicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_nb_2040_wifipicoprobe.build.vid=0x2e8a
-challenger_nb_2040_wifipicoprobe.build.pid=0x100b
+challenger_nb_2040_wifipicoprobe.build.pid=0x100d
 challenger_nb_2040_wifipicoprobe.build.usb_manufacturer="iLabs"
 challenger_nb_2040_wifipicoprobe.build.usb_product="Challenger NB 2040 WiFi (Picoprobe)"
 challenger_nb_2040_wifipicoprobe.build.extra_flags=-DWIFIESPAT2
@@ -10320,7 +10320,7 @@ challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV
 challenger_nb_2040_wifipicodebug.name=iLabs Challenger NB 2040 WiFi (pico-debug)
 challenger_nb_2040_wifipicodebug.vid.0=0x1209
 challenger_nb_2040_wifipicodebug.pid.0=0x2488
-challenger_nb_2040_wifipicodebug.build.usbpid=-DSERIALUSB_PID=0x100b
+challenger_nb_2040_wifipicodebug.build.usbpid=-DSERIALUSB_PID=0x100d
 challenger_nb_2040_wifipicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifipicodebug.build.board=CHALLENGER_NB_2040_WIFI_RP2040
 challenger_nb_2040_wifipicodebug.build.mcu=cortex-m0plus
@@ -10339,7 +10339,7 @@ challenger_nb_2040_wifipicodebug.build.ldscript=memmap_default.ld
 challenger_nb_2040_wifipicodebug.build.ram_length=240k
 challenger_nb_2040_wifipicodebug.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_nb_2040_wifipicodebug.build.vid=0x2e8a
-challenger_nb_2040_wifipicodebug.build.pid=0x100b
+challenger_nb_2040_wifipicodebug.build.pid=0x100d
 challenger_nb_2040_wifipicodebug.build.usb_manufacturer="iLabs"
 challenger_nb_2040_wifipicodebug.build.usb_product="Challenger NB 2040 WiFi (pico-debug)"
 challenger_nb_2040_wifipicodebug.build.extra_flags=-DWIFIESPAT2
