@@ -59,7 +59,9 @@ static int lfs_flash_sync(const struct lfs_config *c) {
     (void) c;
     return 0;
 }
-
+uint8_t _read_buffer[256];
+uint8_t _prog_buffer[256];
+uint8_t _lookahead_buffer[256];
 bool lfsMount(uint8_t *start, uint32_t blockSize, uint32_t size) {
     _start = start;
     _blockSize = blockSize;
@@ -79,9 +81,9 @@ bool lfsMount(uint8_t *start, uint32_t blockSize, uint32_t size) {
     _lfs_cfg.block_cycles = 16; // TODO - need better explanation
     _lfs_cfg.cache_size = 256;
     _lfs_cfg.lookahead_size = 256;
-    _lfs_cfg.read_buffer = NULL;
-    _lfs_cfg.prog_buffer = NULL;
-    _lfs_cfg.lookahead_buffer = NULL;
+    _lfs_cfg.read_buffer = _read_buffer;
+    _lfs_cfg.prog_buffer = _prog_buffer;
+    _lfs_cfg.lookahead_buffer = _lookahead_buffer;
     _lfs_cfg.name_max = 0;
     _lfs_cfg.file_max = 0;
     _lfs_cfg.attr_max = 0;
@@ -111,7 +113,7 @@ int lfs_file_opencfg(lfs_t *lfs, lfs_file_t *file,
 
 bool lfsOpen(const char *filename) {
     _gzip = false;
-    if (!lfs_file_opencfg(&_lfs, &_file, filename, LFS_O_RDONLY, &_file_cfg)) {
+    if (lfs_file_opencfg(&_lfs, &_file, filename, LFS_O_RDONLY, &_file_cfg) < 0) {
         return false;
     }
     char b[2];

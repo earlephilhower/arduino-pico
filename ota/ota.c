@@ -76,20 +76,37 @@ void do_ota() {
     for (uint32_t i = 0; i < _ota_cmd.count; i++) {
         switch (_ota_cmd.cmd[i].command) {
             case _OTA_WRITE:
+                uart_puts(uart0, "write: open ");
+                uart_puts(uart0, _ota_cmd.cmd[i].write.filename);
+                uart_puts(uart0, " = ");
                 if (!lfsOpen(_ota_cmd.cmd[i].write.filename)) {
+                    uart_puts(uart0, "failed\n");
                     return;
                 }
+                uart_puts(uart0, "success\n");
+                uart_puts(uart0, "seek ");
+                dumphex(_ota_cmd.cmd[i].write.fileOffset);
+                uart_puts(uart0, " = ");
                 if (!lfsSeek(_ota_cmd.cmd[i].write.fileOffset)) {
+                    uart_puts(uart0, "failed\n");
                     return;
                 }
+                uart_puts(uart0, "success\n");
                 uint32_t toRead = _ota_cmd.cmd[i].write.fileLength;
                 uint32_t toWrite = _ota_cmd.cmd[i].write.flashAddress;
+
                 while (toRead) {
                     uint32_t len = (toRead < 4096) ? toRead : 4096;
                     uint8_t *p = lfsRead(len);
                     if (!p) {
+                        uart_puts(uart0, "read failed\n");
                         return;
                     }
+                    uart_puts(uart0, "toread = ");
+                    dumphex(toRead);
+                    uart_puts(uart0, "\ntowrite = ");
+                    dumphex(toWrite);
+                    uart_puts(uart0, "\n");
                     int save = save_and_disable_interrupts();
                     flash_range_erase((intptr_t)toWrite, 4096);
                     flash_range_program((intptr_t)toWrite, (const uint8_t *)p, 4096);

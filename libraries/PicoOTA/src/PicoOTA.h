@@ -44,7 +44,7 @@ public:
         _page->count = 0;
     }
 
-    bool addFile(const char *filename, uint32_t offset = 0x4000, uint32_t flashaddr = 0x4000,  uint32_t len = 0) {
+    bool addFile(const char *filename, uint32_t offset = 0x5000, uint32_t flashaddr = 0x5000,  uint32_t len = 0) {
         if (!_page  || _page->count == 8) {
             return false;
         }
