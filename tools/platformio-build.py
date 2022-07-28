@@ -112,6 +112,8 @@ env.Append(
         "ARDUINO_ARCH_RP2040",
         ("F_CPU", "$BOARD_F_CPU"),
         ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
+        "ARM_MATH_CM0_FAMILY",
+        "ARM_MATH_CM0_PLUS",
     ],
 
     CPPPATH=[
