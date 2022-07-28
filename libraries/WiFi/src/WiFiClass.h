@@ -78,7 +78,7 @@ public:
     int8_t waitForConnectResult(unsigned long timeoutLength = 60000) {
         uint32_t now = millis();
         while (millis() - now < timeoutLength) {
-            if(status() != WL_DISCONNECTED) {
+            if (status() != WL_DISCONNECTED) {
                 return status();
             }
             delay(10);
