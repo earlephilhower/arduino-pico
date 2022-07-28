@@ -61,7 +61,7 @@ void setup() {
 
   ArduinoOTA.onError([](ota_error_t error) {
     (void)error;
-    ESP.restart();
+    rp2040.restart();
   });
 
   /* setup the OTA server */

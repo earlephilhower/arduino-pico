@@ -175,8 +175,8 @@ void ArduinoOTAClass::_onRx(){
 
   if (_state == OTA_IDLE) {
     int cmd = parseInt();
-//    if (cmd != U_FLASH && cmd != U_FS)
-//      return;
+    if (cmd != U_FLASH && cmd != U_FS)
+      return;
     _ota_ip = _udp_ota->getRemoteAddress();
     _cmd  = cmd;
     _ota_port = parseInt();
@@ -208,10 +208,10 @@ void ArduinoOTAClass::_onRx(){
     }
   } else if (_state == OTA_WAITAUTH) {
     int cmd = parseInt();
-//    if (cmd != U_AUTH) {
+    if (cmd != U_AUTH) {
       _state = OTA_IDLE;
       return;
-//    }
+    }
     _udp_ota->read();
     String cnonce = readStringUntil(' ');
     String response = readStringUntil('\n');
@@ -303,7 +303,7 @@ void ArduinoOTAClass::_runUpdate() {
 
   uint32_t written, total = 0;
 //  while (!Update.isFinished() && (client.connected() || client.available())) {
-  while ( (total < _size) && (client.connected() || client.available())) {
+  while ( (total < (uint32_t) _size) && (client.connected() || client.available())) {
     int waited = 1000;
     while (!client.available() && waited--)
       delay(1);

@@ -20,6 +20,13 @@ typedef enum {
   OTA_END_ERROR
 } ota_error_t;
 
+
+enum {
+  U_FLASH = 0,
+  U_FS = 100,
+  U_AUTH = 200
+};
+
 class ArduinoOTAClass
 {
   public:

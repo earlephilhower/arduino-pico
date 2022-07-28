@@ -294,6 +294,10 @@ public:
         watchdog_reboot(0, 0, 100);
     }
 
+    inline void restart() {
+        reboot();
+    }
+
     const char *getChipID() {
         static char id[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = { 0 };
         if (!id[0]) {

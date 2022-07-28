@@ -19,7 +19,7 @@ void setup() {
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
     Serial.println("Connection Failed! Rebooting...");
     delay(5000);
-    ESP.restart();
+    rp2040.restart();
   }
 
   // Port defaults to 8266
