@@ -28,7 +28,7 @@ typedef struct {
     uint32_t count;
     commandEntry cmd[8];
 
-    uint32_t crc32;
+    uint32_t crc32; // CRC32 over just the contents of this struct, up until just before this value
 } OTACmdPage;
 
 static const OTACmdPage *_ota_command_rom = (const OTACmdPage*) 0x10004000;

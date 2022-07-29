@@ -26,6 +26,40 @@
 extern uint8_t _FS_start;
 extern uint8_t _FS_end;
 
+// Simple and low code CRC calculation for the OTA page
+class OTACRC32 {
+public:
+    OTACRC32() {
+        crc = 0xffffffff;
+    }
+
+    ~OTACRC32() {
+    }
+
+    void add(const void *d, uint32_t len) {
+        const uint8_t *data = (const uint8_t *)d;
+        for (uint32_t i = 0; i < len; i++) {
+            crc ^= data[i];
+            for (int j = 0; j < 8; j++) {
+                if (crc & 1) {
+                    crc = (crc >> 1) ^ 0xedb88320;
+                } else {
+                    crc >>= 1;
+                }
+            }
+        }
+    }
+
+    uint32_t get() {
+        return ~crc;
+    }
+
+private:
+    uint32_t crc;
+};
+
+
+// Handles generating valid OTA blocks
 class PicoOTA {
 public:
     PicoOTA() { }
@@ -91,13 +125,9 @@ public:
             return false;
         }
 
-        Serial.printf("\n");
-        unsigned char *ptr = (unsigned char *)_page;
-        for (size_t i = 0; i < sizeof(*_page); i++) {
-            Serial.printf("%02x ", *ptr++);
-            if (((1+i)%16) == 0) Serial.printf("\n");
-        }
-        Serial.printf("\n");
+        OTACRC32 crc;
+        crc.add(_page, offsetof(OTACmdPage, crc32));
+        _page->crc32 = crc.get();
 
         // Stop all cores and write the command
         noInterrupts();
@@ -117,3 +147,4 @@ private:
 };
 
 extern PicoOTA picoOTA;
+

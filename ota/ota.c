@@ -50,7 +50,23 @@ void do_ota() {
         return; // No signature
     }
 
-    // TODO - check CRC
+    uint32_t crc = 0xffffffff;
+    const uint8_t *data = (const uint8_t *)_ota_command_rom;
+    for (uint32_t i = 0; i < offsetof(OTACmdPage, crc32); i++) {
+        crc ^= data[i];
+        for (int j = 0; j < 8; j++) {
+            if (crc & 1) {
+                crc = (crc >> 1) ^ 0xedb88320;
+            } else {
+                crc >>= 1;
+            }
+        }
+    }
+    crc = ~crc;
+    if (crc != _ota_command_rom->crc32) {
+        uart_puts(uart0, "\ncrc32 mismatch\n");
+        return;
+    }
 
     if (!_ota_command_rom->count) {
         uart_puts(uart0, "\nno ota count\n");
