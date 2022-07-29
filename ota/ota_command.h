@@ -17,7 +17,7 @@ typedef struct {
 
 // Must fit within 4K page
 typedef struct {
-    uint8_t sign[8]; // "Pico OTA Format\0"
+    uint8_t sign[8]; // "Pico OTA"
 
     // LittleFS partition information
     uint8_t *_start;
