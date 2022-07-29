@@ -42,7 +42,7 @@ compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
 compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
 
 compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=0 {build.lwipdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
-compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines}
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}"
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/include"
 compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect}
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
@@ -144,6 +144,7 @@ recipe.size.regex=^(?:\.boot2|\.text|\.rodata|\.ARM\.extab|\.ARM\.exidx)\s+([0-9
 recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_data)\s+([0-9]+).*
 
 tools.uf2conv.path=
+tools.espota.path=
 # Because the variable expansion doesn't allow one tool to find another, the following lines
 # will point to "{runtime.platform.path}/tools/python3/python3" in GIT and
 # "{runtime.tools.pqt-python3.path}/python3" for JSON board manager releases.
@@ -153,6 +154,16 @@ tools.uf2conv.upload.protocol=uf2
 tools.uf2conv.upload.params.verbose=
 tools.uf2conv.upload.params.quiet=
 tools.uf2conv.upload.pattern="{cmd}" -I "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
+
+# Because the variable expansion doesn't allow one tool to find another, the following lines
+# will point to "{runtime.platform.path}/tools/python3/python3" in GIT and
+# "{runtime.tools.pqt-python3.path}/python3" for JSON board manager releases.
+#tools.espota.cmd={runtime.tools.pqt-python3.path}/python3
+tools.espota.cmd={runtime.platform.path}/system/python3/python3
+tools.espota.upload.protocol=bin
+tools.espota.upload.params.verbose=
+tools.espota.upload.params.quiet=
+tools.espota.upload.pattern="{cmd}" -I "{runtime.platform.path}/tools/espota.py" -i "{serial.port}" -p 2040 -f "{build.path}/{build.project_name}.bin" -d -r
 
 #tools.picoprobe.cmd={runtime.tools.pqt-openocd.path}
 tools.picoprobe.cmd={runtime.platform.path}/system/openocd

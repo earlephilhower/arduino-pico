@@ -1259,7 +1259,7 @@ namespace MDNSImplementation
         {
             if ((!addServiceTxt(hService, "tcp_check", "no"))
                 || (!addServiceTxt(hService, "ssh_upload", "no"))
-                || (!addServiceTxt(hService, "board", STRINGIZE_VALUE_OF(ARDUINO_BOARD)))
+                || (!addServiceTxt(hService, "board", ARDUINO_VARIANT))
                 || (!addServiceTxt(hService, "auth_upload", (p_bAuthUpload) ? "yes" : "no")))
             {
                 removeService(hService);
