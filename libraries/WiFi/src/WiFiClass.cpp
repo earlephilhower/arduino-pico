@@ -475,7 +475,7 @@ uint8_t WiFiClass::status() {
     }
     switch (cyw43_wifi_link_status(&cyw43_state, _apMode ? 1 : 0)) {
     case CYW43_LINK_DOWN: return WL_IDLE_STATUS;
-    case CYW43_LINK_JOIN: return localIP().isSet() ? WL_CONNECTED : WL_CONNECTING;
+    case CYW43_LINK_JOIN: return localIP().isSet() ? WL_CONNECTED : WL_DISCONNECTED;
     case CYW43_LINK_FAIL: return WL_CONNECT_FAILED;
     case CYW43_LINK_NONET: return WL_CONNECT_FAILED;
     case CYW43_LINK_BADAUTH: return WL_CONNECT_FAILED;
