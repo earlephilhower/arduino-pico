@@ -108,6 +108,8 @@ cat $srcdir/platform.txt | \
 sed 's/^runtime.tools.pqt-.*.path=.*//g' | \
 sed 's/^tools.uf2conv.cmd=.*//g' | \
 sed 's/^#tools.uf2conv.cmd=/tools.uf2conv.cmd=/g' | \
+sed 's/^tools.uf2conv.network_cmd=.*//g' | \
+sed 's/^#tools.uf2conv.network_cmd=/tools.uf2conv.cmd=/g' | \
 sed 's/^tools.picoprobe.cmd=.*//g' | \
 sed 's/^#tools.picoprobe.cmd=/tools.picoprobe.cmd=/g' | \
 sed 's/^tools.picodebug.cmd=.*//g' | \

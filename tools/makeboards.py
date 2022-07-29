@@ -106,8 +106,6 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("%s.build.mcu=cortex-m0plus" % (name))
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.tool=%s" % (name, uploadtool))
-    print("%s.upload.tool.default=%s" % (name, uploadtool))
-    print("%s.upload.tool.network=%s" % (name, "espota"))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
     print("%s.upload.maximum_data_size=%d" % (name, ramsize))
     print("%s.upload.wait_for_upload_port=true" % (name))
