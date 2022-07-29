@@ -10,7 +10,7 @@ typedef struct {
             char filename[64];
             uint32_t fileOffset;
             uint32_t fileLength;
-            uint32_t flashAddress;
+            uint32_t flashAddress;   // Normally XIP_BASE
         } write;
     };
 } commandEntry;

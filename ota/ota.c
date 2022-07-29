@@ -124,10 +124,16 @@ void do_ota() {
                     uart_puts(uart0, "\ntowrite = ");
                     dumphex(toWrite);
                     uart_puts(uart0, "\n");
-                    int save = save_and_disable_interrupts();
-                    flash_range_erase((intptr_t)toWrite, 4096);
-                    flash_range_program((intptr_t)toWrite, (const uint8_t *)p, 4096);
-                    restore_interrupts(save);
+                    // Only write pages which differ (i.e. preserve OTA pages unless the OTA shim changes)
+                    if (memcmp(p, (void*)toWrite, 4096)) {
+                        uart_puts(uart0, "writing\n");
+                        int save = save_and_disable_interrupts();
+                        flash_range_erase((intptr_t)toWrite - XIP_BASE, 4096);
+                        flash_range_program((intptr_t)toWrite - XIP_BASE, (const uint8_t *)p, 4096);
+                        restore_interrupts(save);
+                    } else {
+                        uart_puts(uart0, "identical to flash, skipping\n");
+                    }
                     toRead -= len;
                     toWrite += 4096;
                 }
