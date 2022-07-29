@@ -4,12 +4,12 @@
       "earlephilhower": {
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2E8A",
-        "usb_pid": "0x100B"
+        "usb_pid": "0x100D"
       }
     },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_CHALLENGER_NB_2040_WIFI_RP2040 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
+    "extra_flags": "-D ARDUINO_CHALLENGER_NB_2040_WIFI_RP2040 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500 -DWIFIESPAT2",
     "f_cpu": "133000000L",
     "hwids": [
       [
@@ -18,7 +18,7 @@
       ],
       [
         "0x2E8A",
-        "0x100B"
+        "0x100D"
       ]
     ],
     "mcu": "rp2040",

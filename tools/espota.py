@@ -205,6 +205,8 @@ def serve(remoteAddr, localAddr, remotePort, localPort, password, filename, comm
       f.close()
       sock.close()
       if received_ok:
+        sys.stderr.write("Complete\n")
+        sys.stderr.flush()
         return 0
       return 1
     except Exception:

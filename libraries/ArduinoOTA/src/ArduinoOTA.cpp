@@ -263,10 +263,11 @@ void ArduinoOTAClass::_runUpdate() {
 //    _state = OTA_IDLE;
 //    return;
 //  }
+  LittleFS.begin();
   _file = LittleFS.open("firmware.bin", "w");
   if (!_file) {
       _udp_ota->append("ERR: ", 5);
-      _udp_ota->append("nofile", 6);
+      _udp_ota->append("nofilesystem", 6);
       _udp_ota->send(ota_ip, _ota_udp_port);
       delay(100);
       _udp_ota->listen(IP_ADDR_ANY, _port);
