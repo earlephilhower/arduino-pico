@@ -32,6 +32,18 @@
 
 extern "C" volatile bool __otherCoreIdled;
 
+// Halt the FreeRTOS PendSV task switching magic
+extern "C" int __holdUpPendSV;
+
+// FreeRTOS weak functions, to be overridden when we really are running FreeRTOS
+extern "C" {
+    extern void vTaskSuspendAll() __attribute__((weak));
+    extern int32_t xTaskResumeAll() __attribute__((weak));
+    typedef struct tskTaskControlBlock * TaskHandle_t;
+    extern void vTaskPreemptionDisable(TaskHandle_t p) __attribute__((weak));
+    extern void vTaskPreemptionEnable(TaskHandle_t p) __attribute__((weak));
+}
+
 class _MFIFO {
 public:
     _MFIFO() { /* noop */ };
@@ -86,6 +98,11 @@ public:
         if (!_multicore) {
             return;
         }
+        __holdUpPendSV = 1;
+        if (__isFreeRTOS) {
+            vTaskPreemptionDisable(nullptr);
+            vTaskSuspendAll();
+        }
         mutex_enter_blocking(&_idleMutex);
         __otherCoreIdled = false;
         multicore_fifo_push_blocking(_GOTOSLEEP);
@@ -98,6 +115,12 @@ public:
         }
         mutex_exit(&_idleMutex);
         __otherCoreIdled = false;
+        if (__isFreeRTOS) {
+            xTaskResumeAll();
+            vTaskPreemptionEnable(nullptr);
+        }
+        __holdUpPendSV = 0;
+
         // Other core will exit busy-loop and return to operation
         // once __otherCoreIdled == false.
     }
