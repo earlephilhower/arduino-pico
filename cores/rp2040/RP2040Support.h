@@ -37,11 +37,11 @@ extern "C" int __holdUpPendSV;
 
 // FreeRTOS weak functions, to be overridden when we really are running FreeRTOS
 extern "C" {
-extern void vTaskSuspendAll() __attribute__((weak));
-extern int32_t xTaskResumeAll() __attribute__((weak));
-typedef struct tskTaskControlBlock * TaskHandle_t;
-extern void vTaskPreemptionDisable(TaskHandle_t p) __attribute__((weak));
-extern void vTaskPreemptionEnable(TaskHandle_t p) __attribute__((weak));
+    extern void vTaskSuspendAll() __attribute__((weak));
+    extern int32_t xTaskResumeAll() __attribute__((weak));
+    typedef struct tskTaskControlBlock * TaskHandle_t;
+    extern void vTaskPreemptionDisable(TaskHandle_t p) __attribute__((weak));
+    extern void vTaskPreemptionEnable(TaskHandle_t p) __attribute__((weak));
 }
 
 class _MFIFO {
