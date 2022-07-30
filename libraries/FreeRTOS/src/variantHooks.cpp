@@ -29,7 +29,6 @@
 #include <Arduino.h>
 #include <RP2040USB.h>
 #include "tusb.h"
-#define USB_TASK_IRQ 31
 
 
 /* Raspberry PI Pico includes */
@@ -382,19 +381,11 @@ void vApplicationAssertHook() {
 #endif
 
 
-static void __usb_irq() {
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    vTaskNotifyGiveFromISR( __usbTask, &xHigherPriorityTaskWoken );
-    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
-}
-
 static void __usb(void *param)
 {
     (void) param;
 
     tusb_init();
-    irq_set_exclusive_handler(USB_TASK_IRQ, __usb_irq);
-    irq_set_enabled(USB_TASK_IRQ, true);
 
     Serial.begin(115200);
 
