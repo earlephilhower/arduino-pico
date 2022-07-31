@@ -1,29 +1,29 @@
 /*
- SDFS.cpp - file system wrapper for SdFat
- Copyright (c) 2019 Earle F. Philhower, III. All rights reserved.
+    SDFS.cpp - file system wrapper for SdFat
+    Copyright (c) 2019 Earle F. Philhower, III. All rights reserved.
 
- Based on spiffs_api.cpp which is:
- | Copyright (c) 2015 Ivan Grokhotkov. All rights reserved.
+    Based on spiffs_api.cpp which is:
+    | Copyright (c) 2015 Ivan Grokhotkov. All rights reserved.
 
- This code was influenced by NodeMCU and Sming libraries, and first version of
- Arduino wrapper written by Hristo Gochkov.
+    This code was influenced by NodeMCU and Sming libraries, and first version of
+    Arduino wrapper written by Hristo Gochkov.
 
- This file is part of the esp8266 core for Arduino environment.
+    This file is part of the esp8266 core for Arduino environment.
 
- This library is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
 #include "SDFS.h"
 #include <FS.h>
 
@@ -39,8 +39,7 @@ namespace sdfs {
 // Required to be global because SDFAT doesn't allow a this pointer in it's own time call
 time_t (*__sdfs_timeCallback)(void) = nullptr;
 
-FileImplPtr SDFSImpl::open(const char* path, OpenMode openMode, AccessMode accessMode)
-{
+FileImplPtr SDFSImpl::open(const char* path, OpenMode openMode, AccessMode accessMode) {
     if (!_mounted) {
         DEBUGV("SDFSImpl::open() called on unmounted FS\n");
         return FileImplPtr();
@@ -74,8 +73,7 @@ FileImplPtr SDFSImpl::open(const char* path, OpenMode openMode, AccessMode acces
     return std::make_shared<SDFSFileImpl>(this, sharedFd, path);
 }
 
-DirImplPtr SDFSImpl::openDir(const char* path)
-{
+DirImplPtr SDFSImpl::openDir(const char* path) {
     if (!_mounted) {
         return DirImplPtr();
     }
@@ -85,8 +83,8 @@ DirImplPtr SDFSImpl::openDir(const char* path)
         return DirImplPtr();
     }
     // Get rid of any trailing slashes
-    while (strlen(pathStr) && (pathStr[strlen(pathStr)-1]=='/')) {
-        pathStr[strlen(pathStr)-1] = 0;
+    while (strlen(pathStr) && (pathStr[strlen(pathStr) - 1] == '/')) {
+        pathStr[strlen(pathStr) - 1] = 0;
     }
     // At this point we have a name of "/blah/blah/blah" or "blah" or ""
     // If that references a directory, just open it and we're done.

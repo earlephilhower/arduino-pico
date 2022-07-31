@@ -3,36 +3,30 @@
 #include <WiFi.h>
 #include <functional>
 #include <LittleFS.h>
+#include <Updater.h>
 
 class UdpContext;
 
 typedef enum {
-  OTA_IDLE,
-  OTA_WAITAUTH,
-  OTA_RUNUPDATE
+    OTA_IDLE,
+    OTA_WAITAUTH,
+    OTA_RUNUPDATE
 } ota_state_t;
 
 typedef enum {
-  OTA_AUTH_ERROR,
-  OTA_BEGIN_ERROR,
-  OTA_CONNECT_ERROR,
-  OTA_RECEIVE_ERROR,
-  OTA_END_ERROR
+    OTA_AUTH_ERROR,
+    OTA_BEGIN_ERROR,
+    OTA_CONNECT_ERROR,
+    OTA_RECEIVE_ERROR,
+    OTA_END_ERROR
 } ota_error_t;
 
 
-enum {
-  U_FLASH = 0,
-  U_FS = 100,
-  U_AUTH = 200
-};
-
-class ArduinoOTAClass
-{
-  public:
-	typedef std::function<void(void)> THandlerFunction;
-	typedef std::function<void(ota_error_t)> THandlerFunction_Error;
-	typedef std::function<void(unsigned int, unsigned int)> THandlerFunction_Progress;
+class ArduinoOTAClass {
+public:
+    typedef std::function<void(void)> THandlerFunction;
+    typedef std::function<void(ota_error_t)> THandlerFunction_Error;
+    typedef std::function<void(unsigned int, unsigned int)> THandlerFunction_Progress;
 
     ArduinoOTAClass();
     ~ArduinoOTAClass();
@@ -76,7 +70,7 @@ class ArduinoOTAClass
     //Gets update command type after OTA has started. Either U_FLASH or U_FS
     int getCommand();
 
-  private:
+private:
     void _runUpdate(void);
     void _onRx(void);
     int parseInt(void);

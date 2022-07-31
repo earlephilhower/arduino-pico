@@ -17,7 +17,7 @@
 void setup() {
   Serial.begin(115200);
   delay(5000);
-  
+
   Serial.printf("Writing OTA image of blinker...");
   LittleFS.begin();
   File f = LittleFS.open("blink.bin", "w");

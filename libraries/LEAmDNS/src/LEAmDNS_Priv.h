@@ -25,26 +25,20 @@
 #ifndef MDNS_PRIV_H
 #define MDNS_PRIV_H
 
-namespace esp8266
-{
+namespace esp8266 {
 
 /*
     LEAmDNS
 */
 
-namespace MDNSImplementation
-{
+namespace MDNSImplementation {
 
 // Enable class debug functions
 #define ESP_8266_MDNS_INCLUDE
-    //#define DEBUG_ESP_MDNS_RESPONDER
+//#define DEBUG_ESP_MDNS_RESPONDER
 
 #if !defined(DEBUG_ESP_MDNS_RESPONDER) && defined(DEBUG_ESP_MDNS)
 #define DEBUG_ESP_MDNS_RESPONDER
-#endif
-
-#ifndef LWIP_OPEN_SRC
-#define LWIP_OPEN_SRC
 #endif
 
 //
@@ -114,9 +108,9 @@ namespace MDNSImplementation
 /*  already defined in lwIP ('lwip/prot/dns.h')
     #ifdef MDNS_IP4_SUPPORT
     #define DNS_MQUERY_IPV4_GROUP_INIT     (IPAddress(224, 0, 0, 251))              // ip_addr_t
-   v4group = DNS_MQUERY_IPV4_GROUP_INIT #endif #ifdef MDNS_IP6_SUPPORT #define
-   DNS_MQUERY_IPV6_GROUP_INIT     IPADDR6_INIT_HOST(0xFF020000,0,0,0xFB)   // ip_addr_t v6group =
-   DNS_MQUERY_IPV6_GROUP_INIT #endif*/
+    v4group = DNS_MQUERY_IPV4_GROUP_INIT #endif #ifdef MDNS_IP6_SUPPORT #define
+    DNS_MQUERY_IPV6_GROUP_INIT     IPADDR6_INIT_HOST(0xFF020000,0,0,0xFB)   // ip_addr_t v6group =
+    DNS_MQUERY_IPV6_GROUP_INIT #endif*/
 //#define MDNS_MULTICAST_PORT               5353
 
 /*
@@ -156,7 +150,7 @@ namespace MDNSImplementation
     Delay between and number of probes for host and service domains
     Delay between and number of announces for host and service domains
     Delay between and number of service queries; the delay is multiplied by the resent number in
-   '_checkServiceQueryCache'
+    '_checkServiceQueryCache'
 */
 #define MDNS_PROBE_DELAY 250
 #define MDNS_PROBE_COUNT 3

@@ -103,6 +103,9 @@ discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime
 # Compile patterns
 # ----------------
 
+## Generate signing header
+recipe.hooks.sketch.prebuild.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/signing.py" --mode header --publickey "{build.source.path}/public.key" --out "{build.path}/core/Updater_Signing.h"
+
 ## Compile c files
 recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.usbpid} {build.usbpwr} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {includes} "{source_file}" -o "{object_file}"
 
@@ -130,7 +133,8 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" 
 recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2"
 
 ## Create output BIN (for OTA)
-recipe.objcopy.bin.pattern="{compiler.path}/{compiler.objcopy.cmd}" -Obinary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+recipe.objcopy.bin.1.pattern="{compiler.path}/{compiler.objcopy.cmd}" -Obinary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+recipe.objcopy.bin.2.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/signing.py" --mode sign --privatekey "{build.source.path}/private.key" --bin "{build.path}/{build.project_name}.bin" --out "{build.path}/{build.project_name}.bin.signed" --legacy "{build.path}/{build.project_name}.bin.legacy_sig"
 
 
 build.preferred_out_format=uf2

@@ -87,7 +87,7 @@ public:
             return false;
         }
         if (!len) {
-            // Check for GZIP header, and if so read real length from file 
+            // Check for GZIP header, and if so read real length from file
             uint8_t hdr[4];
             if (2 != f.read(hdr, 2)) {
                 // Error, this can't be valid
@@ -102,9 +102,9 @@ public:
                     return false;
                 }
                 len = hdr[0];
-                len += hdr[1]<<8;
-                len += hdr[2]<<16;
-                len += hdr[3]<<24;
+                len += hdr[1] << 8;
+                len += hdr[2] << 16;
+                len += hdr[3] << 24;
             } else {
                 len = f.size();
             }
@@ -136,7 +136,7 @@ public:
         flash_range_program((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, (const uint8_t *)_page, 4096);
         rp2040.resumeOtherCore();
         interrupts();
-        
+
         delete _page;
         _page = nullptr;
         return true;
