@@ -44,10 +44,8 @@
 #define U_FS      100
 #define U_AUTH    200
 
-#ifdef DEBUG_ESP_UPDATER
-#ifdef DEBUG_ESP_PORT
-#define DEBUG_UPDATER DEBUG_ESP_PORT
-#endif
+#ifdef DEBUG_RP2040_PORT
+#define DEBUG_UPDATER DEBUG_RP2040_PORT
 #endif
 
 // Abstract class to implement whatever signing hash desired

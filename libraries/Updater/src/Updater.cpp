@@ -272,6 +272,7 @@ bool UpdaterClass::end(bool evenIfRemaining) {
     }
 
     if (_command == U_FLASH) {
+        _fp.close();
         picoOTA.begin();
         picoOTA.addFile("firmware.bin");
         picoOTA.commit();
