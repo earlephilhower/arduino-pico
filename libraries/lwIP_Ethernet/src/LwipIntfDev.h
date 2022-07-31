@@ -32,7 +32,9 @@
 #include <lwip/init.h>
 #include <lwip/netif.h>
 #include <lwip/etharp.h>
+#include <lwip/ethip6.h>
 #include <lwip/dhcp.h>
+#include <lwip/dhcp6.h>
 #include <lwip/dns.h>
 #include <lwip/raw.h>
 #include <lwip/icmp.h>
@@ -366,6 +368,12 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
         netif_set_up(&_netif);
     }
 
+    #if LWIP_IPV6
+    netif_create_ip6_linklocal_address(&_netif, true);
+    err_t __res = dhcp6_enable_stateless(&_netif);
+    DEBUGV("LwipIntfDev: Enabled DHCP6 stateless: %d\n", __res);
+    #endif
+
     _started = true;
 
     if (_intrPin >= 0) {
@@ -444,10 +452,18 @@ err_t LwipIntfDev<RawDev>::netif_init() {
     _netif.chksum_flags = NETIF_CHECKSUM_ENABLE_ALL;
     _netif.flags = NETIF_FLAG_ETHARP | NETIF_FLAG_IGMP | NETIF_FLAG_BROADCAST | NETIF_FLAG_LINK_UP;
 
+    #if LWIP_IPV6_MLD
+    _netif.flags |= NETIF_FLAG_MLD6;
+    #endif
+
     // lwIP's doc: This function typically first resolves the hardware
     // address, then sends the packet.  For ethernet physical layer, this is
     // usually lwIP's etharp_output()
     _netif.output = etharp_output;
+
+    #ifdef LWIP_IPV6
+    _netif.output_ip6 = ethip6_output;
+    #endif
 
     // lwIP's doc: This function outputs the pbuf as-is on the link medium
     // (this must points to the raw ethernet driver, meaning: us)
