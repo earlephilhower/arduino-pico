@@ -21,7 +21,7 @@ extern void interrupts();
 #define MEM_LIBC_MALLOC             0
 
 #define MEM_ALIGNMENT               4
-#define MEM_SIZE                    4000
+#define MEM_SIZE                    16384
 #define MEMP_NUM_TCP_SEG            32
 #define MEMP_NUM_ARP_QUEUE          10
 #define PBUF_POOL_SIZE              24

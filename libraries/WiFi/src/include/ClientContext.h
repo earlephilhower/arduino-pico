@@ -491,6 +491,7 @@ protected:
         DEBUGV(":wr %d %d\r\n", _datalen - _written, _written);
 
         bool has_written = false;
+        int scale = 0;
 
         while (_written < _datalen) {
             if (state() == CLOSED) {
@@ -501,6 +502,10 @@ protected:
             {
                 LWIPMutex m;  // Block the timer sys_check_timeouts call, just for this call
                 next_chunk_size = std::min((size_t)tcp_sndbuf(_pcb), remaining);
+                // Potentially reduce transmit size if we are tight on memory, but only if it doesn't return a 0 chunk size
+                if (next_chunk_size > (size_t)(1 << scale)) {
+                    next_chunk_size >>= scale;
+                }
             }
             if (!next_chunk_size) {
                 break;
@@ -531,6 +536,13 @@ protected:
             if (err == ERR_OK) {
                 _written += next_chunk_size;
                 has_written = true;
+            } else if (err == ERR_MEM) {
+                if (scale < 4) {
+                    // Retry sending at 1/2 the chunk size
+                    scale ++;
+                } else {
+                    break;
+                }
             } else {
                 // ERR_MEM(-1) is a valid error meaning
                 // "come back later". It leaves state() opened

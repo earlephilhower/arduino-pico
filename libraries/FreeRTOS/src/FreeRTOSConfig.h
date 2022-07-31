@@ -26,6 +26,7 @@
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
 #define configSUPPORT_STATIC_ALLOCATION 0
 #define configSTACK_DEPTH_TYPE			uint32_t
+#define configUSE_TASK_PREEMPTION_DISABLE 1
 
 #define configUSE_NEWLIB_REENTRANT 1
 #define configNEWLIB_REENTRANT_IS_DYNAMIC 0 /* Note that we have a different config option, portSET_IMPURE_PTR */
