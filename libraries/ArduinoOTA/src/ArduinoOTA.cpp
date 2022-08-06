@@ -3,23 +3,21 @@
 #include "ArduinoOTA.h"
 #include "MD5Builder.h"
 #include <PicoOTA.h>
+#include <StreamString.h>
 
-#include "lwip/opt.h"
 #include "lwip/udp.h"
-#include "lwip/inet.h"
-#include "lwip/igmp.h"
-#include "lwip/mem.h"
 #include "include/UdpContext.h"
 
 #if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_MDNS)
-#include <ESP8266mDNS.h>
+#include <LEAmDNS.h>
 #endif
 
-#ifdef DEBUG_ESP_OTA
-#ifdef DEBUG_ESP_PORT
-#define OTA_DEBUG DEBUG_ESP_PORT
-#endif
-#endif
+//#ifdef DEBUG_ESP_OTA
+//#ifdef DEBUG_ESP_PORT
+//#define OTA_DEBUG DEBUG_ESP_PORT
+//#endif
+//#endif
+#define OTA_DEBUG Serial
 
 ArduinoOTAClass::ArduinoOTAClass() {
 }
@@ -246,27 +244,25 @@ void ArduinoOTAClass::_onRx() {
 void ArduinoOTAClass::_runUpdate() {
     IPAddress ota_ip = _ota_ip;
 
-    //  if (!Update.begin(_size, _cmd)) {
-    //#ifdef OTA_DEBUG
-    //    OTA_DEBUG.println("Update Begin Error");
-    //#endif
-    //    if (_error_callback) {
-    //      _error_callback(OTA_BEGIN_ERROR);
-    //    }
-    //
-    //    StreamString ss;
-    //    Update.printError(ss);
-    //    _udp_ota->append("ERR: ", 5);
-    //    _udp_ota->append(ss.c_str(), ss.length());
-    //    _udp_ota->send(ota_ip, _ota_udp_port);
-    //    delay(100);
-    //    _udp_ota->listen(IP_ADDR_ANY, _port);
-    //    _state = OTA_IDLE;
-    //    return;
-    //  }
-    LittleFS.begin();
-    _file = LittleFS.open("firmware.bin", "w");
-    if (!_file) {
+    if (!Update.begin(_size, _cmd)) {
+#ifdef OTA_DEBUG
+        OTA_DEBUG.println("Update Begin Error");
+#endif
+        if (_error_callback) {
+            _error_callback(OTA_BEGIN_ERROR);
+        }
+
+        StreamString ss;
+        Update.printError(ss);
+        _udp_ota->append("ERR: ", 5);
+        _udp_ota->append(ss.c_str(), ss.length());
+        _udp_ota->send(ota_ip, _ota_udp_port);
+        delay(100);
+        _udp_ota->listen(IP_ADDR_ANY, _port);
+        _state = OTA_IDLE;
+        return;
+    }
+    if (!LittleFS.begin()) {
         _udp_ota->append("ERR: ", 5);
         _udp_ota->append("nofilesystem", 6);
         _udp_ota->send(ota_ip, _ota_udp_port);
@@ -280,7 +276,7 @@ void ArduinoOTAClass::_runUpdate() {
     _udp_ota->send(ota_ip, _ota_udp_port);
     delay(100);
 
-    //  Update.setMD5(_md5.c_str());
+    Update.setMD5(_md5.c_str());
 
     if (_start_callback) {
         _start_callback();
@@ -304,8 +300,7 @@ void ArduinoOTAClass::_runUpdate() {
     client.setNoDelay(true);
 
     uint32_t written, total = 0;
-    //  while (!Update.isFinished() && (client.connected() || client.available())) {
-    while ((total < (uint32_t) _size) && (client.connected() || client.available())) {
+    while (!Update.isFinished() && (client.connected() || client.available())) {
         int waited = 1000;
         while (!client.available() && waited--) {
             delay(1);
@@ -320,8 +315,7 @@ void ArduinoOTAClass::_runUpdate() {
             }
             _state = OTA_IDLE;
         }
-        //    written = Update.write(client);
-        written = _file.write(client);
+        written = Update.write(client);
         if (written > 0) {
             client.print(written, DEC);
             total += written;
@@ -331,9 +325,8 @@ void ArduinoOTAClass::_runUpdate() {
         }
     }
 
-    //  if (Update.end()) {
-    _file.close();
-    if (1) {
+
+    if (Update.end()) {
         // Ensure last count packet has been sent out and not combined with the final OK
         client.flush();
         delay(1000);
@@ -365,10 +358,10 @@ void ArduinoOTAClass::_runUpdate() {
         if (_error_callback) {
             _error_callback(OTA_END_ERROR);
         }
-        //    Update.printError(client);
-        //#ifdef OTA_DEBUG
-        //    Update.printError(OTA_DEBUG);
-        //#endif
+        Update.printError(client);
+#ifdef OTA_DEBUG
+        Update.printError(OTA_DEBUG);
+#endif
         _state = OTA_IDLE;
     }
 }

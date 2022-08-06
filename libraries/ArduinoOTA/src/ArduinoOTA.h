@@ -92,8 +92,6 @@ private:
     IPAddress _ota_ip;
     String _md5;
 
-    File _file;
-
     THandlerFunction _start_callback = nullptr;
     THandlerFunction _end_callback = nullptr;
     THandlerFunction_Error _error_callback = nullptr;

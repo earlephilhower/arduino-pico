@@ -134,7 +134,7 @@ recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.pa
 
 ## Create output BIN (for OTA)
 recipe.objcopy.bin.1.pattern="{compiler.path}/{compiler.objcopy.cmd}" -Obinary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
-recipe.objcopy.bin.2.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/signing.py" --mode sign --privatekey "{build.source.path}/private.key" --bin "{build.path}/{build.project_name}.bin" --out "{build.path}/{build.project_name}.bin.signed" --legacy "{build.path}/{build.project_name}.bin.legacy_sig"
+recipe.objcopy.bin.2.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/signing.py" --mode sign --privatekey "{build.source.path}/private.key" --bin "{build.path}/{build.project_name}.bin" --out "{build.path}/{build.project_name}.bin.signed"
 
 
 build.preferred_out_format=uf2

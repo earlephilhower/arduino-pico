@@ -109,8 +109,7 @@
 
 */
 
-#ifndef MDNS_H
-#define MDNS_H
+#pragma once
 
 #include <functional>  // for UdpContext.h
 #include "WiFiUdp.h"
@@ -1348,4 +1347,4 @@ protected:
 
 }  // namespace esp8266
 
-#endif  // MDNS_H
+#include <ESP8266mDNS.h>

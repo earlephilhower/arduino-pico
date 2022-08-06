@@ -42,8 +42,7 @@
 
 */
 
-#ifndef __ESP8266MDNS_H
-#define __ESP8266MDNS_H
+#pragma once
 
 #include "LEAmDNS.h"  // LEA
 
@@ -53,5 +52,3 @@ using MDNSResponder = esp8266::MDNSImplementation::MDNSResponder;  // LEA
 
 extern MDNSResponder MDNS;
 #endif
-
-#endif  // __ESP8266MDNS_H

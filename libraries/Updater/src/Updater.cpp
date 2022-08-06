@@ -25,7 +25,7 @@
 #include <hardware/flash.h>
 #include <PicoOTA.h>
 
-//#define DEBUG_UPDATER Serial
+#define DEBUG_UPDATER Serial
 
 #include <Updater_Signing.h>
 #ifndef ARDUINO_SIGNING
@@ -99,6 +99,7 @@ bool UpdaterClass::begin(size_t size, int command) {
     _md5 = MD5Builder();
 
     if (command == U_FLASH) {
+        LittleFS.begin();
         _fp = LittleFS.open("firmware.bin", "w+");
         if (!_fp) {
 #ifdef DEBUG_UPDATER
