@@ -7206,6 +7206,445 @@ dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.
 dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
+# ElectronicCats HunterCat NFC RP2040
+# -----------------------------------
+electroniccats_bombercat.name=ElectronicCats HunterCat NFC RP2040
+electroniccats_bombercat.vid.0=0x1209
+electroniccats_bombercat.pid.0=0x1209
+electroniccats_bombercat.build.usbpid=-DSERIALUSB_PID=0x1209
+electroniccats_bombercat.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+electroniccats_bombercat.build.board=ELECTRONICCATS_BOMBERCAT
+electroniccats_bombercat.build.mcu=cortex-m0plus
+electroniccats_bombercat.build.variant=electroniccats_bombercat
+electroniccats_bombercat.upload.tool=uf2conv
+electroniccats_bombercat.upload.maximum_size=2097152
+electroniccats_bombercat.upload.maximum_data_size=262144
+electroniccats_bombercat.upload.wait_for_upload_port=true
+electroniccats_bombercat.upload.erase_cmd=
+electroniccats_bombercat.serial.disableDTR=false
+electroniccats_bombercat.serial.disableRTS=false
+electroniccats_bombercat.build.f_cpu=125000000
+electroniccats_bombercat.build.led=
+electroniccats_bombercat.build.core=rp2040
+electroniccats_bombercat.build.ldscript=memmap_default.ld
+electroniccats_bombercat.build.ram_length=256k
+electroniccats_bombercat.build.boot2=boot2_w25q080_2_padded_checksum
+electroniccats_bombercat.build.vid=0x1209
+electroniccats_bombercat.build.pid=0x1209
+electroniccats_bombercat.build.usb_manufacturer="ElectronicCats"
+electroniccats_bombercat.build.usb_product="HunterCat NFC RP2040"
+electroniccats_bombercat.menu.flash.2097152_0=2MB (no FS)
+electroniccats_bombercat.menu.flash.2097152_0.upload.maximum_size=2093056
+electroniccats_bombercat.menu.flash.2097152_0.build.flash_length=2093056
+electroniccats_bombercat.menu.flash.2097152_0.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_0.build.fs_start=270528512
+electroniccats_bombercat.menu.flash.2097152_0.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+electroniccats_bombercat.menu.flash.2097152_65536.upload.maximum_size=2027520
+electroniccats_bombercat.menu.flash.2097152_65536.build.flash_length=2027520
+electroniccats_bombercat.menu.flash.2097152_65536.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_65536.build.fs_start=270462976
+electroniccats_bombercat.menu.flash.2097152_65536.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+electroniccats_bombercat.menu.flash.2097152_131072.upload.maximum_size=1961984
+electroniccats_bombercat.menu.flash.2097152_131072.build.flash_length=1961984
+electroniccats_bombercat.menu.flash.2097152_131072.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_131072.build.fs_start=270397440
+electroniccats_bombercat.menu.flash.2097152_131072.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+electroniccats_bombercat.menu.flash.2097152_262144.upload.maximum_size=1830912
+electroniccats_bombercat.menu.flash.2097152_262144.build.flash_length=1830912
+electroniccats_bombercat.menu.flash.2097152_262144.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_262144.build.fs_start=270266368
+electroniccats_bombercat.menu.flash.2097152_262144.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+electroniccats_bombercat.menu.flash.2097152_524288.upload.maximum_size=1568768
+electroniccats_bombercat.menu.flash.2097152_524288.build.flash_length=1568768
+electroniccats_bombercat.menu.flash.2097152_524288.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_524288.build.fs_start=270004224
+electroniccats_bombercat.menu.flash.2097152_524288.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+electroniccats_bombercat.menu.flash.2097152_1048576.upload.maximum_size=1044480
+electroniccats_bombercat.menu.flash.2097152_1048576.build.flash_length=1044480
+electroniccats_bombercat.menu.flash.2097152_1048576.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_1048576.build.fs_start=269479936
+electroniccats_bombercat.menu.flash.2097152_1048576.build.fs_end=270528512
+electroniccats_bombercat.menu.freq.133=133 MHz
+electroniccats_bombercat.menu.freq.133.build.f_cpu=133000000L
+electroniccats_bombercat.menu.freq.50=50 MHz
+electroniccats_bombercat.menu.freq.50.build.f_cpu=50000000L
+electroniccats_bombercat.menu.freq.100=100 MHz
+electroniccats_bombercat.menu.freq.100.build.f_cpu=100000000L
+electroniccats_bombercat.menu.freq.120=120 MHz
+electroniccats_bombercat.menu.freq.120.build.f_cpu=120000000L
+electroniccats_bombercat.menu.freq.125=125 MHz
+electroniccats_bombercat.menu.freq.125.build.f_cpu=125000000L
+electroniccats_bombercat.menu.freq.150=150 MHz (Overclock)
+electroniccats_bombercat.menu.freq.150.build.f_cpu=150000000L
+electroniccats_bombercat.menu.freq.175=175 MHz (Overclock)
+electroniccats_bombercat.menu.freq.175.build.f_cpu=175000000L
+electroniccats_bombercat.menu.freq.200=200 MHz (Overclock)
+electroniccats_bombercat.menu.freq.200.build.f_cpu=200000000L
+electroniccats_bombercat.menu.freq.225=225 MHz (Overclock)
+electroniccats_bombercat.menu.freq.225.build.f_cpu=225000000L
+electroniccats_bombercat.menu.freq.240=240 MHz (Overclock)
+electroniccats_bombercat.menu.freq.240.build.f_cpu=240000000L
+electroniccats_bombercat.menu.freq.250=250 MHz (Overclock)
+electroniccats_bombercat.menu.freq.250.build.f_cpu=250000000L
+electroniccats_bombercat.menu.freq.275=275 MHz (Overclock)
+electroniccats_bombercat.menu.freq.275.build.f_cpu=275000000L
+electroniccats_bombercat.menu.freq.300=300 MHz (Overclock)
+electroniccats_bombercat.menu.freq.300.build.f_cpu=300000000L
+electroniccats_bombercat.menu.opt.Small=Small (-Os) (standard)
+electroniccats_bombercat.menu.opt.Small.build.flags.optimize=-Os
+electroniccats_bombercat.menu.opt.Optimize=Optimize (-O)
+electroniccats_bombercat.menu.opt.Optimize.build.flags.optimize=-O
+electroniccats_bombercat.menu.opt.Optimize2=Optimize More (-O2)
+electroniccats_bombercat.menu.opt.Optimize2.build.flags.optimize=-O2
+electroniccats_bombercat.menu.opt.Optimize3=Optimize Even More (-O3)
+electroniccats_bombercat.menu.opt.Optimize3.build.flags.optimize=-O3
+electroniccats_bombercat.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+electroniccats_bombercat.menu.opt.Fast.build.flags.optimize=-Ofast
+electroniccats_bombercat.menu.opt.Debug=Debug (-Og)
+electroniccats_bombercat.menu.opt.Debug.build.flags.optimize=-Og
+electroniccats_bombercat.menu.rtti.Disabled=Disabled
+electroniccats_bombercat.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+electroniccats_bombercat.menu.rtti.Enabled=Enabled
+electroniccats_bombercat.menu.rtti.Enabled.build.flags.rtti=
+electroniccats_bombercat.menu.stackprotect.Disabled=Disabled
+electroniccats_bombercat.menu.stackprotect.Disabled.build.flags.stackprotect=
+electroniccats_bombercat.menu.stackprotect.Enabled=Enabled
+electroniccats_bombercat.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+electroniccats_bombercat.menu.exceptions.Disabled=Disabled
+electroniccats_bombercat.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+electroniccats_bombercat.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+electroniccats_bombercat.menu.exceptions.Enabled=Enabled
+electroniccats_bombercat.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+electroniccats_bombercat.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+electroniccats_bombercat.menu.dbgport.Disabled=Disabled
+electroniccats_bombercat.menu.dbgport.Disabled.build.debug_port=
+electroniccats_bombercat.menu.dbgport.Serial=Serial
+electroniccats_bombercat.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+electroniccats_bombercat.menu.dbgport.Serial1=Serial1
+electroniccats_bombercat.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+electroniccats_bombercat.menu.dbgport.Serial2=Serial2
+electroniccats_bombercat.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+electroniccats_bombercat.menu.dbglvl.None=None
+electroniccats_bombercat.menu.dbglvl.None.build.debug_level=
+electroniccats_bombercat.menu.dbglvl.Core=Core
+electroniccats_bombercat.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+electroniccats_bombercat.menu.dbglvl.SPI=SPI
+electroniccats_bombercat.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+electroniccats_bombercat.menu.dbglvl.Wire=Wire
+electroniccats_bombercat.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+electroniccats_bombercat.menu.dbglvl.All=All
+electroniccats_bombercat.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+electroniccats_bombercat.menu.dbglvl.NDEBUG=NDEBUG
+electroniccats_bombercat.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+electroniccats_bombercat.menu.usbstack.picosdk=Pico SDK
+electroniccats_bombercat.menu.usbstack.picosdk.build.usbstack_flags=
+electroniccats_bombercat.menu.usbstack.tinyusb=Adafruit TinyUSB
+electroniccats_bombercat.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+electroniccats_bombercat.menu.ipstack.ipv4only=IPv4 Only
+electroniccats_bombercat.menu.ipstack.ipv4only.build.libpico=libpico.a
+electroniccats_bombercat.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+electroniccats_bombercat.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+electroniccats_bombercat.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+electroniccats_bombercat.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
+# ElectronicCats HunterCat NFC RP2040 (Picoprobe)
+# -----------------------------------
+electroniccats_bombercatpicoprobe.name=ElectronicCats HunterCat NFC RP2040 (Picoprobe)
+electroniccats_bombercatpicoprobe.vid.0=0x1209
+electroniccats_bombercatpicoprobe.pid.0=0x0004
+electroniccats_bombercatpicoprobe.build.usbpid=-DSERIALUSB_PID=0x1209
+electroniccats_bombercatpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+electroniccats_bombercatpicoprobe.build.board=ELECTRONICCATS_BOMBERCAT
+electroniccats_bombercatpicoprobe.build.mcu=cortex-m0plus
+electroniccats_bombercatpicoprobe.build.variant=electroniccats_bombercat
+electroniccats_bombercatpicoprobe.upload.tool=picoprobe
+electroniccats_bombercatpicoprobe.upload.maximum_size=2097152
+electroniccats_bombercatpicoprobe.upload.maximum_data_size=262144
+electroniccats_bombercatpicoprobe.upload.wait_for_upload_port=true
+electroniccats_bombercatpicoprobe.upload.erase_cmd=
+electroniccats_bombercatpicoprobe.serial.disableDTR=false
+electroniccats_bombercatpicoprobe.serial.disableRTS=false
+electroniccats_bombercatpicoprobe.build.f_cpu=125000000
+electroniccats_bombercatpicoprobe.build.led=
+electroniccats_bombercatpicoprobe.build.core=rp2040
+electroniccats_bombercatpicoprobe.build.ldscript=memmap_default.ld
+electroniccats_bombercatpicoprobe.build.ram_length=256k
+electroniccats_bombercatpicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
+electroniccats_bombercatpicoprobe.build.vid=0x1209
+electroniccats_bombercatpicoprobe.build.pid=0x1209
+electroniccats_bombercatpicoprobe.build.usb_manufacturer="ElectronicCats"
+electroniccats_bombercatpicoprobe.build.usb_product="HunterCat NFC RP2040 (Picoprobe)"
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0=2MB (no FS)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.flash_length=2093056
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.fs_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.upload.maximum_size=2027520
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.flash_length=2027520
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.fs_start=270462976
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.upload.maximum_size=1961984
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.flash_length=1961984
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.fs_start=270397440
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.upload.maximum_size=1830912
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.flash_length=1830912
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.fs_start=270266368
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.upload.maximum_size=1568768
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.flash_length=1568768
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.fs_start=270004224
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.upload.maximum_size=1044480
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.flash_length=1044480
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.fs_start=269479936
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.freq.133=133 MHz
+electroniccats_bombercatpicoprobe.menu.freq.133.build.f_cpu=133000000L
+electroniccats_bombercatpicoprobe.menu.freq.50=50 MHz
+electroniccats_bombercatpicoprobe.menu.freq.50.build.f_cpu=50000000L
+electroniccats_bombercatpicoprobe.menu.freq.100=100 MHz
+electroniccats_bombercatpicoprobe.menu.freq.100.build.f_cpu=100000000L
+electroniccats_bombercatpicoprobe.menu.freq.120=120 MHz
+electroniccats_bombercatpicoprobe.menu.freq.120.build.f_cpu=120000000L
+electroniccats_bombercatpicoprobe.menu.freq.125=125 MHz
+electroniccats_bombercatpicoprobe.menu.freq.125.build.f_cpu=125000000L
+electroniccats_bombercatpicoprobe.menu.freq.150=150 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.150.build.f_cpu=150000000L
+electroniccats_bombercatpicoprobe.menu.freq.175=175 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.175.build.f_cpu=175000000L
+electroniccats_bombercatpicoprobe.menu.freq.200=200 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.200.build.f_cpu=200000000L
+electroniccats_bombercatpicoprobe.menu.freq.225=225 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.225.build.f_cpu=225000000L
+electroniccats_bombercatpicoprobe.menu.freq.240=240 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.240.build.f_cpu=240000000L
+electroniccats_bombercatpicoprobe.menu.freq.250=250 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.250.build.f_cpu=250000000L
+electroniccats_bombercatpicoprobe.menu.freq.275=275 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.275.build.f_cpu=275000000L
+electroniccats_bombercatpicoprobe.menu.freq.300=300 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.300.build.f_cpu=300000000L
+electroniccats_bombercatpicoprobe.menu.opt.Small=Small (-Os) (standard)
+electroniccats_bombercatpicoprobe.menu.opt.Small.build.flags.optimize=-Os
+electroniccats_bombercatpicoprobe.menu.opt.Optimize=Optimize (-O)
+electroniccats_bombercatpicoprobe.menu.opt.Optimize.build.flags.optimize=-O
+electroniccats_bombercatpicoprobe.menu.opt.Optimize2=Optimize More (-O2)
+electroniccats_bombercatpicoprobe.menu.opt.Optimize2.build.flags.optimize=-O2
+electroniccats_bombercatpicoprobe.menu.opt.Optimize3=Optimize Even More (-O3)
+electroniccats_bombercatpicoprobe.menu.opt.Optimize3.build.flags.optimize=-O3
+electroniccats_bombercatpicoprobe.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+electroniccats_bombercatpicoprobe.menu.opt.Fast.build.flags.optimize=-Ofast
+electroniccats_bombercatpicoprobe.menu.opt.Debug=Debug (-Og)
+electroniccats_bombercatpicoprobe.menu.opt.Debug.build.flags.optimize=-Og
+electroniccats_bombercatpicoprobe.menu.rtti.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+electroniccats_bombercatpicoprobe.menu.rtti.Enabled=Enabled
+electroniccats_bombercatpicoprobe.menu.rtti.Enabled.build.flags.rtti=
+electroniccats_bombercatpicoprobe.menu.stackprotect.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.stackprotect.Disabled.build.flags.stackprotect=
+electroniccats_bombercatpicoprobe.menu.stackprotect.Enabled=Enabled
+electroniccats_bombercatpicoprobe.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+electroniccats_bombercatpicoprobe.menu.exceptions.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+electroniccats_bombercatpicoprobe.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+electroniccats_bombercatpicoprobe.menu.exceptions.Enabled=Enabled
+electroniccats_bombercatpicoprobe.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+electroniccats_bombercatpicoprobe.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+electroniccats_bombercatpicoprobe.menu.dbgport.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.dbgport.Disabled.build.debug_port=
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial=Serial
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial1=Serial1
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial2=Serial2
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+electroniccats_bombercatpicoprobe.menu.dbglvl.None=None
+electroniccats_bombercatpicoprobe.menu.dbglvl.None.build.debug_level=
+electroniccats_bombercatpicoprobe.menu.dbglvl.Core=Core
+electroniccats_bombercatpicoprobe.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+electroniccats_bombercatpicoprobe.menu.dbglvl.SPI=SPI
+electroniccats_bombercatpicoprobe.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+electroniccats_bombercatpicoprobe.menu.dbglvl.Wire=Wire
+electroniccats_bombercatpicoprobe.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+electroniccats_bombercatpicoprobe.menu.dbglvl.All=All
+electroniccats_bombercatpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+electroniccats_bombercatpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
+electroniccats_bombercatpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+electroniccats_bombercatpicoprobe.menu.usbstack.picosdk=Pico SDK
+electroniccats_bombercatpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+electroniccats_bombercatpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
+electroniccats_bombercatpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
+# ElectronicCats HunterCat NFC RP2040 (pico-debug)
+# -----------------------------------
+electroniccats_bombercatpicodebug.name=ElectronicCats HunterCat NFC RP2040 (pico-debug)
+electroniccats_bombercatpicodebug.vid.0=0x1209
+electroniccats_bombercatpicodebug.pid.0=0x2488
+electroniccats_bombercatpicodebug.build.usbpid=-DSERIALUSB_PID=0x1209
+electroniccats_bombercatpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+electroniccats_bombercatpicodebug.build.board=ELECTRONICCATS_BOMBERCAT
+electroniccats_bombercatpicodebug.build.mcu=cortex-m0plus
+electroniccats_bombercatpicodebug.build.variant=electroniccats_bombercat
+electroniccats_bombercatpicodebug.upload.tool=picodebug
+electroniccats_bombercatpicodebug.upload.maximum_size=2097152
+electroniccats_bombercatpicodebug.upload.maximum_data_size=245760
+electroniccats_bombercatpicodebug.upload.wait_for_upload_port=true
+electroniccats_bombercatpicodebug.upload.erase_cmd=
+electroniccats_bombercatpicodebug.serial.disableDTR=false
+electroniccats_bombercatpicodebug.serial.disableRTS=false
+electroniccats_bombercatpicodebug.build.f_cpu=125000000
+electroniccats_bombercatpicodebug.build.led=
+electroniccats_bombercatpicodebug.build.core=rp2040
+electroniccats_bombercatpicodebug.build.ldscript=memmap_default.ld
+electroniccats_bombercatpicodebug.build.ram_length=240k
+electroniccats_bombercatpicodebug.build.boot2=boot2_w25q080_2_padded_checksum
+electroniccats_bombercatpicodebug.build.vid=0x1209
+electroniccats_bombercatpicodebug.build.pid=0x1209
+electroniccats_bombercatpicodebug.build.usb_manufacturer="ElectronicCats"
+electroniccats_bombercatpicodebug.build.usb_product="HunterCat NFC RP2040 (pico-debug)"
+electroniccats_bombercatpicodebug.menu.flash.2097152_0=2MB (no FS)
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.upload.maximum_size=2093056
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.flash_length=2093056
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.fs_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.upload.maximum_size=2027520
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.flash_length=2027520
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.fs_start=270462976
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.upload.maximum_size=1961984
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.flash_length=1961984
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.fs_start=270397440
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.upload.maximum_size=1830912
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.flash_length=1830912
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.fs_start=270266368
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.upload.maximum_size=1568768
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.flash_length=1568768
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.fs_start=270004224
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.upload.maximum_size=1044480
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.flash_length=1044480
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.fs_start=269479936
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.freq.133=133 MHz
+electroniccats_bombercatpicodebug.menu.freq.133.build.f_cpu=133000000L
+electroniccats_bombercatpicodebug.menu.freq.50=50 MHz
+electroniccats_bombercatpicodebug.menu.freq.50.build.f_cpu=50000000L
+electroniccats_bombercatpicodebug.menu.freq.100=100 MHz
+electroniccats_bombercatpicodebug.menu.freq.100.build.f_cpu=100000000L
+electroniccats_bombercatpicodebug.menu.freq.120=120 MHz
+electroniccats_bombercatpicodebug.menu.freq.120.build.f_cpu=120000000L
+electroniccats_bombercatpicodebug.menu.freq.125=125 MHz
+electroniccats_bombercatpicodebug.menu.freq.125.build.f_cpu=125000000L
+electroniccats_bombercatpicodebug.menu.freq.150=150 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.150.build.f_cpu=150000000L
+electroniccats_bombercatpicodebug.menu.freq.175=175 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.175.build.f_cpu=175000000L
+electroniccats_bombercatpicodebug.menu.freq.200=200 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.200.build.f_cpu=200000000L
+electroniccats_bombercatpicodebug.menu.freq.225=225 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.225.build.f_cpu=225000000L
+electroniccats_bombercatpicodebug.menu.freq.240=240 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.240.build.f_cpu=240000000L
+electroniccats_bombercatpicodebug.menu.freq.250=250 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.250.build.f_cpu=250000000L
+electroniccats_bombercatpicodebug.menu.freq.275=275 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.275.build.f_cpu=275000000L
+electroniccats_bombercatpicodebug.menu.freq.300=300 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.300.build.f_cpu=300000000L
+electroniccats_bombercatpicodebug.menu.opt.Small=Small (-Os) (standard)
+electroniccats_bombercatpicodebug.menu.opt.Small.build.flags.optimize=-Os
+electroniccats_bombercatpicodebug.menu.opt.Optimize=Optimize (-O)
+electroniccats_bombercatpicodebug.menu.opt.Optimize.build.flags.optimize=-O
+electroniccats_bombercatpicodebug.menu.opt.Optimize2=Optimize More (-O2)
+electroniccats_bombercatpicodebug.menu.opt.Optimize2.build.flags.optimize=-O2
+electroniccats_bombercatpicodebug.menu.opt.Optimize3=Optimize Even More (-O3)
+electroniccats_bombercatpicodebug.menu.opt.Optimize3.build.flags.optimize=-O3
+electroniccats_bombercatpicodebug.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+electroniccats_bombercatpicodebug.menu.opt.Fast.build.flags.optimize=-Ofast
+electroniccats_bombercatpicodebug.menu.opt.Debug=Debug (-Og)
+electroniccats_bombercatpicodebug.menu.opt.Debug.build.flags.optimize=-Og
+electroniccats_bombercatpicodebug.menu.rtti.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+electroniccats_bombercatpicodebug.menu.rtti.Enabled=Enabled
+electroniccats_bombercatpicodebug.menu.rtti.Enabled.build.flags.rtti=
+electroniccats_bombercatpicodebug.menu.stackprotect.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.stackprotect.Disabled.build.flags.stackprotect=
+electroniccats_bombercatpicodebug.menu.stackprotect.Enabled=Enabled
+electroniccats_bombercatpicodebug.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+electroniccats_bombercatpicodebug.menu.exceptions.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+electroniccats_bombercatpicodebug.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+electroniccats_bombercatpicodebug.menu.exceptions.Enabled=Enabled
+electroniccats_bombercatpicodebug.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+electroniccats_bombercatpicodebug.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+electroniccats_bombercatpicodebug.menu.dbgport.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.dbgport.Disabled.build.debug_port=
+electroniccats_bombercatpicodebug.menu.dbgport.Serial=Serial
+electroniccats_bombercatpicodebug.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+electroniccats_bombercatpicodebug.menu.dbgport.Serial1=Serial1
+electroniccats_bombercatpicodebug.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+electroniccats_bombercatpicodebug.menu.dbgport.Serial2=Serial2
+electroniccats_bombercatpicodebug.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+electroniccats_bombercatpicodebug.menu.dbglvl.None=None
+electroniccats_bombercatpicodebug.menu.dbglvl.None.build.debug_level=
+electroniccats_bombercatpicodebug.menu.dbglvl.Core=Core
+electroniccats_bombercatpicodebug.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+electroniccats_bombercatpicodebug.menu.dbglvl.SPI=SPI
+electroniccats_bombercatpicodebug.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+electroniccats_bombercatpicodebug.menu.dbglvl.Wire=Wire
+electroniccats_bombercatpicodebug.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+electroniccats_bombercatpicodebug.menu.dbglvl.All=All
+electroniccats_bombercatpicodebug.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+electroniccats_bombercatpicodebug.menu.dbglvl.NDEBUG=NDEBUG
+electroniccats_bombercatpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+electroniccats_bombercatpicodebug.menu.usbstack.nousb=No USB
+electroniccats_bombercatpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4only=IPv4 Only
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
 # iLabs Challenger 2040 LTE
 # -----------------------------------
 challenger_2040_lte.name=iLabs Challenger 2040 LTE
@@ -14650,14 +15089,14 @@ upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040
+# Seeed XIAO RP2040
 # -----------------------------------
-seeed_xiao_rp2040.name=Seeed XAIO RP2040
+seeed_xiao_rp2040.name=Seeed XIAO RP2040
 seeed_xiao_rp2040.vid.0=0x2e8a
 seeed_xiao_rp2040.pid.0=0x000a
 seeed_xiao_rp2040.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040.build.mcu=cortex-m0plus
 seeed_xiao_rp2040.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040.upload.tool=uf2conv
@@ -14676,7 +15115,7 @@ seeed_xiao_rp2040.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040.build.vid=0x2e8a
 seeed_xiao_rp2040.build.pid=0x000a
 seeed_xiao_rp2040.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040.build.usb_product="XAIO RP2040"
+seeed_xiao_rp2040.build.usb_product="XIAO RP2040"
 seeed_xiao_rp2040.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040.menu.flash.2097152_0.build.flash_length=2093056
@@ -14797,14 +15236,14 @@ seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040 (Picoprobe)
+# Seeed XIAO RP2040 (Picoprobe)
 # -----------------------------------
-seeed_xiao_rp2040picoprobe.name=Seeed XAIO RP2040 (Picoprobe)
+seeed_xiao_rp2040picoprobe.name=Seeed XIAO RP2040 (Picoprobe)
 seeed_xiao_rp2040picoprobe.vid.0=0x2e8a
 seeed_xiao_rp2040picoprobe.pid.0=0x0004
 seeed_xiao_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040picoprobe.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040picoprobe.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040picoprobe.build.mcu=cortex-m0plus
 seeed_xiao_rp2040picoprobe.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040picoprobe.upload.tool=picoprobe
@@ -14823,7 +15262,7 @@ seeed_xiao_rp2040picoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040picoprobe.build.vid=0x2e8a
 seeed_xiao_rp2040picoprobe.build.pid=0x000a
 seeed_xiao_rp2040picoprobe.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040picoprobe.build.usb_product="XAIO RP2040 (Picoprobe)"
+seeed_xiao_rp2040picoprobe.build.usb_product="XIAO RP2040 (Picoprobe)"
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0.build.flash_length=2093056
@@ -14944,14 +15383,14 @@ seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040 (pico-debug)
+# Seeed XIAO RP2040 (pico-debug)
 # -----------------------------------
-seeed_xiao_rp2040picodebug.name=Seeed XAIO RP2040 (pico-debug)
+seeed_xiao_rp2040picodebug.name=Seeed XIAO RP2040 (pico-debug)
 seeed_xiao_rp2040picodebug.vid.0=0x1209
 seeed_xiao_rp2040picodebug.pid.0=0x2488
 seeed_xiao_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040picodebug.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040picodebug.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040picodebug.build.mcu=cortex-m0plus
 seeed_xiao_rp2040picodebug.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040picodebug.upload.tool=picodebug
@@ -14970,7 +15409,7 @@ seeed_xiao_rp2040picodebug.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040picodebug.build.vid=0x2e8a
 seeed_xiao_rp2040picodebug.build.pid=0x000a
 seeed_xiao_rp2040picodebug.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040picodebug.build.usb_product="XAIO RP2040 (pico-debug)"
+seeed_xiao_rp2040picodebug.build.usb_product="XIAO RP2040 (pico-debug)"
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0.build.flash_length=2093056
