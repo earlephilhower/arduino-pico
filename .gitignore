@@ -1,3 +1,4 @@
 .DS_Store
 system
 tools/dist
+tools/libpico/build
