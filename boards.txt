@@ -15089,14 +15089,14 @@ upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040
+# Seeed XIAO RP2040
 # -----------------------------------
-seeed_xiao_rp2040.name=Seeed XAIO RP2040
+seeed_xiao_rp2040.name=Seeed XIAO RP2040
 seeed_xiao_rp2040.vid.0=0x2e8a
 seeed_xiao_rp2040.pid.0=0x000a
 seeed_xiao_rp2040.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040.build.mcu=cortex-m0plus
 seeed_xiao_rp2040.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040.upload.tool=uf2conv
@@ -15115,7 +15115,7 @@ seeed_xiao_rp2040.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040.build.vid=0x2e8a
 seeed_xiao_rp2040.build.pid=0x000a
 seeed_xiao_rp2040.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040.build.usb_product="XAIO RP2040"
+seeed_xiao_rp2040.build.usb_product="XIAO RP2040"
 seeed_xiao_rp2040.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040.menu.flash.2097152_0.build.flash_length=2093056
@@ -15236,14 +15236,14 @@ seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040 (Picoprobe)
+# Seeed XIAO RP2040 (Picoprobe)
 # -----------------------------------
-seeed_xiao_rp2040picoprobe.name=Seeed XAIO RP2040 (Picoprobe)
+seeed_xiao_rp2040picoprobe.name=Seeed XIAO RP2040 (Picoprobe)
 seeed_xiao_rp2040picoprobe.vid.0=0x2e8a
 seeed_xiao_rp2040picoprobe.pid.0=0x0004
 seeed_xiao_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040picoprobe.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040picoprobe.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040picoprobe.build.mcu=cortex-m0plus
 seeed_xiao_rp2040picoprobe.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040picoprobe.upload.tool=picoprobe
@@ -15262,7 +15262,7 @@ seeed_xiao_rp2040picoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040picoprobe.build.vid=0x2e8a
 seeed_xiao_rp2040picoprobe.build.pid=0x000a
 seeed_xiao_rp2040picoprobe.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040picoprobe.build.usb_product="XAIO RP2040 (Picoprobe)"
+seeed_xiao_rp2040picoprobe.build.usb_product="XIAO RP2040 (Picoprobe)"
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0.build.flash_length=2093056
@@ -15383,14 +15383,14 @@ seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040 (pico-debug)
+# Seeed XIAO RP2040 (pico-debug)
 # -----------------------------------
-seeed_xiao_rp2040picodebug.name=Seeed XAIO RP2040 (pico-debug)
+seeed_xiao_rp2040picodebug.name=Seeed XIAO RP2040 (pico-debug)
 seeed_xiao_rp2040picodebug.vid.0=0x1209
 seeed_xiao_rp2040picodebug.pid.0=0x2488
 seeed_xiao_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040picodebug.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040picodebug.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040picodebug.build.mcu=cortex-m0plus
 seeed_xiao_rp2040picodebug.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040picodebug.upload.tool=picodebug
@@ -15409,7 +15409,7 @@ seeed_xiao_rp2040picodebug.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040picodebug.build.vid=0x2e8a
 seeed_xiao_rp2040picodebug.build.pid=0x000a
 seeed_xiao_rp2040picodebug.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040picodebug.build.usb_product="XAIO RP2040 (pico-debug)"
+seeed_xiao_rp2040picodebug.build.usb_product="XIAO RP2040 (pico-debug)"
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0.build.flash_length=2093056
