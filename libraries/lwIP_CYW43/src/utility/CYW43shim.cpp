@@ -50,6 +50,10 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
             authmode = CYW43_AUTH_OPEN;
         }
 
+        // Not currently possible to hook up igmp_mac_filter and mld_mac_filter
+        // TODO: implement igmp_mac_filter and mld_mac_filter
+        cyw43_set_allmulti(_self, true);
+
         if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
             return false;
         } else {

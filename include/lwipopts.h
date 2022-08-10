@@ -53,6 +53,10 @@ extern void interrupts();
 #define DHCP_DOES_ARP_CHECK         0
 #define LWIP_DHCP_DOES_ACD_CHECK    0
 
+#if LWIP_IPV6
+#define LWIP_IPV6_DHCP6             1
+#endif
+
 // NTP
 extern void __setSystemTime(unsigned long long sec, unsigned long us);
 #define SNTP_SET_SYSTEM_TIME_US(sec, us)  __setSystemTime(sec, us)
