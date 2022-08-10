@@ -53,13 +53,13 @@ void dumphex(uint32_t x) {
 static OTACmdPage _ota_cmd;
 
 void do_ota() {
-    if (memcmp(_ota_command_rom->sign, "Pico OTA", 8)) {
+    if (memcmp(_ota_command_page->sign, "Pico OTA", 8)) {
         uart_puts(uart0, "\nno ota signature\n");
         return; // No signature
     }
 
     uint32_t crc = 0xffffffff;
-    const uint8_t *data = (const uint8_t *)_ota_command_rom;
+    const uint8_t *data = (const uint8_t *)_ota_command_page;
     for (uint32_t i = 0; i < offsetof(OTACmdPage, crc32); i++) {
         crc ^= data[i];
         for (int j = 0; j < 8; j++) {
@@ -71,12 +71,12 @@ void do_ota() {
         }
     }
     crc = ~crc;
-    if (crc != _ota_command_rom->crc32) {
+    if (crc != _ota_command_page->crc32) {
         uart_puts(uart0, "\ncrc32 mismatch\n");
         return;
     }
 
-    if (!_ota_command_rom->count) {
+    if (!_ota_command_page->count) {
         uart_puts(uart0, "\nno ota count\n");
         return;
     }
@@ -84,7 +84,7 @@ void do_ota() {
     uart_puts(uart0, "\nstarting ota\n");
 
     // Copy to RAM since theoretically it could be erased by embedded commands
-    memcpy(&_ota_cmd, _ota_command_rom, sizeof(_ota_cmd));
+    memcpy(&_ota_cmd, _ota_command_page, sizeof(_ota_cmd));
 
     uart_puts(uart0, "\nlfsmount(");
     dumphex((uint32_t)_ota_cmd._start);
@@ -155,11 +155,8 @@ void do_ota() {
 
     uart_puts(uart0, "\nota completed\n");
 
-    // Work completed, erase record.  If we lose power while updating, as long as the bootloader
-    // wasn't being updated, then we can retry on the next power up
-    int save = save_and_disable_interrupts();
-    flash_range_erase((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, 4096);
-    restore_interrupts(save);
+    // Work completed, erase record.
+    memset((void*)_ota_command_page, 0, sizeof(*_ota_command_page)); // Corrupt signature
 
     // Do a hard reset just in case the start up sequence is not the same
     watchdog_reboot(0, 0, 100);
@@ -183,12 +180,12 @@ int main(unsigned char **a, int b) {
     do_ota();
 
     // Reset the interrupt/etc. vectors to the real app.  Will be copied to RAM in app's runtime_init
-    scb_hw->vtor = (uint32_t)0x10004000;
+    scb_hw->vtor = (uint32_t)0x10003000;
 
     // Jump to it
     register uint32_t* sp asm("sp");
-    register uint32_t _sp = *(uint32_t *)0x10004000;
-    register void (*fcn)(void) = (void (*)(void)) *(uint32_t *)0x10004004;
+    register uint32_t _sp = *(uint32_t *)0x10003000;
+    register void (*fcn)(void) = (void (*)(void)) *(uint32_t *)0x10003004;
     sp = (uint32_t *)_sp;
     fcn();
 

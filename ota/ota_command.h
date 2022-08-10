@@ -31,4 +31,5 @@ typedef struct {
     uint32_t crc32; // CRC32 over just the contents of this struct, up until just before this value
 } OTACmdPage;
 
-static const OTACmdPage *_ota_command_rom = (const OTACmdPage*) 0x10003000;
+// This is the last physical page of DRAM
+static const OTACmdPage *_ota_command_page = (const OTACmdPage*) (0x21040000 - 0x1000);

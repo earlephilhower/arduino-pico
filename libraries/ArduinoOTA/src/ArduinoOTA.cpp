@@ -346,11 +346,9 @@ void ArduinoOTAClass::_runUpdate() {
             //let serial/network finish tasks that might be given in _end_callback
             picoOTA.begin();
             picoOTA.addFile("firmware.bin");
-            picoOTA.commit();
             LittleFS.end();
             delay(100);
-            rp2040.reboot();
-            //      ESP.restart();
+            picoOTA.reboot();
         }
     } else {
         _udp_ota->listen(IP_ADDR_ANY, _port);

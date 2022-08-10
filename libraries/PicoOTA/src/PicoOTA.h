@@ -21,7 +21,7 @@
 
 #include <LittleFS.h>
 #include <pico_base/pico/ota_command.h>
-#include <hardware/flash.h>
+#include <hardware/resets.h>
 
 extern uint8_t _FS_start;
 extern uint8_t _FS_end;
@@ -120,7 +120,7 @@ public:
         return true;
     }
 
-    bool commit() {
+    bool reboot() {
         if (!_page) {
             return false;
         }
@@ -132,13 +132,10 @@ public:
         // Stop all cores and write the command
         noInterrupts();
         rp2040.idleOtherCore();
-        flash_range_erase((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, 4096);
-        flash_range_program((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, (const uint8_t *)_page, 4096);
-        rp2040.resumeOtherCore();
-        interrupts();
-
-        delete _page;
-        _page = nullptr;
+        reset_block(RESETS_RESET_DMA_BITS | RESETS_RESET_USBCTRL_BITS);
+        memmove((void *)_ota_command_page, _page, sizeof(*_page));
+        rp2040.reboot();
+        // Never really returning...
         return true;
     }
 
