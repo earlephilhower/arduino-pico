@@ -12,8 +12,8 @@ void setup() {
 
 void loop() {
   int del = rand() % 100;
-  digitalWrite(LED_BUILTIN, HIGH); 
+  digitalWrite(LED_BUILTIN, HIGH);
   delay(del * 10);
-  digitalWrite(LED_BUILTIN, LOW); 
+  digitalWrite(LED_BUILTIN, LOW);
   delay(del * 10);
 }

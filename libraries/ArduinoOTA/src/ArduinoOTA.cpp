@@ -119,7 +119,6 @@ void ArduinoOTAClass::begin(bool useMDNS) {
         } else {
             MDNS.enableArduino(_port);
         }
-        MDNS.enableBackgroundMode(100);
     }
 #endif
     _initialized = true;

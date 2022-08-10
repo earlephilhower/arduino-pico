@@ -1239,21 +1239,6 @@ bool MDNSResponder::_leaveMulticastGroups() {
     return bResult;
 }
 
-
-void MDNSResponder::enableBackgroundMode(uint32_t ms) {
-    add_repeating_timer_ms(ms, _backgroundCB, (void *)this, &_backgroundTimer);
-}
-
-bool MDNSResponder::_backgroundCallback() {
-    if (!__inLWIP) {
-        LWIPMutex m();
-        update();
-    }
-    return true;
-}
-
-
-
 }  // namespace MDNSImplementation
 
 }  // namespace esp8266
