@@ -27,19 +27,26 @@
 #include <hardware/gpio.h>
 #include <hardware/uart.h>
 #include <hardware/watchdog.h>
-
 #include "ota_lfs.h"
 #include "ota_command.h"
 
 
+#ifndef DEBUG
+#define uart_putc(a, b)
+#define uart_puts(a, b)
+#endif
 
 void dumphex(uint32_t x) {
+#ifndef DEBUG
+    (void) x;
+#else
     uart_puts(uart0, "0x");
     for (int nibble = 7; nibble >= 0; nibble--) {
         uint32_t n = 0x0f & (x >> (nibble * 4));
         char c = n < 10 ? '0' + n : 'A' + n - 10;
         uart_putc(uart0, c);
     }
+#endif
 }
 
 static OTACmdPage _ota_cmd;
@@ -153,7 +160,6 @@ void do_ota() {
     flash_range_erase((intptr_t)_ota_command_rom - (intptr_t)XIP_BASE, 4096);
     restore_interrupts(save);
 
-
     // Do a hard reset just in case the start up sequence is not the same
     watchdog_reboot(0, 0, 100);
 }
@@ -165,11 +171,13 @@ int main(unsigned char **a, int b) {
     (void) a;
     (void) b;
 
+#ifdef DEBUG
     uart_init(uart0, 115200);
     gpio_set_function(0, GPIO_FUNC_UART);
     gpio_set_function(1, GPIO_FUNC_UART);
     uart_set_hw_flow(uart0, false, false);
     uart_set_format(uart0, 8, 1, UART_PARITY_NONE);
+#endif
 
     do_ota();
 
@@ -197,5 +205,10 @@ int __wrap_atexit(void (*function)(void)) {
 // Clear out some unwanted extra code
 void __wrap_exit(int status) {
     (void) status;
+    while (1) continue;
+}
+
+void __wrap_panic(const char *x) {
+    (void) x;
     while (1) continue;
 }
