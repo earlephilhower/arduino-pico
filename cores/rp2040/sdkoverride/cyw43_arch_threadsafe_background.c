@@ -99,9 +99,7 @@ static void periodic_worker(void) {
     CYW43_STAT_INC(LWIP_RUN_COUNT);
     //#if CYW43_LWIP
     if (!__inLWIP) {
-        __inLWIP = true; // Guard against other things like MDNS also coming in periodically
         sys_check_timeouts();
-        __inLWIP = false;
     }
     //#endif
     if (cyw43_poll) {
