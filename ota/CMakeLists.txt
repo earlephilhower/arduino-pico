@@ -16,6 +16,7 @@ pico_sdk_init()
 add_executable(ota
         ota.c
         ota_lfs.c
+        ota_clocks.c
         ../libraries/LittleFS/lib/littlefs/lfs.c
         ../libraries/LittleFS/lib/littlefs/lfs_util.c
         ./uzlib/src/tinflate.c
@@ -41,6 +42,8 @@ target_compile_definitions(ota PUBLIC
         LFS_NO_ERROR=1
         LFS_NO_ASSERT=1
         LFS_NO_MALLOC=1
+        PICO_PANIC_FUNCTION=
+        PICO_TIME_DEFAULT_ALARM_POOL_DISABLED=1
 )
 
 target_compile_options(ota PUBLIC
@@ -52,6 +55,8 @@ target_compile_options(ota PUBLIC
 target_link_options(ota PUBLIC
         -Wl,--wrap=exit
         -Wl,--wrap=atexit
+        -Wl,--cref
+        -Wl,--wrap=clocks_init
 )
 
 set_target_properties(ota PROPERTIES PICO_TARGET_LINKER_SCRIPT

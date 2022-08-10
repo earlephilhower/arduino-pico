@@ -1,17 +1,14 @@
-// This example overwrites itself with a blinker (for the Pico only) using OTA
+// This example overwrites itself with a serial blinker sketch using OTA
 // In general, you will get a file from the Internet, over a serial port, etc.
 // and not include it in a header like we do here for simplicity.
 //
 // The blinker.BIN file was compressed with `gzip -9` and will be expanded
 // during OTA
 //
-// To run, you need to have a standard Pico (since the included blink binary is
-// hardcoded  to flash the Pico's LED.
-//
-// You also need to have at least 256K of filesystem configured in
+// You need to have at least 256K of filesystem configured in
 // Tools->Flash Size
 //
-// Released to the public domain July 2022 by Earle F. Philhower, III
+// Released to the public domain August 2022 by Earle F. Philhower, III
 
 #include <PicoOTA.h>
 #include <LittleFS.h>
@@ -25,7 +22,7 @@ void setup() {
   LittleFS.begin();
   File f = LittleFS.open("blink.bin.gz", "w");
   if (sizeof(blink_gz) != f.write(blink_gz, sizeof(blink_gz))) {
-    Serial.printf("Unable to write OTA binary.  Is the filesystem set?\n");
+    Serial.printf("Unable to write OTA binary.  Is the filesystem size set?\n");
     return;
   }
   f.close();

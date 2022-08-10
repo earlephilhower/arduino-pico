@@ -58,7 +58,7 @@ SECTIONS
     .ota : {
         /* Start image with OTA */
         KEEP (*(.OTA))
-        . = ALIGN(0x4000);
+        . = ALIGN(0x1000);
         /* This 4k region will be the OTA command area */
         LONG(0x0b0ec0de);
         . = ALIGN(0x1000);

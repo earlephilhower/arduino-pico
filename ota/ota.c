@@ -30,6 +30,7 @@
 #include "ota_lfs.h"
 #include "ota_command.h"
 
+//#define DEBUG 1
 
 #ifndef DEBUG
 #define uart_putc(a, b)
@@ -182,12 +183,12 @@ int main(unsigned char **a, int b) {
     do_ota();
 
     // Reset the interrupt/etc. vectors to the real app.  Will be copied to RAM in app's runtime_init
-    scb_hw->vtor = (uint32_t)0x10005000;
+    scb_hw->vtor = (uint32_t)0x10004000;
 
     // Jump to it
     register uint32_t* sp asm("sp");
-    register uint32_t _sp = *(uint32_t *)0x10005000;
-    register void (*fcn)(void) = (void (*)(void)) *(uint32_t *)0x10005004;
+    register uint32_t _sp = *(uint32_t *)0x10004000;
+    register void (*fcn)(void) = (void (*)(void)) *(uint32_t *)0x10004004;
     sp = (uint32_t *)_sp;
     fcn();
 
