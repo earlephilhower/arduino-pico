@@ -18,6 +18,7 @@
 */
 
 #include "ota_lfs.h"
+#include "ota_command.h"
 #include "hardware/sync.h"
 #include "hardware/flash.h"
 
@@ -33,12 +34,16 @@ static uint32_t _blockSize;
 static uint32_t _size;
 
 // The actual flash accessing routines
+static lfs_block_t _lastBlock;
 static int lfs_flash_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *dst, lfs_size_t size) {
+    (void) c;
     memcpy(dst, _start + (block * _blockSize) + off, size);
+    _lastBlock = block;
     return 0;
 }
 
 static int lfs_flash_prog(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, const void *buffer, lfs_size_t size) {
+    (void) c;
     uint8_t *addr = _start + (block * _blockSize) + off;
     int save = save_and_disable_interrupts();
     flash_range_program((intptr_t)addr - (intptr_t)XIP_BASE, (const uint8_t *)buffer, size);
@@ -47,6 +52,7 @@ static int lfs_flash_prog(const struct lfs_config *c, lfs_block_t block, lfs_off
 }
 
 static int lfs_flash_erase(const struct lfs_config *c, lfs_block_t block) {
+    (void) c;
     uint8_t *addr = _start + (block * _blockSize);
     int save = save_and_disable_interrupts();
     flash_range_erase((intptr_t)addr - (intptr_t)XIP_BASE, _blockSize);
@@ -54,11 +60,16 @@ static int lfs_flash_erase(const struct lfs_config *c, lfs_block_t block) {
     return 0;
 }
 
+void lfsEraseBlock(uint32_t blockToErase) {
+    lfs_flash_erase(&_lfs_cfg, blockToErase);
+}
+
 static int lfs_flash_sync(const struct lfs_config *c) {
     /* NOOP */
     (void) c;
     return 0;
 }
+
 uint8_t _read_buffer[256];
 uint8_t _prog_buffer[256];
 uint8_t _lookahead_buffer[256];
@@ -94,12 +105,30 @@ static bool _gzip = false;
 static lfs_file_t _file;
 
 static unsigned char __attribute__((aligned(4))) uzlib_read_buff[4096];
-static uint32_t uzlib_flash_read_cb_addr;
 static unsigned char gzip_dict[32768];
 static uint8_t _flash_buff[4096]; // no room for this on the stack
 static struct uzlib_uncomp m_uncomp;
+
+static uint8_t _ota_buff[256];
+static struct lfs_file_config _ota_cfg = { (void *)_ota_buff, NULL, 0 };
+
 static uint8_t _file_buff[256];
 static struct lfs_file_config _file_cfg = { (void *)_file_buff, NULL, 0 };
+
+bool lfsReadOTA(OTACmdPage *ota, uint32_t *blockToErase) {
+    lfs_file_t f;
+
+    if (lfs_file_opencfg(&_lfs, &f, _OTA_COMMAND_FILE, LFS_O_RDONLY, &_ota_cfg) < 0) {
+        return false;
+    }
+    if (sizeof(*ota) != lfs_file_read(&_lfs, &f, ota, sizeof(*ota))) {
+        return false;
+    }
+    *blockToErase = _lastBlock;
+    // No need to close the file, it's open read-only and we're just going to reboot anyway
+    //lfs_file_close(&_lfs, &f);
+    return true;
+}
 
 static int uzlib_read_cb(struct uzlib_uncomp *m) {
     m->source = uzlib_read_buff;
@@ -107,9 +136,6 @@ static int uzlib_read_cb(struct uzlib_uncomp *m) {
     m->source_limit = uzlib_read_buff + len;
     return *(m->source++);
 }
-int lfs_file_opencfg(lfs_t *lfs, lfs_file_t *file,
-        const char *path, int flags,
-        const struct lfs_file_config *config);
 
 bool lfsOpen(const char *filename) {
     _gzip = false;
@@ -172,5 +198,6 @@ uint8_t *lfsRead(uint32_t len) {
 }
 
 void lfsClose() {
-    lfs_file_close(&_lfs, &_file);
+    // No need to close the file, it's open read-only and we're just going to reboot anyway
+    //lfs_file_close(&_lfs, &_file);
 }

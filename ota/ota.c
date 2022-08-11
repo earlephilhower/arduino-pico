@@ -37,6 +37,9 @@
 #define uart_puts(a, b)
 #endif
 
+uint8_t **__FS_START__ = (uint8_t **)(XIP_BASE + 0x3000 - 0x10 + 0x0);
+uint8_t **__FS_END__   = (uint8_t **)(XIP_BASE + 0x3000 - 0x10 + 0x4);
+
 void dumphex(uint32_t x) {
 #ifndef DEBUG
     (void) x;
@@ -53,13 +56,27 @@ void dumphex(uint32_t x) {
 static OTACmdPage _ota_cmd;
 
 void do_ota() {
-    if (memcmp(_ota_command_page->sign, "Pico OTA", 8)) {
-        uart_puts(uart0, "\nno ota signature\n");
+    if (*__FS_START__ == *__FS_END__) {
+        return;
+    }
+    if (!lfsMount(*__FS_START__, 4096, *__FS_END__ - *__FS_START__)) {
+        uart_puts(uart0, "mount failed\n");
+        return;
+    }
+
+    // We are very naughty and record the last block read, since it should be the actual data block of the
+    // OTA structure.  We'll erase it behind the scenes to avoid bringing in all of LittleFS write infra.
+    uint32_t blockToErase;
+    if (!lfsReadOTA(&_ota_cmd, &blockToErase)) {
+        return;
+    }
+
+    if (memcmp(_ota_cmd.sign, "Pico OTA", 8)) {
         return; // No signature
     }
 
     uint32_t crc = 0xffffffff;
-    const uint8_t *data = (const uint8_t *)_ota_command_page;
+    const uint8_t *data = (const uint8_t *)&_ota_cmd;
     for (uint32_t i = 0; i < offsetof(OTACmdPage, crc32); i++) {
         crc ^= data[i];
         for (int j = 0; j < 8; j++) {
@@ -71,33 +88,16 @@ void do_ota() {
         }
     }
     crc = ~crc;
-    if (crc != _ota_command_page->crc32) {
+    if (crc != _ota_cmd.crc32) {
         uart_puts(uart0, "\ncrc32 mismatch\n");
         return;
     }
 
-    if (!_ota_command_page->count) {
+    if (!_ota_cmd.count) {
         uart_puts(uart0, "\nno ota count\n");
         return;
     }
 
-    uart_puts(uart0, "\nstarting ota\n");
-
-    // Copy to RAM since theoretically it could be erased by embedded commands
-    memcpy(&_ota_cmd, _ota_command_page, sizeof(_ota_cmd));
-
-    uart_puts(uart0, "\nlfsmount(");
-    dumphex((uint32_t)_ota_cmd._start);
-    uart_puts(uart0, ",");
-    dumphex(_ota_cmd._blockSize);
-    uart_puts(uart0, ",");
-    dumphex(_ota_cmd._size);
-    uart_puts(uart0, ") = ");
-    if (!lfsMount(_ota_cmd._start, _ota_cmd._blockSize, _ota_cmd._size)) {
-        uart_puts(uart0, "failed\n");
-        return;
-    }
-    uart_puts(uart0, "success\n");
     for (uint32_t i = 0; i < _ota_cmd.count; i++) {
         switch (_ota_cmd.cmd[i].command) {
             case _OTA_WRITE:
@@ -156,7 +156,7 @@ void do_ota() {
     uart_puts(uart0, "\nota completed\n");
 
     // Work completed, erase record.
-    memset((void*)_ota_command_page, 0, sizeof(*_ota_command_page)); // Corrupt signature
+    lfsEraseBlock(blockToErase);
 
     // Do a hard reset just in case the start up sequence is not the same
     watchdog_reboot(0, 0, 100);
@@ -165,7 +165,7 @@ void do_ota() {
 
 #pragma GCC push_options
 #pragma GCC optimize("O0")
-int main(unsigned char **a, int b) {
+int main(int a, unsigned char **b) {
     (void) a;
     (void) b;
 

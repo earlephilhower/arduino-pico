@@ -72,13 +72,10 @@ public:
         _page = new OTACmdPage;
         memset(_page, 0, sizeof(*_page));
         memcpy(_page->sign, "Pico OTA Format\0", sizeof(_page->sign));
-        _page->_start = &_FS_start;
-        _page->_blockSize = 4096;
-        _page->_size = &_FS_end - &_FS_start;
         _page->count = 0;
     }
 
-    bool addFile(const char *filename, uint32_t offset = 0, uint32_t flashaddr = XIP_BASE,  uint32_t len = 0) {
+    bool addFile(const char *filename, uint32_t offset = 0, uint32_t flashaddr = XIP_BASE, uint32_t len = 0) {
         if (!_page  || _page->count == 8) {
             return false;
         }
@@ -120,7 +117,7 @@ public:
         return true;
     }
 
-    bool reboot() {
+    bool commit() {
         if (!_page) {
             return false;
         }
@@ -129,14 +126,14 @@ public:
         crc.add(_page, offsetof(OTACmdPage, crc32));
         _page->crc32 = crc.get();
 
-        // Stop all cores and write the command
-        noInterrupts();
-        rp2040.idleOtherCore();
-        reset_block(RESETS_RESET_DMA_BITS | RESETS_RESET_USBCTRL_BITS);
-        memmove((void *)_ota_command_page, _page, sizeof(*_page));
-        rp2040.reboot();
-        // Never really returning...
-        return true;
+        File f = LittleFS.open(_OTA_COMMAND_FILE, "w");
+        if (!f) {
+            return false;
+        }
+        auto len = f.write((uint8_t *)_page, sizeof(*_page));
+        f.close();
+
+        return len == sizeof(*_page);
     }
 
 private:

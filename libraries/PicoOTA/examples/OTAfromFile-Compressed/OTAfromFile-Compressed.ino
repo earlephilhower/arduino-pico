@@ -30,11 +30,12 @@ void setup() {
   Serial.printf("Programming OTA commands...");
   picoOTA.begin();
   picoOTA.addFile("blink.bin.gz");
+  picoOTA.commit();
   LittleFS.end();
   Serial.printf("done\n\n");
   Serial.printf("Rebooting in 5 seconds, should begin blinker instead of this app...\n");
   delay(5000);
-  picoOTA.reboot();
+  rp2040.reboot();
 }
 
 void loop() {

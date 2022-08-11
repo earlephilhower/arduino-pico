@@ -343,12 +343,10 @@ void ArduinoOTAClass::_runUpdate() {
 #ifdef OTA_DEBUG
             OTA_DEBUG.printf("Rebooting...\n");
 #endif
-            //let serial/network finish tasks that might be given in _end_callback
-            picoOTA.begin();
-            picoOTA.addFile("firmware.bin");
             LittleFS.end();
+            //let serial/network finish tasks that might be given in _end_callback
             delay(100);
-            picoOTA.reboot();
+            rp2040.reboot();
         }
     } else {
         _udp_ota->listen(IP_ADDR_ANY, _port);

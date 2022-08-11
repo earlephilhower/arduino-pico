@@ -13,6 +13,7 @@ picoOTA	KEYWORD1
 #######################################
 
 addFile	KEYWORD1
+commit	KEYWORD1
 
 #######################################
 # Constants (LITERAL1)

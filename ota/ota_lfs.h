@@ -21,9 +21,13 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "ota_command.h"
 
 bool lfsMount(uint8_t *start, uint32_t blockSize, uint32_t size);
 bool lfsOpen(const char *filename);
 bool lfsSeek(uint32_t offset);
 uint8_t *lfsRead(uint32_t len);
 void lfsClose();
+
+bool lfsReadOTA(OTACmdPage *ota, uint32_t *blockToErase);
+void lfsEraseBlock(uint32_t blockToErase);

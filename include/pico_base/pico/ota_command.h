@@ -1,3 +1,24 @@
+/*
+    ota_command.h - OTA stub that copies from LittleFS to flash
+    Copyright (c) 2022 Earle F. Philhower, III.  All rights reserved.
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
+#pragma once
+
 #include <stdint.h>
 
 #define _OTA_WRITE 1
@@ -19,11 +40,6 @@ typedef struct {
 typedef struct {
     uint8_t sign[8]; // "Pico OTA"
 
-    // LittleFS partition information
-    uint8_t *_start;
-    uint32_t _blockSize;
-    uint32_t _size;
-
     // List of operations
     uint32_t count;
     commandEntry cmd[8];
@@ -31,5 +47,4 @@ typedef struct {
     uint32_t crc32; // CRC32 over just the contents of this struct, up until just before this value
 } OTACmdPage;
 
-// This is the last physical page of DRAM
-static const OTACmdPage *_ota_command_page = (const OTACmdPage*) (0x21040000 - 0x1000);
+#define _OTA_COMMAND_FILE "otacommand.bin"

@@ -276,6 +276,7 @@ bool UpdaterClass::end(bool evenIfRemaining) {
         _fp.close();
         picoOTA.begin();
         picoOTA.addFile("firmware.bin");
+        picoOTA.commit();
 #ifdef DEBUG_UPDATER
         DEBUG_UPDATER.printf_P(PSTR("Staged: address:0x%08X, size:0x%08zX\n"), _startAddress, _size);
 #endif
