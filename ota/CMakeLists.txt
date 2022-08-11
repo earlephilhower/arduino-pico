@@ -53,10 +53,13 @@ target_compile_options(ota PUBLIC
 )
 
 target_link_options(ota PUBLIC
+        -Wl,--wrap=clocks_init
         -Wl,--wrap=exit
         -Wl,--wrap=atexit
+        -Wl,--wrap=panic_unsupported
+        -Wl,--wrap=panic
+        -Wl,--wrap=hard_assertion_failure
         -Wl,--cref
-        -Wl,--wrap=clocks_init
 )
 
 set_target_properties(ota PROPERTIES PICO_TARGET_LINKER_SCRIPT

@@ -17,12 +17,6 @@
 #include "hardware/irq.h"
 #include "hardware/gpio.h"
 
-check_hw_layout(clocks_hw_t, clk[clk_adc].selected, CLOCKS_CLK_ADC_SELECTED_OFFSET);
-check_hw_layout(clocks_hw_t, fc0.result, CLOCKS_FC0_RESULT_OFFSET);
-check_hw_layout(clocks_hw_t, ints, CLOCKS_INTS_OFFSET);
-
-static uint32_t configured_freq[CLK_COUNT];
-
 // Clock muxing consists of two components:
 // - A glitchless mux, which can be switched freely, but whose inputs must be
 //   free-running
@@ -68,19 +62,6 @@ bool _clock_configure(enum clock_index clk_index, uint32_t src, uint32_t auxsrc,
         // Disable clock. On clk_ref and clk_sys this does nothing,
         // all other clocks have the ENABLE bit in the same position.
         hw_clear_bits(&clock->ctrl, CLOCKS_CLK_GPOUT0_CTRL_ENABLE_BITS);
-        if (configured_freq[clk_index] > 0) {
-            // Delay for 3 cycles of the target clock, for ENABLE propagation.
-            // Note XOSC_COUNT is not helpful here because XOSC is not
-            // necessarily running, nor is timer... so, 3 cycles per loop:
-            uint delay_cyc = configured_freq[clk_sys] / configured_freq[clk_index] + 1;
-            asm volatile (
-                ".syntax unified \n\t"
-                "1: \n\t"
-                "subs %0, #1 \n\t"
-                "bne 1b"
-                : "+r" (delay_cyc)
-            );
-        }
     }
 
     // Set aux mux first, and then glitchless mux if this clock has one
@@ -116,15 +97,6 @@ bool _clock_configure(enum clock_index clk_index, uint32_t src, uint32_t auxsrc,
 void __wrap_clocks_init(void) {
     // Start tick in watchdog
     watchdog_start_tick(XOSC_MHZ);
-
-    // Everything is 48MHz on FPGA apart from RTC. Otherwise set to 0 and will be set in clock configure
-    if (running_on_fpga()) {
-        for (uint i = 0; i < CLK_COUNT; i++) {
-            configured_freq[i] = 48 * MHZ;
-        }
-        configured_freq[clk_rtc] = 46875;
-        return;
-    }
 
     // Disable resus that may be enabled from previous software
     clocks_hw->resus.ctrl = 0;

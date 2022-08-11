@@ -210,3 +210,11 @@ void __wrap_panic(const char *x) {
     (void) x;
     while (1) continue;
 }
+
+void __wrap_panic_unsupported() {
+    while (1) continue;
+}
+
+void __wrap_hard_assertion_failure() {
+    while (1) continue;
+}

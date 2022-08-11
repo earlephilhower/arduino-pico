@@ -165,16 +165,9 @@ bool lfsOpen(const char *filename) {
 }
 
 bool lfsSeek(uint32_t offset) {
-    if (!_gzip) {
-        return lfs_file_seek(&_lfs, &_file, offset, LFS_SEEK_SET) == offset;
-    }
     while (offset) {
-        m_uncomp.dest_start = _flash_buff;
-        m_uncomp.dest = _flash_buff;
-        int to_read = (offset > sizeof(_flash_buff)) ? sizeof(_flash_buff) : offset;
-        m_uncomp.dest_limit = _flash_buff + to_read;
-        int res = uzlib_uncompress(&m_uncomp);
-        if ((res != TINF_DONE) && (res != TINF_OK)) {
+        uint32_t to_read = (offset > sizeof(_flash_buff)) ? sizeof(_flash_buff) : offset;
+        if (!lfsRead(to_read)) {
             return false;
         }
         offset -= to_read;

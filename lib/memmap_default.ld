@@ -60,6 +60,16 @@ SECTIONS
         KEEP (*(.OTA))
         /* Align to the last 16-bytes of the OTA region */
         /* If anyone has a better way of doing this, please submit a PR! */
+       /* . = __flash_binary_start + 0x2ff0;
+        LONG(__FS_START__)
+        LONG(__FS_END__)
+        LONG(__EEPROM_START__)
+        LONG(__FLASH_LENGTH__)*/
+    } > FLASH
+
+    .partition : {
+        /* Align to the last 16-bytes of the OTA region */
+        /* If anyone has a better way of doing this, please submit a PR! */
         . = __flash_binary_start + 0x2ff0;
         LONG(__FS_START__)
         LONG(__FS_END__)
