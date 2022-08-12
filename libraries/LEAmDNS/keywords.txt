@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-ESP8266mDNS	KEYWORD1
+LEAmDNS	KEYWORD1
 MDNSResponder	KEYWORD1
 MDNS	KEYWORD1
 

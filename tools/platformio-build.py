@@ -148,6 +148,7 @@ env.Append(
 
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
+        File(os.path.join(FRAMEWORK_DIR, "lib", "ota.o")),
         libpico,
         File(os.path.join(FRAMEWORK_DIR, "lib", "libbearssl.a")),
         "m", "c", stdcpp_lib, "c"]
@@ -301,7 +302,7 @@ if variant != "":
     ])
 
     env.Append(CPPDEFINES=[
-        ("ARDUINO_VARIANT", '"' + variant + '"'),
+        ("ARDUINO_VARIANT", '\\"' + variant + '\\"'),
     ])
 
 
