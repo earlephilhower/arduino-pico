@@ -3,3 +3,4 @@ system
 tools/dist
 docs/_build
 ota/build
+tools/libpico/build

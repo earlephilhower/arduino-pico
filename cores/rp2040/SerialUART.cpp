@@ -292,7 +292,7 @@ int SerialUART::available() {
     } else {
         _pumpFIFO();
     }
-    return (_writer - _reader) % _fifoSize;
+    return (_fifoSize + _writer - _reader) % _fifoSize;
 }
 
 int SerialUART::availableForWrite() {

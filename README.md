@@ -24,6 +24,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Cytron Maker Nano RP2040
 * DeRuiLab FlyBoard2040 Core
 * DFRobot Beetle RP2040
+* ElectronicCats Hunter Cat NFC
 * Invector Labs Challenger RP2040 WiFi
 * Invector Labs Challenger RP2040 WiFi/BLE
 * Invector Labs Challenger NB RP2040 WiFi

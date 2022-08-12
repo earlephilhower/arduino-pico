@@ -51,6 +51,11 @@ public:
         , _tx_buf_cur(0)
         , _tx_buf_offset(0) {
         _pcb = udp_new();
+#if LWIP_IPV6
+        // local_ip defaults to 0.0.0.0
+        // which is problematic for sending IPv6 packets
+        ip_addr_set_ipaddr(&_pcb->local_ip, IP_ANY_TYPE);
+#endif
 #ifdef LWIP_MAYBE_XCC
         _mcast_ttl = 1;
 #endif
