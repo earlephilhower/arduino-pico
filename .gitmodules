@@ -31,3 +31,6 @@
 [submodule "tools/libbearssl/bearssl"]
 	path = tools/libbearssl/bearssl
 	url = https://github.com/earlephilhower/bearssl-esp8266.git
+[submodule "ota/uzlib"]
+	path = ota/uzlib
+	url = https://github.com/pfalcon/uzlib.git

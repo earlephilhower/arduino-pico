@@ -28,6 +28,7 @@ extern "C" {
 }
 
 #include <AddrList.h>
+#include <Arduino.h>
 //#include <PolledTimeout.h>
 
 #define PBUF_ALIGNER_ADJUST 4

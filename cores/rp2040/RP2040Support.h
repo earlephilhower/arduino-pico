@@ -21,7 +21,9 @@
 #include <hardware/clocks.h>
 #include <hardware/irq.h>
 #include <hardware/pio.h>
+#include <pico/unique_id.h>
 #include <hardware/exception.h>
+#include <hardware/watchdog.h>
 #include <hardware/structs/rosc.h>
 #include <hardware/structs/systick.h>
 #include <pico/multicore.h>
@@ -309,6 +311,22 @@ public:
         multicore_reset_core1();
         fifo.clear();
         multicore_launch_core1(main1);
+    }
+
+    void reboot() {
+        watchdog_reboot(0, 0, 100);
+    }
+
+    inline void restart() {
+        reboot();
+    }
+
+    const char *getChipID() {
+        static char id[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = { 0 };
+        if (!id[0]) {
+            pico_get_unique_board_id_string(id, sizeof(id));
+        }
+        return id;
     }
 
     // Multicore comms FIFO

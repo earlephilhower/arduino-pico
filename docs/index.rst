@@ -50,6 +50,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    WiFiClientSecure (TLS/SSL/HTTPS) <bearssl-client-secure-class>
    WiFiServerSecure (TLS/SSL/HTTPS) <bearssl-server-secure-class>
 
+   Over-the-Air (OTA) Updates <ota>
+
    Ported/Optimized Libraries <libraries>
    Using Pico-SDK <sdk>
 

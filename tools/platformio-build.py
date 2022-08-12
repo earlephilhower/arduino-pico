@@ -300,6 +300,11 @@ if variant != "":
         os.path.join(FRAMEWORK_DIR, "variants", variant)
     ])
 
+    env.Append(CPPDEFINES=[
+        ("ARDUINO_VARIANT", '"' + variant + '"'),
+    ])
+
+
     # link variant's source files as object files into the binary.
     # otherwise weak function overriding won't work in the linking stage.
     env.BuildSources(

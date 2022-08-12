@@ -1,0 +1,27 @@
+#######################################
+# Syntax Coloring Map For Ultrasound
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MD5Builder	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+add	KEYWORD2
+addHexString	KEYWORD2
+addStream	KEYWORD2
+calculate	KEYWORD2
+getBytes	KEYWORD2
+getChars	KEYWORD2
+toString	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

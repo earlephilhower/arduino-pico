@@ -146,6 +146,8 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 # Features
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
 * Generic Arduino USB Serial, Keyboard, and Mouse emulation
+* WiFi (Pico W)
+* Over-the-Air (OTA) upgrades
 * Filesystems (LittleFS and SD/SDFS)
 * Multicore support (setup1() and loop1())
 * FreeRTOS SMP support
@@ -184,6 +186,8 @@ If you want to contribute or have bugfixes, drop me a note at <earlephilhower@ya
 * [FreeRTOS](https://freertos.org) is Copyright Amazon.com, Inc. or its affiliates, and distributed under the MIT license.
 * [lwIP](https://savannah.nongnu.org/projects/lwip/) is (c) the Swedish Institute of Computer Science and licenced under the BSD license.
 * [BearSSL](https://bearssl.org) library written by Thomas Pornin, is distributed under the [MIT License](https://bearssl.org/#legal-details).
+* [UZLib](https://github.com/pfalcon/uzlib) is copyright (c) 2003 Joergen Ibsen and distributed under the zlib license.
+* [LEAmDMS](https://github.com/LaborEtArs/ESP8266mDNS) is copyright multiple authors and distributed under the MIT license.
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com

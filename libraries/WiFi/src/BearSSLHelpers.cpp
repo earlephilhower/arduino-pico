@@ -893,7 +893,7 @@ ServerSessions::ServerSessions(ServerSession *sessions, uint32_t size, bool isDy
 const br_ssl_session_cache_class **ServerSessions::getCache() {
     return _size > 0 ? &_cache.vtable : nullptr;
 }
-#if 0
+
 // SHA256 hash for updater
 void HashSHA256::begin() {
     br_sha256_init(&_cc);
@@ -954,7 +954,7 @@ extern "C" bool SigningVerifier_verify(PublicKey *_pubKey, UpdaterHashClass *has
 };
 
 #if !CORE_MOCK
-make_stack_thunk(SigningVerifier_verify);
+make_stack_thunk_bool(SigningVerifier_verify, (PublicKey *_pubKey, UpdaterHashClass *hash, const void *signature, uint32_t signatureLen), (_pubKey, hash, signature, signatureLen));
 extern "C" bool thunk_SigningVerifier_verify(PublicKey *_pubKey, UpdaterHashClass *hash, const void *signature, uint32_t signatureLen);
 #endif
 
@@ -969,8 +969,6 @@ bool SigningVerifier::verify(UpdaterHashClass *hash, const void *signature, uint
 #endif
 }
 
-
-#endif
 
 };
 

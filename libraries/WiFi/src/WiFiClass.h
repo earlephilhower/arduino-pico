@@ -75,6 +75,16 @@ public:
     int begin(const char* ssid, const char *passphrase);
 
     bool connected();
+    int8_t waitForConnectResult(unsigned long timeoutLength = 60000) {
+        uint32_t now = millis();
+        while (millis() - now < timeoutLength) {
+            if (status() != WL_DISCONNECTED) {
+                return status();
+            }
+            delay(10);
+        }
+        return -1;
+    }
 
     uint8_t beginAP(const char *ssid);
     uint8_t beginAP(const char *ssid, uint8_t channel);

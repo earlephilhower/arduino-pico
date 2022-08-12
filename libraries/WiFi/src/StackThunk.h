@@ -43,6 +43,16 @@ extern "C" unsigned char * thunk_##fcnToThunk proto { \
     return x; \
 }
 
+#define make_stack_thunk_bool(fcnToThunk, proto, params) \
+extern "C" bool thunk_##fcnToThunk proto { \
+    register uint32_t* sp asm("sp"); \
+    stack_thunk_save = sp; \
+    sp = stack_thunk_top; \
+    auto x = fcnToThunk params; \
+    sp = stack_thunk_save; \
+    return x; \
+}
+
 #ifdef __cplusplus
 }
 #endif
