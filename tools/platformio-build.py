@@ -302,7 +302,7 @@ if variant != "":
     ])
 
     env.Append(CPPDEFINES=[
-        ("ARDUINO_VARIANT", '"' + variant + '"'),
+        ("ARDUINO_VARIANT", '\\"' + variant + '\\"'),
     ])
 
 
