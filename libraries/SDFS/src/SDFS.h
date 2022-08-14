@@ -45,7 +45,7 @@ class SDFSConfig : public FSConfig {
 public:
     static constexpr uint32_t FSId = 0x53444653;
 
-    SDFSConfig(uint8_t csPin = 4, uint32_t spi = SD_SCK_MHZ(10)) : FSConfig(FSId, false), _csPin(csPin), _part(0), _spiSettings(spi)  { }
+    SDFSConfig(uint8_t csPin = 4, uint32_t spi = SD_SCK_MHZ(10), HardwareSPI &port = SPI) : FSConfig(FSId, false), _csPin(csPin), _part(0), _spiSettings(spi), _spi(&port)  { }
 
     SDFSConfig setAutoFormat(bool val = true) {
         _autoFormat = val;
@@ -55,9 +55,13 @@ public:
         _csPin = pin;
         return *this;
     }
-    SDFSConfig setSPI(uint32_t spi) {
+    SDFSConfig setSPISpeed(uint32_t spi) {
         _spiSettings = spi;
         return *this;
+    }
+    SDFSConfig setSPI(HardwareSPI &spi) {
+        _spi = &spi;
+        return true;
     }
     SDFSConfig setPart(uint8_t part) {
         _part = part;
@@ -68,6 +72,7 @@ public:
     uint8_t   _csPin;
     uint8_t   _part;
     uint32_t  _spiSettings;
+    HardwareSPI *_spi;
 };
 
 class SDFSImpl : public FSImpl {
@@ -146,10 +151,11 @@ public:
         if (_mounted) {
             return true;
         }
-        _mounted = _fs.begin(_cfg._csPin, _cfg._spiSettings);
+        SdSpiConfig ssc(_cfg._csPin, SHARED_SPI, _cfg._spiSettings, _cfg._spi);
+        _mounted = _fs.begin(ssc);
         if (!_mounted && _cfg._autoFormat) {
             format();
-            _mounted = _fs.begin(_cfg._csPin, _cfg._spiSettings);
+            _mounted = _fs.begin(ssc);
         }
         FsDateTime::setCallback(dateTimeCB);
         return _mounted;
