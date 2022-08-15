@@ -233,7 +233,7 @@ A firmware file is uploaded via any method (Ethernet, WiFi, serial ZModem, etc.)
 
 The ROM layout consists of:
 
-... code:
+.. code:: cpp
 
     [boot2.S] [OTA Bootloader] [0-pad] [OTA partition table] [Main sketch] [LittleFS filesystem] [EEPROM]
 
