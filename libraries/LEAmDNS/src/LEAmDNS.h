@@ -1100,7 +1100,7 @@ protected:
         };
 
     public:
-        uint16_t            m_u16ID;            // Query ID (used only in lagacy queries)
+        uint16_t            m_u16ID;            // Query ID (used only in legacy queries)
         stcMDNS_RRQuestion* m_pQuestions;       // A list of queries
         uint8_t             m_u8HostReplyMask;  // Flags for reply components/answers
         bool                m_bLegacyQuery;     // Flag: Legacy query

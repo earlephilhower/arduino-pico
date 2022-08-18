@@ -5,7 +5,7 @@ The Arduino-Pico core can be installed using the Arduino IDE Boards Manager
 or using `git`.  If you want to simply write programs for your RP2040 board,
 the Boards Manager installation will suffice, but if you want to try the
 latest pre-release versions and submit improvements, you will need the `git`
-instllation.
+installation.
 
 Installing via Arduino Boards Manager
 -------------------------------------

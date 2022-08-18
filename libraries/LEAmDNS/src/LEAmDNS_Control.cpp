@@ -1980,7 +1980,7 @@ uint8_t MDNSResponder::_replyMaskForHost(const MDNSResponder::stcMDNS_RRHeader& 
 #ifdef MDNS_IP6_SUPPORT
             // TODO
 #endif
-        }  // Address qeuest
+        }  // Address quest
 
         stcMDNS_RRDomain hostDomain;
         if ((_buildDomainForHost(m_pcHostname, hostDomain))
