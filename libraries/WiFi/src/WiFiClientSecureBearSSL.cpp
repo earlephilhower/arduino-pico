@@ -1224,7 +1224,7 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
     _x509_insecure = nullptr;
     _x509_knownkey = nullptr;
 
-    // reduce timeout after successful handshake to fail fast if server stop accepting our data for whathever reason
+    // reduce timeout after successful handshake to fail fast if server stop accepting our data for whatever reason
     if (ret) {
         _timeout = 5000;
     }

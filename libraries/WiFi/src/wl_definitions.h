@@ -43,7 +43,7 @@ extern "C" {
 #define WL_IPV4_LENGTH 4
 // Maximum size of a SSID list
 #define WL_NETWORKS_LIST_MAXNUM	10
-// Maxmium number of socket
+// Maximum number of socket
 #define	WIFI_MAX_SOCK_NUM	10
 // Socket not available constant
 #define SOCK_NOT_AVAIL  255

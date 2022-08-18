@@ -1,5 +1,5 @@
 /* Simple sketch to do something on a BOOTSEL press */
-/* Releaed into the public domain */
+/* Released into the public domain */
 
 void setup() {
   Serial.begin(115200);
