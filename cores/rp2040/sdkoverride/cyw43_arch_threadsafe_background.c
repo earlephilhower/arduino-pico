@@ -316,6 +316,9 @@ void cyw43_arch_poll() {
     //    }
 }
 
+
+bool _cyw43_cb_link_up = true;
+
 #ifdef ARDUINO_RASPBERRY_PI_PICO_W
 void __attribute__((weak)) cyw43_cb_tcpip_init(cyw43_t *self, int itf);
 void cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
@@ -331,11 +334,15 @@ void __attribute__((weak)) cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf);
 void cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
+    printf("\nlu\n");
+    _cyw43_cb_link_up = true;
 }
 void __attribute__((weak)) cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf);
 void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
+    printf("\nld\n");
+    _cyw43_cb_link_up = false;
 }
 void __attribute__((weak)) cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf);
 void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
