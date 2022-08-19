@@ -314,7 +314,10 @@ public:
     }
 
     void reboot() {
-        watchdog_reboot(0, 0, 100);
+        watchdog_reboot(0, 0, 10);
+        while (1) {
+            continue;
+        }
     }
 
     inline void restart() {
