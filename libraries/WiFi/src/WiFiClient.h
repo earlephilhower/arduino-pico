@@ -23,7 +23,6 @@
 #pragma once
 
 #include <memory>
-#include "WiFi.h"
 #include "Print.h"
 #include "Client.h"
 #include "IPAddress.h"
