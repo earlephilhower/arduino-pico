@@ -16,6 +16,8 @@ const char* password = STAPSK;
 const char* host = "djxmmx.net";
 const uint16_t port = 17;
 
+WiFiMulti multi;
+
 void setup() {
   Serial.begin(115200);
 
@@ -26,11 +28,12 @@ void setup() {
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
-  WiFi.begin(ssid, password);
+  multi.addAP(ssid, password);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  if (multi.run() != WL_CONNECTED) {
+    Serial.println("Unable to connect to network, rebooting in 10 seconds...");
+    delay(10000);
+    rp2040.reboot();
   }
 
   Serial.println("");
