@@ -36,7 +36,6 @@
 #define CYW43_WL_GPIO_LED_PIN 0
 #endif
 
-
 volatile bool __inLWIP = false;
 
 // note same code

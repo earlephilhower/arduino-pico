@@ -37,6 +37,9 @@ WiFiMulti::~WiFiMulti() {
 
 bool WiFiMulti::addAP(const char *ssid, const char *pass) {
     struct _AP ap;
+    if (!ssid) {
+        return false;
+    }
     ap.ssid = strdup(ssid);
     if (!ap.ssid) {
         return false;
@@ -82,7 +85,11 @@ uint8_t WiFiMulti::run(uint32_t to) {
 
     // Connect!
     uint32_t start = millis();
-    WiFi.begin(hit->ssid, hit->pass);
+    if (hit->pass) {
+        WiFi.begin(hit->ssid, hit->pass);
+    } else {
+        WiFi.begin(hit->ssid);
+    }
     while (!WiFi.connected() && (millis() - start < to)) {
         delay(5);
     }

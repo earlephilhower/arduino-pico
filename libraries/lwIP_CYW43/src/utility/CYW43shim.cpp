@@ -26,6 +26,18 @@ extern "C" {
 #include "pico/cyw43_arch.h"
 #include <Arduino.h>
 
+// From cyw43_ctrl.c
+#define WIFI_JOIN_STATE_KIND_MASK (0x000f)
+#define WIFI_JOIN_STATE_ACTIVE  (0x0001)
+#define WIFI_JOIN_STATE_FAIL    (0x0002)
+#define WIFI_JOIN_STATE_NONET   (0x0003)
+#define WIFI_JOIN_STATE_BADAUTH (0x0004)
+#define WIFI_JOIN_STATE_AUTH    (0x0200)
+#define WIFI_JOIN_STATE_LINK    (0x0400)
+#define WIFI_JOIN_STATE_KEYED   (0x0800)
+#define WIFI_JOIN_STATE_ALL     (0x0e01)
+
+
 netif *CYW43::_netif = nullptr;
 
 CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
@@ -124,6 +136,7 @@ extern "C" void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     if (CYW43::_netif) {
         netif_set_link_down(CYW43::_netif);
     }
+    self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
 }
 
 extern "C" int cyw43_tcpip_link_status(cyw43_t *self, int itf) {
