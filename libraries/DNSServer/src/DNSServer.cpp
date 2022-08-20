@@ -368,8 +368,8 @@ void DNSServer::processNextRequest()
 
   _udp.read(buffer.get(), currentPacketSize);
   if (_dns.isSet() && _udp.remoteIP() == _dns) {
-    // _forwarder may have been set to false; however, for now allow inflight
-    // replys  to finish. //??
+    // _forwarder may have been set to false; however, for now allow in-flight
+    // replies to finish. //??
     forwardReply(buffer.get(), currentPacketSize);
   } else
   if (respondToRequest(buffer.get(), currentPacketSize)) {

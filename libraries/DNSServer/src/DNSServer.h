@@ -115,7 +115,7 @@ class DNSServer
     std::unique_ptr<DNSS_REQUESTER[]> _que;
     uint32_t _ttl;
 #ifdef DEBUG_DNSSERVER
-    // There are 2 possiblities for OverFlow:
+    // There are 2 possibilities for overflow:
     //   1) we have more than kDNSSQueSize request already outstanding.
     //   2) we have request that never received a reply.
     uint32_t _que_ov;
