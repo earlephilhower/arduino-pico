@@ -91,6 +91,57 @@ public:
     uint8_t beginAP(const char *ssid, const char* passphrase);
     uint8_t beginAP(const char *ssid, const char* passphrase, uint8_t channel);
 
+    // ESP8266 compatible calls
+    bool softAP(const char* ssid, const char* psk = NULL, int channel = 1, int ssid_hidden = 0, int max_connection = 4) {
+        (void) ssid_hidden;
+        (void) max_connection;
+        return beginAP(ssid, psk, channel) == WL_CONNECTED;
+    }
+
+    bool softAP(const String& ssid, const String& psk = "", int channel = 1, int ssid_hidden = 0, int max_connection = 4) {
+        (void) ssid_hidden;
+        (void) max_connection;
+        if (psk != "") {
+            return beginAP(ssid.c_str(), psk.c_str(), channel) == WL_CONNECTED;
+        } else {
+            return beginAP(ssid.c_str(), channel) == WL_CONNECTED;
+        }
+    }
+
+    bool softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet) {
+        config(local_ip, gateway, subnet);
+        return true;
+    }
+
+    bool softAPdisconnect(bool wifioff = false) {
+        (void) wifioff;
+        end();
+        return true;
+    }
+
+    uint8_t softAPgetStationNum();
+
+    IPAddress softAPIP() {
+        return localIP();
+    }
+
+    uint8_t* softAPmacAddress(uint8_t* mac) {
+        return macAddress(mac);
+    }
+
+    String softAPmacAddress(void) {
+        uint8_t mac[8];
+        macAddress(mac);
+        char buff[32];
+        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+        return String(buff);
+    }
+
+    String softAPSSID() {
+        return String(SSID());
+    }
+
+
     // TODO - EAP is not supported by the driver.  Maybe some way of user-level wap-supplicant in the future?
     //uint8_t beginEnterprise(const char* ssid, const char* username, const char* password);
     //uint8_t beginEnterprise(const char* ssid, const char* username, const char* password, const char* identity);
