@@ -109,7 +109,7 @@ public:
     }
 
     bool softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet) {
-        config(local_ip, gateway, subnet);
+        config(local_ip, local_ip, gateway, subnet);
         return true;
     }
 
