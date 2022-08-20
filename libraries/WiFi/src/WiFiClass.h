@@ -114,6 +114,7 @@ public:
     }
 
     bool softAPdisconnect(bool wifioff = false) {
+        (void) wifioff;
         end();
         return true;
     }
