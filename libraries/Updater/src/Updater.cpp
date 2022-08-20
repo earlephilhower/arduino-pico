@@ -25,8 +25,6 @@
 #include <hardware/flash.h>
 #include <PicoOTA.h>
 
-#define DEBUG_UPDATER Serial
-
 #include <Updater_Signing.h>
 #ifndef ARDUINO_SIGNING
 #define ARDUINO_SIGNING 0
