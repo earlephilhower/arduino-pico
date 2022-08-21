@@ -8,16 +8,6 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-/* this can be run with an emulated server on host:
-        cd esp8266-core-root-dir
-        cd tests/host
-        make ../../libraries/ESP8266WebServer/examples/PostServer/PostServer
-        bin/PostServer/PostServer
-   then put your PC's IP address in SERVER_IP below, port 9080 (instead of default 80):
-*/
-//#define SERVER_IP "10.0.1.7:9080" // PC address with emulation on host
-#define SERVER_IP "192.168.1.42"
-
 #ifndef STASSID
 #define STASSID "your-ssid"
 #define STAPSK "your-password"
@@ -47,10 +37,11 @@ void loop() {
   if ((WiFi.status() == WL_CONNECTED)) {
 
     HTTPClient http;
+    http.setInsecure();
 
     Serial.print("[HTTP] begin...\n");
-    // configure traged server and url
-    http.begin("http://" SERVER_IP "/postplain/");  // HTTP
+    // configure target server and url
+    http.begin("https://httpbin.org/post");
     http.addHeader("Content-Type", "application/json");
 
     Serial.print("[HTTP] POST...\n");
