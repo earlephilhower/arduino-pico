@@ -248,7 +248,7 @@ void ArduinoOTAClass::_runUpdate() {
         OTA_DEBUG.println("LittleFS Begin Error");
 #endif
         _udp_ota->append("ERR: ", 5);
-        _udp_ota->append("no filesystem", 13);
+        _udp_ota->append("No Filesystem", 13);
         _udp_ota->send(ota_ip, _ota_udp_port);
         delay(100);
         _udp_ota->listen(IP_ADDR_ANY, _port);
