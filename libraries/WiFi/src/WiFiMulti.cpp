@@ -58,6 +58,12 @@ bool WiFiMulti::addAP(const char *ssid, const char *pass) {
 }
 
 uint8_t WiFiMulti::run(uint32_t to) {
+
+    // If we're already connected, don't re-scan/etc.
+    if (WiFi.status() == WL_CONNECTED) {
+        return WL_CONNECTED;
+    }
+
     int cnt = WiFi.scanNetworks();
     if (!cnt) {
         return WL_DISCONNECTED;
