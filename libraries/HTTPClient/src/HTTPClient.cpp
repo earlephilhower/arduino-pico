@@ -576,8 +576,7 @@ size_t StreamSendSize(Stream *s, Print *c, int size) {
         int x = s->read();
         if (x < 0) {
             break;
-        }
-        if (c->write(x)) {
+        } else if (c->write(x)) {
             sent++;
         } else {
             break;
@@ -720,6 +719,7 @@ int HTTPClient::writeToPrint(Print * print) {
             }
 
             chunkHeader.trim(); // remove \r
+            DEBUG_HTTPCLIENT("[HTTP-Client] chunk header: '%s'\n", chunkHeader.c_str());
 
             // read size of chunk
             len = (uint32_t) strtol((const char *) chunkHeader.c_str(), NULL, 16);
