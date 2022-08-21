@@ -32,7 +32,7 @@ public:
 
     bool addAP(const char *ssid, const char *pass = NULL);
 
-    uint8_t run(uint32_t to = 5000);
+    uint8_t run(uint32_t to = 10000);
 
 private:
     struct _AP {

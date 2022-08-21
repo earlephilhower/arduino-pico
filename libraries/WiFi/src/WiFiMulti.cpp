@@ -53,6 +53,7 @@ bool WiFiMulti::addAP(const char *ssid, const char *pass) {
     } else {
         ap.pass = nullptr;
     }
+    DEBUGV("[WIFIMULTI] Adding: '%s' %s' to list\n", ap.ssid, ap.pass);
     _list.push_front(ap);
     return true;
 }
@@ -77,6 +78,7 @@ uint8_t WiFiMulti::run(uint32_t to) {
     for (int i = 0; i < cnt; i++) {
         if (WiFi.RSSI(i) > maxRSSID) {
             for (auto j = _list.begin(); j != _list.end(); j++) {
+                DEBUGV("[WIFIMULTI] Checking for '%s' at %d\n", WiFi.SSID(i), WiFi.RSSI(i));
                 if (!strcmp(j->ssid, WiFi.SSID(i))) {
                     hit = j;
                     maxRSSID = WiFi.RSSI(i);
@@ -90,6 +92,7 @@ uint8_t WiFiMulti::run(uint32_t to) {
     }
 
     // Connect!
+    DEBUGV("[WIFIMULTI] Connecting to '%s' and '%s'\n", hit->ssid, hit->pass);
     uint32_t start = millis();
     if (hit->pass) {
         WiFi.begin(hit->ssid, hit->pass);

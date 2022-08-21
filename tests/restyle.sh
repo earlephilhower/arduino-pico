@@ -7,7 +7,7 @@ for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S \
            ./libraries/WiFi ./libraries/lwIP_Ethernet ./libraries/lwIP_CYW43 \
            ./libraries/FreeRTOS/src ./libraries/LEAmDNS ./libraries/MD5Builder \
            ./libraries/PicoOTA ./libraries/SDFS ./libraries/ArduinoOTA \
-           ./libraries/Updater; do
+           ./libraries/Updater ./libraries/HTTPClient; do
     find $dir -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" \) -a  \! -path '*api*' -exec astyle --suffix=none --options=./tests/astyle_core.conf \{\} \;
     find $dir -type f -name "*.ino" -exec astyle --suffix=none --options=./tests/astyle_examples.conf \{\} \;
 done
