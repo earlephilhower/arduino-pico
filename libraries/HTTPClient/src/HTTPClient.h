@@ -40,9 +40,11 @@
 #endif
 #endif
 
+//#define DEBUG_HTTPCLIENT(fmt, ...) Serial.printf(fmt, ## __VA_ARGS__ )
 #ifndef DEBUG_HTTPCLIENT
 #define DEBUG_HTTPCLIENT(...) do { (void)0; } while (0)
 #endif
+
 
 #define HTTPCLIENT_DEFAULT_TCP_TIMEOUT (5000)
 
@@ -158,6 +160,7 @@ public:
     HTTPClient(HTTPClient&&) = default;
     HTTPClient& operator=(HTTPClient&&) = default;
 
+    // The easier way
     bool begin(String url);
     bool begin(String host, uint16_t port, String uri = "/", bool https = false);
     bool begin(String url, const uint8_t httpsFingerprint[20]) {
@@ -168,6 +171,11 @@ public:
         setFingerprint(httpsFingerprint);
         return begin(host, port, uri);
     }
+
+    // Let's do it the hard way, too
+    bool begin(WiFiClient &client, const String& url);
+    bool begin(WiFiClient &client, const String& host, uint16_t port, const String& uri = "/", bool https = false);
+
 
     void end(void);
 
@@ -297,11 +305,12 @@ public:
 protected:
     // HTTPS helpers
     WiFiClientSecure *_tls() {
-        if (!_client) {
-            _client = new WiFiClientSecure();
+        if (!_clientMade) {
+            _clientMade = new WiFiClientSecure();
+            _clientGiven = false;
         }
         _clientTLS = true;
-        return (WiFiClientSecure*)_client;
+        return (WiFiClientSecure*)_clientMade;
     }
 
     struct RequestArgument {
@@ -318,8 +327,19 @@ protected:
     int handleHeaderResponse();
     int writeToStreamDataBlock(Stream * stream, int len);
 
-    WiFiClient *_client = nullptr;
+    WiFiClient *_clientMade = nullptr;
     bool _clientTLS = false;
+
+    std::unique_ptr<WiFiClient> _clientIn;
+    bool _clientGiven = false;
+
+    WiFiClient *_client() {
+        if (_clientGiven) {
+            return _clientIn.get();
+        } else {
+            return _clientMade;
+        }
+    }
 
     /// request handling
     String _host;

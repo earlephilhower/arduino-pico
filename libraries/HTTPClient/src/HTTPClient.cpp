@@ -85,12 +85,12 @@ bool HTTPClient::begin(String url) {
     }
 
     _port = (protocol == "https" ? 443 : 80);
-    if (!_client) {
+    if (!_client()) {
         if (protocol == "https") {
             _tls();
-            //_tls()->setInsecure();
         } else {
-            _client = new WiFiClient();
+            _clientMade = new WiFiClient();
+            _clientGiven = false;
         }
     }
 
@@ -120,16 +120,88 @@ bool HTTPClient::begin(String host, uint16_t port, String uri, bool https) {
     _port = port;
     _uri = uri;
     _protocol = (https ? "https" : "http");
-    if (!_client) {
+    if (!_client()) {
         if (https) {
             _tls();
-            //_tls()->setInsecure();
         } else {
-            _client = new WiFiClient();
+            _clientMade = new WiFiClient();
+            _clientGiven = false;
         }
     }
     return true;
 }
+
+
+
+/**
+    parsing the url for all needed parameters
+    @param client Client&
+    @param url String
+    @param https bool
+    @return success bool
+*/
+bool HTTPClient::begin(WiFiClient &client, const String& url) {
+    // check for : (http: or https:)
+    int index = url.indexOf(':');
+    if (index < 0) {
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] failed to parse protocol\n");
+        return false;
+    }
+
+    String protocol = url.substring(0, index);
+    protocol.toLowerCase();
+    if (protocol != "http" && protocol != "https") {
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unknown protocol '%s'\n", protocol.c_str());
+        return false;
+    }
+
+    _port = (protocol == "https" ? 443 : 80);
+    _clientIn = client.clone();
+    _clientGiven = true;
+    if (_clientMade) {
+        delete _clientMade;
+        _clientMade = nullptr;
+    }
+
+
+    return beginInternal(url, protocol.c_str());
+}
+
+
+/**
+    directly supply all needed parameters
+    @param client Client&
+    @param host String
+    @param port uint16_t
+    @param uri String
+    @param https bool
+    @return success bool
+*/
+bool HTTPClient::begin(WiFiClient &client, const String& host, uint16_t port, const String& uri, bool https) {
+    // Disconnect when reusing HTTPClient to talk to a different host
+    if ((_host != "") && (_host != host)) {
+        _canReuse = false;
+        disconnect(true);
+    }
+
+    _clientIn = client.clone();
+    _clientGiven = true;
+    if (_clientMade) {
+        delete _clientMade;
+        _clientMade = nullptr;
+    }
+
+    clear();
+
+    _host = host;
+    _port = port;
+    _uri = uri;
+    _protocol = (https ? "https" : "http");
+    return true;
+}
+
+
+
 
 
 bool HTTPClient::beginInternal(const String& __url, const char* expectedProtocol) {
@@ -209,9 +281,9 @@ bool HTTPClient::beginInternal(const String& __url, const char* expectedProtocol
 void HTTPClient::end(void) {
     disconnect(false);
     clear();
-    if (_client) {
-        delete _client;
-        _client = nullptr;
+    if (_clientMade) {
+        delete _clientMade;
+        _clientMade = nullptr;
         _clientTLS = false;
     }
 }
@@ -222,10 +294,10 @@ void HTTPClient::end(void) {
 */
 void HTTPClient::disconnect(bool preserveClient) {
     if (connected()) {
-        if (_client->available() > 0) {
-            DEBUG_HTTPCLIENT("[HTTP-Client][end] still data in buffer (%d), clean up.\n", _client->available());
-            while (_client->available() > 0) {
-                _client->read();
+        if (_client()->available() > 0) {
+            DEBUG_HTTPCLIENT("[HTTP-Client][end] still data in buffer (%d), clean up.\n", _client()->available());
+            while (_client()->available() > 0) {
+                _client()->read();
             }
         }
 
@@ -233,16 +305,26 @@ void HTTPClient::disconnect(bool preserveClient) {
             DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp keep open for reuse\n");
         } else {
             DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp stop\n");
-            if (_client) {
-                _client->stop();
+            if (_client()) {
+                _client()->stop();
                 if (!preserveClient) {
-                    _client = nullptr;
+                    _clientIn = nullptr;
+                    if (_clientMade) {
+                        delete _clientMade;
+                        _clientMade = nullptr;
+                    }
+                    _clientGiven = false;
                 }
             }
         }
     } else {
-        if (!preserveClient && _client) { // Also destroy _client if not connected()
-            _client = nullptr;
+        if (!preserveClient && _client()) { // Also destroy _client if not connected()
+            _clientIn = nullptr;
+            if (_clientMade) {
+                delete _clientMade;
+                _clientMade = nullptr;
+            }
+            _clientGiven = false;
         }
 
         DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp is closed\n");
@@ -254,8 +336,8 @@ void HTTPClient::disconnect(bool preserveClient) {
     @return connected status
 */
 bool HTTPClient::connected() {
-    if (_client) {
-        return (_client->connected() || (_client->available() > 0));
+    if (_client()) {
+        return (_client()->connected() || (_client()->available() > 0));
     }
     return false;
 }
@@ -317,7 +399,7 @@ void HTTPClient::setAuthorization(String auth) {
 void HTTPClient::setTimeout(uint16_t timeout) {
     _tcpTimeout = timeout;
     if (connected()) {
-        _client->setTimeout(timeout);
+        _client()->setTimeout(timeout);
     }
 }
 
@@ -493,7 +575,7 @@ int HTTPClient::sendRequest(const char * type, const uint8_t * payload, size_t s
         }
 
         // transfer all of it, with send-timeout
-        if (size && StreamConstPtr(payload, size).sendAll(_client) != size) {
+        if (size && StreamConstPtr(payload, size).sendAll(_client()) != size) {
             return returnError(HTTPC_ERROR_SEND_PAYLOAD_FAILED);
         }
 
@@ -612,7 +694,7 @@ int HTTPClient::sendRequest(const char * type, Stream * stream, size_t size) {
     }
 
     // transfer all of it, with timeout
-    size_t transferred = StreamSendSize(stream, _client, size);
+    size_t transferred = StreamSendSize(stream, _client(), size);
     if (transferred != size) {
         DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] short write, asked for %zu but got %zu failed.\n", size, transferred);
         return returnError(HTTPC_ERROR_SEND_PAYLOAD_FAILED);
@@ -643,7 +725,7 @@ const String& HTTPClient::getLocation(void) {
 */
 WiFiClient& HTTPClient::getStream(void) {
     if (connected()) {
-        return *_client;
+        return *_client();
     }
 
     DEBUG_HTTPCLIENT("[HTTP-Client] getStream: not connected\n");
@@ -657,7 +739,7 @@ WiFiClient& HTTPClient::getStream(void) {
 */
 WiFiClient* HTTPClient::getStreamPtr(void) {
     if (connected()) {
-        return _client;
+        return _client();
     }
 
     DEBUG_HTTPCLIENT("[HTTP-Client] getStreamPtr: not connected\n");
@@ -697,7 +779,7 @@ int HTTPClient::writeToPrint(Print * print) {
     if (_transferEncoding == HTTPC_TE_IDENTITY) {
         // len < 0: transfer all of it, with timeout
         // len >= 0: max:len, with timeout
-        ret = StreamSendSize(_client, print, len);
+        ret = StreamSendSize(_client(), print, len);
 
         if (len > 0 && ret != len) {
             return HTTPC_ERROR_NO_STREAM;
@@ -712,7 +794,7 @@ int HTTPClient::writeToPrint(Print * print) {
             if (!connected()) {
                 return returnError(HTTPC_ERROR_CONNECTION_LOST);
             }
-            String chunkHeader = _client->readStringUntil('\n');
+            String chunkHeader = _client()->readStringUntil('\n');
 
             if (chunkHeader.length() <= 0) {
                 return returnError(HTTPC_ERROR_READ_TIMEOUT);
@@ -729,7 +811,7 @@ int HTTPClient::writeToPrint(Print * print) {
             // data left?
             if (len > 0) {
                 // read len bytes with timeout
-                int r = StreamSendSize(_client, print, len);
+                int r = StreamSendSize(_client(), print, len);
                 if (r != len) {
                     return HTTPC_ERROR_NO_STREAM;
                 }
@@ -754,7 +836,7 @@ int HTTPClient::writeToPrint(Print * print) {
 
             // read trailing \r\n at the end of the chunk
             char buf[2];
-            auto trailing_seq_len = _client->readBytes((uint8_t*)buf, 2);
+            auto trailing_seq_len = _client()->readBytes((uint8_t*)buf, 2);
             if (trailing_seq_len != 2 || buf[0] != '\r' || buf[1] != '\n') {
                 return returnError(HTTPC_ERROR_READ_TIMEOUT);
             }
@@ -912,26 +994,26 @@ bool HTTPClient::connect(void) {
     if (_reuse && _canReuse && connected()) {
         DEBUG_HTTPCLIENT("[HTTP-Client] connect: already connected, reusing connection\n");
         // clear _client's output (all of it, no timeout)
-        while (_client->available()) {
-            _client->read();
+        while (_client()->available()) {
+            _client()->read();
         }
         return true;
     }
 
-    if (!_client) {
+    if (!_client()) {
         DEBUG_HTTPCLIENT("[HTTP-Client] connect: HTTPClient::begin was not called or returned error\n");
         return false;
     }
 
-    _client->setTimeout(_tcpTimeout);
+    _client()->setTimeout(_tcpTimeout);
 
-    if (!_client->connect(_host.c_str(), _port)) {
+    if (!_client()->connect(_host.c_str(), _port)) {
         DEBUG_HTTPCLIENT("[HTTP-Client] failed connect to %s:%u\n", _host.c_str(), _port);
         return false;
     }
 
     DEBUG_HTTPCLIENT("[HTTP-Client] connected to %s:%u\n", _host.c_str(), _port);
-    _client->setNoDelay(true);
+    _client()->setNoDelay(true);
     return connected();
 }
 
@@ -994,7 +1076,7 @@ bool HTTPClient::sendHeader(const char * type) {
     DEBUG_HTTPCLIENT("[HTTP-Client] sending request header\n-----\n%s-----\n", header.c_str());
 
     // transfer all of it, with timeout
-    return StreamConstPtr(header).sendAll(_client) == header.length();
+    return StreamConstPtr(header).sendAll(_client()) == header.length();
 }
 
 /**
@@ -1017,10 +1099,10 @@ int HTTPClient::handleHeaderResponse() {
     unsigned long lastDataTime = millis();
 
     while (connected()) {
-        size_t len = _client->available();
+        size_t len = _client()->available();
         if (len > 0) {
             int headerSeparator = -1;
-            String headerLine = _client->readStringUntil('\n');
+            String headerLine = _client()->readStringUntil('\n');
 
             lastDataTime = millis();
 
@@ -1120,7 +1202,7 @@ int HTTPClient::returnError(int error) {
         DEBUG_HTTPCLIENT("[HTTP-Client][returnError] error(%d): %s\n", error, errorToString(error).c_str());
         if (connected()) {
             DEBUG_HTTPCLIENT("[HTTP-Client][returnError] tcp stop\n");
-            _client->stop();
+            _client()->stop();
         }
     }
     return error;
