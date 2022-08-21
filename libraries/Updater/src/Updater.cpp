@@ -198,7 +198,7 @@ bool UpdaterClass::end(bool evenIfRemaining) {
 
         int binSize = _size;
         if (expectedSigLen > 0) {
-            _size -= (sigLen + sizeof(uint32_t) /* The siglen word */);
+            binSize -= (sigLen + sizeof(uint32_t) /* The siglen word */);
         }
         _hash->begin();
 #ifdef DEBUG_UPDATER
