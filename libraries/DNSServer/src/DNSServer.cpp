@@ -1,4 +1,4 @@
-#include <ESP8266WiFi.h>
+#include "WiFi.h"
 #include "DNSServer.h"
 #include <lwip/def.h>
 #include <Arduino.h>
