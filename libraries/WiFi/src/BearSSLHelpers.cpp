@@ -29,7 +29,8 @@
 #include <string.h>
 #include <Arduino.h>
 #include "StackThunk.h"
-//#include <Updater_Signing.h>
+
+#include <Updater_Signing.h>
 #ifndef ARDUINO_SIGNING
 #define ARDUINO_SIGNING 0
 #endif

@@ -243,6 +243,19 @@ void ArduinoOTAClass::_onRx() {
 void ArduinoOTAClass::_runUpdate() {
     IPAddress ota_ip = _ota_ip;
 
+    if (!LittleFS.begin()) {
+#ifdef OTA_DEBUG
+        OTA_DEBUG.println("LittleFS Begin Error");
+#endif
+        _udp_ota->append("ERR: ", 5);
+        _udp_ota->append("no filesystem", 13);
+        _udp_ota->send(ota_ip, _ota_udp_port);
+        delay(100);
+        _udp_ota->listen(IP_ADDR_ANY, _port);
+        _state = OTA_IDLE;
+        return;
+    }
+
     if (!Update.begin(_size, _cmd)) {
 #ifdef OTA_DEBUG
         OTA_DEBUG.println("Update Begin Error");
@@ -255,15 +268,6 @@ void ArduinoOTAClass::_runUpdate() {
         Update.printError(ss);
         _udp_ota->append("ERR: ", 5);
         _udp_ota->append(ss.c_str(), ss.length());
-        _udp_ota->send(ota_ip, _ota_udp_port);
-        delay(100);
-        _udp_ota->listen(IP_ADDR_ANY, _port);
-        _state = OTA_IDLE;
-        return;
-    }
-    if (!LittleFS.begin()) {
-        _udp_ota->append("ERR: ", 5);
-        _udp_ota->append("nofilesystem", 6);
         _udp_ota->send(ota_ip, _ota_udp_port);
         delay(100);
         _udp_ota->listen(IP_ADDR_ANY, _port);
