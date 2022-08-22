@@ -214,6 +214,13 @@ public:
         return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
     */
     uint8_t* macAddress(uint8_t* mac);
+    String macAddress(void) {
+        uint8_t mac[8];
+        macAddress(mac);
+        char buff[32];
+        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+        return String(buff);
+    }
 
     /*
         Get the interface IP address.
