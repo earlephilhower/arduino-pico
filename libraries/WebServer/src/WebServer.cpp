@@ -31,10 +31,6 @@
 #include "detail/RequestHandlersImpl.h"
 #include <MD5Builder.h>
 
-#define log_e(...)
-#define log_w(...)
-#define log_v(...)
-
 static const char AUTHORIZATION_HEADER[] = "Authorization";
 static const char qop_auth[] PROGMEM = "qop=auth";
 static const char qop_auth_quoted[] PROGMEM = "qop=\"auth\"";
@@ -74,6 +70,8 @@ WebServer::WebServer(int port) : HTTPServer(), _server(port)
 {
   log_v("WebServer::Webserver(port=%d)", port);
 }
+
+
 
 HTTPServer::~HTTPServer() {
   if (_currentHeaders)
