@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        chunk: [0, 1, 2, 3]
+        chunk: [0, 1, 2, 3, 4, 5]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -76,7 +76,7 @@ jobs:
         TRAVIS_BUILD_DIR: ${{ github.workspace }}
         TRAVIS_TAG: ${{ github.ref }}
         BUILD_PARITY: custom
-        mod: 4
+        mod: 6
         rem: ${{ matrix.chunk }}
       run: |
         cd pico-sdk
