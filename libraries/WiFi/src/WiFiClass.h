@@ -198,6 +198,7 @@ public:
 
     */
     void setHostname(const char* name);
+    const char *getHostname();
 
     /*
         Disconnect from the network

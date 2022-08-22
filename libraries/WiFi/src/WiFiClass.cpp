@@ -225,6 +225,9 @@ void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2) {
 void WiFiClass::setHostname(const char* name) {
     _wifi.setHostname(name);
 }
+const char *WiFiClass::getHostname() {
+    return _wifi.getHostname();
+}
 
 /*
     Disconnect from the network
