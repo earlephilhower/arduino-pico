@@ -52,6 +52,55 @@ const String HTTPClient::defaultUserAgent = defaultUserAgentPstr;
 //    return 0; // never reached, keep gcc quiet
 //}
 
+// Wrappers for ESP8266-specific Arduino API changes
+static size_t StreamSendSize(Stream *s, Print *c, int size) {
+    int sent = 0;
+    if (size < 0) {
+        size = 999999; // Transfer until read fails
+    }
+    uint32_t start = millis();
+    while ((sent < size) && (millis() - start < 5000)) {
+        int x = s->read();
+        if (x < 0) {
+            break;
+        } else if (c->write(x)) {
+            sent++;
+        } else {
+            break;
+        }
+    }
+    return sent;
+}
+
+class StreamConstPtr {
+public:
+    StreamConstPtr(const uint8_t *payload, size_t size) {
+        _payload = payload;
+        _size = size;
+    }
+    StreamConstPtr(const String& string) {
+        _payload = (const uint8_t *)string.c_str();
+        _size = string.length();
+    }
+    size_t sendAll(Client *dst) {
+        uint32_t start = millis();
+        size_t sent = 0;
+        while ((sent < _size) && (millis() - start < 5000)) {
+            size_t towrite = std::min((size_t)128, _size - sent);
+            auto wrote = dst->write(_payload, towrite);
+            if (wrote <= 0) {
+                break;
+            }
+            sent += wrote;
+            _payload += wrote;
+        }
+        return sent;
+    }
+    const uint8_t *_payload;
+    size_t _size;
+};
+
+
 void HTTPClient::clear() {
     _returnCode = 0;
     _size = -1;
@@ -513,34 +562,6 @@ int HTTPClient::sendRequest(const char * type, const String& payload) {
     return sendRequest(type, (const uint8_t *) payload.c_str(), payload.length());
 }
 
-class StreamConstPtr {
-public:
-    StreamConstPtr(const uint8_t *payload, size_t size) {
-        _payload = payload;
-        _size = size;
-    }
-    StreamConstPtr(const String& string) {
-        _payload = (const uint8_t *)string.c_str();
-        _size = string.length();
-    }
-    size_t sendAll(Client *dst) {
-        uint32_t start = millis();
-        size_t sent = 0;
-        while ((sent < _size) && (millis() - start < 5000)) {
-            size_t towrite = std::min((size_t)128, _size - sent);
-            auto wrote = dst->write(_payload, towrite);
-            if (wrote <= 0) {
-                break;
-            }
-            sent += wrote;
-            _payload += wrote;
-        }
-        return sent;
-    }
-    const uint8_t *_payload;
-    size_t _size;
-};
-
 /**
     sendRequest
     @param type const char *           "GET", "POST", ....
@@ -648,24 +669,6 @@ int HTTPClient::sendRequest(const char * type, const uint8_t * payload, size_t s
     return returnError(code);
 }
 
-size_t StreamSendSize(Stream *s, Print *c, int size) {
-    int sent = 0;
-    if (size < 0) {
-        size = 999999; // Transfer until read fails
-    }
-    uint32_t start = millis();
-    while ((sent < size) && (millis() - start < 5000)) {
-        int x = s->read();
-        if (x < 0) {
-            break;
-        } else if (c->write(x)) {
-            sent++;
-        } else {
-            break;
-        }
-    }
-    return sent;
-}
 /**
     sendRequest
     @param type const char *     "GET", "POST", ....
