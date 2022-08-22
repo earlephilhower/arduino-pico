@@ -37,7 +37,6 @@ static const char qop_auth_quoted[] PROGMEM = "qop=\"auth\"";
 static const char WWW_Authenticate[] = "WWW-Authenticate";
 static const char Content_Length[] = "Content-Length";
 
-
 HTTPServer::HTTPServer()
 : _corsEnabled(false)
 , _currentMethod(HTTP_ANY)

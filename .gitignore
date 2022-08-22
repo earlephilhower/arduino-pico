@@ -4,3 +4,4 @@ tools/dist
 docs/_build
 ota/build
 tools/libpico/build
+platform.local.txt
