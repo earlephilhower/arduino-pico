@@ -241,15 +241,15 @@ void HTTPServer::requestAuthentication(HTTPAuthMethod mode, const char* realm, c
   send(401, String(FPSTR(mimeTable[html].mimeType)), authFailMsg);
 }
 
-void HTTPServer::on(const Uri &uri, WebServer::THandlerFunction handler) {
+void HTTPServer::on(const Uri &uri, HTTPServer::THandlerFunction handler) {
   on(uri, HTTP_ANY, handler);
 }
 
-void HTTPServer::on(const Uri &uri, HTTPMethod method, WebServer::THandlerFunction fn) {
+void HTTPServer::on(const Uri &uri, HTTPMethod method, HTTPServer::THandlerFunction fn) {
   on(uri, method, fn, _fileUploadHandler);
 }
 
-void HTTPServer::on(const Uri &uri, HTTPMethod method, WebServer::THandlerFunction fn, WebServer::THandlerFunction ufn) {
+void HTTPServer::on(const Uri &uri, HTTPMethod method, HTTPServer::THandlerFunction fn, HTTPServer::THandlerFunction ufn) {
   _addRequestHandler(new FunctionRequestHandler(fn, ufn, uri, method));
 }
 
