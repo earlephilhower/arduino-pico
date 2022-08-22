@@ -42,9 +42,13 @@ static const char WWW_Authenticate[] = "WWW-Authenticate";
 static const char Content_Length[] = "Content-Length";
 
 
-WebServer::WebServer(IPAddress addr, int port)
+WebServer::WebServer(IPAddress addr, int port) : HTTPServer(), _server(addr, port)
+{
+  log_v("WebServer::WebServer(addr=%s, port=%d)", addr.toString().c_str(), port);
+}
+
+HTTPServer::HTTPServer()
 : _corsEnabled(false)
-, _server(addr, port)
 , _currentMethod(HTTP_ANY)
 , _currentVersion(0)
 , _currentStatus(HC_NONE)
@@ -63,35 +67,15 @@ WebServer::WebServer(IPAddress addr, int port)
 , _clientContentLength(0)
 , _chunked(false)
 {
-  log_v("WebServer::Webserver(addr=%s, port=%d)", addr.toString().c_str(), port);
+  log_v("HTTPServer::HTTPServer()");
 }
 
-WebServer::WebServer(int port)
-: _corsEnabled(false)
-, _server(port)
-, _currentMethod(HTTP_ANY)
-, _currentVersion(0)
-, _currentStatus(HC_NONE)
-, _statusChange(0)
-, _nullDelay(true)
-, _currentHandler(nullptr)
-, _firstHandler(nullptr)
-, _lastHandler(nullptr)
-, _currentArgCount(0)
-, _currentArgs(nullptr)
-, _postArgsLen(0)
-, _postArgs(nullptr)
-, _headerKeysCount(0)
-, _currentHeaders(nullptr)
-, _contentLength(0)
-, _clientContentLength(0)
-, _chunked(false)
+WebServer::WebServer(int port) : HTTPServer(), _server(port)
 {
   log_v("WebServer::Webserver(port=%d)", port);
 }
 
-WebServer::~WebServer() {
-  _server.close();
+HTTPServer::~HTTPServer() {
   if (_currentHeaders)
     delete[]_currentHeaders;
   RequestHandler* handler = _firstHandler;
@@ -100,6 +84,10 @@ WebServer::~WebServer() {
     delete handler;
     handler = next;
   }
+}
+
+WebServer::~WebServer() {
+  _server.close();
 }
 
 void WebServer::begin() {
@@ -114,7 +102,7 @@ void WebServer::begin(uint16_t port) {
   _server.setNoDelay(true);
 }
 
-String WebServer::_extractParam(String& authReq,const String& param,const char delimit){
+String HTTPServer::_extractParam(String& authReq,const String& param,const char delimit){
   int _begin = authReq.indexOf(param);
   if (_begin == -1)
     return "";
@@ -141,7 +129,7 @@ static String md5str(String &in){
   return String(out);
 }
 
-bool WebServer::authenticate(const char * username, const char * password){
+bool HTTPServer::authenticate(const char * username, const char * password){
   if(hasHeader(FPSTR(AUTHORIZATION_HEADER))) {
     String authReq = header(FPSTR(AUTHORIZATION_HEADER));
     if(authReq.startsWith(F("Basic"))){
@@ -229,7 +217,7 @@ bool WebServer::authenticate(const char * username, const char * password){
   return false;
 }
 
-String WebServer::_getRandomHexString() {
+String HTTPServer::_getRandomHexString() {
   char buffer[33];  // buffer to hold 32 Hex Digit + /0
   int i;
   for(i = 0; i < 4; i++) {
@@ -238,7 +226,7 @@ String WebServer::_getRandomHexString() {
   return String(buffer);
 }
 
-void WebServer::requestAuthentication(HTTPAuthMethod mode, const char* realm, const String& authFailMsg) {
+void HTTPServer::requestAuthentication(HTTPAuthMethod mode, const char* realm, const String& authFailMsg) {
   if(realm == NULL) {
     _srealm = String(F("Login Required"));
   } else {
@@ -255,23 +243,23 @@ void WebServer::requestAuthentication(HTTPAuthMethod mode, const char* realm, co
   send(401, String(FPSTR(mimeTable[html].mimeType)), authFailMsg);
 }
 
-void WebServer::on(const Uri &uri, WebServer::THandlerFunction handler) {
+void HTTPServer::on(const Uri &uri, WebServer::THandlerFunction handler) {
   on(uri, HTTP_ANY, handler);
 }
 
-void WebServer::on(const Uri &uri, HTTPMethod method, WebServer::THandlerFunction fn) {
+void HTTPServer::on(const Uri &uri, HTTPMethod method, WebServer::THandlerFunction fn) {
   on(uri, method, fn, _fileUploadHandler);
 }
 
-void WebServer::on(const Uri &uri, HTTPMethod method, WebServer::THandlerFunction fn, WebServer::THandlerFunction ufn) {
+void HTTPServer::on(const Uri &uri, HTTPMethod method, WebServer::THandlerFunction fn, WebServer::THandlerFunction ufn) {
   _addRequestHandler(new FunctionRequestHandler(fn, ufn, uri, method));
 }
 
-void WebServer::addHandler(RequestHandler* handler) {
+void HTTPServer::addHandler(RequestHandler* handler) {
     _addRequestHandler(handler);
 }
 
-void WebServer::_addRequestHandler(RequestHandler* handler) {
+void HTTPServer::_addRequestHandler(RequestHandler* handler) {
     if (!_lastHandler) {
       _firstHandler = handler;
       _lastHandler = handler;
@@ -282,12 +270,17 @@ void WebServer::_addRequestHandler(RequestHandler* handler) {
     }
 }
 
-void WebServer::serveStatic(const char* uri, FS& fs, const char* path, const char* cache_header) {
+void HTTPServer::serveStatic(const char* uri, FS& fs, const char* path, const char* cache_header) {
     _addRequestHandler(new StaticRequestHandler(fs, path, uri, cache_header));
 }
 
 void WebServer::handleClient() {
   if (_currentStatus == HC_NONE) {
+    if (_currentClient) {
+        delete _currentClient;
+        _currentClient = nullptr;
+    }
+
     WiFiClient client = _server.available();
     if (!client) {
       if (_nullDelay) {
@@ -298,37 +291,40 @@ void WebServer::handleClient() {
 
     log_v("New client: client.localIP()=%s", client.localIP().toString().c_str());
 
-    _currentClient = client;
+    _currentClient = new WiFiClient(client);
     _currentStatus = HC_WAIT_READ;
     _statusChange = millis();
   }
+  httpHandleClient();
+}
 
+void HTTPServer::httpHandleClient() {
   bool keepCurrentClient = false;
   bool callYield = false;
 
-  if (_currentClient.connected()) {
+  if (_currentClient->connected()) {
     switch (_currentStatus) {
     case HC_NONE:
       // No-op to avoid C++ compiler warning
       break;
     case HC_WAIT_READ:
       // Wait for data from client to become available
-      if (_currentClient.available()) {
+      if (_currentClient->available()) {
         if (_parseRequest(_currentClient)) {
           // because HTTP_MAX_SEND_WAIT is expressed in milliseconds,
           // it must be divided by 1000
-          _currentClient.setTimeout(HTTP_MAX_SEND_WAIT / 1000);
+          _currentClient->setTimeout(HTTP_MAX_SEND_WAIT / 1000);
           _contentLength = CONTENT_LENGTH_NOT_SET;
           _handleRequest();
 
 // Fix for issue with Chrome based browsers: https://github.com/espressif/arduino-esp32/issues/3652
-//           if (_currentClient.connected()) {
+//           if (_currentClient->connected()) {
 //             _currentStatus = HC_WAIT_CLOSE;
 //             _statusChange = millis();
 //             keepCurrentClient = true;
 //           }
         }
-      } else { // !_currentClient.available()
+      } else { // !_currentClient->available()
         if (millis() - _statusChange <= HTTP_MAX_DATA_WAIT) {
           keepCurrentClient = true;
         }
@@ -345,7 +341,7 @@ void WebServer::handleClient() {
   }
 
   if (!keepCurrentClient) {
-    _currentClient = WiFiClient();
+    _currentClient = nullptr;
     _currentStatus = HC_NONE;
     _currentUpload.reset();
   }
@@ -355,18 +351,22 @@ void WebServer::handleClient() {
   }
 }
 
-void WebServer::close() {
-  _server.close();
+void HTTPServer::httpClose() {
   _currentStatus = HC_NONE;
   if(!_headerKeysCount)
     collectHeaders(0, 0);
+}
+
+void WebServer::close() {
+  _server.close();
+  httpClose();
 }
 
 void WebServer::stop() {
   close();
 }
 
-void WebServer::sendHeader(const String& name, const String& value, bool first) {
+void HTTPServer::sendHeader(const String& name, const String& value, bool first) {
   String headerLine = name;
   headerLine += F(": ");
   headerLine += value;
@@ -380,23 +380,23 @@ void WebServer::sendHeader(const String& name, const String& value, bool first) 
   }
 }
 
-void WebServer::setContentLength(const size_t contentLength) {
+void HTTPServer::setContentLength(const size_t contentLength) {
     _contentLength = contentLength;
 }
 
-void WebServer::enableDelay(boolean value) {
+void HTTPServer::enableDelay(boolean value) {
   _nullDelay = value;
 }
 
-void WebServer::enableCORS(boolean value) {
+void HTTPServer::enableCORS(boolean value) {
   _corsEnabled = value;
 }
 
-void WebServer::enableCrossOrigin(boolean value) {
+void HTTPServer::enableCrossOrigin(boolean value) {
   enableCORS(value);
 }
 
-void WebServer::_prepareHeader(String& response, int code, const char* content_type, size_t contentLength) {
+void HTTPServer::_prepareHeader(String& response, int code, const char* content_type, size_t contentLength) {
     response = String(F("HTTP/1.")) + String(_currentVersion) + ' ';
     response += String(code);
     response += ' ';
@@ -430,7 +430,7 @@ void WebServer::_prepareHeader(String& response, int code, const char* content_t
     _responseHeaders = "";
 }
 
-void WebServer::send(int code, const char* content_type, const String& content) {
+void HTTPServer::send(int code, const char* content_type, const String& content) {
     String header;
     // Can we asume the following?
     //if(code == 200 && content.length() == 0 && _contentLength == CONTENT_LENGTH_NOT_SET)
@@ -444,15 +444,15 @@ void WebServer::send(int code, const char* content_type, const String& content) 
       sendContent(content);
 }
 
-void WebServer::send(int code, char* content_type, const String& content) {
+void HTTPServer::send(int code, char* content_type, const String& content) {
   send(code, (const char*)content_type, content);
 }
 
-void WebServer::send(int code, const String& content_type, const String& content) {
+void HTTPServer::send(int code, const String& content_type, const String& content) {
   send(code, (const char*)content_type.c_str(), content);
 }
 
-void WebServer::send(int code, const char* content_type, const char* content)
+void HTTPServer::send(int code, const char* content_type, const char* content)
 {
     const String passStr = (String)content;
     if (strlen(content) != passStr.length()) {
@@ -461,7 +461,7 @@ void WebServer::send(int code, const char* content_type, const char* content)
     send(code, content_type, passStr);
 }
 
-void WebServer::send_P(int code, PGM_P content_type, PGM_P content) {
+void HTTPServer::send_P(int code, PGM_P content_type, PGM_P content) {
     size_t contentLength = 0;
 
     if (content != NULL) {
@@ -476,7 +476,7 @@ void WebServer::send_P(int code, PGM_P content_type, PGM_P content) {
     sendContent_P(content);
 }
 
-void WebServer::send_P(int code, PGM_P content_type, PGM_P content, size_t contentLength) {
+void HTTPServer::send_P(int code, PGM_P content_type, PGM_P content, size_t contentLength) {
     String header;
     char type[64];
     memccpy_P((void*)type, (PGM_VOID_P)content_type, 0, sizeof(type));
@@ -485,11 +485,11 @@ void WebServer::send_P(int code, PGM_P content_type, PGM_P content, size_t conte
     sendContent_P(content, contentLength);
 }
 
-void WebServer::sendContent(const String& content) {
+void HTTPServer::sendContent(const String& content) {
   sendContent(content.c_str(), content.length());
 }
 
-void WebServer::sendContent(const char* content, size_t contentLength) {
+void HTTPServer::sendContent(const char* content, size_t contentLength) {
   const char * footer = "\r\n";
   if(_chunked) {
     char * chunkSize = (char *)malloc(11);
@@ -501,18 +501,18 @@ void WebServer::sendContent(const char* content, size_t contentLength) {
   }
   _currentClientWrite(content, contentLength);
   if(_chunked){
-    _currentClient.write(footer, 2);
+    _currentClient->write(footer, 2);
     if (contentLength == 0) {
       _chunked = false;
     }
   }
 }
 
-void WebServer::sendContent_P(PGM_P content) {
+void HTTPServer::sendContent_P(PGM_P content) {
   sendContent_P(content, strlen_P(content));
 }
 
-void WebServer::sendContent_P(PGM_P content, size_t size) {
+void HTTPServer::sendContent_P(PGM_P content, size_t size) {
   const char * footer = "\r\n";
   if(_chunked) {
     char * chunkSize = (char *)malloc(11);
@@ -524,7 +524,7 @@ void WebServer::sendContent_P(PGM_P content, size_t size) {
   }
   _currentClientWrite_P(content, size);
   if(_chunked){
-    _currentClient.write(footer, 2);
+    _currentClient->write(footer, 2);
     if (size == 0) {
       _chunked = false;
     }
@@ -532,7 +532,7 @@ void WebServer::sendContent_P(PGM_P content, size_t size) {
 }
 
 
-void WebServer::_streamFileCore(const size_t fileSize, const String & fileName, const String & contentType, const int code)
+void HTTPServer::_streamFileCore(const size_t fileSize, const String & fileName, const String & contentType, const int code)
 {
   using namespace mime;
   setContentLength(fileSize);
@@ -544,13 +544,13 @@ void WebServer::_streamFileCore(const size_t fileSize, const String & fileName, 
   send(code, contentType, "");
 }
 
-String WebServer::pathArg(unsigned int i) {
+String HTTPServer::pathArg(unsigned int i) {
   if (_currentHandler != nullptr)
     return _currentHandler->pathArg(i);
   return "";
 }
 
-String WebServer::arg(String name) {
+String HTTPServer::arg(String name) {
   for (int j = 0; j < _postArgsLen; ++j) {
 	    if ( _postArgs[j].key == name )
 	      return _postArgs[j].value;
@@ -562,23 +562,23 @@ String WebServer::arg(String name) {
   return "";
 }
 
-String WebServer::arg(int i) {
+String HTTPServer::arg(int i) {
   if (i < _currentArgCount)
     return _currentArgs[i].value;
   return "";
 }
 
-String WebServer::argName(int i) {
+String HTTPServer::argName(int i) {
   if (i < _currentArgCount)
     return _currentArgs[i].key;
   return "";
 }
 
-int WebServer::args() {
+int HTTPServer::args() {
   return _currentArgCount;
 }
 
-bool WebServer::hasArg(String  name) {
+bool HTTPServer::hasArg(String  name) {
   for (int j = 0; j < _postArgsLen; ++j) {
 	    if (_postArgs[j].key == name)
 	      return true;
@@ -591,7 +591,7 @@ bool WebServer::hasArg(String  name) {
 }
 
 
-String WebServer::header(String name) {
+String HTTPServer::header(String name) {
   for (int i = 0; i < _headerKeysCount; ++i) {
     if (_currentHeaders[i].key.equalsIgnoreCase(name))
       return _currentHeaders[i].value;
@@ -599,7 +599,7 @@ String WebServer::header(String name) {
   return "";
 }
 
-void WebServer::collectHeaders(const char* headerKeys[], const size_t headerKeysCount) {
+void HTTPServer::collectHeaders(const char* headerKeys[], const size_t headerKeysCount) {
   _headerKeysCount = headerKeysCount + 1;
   if (_currentHeaders)
      delete[]_currentHeaders;
@@ -610,23 +610,23 @@ void WebServer::collectHeaders(const char* headerKeys[], const size_t headerKeys
   }
 }
 
-String WebServer::header(int i) {
+String HTTPServer::header(int i) {
   if (i < _headerKeysCount)
     return _currentHeaders[i].value;
   return "";
 }
 
-String WebServer::headerName(int i) {
+String HTTPServer::headerName(int i) {
   if (i < _headerKeysCount)
     return _currentHeaders[i].key;
   return "";
 }
 
-int WebServer::headers() {
+int HTTPServer::headers() {
   return _headerKeysCount;
 }
 
-bool WebServer::hasHeader(String name) {
+bool HTTPServer::hasHeader(String name) {
   for (int i = 0; i < _headerKeysCount; ++i) {
     if ((_currentHeaders[i].key.equalsIgnoreCase(name)) &&  (_currentHeaders[i].value.length() > 0))
       return true;
@@ -634,19 +634,19 @@ bool WebServer::hasHeader(String name) {
   return false;
 }
 
-String WebServer::hostHeader() {
+String HTTPServer::hostHeader() {
   return _hostHeader;
 }
 
-void WebServer::onFileUpload(THandlerFunction fn) {
+void HTTPServer::onFileUpload(THandlerFunction fn) {
   _fileUploadHandler = fn;
 }
 
-void WebServer::onNotFound(THandlerFunction fn) {
+void HTTPServer::onNotFound(THandlerFunction fn) {
   _notFoundHandler = fn;
 }
 
-void WebServer::_handleRequest() {
+void HTTPServer::_handleRequest() {
   bool handled = false;
   if (!_currentHandler){
     log_e("request handler not found");
@@ -673,13 +673,13 @@ void WebServer::_handleRequest() {
 }
 
 
-void WebServer::_finalizeResponse() {
+void HTTPServer::_finalizeResponse() {
   if (_chunked) {
     sendContent("");
   }
 }
 
-String WebServer::_responseCodeToString(int code) {
+String HTTPServer::_responseCodeToString(int code) {
   switch (code) {
     case 100: return F("Continue");
     case 101: return F("Switching Protocols");

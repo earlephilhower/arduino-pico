@@ -16,7 +16,7 @@ using namespace mime;
 
 class FunctionRequestHandler : public RequestHandler {
 public:
-    FunctionRequestHandler(WebServer::THandlerFunction fn, WebServer::THandlerFunction ufn, const Uri &uri, HTTPMethod method)
+    FunctionRequestHandler(HTTPServer::THandlerFunction fn, HTTPServer::THandlerFunction ufn, const Uri &uri, HTTPMethod method)
     : _fn(fn)
     , _ufn(ufn)
     , _uri(uri.clone())
@@ -43,7 +43,7 @@ public:
         return true;
     }
 
-    bool handle(WebServer& server, HTTPMethod requestMethod, String requestUri) override {
+    bool handle(HTTPServer& server, HTTPMethod requestMethod, String requestUri) override {
         (void) server;
         if (!canHandle(requestMethod, requestUri))
             return false;
@@ -52,7 +52,7 @@ public:
         return true;
     }
 
-    void upload(WebServer& server, String requestUri, HTTPUpload& upload) override {
+    void upload(HTTPServer& server, String requestUri, HTTPUpload& upload) override {
         (void) server;
         (void) upload;
         if (canUpload(requestUri))
@@ -60,8 +60,8 @@ public:
     }
 
 protected:
-    WebServer::THandlerFunction _fn;
-    WebServer::THandlerFunction _ufn;
+    HTTPServer::THandlerFunction _fn;
+    HTTPServer::THandlerFunction _ufn;
     Uri *_uri;
     HTTPMethod _method;
 };
@@ -90,7 +90,7 @@ public:
         return true;
     }
 
-    bool handle(WebServer& server, HTTPMethod requestMethod, String requestUri) override {
+    bool handle(HTTPServer& server, HTTPMethod requestMethod, String requestUri) override {
         if (!canHandle(requestMethod, requestUri))
             return false;
 

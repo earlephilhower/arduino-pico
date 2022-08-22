@@ -43,14 +43,14 @@ const char * _http_method_str[] = {
 static const char Content_Type[] PROGMEM = "Content-Type";
 static const char filename[] PROGMEM = "filename";
 
-static char* readBytesWithTimeout(WiFiClient& client, size_t maxLength, size_t& dataLength, int timeout_ms)
+static char* readBytesWithTimeout(WiFiClient* client, size_t maxLength, size_t& dataLength, int timeout_ms)
 {
   char *buf = nullptr;
   dataLength = 0;
   while (dataLength < maxLength) {
     int tries = timeout_ms;
     size_t newLength;
-    while (!(newLength = client.available()) && tries--) delay(1);
+    while (!(newLength = client->available()) && tries--) delay(1);
     if (!newLength) {
       break;
     }
@@ -68,17 +68,17 @@ static char* readBytesWithTimeout(WiFiClient& client, size_t maxLength, size_t& 
       }
       buf = newBuf;
     }
-    client.readBytes(buf + dataLength, newLength);
+    client->readBytes(buf + dataLength, newLength);
     dataLength += newLength;
     buf[dataLength] = '\0';
   }
   return buf;
 }
 
-bool WebServer::_parseRequest(WiFiClient& client) {
+bool HTTPServer::_parseRequest(WiFiClient* client) {
   // Read the first line of HTTP request
-  String req = client.readStringUntil('\r');
-  client.readStringUntil('\n');
+  String req = client->readStringUntil('\r');
+  client->readStringUntil('\n');
   //reset header value
   for (int i = 0; i < _headerKeysCount; ++i) {
     _currentHeaders[i].value =String();
@@ -141,8 +141,8 @@ bool WebServer::_parseRequest(WiFiClient& client) {
     bool isEncoded = false;
     //parse headers
     while(1){
-      req = client.readStringUntil('\r');
-      client.readStringUntil('\n');
+      req = client->readStringUntil('\r');
+      client->readStringUntil('\n');
       if (req == "") break;//no moar headers
       int headerDiv = req.indexOf(':');
       if (headerDiv == -1){
@@ -178,7 +178,7 @@ bool WebServer::_parseRequest(WiFiClient& client) {
     if (!isForm){
       size_t plainLength;
       char* plainBuf = readBytesWithTimeout(client, _clientContentLength, plainLength, HTTP_MAX_POST_WAIT);
-      if (plainLength < _clientContentLength) {
+      if ((int)plainLength < (int)_clientContentLength) {
       	free(plainBuf);
       	return false;
       }
@@ -214,8 +214,8 @@ bool WebServer::_parseRequest(WiFiClient& client) {
     String headerValue;
     //parse headers
     while(1){
-      req = client.readStringUntil('\r');
-      client.readStringUntil('\n');
+      req = client->readStringUntil('\r');
+      client->readStringUntil('\n');
       if (req == "") break;//no moar headers
       int headerDiv = req.indexOf(':');
       if (headerDiv == -1){
@@ -234,7 +234,7 @@ bool WebServer::_parseRequest(WiFiClient& client) {
     }
     _parseArguments(searchStr);
   }
-  client.flush();
+  client->flush();
 
   log_v("Request: %s", url.c_str());
   log_v(" Arguments: %s", searchStr.c_str());
@@ -242,7 +242,7 @@ bool WebServer::_parseRequest(WiFiClient& client) {
   return true;
 }
 
-bool WebServer::_collectHeader(const char* headerName, const char* headerValue) {
+bool HTTPServer::_collectHeader(const char* headerName, const char* headerValue) {
   for (int i = 0; i < _headerKeysCount; i++) {
     if (_currentHeaders[i].key.equalsIgnoreCase(headerName)) {
             _currentHeaders[i].value=headerValue;
@@ -252,7 +252,7 @@ bool WebServer::_collectHeader(const char* headerName, const char* headerValue) 
   return false;
 }
 
-void WebServer::_parseArguments(String data) {
+void HTTPServer::_parseArguments(String data) {
   log_v("args: %s", data.c_str());
   if (_currentArgs)
     delete[] _currentArgs;
@@ -301,7 +301,7 @@ void WebServer::_parseArguments(String data) {
 
 }
 
-void WebServer::_uploadWriteByte(uint8_t b){
+void HTTPServer::_uploadWriteByte(uint8_t b){
   if (_currentUpload->currentSize == HTTP_UPLOAD_BUFLEN){
     if(_currentHandler && _currentHandler->canUpload(_currentUri))
       _currentHandler->upload(*this, _currentUri, *_currentUpload);
@@ -311,30 +311,30 @@ void WebServer::_uploadWriteByte(uint8_t b){
   _currentUpload->buf[_currentUpload->currentSize++] = b;
 }
 
-int WebServer::_uploadReadByte(WiFiClient& client){
-  int res = client.read();
+int HTTPServer::_uploadReadByte(WiFiClient* client){
+  int res = client->read();
   if(res < 0) {
     // keep trying until you either read a valid byte or timeout
     unsigned long startMillis = millis();
-    long timeoutIntervalMillis = client.getTimeout();
+    unsigned long timeoutIntervalMillis = client->getTimeout();
     boolean timedOut = false;
     for(;;) {
-      if (!client.connected()) return -1;
+      if (!client->connected()) return -1;
       // loosely modeled after blinkWithoutDelay pattern
-      while(!timedOut && !client.available() && client.connected()){
+      while(!timedOut && !client->available() && client->connected()){
         delay(2);
         timedOut = millis() - startMillis >= timeoutIntervalMillis;
       }
 
-      res = client.read();
+      res = client->read();
       if(res >= 0) {
         return res; // exit on a valid read
       }
       // NOTE: it is possible to get here and have all of the following
       //       assertions hold true
       //
-      //       -- client.available() > 0
-      //       -- client.connected == true
+      //       -- client->available() > 0
+      //       -- client->connected == true
       //       -- res == -1
       //
       //       a simple retry strategy overcomes this which is to say the
@@ -352,17 +352,17 @@ int WebServer::_uploadReadByte(WiFiClient& client){
   return res;
 }
 
-bool WebServer::_parseForm(WiFiClient& client, String boundary, uint32_t len){
+bool HTTPServer::_parseForm(WiFiClient* client, String boundary, uint32_t len){
   (void) len;
   log_v("Parse Form: Boundary: %s Length: %d", boundary.c_str(), len);
   String line;
   int retry = 0;
   do {
-    line = client.readStringUntil('\r');
+    line = client->readStringUntil('\r');
     ++retry;
   } while (line.length() == 0 && retry < 3);
 
-  client.readStringUntil('\n');
+  client->readStringUntil('\n');
   //start reading the form
   if (line == ("--"+boundary)){
    if(_postArgs) delete[] _postArgs;
@@ -375,8 +375,8 @@ bool WebServer::_parseForm(WiFiClient& client, String boundary, uint32_t len){
       String argFilename;
       bool argIsFile = false;
 
-      line = client.readStringUntil('\r');
-      client.readStringUntil('\n');
+      line = client->readStringUntil('\r');
+      client->readStringUntil('\n');
       if (line.length() > 19 && line.substring(0, 19).equalsIgnoreCase(F("Content-Disposition"))){
         int nameStart = line.indexOf('=');
         if (nameStart != -1){
@@ -396,19 +396,19 @@ bool WebServer::_parseForm(WiFiClient& client, String boundary, uint32_t len){
           log_v("PostArg Name: %s", argName.c_str());
           using namespace mime;
           argType = FPSTR(mimeTable[txt].mimeType);
-          line = client.readStringUntil('\r');
-          client.readStringUntil('\n');
+          line = client->readStringUntil('\r');
+          client->readStringUntil('\n');
           if (line.length() > 12 && line.substring(0, 12).equalsIgnoreCase(FPSTR(Content_Type))){
             argType = line.substring(line.indexOf(':')+2);
             //skip next line
-            client.readStringUntil('\r');
-            client.readStringUntil('\n');
+            client->readStringUntil('\r');
+            client->readStringUntil('\n');
           }
           log_v("PostArg Type: %s", argType.c_str());
           if (!argIsFile){
             while(1){
-              line = client.readStringUntil('\r');
-              client.readStringUntil('\n');
+              line = client->readStringUntil('\r');
+              client->readStringUntil('\n');
               if (line.startsWith("--"+boundary)) break;
               if (argValue.length() > 0) argValue += "\n";
               argValue += line;
@@ -496,8 +496,8 @@ readfile:
                 if(_currentHandler && _currentHandler->canUpload(_currentUri))
                   _currentHandler->upload(*this, _currentUri, *_currentUpload);
                 log_v("End File: %s Type: %s Size: %d", _currentUpload->filename.c_str(), _currentUpload->type.c_str(), _currentUpload->totalSize);
-                line = client.readStringUntil(0x0D);
-                client.readStringUntil(0x0A);
+                line = client->readStringUntil(0x0D);
+                client->readStringUntil(0x0A);
                 if (line == "--"){
                   log_v("Done Parsing POST");
                   break;
@@ -551,7 +551,7 @@ readfile:
   return false;
 }
 
-String WebServer::urlDecode(const String& text)
+String HTTPServer::urlDecode(const String& text)
 {
 	String decoded = "";
 	char temp[] = "0x00";
@@ -582,7 +582,7 @@ String WebServer::urlDecode(const String& text)
 	return decoded;
 }
 
-bool WebServer::_parseFormUploadAborted(){
+bool HTTPServer::_parseFormUploadAborted(){
   _currentUpload->status = UPLOAD_FILE_ABORTED;
   if(_currentHandler && _currentHandler->canUpload(_currentUri))
     _currentHandler->upload(*this, _currentUri, *_currentUpload);

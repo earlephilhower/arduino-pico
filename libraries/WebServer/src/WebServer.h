@@ -20,9 +20,7 @@
   Modified 8 May 2015 by Hristo Gochkov (proper post and file upload handling)
 */
 
-
-#ifndef WEBSERVER_H
-#define WEBSERVER_H
+#pragma once
 
 #include <functional>
 #include <memory>
@@ -54,6 +52,8 @@ enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 #endif
 
 class WebServer;
+class WebServerSecure;
+class HTTPServer;
 
 typedef struct {
   HTTPUploadStatus status;
@@ -71,19 +71,17 @@ namespace fs {
 class FS;
 }
 
-class WebServer
+
+class HTTPServer
 {
+    friend class WebServer;
+    friend class WebServerSecure;
 public:
-  WebServer(IPAddress addr, int port = 80);
-  WebServer(int port = 80);
-  virtual ~WebServer();
+  HTTPServer();
+  virtual ~HTTPServer();
 
-  virtual void begin();
-  virtual void begin(uint16_t port);
-  virtual void handleClient();
-
-  virtual void close();
-  void stop();
+  virtual void httpClose();
+  virtual void httpHandleClient();
 
   bool authenticate(const char * username, const char * password);
   void requestAuthentication(HTTPAuthMethod mode = BASIC_AUTH, const char* realm = NULL, const String& authFailMsg = String("") );
@@ -99,7 +97,8 @@ public:
 
   String uri() { return _currentUri; }
   HTTPMethod method() { return _currentMethod; }
-  virtual WiFiClient client() { return _currentClient; }
+//  virtual WiFiClient client() { return _currentClient; }
+  virtual WiFiClient *client() { return _currentClient; }
   HTTPUpload& upload() { return *_currentUpload; }
 
   String pathArg(unsigned int i); // get request path argument by number
@@ -147,22 +146,22 @@ public:
   template<typename T>
   size_t streamFile(T &file, const String& contentType, const int code = 200) {
     _streamFileCore(file.size(), file.name(), contentType, code);
-    return _currentClient.write(file);
+    return _currentClient->write(file);
   }
 
 protected:
-  virtual size_t _currentClientWrite(const char* b, size_t l) { return _currentClient.write( b, l ); }
-  virtual size_t _currentClientWrite_P(PGM_P b, size_t l) { return _currentClient.write( b, l ); }
+  virtual size_t _currentClientWrite(const char* b, size_t l) { return _currentClient->write( b, l ); }
+  virtual size_t _currentClientWrite_P(PGM_P b, size_t l) { return _currentClient->write( b, l ); }
   void _addRequestHandler(RequestHandler* handler);
   void _handleRequest();
   void _finalizeResponse();
-  bool _parseRequest(WiFiClient& client);
+  bool _parseRequest(WiFiClient* client);
   void _parseArguments(String data);
   static String _responseCodeToString(int code);
-  bool _parseForm(WiFiClient& client, String boundary, uint32_t len);
+  bool _parseForm(WiFiClient* client, String boundary, uint32_t len);
   bool _parseFormUploadAborted();
   void _uploadWriteByte(uint8_t b);
-  int _uploadReadByte(WiFiClient& client);
+  int _uploadReadByte(WiFiClient* client);
   void _prepareHeader(String& response, int code, const char* content_type, size_t contentLength);
   bool _collectHeader(const char* headerName, const char* headerValue);
 
@@ -178,9 +177,8 @@ protected:
   };
 
   boolean     _corsEnabled;
-  WiFiServer  _server;
 
-  WiFiClient  _currentClient;
+  WiFiClient  *_currentClient;
   HTTPMethod  _currentMethod;
   String      _currentUri;
   uint8_t     _currentVersion;
@@ -217,4 +215,48 @@ protected:
 };
 
 
-#endif //ESP8266WEBSERVER_H
+class WebServer : public HTTPServer
+{
+public:
+  WebServer(IPAddress addr, int port = 80);
+  WebServer(int port = 80);
+  virtual ~WebServer();
+
+  virtual void begin();
+  virtual void begin(uint16_t port);
+  virtual void handleClient();
+
+  virtual void close();
+  virtual void stop();
+
+  WiFiServer *getServer() {
+      return &_server;
+  }
+
+private:
+  WiFiServer _server;
+  WiFiClient _curClient;
+};
+
+class WebServerSecure : public HTTPServer
+{
+public:
+  WebServerSecure(IPAddress addr, int port = 443);
+  WebServerSecure(int port = 443);
+  virtual ~WebServerSecure();
+
+  virtual void begin();
+  virtual void begin(uint16_t port);
+  virtual void handleClient();
+
+  virtual void close();
+  virtual void stop();
+  WiFiServerSecure *getServer() {
+      return &_server;
+  }
+
+private:
+  WiFiServerSecure _server;
+  WiFiClientSecure _curClient;
+};
+
