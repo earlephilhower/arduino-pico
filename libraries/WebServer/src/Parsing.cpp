@@ -22,7 +22,7 @@
 #include <Arduino.h>
 #include "WiFiServer.h"
 #include "WiFiClient.h"
-#include "WebServer.h"
+#include "HTTPServer.h"
 #include "detail/mimetable.h"
 
 #ifndef WEBSERVER_MAX_POST_ARGS

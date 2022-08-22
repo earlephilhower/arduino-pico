@@ -1,5 +1,5 @@
 /*
-  WebServer.cpp - Dead simple web-server.
+  HTTPServer.cpp - Dead simple web-server.
   Supports only one simultaneous client, knows how to handle GET and POST.
 
   Copyright (c) 2014 Ivan Grokhotkov. All rights reserved.
@@ -26,7 +26,7 @@
 #include <libb64/cencode.h>
 #include "WiFiServer.h"
 #include "WiFiClient.h"
-#include "WebServer.h"
+#include "HTTPServer.h"
 #include "FS.h"
 #include "detail/RequestHandlersImpl.h"
 #include <MD5Builder.h>
@@ -37,11 +37,6 @@ static const char qop_auth_quoted[] PROGMEM = "qop=\"auth\"";
 static const char WWW_Authenticate[] = "WWW-Authenticate";
 static const char Content_Length[] = "Content-Length";
 
-
-WebServer::WebServer(IPAddress addr, int port) : HTTPServer(), _server(addr, port)
-{
-  log_v("WebServer::WebServer(addr=%s, port=%d)", addr.toString().c_str(), port);
-}
 
 HTTPServer::HTTPServer()
 : _corsEnabled(false)
@@ -66,13 +61,6 @@ HTTPServer::HTTPServer()
   log_v("HTTPServer::HTTPServer()");
 }
 
-WebServer::WebServer(int port) : HTTPServer(), _server(port)
-{
-  log_v("WebServer::Webserver(port=%d)", port);
-}
-
-
-
 HTTPServer::~HTTPServer() {
   if (_currentHeaders)
     delete[]_currentHeaders;
@@ -82,22 +70,6 @@ HTTPServer::~HTTPServer() {
     delete handler;
     handler = next;
   }
-}
-
-WebServer::~WebServer() {
-  _server.close();
-}
-
-void WebServer::begin() {
-  close();
-  _server.begin();
-  _server.setNoDelay(true);
-}
-
-void WebServer::begin(uint16_t port) {
-  close();
-  _server.begin(port);
-  _server.setNoDelay(true);
 }
 
 String HTTPServer::_extractParam(String& authReq,const String& param,const char delimit){
@@ -272,30 +244,6 @@ void HTTPServer::serveStatic(const char* uri, FS& fs, const char* path, const ch
     _addRequestHandler(new StaticRequestHandler(fs, path, uri, cache_header));
 }
 
-void WebServer::handleClient() {
-  if (_currentStatus == HC_NONE) {
-    if (_currentClient) {
-        delete _currentClient;
-        _currentClient = nullptr;
-    }
-
-    WiFiClient client = _server.available();
-    if (!client) {
-      if (_nullDelay) {
-        delay(1);
-      }
-      return;
-    }
-
-    log_v("New client: client.localIP()=%s", client.localIP().toString().c_str());
-
-    _currentClient = new WiFiClient(client);
-    _currentStatus = HC_WAIT_READ;
-    _statusChange = millis();
-  }
-  httpHandleClient();
-}
-
 void HTTPServer::httpHandleClient() {
   bool keepCurrentClient = false;
   bool callYield = false;
@@ -353,15 +301,6 @@ void HTTPServer::httpClose() {
   _currentStatus = HC_NONE;
   if(!_headerKeysCount)
     collectHeaders(0, 0);
-}
-
-void WebServer::close() {
-  _server.close();
-  httpClose();
-}
-
-void WebServer::stop() {
-  close();
 }
 
 void HTTPServer::sendHeader(const String& name, const String& value, bool first) {
