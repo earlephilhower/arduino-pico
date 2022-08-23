@@ -75,7 +75,9 @@ void handleRoot() {
     return;
   }
   String content = "<html><body><H2>hello, you successfully connected to esp8266!</H2><br>";
-  if (server.hasHeader("User-Agent")) { content += "the user agent used is : " + server.header("User-Agent") + "<br><br>"; }
+  if (server.hasHeader("User-Agent")) {
+    content += "the user agent used is : " + server.header("User-Agent") + "<br><br>";
+  }
   content += "You can access this page until you <a href=\"/login?DISCONNECT=YES\">disconnect</a></body></html>";
   server.send(200, "text/html", content);
 }
@@ -90,7 +92,9 @@ void handleNotFound() {
   message += "\nArguments: ";
   message += server.args();
   message += "\n";
-  for (uint8_t i = 0; i < server.args(); i++) { message += " " + server.argName(i) + ": " + server.arg(i) + "\n"; }
+  for (uint8_t i = 0; i < server.args(); i++) {
+    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
+  }
   server.send(404, "text/plain", message);
 }
 
