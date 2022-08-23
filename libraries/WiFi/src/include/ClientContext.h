@@ -374,6 +374,23 @@ public:
         return _write_from_source(ds, dl);
     }
 
+    size_t write(Stream& stream) {
+        if (!_pcb) {
+            return 0;
+        }
+        size_t sent = 0;
+        while (stream.available()) {
+            char b;
+            b = stream.read();
+            if (write(&b, 1)) {
+                sent ++;
+            } else {
+                break;
+            }
+        }
+        return sent;
+    }
+
     void keepAlive(uint16_t idle_sec = TCP_DEFAULT_KEEPALIVE_IDLE_SEC, uint16_t intv_sec = TCP_DEFAULT_KEEPALIVE_INTERVAL_SEC, uint8_t count = TCP_DEFAULT_KEEPALIVE_COUNT) {
         if (idle_sec && intv_sec && count) {
             _pcb->so_options |= SOF_KEEPALIVE;
