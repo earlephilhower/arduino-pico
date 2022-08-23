@@ -296,7 +296,7 @@ The server-side script can respond as follows: - response code 200, and send the
 .. code:: cpp
 
     WiFiClient client;
-    t_httpUpdate_return ret = HTTPUpdate.update(client, "192.168.0.2", 80, "/esp/update/arduino.php", "optional current version string here");
+    t_httpUpdate_return ret = HTTPUpdate.update(client, "192.168.0.2", 80, "/pico/update/arduino.php", "optional current version string here");
     switch(ret) {
         case HTTP_UPDATE_FAILED:
             Serial.println("[update] Update failed.");
