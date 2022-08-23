@@ -64,7 +64,7 @@ void SerialUSB::end() {
 }
 
 int SerialUSB::peek() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -74,7 +74,7 @@ int SerialUSB::peek() {
 }
 
 int SerialUSB::read() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return -1;
     }
@@ -86,7 +86,7 @@ int SerialUSB::read() {
 }
 
 int SerialUSB::available() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -95,7 +95,7 @@ int SerialUSB::available() {
 }
 
 int SerialUSB::availableForWrite() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -104,7 +104,7 @@ int SerialUSB::availableForWrite() {
 }
 
 void SerialUSB::flush() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return;
     }
@@ -117,7 +117,7 @@ size_t SerialUSB::write(uint8_t c) {
 }
 
 size_t SerialUSB::write(const uint8_t *buf, size_t length) {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -155,7 +155,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
 }
 
 SerialUSB::operator bool() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return false;
     }
