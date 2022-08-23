@@ -135,9 +135,14 @@ public:
     void send(int code, char* content_type, const String& content);
     void send(int code, const String& content_type, const String& content);
     void send(int code, const char* content_type, const char* content);
+    void send(int code, const char* content_type, const char* content, size_t contentLength);
 
     void send_P(int code, PGM_P content_type, PGM_P content);
     void send_P(int code, PGM_P content_type, PGM_P content, size_t contentLength);
+    template<typename TypeName>
+    void send(int code, PGM_P content_type, TypeName content, size_t contentLength) {
+        send(code, content_type, (const char *)content, contentLength);
+    }
 
     void enableDelay(boolean value);
     void enableCORS(boolean value = true);
@@ -149,6 +154,26 @@ public:
     void sendContent(const char* content, size_t contentLength);
     void sendContent_P(PGM_P content);
     void sendContent_P(PGM_P content, size_t size);
+
+    bool chunkedResponseModeStart_P(int code, PGM_P content_type) {
+        if (_currentVersion == 0)
+            // no chunk mode in HTTP/1.0
+        {
+            return false;
+        }
+        setContentLength(CONTENT_LENGTH_UNKNOWN);
+        send(code, content_type, "");
+        return true;
+    }
+    bool chunkedResponseModeStart(int code, const char* content_type) {
+        return chunkedResponseModeStart_P(code, content_type);
+    }
+    bool chunkedResponseModeStart(int code, const String& content_type) {
+        return chunkedResponseModeStart_P(code, content_type.c_str());
+    }
+    void chunkedResponseFinalize() {
+        sendContent("");
+    }
 
     static String urlDecode(const String& text);
 

@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "mimetable.h"
 #include "pgmspace.h"
 
@@ -30,4 +31,14 @@ const Entry mimeTable[maxType] = {
     { "", "application/octet-stream" }
 };
 
+
+arduino::String getContentType(const arduino::String& path) {
+    for (size_t i = 0; i < maxType; i++) {
+        if (path.endsWith(FPSTR(mimeTable[i].endsWith))) {
+            return arduino::String(FPSTR(mimeTable[i].mimeType));
+        }
+    }
+    // Fall-through and just return default type
+    return arduino::String(FPSTR(mimeTable[none].mimeType));
+}
 }

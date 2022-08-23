@@ -1,5 +1,7 @@
 #pragma once
 
+#include <api/String.h>
+
 namespace mime {
 
 enum type {
@@ -35,4 +37,7 @@ struct Entry {
 };
 
 extern const Entry mimeTable[maxType];
+
+arduino::String getContentType(const arduino::String& path);
+
 }

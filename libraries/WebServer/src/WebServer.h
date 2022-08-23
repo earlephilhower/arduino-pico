@@ -21,5 +21,6 @@
 #pragma once
 
 #include "WebServerTemplate.h"
+#include "detail/mimetable.h"
 
 using WebServer = WebServerTemplate<WiFiServer>;
