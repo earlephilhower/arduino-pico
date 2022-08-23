@@ -38,7 +38,7 @@ public:
                 }
                 return;
             }
-            // mutex_enter_blocking(_mutex);
+            mutex_enter_blocking(_mutex);
         }
         _acquired = true;
     }
