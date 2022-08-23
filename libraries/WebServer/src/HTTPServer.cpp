@@ -20,8 +20,6 @@
     Modified 8 May 2015 by Hristo Gochkov (proper post and file upload handling)
 */
 
-#define PGM_VOID_P void *
-
 #include <Arduino.h>
 #include <libb64/cencode.h>
 #include "WiFiServer.h"
@@ -30,6 +28,12 @@
 #include "FS.h"
 #include "detail/RequestHandlersImpl.h"
 #include <MD5Builder.h>
+
+#ifndef log_e
+#define log_e(...)
+#define log_w(...)
+#define log_v(...)
+#endif
 
 static const char AUTHORIZATION_HEADER[] = "Authorization";
 static const char qop_auth[] PROGMEM = "qop=auth";

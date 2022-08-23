@@ -25,6 +25,12 @@
 #include "HTTPServer.h"
 #include "detail/mimetable.h"
 
+#ifndef log_e
+#define log_e(...)
+#define log_w(...)
+#define log_v(...)
+#endif
+
 #ifndef WEBSERVER_MAX_POST_ARGS
 #define WEBSERVER_MAX_POST_ARGS 32
 #endif
@@ -36,9 +42,6 @@ const char * _http_method_str[] = {
     HTTP_METHOD_MAP(XX)
 #undef XX
 };
-
-#define log_e(...)
-#define log_v(...)
 
 static const char Content_Type[] PROGMEM = "Content-Type";
 static const char filename[] PROGMEM = "filename";

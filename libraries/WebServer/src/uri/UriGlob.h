@@ -1,5 +1,4 @@
-#ifndef URI_GLOB_H
-#define URI_GLOB_H
+#pragma once
 
 #include "Uri.h"
 #include <fnmatch.h>
@@ -18,5 +17,3 @@ public:
         return fnmatch(_uri.c_str(), requestUri.c_str(), 0) == 0;
     }
 };
-
-#endif

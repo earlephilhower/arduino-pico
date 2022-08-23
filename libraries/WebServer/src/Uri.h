@@ -1,5 +1,4 @@
-#ifndef URI_H
-#define URI_H
+#pragma once
 
 #include <Arduino.h>
 #include <vector>
@@ -25,5 +24,3 @@ public:
         return _uri == requestUri;
     }
 };
-
-#endif

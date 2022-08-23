@@ -1,5 +1,4 @@
-#ifndef REQUESTHANDLER_H
-#define REQUESTHANDLER_H
+#pragma once
 
 #include <vector>
 #include <assert.h>
@@ -47,5 +46,3 @@ public:
         return pathArgs[i];
     }
 };
-
-#endif //REQUESTHANDLER_H

@@ -1,5 +1,4 @@
-#ifndef REQUESTHANDLERSIMPL_H
-#define REQUESTHANDLERSIMPL_H
+#pragma once
 
 #include "RequestHandler.h"
 #include "mimetable.h"
@@ -162,6 +161,3 @@ protected:
     bool _isFile;
     size_t _baseUriLength;
 };
-
-
-#endif //REQUESTHANDLERSIMPL_H

@@ -48,16 +48,6 @@ enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 #define CONTENT_LENGTH_UNKNOWN ((size_t) -1)
 #define CONTENT_LENGTH_NOT_SET ((size_t) -2)
 
-#ifndef FPSTR
-#define FPSTR (const char *)
-#endif
-
-#ifndef log_e
-#define log_e(...)
-#define log_w(...)
-#define log_v(...)
-#endif
-
 class HTTPServer;
 
 typedef struct {

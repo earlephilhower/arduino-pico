@@ -90,6 +90,15 @@ extern bool __isFreeRTOS;
 #define HAVE_HWSERIAL1
 #define HAVE_HWSERIAL2
 
+// PSTR/etc.
+#ifndef FPSTR
+#define FPSTR (const char *)
+#endif
+
+#ifndef PGM_VOID_P
+#define PGM_VOID_P void *
+#endif
+
 #ifdef __cplusplus
 
 #ifdef USE_TINYUSB

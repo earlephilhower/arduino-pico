@@ -5,8 +5,7 @@
     For details, see http://sourceforge.net/projects/libb64
 */
 
-#ifndef BASE64_CDECODE_H
-#define BASE64_CDECODE_H
+#pragma once
 
 #define base64_decode_expected_len(n) ((n * 3) / 4)
 
@@ -34,5 +33,3 @@ int base64_decode_chars(const char* code_in, const int length_in, char* plaintex
 #ifdef __cplusplus
 } // extern "C"
 #endif
-
-#endif /* BASE64_CDECODE_H */

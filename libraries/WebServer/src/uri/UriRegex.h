@@ -1,5 +1,4 @@
-#ifndef URI_REGEX_H
-#define URI_REGEX_H
+#pragma once
 
 #include "Uri.h"
 #include <regex>
@@ -41,5 +40,3 @@ public:
         return false;
     }
 };
-
-#endif

@@ -5,8 +5,7 @@
     For details, see http://sourceforge.net/projects/libb64
 */
 
-#ifndef BASE64_CENCODE_H
-#define BASE64_CENCODE_H
+#pragma once
 
 #define BASE64_CHARS_PER_LINE 72
 
@@ -44,5 +43,3 @@ int base64_encode_chars(const char* plaintext_in, int length_in, char* code_out)
 #ifdef __cplusplus
 } // extern "C"
 #endif
-
-#endif /* BASE64_CENCODE_H */

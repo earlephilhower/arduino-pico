@@ -1,5 +1,4 @@
-#ifndef URI_BRACES_H
-#define URI_BRACES_H
+#pragma once
 
 #include "Uri.h"
 
@@ -64,5 +63,3 @@ public:
         return requestUriIndex >= requestUri.length();
     }
 };
-
-#endif
