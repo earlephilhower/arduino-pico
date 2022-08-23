@@ -33,7 +33,7 @@ values returned may not meet the most stringent random tests.  **If your
 application needs absolute bulletproof random numbers, consider using
 dedicated external hardware.**
 
-void reboot()
+void rp2040.reboot()
 ~~~~~~~~~~~~~
 Forces a hardware reboot of the Pico.
 
