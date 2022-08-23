@@ -47,7 +47,7 @@ that because there is some overhead, and there may be heap fragmentation,
 this number is an *upper bound* and you generally will only be able to allocate
 less than this returned number.
 
-int rp2040.getUsedHeap
+int rp2040.getUsedHeap()
 ~~~~~~~~~~~~~~~~~~~~~~
 Returns the number of bytes allocated out of the heap.
 
