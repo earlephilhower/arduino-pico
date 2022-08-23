@@ -10,8 +10,9 @@ OTA (Over the Air) update is the process of uploading firmware to a Pico using a
 OTA may be done using:
 
 -  `Arduino IDE <#arduino-ide>`__
--  `Web Browser <#web-browser>`__ - Coming soon
--  `HTTP Server <#http-server>`__ - Coming soon
+-  `Web Browser <#web-browser>`__
+-  `HTTP Server <#http-server>`__
+- Any other method (ZModen receive over a UART port, etc.) by using the ``Updater`` object in your sketch
 
 The Arduino IDE option is intended primarily for the software development phase. The other two options would be more useful after deployment, to provide the module with application updates either manually with a web browser, or automatically using an HTTP server.
 
@@ -48,16 +49,16 @@ Check functionality provided with the `ArduinoOTA <https://github.com/earlephilh
     void setHostname(const char* hostname);
     void setPassword(const char* password);
 
-Certain basic protection is already built in and does not require any additional coding by the developer. `ArduinoOTA <https://github.com/earlephilhower/arduino-pico/tree/master/libraries/ArduinoOTA>`__ and espota.py use `Digest-MD5 <https://en.wikipedia.org/wiki/Digest_access_authentication>`__ to authenticate uploads. Integrity of transferred data is verified on the ESP side using `MD5 <https://en.wikipedia.org/wiki/MD5>`__ checksum.
+Certain basic protection is already built in and does not require any additional coding by the developer. `ArduinoOTA <https://github.com/earlephilhower/arduino-pico/tree/master/libraries/ArduinoOTA>`__ and espota.py use `Digest-MD5 <https://en.wikipedia.org/wiki/Digest_access_authentication>`__ to authenticate uploads. Integrity of transferred data is verified on the Pico side using `MD5 <https://en.wikipedia.org/wiki/MD5>`__ checksum.
 
-Make your own risk analysis and, depending on the application, decide what library functions to implement. If required, consider implementation of other means of protection from being hacked, like exposing modules for uploads only according to a specific schedule, triggering OTA only when the user presses a dedicated “Update” button wired to the ESP, etc.
+Make your own risk analysis and, depending on the application, decide what library functions to implement. If required, consider implementation of other means of protection from being hacked, like exposing modules for uploads only according to a specific schedule, triggering OTA only when the user presses a dedicated “Update” button wired to the Pico, etc.
 
 Advanced Security - Signed Updates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While the above password-based security will dissuade casual hacking attempts, it is not highly secure.  For applications where a higher level of security is needed, cryptographically signed OTA updates can be required.  This uses SHA256 hashing in place of MD5 (which is known to be cryptographically broken) and RSA-2048 bit level public-key encryption to guarantee that only the holder of a cryptographic private key can produce signed updates accepted by the OTA update mechanisms.
 
-Signed updates are updates whose compiled binaries are signed with a private key (held by the developer) and verified with a public key (stored in the application and available for all to see).  The signing process computes a hash of the binary code, encrypts the hash with the developer's private key, and appends this encrypted hash (also called a signature) to the binary that is uploaded (via OTA, web, or HTTP server).  If the code is modified or replaced in any way by anyone except the holder of the developer's private key, the signature will not match and the ESP8266 will reject the upload.
+Signed updates are updates whose compiled binaries are signed with a private key (held by the developer) and verified with a public key (stored in the application and available for all to see).  The signing process computes a hash of the binary code, encrypts the hash with the developer's private key, and appends this encrypted hash (also called a signature) to the binary that is uploaded (via OTA, web, or HTTP server).  If the code is modified or replaced in any way by anyone except the holder of the developer's private key, the signature will not match and the Pico will reject the upload.
 
 Cryptographic signing only protects against tampering with binaries delivered via OTA.  If someone has physical access, they will always be able to flash the device over the serial port.  Signing also does not encrypt anything but the hash (so that it can't be modified), so this does not protect code inside the device: if a user has physical access they can read out your program.
 
@@ -134,7 +135,7 @@ Compile the sketch normally and, once a `.bin` file is available, sign it using 
 
 .. code:: bash
 
-    <ESP8266ArduinoPath>/tools/signing.py --mode sign --privatekey <path-to-private.key> --bin <path-to-unsigned-bin> --out <path-to-signed-binary>
+    <PicoArduinoPath>/tools/signing.py --mode sign --privatekey <path-to-private.key> --bin <path-to-unsigned-bin> --out <path-to-signed-binary>
 
 Compression
 -----------
@@ -155,14 +156,14 @@ If signing is desired, sign the gzip compressed file *after* compression.
 .. code:: bash
 
     gzip -9 sketch.bin
-    <ESP8266ArduinoPath>/tools/signing.py --mode sign --privatekey <path-to-private.key> --bin sketch.bin.gz --out sketch.bin.gz.signed
+    <PicoPath>/tools/signing.py --mode sign --privatekey <path-to-private.key> --bin sketch.bin.gz --out sketch.bin.gz.signed
 
 Safety
 ~~~~~~
 
-The OTA process consumes some of the ESP’s resources and bandwidth during upload. Then, the module is restarted and a new sketch executed. Analyse and test how this affects the functionality of the existing and new sketches.
+The OTA process consumes some of the Pico’s resources and bandwidth during upload. Then, the module is restarted and a new sketch executed. Analyse and test how this affects the functionality of the existing and new sketches.
 
-If the ESP is in a remote location and controlling some equipment, you should devote additional attention to what happens if operation of this equipment is suddenly interrupted by the update process. Therefore, decide how to put this equipment into a safe state before starting the update. For instance, your module may be controlling a garden watering system in a sequence. If this sequence is not properly shut down and a water valve is left open, the garden may be flooded.
+If the Pico is in a remote location and controlling some equipment, you should devote additional attention to what happens if operation of this equipment is suddenly interrupted by the update process. Therefore, decide how to put this equipment into a safe state before starting the update. For instance, your module may be controlling a garden watering system in a sequence. If this sequence is not properly shut down and a water valve is left open, the garden may be flooded.
 
 The following functions are provided with the `ArduinoOTA <https://github.com/earlephilhower/arduino-pico/tree/master/libraries/ArduinoOTA>`__ library and intended to handle functionality of your application during specific stages of OTA, or on an OTA error:
 
@@ -214,6 +215,125 @@ Enter the password and upload should be initiated as usual with the only differe
 You will not be prompted for a reentering the same password next time. Arduino IDE will remember it for you. You will see prompt for password only after reopening IDE, or if you change it in your sketch, upload the sketch and then try to upload it again.
 
 Please note, it is possible to reveal password entered previously in Arduino IDE, if IDE has not been closed since last upload. This can be done by enabling *Show verbose output during: upload* in *File > Preferences* and attempting to upload the module.
+
+
+
+
+Web Browser
+-----------
+
+Updates described in this chapter are done with a web browser that can be useful in the following typical scenarios:
+
+-  after application deployment if loading directly from Arduino IDE is inconvenient or not possible,
+-  after deployment if user is unable to expose module for OTA from external update server,
+-  to provide updates after deployment to small quantity of modules when setting an update server is not practicable.
+
+Requirements
+~~~~~~~~~~~~
+
+-  The Pico and the computer must be connected to the same network, or the IP of the Pico should be known if on a different network.
+
+Implementation Overview
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Updates with a web browser are implemented using ``HTTPUpdateServer`` class together with ``WebServer`` and ``LEAmDNS`` classes. The following code is required to get it work:
+
+setup()
+
+.. code:: cpp
+
+        MDNS.begin(host);
+
+        httpUpdater.setup(&httpServer);
+        httpServer.begin();
+
+        MDNS.addService("http", "tcp", 80);
+
+loop()
+
+.. code:: cpp
+
+        httpServer.handleClient();
+
+In case OTA update fails dead after entering modifications in your sketch, you can always recover module by loading it over a serial port. Then diagnose the issue with sketch using Serial Monitor. Once the issue is fixed try OTA again.
+
+
+HTTP Server
+-----------
+
+``HTTPUpdate`` class can check for updates and download a binary file from HTTP web server. It is possible to download updates from every IP or domain address on the network or Internet.
+
+Note that by default this class closes all other connections except the one used by the update, this is because the update method blocks. This means that if there's another application receiving data then TCP packets will build up in the buffer leading to out of memory errors causing the OTA update to fail. There's also a limited number of receive buffers available and all may be used up by other applications.
+
+There are some cases where you know that you won't be receiving any data but would still like to send progress updates.
+It's possible to disable the default behaviour (and keep connections open) by calling closeConnectionsOnUpdate(false).
+
+Requirements
+~~~~~~~~~~~~
+
+-  web server
+
+Arduino code
+~~~~~~~~~~~~
+
+Simple updater
+^^^^^^^^^^^^^^
+
+Simple updater downloads the file every time the function is called.
+
+.. code:: cpp
+
+    WiFiClient client;
+    HTTPUpdate.update(client, "192.168.0.2", 80, "/arduino.bin");
+
+Advanced updater
+^^^^^^^^^^^^^^^^
+
+Its possible to point the update function to a script on the server. If a version string argument is given, it will be sent to the server. The server side script can use this string to check whether an update should be performed.
+
+The server-side script can respond as follows: - response code 200, and send the firmware image, - or response code 304 to notify Pico that no update is required.
+
+.. code:: cpp
+
+    WiFiClient client;
+    t_httpUpdate_return ret = HTTPUpdate.update(client, "192.168.0.2", 80, "/esp/update/arduino.php", "optional current version string here");
+    switch(ret) {
+        case HTTP_UPDATE_FAILED:
+            Serial.println("[update] Update failed.");
+            break;
+        case HTTP_UPDATE_NO_UPDATES:
+            Serial.println("[update] Update no Update.");
+            break;
+        case HTTP_UPDATE_OK:
+            Serial.println("[update] Update ok."); // may not be called since we reboot the RP2040
+            break;
+    }
+
+TLS updater
+^^^^^^^^^^^
+
+Please read and try the examples provided with the library.
+
+Server request handling
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Simple updater
+^^^^^^^^^^^^^^
+
+For the simple updater the server only needs to deliver the binary file for update.
+
+Advanced updater
+^^^^^^^^^^^^^^^^
+
+For advanced update management a script (such as a PHP script) can run on the server side.  It will receive the following headers which it may use to choose a specific firmware file to serve:
+
+::
+        [User-Agent] => Pico-HTTP-Update
+        [x-Pico-STA-MAC] => 18:FE:AA:AA:AA:AA
+        [x-Pico-AP-MAC] => 1A:FE:AA:AA:AA:AA
+        [x-Pico-Version] => DOOR-7-g14f53a19
+        [x-Pico-Mode] => sketch
+
 
 Stream Interface
 ----------------

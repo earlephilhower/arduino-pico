@@ -147,6 +147,8 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
 * Generic Arduino USB Serial, Keyboard, and Mouse emulation
 * WiFi (Pico W)
+* HTTP client and server (WebServer)
+* SSL/TLS/HTTPS
 * Over-the-Air (OTA) upgrades
 * Filesystems (LittleFS and SD/SDFS)
 * Multicore support (setup1() and loop1())
