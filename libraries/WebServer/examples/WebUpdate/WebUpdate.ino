@@ -1,29 +1,30 @@
 /*
-  To upload through terminal you can use: curl -F "image=@firmware.bin" esp8266-webupdate.local/update
+  To upload through terminal you can use: curl -F "image=@firmware.bin" picow-webupdate.local/update
 */
 
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <WiFiClient.h>
-#include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
+#include <WebServer.h>
+#include <LEAmDNS.h>
+#include <LittleFS.h>
 
 #ifndef STASSID
 #define STASSID "your-ssid"
 #define STAPSK "your-password"
 #endif
 
-const char* host = "esp8266-webupdate";
+const char* host = "picow-webupdate";
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
-ESP8266WebServer server(80);
+WebServer server(80);
 const char* serverIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
 
 void setup(void) {
   Serial.begin(115200);
   Serial.println();
   Serial.println("Booting Sketch...");
-  WiFi.mode(WIFI_AP_STA);
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   if (WiFi.waitForConnectResult() == WL_CONNECTED) {
     MDNS.begin(host);
@@ -35,15 +36,17 @@ void setup(void) {
     "/update", HTTP_POST, []() {
       server.sendHeader("Connection", "close");
       server.send(200, "text/plain", (Update.hasError()) ? "FAIL" : "OK");
-      ESP.restart();
+      rp2040.restart();
     },
     []() {
       HTTPUpload& upload = server.upload();
       if (upload.status == UPLOAD_FILE_START) {
-        Serial.setDebugOutput(true);
         WiFiUDP::stopAll();
         Serial.printf("Update: %s\n", upload.filename.c_str());
-        uint32_t maxSketchSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;
+        FSInfo64 i;
+        LittleFS.begin();
+        LittleFS.info64(i);
+        uint32_t maxSketchSpace = i.totalBytes - i.usedBytes;
         if (!Update.begin(maxSketchSpace)) {  // start with max available size
           Update.printError(Serial);
         }
@@ -57,9 +60,7 @@ void setup(void) {
         } else {
           Update.printError(Serial);
         }
-        Serial.setDebugOutput(false);
       }
-      yield();
     });
     server.begin();
     MDNS.addService("http", "tcp", 80);
