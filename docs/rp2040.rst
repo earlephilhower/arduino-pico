@@ -34,7 +34,7 @@ application needs absolute bulletproof random numbers, consider using
 dedicated external hardware.**
 
 void rp2040.reboot()
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 Forces a hardware reboot of the Pico.
 
 Memory Information
@@ -48,7 +48,7 @@ this number is an *upper bound* and you generally will only be able to allocate
 less than this returned number.
 
 int rp2040.getUsedHeap()
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 Returns the number of bytes allocated out of the heap.
 
 int rp2040.getTotalHeap()
