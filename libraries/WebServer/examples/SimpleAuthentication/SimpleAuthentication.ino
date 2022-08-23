@@ -1,6 +1,6 @@
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <WiFiClient.h>
-#include <ESP8266WebServer.h>
+#include <WebServer.h>
 
 #ifndef STASSID
 #define STASSID "your-ssid"
@@ -10,7 +10,7 @@
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
-ESP8266WebServer server(80);
+WebServer server(80);
 
 // Check if header is present and correct
 bool is_authenticated() {
@@ -19,7 +19,7 @@ bool is_authenticated() {
     Serial.print("Found cookie: ");
     String cookie = server.header("Cookie");
     Serial.println(cookie);
-    if (cookie.indexOf("ESPSESSIONID=1") != -1) {
+    if (cookie.indexOf("PICOSESSIONID=1") != -1) {
       Serial.println("Authentication Successful");
       return true;
     }
@@ -40,7 +40,7 @@ void handleLogin() {
     Serial.println("Disconnection");
     server.sendHeader("Location", "/login");
     server.sendHeader("Cache-Control", "no-cache");
-    server.sendHeader("Set-Cookie", "ESPSESSIONID=0");
+    server.sendHeader("Set-Cookie", "PICOSESSIONID=0");
     server.send(301);
     return;
   }
@@ -48,7 +48,7 @@ void handleLogin() {
     if (server.arg("USERNAME") == "admin" && server.arg("PASSWORD") == "admin") {
       server.sendHeader("Location", "/");
       server.sendHeader("Cache-Control", "no-cache");
-      server.sendHeader("Set-Cookie", "ESPSESSIONID=1");
+      server.sendHeader("Set-Cookie", "PICOSESSIONID=1");
       server.send(301);
       Serial.println("Log in Successful");
       return;
@@ -74,7 +74,7 @@ void handleRoot() {
     server.send(301);
     return;
   }
-  String content = "<html><body><H2>hello, you successfully connected to esp8266!</H2><br>";
+  String content = "<html><body><H2>hello, you successfully connected to Pico W!</H2><br>";
   if (server.hasHeader("User-Agent")) {
     content += "the user agent used is : " + server.header("User-Agent") + "<br><br>";
   }

@@ -235,16 +235,16 @@ const char *WiFiClass::getHostname() {
     return: one value of wl_status_t enum
 */
 int WiFiClass::disconnect(void) {
-    if (_wifiHWInitted) {
-        cyw43_wifi_leave(&cyw43_state, _apMode ? 1 : 0);
-    }
-    _wifiHWInitted = false;
     if (_dhcpServer) {
         dhcp_server_deinit(_dhcpServer);
         free(_dhcpServer);
         _dhcpServer = nullptr;
     }
-    _wifi.end();
+    if (_wifiHWInitted) {
+        _wifiHWInitted = false;
+        cyw43_wifi_leave(&cyw43_state, _apMode ? 1 : 0);
+        _wifi.end();
+    }
     return WL_DISCONNECTED;
 }
 
