@@ -2,21 +2,21 @@
 
 ## What is this sketch about ?
 
-This example is a FileSystem Browser for the ESP8266 using http requests and a html/javascript frontend, 
+This example is a FileSystem Browser for the Pico using http requests and a html/javascript frontend, 
 working for all of SPIFFS, LittleFS and SDFS.
 This unified version is based on the previous examples named FSWebServer, FSBrowser and SDWebServer, Copyright (c) 2015 Hristo Gochkov. All rights reserved.
 
 ## How to use it ?
 1. Uncomment one of the `#define USE_xxx` directives in the sketch
 2. Add the credentials of your WiFi network (search for `STASSID`)
-3. Compile and upload the sketch to your ESP8266 device
+3. Compile and upload the sketch to your Pico
 4. For normal use, copy the contents of the `data` folder to the filesystem. To do so:
-- for SDFS, copy that contents (not the data folder itself, just its contents) to the root of a FAT/FAT32-formated SD card connected to the SPI port of the ESP8266
-- for SPIFFS or LittleFS, please follow the instructions at https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#uploading-files-to-file-system
+- for SDFS, copy that contents (not the data folder itself, just its contents) to the root of a FAT/FAT32-formated SD card connected to the SPI port of the Pico
+- for LittleFS, please follow the instructions at https://arduino-pico.readthedocs.io/en/latest/fs.html#uploading-files-to-the-littlefs-file-system
 5. Once the data and sketch have been uploaded, access the editor by pointing your browser to http://fsbrowser.local/edit
 
 ## Options
-If you need to free some space on the ESP filesystem, you can delete all the sample files at the root but also replace the `index.htm` file in the `data/edit` subfolder by the `index.htm.gz` file from the `extras` folder. That compressed version is not suited for learning or debugging, but will bring the total FS usage under 7KB.
+If you need to free some space on the Pico filesystem, you can delete all the sample files at the root but also replace the `index.htm` file in the `data/edit` subfolder by the `index.htm.gz` file from the `extras` folder. That compressed version is not suited for learning or debugging, but will bring the total FS usage under 7KB.
 If you want to use the browser on a an existing filesystem or don't want to perform step 4 above, you have two possibilities :
 - either upload the `index.htm` file to the filesystem by opening a command shell in the `data` folder and running the following cURL command:
 `curl -F file=@edit/index.htm;filename=/edit/index.htm fsbrowser.local/edit`
@@ -29,7 +29,7 @@ If you use the gzipped or `INCLUDE_FALLBACK_INDEX_HTM` options, please remember 
 ## Dependency
 The html page uses the [Ace.js](https://ace.c9.io/) (v1.4.9 at the time of writing) text editor which is loaded from a CDN. Consequently, internet access from your web browser is required for the FSBrowser editing feature to work as-is.
 
-If your browser has no web access (e.g. if you are connected to the ESP8266 as an access-point), you can copy the `ace.js` file to the `edit` subfolder of the ESP filesystem, along with optional plugins etc. according to your needs. A typical set might be:
+If your browser has no web access (e.g. if you are connected to the Pico as an access-point), you can copy the `ace.js` file to the `edit` subfolder of the Pico filesystem, along with optional plugins etc. according to your needs. A typical set might be:
 ```
 ace.js
 ext-keybinding_menu.js
@@ -45,14 +45,13 @@ worker-json.js
 ```
 (see https://github.com/ajaxorg/ace-builds for a full list).
 
-If `ace.js` cannot be found on the ESP filesystem either, the page will default to a plain text viewer, with a warning message.
+If `ace.js` cannot be found on the Pico filesystem either, the page will default to a plain text viewer, with a warning message.
 
 ## Notes
-- See https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html for more information on FileSystems supported by the ESP8266.
+- See https://arduino-pico.readthedocs.io/en/latest/fs.html for more information on FileSystems supported by the Pico.
 - For SDFS, if your card's CS pin is not connected to the default pin (4), uncomment the `fileSystemConfig.setCSPin(chipSelectPin);` line, specifying the GPIO the CS pin is connected to
 - `index.htm` is the default index returned if your URL does not end with a filename (works on subfolders as well)
-- Filesystem limitations apply. For example, FAT16 is limited to 8.3 filenames - see https://en.wikipedia.org/wiki/8.3_filename - SPIFFS and LittleFS also have limitations, please see https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html#spiffs-file-system-limitations
-- Directories are supported on SDFS and LittleFS. On SPIFFS, all files are at the root, although their names may contain the "/" character.
+- Directories are supported on SDFS and LittleFS.
 - The convention here is that the root of the filesystem is "/". On SPIFFS, paths not started with a slash are not supported
 - For creation, the convention is that a path ending with a "/" means create a folder, while without a "/" we create a file. Having an extension or not does not matter.
 
