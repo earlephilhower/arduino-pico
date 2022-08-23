@@ -165,19 +165,19 @@ HTTPUpdateResult HTTPUpdate::handleUpdate(HTTPClient& http, const String& curren
     http.useHTTP10(true);
     http.setTimeout(_httpClientTimeout);
     http.setFollowRedirects(_followRedirects);
-    http.setUserAgent(F("-http-Update"));
-    http.addHeader(F("x--Chip-ID"), String(rp2040.getChipID()));
-    http.addHeader(F("x--STA-MAC"), WiFi.macAddress());
-    http.addHeader(F("x--AP-MAC"), WiFi.softAPmacAddress());
+    http.setUserAgent(F("Pico-HTTP-Update"));
+    http.addHeader(F("x-Pico-Chip-ID"), String(rp2040.getChipID()));
+    http.addHeader(F("x-Pico-STA-MAC"), WiFi.macAddress());
+    http.addHeader(F("x-Pico-AP-MAC"), WiFi.softAPmacAddress());
 
     if (spiffs) {
-        http.addHeader(F("x--mode"), F("spiffs"));
+        http.addHeader(F("x-Pico-Mode"), F("spiffs"));
     } else {
-        http.addHeader(F("x--mode"), F("sketch"));
+        http.addHeader(F("x-Pico-Mode"), F("sketch"));
     }
 
     if (currentVersion && currentVersion[0] != 0x00) {
-        http.addHeader(F("x--version"), currentVersion);
+        http.addHeader(F("x-Pico-Version"), currentVersion);
     }
 
     if (_user != "" && _password != "") {

@@ -32,8 +32,21 @@ usToPIOCycles	KEYWORD2
 f_cpu	KEYWORD2
 getCycleCount	KEYWORD2
 getCycleCount64	KEYWORD2
+
+getFreeHeap	KEYWORD2
+getUsedHeap	KEYWORD2
+getTotalHeap	KEYWORD2
+
 idleOtherCore	KEYWORD2
 resumeOtherCore	KEYWORD2
+
+restartCore1	KEYWORD2
+reboot	KEYWORD2
+restart	KEYWORD2
+
+getChipID	KEYWORD2
+
+hwrand32	KEYWORD2
 
 PIOProgram	KEYWORD2
 prepare	KEYWORD2

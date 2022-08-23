@@ -27,13 +27,15 @@
 
 class CoreMutex {
 public:
-    CoreMutex(mutex_t *mutex) {
+    CoreMutex(mutex_t *mutex, bool debugEnable = true) {
         uint32_t owner;
         _mutex = mutex;
         _acquired = false;
         if (!mutex_try_enter(_mutex, &owner)) {
             if (owner == get_core_num()) { // Deadlock!
-                DEBUGCORE("CoreMutex - Deadlock detected!\n");
+                if (debugEnable) {
+                    DEBUGCORE("CoreMutex - Deadlock detected!\n");
+                }
                 return;
             }
             mutex_enter_blocking(_mutex);
