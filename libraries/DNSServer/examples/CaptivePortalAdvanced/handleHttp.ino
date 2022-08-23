@@ -12,7 +12,7 @@ void handleRoot() {
             "<meta name='viewport' content='width=device-width'>"
             "<title>CaptivePortal</title></head><body>"
             "<h1>HELLO WORLD!!</h1>");
-  if (server.client()->localIP() == apIP) {
+  if (server.client().localIP() == apIP) {
     Page += String(F("<p>You are connected through the soft AP: ")) + softAP_ssid + F("</p>");
   } else {
     Page += String(F("<p>You are connected through the wifi network: ")) + ssid + F("</p>");
@@ -27,9 +27,9 @@ void handleRoot() {
 boolean captivePortal() {
   if (!isIp(server.hostHeader()) && server.hostHeader() != (String(myHostname) + ".local")) {
     Serial.println("Request redirected to captive portal");
-    server.sendHeader("Location", String("http://") + toStringIp(server.client()->localIP()), true);
+    server.sendHeader("Location", String("http://") + toStringIp(server.client().localIP()), true);
     server.send(302, "text/plain", "");  // Empty content inhibits Content-length header so we have to close the socket ourselves.
-    server.client()->stop();              // Stop is needed because we sent no content length
+    server.client().stop();              // Stop is needed because we sent no content length
     return true;
   }
   return false;
@@ -46,7 +46,7 @@ void handleWifi() {
             "<meta name='viewport' content='width=device-width'>"
             "<title>CaptivePortal</title></head><body>"
             "<h1>Wifi config</h1>");
-  if (server.client()->localIP() == apIP) {
+  if (server.client().localIP() == apIP) {
     Page += String(F("<p>You are connected through the soft AP: ")) + softAP_ssid + F("</p>");
   } else {
     Page += String(F("<p>You are connected through the wifi network: ")) + ssid + F("</p>");
@@ -83,7 +83,7 @@ void handleWifi() {
             "<p>You may want to <a href='/'>return to the home page</a>.</p>"
             "</body></html>");
   server.send(200, "text/html", Page);
-  server.client()->stop();  // Stop is needed because we sent no content length
+  server.client().stop();  // Stop is needed because we sent no content length
 }
 
 /** Handle the WLAN save form and redirect to WLAN config page again */
@@ -96,7 +96,7 @@ void handleWifiSave() {
   server.sendHeader("Pragma", "no-cache");
   server.sendHeader("Expires", "-1");
   server.send(302, "text/plain", "");  // Empty content inhibits Content-length header so we have to close the socket ourselves.
-  server.client()->stop();              // Stop is needed because we sent no content length
+  server.client().stop();              // Stop is needed because we sent no content length
   saveCredentials();
   connect = strlen(ssid) > 0;  // Request WLAN connect with new credentials if there is a SSID
 }

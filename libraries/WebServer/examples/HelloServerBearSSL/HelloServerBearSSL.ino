@@ -125,10 +125,10 @@ void setup(void) {
 
   if (MDNS.begin("picow")) { Serial.println("MDNS responder started"); }
 
-  server.getServer()->setRSACert(new BearSSL::X509List(serverCert), new BearSSL::PrivateKey(serverKey));
+  server.getServer().setRSACert(new BearSSL::X509List(serverCert), new BearSSL::PrivateKey(serverKey));
 
   // Cache SSL sessions to accelerate the TLS handshake.
-  server.getServer()->setCache(&serverCache);
+  server.getServer().setCache(&serverCache);
 
   server.on("/", handleRoot);
 

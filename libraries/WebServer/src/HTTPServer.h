@@ -102,10 +102,6 @@ public:
     HTTPMethod method() {
         return _currentMethod;
     }
-    //  virtual WiFiClient client() { return _currentClient; }
-    virtual WiFiClient *client() {
-        return _currentClient;
-    }
     HTTPUpload& upload() {
         return *_currentUpload;
     }

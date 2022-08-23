@@ -41,13 +41,18 @@ public:
 
     virtual void close();
     virtual void stop();
-    ServerType *getServer() {
-        return &_server;
+
+    ServerType &getServer() {
+        return _server;
+    }
+
+    ClientType& client() {
+        // _currentClient is always a WiFiClient*, so we need to coerce to the proper type for SSL
+        return *(ClientType*)_currentClient;
     }
 
 private:
     ServerType _server;
-    ClientType _curClient;
 };
 
 template <typename ServerType, int DefaultPort>
