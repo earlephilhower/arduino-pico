@@ -107,7 +107,7 @@ extern "C" void yield() {
 extern mutex_t __usb_mutex;
 static TaskHandle_t __usbTask;
 static void __usb(void *param);
-volatile bool __freeRTOSinitted = false;
+extern volatile bool __freeRTOSinitted;
 void startFreeRTOS(void) {
 
     TaskHandle_t c0;
