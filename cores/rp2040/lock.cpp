@@ -43,10 +43,10 @@ auto_init_mutex(__lock___arc4random_mutex);
 #undef static
 
 extern "C" {
-extern volatile bool __freeRTOSinitted;
-typedef struct tskTaskControlBlock * TaskHandle_t;
-extern void vTaskPreemptionDisable(TaskHandle_t p) __attribute__((weak));
-extern void vTaskPreemptionEnable(TaskHandle_t p) __attribute__((weak));
+    extern volatile bool __freeRTOSinitted;
+    typedef struct tskTaskControlBlock * TaskHandle_t;
+    extern void vTaskPreemptionDisable(TaskHandle_t p) __attribute__((weak));
+    extern void vTaskPreemptionEnable(TaskHandle_t p) __attribute__((weak));
 }
 
 void __retarget_lock_init(_LOCK_T *lock) {
