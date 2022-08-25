@@ -107,7 +107,7 @@ extern "C" void yield() {
 extern mutex_t __usb_mutex;
 static TaskHandle_t __usbTask;
 static void __usb(void *param);
-
+volatile bool __freeRTOSinitted = false;
 void startFreeRTOS(void) {
 
     TaskHandle_t c0;
@@ -121,6 +121,7 @@ void startFreeRTOS(void) {
     }
 
     // Initialise and run the freeRTOS scheduler. Execution should never return here.
+    __freeRTOSinitted = true;
     vTaskStartScheduler();
 
     while (true) {
