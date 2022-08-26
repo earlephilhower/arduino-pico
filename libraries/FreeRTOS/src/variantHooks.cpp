@@ -39,10 +39,13 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
+#include "semphr.h"
 
 /*-----------------------------------------------------------*/
 
+extern void __initFreeRTOSMutexes();
 void initFreeRTOS(void) {
+    __initFreeRTOSMutexes();
 }
 
 extern void setup() __attribute__((weak));
@@ -393,3 +396,42 @@ void __USBStart() {
     xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 1, &__usbTask);
     vTaskCoreAffinitySet(__usbTask, 1 << 0);
 }
+
+
+// Interfaces for the main core to use FreeRTOS mutexes
+extern "C" {
+
+    SemaphoreHandle_t __freertos_mutex_create() {
+        return xSemaphoreCreateMutex();
+    }
+
+    SemaphoreHandle_t _freertos_recursive_mutex_create() {
+        return xSemaphoreCreateRecursiveMutex();
+    }
+
+    void __freertos_mutex_take(SemaphoreHandle_t mtx) {
+        xSemaphoreTake(mtx, portMAX_DELAY);
+    }
+
+    int __freertos_mutex_try_take(SemaphoreHandle_t mtx) {
+        return xSemaphoreTake(mtx, 0);
+    }
+
+    void __freertos_mutex_give(SemaphoreHandle_t mtx) {
+        xSemaphoreGive(mtx);
+    }
+
+    void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
+        xSemaphoreTakeRecursive(mtx, portMAX_DELAY);
+    }
+
+    int __freertos_recursive_mutex_try_take(SemaphoreHandle_t mtx) {
+        return xSemaphoreTakeRecursive(mtx, 0);
+    }
+
+    void __freertos_recursive_mutex_give(SemaphoreHandle_t mtx) {
+        xSemaphoreGiveRecursive(mtx);
+    }
+
+}
+
