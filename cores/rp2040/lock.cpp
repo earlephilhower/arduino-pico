@@ -25,6 +25,8 @@
 #include <pico/mutex.h>
 #include <sys/lock.h>
 
+#include "_freertos.h"
+
 // HACK ALERT
 // Pico-SDK defines mutex which can be at global scope, but when the auto_init_
 // macros are used they are defined as static.  Newlib needs global access to
@@ -42,34 +44,8 @@ auto_init_mutex(__lock___dd_hash_mutex);
 auto_init_mutex(__lock___arc4random_mutex);
 #undef static
 
-
 // FreeRTOS hack - Allow Newlib to use FreeRTOS mutexes which preserve TASKID which
 // is needed to support multithread
-
-// Cannot include refs to FreeRTOS's actual semaphore calls because they are implemented
-// as macros, so we have a wrapper in our variant hook to handle it.
-
-extern volatile bool __freeRTOSinitted;
-extern "C" {
-    // Note the structs below are dummy definitions and only pointers are actually used anywhere here
-    typedef struct {
-        uint32_t dummy1;
-    } __freertos_mutex;
-    typedef struct {
-        uint32_t dummy2;
-    } __freertos_recursive_mutex;
-
-    extern __freertos_mutex *__freertos_mutex_create() __attribute__((weak));
-    extern __freertos_recursive_mutex *_freertos_recursive_mutex_create() __attribute__((weak));
-
-    extern void __freertos_mutex_take(__freertos_mutex *mtx) __attribute__((weak));
-    extern int __freertos_mutex_try_take(__freertos_mutex *mtx) __attribute__((weak));
-    extern void __freertos_mutex_give(__freertos_mutex *mtx) __attribute__((weak));
-
-    extern void __freertos_recursive_mutex_take(__freertos_recursive_mutex *mtx) __attribute__((weak));
-    extern int __freertos_recursive_mutex_try_take(__freertos_recursive_mutex *mtx) __attribute__((weak));
-    extern void __freertos_recursive_mutex_give(__freertos_recursive_mutex *mtx) __attribute__((weak));
-}
 
 __freertos_recursive_mutex *__lock___sinit_recursive_mutex_freertos;
 __freertos_recursive_mutex *__lock___sfp_recursive_mutex_freertos;
@@ -122,7 +98,6 @@ static __freertos_recursive_mutex *__getFreeRTOSRecursiveMutex(_LOCK_T lock) {
     }
     return nullptr;
 }
-
 
 void __retarget_lock_init(_LOCK_T *lock) {
     if (__freeRTOSinitted) {

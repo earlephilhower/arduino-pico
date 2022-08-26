@@ -25,21 +25,22 @@
 */
 #include <stdlib.h>
 
-/* Arduino Core includes */
-#include <Arduino.h>
-#include <RP2040USB.h>
-#include "tusb.h"
-
-
-/* Raspberry PI Pico includes */
-#include <pico.h>
-#include <pico/time.h>
-
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
 #include "semphr.h"
+
+/* Arduino Core includes */
+#include <Arduino.h>
+#include <RP2040USB.h>
+#include "tusb.h"
+
+/* Raspberry PI Pico includes */
+#include <pico.h>
+#include <pico/time.h>
+
+#include "_freertos.h"
 
 /*-----------------------------------------------------------*/
 
