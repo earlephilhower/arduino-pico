@@ -17,8 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef __SD_H__
-#define __SD_H__
+#pragma once
 
 #include <Arduino.h>
 #include <FS.h>
@@ -217,6 +216,4 @@ static inline uint8_t FAT_SECOND(uint16_t fatTime) {
 
 #if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_SD)
 extern SDClass SD;
-#endif
-
 #endif

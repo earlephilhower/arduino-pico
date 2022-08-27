@@ -19,8 +19,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef EEPROM_h
-#define EEPROM_h
+#pragma once
 
 #include <stddef.h>
 #include <stdint.h>
@@ -85,6 +84,3 @@ protected:
 };
 
 extern EEPROMClass EEPROM;
-
-#endif
-

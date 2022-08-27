@@ -1,6 +1,3 @@
-#ifndef SDFS_H
-#define SDFS_H
-
 /*
     SDFS.h - file system wrapper for SdLib
     Copyright (c) 2019 Earle F. Philhower, III.  All rights reserved.
@@ -27,6 +24,9 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+#pragma once
+
 #include <limits>
 #include <assert.h>
 #include "FS.h"
@@ -508,5 +508,3 @@ protected:
 extern FS SDFS;
 using sdfs::SDFSConfig;
 #endif
-
-#endif // SDFS.h
