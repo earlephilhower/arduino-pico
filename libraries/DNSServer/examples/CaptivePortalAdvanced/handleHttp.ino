@@ -57,21 +57,23 @@ void handleWifi() {
           + String(softAP_ssid) + F("</td></tr>"
                                     "<tr><td>IP ")
           + toStringIp(WiFi.softAPIP()) + F("</td></tr>"
-                                            "</table>"
-                                            "\r\n<br />"
-                                            "<table><tr><th align='left'>WLAN config</th></tr>"
-                                            "<tr><td>SSID ")
+              "</table>"
+              "\r\n<br />"
+              "<table><tr><th align='left'>WLAN config</th></tr>"
+              "<tr><td>SSID ")
           + String(ssid) + F("</td></tr>"
                              "<tr><td>IP ")
           + toStringIp(WiFi.localIP()) + F("</td></tr>"
-                                           "</table>"
-                                           "\r\n<br />"
-                                           "<table><tr><th align='left'>WLAN list (refresh if any missing)</th></tr>");
+              "</table>"
+              "\r\n<br />"
+              "<table><tr><th align='left'>WLAN list (refresh if any missing)</th></tr>");
   Serial.println("scan start");
   int n = WiFi.scanNetworks();
   Serial.println("scan done");
   if (n > 0) {
-    for (int i = 0; i < n; i++) { Page += String(F("\r\n<tr><td>SSID ")) + WiFi.SSID(i) + ((WiFi.encryptionType(i) == ENC_TYPE_NONE) ? F(" ") : F(" *")) + F(" (") + WiFi.RSSI(i) + F(")</td></tr>"); }
+    for (int i = 0; i < n; i++) {
+      Page += String(F("\r\n<tr><td>SSID ")) + WiFi.SSID(i) + ((WiFi.encryptionType(i) == ENC_TYPE_NONE) ? F(" ") : F(" *")) + F(" (") + WiFi.RSSI(i) + F(")</td></tr>");
+    }
   } else {
     Page += F("<tr><td>No WLAN found</td></tr>");
   }
@@ -114,7 +116,9 @@ void handleNotFound() {
   message += server.args();
   message += F("\n");
 
-  for (uint8_t i = 0; i < server.args(); i++) { message += String(F(" ")) + server.argName(i) + F(": ") + server.arg(i) + F("\n"); }
+  for (uint8_t i = 0; i < server.args(); i++) {
+    message += String(F(" ")) + server.argName(i) + F(": ") + server.arg(i) + F("\n");
+  }
   server.sendHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   server.sendHeader("Pragma", "no-cache");
   server.sendHeader("Expires", "-1");
