@@ -133,7 +133,9 @@ void loop() {
         WiFi.disconnect();
       }
     }
-    if (s == WL_CONNECTED) { MDNS.update(); }
+    if (s == WL_CONNECTED) {
+      MDNS.update();
+    }
   }
   // Do work:
   // DNS

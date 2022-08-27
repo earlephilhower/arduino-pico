@@ -52,7 +52,7 @@ void loop() {
 
     // Print samples to the serial monitor or plotter
     for (int i = 0; i < samplesRead; i++) {
-      if(channels == 2) {
+      if (channels == 2) {
         Serial.print("L:");
         Serial.print(sampleBuffer[i]);
         Serial.print(" R:");
@@ -67,9 +67,9 @@ void loop() {
 }
 
 /**
- * Callback function to process the data from the PDM microphone.
- * NOTE: This callback is executed as part of an ISR.
- * Therefore using `Serial` to print messages inside this function isn't supported.
+   Callback function to process the data from the PDM microphone.
+   NOTE: This callback is executed as part of an ISR.
+   Therefore using `Serial` to print messages inside this function isn't supported.
  * */
 void onPDMdata() {
   // Query the number of available bytes

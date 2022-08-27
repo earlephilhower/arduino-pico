@@ -37,8 +37,7 @@
        detach()    - Stops an attached servos from pulsing its i/o pin.
 */
 
-#ifndef Servo_h
-#define Servo_h
+#pragma once
 
 #include <Arduino.h>
 #include <hardware/pio.h>
@@ -89,5 +88,3 @@ private:
 
 
 };
-
-#endif
