@@ -22,8 +22,7 @@
 
 */
 
-#ifndef MDNS_PRIV_H
-#define MDNS_PRIV_H
+#pragma once
 
 namespace esp8266 {
 
@@ -186,5 +185,3 @@ namespace MDNSImplementation {
 
 // Include the main header, so the submodlues only need to include this header
 #include "LEAmDNS.h"
-
-#endif  // MDNS_PRIV_H
