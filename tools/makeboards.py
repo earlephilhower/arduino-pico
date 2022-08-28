@@ -98,8 +98,14 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("# %s" % (prettyname))
     print("# -----------------------------------")
     print("%s.name=%s" % (name, prettyname))
-    print("%s.vid.0=%s" % (name, vidtouse))
-    print("%s.pid.0=%s" % (name, pidtouse))
+    usb = 0;
+    for kb in [ "0", "0x8000" ]:
+        for ms in [ "0", "0x4000" ]:
+            for jy in [ "0", "0x0100" ]:
+                thispid = int(pidtouse, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
+                print("%s.vid.%d=%s" % (name, usb, vidtouse))
+                print("%s.pid.%d=0x%04x" % (name, usb, thispid))
+                usb = usb + 1
     print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
