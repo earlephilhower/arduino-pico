@@ -173,6 +173,7 @@ Here are some links to coverage and additional tutorials for using `arduino-pico
 * Pre-release Adafruit QT Py RP2040 - https://www.youtube.com/watch?v=sfC1msqXX0I
 * Adafruit Feather RP2040 running LCD + TMP117 - https://www.youtube.com/watch?v=fKDeqZiIwHg
 * Demonstration of Servos and I2C in Korean - https://cafe.naver.com/arduinoshield/1201
+* Home Assistant Pico W integration starter project using Arduino - https://github.com/daniloc/PicoW_HomeAssistant_Starter
 
 # Contributing
 If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
