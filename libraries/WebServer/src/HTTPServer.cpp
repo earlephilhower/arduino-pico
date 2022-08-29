@@ -87,10 +87,7 @@ static String md5str(String &in) {
     char out[33] = {0};
     MD5Builder _ctx;
     uint8_t i;
-    uint8_t * _buf = (uint8_t*)malloc(16);
-    if (_buf == NULL) {
-        return String(out);
-    }
+    uint8_t _buf[16];
     memset(_buf, 0x00, 16);
     _ctx.begin();
     _ctx.add((const uint8_t *)in.c_str(), in.length());
@@ -100,7 +97,6 @@ static String md5str(String &in) {
         sprintf(out + (i * 2), "%02x", _buf[i]);
     }
     out[32] = 0;
-    free(_buf);
     return String(out);
 }
 
@@ -443,12 +439,9 @@ void HTTPServer::sendContent(const String& content) {
 void HTTPServer::sendContent(const char* content, size_t contentLength) {
     const char * footer = "\r\n";
     if (_chunked) {
-        char * chunkSize = (char *)malloc(11);
-        if (chunkSize) {
-            sprintf(chunkSize, "%x%s", contentLength, footer);
-            _currentClientWrite(chunkSize, strlen(chunkSize));
-            free(chunkSize);
-        }
+        char chunkSize[11];
+        sprintf(chunkSize, "%x%s", contentLength, footer);
+        _currentClientWrite(chunkSize, strlen(chunkSize));
     }
     _currentClientWrite(content, contentLength);
     if (_chunked) {
@@ -466,12 +459,9 @@ void HTTPServer::sendContent_P(PGM_P content) {
 void HTTPServer::sendContent_P(PGM_P content, size_t size) {
     const char * footer = "\r\n";
     if (_chunked) {
-        char * chunkSize = (char *)malloc(11);
-        if (chunkSize) {
-            sprintf(chunkSize, "%x%s", size, footer);
-            _currentClientWrite(chunkSize, strlen(chunkSize));
-            free(chunkSize);
-        }
+        char chunkSize[11];
+        sprintf(chunkSize, "%x%s", size, footer);
+        _currentClientWrite(chunkSize, strlen(chunkSize));
     }
     _currentClientWrite_P(content, size);
     if (_chunked) {
