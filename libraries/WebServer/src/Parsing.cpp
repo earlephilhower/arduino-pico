@@ -514,9 +514,8 @@ readfile:
                                     _uploadWriteByte(0x0A);
                                     _uploadWriteByte((uint8_t)('-'));
                                     _uploadWriteByte((uint8_t)('-'));
-                                    uint32_t j = 0;
-                                    while (j < i) {
-                                        _uploadWriteByte(endBuf[j++]);
+                                    for (uint32_t j = 0; j < i; j++) {
+                                        _uploadWriteByte(endBuf[j]);
                                     }
                                     goto readfile;
                                 }
@@ -545,9 +544,8 @@ readfile:
                                 _uploadWriteByte(0x0A);
                                 _uploadWriteByte((uint8_t)('-'));
                                 _uploadWriteByte((uint8_t)('-'));
-                                uint32_t i = 0;
-                                while (i < boundary.length()) {
-                                    _uploadWriteByte(endBuf[i++]);
+                                for (uint32_t j = 0; j < boundary.length(); j++) {
+                                    _uploadWriteByte(endBuf[j]);
                                 }
                                 argByte = _uploadReadByte(client);
                                 goto readfile;
