@@ -24,28 +24,39 @@
 #pragma once
 
 #include "pico/mutex.h"
+#include "_freertos.h"
 
 class CoreMutex {
 public:
     CoreMutex(mutex_t *mutex, bool debugEnable = true) {
-        uint32_t owner;
         _mutex = mutex;
         _acquired = false;
-        if (!mutex_try_enter(_mutex, &owner)) {
-            if (owner == get_core_num()) { // Deadlock!
-                if (debugEnable) {
-                    DEBUGCORE("CoreMutex - Deadlock detected!\n");
+        if (__isFreeRTOS) {
+            auto m = __get_freertos_mutex_for_ptr(mutex);
+            __freertos_mutex_take(m);
+        } else {
+            uint32_t owner;
+            if (!mutex_try_enter(_mutex, &owner)) {
+                if (owner == get_core_num()) { // Deadlock!
+                    if (debugEnable) {
+                        DEBUGCORE("CoreMutex - Deadlock detected!\n");
+                    }
+                    return;
                 }
-                return;
+                mutex_enter_blocking(_mutex);
             }
-            mutex_enter_blocking(_mutex);
         }
         _acquired = true;
     }
 
     ~CoreMutex() {
         if (_acquired) {
-            mutex_exit(_mutex);
+            if (__isFreeRTOS) {
+                auto m = __get_freertos_mutex_for_ptr(_mutex);
+                __freertos_mutex_give(m);
+            } else {
+                mutex_exit(_mutex);
+            }
         }
     }
 

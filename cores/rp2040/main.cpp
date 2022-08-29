@@ -42,6 +42,8 @@ extern void loop();
 extern void initFreeRTOS() __attribute__((weak));
 extern void startFreeRTOS() __attribute__((weak));
 bool __isFreeRTOS;
+volatile bool __freeRTOSinitted;
+
 
 // Weak empty variant initialization. May be redefined by variant files.
 void initVariant() __attribute__((weak));

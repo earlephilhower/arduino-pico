@@ -25,24 +25,28 @@
 */
 #include <stdlib.h>
 
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "timers.h"
+#include "semphr.h"
+
 /* Arduino Core includes */
 #include <Arduino.h>
 #include <RP2040USB.h>
 #include "tusb.h"
 
-
 /* Raspberry PI Pico includes */
 #include <pico.h>
 #include <pico/time.h>
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "timers.h"
+#include "_freertos.h"
 
 /*-----------------------------------------------------------*/
 
+extern void __initFreeRTOSMutexes();
 void initFreeRTOS(void) {
+    __initFreeRTOSMutexes();
 }
 
 extern void setup() __attribute__((weak));
@@ -107,7 +111,7 @@ extern "C" void yield() {
 extern mutex_t __usb_mutex;
 static TaskHandle_t __usbTask;
 static void __usb(void *param);
-
+extern volatile bool __freeRTOSinitted;
 void startFreeRTOS(void) {
 
     TaskHandle_t c0;
@@ -121,6 +125,7 @@ void startFreeRTOS(void) {
     }
 
     // Initialise and run the freeRTOS scheduler. Execution should never return here.
+    __freeRTOSinitted = true;
     vTaskStartScheduler();
 
     while (true) {
@@ -392,3 +397,42 @@ void __USBStart() {
     xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 1, &__usbTask);
     vTaskCoreAffinitySet(__usbTask, 1 << 0);
 }
+
+
+// Interfaces for the main core to use FreeRTOS mutexes
+extern "C" {
+
+    SemaphoreHandle_t __freertos_mutex_create() {
+        return xSemaphoreCreateMutex();
+    }
+
+    SemaphoreHandle_t _freertos_recursive_mutex_create() {
+        return xSemaphoreCreateRecursiveMutex();
+    }
+
+    void __freertos_mutex_take(SemaphoreHandle_t mtx) {
+        xSemaphoreTake(mtx, portMAX_DELAY);
+    }
+
+    int __freertos_mutex_try_take(SemaphoreHandle_t mtx) {
+        return xSemaphoreTake(mtx, 0);
+    }
+
+    void __freertos_mutex_give(SemaphoreHandle_t mtx) {
+        xSemaphoreGive(mtx);
+    }
+
+    void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
+        xSemaphoreTakeRecursive(mtx, portMAX_DELAY);
+    }
+
+    int __freertos_recursive_mutex_try_take(SemaphoreHandle_t mtx) {
+        return xSemaphoreTakeRecursive(mtx, 0);
+    }
+
+    void __freertos_recursive_mutex_give(SemaphoreHandle_t mtx) {
+        xSemaphoreGiveRecursive(mtx);
+    }
+
+}
+
