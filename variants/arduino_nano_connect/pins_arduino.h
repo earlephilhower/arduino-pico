@@ -94,6 +94,10 @@ static const uint8_t SCK = PIN_SPI0_SCK;
 #define SerialNina		Serial3
 #define SerialHCI		Serial2
 
+#define SERIAL3_TX              (25)
+#define SERIAL3_RX              (26)
+
+
 //#define NINA_GPIOIRQ	(21u) // LEDG pin (GPIO26 on NINA)
 #define NINA_GPIO0		(D20)   // (2u), real GPIO0 on NINA
 
@@ -117,4 +121,5 @@ static const uint8_t SCK = PIN_SPI0_SCK;
 #define CRYPTO_WIRE		Wire
 
 #define USB_MAX_POWER	(500)
+
 #include "nina_pins.h"
