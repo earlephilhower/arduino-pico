@@ -131,6 +131,7 @@ extern "C" int analogRead(pin_size_t pin) {
     }
     if (!adcInitted) {
         adc_init();
+        adcInitted = true;
     }
     adc_gpio_init(pin);
     adc_select_input(pin - minPin);
@@ -145,6 +146,7 @@ extern "C" float analogReadTemp() {
     }
     if (!adcInitted) {
         adc_init();
+        adcInitted = true;
     }
     adc_set_temp_sensor_enabled(true);
     delay(1); // Allow things to settle.  Without this, readings can be erratic
