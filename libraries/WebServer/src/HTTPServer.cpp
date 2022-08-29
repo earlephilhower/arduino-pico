@@ -43,6 +43,7 @@ static const char Content_Length[] = "Content-Length";
 
 HTTPServer::HTTPServer()
     : _corsEnabled(false)
+    , _currentClient(nullptr)
     , _currentMethod(HTTP_ANY)
     , _currentVersion(0)
     , _currentStatus(HC_NONE)
@@ -109,18 +110,15 @@ bool HTTPServer::authenticate(const char * username, const char * password) {
             char toencodeLen = strlen(username) + strlen(password) + 1;
             char *toencode = new char[toencodeLen + 1];
             if (toencode == NULL) {
-                authReq = "";
                 return false;
             }
             char *encoded = new char[base64_encode_expected_len(toencodeLen) + 1];
             if (encoded == NULL) {
-                authReq = "";
                 delete[] toencode;
                 return false;
             }
             sprintf(toencode, "%s:%s", username, password);
             if (base64_encode_chars(toencode, toencodeLen, encoded) > 0 && authReq == encoded) {
-                authReq = "";
                 delete[] toencode;
                 delete[] encoded;
                 return true;
@@ -132,7 +130,6 @@ bool HTTPServer::authenticate(const char * username, const char * password) {
             log_v("%s", authReq.c_str());
             String _username = _extractParam(authReq, F("username=\""), '\"');
             if (!_username.length() || _username != String(username)) {
-                authReq = "";
                 return false;
             }
             // extracting required parameters for RFC 2069 simpler Digest
@@ -143,11 +140,9 @@ bool HTTPServer::authenticate(const char * username, const char * password) {
             String _opaque   = _extractParam(authReq, F("opaque=\""), '\"');
 
             if ((!_realm.length()) || (!_nonce.length()) || (!_uri.length()) || (!_response.length()) || (!_opaque.length())) {
-                authReq = "";
                 return false;
             }
             if ((_opaque != _sopaque) || (_nonce != _snonce) || (_realm != _srealm)) {
-                authReq = "";
                 return false;
             }
             // parameters for the RFC 2617 newer Digest
@@ -179,11 +174,9 @@ bool HTTPServer::authenticate(const char * username, const char * password) {
             }
             log_v("The Proper response=%s", _responsecheck.c_str());
             if (_response == _responsecheck) {
-                authReq = "";
                 return true;
             }
         }
-        authReq = "";
     }
     return false;
 }
@@ -440,7 +433,7 @@ void HTTPServer::sendContent(const char* content, size_t contentLength) {
     const char * footer = "\r\n";
     if (_chunked) {
         char chunkSize[11];
-        sprintf(chunkSize, "%x%s", contentLength, footer);
+        sprintf(chunkSize, "%x%s", (unsigned int)contentLength, footer);
         _currentClientWrite(chunkSize, strlen(chunkSize));
     }
     _currentClientWrite(content, contentLength);
@@ -460,7 +453,7 @@ void HTTPServer::sendContent_P(PGM_P content, size_t size) {
     const char * footer = "\r\n";
     if (_chunked) {
         char chunkSize[11];
-        sprintf(chunkSize, "%x%s", size, footer);
+        sprintf(chunkSize, "%x%s", (unsigned int)size, footer);
         _currentClientWrite(chunkSize, strlen(chunkSize));
     }
     _currentClientWrite_P(content, size);
