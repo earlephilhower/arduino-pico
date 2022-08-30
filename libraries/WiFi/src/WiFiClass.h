@@ -133,7 +133,7 @@ public:
         uint8_t mac[8];
         macAddress(mac);
         char buff[32];
-        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
         return String(buff);
     }
 
@@ -219,7 +219,7 @@ public:
         uint8_t mac[8];
         macAddress(mac);
         char buff[32];
-        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
         return String(buff);
     }
 
