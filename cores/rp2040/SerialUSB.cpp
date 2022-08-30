@@ -79,7 +79,7 @@ int SerialUSB::read() {
         return -1;
     }
 
-    if (tud_cdc_connected() && tud_cdc_available()) {
+    if (tud_cdc_available()) {
         return tud_cdc_read_char();
     }
     return -1;
