@@ -36,7 +36,7 @@ public:
     void transfer(void *buf, size_t count) override;
 
     // Sends one buffer and receives into another, much faster! can set rx or txbuf to NULL
-    void transfer(void *txbuf, void *rxbuf, size_t count);
+    void transfer(const void *txbuf, void *rxbuf, size_t count) override;
 
     // Call before/after every complete transaction
     void beginTransaction(SPISettings settings) override;
