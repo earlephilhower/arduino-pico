@@ -38,7 +38,7 @@ template<>
 WiFiUDP* SList<WiFiUDP>::_s_first = 0;
 
 /* Constructor */
-WiFiUDP::WiFiUDP() : _ctx(0) {
+WiFiUDP::WiFiUDP() : _ctx(0), _multicast(false) {
     WiFiUDP::_add(this);
 }
 
@@ -48,6 +48,7 @@ WiFiUDP::WiFiUDP(const WiFiUDP& other) {
         _ctx->ref();
     }
     WiFiUDP::_add(this);
+    _multicast = other._multicast;
 }
 
 WiFiUDP& WiFiUDP::operator=(const WiFiUDP& rhs) {
@@ -97,6 +98,12 @@ uint8_t WiFiUDP::beginMulticast(IPAddress interfaceAddr, IPAddress multicast, ui
     return 1;
 }
 
+uint8_t WiFiUDP::beginMulticast(IPAddress addr, uint16_t port) {
+    auto ret = beginMulticast(IP_ADDR_ANY, addr, port);
+    _multicast = true;
+    return ret;
+}
+
 /*  return number of bytes available in the current packet,
     will return zero if parsePacket hasn't been called yet */
 int WiFiUDP::available() {
@@ -137,7 +144,13 @@ int WiFiUDP::beginPacket(IPAddress ip, uint16_t port) {
         _ctx = new UdpContext;
         _ctx->ref();
     }
-    return (_ctx->connect(ip, port)) ? 1 : 0;
+    auto ret = (_ctx->connect(ip, port)) ? 1 : 0;
+    if (_multicast) {
+        _ctx->setMulticastInterface(IP_ADDR_ANY);
+        _ctx->setMulticastTTL(255);
+    }
+    return ret;
+
 }
 
 int WiFiUDP::beginPacketMulticast(IPAddress multicastAddress, uint16_t port,

@@ -44,9 +44,12 @@ public:
 
     // initialize, start listening on specified port.
     // Returns 1 if successful, 0 if there are no sockets available to use
-    uint8_t begin(uint16_t port) override;
+    virtual uint8_t begin(uint16_t port) override;
+    // initialize, start listening on specified multicast IP address and port. Returns 1 if successful, 0 if there are no sockets available to use
+    virtual uint8_t beginMulticast(IPAddress, uint16_t) override;
+
     // Finish with the UDP connection
-    void stop() override;
+    virtual void stop() override;
     // join a multicast group and listen on the given port
     uint8_t beginMulticast(IPAddress interfaceAddr, IPAddress multicast, uint16_t port);
 
@@ -110,4 +113,6 @@ public:
     static void stopAll();
     static void stopAllExcept(WiFiUDP * exC);
 
+private:
+    bool _multicast;
 };
