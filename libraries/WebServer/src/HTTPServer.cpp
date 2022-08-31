@@ -385,11 +385,7 @@ void HTTPServer::send(int code, const String& content_type, const String& conten
 }
 
 void HTTPServer::send(int code, const char* content_type, const char* content) {
-    const String passStr = (String)content;
-    if (strlen(content) != passStr.length()) {
-        log_e("String cast failed.  Use send_P for long arrays");
-    }
-    send(code, content_type, passStr);
+    send(code, content_type, content, content ? strlen(content) : 0);
 }
 
 void HTTPServer::send(int code, const char* content_type, const char* content, size_t contentLength) {
@@ -409,18 +405,14 @@ void HTTPServer::send_P(int code, PGM_P content_type, PGM_P content) {
     }
 
     String header;
-    char type[64];
-    memccpy_P((void*)type, (PGM_VOID_P)content_type, 0, sizeof(type));
-    _prepareHeader(header, code, (const char*)type, contentLength);
+    _prepareHeader(header, code, content_type, contentLength);
     _currentClientWrite(header.c_str(), header.length());
     sendContent_P(content);
 }
 
 void HTTPServer::send_P(int code, PGM_P content_type, PGM_P content, size_t contentLength) {
     String header;
-    char type[64];
-    memccpy_P((void*)type, (PGM_VOID_P)content_type, 0, sizeof(type));
-    _prepareHeader(header, code, (const char*)type, contentLength);
+    _prepareHeader(header, code, content_type, contentLength);
     sendContent(header);
     sendContent_P(content, contentLength);
 }
