@@ -71,7 +71,7 @@ public:
         }
         _page = new OTACmdPage;
         memset(_page, 0, sizeof(*_page));
-        memcpy(_page->sign, "Pico OTA Format\0", sizeof(_page->sign));
+        memcpy(_page->sign, "Pico OTA", sizeof(_page->sign));
         _page->count = 0;
     }
 
