@@ -141,13 +141,13 @@ void SPIClassRP2040::transfer(void *buf, size_t count) {
     DEBUGSPI("SPI::transfer completed\n");
 }
 
-void SPIClassRP2040::transfer(void *txbuf, void *rxbuf, size_t count) {
+void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
     if (!_initted) {
         return;
     }
 
     DEBUGSPI("SPI::transfer(%p, %p, %d)\n", txbuf, rxbuf, count);
-    uint8_t *txbuff = reinterpret_cast<uint8_t *>(txbuf);
+    const uint8_t *txbuff = reinterpret_cast<const uint8_t *>(txbuf);
     uint8_t *rxbuff = reinterpret_cast<uint8_t *>(rxbuf);
 
     // MSB version is easy!

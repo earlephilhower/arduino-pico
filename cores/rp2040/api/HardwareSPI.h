@@ -110,6 +110,19 @@ class HardwareSPI
     virtual uint16_t transfer16(uint16_t data) = 0;
     virtual void transfer(void *buf, size_t count) = 0;
 
+    // New transfer API.  If either send or recv == nullptr then ignore it
+    virtual void transfer(const void *send, void *recv, size_t count) {
+        const uint8_t *out = (const uint8_t *)send;
+        uint8_t *in = (uint8_t *)recv;
+        for (size_t i = 0; i < count; i++) {
+            uint8_t t = out ? *(out++) : 0xff;
+            t = transfer(t);
+            if (in) {
+                *(in++) = t;
+            }
+        }
+    }
+
     // Transaction Functions
     virtual void usingInterrupt(int interruptNumber) = 0;
     virtual void notUsingInterrupt(int interruptNumber) = 0;
