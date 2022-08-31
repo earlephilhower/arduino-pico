@@ -3,6 +3,7 @@
 
 #include <FS.h>
 #include <LittleFS.h>
+#include <SDFS.h>
 
 // Choose the filesystem to test
 // WARNING:  The filesystem will be formatted at the start of the test!
