@@ -85,6 +85,10 @@ public:
     // IRQ callback
     void onIRQ();
 
+    // Disallow copy or move, this object corresponds to a specific hardware device
+    TwoWire(const TwoWire&) = delete;
+    TwoWire& operator=(const TwoWire&) = delete;
+
 private:
     i2c_inst_t *_i2c;
     pin_size_t _sda;

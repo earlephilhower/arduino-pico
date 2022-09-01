@@ -66,6 +66,10 @@ public:
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
     void _handleIRQ(bool inIRQ = true);
 
+    // Disallow copy or move, this object corresponds to a specific hardware device
+    SerialUART(const SerialUART&) = delete;
+    SerialUART& operator=(const SerialUART&) = delete;
+
 private:
     bool _running = false;
     uart_inst_t *_uart;

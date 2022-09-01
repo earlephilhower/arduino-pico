@@ -70,6 +70,10 @@ public:
     virtual void attachInterrupt() override { /* noop */ }
     virtual void detachInterrupt() override { /* noop */ }
 
+    // Disallow copy or move, this object corresponds to a specific hardware device
+    SPIClassRP2040(const SPIClassRP2040&) = delete;
+    SPIClassRP2040& operator=(const SPIClassRP2040&) = delete;
+
 private:
     spi_cpol_t cpol();
     spi_cpha_t cpha();

@@ -44,6 +44,10 @@ public:
     using Print::write;
     operator bool() override;
 
+    // Disallow copy or move, this object corresponds to a specific hardware device
+    SerialUSB(const SerialUSB&) = delete;
+    SerialUSB& operator=(const SerialUSB&) = delete;
+
 private:
     bool _running = false;
 };
