@@ -1,5 +1,5 @@
 /*
-    DNSServer.cwhcpp - Simple DNS server for the Pico
+    DNSServer.h - Simple DNS server for the Pico
     Modified 2022 Earle F. Philhower, III.  All rights reserved.
 
     Taken from the ESP8266 core libraries, (c) various authors.
