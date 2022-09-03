@@ -44,6 +44,7 @@ target_compile_definitions(ota PUBLIC
         LFS_NO_MALLOC=1
         PICO_PANIC_FUNCTION=
         PICO_TIME_DEFAULT_ALARM_POOL_DISABLED=1
+        PICO_NO_BINARY_INFO=1
 )
 
 target_compile_options(ota PUBLIC
