@@ -1,6 +1,6 @@
 {
   "name": "framework-arduinopico",
-  "version": "1.20501.0",
+  "version": "1.20502.0",
   "description": "Arduino Wiring-based Framework (RPi Pico RP2040)",
   "keywords": [
     "framework",
