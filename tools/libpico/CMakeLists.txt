@@ -31,6 +31,7 @@ target_compile_definitions(pico PUBLIC
         PICO_RP2040_B0_SUPPORTED=1
         PICO_RP2040_B1_SUPPORTED=1
         PICO_RP2040_B2_SUPPORTED=1
+        PICO_NO_BINARY_INFO=1
 )
 
 target_compile_options(pico PUBLIC

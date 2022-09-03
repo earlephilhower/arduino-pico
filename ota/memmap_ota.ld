@@ -84,15 +84,6 @@ SECTIONS
     } > FLASH
     __exidx_end = .;
 
-    /* Machine inspectable binary information */
-    . = ALIGN(4);
-    __binary_info_start = .;
-    .binary_info :
-    {
-        KEEP(*(.binary_info.keep.*))
-        *(.binary_info.*)
-    } > FLASH
-    __binary_info_end = .;
     . = ALIGN(4);
 
     /* Vector table goes first in RAM, to avoid large alignment hole */
