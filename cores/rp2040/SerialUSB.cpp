@@ -70,6 +70,7 @@ int SerialUSB::peek() {
     }
 
     uint8_t c;
+    tud_task();
     return tud_cdc_peek(&c) ? (int) c : -1;
 }
 
@@ -79,6 +80,7 @@ int SerialUSB::read() {
         return -1;
     }
 
+    tud_task();
     if (tud_cdc_available()) {
         return tud_cdc_read_char();
     }
@@ -91,6 +93,7 @@ int SerialUSB::available() {
         return 0;
     }
 
+    tud_task();
     return tud_cdc_available();
 }
 
@@ -100,6 +103,7 @@ int SerialUSB::availableForWrite() {
         return 0;
     }
 
+    tud_task();
     return tud_cdc_write_available();
 }
 
@@ -110,6 +114,7 @@ void SerialUSB::flush() {
     }
 
     tud_cdc_write_flush();
+    tud_task();
 }
 
 size_t SerialUSB::write(uint8_t c) {
@@ -151,6 +156,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
         // reset our timeout
         last_avail_time = 0;
     }
+    tud_task();
     return written;
 }
 
