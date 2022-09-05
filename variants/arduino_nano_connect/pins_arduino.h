@@ -92,7 +92,10 @@ static const uint8_t SCK = PIN_SPI0_SCK;
 
 #define NINA_RESETN		(D24)
 #define SerialNina		Serial3
-#define SerialHCI		Serial2
+#define SerialHCI		  Serial2
+
+#define SERIAL3_TX              (D25)
+#define SERIAL3_RX              (D26)
 
 //#define NINA_GPIOIRQ	(21u) // LEDG pin (GPIO26 on NINA)
 #define NINA_GPIO0		(D20)   // (2u), real GPIO0 on NINA
