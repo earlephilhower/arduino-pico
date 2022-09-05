@@ -90,9 +90,9 @@ static const uint8_t SCK = PIN_SPI0_SCK;
 
 //Nina support
 
-#define NINA_RESETN   (D24)
-#define SerialNina    Serial3
-#define SerialHCI     Serial2
+#define NINA_RESETN		(D24)
+#define SerialNina		Serial3
+#define SerialHCI		Serial2
 
 #define SERIAL3_TX              (D25)
 #define SERIAL3_RX              (D26)
