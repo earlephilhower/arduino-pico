@@ -80,3 +80,8 @@ protected:
     uint32_t _reader;
     uint8_t  *_queue;
 };
+
+#ifdef ARDUINO_NANO_RP2040_CONNECT
+// NINA updates
+extern SerialPIO Serial3;
+#endif

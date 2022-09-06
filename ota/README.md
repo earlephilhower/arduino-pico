@@ -12,6 +12,6 @@ Should a power failure happen, as long as it was not in the middle of writing a 
 
 When the copy is completed, the command file's contents are erased so that on a reboot it won't attempt to write the same firmware over and over.  It then reboots the chip (and re-runs the potentially new bootloader).
 
-If there is no special file, or its contents don't have a proper checksum, the bootloaer simply adjusts the ARM internal vector pointers and jumps to the main application.
+If there is no special file, or its contents don't have a proper checksum, the bootloader simply adjusts the ARM internal vector pointers and jumps to the main application.
 
 The files in the LittleFS filesystem can come over ``WiFi``, over an ``Ethernet`` object, or even over a serial port.

@@ -71,6 +71,7 @@ private:
     uart_inst_t *_uart;
     pin_size_t _tx, _rx;
     pin_size_t _rts, _cts;
+    enum gpio_function _fcnTx, _fcnRx, _fcnRts, _fcnCts;
     int _baud;
     mutex_t _mutex;
     bool _polling = false;
