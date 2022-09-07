@@ -24,7 +24,7 @@
 #define configUSE_COUNTING_SEMAPHORES	1
 #define configUSE_QUEUE_SETS			1
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
-#define configSUPPORT_STATIC_ALLOCATION 0
+#define configSUPPORT_STATIC_ALLOCATION 1
 #define configSTACK_DEPTH_TYPE			uint32_t
 #define configUSE_TASK_PREEMPTION_DISABLE 1
 
