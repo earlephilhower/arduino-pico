@@ -807,7 +807,7 @@ int HTTPClient::writeToPrint(Print * print) {
             DEBUG_HTTPCLIENT("[HTTP-Client] chunk header: '%s'\n", chunkHeader.c_str());
 
             // read size of chunk
-            len = (uint32_t) strtol((const char *) chunkHeader.c_str(), NULL, 16);
+            len = (uint32_t) strtol((const char *) chunkHeader.c_str(), nullptr, 16);
             size += len;
             DEBUG_HTTPCLIENT("[HTTP-Client] read chunk len: %d\n", len);
 

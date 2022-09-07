@@ -59,10 +59,10 @@ public:
     void setHostname(const char *hostname);
     String getHostname();
 
-    //Sets the password that will be required for OTA. Default NULL
+    //Sets the password that will be required for OTA. Default nullptr
     void setPassword(const char *password);
 
-    //Sets the password as above but in the form MD5(password). Default NULL
+    //Sets the password as above but in the form MD5(password). Default nullptr
     void setPasswordHash(const char *password);
 
     //Sets if the device should be rebooted after successful update. Default true

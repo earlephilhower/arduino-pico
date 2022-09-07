@@ -112,7 +112,7 @@ extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, co
 #endif
     if (netif->flags & NETIF_FLAG_LINK_UP) {
         struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
-        if (p != NULL) {
+        if (p != nullptr) {
             pbuf_take(p, buf, len);
             if (netif->input(p, netif) != ERR_OK) {
                 pbuf_free(p);

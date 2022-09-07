@@ -30,7 +30,7 @@ public:
     WiFiMulti();
     ~WiFiMulti();
 
-    bool addAP(const char *ssid, const char *pass = NULL);
+    bool addAP(const char *ssid, const char *pass = nullptr);
 
     uint8_t run(uint32_t to = 10000);
 

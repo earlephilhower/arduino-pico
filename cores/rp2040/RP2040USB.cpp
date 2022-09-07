@@ -289,7 +289,7 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
         len = 1;
     } else {
         if (index >= sizeof(usbd_desc_str) / sizeof(usbd_desc_str[0])) {
-            return NULL;
+            return nullptr;
         }
         const char *str = usbd_desc_str[index];
         for (len = 0; len < DESC_STR_MAX - 1 && str[len]; ++len) {
@@ -308,7 +308,7 @@ static void usb_irq() {
     // if the mutex is already owned, then we are in user code
     // in this file which will do a tud_task itself, so we'll just do nothing
     // until the next tick; we won't starve
-    if (mutex_try_enter(&__usb_mutex, NULL)) {
+    if (mutex_try_enter(&__usb_mutex, nullptr)) {
         tud_task();
         mutex_exit(&__usb_mutex);
     }
@@ -338,7 +338,7 @@ void __USBStart() {
     irq_set_exclusive_handler(__usb_task_irq, usb_irq);
     irq_set_enabled(__usb_task_irq, true);
 
-    add_alarm_in_us(USB_TASK_INTERVAL, timer_task, NULL, true);
+    add_alarm_in_us(USB_TASK_INTERVAL, timer_task, nullptr, true);
 }
 
 

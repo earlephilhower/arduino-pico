@@ -125,7 +125,7 @@ public:
     }
 
     // Return an error code and possibly a text string in a passed-in buffer with last SSL failure
-    int getLastSSLError(char *dest = NULL, size_t len = 0);
+    int getLastSSLError(char *dest = nullptr, size_t len = 0);
 
     // Attach a preconfigured certificate store
     void setCertStore(CertStoreBase *certStore) {
@@ -291,7 +291,7 @@ private:
     const PublicKey *_knownkey;
     unsigned _knownkey_usages;
 
-    // Custom cipher list pointer or NULL if default
+    // Custom cipher list pointer or nullptr if default
     std::shared_ptr<uint16_t> _cipher_list;
     uint8_t _cipher_cnt;
 
@@ -490,7 +490,7 @@ public:
     }
 
     // Return an error code and possibly a text string in a passed-in buffer with last SSL failure
-    int getLastSSLError(char *dest = NULL, size_t len = 0) {
+    int getLastSSLError(char *dest = nullptr, size_t len = 0) {
         return _ctx->getLastSSLError(dest, len);
     }
 

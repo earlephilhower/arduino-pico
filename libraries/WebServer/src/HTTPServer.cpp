@@ -109,11 +109,11 @@ bool HTTPServer::authenticate(const char * username, const char * password) {
             authReq.trim();
             char toencodeLen = strlen(username) + strlen(password) + 1;
             char *toencode = new char[toencodeLen + 1];
-            if (toencode == NULL) {
+            if (toencode == nullptr) {
                 return false;
             }
             char *encoded = new char[base64_encode_expected_len(toencodeLen) + 1];
-            if (encoded == NULL) {
+            if (encoded == nullptr) {
                 delete[] toencode;
                 return false;
             }
@@ -191,7 +191,7 @@ String HTTPServer::_getRandomHexString() {
 }
 
 void HTTPServer::requestAuthentication(HTTPAuthMethod mode, const char* realm, const String& authFailMsg) {
-    if (realm == NULL) {
+    if (realm == nullptr) {
         _srealm = String(F("Login Required"));
     } else {
         _srealm = String(realm);
@@ -400,7 +400,7 @@ void HTTPServer::send(int code, const char* content_type, const char* content, s
 void HTTPServer::send_P(int code, PGM_P content_type, PGM_P content) {
     size_t contentLength = 0;
 
-    if (content != NULL) {
+    if (content != nullptr) {
         contentLength = strlen_P(content);
     }
 

@@ -444,7 +444,7 @@ void DNSServer::replyWithError(DNSHeader *dnsHeader,
 
     _udp.beginPacket(_udp.remoteIP(), _udp.remotePort());
     _udp.write((unsigned char *)dnsHeader, sizeof(DNSHeader));
-    if (query != NULL) {
+    if (query != nullptr) {
         _udp.write(query, queryLength);
     }
     _udp.endPacket();
@@ -452,5 +452,5 @@ void DNSServer::replyWithError(DNSHeader *dnsHeader,
 
 void DNSServer::replyWithError(DNSHeader *dnsHeader,
                                DNSReplyCode rcode) {
-    replyWithError(dnsHeader, rcode, NULL, 0);
+    replyWithError(dnsHeader, rcode, nullptr, 0);
 }

@@ -75,14 +75,14 @@ public:
     virtual void httpHandleClient();
 
     bool authenticate(const char * username, const char * password);
-    void requestAuthentication(HTTPAuthMethod mode = BASIC_AUTH, const char* realm = NULL, const String& authFailMsg = String(""));
+    void requestAuthentication(HTTPAuthMethod mode = BASIC_AUTH, const char* realm = nullptr, const String& authFailMsg = String(""));
 
     typedef std::function<void(void)> THandlerFunction;
     void on(const Uri &uri, THandlerFunction fn);
     void on(const Uri &uri, HTTPMethod method, THandlerFunction fn);
     void on(const Uri &uri, HTTPMethod method, THandlerFunction fn, THandlerFunction ufn); //ufn handles file uploads
     void addHandler(RequestHandler* handler);
-    void serveStatic(const char* uri, fs::FS& fs, const char* path, const char* cache_header = NULL);
+    void serveStatic(const char* uri, fs::FS& fs, const char* path, const char* cache_header = nullptr);
     void onNotFound(THandlerFunction fn);  //called when handler is not assigned
     void onFileUpload(THandlerFunction ufn); //handle file uploads
 
@@ -131,7 +131,7 @@ public:
     // code - HTTP response code, can be 200 or 404
     // content_type - HTTP content type, like "text/plain" or "image/png"
     // content - actual content body
-    void send(int code, const char* content_type = NULL, const String& content = String(""));
+    void send(int code, const char* content_type = nullptr, const String& content = String(""));
     void send(int code, char* content_type, const String& content);
     void send(int code, const String& content_type, const String& content);
     void send(int code, const char* content_type, const char* content);

@@ -63,11 +63,11 @@ public:
     err_t abort() {
         if (_pcb) {
             DEBUGV(":abort\r\n");
-            tcp_arg(_pcb, NULL);
-            tcp_sent(_pcb, NULL);
-            tcp_recv(_pcb, NULL);
-            tcp_err(_pcb, NULL);
-            tcp_poll(_pcb, NULL, 0);
+            tcp_arg(_pcb, nullptr);
+            tcp_sent(_pcb, nullptr);
+            tcp_recv(_pcb, nullptr);
+            tcp_err(_pcb, nullptr);
+            tcp_poll(_pcb, nullptr, 0);
             LWIPMutex m;  // Block the timer sys_check_timeouts call
             tcp_abort(_pcb);
             _pcb = nullptr;
@@ -79,11 +79,11 @@ public:
         err_t err = ERR_OK;
         if (_pcb) {
             DEBUGV(":close\r\n");
-            tcp_arg(_pcb, NULL);
-            tcp_sent(_pcb, NULL);
-            tcp_recv(_pcb, NULL);
-            tcp_err(_pcb, NULL);
-            tcp_poll(_pcb, NULL, 0);
+            tcp_arg(_pcb, nullptr);
+            tcp_sent(_pcb, nullptr);
+            tcp_recv(_pcb, nullptr);
+            tcp_err(_pcb, nullptr);
+            tcp_poll(_pcb, nullptr, 0);
             LWIPMutex m;  // Block the timer sys_check_timeouts call
             err = tcp_close(_pcb);
             if (err != ERR_OK) {
@@ -651,10 +651,10 @@ protected:
     void _error(err_t err) {
         (void) err;
         DEBUGV(":er %d 0x%08x\r\n", (int) err, (uint32_t) _datasource);
-        tcp_arg(_pcb, NULL);
-        tcp_sent(_pcb, NULL);
-        tcp_recv(_pcb, NULL);
-        tcp_err(_pcb, NULL);
+        tcp_arg(_pcb, nullptr);
+        tcp_sent(_pcb, nullptr);
+        tcp_recv(_pcb, nullptr);
+        tcp_err(_pcb, nullptr);
         _pcb = nullptr;
         _notify_error();
     }
