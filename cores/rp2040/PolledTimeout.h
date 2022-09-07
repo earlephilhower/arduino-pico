@@ -129,10 +129,10 @@ struct TimeUnit {
     }
 };
 
-using TimeMillis     = TimeUnit< TimeSourceMillis,       1000 >;
-using TimeFastMillis = TimeUnit< TimeSourceCycles,       1000 >;
-using TimeFastMicros = TimeUnit< TimeSourceCycles,    1000000 >;
-using TimeFastNanos  = TimeUnit< TimeSourceCycles, 1000000000 >;
+using TimeMillis     = TimeUnit < TimeSourceMillis, 1'000 >;
+using TimeFastMillis = TimeUnit < TimeSourceCycles, 1'000 >;
+using TimeFastMicros = TimeUnit < TimeSourceCycles, 1'000'000 >;
+using TimeFastNanos  = TimeUnit < TimeSourceCycles, 1'000'000'000 >;
 
 } //TimePolicy
 
