@@ -62,7 +62,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         return;    // Weird deadlock case
     }
 
-    int us = 1000000 / frequency / 2;
+    int us = 1'000'000 / frequency / 2;
     if (us < 5) {
         us = 5;
     }

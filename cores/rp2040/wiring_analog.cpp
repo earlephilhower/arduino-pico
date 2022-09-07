@@ -42,9 +42,9 @@ extern "C" void analogWriteFreq(uint32_t freq) {
     if (freq < 100) {
         DEBUGCORE("ERROR: analogWriteFreq too low (%d)\n", freq);
         analogFreq = 100;
-    } else if (freq > 1000000) {
+    } else if (freq > 1'000'000) {
         DEBUGCORE("ERROR: analogWriteFreq too high (%d)\n", freq);
-        analogFreq = 1000000;
+        analogFreq = 1'000'000;
     } else {
         analogFreq = freq;
     }
