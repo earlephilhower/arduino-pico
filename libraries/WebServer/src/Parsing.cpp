@@ -522,7 +522,7 @@ readfile:
                                 endBuf[i++] = (uint8_t)argByte;
                             }
 
-                            if (strstr((const char*)endBuf, boundary.c_str()) != NULL) {
+                            if (strstr((const char*)endBuf, boundary.c_str()) != nullptr) {
                                 if (_currentHandler && _currentHandler->canUpload(_currentUri)) {
                                     _currentHandler->upload(*this, _currentUri, *_currentUpload);
                                 }
@@ -600,7 +600,7 @@ String HTTPServer::urlDecode(const String& text) {
             temp[2] = text.charAt(i++);
             temp[3] = text.charAt(i++);
 
-            decodedChar = strtol(temp, NULL, 16);
+            decodedChar = strtol(temp, nullptr, 16);
         } else {
             if (encodedChar == '+') {
                 decodedChar = ' ';

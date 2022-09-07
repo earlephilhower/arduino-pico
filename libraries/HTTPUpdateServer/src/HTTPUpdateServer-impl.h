@@ -60,7 +60,7 @@ static const char successResponse[] PROGMEM =
 template <typename ServerType, int ServerPort>
 HTTPUpdateServerTemplate<ServerType, ServerPort>::HTTPUpdateServerTemplate(bool serial_debug) {
     _serial_output = serial_debug;
-    _server = NULL;
+    _server = nullptr;
     _username = "";
     _password = "";
     _authenticated = false;

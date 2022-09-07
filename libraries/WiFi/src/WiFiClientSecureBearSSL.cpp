@@ -784,7 +784,7 @@ extern "C" {
     // Return the public key from the validator (set by x509_minimal)
     static const br_x509_pkey *insecure_get_pkey(const br_x509_class *const *ctx, unsigned *usages) {
         const br_x509_insecure_context *xc = (const br_x509_insecure_context *)ctx;
-        if (usages != NULL) {
+        if (usages != nullptr) {
             *usages = BR_KEYTYPE_KEYX | BR_KEYTYPE_SIGN; // I said we were insecure!
         }
         return &xc->ctx.pkey;

@@ -154,11 +154,11 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
     if (_spis.getBitOrder() == MSBFIRST) {
         spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
 
-        if (rxbuf == NULL) { // transmit only!
+        if (rxbuf == nullptr) { // transmit only!
             spi_write_blocking(_spi, txbuff, count);
             return;
         }
-        if (txbuf == NULL) { // receive only!
+        if (txbuf == nullptr) { // receive only!
             spi_read_blocking(_spi, 0xFF, rxbuff, count);
             return;
         }
