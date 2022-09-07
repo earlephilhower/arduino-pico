@@ -92,7 +92,7 @@ public:
     uint8_t beginAP(const char *ssid, const char* passphrase, uint8_t channel);
 
     // ESP8266 compatible calls
-    bool softAP(const char* ssid, const char* psk = NULL, int channel = 1, int ssid_hidden = 0, int max_connection = 4) {
+    bool softAP(const char* ssid, const char* psk = nullptr, int channel = 1, int ssid_hidden = 0, int max_connection = 4) {
         (void) ssid_hidden;
         (void) max_connection;
         return beginAP(ssid, psk, channel) == WL_CONNECTED;

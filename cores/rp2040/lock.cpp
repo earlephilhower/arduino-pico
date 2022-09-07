@@ -147,7 +147,7 @@ int __retarget_lock_try_acquire(_LOCK_T lock) {
         auto mtx = __getFreeRTOSMutex(lock);
         ret = __freertos_mutex_try_take(mtx);
     } else {
-        ret = mutex_try_enter((mutex_t *)lock, NULL);
+        ret = mutex_try_enter((mutex_t *)lock, nullptr);
     }
     return ret;
 }
@@ -158,7 +158,7 @@ int __retarget_lock_try_acquire_recursive(_LOCK_T lock) {
         auto mtx = __getFreeRTOSRecursiveMutex(lock);
         ret = __freertos_recursive_mutex_try_take(mtx);
     } else {
-        ret = recursive_mutex_try_enter((recursive_mutex_t*)lock, NULL);
+        ret = recursive_mutex_try_enter((recursive_mutex_t*)lock, nullptr);
     }
     return ret;
 }

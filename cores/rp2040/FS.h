@@ -240,7 +240,7 @@ protected:
     }
     time_t (*_timeCallback)(void) = nullptr;
     static time_t _defaultTimeCB(void) {
-        return time(NULL);
+        return time(nullptr);
     }
 };
 
