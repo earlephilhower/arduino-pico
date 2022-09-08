@@ -50,6 +50,7 @@ void setup() {
 
 void led_ON(void *pvParameters)
 {
+  (void) pvParameters;
   while (1)
   {
     xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );
@@ -62,6 +63,7 @@ void led_ON(void *pvParameters)
 
 void led_OFF(void *pvParameters)
 {
+  (void) pvParameters;
   while (1)
   {
     xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );
