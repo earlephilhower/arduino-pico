@@ -64,52 +64,57 @@ void SerialUSB::end() {
 }
 
 int SerialUSB::peek() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
 
     uint8_t c;
+    tud_task();
     return tud_cdc_peek(&c) ? (int) c : -1;
 }
 
 int SerialUSB::read() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return -1;
     }
 
-    if (tud_cdc_connected() && tud_cdc_available()) {
+    tud_task();
+    if (tud_cdc_available()) {
         return tud_cdc_read_char();
     }
     return -1;
 }
 
 int SerialUSB::available() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
 
+    tud_task();
     return tud_cdc_available();
 }
 
 int SerialUSB::availableForWrite() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
 
+    tud_task();
     return tud_cdc_write_available();
 }
 
 void SerialUSB::flush() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return;
     }
 
     tud_cdc_write_flush();
+    tud_task();
 }
 
 size_t SerialUSB::write(uint8_t c) {
@@ -117,7 +122,7 @@ size_t SerialUSB::write(uint8_t c) {
 }
 
 size_t SerialUSB::write(const uint8_t *buf, size_t length) {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -142,7 +147,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
                 tud_task();
                 tud_cdc_write_flush();
                 if (!tud_cdc_connected() ||
-                        (!tud_cdc_write_available() && time_us_64() > last_avail_time + 1000000 /* 1 second */)) {
+                        (!tud_cdc_write_available() && time_us_64() > last_avail_time + 1'000'000 /* 1 second */)) {
                     break;
                 }
             }
@@ -151,11 +156,12 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
         // reset our timeout
         last_avail_time = 0;
     }
+    tud_task();
     return written;
 }
 
 SerialUSB::operator bool() {
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&__usb_mutex, false);
     if (!_running || !m) {
         return false;
     }

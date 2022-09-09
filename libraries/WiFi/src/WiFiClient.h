@@ -23,7 +23,6 @@
 #pragma once
 
 #include <memory>
-#include "WiFi.h"
 #include "Print.h"
 #include "Client.h"
 #include "IPAddress.h"
@@ -71,7 +70,7 @@ public:
     virtual int connect(const String& host, uint16_t port);
     virtual size_t write(uint8_t) override;
     virtual size_t write(const uint8_t *buf, size_t size) override;
-    //size_t write(Stream& stream);
+    size_t write(Stream& stream);
 
     virtual int available() override;
     virtual int read() override;

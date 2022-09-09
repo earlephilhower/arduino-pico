@@ -42,9 +42,9 @@ extern "C" void analogWriteFreq(uint32_t freq) {
     if (freq < 100) {
         DEBUGCORE("ERROR: analogWriteFreq too low (%d)\n", freq);
         analogFreq = 100;
-    } else if (freq > 1000000) {
+    } else if (freq > 1'000'000) {
         DEBUGCORE("ERROR: analogWriteFreq too high (%d)\n", freq);
-        analogFreq = 1000000;
+        analogFreq = 1'000'000;
     } else {
         analogFreq = freq;
     }
@@ -131,6 +131,7 @@ extern "C" int analogRead(pin_size_t pin) {
     }
     if (!adcInitted) {
         adc_init();
+        adcInitted = true;
     }
     adc_gpio_init(pin);
     adc_select_input(pin - minPin);
@@ -145,6 +146,7 @@ extern "C" float analogReadTemp() {
     }
     if (!adcInitted) {
         adc_init();
+        adcInitted = true;
     }
     adc_set_temp_sensor_enabled(true);
     delay(1); // Allow things to settle.  Without this, readings can be erratic

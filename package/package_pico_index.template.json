@@ -60,6 +60,12 @@
                      "name": "DFRobot Beetle RP2040"
                   },
                   {
+                     "name": "ElectronicCats HunterCat NFC RP2040"
+                  },
+                  {
+                     "name": "ExtremeElectronics RC2040"
+                  },
+                  {
                      "name": "iLabs Challenger 2040 LTE"
                   },
                   {
@@ -99,7 +105,7 @@
                      "name": "uPesy RP2040 DevKit"
                   },
                   {
-                     "name": "Seeed XAIO RP2040"
+                     "name": "Seeed XIAO RP2040"
                   },
                   {
                      "name": "WIZnet W5100S-EVB-Pico"

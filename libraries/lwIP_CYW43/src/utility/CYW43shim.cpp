@@ -26,6 +26,18 @@ extern "C" {
 #include "pico/cyw43_arch.h"
 #include <Arduino.h>
 
+// From cyw43_ctrl.c
+#define WIFI_JOIN_STATE_KIND_MASK (0x000f)
+#define WIFI_JOIN_STATE_ACTIVE  (0x0001)
+#define WIFI_JOIN_STATE_FAIL    (0x0002)
+#define WIFI_JOIN_STATE_NONET   (0x0003)
+#define WIFI_JOIN_STATE_BADAUTH (0x0004)
+#define WIFI_JOIN_STATE_AUTH    (0x0200)
+#define WIFI_JOIN_STATE_LINK    (0x0400)
+#define WIFI_JOIN_STATE_KEYED   (0x0800)
+#define WIFI_JOIN_STATE_ALL     (0x0e01)
+
+
 netif *CYW43::_netif = nullptr;
 
 CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
@@ -49,6 +61,10 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
         if (_password == nullptr) {
             authmode = CYW43_AUTH_OPEN;
         }
+
+        // Not currently possible to hook up igmp_mac_filter and mld_mac_filter
+        // TODO: implement igmp_mac_filter and mld_mac_filter
+        cyw43_set_allmulti(_self, true);
 
         if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
             return false;
@@ -96,7 +112,7 @@ extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, co
 #endif
     if (netif->flags & NETIF_FLAG_LINK_UP) {
         struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
-        if (p != NULL) {
+        if (p != nullptr) {
             pbuf_take(p, buf, len);
             if (netif->input(p, netif) != ERR_OK) {
                 pbuf_free(p);
@@ -120,6 +136,7 @@ extern "C" void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     if (CYW43::_netif) {
         netif_set_link_down(CYW43::_netif);
     }
+    self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
 }
 
 extern "C" int cyw43_tcpip_link_status(cyw43_t *self, int itf) {

@@ -13,6 +13,7 @@ WiFiClient	KEYWORD1
 WiFiSSLClient	KEYWORD1
 WiFiServer	KEYWORD1
 WiFiUDP	KEYWORD1
+WiFiMulti	KEYWORD1
 NTP	KEYWORD1
 
 
@@ -48,6 +49,7 @@ parsePacket	KEYWORD2
 remoteIP	KEYWORD2
 remotePort	KEYWORD2
 mode	KEYWORD2
+addAP	KEYWORD2
 
 beginAP	KEYWORD2
 beginEnterprise	KEYWORD2
@@ -61,6 +63,26 @@ beginMulticast	KEYWORD2
 setTimeout	KEYWORD2
 waitSet	KEYWORD2
 
+setSession	KEYWORD2
+setInsecure	KEYWORD2
+setKnownKey	KEYWORD2
+setFingerprint	KEYWORD2
+allowSelfSignedCerts	KEYWORD2
+setTrustAnchors	KEYWORD2
+setX509Time	KEYWORD2
+setClientRSACert	KEYWORD2
+setClientECCert	KEYWORD2
+setBufferSizes	KEYWORD2
+setCertStore	KEYWORD2
+setCiphers	KEYWORD2
+setCiphersLessSecure	KEYWORD2
+setSSLVersion	KEYWORD2
+setCACert	KEYWORD2
+setCertificate	KEYWORD2
+setPrivateKey	KEYWORD2
+loadCACert	KEYWORD2
+loadCertificate	KEYWORD2
+loadPrivateKey	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

@@ -21,7 +21,7 @@ extern void interrupts();
 #define MEM_LIBC_MALLOC             0
 
 #define MEM_ALIGNMENT               4
-#define MEM_SIZE                    4000
+#define MEM_SIZE                    16384
 #define MEMP_NUM_TCP_SEG            32
 #define MEMP_NUM_ARP_QUEUE          10
 #define PBUF_POOL_SIZE              24
@@ -52,6 +52,10 @@ extern void interrupts();
 #define LWIP_NETIF_TX_SINGLE_PBUF   1
 #define DHCP_DOES_ARP_CHECK         0
 #define LWIP_DHCP_DOES_ACD_CHECK    0
+
+#if LWIP_IPV6
+#define LWIP_IPV6_DHCP6             1
+#endif
 
 // NTP
 extern void __setSystemTime(unsigned long long sec, unsigned long us);

@@ -784,7 +784,7 @@ extern "C" {
     // Return the public key from the validator (set by x509_minimal)
     static const br_x509_pkey *insecure_get_pkey(const br_x509_class *const *ctx, unsigned *usages) {
         const br_x509_insecure_context *xc = (const br_x509_insecure_context *)ctx;
-        if (usages != NULL) {
+        if (usages != nullptr) {
             *usages = BR_KEYTYPE_KEYX | BR_KEYTYPE_SIGN; // I said we were insecure!
         }
         return &xc->ctx.pkey;
@@ -1224,7 +1224,7 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
     _x509_insecure = nullptr;
     _x509_knownkey = nullptr;
 
-    // reduce timeout after successful handshake to fail fast if server stop accepting our data for whathever reason
+    // reduce timeout after successful handshake to fail fast if server stop accepting our data for whatever reason
     if (ret) {
         _timeout = 5000;
     }

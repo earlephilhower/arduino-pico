@@ -2,6 +2,8 @@
 # Syntax Coloring Map
 #######################################
 
+Arduino	KEYWORD3		RESERVED_WORD
+
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
@@ -23,13 +25,28 @@ pop	KEYWORD2
 pop_nb	KEYWORD2
 
 rp2040	KEYWORD2
+reboot	KEYWORD2
+restart	KEYWORD2
 RP2040	KEYWORD2
 usToPIOCycles	KEYWORD2
 f_cpu	KEYWORD2
 getCycleCount	KEYWORD2
 getCycleCount64	KEYWORD2
+
+getFreeHeap	KEYWORD2
+getUsedHeap	KEYWORD2
+getTotalHeap	KEYWORD2
+
 idleOtherCore	KEYWORD2
 resumeOtherCore	KEYWORD2
+
+restartCore1	KEYWORD2
+reboot	KEYWORD2
+restart	KEYWORD2
+
+getChipID	KEYWORD2
+
+hwrand32	KEYWORD2
 
 PIOProgram	KEYWORD2
 prepare	KEYWORD2

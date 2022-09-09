@@ -98,8 +98,14 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("# %s" % (prettyname))
     print("# -----------------------------------")
     print("%s.name=%s" % (name, prettyname))
-    print("%s.vid.0=%s" % (name, vidtouse))
-    print("%s.pid.0=%s" % (name, pidtouse))
+    usb = 0;
+    for kb in [ "0", "0x8000" ]:
+        for ms in [ "0", "0x4000" ]:
+            for jy in [ "0", "0x0100" ]:
+                thispid = int(pidtouse, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
+                print("%s.vid.%d=%s" % (name, usb, vidtouse))
+                print("%s.pid.%d=0x%04x" % (name, usb, thispid))
+                usb = usb + 1
     print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
@@ -306,6 +312,12 @@ MakeBoard("flyboard2040_core", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a
 # DFRobot
 MakeBoard("dfrobot_beetle_rp2040", "DFRobot", "Beetle RP2040", "0x3343", "0x4253", 250, "DFROBOT_BEETLE_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 
+# ElectronicCat
+MakeBoard("electroniccats_bombercat", "ElectronicCats", "HunterCat NFC RP2040", "0x1209", "0x1209", 500, "ELECTRONICCATS_BOMBERCAT", 2, "boot2_w25q080_2_padded_checksum")
+
+# ExtremeElectronics
+MakeBoard("extelec_rc2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, "boot2_w25q080_2_padded_checksum")
+
 # iLabs
 MakeBoard("challenger_2040_lte", "iLabs", "Challenger 2040 LTE", "0x2e8a", "0x100b", 500, "CHALLENGER_2040_LTE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_lora", "iLabs", "Challenger 2040 LoRa", "0x2e8a", "0x1023", 250, "CHALLENGER_2040_LORA_RP2040", 8, "boot2_w25q080_2_padded_checksum")
@@ -330,7 +342,7 @@ MakeBoard("sparkfun_thingplusrp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f",
 MakeBoard("upesy_rp2040_devkit", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, "boot2_w25q080_2_padded_checksum")
 
 # Seeed
-MakeBoard("seeed_xiao_rp2040", "Seeed", "XAIO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XAIO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("seeed_xiao_rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 
 # WIZnet
 MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")

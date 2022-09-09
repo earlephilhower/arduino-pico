@@ -201,18 +201,13 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size) {
     return _client->write((const char*)buf, size);
 }
 
-//TODO - implement!
-//size_t WiFiClient::write(Stream& stream)
-//{
-//    // (this method is deprecated)
-//
-//    if (!_client || !stream.available())
-//    {
-//        return 0;
-//    }
-//    // core up to 2.7.4 was equivalent to this
-//    return _client->write(stream);
-//}
+size_t WiFiClient::write(Stream& stream) {
+    if (!_client || !stream.available()) {
+        return 0;
+    }
+    _client->setTimeout(_timeout);
+    return _client->write(stream);
+}
 
 int WiFiClient::available() {
     if (!_client) {

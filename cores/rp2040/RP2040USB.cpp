@@ -71,8 +71,6 @@ static int __usb_task_irq;
 
 #define EPNUM_HID   0x83
 
-#define EPNUM_MIDI   0x01
-
 
 const uint8_t *tud_descriptor_device_cb(void) {
     static tusb_desc_device_t usbd_desc_device = {
@@ -91,7 +89,7 @@ const uint8_t *tud_descriptor_device_cb(void) {
         .iSerialNumber = USBD_STR_SERIAL,
         .bNumConfigurations = 1
     };
-    if (__USBInstallSerial && !__USBInstallKeyboard && !__USBInstallMouse && !__USBInstallJoystick && !__USBInstallMIDI) {
+    if (__USBInstallSerial && !__USBInstallKeyboard && !__USBInstallMouse && !__USBInstallJoystick) {
         // Can use as-is, this is the default USB case
         return (const uint8_t *)&usbd_desc_device;
     }
@@ -104,9 +102,6 @@ const uint8_t *tud_descriptor_device_cb(void) {
     }
     if (__USBInstallJoystick) {
         usbd_desc_device.idProduct |= 0x0100;
-    }
-    if (__USBInstallMIDI) {
-        usbd_desc_device.idProduct |= 0x2000;
     }
     // Set the device class to 0 to indicate multiple device classes
     usbd_desc_device.bDeviceClass = 0;
@@ -228,7 +223,7 @@ void __SetupUSBDescriptor() {
     if (!usbd_desc_cfg) {
         bool hasHID = __USBInstallKeyboard || __USBInstallMouse || __USBInstallJoystick;
 
-        uint8_t interface_count = (__USBInstallSerial ? 2 : 0) + (hasHID ? 1 : 0) + (__USBInstallMIDI ? 2 : 0);
+        uint8_t interface_count = (__USBInstallSerial ? 2 : 0) + (hasHID ? 1 : 0);
 
         uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
@@ -243,13 +238,7 @@ void __SetupUSBDescriptor() {
             TUD_HID_DESCRIPTOR(hid_itf, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 10)
         };
 
-        uint8_t midi_itf = hid_itf + (hasHID ? 1 : 0);
-        uint8_t midi_desc[TUD_MIDI_DESC_LEN] = {
-            // Interface number, string index, EP Out & EP In address, EP size
-            TUD_MIDI_DESCRIPTOR(midi_itf, 0, EPNUM_MIDI, 0x80 | EPNUM_MIDI, 64)
-        };
-
-        int usbd_desc_len = TUD_CONFIG_DESC_LEN + (__USBInstallSerial ? sizeof(cdc_desc) : 0) + (hasHID ? sizeof(hid_desc) : 0) + (__USBInstallMIDI ? sizeof(midi_desc) : 0);
+        int usbd_desc_len = TUD_CONFIG_DESC_LEN + (__USBInstallSerial ? sizeof(cdc_desc) : 0) + (hasHID ? sizeof(hid_desc) : 0);
 
         uint8_t tud_cfg_desc[TUD_CONFIG_DESC_LEN] = {
             // Config number, interface count, string index, total length, attribute, power in mA
@@ -270,9 +259,6 @@ void __SetupUSBDescriptor() {
             if (hasHID) {
                 memcpy(ptr, hid_desc, sizeof(hid_desc));
                 ptr += sizeof(hid_desc);
-            }
-            if (__USBInstallMIDI) {
-                memcpy(ptr, midi_desc, sizeof(midi_desc));
             }
         }
     }
@@ -303,7 +289,7 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
         len = 1;
     } else {
         if (index >= sizeof(usbd_desc_str) / sizeof(usbd_desc_str[0])) {
-            return NULL;
+            return nullptr;
         }
         const char *str = usbd_desc_str[index];
         for (len = 0; len < DESC_STR_MAX - 1 && str[len]; ++len) {
@@ -322,7 +308,7 @@ static void usb_irq() {
     // if the mutex is already owned, then we are in user code
     // in this file which will do a tud_task itself, so we'll just do nothing
     // until the next tick; we won't starve
-    if (mutex_try_enter(&__usb_mutex, NULL)) {
+    if (mutex_try_enter(&__usb_mutex, nullptr)) {
         tud_task();
         mutex_exit(&__usb_mutex);
     }
@@ -352,7 +338,7 @@ void __USBStart() {
     irq_set_exclusive_handler(__usb_task_irq, usb_irq);
     irq_set_enabled(__usb_task_irq, true);
 
-    add_alarm_in_us(USB_TASK_INTERVAL, timer_task, NULL, true);
+    add_alarm_in_us(USB_TASK_INTERVAL, timer_task, nullptr, true);
 }
 
 

@@ -21,6 +21,20 @@ menu.ipstack=IP Stack
 rpipico.name=Raspberry Pi Pico
 rpipico.vid.0=0x2e8a
 rpipico.pid.0=0x000a
+rpipico.vid.1=0x2e8a
+rpipico.pid.1=0x010a
+rpipico.vid.2=0x2e8a
+rpipico.pid.2=0x400a
+rpipico.vid.3=0x2e8a
+rpipico.pid.3=0x410a
+rpipico.vid.4=0x2e8a
+rpipico.pid.4=0x800a
+rpipico.vid.5=0x2e8a
+rpipico.pid.5=0x810a
+rpipico.vid.6=0x2e8a
+rpipico.pid.6=0xc00a
+rpipico.vid.7=0x2e8a
+rpipico.pid.7=0xc10a
 rpipico.build.usbpid=-DSERIALUSB_PID=0x000a
 rpipico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipico.build.board=RASPBERRY_PI_PICO
@@ -168,6 +182,20 @@ rpipico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 rpipicopicoprobe.name=Raspberry Pi Pico (Picoprobe)
 rpipicopicoprobe.vid.0=0x2e8a
 rpipicopicoprobe.pid.0=0x0004
+rpipicopicoprobe.vid.1=0x2e8a
+rpipicopicoprobe.pid.1=0x0104
+rpipicopicoprobe.vid.2=0x2e8a
+rpipicopicoprobe.pid.2=0x4004
+rpipicopicoprobe.vid.3=0x2e8a
+rpipicopicoprobe.pid.3=0x4104
+rpipicopicoprobe.vid.4=0x2e8a
+rpipicopicoprobe.pid.4=0x8004
+rpipicopicoprobe.vid.5=0x2e8a
+rpipicopicoprobe.pid.5=0x8104
+rpipicopicoprobe.vid.6=0x2e8a
+rpipicopicoprobe.pid.6=0xc004
+rpipicopicoprobe.vid.7=0x2e8a
+rpipicopicoprobe.pid.7=0xc104
 rpipicopicoprobe.build.usbpid=-DSERIALUSB_PID=0x000a
 rpipicopicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicopicoprobe.build.board=RASPBERRY_PI_PICO
@@ -315,6 +343,20 @@ rpipicopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=
 rpipicopicodebug.name=Raspberry Pi Pico (pico-debug)
 rpipicopicodebug.vid.0=0x1209
 rpipicopicodebug.pid.0=0x2488
+rpipicopicodebug.vid.1=0x1209
+rpipicopicodebug.pid.1=0x2588
+rpipicopicodebug.vid.2=0x1209
+rpipicopicodebug.pid.2=0x6488
+rpipicopicodebug.vid.3=0x1209
+rpipicopicodebug.pid.3=0x6588
+rpipicopicodebug.vid.4=0x1209
+rpipicopicodebug.pid.4=0xa488
+rpipicopicodebug.vid.5=0x1209
+rpipicopicodebug.pid.5=0xa588
+rpipicopicodebug.vid.6=0x1209
+rpipicopicodebug.pid.6=0xe488
+rpipicopicodebug.vid.7=0x1209
+rpipicopicodebug.pid.7=0xe588
 rpipicopicodebug.build.usbpid=-DSERIALUSB_PID=0x000a
 rpipicopicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicopicodebug.build.board=RASPBERRY_PI_PICO
@@ -460,6 +502,20 @@ rpipicopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=
 rpipicow.name=Raspberry Pi Pico W
 rpipicow.vid.0=0x2e8a
 rpipicow.pid.0=0xf00a
+rpipicow.vid.1=0x2e8a
+rpipicow.pid.1=0xf10a
+rpipicow.vid.2=0x2e8a
+rpipicow.pid.2=0xf00a
+rpipicow.vid.3=0x2e8a
+rpipicow.pid.3=0xf10a
+rpipicow.vid.4=0x2e8a
+rpipicow.pid.4=0xf00a
+rpipicow.vid.5=0x2e8a
+rpipicow.pid.5=0xf10a
+rpipicow.vid.6=0x2e8a
+rpipicow.pid.6=0xf00a
+rpipicow.vid.7=0x2e8a
+rpipicow.pid.7=0xf10a
 rpipicow.build.usbpid=-DSERIALUSB_PID=0xf00a
 rpipicow.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicow.build.board=RASPBERRY_PI_PICO_W
@@ -607,6 +663,20 @@ rpipicow.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 rpipicowpicoprobe.name=Raspberry Pi Pico W (Picoprobe)
 rpipicowpicoprobe.vid.0=0x2e8a
 rpipicowpicoprobe.pid.0=0x0004
+rpipicowpicoprobe.vid.1=0x2e8a
+rpipicowpicoprobe.pid.1=0x0104
+rpipicowpicoprobe.vid.2=0x2e8a
+rpipicowpicoprobe.pid.2=0x4004
+rpipicowpicoprobe.vid.3=0x2e8a
+rpipicowpicoprobe.pid.3=0x4104
+rpipicowpicoprobe.vid.4=0x2e8a
+rpipicowpicoprobe.pid.4=0x8004
+rpipicowpicoprobe.vid.5=0x2e8a
+rpipicowpicoprobe.pid.5=0x8104
+rpipicowpicoprobe.vid.6=0x2e8a
+rpipicowpicoprobe.pid.6=0xc004
+rpipicowpicoprobe.vid.7=0x2e8a
+rpipicowpicoprobe.pid.7=0xc104
 rpipicowpicoprobe.build.usbpid=-DSERIALUSB_PID=0xf00a
 rpipicowpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicowpicoprobe.build.board=RASPBERRY_PI_PICO_W
@@ -754,6 +824,20 @@ rpipicowpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4
 rpipicowpicodebug.name=Raspberry Pi Pico W (pico-debug)
 rpipicowpicodebug.vid.0=0x1209
 rpipicowpicodebug.pid.0=0x2488
+rpipicowpicodebug.vid.1=0x1209
+rpipicowpicodebug.pid.1=0x2588
+rpipicowpicodebug.vid.2=0x1209
+rpipicowpicodebug.pid.2=0x6488
+rpipicowpicodebug.vid.3=0x1209
+rpipicowpicodebug.pid.3=0x6588
+rpipicowpicodebug.vid.4=0x1209
+rpipicowpicodebug.pid.4=0xa488
+rpipicowpicodebug.vid.5=0x1209
+rpipicowpicodebug.pid.5=0xa588
+rpipicowpicodebug.vid.6=0x1209
+rpipicowpicodebug.pid.6=0xe488
+rpipicowpicodebug.vid.7=0x1209
+rpipicowpicodebug.pid.7=0xe588
 rpipicowpicodebug.build.usbpid=-DSERIALUSB_PID=0xf00a
 rpipicowpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicowpicodebug.build.board=RASPBERRY_PI_PICO_W
@@ -899,6 +983,20 @@ rpipicowpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4
 adafruit_feather.name=Adafruit Feather RP2040
 adafruit_feather.vid.0=0x239a
 adafruit_feather.pid.0=0x80f1
+adafruit_feather.vid.1=0x239a
+adafruit_feather.pid.1=0x81f1
+adafruit_feather.vid.2=0x239a
+adafruit_feather.pid.2=0xc0f1
+adafruit_feather.vid.3=0x239a
+adafruit_feather.pid.3=0xc1f1
+adafruit_feather.vid.4=0x239a
+adafruit_feather.pid.4=0x80f1
+adafruit_feather.vid.5=0x239a
+adafruit_feather.pid.5=0x81f1
+adafruit_feather.vid.6=0x239a
+adafruit_feather.pid.6=0xc0f1
+adafruit_feather.vid.7=0x239a
+adafruit_feather.pid.7=0xc1f1
 adafruit_feather.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruit_feather.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather.build.board=ADAFRUIT_FEATHER_RP2040
@@ -1082,6 +1180,20 @@ adafruit_feather.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=
 adafruit_featherpicoprobe.name=Adafruit Feather RP2040 (Picoprobe)
 adafruit_featherpicoprobe.vid.0=0x239a
 adafruit_featherpicoprobe.pid.0=0x0004
+adafruit_featherpicoprobe.vid.1=0x239a
+adafruit_featherpicoprobe.pid.1=0x0104
+adafruit_featherpicoprobe.vid.2=0x239a
+adafruit_featherpicoprobe.pid.2=0x4004
+adafruit_featherpicoprobe.vid.3=0x239a
+adafruit_featherpicoprobe.pid.3=0x4104
+adafruit_featherpicoprobe.vid.4=0x239a
+adafruit_featherpicoprobe.pid.4=0x8004
+adafruit_featherpicoprobe.vid.5=0x239a
+adafruit_featherpicoprobe.pid.5=0x8104
+adafruit_featherpicoprobe.vid.6=0x239a
+adafruit_featherpicoprobe.pid.6=0xc004
+adafruit_featherpicoprobe.vid.7=0x239a
+adafruit_featherpicoprobe.pid.7=0xc104
 adafruit_featherpicoprobe.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruit_featherpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_featherpicoprobe.build.board=ADAFRUIT_FEATHER_RP2040
@@ -1265,6 +1377,20 @@ adafruit_featherpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DL
 adafruit_featherpicodebug.name=Adafruit Feather RP2040 (pico-debug)
 adafruit_featherpicodebug.vid.0=0x1209
 adafruit_featherpicodebug.pid.0=0x2488
+adafruit_featherpicodebug.vid.1=0x1209
+adafruit_featherpicodebug.pid.1=0x2588
+adafruit_featherpicodebug.vid.2=0x1209
+adafruit_featherpicodebug.pid.2=0x6488
+adafruit_featherpicodebug.vid.3=0x1209
+adafruit_featherpicodebug.pid.3=0x6588
+adafruit_featherpicodebug.vid.4=0x1209
+adafruit_featherpicodebug.pid.4=0xa488
+adafruit_featherpicodebug.vid.5=0x1209
+adafruit_featherpicodebug.pid.5=0xa588
+adafruit_featherpicodebug.vid.6=0x1209
+adafruit_featherpicodebug.pid.6=0xe488
+adafruit_featherpicodebug.vid.7=0x1209
+adafruit_featherpicodebug.pid.7=0xe588
 adafruit_featherpicodebug.build.usbpid=-DSERIALUSB_PID=0x80f1
 adafruit_featherpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_featherpicodebug.build.board=ADAFRUIT_FEATHER_RP2040
@@ -1446,6 +1572,20 @@ adafruit_featherpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DL
 adafruit_itsybitsy.name=Adafruit ItsyBitsy RP2040
 adafruit_itsybitsy.vid.0=0x239a
 adafruit_itsybitsy.pid.0=0x80fd
+adafruit_itsybitsy.vid.1=0x239a
+adafruit_itsybitsy.pid.1=0x81fd
+adafruit_itsybitsy.vid.2=0x239a
+adafruit_itsybitsy.pid.2=0xc0fd
+adafruit_itsybitsy.vid.3=0x239a
+adafruit_itsybitsy.pid.3=0xc1fd
+adafruit_itsybitsy.vid.4=0x239a
+adafruit_itsybitsy.pid.4=0x80fd
+adafruit_itsybitsy.vid.5=0x239a
+adafruit_itsybitsy.pid.5=0x81fd
+adafruit_itsybitsy.vid.6=0x239a
+adafruit_itsybitsy.pid.6=0xc0fd
+adafruit_itsybitsy.vid.7=0x239a
+adafruit_itsybitsy.pid.7=0xc1fd
 adafruit_itsybitsy.build.usbpid=-DSERIALUSB_PID=0x80fd
 adafruit_itsybitsy.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_itsybitsy.build.board=ADAFRUIT_ITSYBITSY_RP2040
@@ -1629,6 +1769,20 @@ adafruit_itsybitsy.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV
 adafruit_itsybitsypicoprobe.name=Adafruit ItsyBitsy RP2040 (Picoprobe)
 adafruit_itsybitsypicoprobe.vid.0=0x239a
 adafruit_itsybitsypicoprobe.pid.0=0x0004
+adafruit_itsybitsypicoprobe.vid.1=0x239a
+adafruit_itsybitsypicoprobe.pid.1=0x0104
+adafruit_itsybitsypicoprobe.vid.2=0x239a
+adafruit_itsybitsypicoprobe.pid.2=0x4004
+adafruit_itsybitsypicoprobe.vid.3=0x239a
+adafruit_itsybitsypicoprobe.pid.3=0x4104
+adafruit_itsybitsypicoprobe.vid.4=0x239a
+adafruit_itsybitsypicoprobe.pid.4=0x8004
+adafruit_itsybitsypicoprobe.vid.5=0x239a
+adafruit_itsybitsypicoprobe.pid.5=0x8104
+adafruit_itsybitsypicoprobe.vid.6=0x239a
+adafruit_itsybitsypicoprobe.pid.6=0xc004
+adafruit_itsybitsypicoprobe.vid.7=0x239a
+adafruit_itsybitsypicoprobe.pid.7=0xc104
 adafruit_itsybitsypicoprobe.build.usbpid=-DSERIALUSB_PID=0x80fd
 adafruit_itsybitsypicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_itsybitsypicoprobe.build.board=ADAFRUIT_ITSYBITSY_RP2040
@@ -1812,6 +1966,20 @@ adafruit_itsybitsypicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -
 adafruit_itsybitsypicodebug.name=Adafruit ItsyBitsy RP2040 (pico-debug)
 adafruit_itsybitsypicodebug.vid.0=0x1209
 adafruit_itsybitsypicodebug.pid.0=0x2488
+adafruit_itsybitsypicodebug.vid.1=0x1209
+adafruit_itsybitsypicodebug.pid.1=0x2588
+adafruit_itsybitsypicodebug.vid.2=0x1209
+adafruit_itsybitsypicodebug.pid.2=0x6488
+adafruit_itsybitsypicodebug.vid.3=0x1209
+adafruit_itsybitsypicodebug.pid.3=0x6588
+adafruit_itsybitsypicodebug.vid.4=0x1209
+adafruit_itsybitsypicodebug.pid.4=0xa488
+adafruit_itsybitsypicodebug.vid.5=0x1209
+adafruit_itsybitsypicodebug.pid.5=0xa588
+adafruit_itsybitsypicodebug.vid.6=0x1209
+adafruit_itsybitsypicodebug.pid.6=0xe488
+adafruit_itsybitsypicodebug.vid.7=0x1209
+adafruit_itsybitsypicodebug.pid.7=0xe588
 adafruit_itsybitsypicodebug.build.usbpid=-DSERIALUSB_PID=0x80fd
 adafruit_itsybitsypicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_itsybitsypicodebug.build.board=ADAFRUIT_ITSYBITSY_RP2040
@@ -1993,6 +2161,20 @@ adafruit_itsybitsypicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -
 adafruit_qtpy.name=Adafruit QT Py RP2040
 adafruit_qtpy.vid.0=0x239a
 adafruit_qtpy.pid.0=0x80f7
+adafruit_qtpy.vid.1=0x239a
+adafruit_qtpy.pid.1=0x81f7
+adafruit_qtpy.vid.2=0x239a
+adafruit_qtpy.pid.2=0xc0f7
+adafruit_qtpy.vid.3=0x239a
+adafruit_qtpy.pid.3=0xc1f7
+adafruit_qtpy.vid.4=0x239a
+adafruit_qtpy.pid.4=0x80f7
+adafruit_qtpy.vid.5=0x239a
+adafruit_qtpy.pid.5=0x81f7
+adafruit_qtpy.vid.6=0x239a
+adafruit_qtpy.pid.6=0xc0f7
+adafruit_qtpy.vid.7=0x239a
+adafruit_qtpy.pid.7=0xc1f7
 adafruit_qtpy.build.usbpid=-DSERIALUSB_PID=0x80f7
 adafruit_qtpy.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_qtpy.build.board=ADAFRUIT_QTPY_RP2040
@@ -2176,6 +2358,20 @@ adafruit_qtpy.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_qtpypicoprobe.name=Adafruit QT Py RP2040 (Picoprobe)
 adafruit_qtpypicoprobe.vid.0=0x239a
 adafruit_qtpypicoprobe.pid.0=0x0004
+adafruit_qtpypicoprobe.vid.1=0x239a
+adafruit_qtpypicoprobe.pid.1=0x0104
+adafruit_qtpypicoprobe.vid.2=0x239a
+adafruit_qtpypicoprobe.pid.2=0x4004
+adafruit_qtpypicoprobe.vid.3=0x239a
+adafruit_qtpypicoprobe.pid.3=0x4104
+adafruit_qtpypicoprobe.vid.4=0x239a
+adafruit_qtpypicoprobe.pid.4=0x8004
+adafruit_qtpypicoprobe.vid.5=0x239a
+adafruit_qtpypicoprobe.pid.5=0x8104
+adafruit_qtpypicoprobe.vid.6=0x239a
+adafruit_qtpypicoprobe.pid.6=0xc004
+adafruit_qtpypicoprobe.vid.7=0x239a
+adafruit_qtpypicoprobe.pid.7=0xc104
 adafruit_qtpypicoprobe.build.usbpid=-DSERIALUSB_PID=0x80f7
 adafruit_qtpypicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_qtpypicoprobe.build.board=ADAFRUIT_QTPY_RP2040
@@ -2359,6 +2555,20 @@ adafruit_qtpypicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP
 adafruit_qtpypicodebug.name=Adafruit QT Py RP2040 (pico-debug)
 adafruit_qtpypicodebug.vid.0=0x1209
 adafruit_qtpypicodebug.pid.0=0x2488
+adafruit_qtpypicodebug.vid.1=0x1209
+adafruit_qtpypicodebug.pid.1=0x2588
+adafruit_qtpypicodebug.vid.2=0x1209
+adafruit_qtpypicodebug.pid.2=0x6488
+adafruit_qtpypicodebug.vid.3=0x1209
+adafruit_qtpypicodebug.pid.3=0x6588
+adafruit_qtpypicodebug.vid.4=0x1209
+adafruit_qtpypicodebug.pid.4=0xa488
+adafruit_qtpypicodebug.vid.5=0x1209
+adafruit_qtpypicodebug.pid.5=0xa588
+adafruit_qtpypicodebug.vid.6=0x1209
+adafruit_qtpypicodebug.pid.6=0xe488
+adafruit_qtpypicodebug.vid.7=0x1209
+adafruit_qtpypicodebug.pid.7=0xe588
 adafruit_qtpypicodebug.build.usbpid=-DSERIALUSB_PID=0x80f7
 adafruit_qtpypicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_qtpypicodebug.build.board=ADAFRUIT_QTPY_RP2040
@@ -2540,6 +2750,20 @@ adafruit_qtpypicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP
 adafruit_stemmafriend.name=Adafruit STEMMA Friend RP2040
 adafruit_stemmafriend.vid.0=0x239a
 adafruit_stemmafriend.pid.0=0x80e3
+adafruit_stemmafriend.vid.1=0x239a
+adafruit_stemmafriend.pid.1=0x81e3
+adafruit_stemmafriend.vid.2=0x239a
+adafruit_stemmafriend.pid.2=0xc0e3
+adafruit_stemmafriend.vid.3=0x239a
+adafruit_stemmafriend.pid.3=0xc1e3
+adafruit_stemmafriend.vid.4=0x239a
+adafruit_stemmafriend.pid.4=0x80e3
+adafruit_stemmafriend.vid.5=0x239a
+adafruit_stemmafriend.pid.5=0x81e3
+adafruit_stemmafriend.vid.6=0x239a
+adafruit_stemmafriend.pid.6=0xc0e3
+adafruit_stemmafriend.vid.7=0x239a
+adafruit_stemmafriend.pid.7=0xc1e3
 adafruit_stemmafriend.build.usbpid=-DSERIALUSB_PID=0x80e3
 adafruit_stemmafriend.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_stemmafriend.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
@@ -2723,6 +2947,20 @@ adafruit_stemmafriend.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_
 adafruit_stemmafriendpicoprobe.name=Adafruit STEMMA Friend RP2040 (Picoprobe)
 adafruit_stemmafriendpicoprobe.vid.0=0x239a
 adafruit_stemmafriendpicoprobe.pid.0=0x0004
+adafruit_stemmafriendpicoprobe.vid.1=0x239a
+adafruit_stemmafriendpicoprobe.pid.1=0x0104
+adafruit_stemmafriendpicoprobe.vid.2=0x239a
+adafruit_stemmafriendpicoprobe.pid.2=0x4004
+adafruit_stemmafriendpicoprobe.vid.3=0x239a
+adafruit_stemmafriendpicoprobe.pid.3=0x4104
+adafruit_stemmafriendpicoprobe.vid.4=0x239a
+adafruit_stemmafriendpicoprobe.pid.4=0x8004
+adafruit_stemmafriendpicoprobe.vid.5=0x239a
+adafruit_stemmafriendpicoprobe.pid.5=0x8104
+adafruit_stemmafriendpicoprobe.vid.6=0x239a
+adafruit_stemmafriendpicoprobe.pid.6=0xc004
+adafruit_stemmafriendpicoprobe.vid.7=0x239a
+adafruit_stemmafriendpicoprobe.pid.7=0xc104
 adafruit_stemmafriendpicoprobe.build.usbpid=-DSERIALUSB_PID=0x80e3
 adafruit_stemmafriendpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_stemmafriendpicoprobe.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
@@ -2906,6 +3144,20 @@ adafruit_stemmafriendpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 adafruit_stemmafriendpicodebug.name=Adafruit STEMMA Friend RP2040 (pico-debug)
 adafruit_stemmafriendpicodebug.vid.0=0x1209
 adafruit_stemmafriendpicodebug.pid.0=0x2488
+adafruit_stemmafriendpicodebug.vid.1=0x1209
+adafruit_stemmafriendpicodebug.pid.1=0x2588
+adafruit_stemmafriendpicodebug.vid.2=0x1209
+adafruit_stemmafriendpicodebug.pid.2=0x6488
+adafruit_stemmafriendpicodebug.vid.3=0x1209
+adafruit_stemmafriendpicodebug.pid.3=0x6588
+adafruit_stemmafriendpicodebug.vid.4=0x1209
+adafruit_stemmafriendpicodebug.pid.4=0xa488
+adafruit_stemmafriendpicodebug.vid.5=0x1209
+adafruit_stemmafriendpicodebug.pid.5=0xa588
+adafruit_stemmafriendpicodebug.vid.6=0x1209
+adafruit_stemmafriendpicodebug.pid.6=0xe488
+adafruit_stemmafriendpicodebug.vid.7=0x1209
+adafruit_stemmafriendpicodebug.pid.7=0xe588
 adafruit_stemmafriendpicodebug.build.usbpid=-DSERIALUSB_PID=0x80e3
 adafruit_stemmafriendpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_stemmafriendpicodebug.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
@@ -3087,6 +3339,20 @@ adafruit_stemmafriendpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 adafruit_trinkeyrp2040qt.name=Adafruit Trinkey RP2040 QT
 adafruit_trinkeyrp2040qt.vid.0=0x239a
 adafruit_trinkeyrp2040qt.pid.0=0x8109
+adafruit_trinkeyrp2040qt.vid.1=0x239a
+adafruit_trinkeyrp2040qt.pid.1=0x8109
+adafruit_trinkeyrp2040qt.vid.2=0x239a
+adafruit_trinkeyrp2040qt.pid.2=0xc109
+adafruit_trinkeyrp2040qt.vid.3=0x239a
+adafruit_trinkeyrp2040qt.pid.3=0xc109
+adafruit_trinkeyrp2040qt.vid.4=0x239a
+adafruit_trinkeyrp2040qt.pid.4=0x8109
+adafruit_trinkeyrp2040qt.vid.5=0x239a
+adafruit_trinkeyrp2040qt.pid.5=0x8109
+adafruit_trinkeyrp2040qt.vid.6=0x239a
+adafruit_trinkeyrp2040qt.pid.6=0xc109
+adafruit_trinkeyrp2040qt.vid.7=0x239a
+adafruit_trinkeyrp2040qt.pid.7=0xc109
 adafruit_trinkeyrp2040qt.build.usbpid=-DSERIALUSB_PID=0x8109
 adafruit_trinkeyrp2040qt.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_trinkeyrp2040qt.build.board=ADAFRUIT_TRINKEYQT_RP2040
@@ -3270,6 +3536,20 @@ adafruit_trinkeyrp2040qt.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 adafruit_trinkeyrp2040qtpicoprobe.name=Adafruit Trinkey RP2040 QT (Picoprobe)
 adafruit_trinkeyrp2040qtpicoprobe.vid.0=0x239a
 adafruit_trinkeyrp2040qtpicoprobe.pid.0=0x0004
+adafruit_trinkeyrp2040qtpicoprobe.vid.1=0x239a
+adafruit_trinkeyrp2040qtpicoprobe.pid.1=0x0104
+adafruit_trinkeyrp2040qtpicoprobe.vid.2=0x239a
+adafruit_trinkeyrp2040qtpicoprobe.pid.2=0x4004
+adafruit_trinkeyrp2040qtpicoprobe.vid.3=0x239a
+adafruit_trinkeyrp2040qtpicoprobe.pid.3=0x4104
+adafruit_trinkeyrp2040qtpicoprobe.vid.4=0x239a
+adafruit_trinkeyrp2040qtpicoprobe.pid.4=0x8004
+adafruit_trinkeyrp2040qtpicoprobe.vid.5=0x239a
+adafruit_trinkeyrp2040qtpicoprobe.pid.5=0x8104
+adafruit_trinkeyrp2040qtpicoprobe.vid.6=0x239a
+adafruit_trinkeyrp2040qtpicoprobe.pid.6=0xc004
+adafruit_trinkeyrp2040qtpicoprobe.vid.7=0x239a
+adafruit_trinkeyrp2040qtpicoprobe.pid.7=0xc104
 adafruit_trinkeyrp2040qtpicoprobe.build.usbpid=-DSERIALUSB_PID=0x8109
 adafruit_trinkeyrp2040qtpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_trinkeyrp2040qtpicoprobe.build.board=ADAFRUIT_TRINKEYQT_RP2040
@@ -3453,6 +3733,20 @@ adafruit_trinkeyrp2040qtpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 adafruit_trinkeyrp2040qtpicodebug.name=Adafruit Trinkey RP2040 QT (pico-debug)
 adafruit_trinkeyrp2040qtpicodebug.vid.0=0x1209
 adafruit_trinkeyrp2040qtpicodebug.pid.0=0x2488
+adafruit_trinkeyrp2040qtpicodebug.vid.1=0x1209
+adafruit_trinkeyrp2040qtpicodebug.pid.1=0x2588
+adafruit_trinkeyrp2040qtpicodebug.vid.2=0x1209
+adafruit_trinkeyrp2040qtpicodebug.pid.2=0x6488
+adafruit_trinkeyrp2040qtpicodebug.vid.3=0x1209
+adafruit_trinkeyrp2040qtpicodebug.pid.3=0x6588
+adafruit_trinkeyrp2040qtpicodebug.vid.4=0x1209
+adafruit_trinkeyrp2040qtpicodebug.pid.4=0xa488
+adafruit_trinkeyrp2040qtpicodebug.vid.5=0x1209
+adafruit_trinkeyrp2040qtpicodebug.pid.5=0xa588
+adafruit_trinkeyrp2040qtpicodebug.vid.6=0x1209
+adafruit_trinkeyrp2040qtpicodebug.pid.6=0xe488
+adafruit_trinkeyrp2040qtpicodebug.vid.7=0x1209
+adafruit_trinkeyrp2040qtpicodebug.pid.7=0xe588
 adafruit_trinkeyrp2040qtpicodebug.build.usbpid=-DSERIALUSB_PID=0x8109
 adafruit_trinkeyrp2040qtpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_trinkeyrp2040qtpicodebug.build.board=ADAFRUIT_TRINKEYQT_RP2040
@@ -3634,6 +3928,20 @@ adafruit_trinkeyrp2040qtpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 adafruit_macropad2040.name=Adafruit MacroPad RP2040
 adafruit_macropad2040.vid.0=0x239a
 adafruit_macropad2040.pid.0=0x8107
+adafruit_macropad2040.vid.1=0x239a
+adafruit_macropad2040.pid.1=0x8107
+adafruit_macropad2040.vid.2=0x239a
+adafruit_macropad2040.pid.2=0xc107
+adafruit_macropad2040.vid.3=0x239a
+adafruit_macropad2040.pid.3=0xc107
+adafruit_macropad2040.vid.4=0x239a
+adafruit_macropad2040.pid.4=0x8107
+adafruit_macropad2040.vid.5=0x239a
+adafruit_macropad2040.pid.5=0x8107
+adafruit_macropad2040.vid.6=0x239a
+adafruit_macropad2040.pid.6=0xc107
+adafruit_macropad2040.vid.7=0x239a
+adafruit_macropad2040.pid.7=0xc107
 adafruit_macropad2040.build.usbpid=-DSERIALUSB_PID=0x8107
 adafruit_macropad2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_macropad2040.build.board=ADAFRUIT_MACROPAD_RP2040
@@ -3817,6 +4125,20 @@ adafruit_macropad2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_
 adafruit_macropad2040picoprobe.name=Adafruit MacroPad RP2040 (Picoprobe)
 adafruit_macropad2040picoprobe.vid.0=0x239a
 adafruit_macropad2040picoprobe.pid.0=0x0004
+adafruit_macropad2040picoprobe.vid.1=0x239a
+adafruit_macropad2040picoprobe.pid.1=0x0104
+adafruit_macropad2040picoprobe.vid.2=0x239a
+adafruit_macropad2040picoprobe.pid.2=0x4004
+adafruit_macropad2040picoprobe.vid.3=0x239a
+adafruit_macropad2040picoprobe.pid.3=0x4104
+adafruit_macropad2040picoprobe.vid.4=0x239a
+adafruit_macropad2040picoprobe.pid.4=0x8004
+adafruit_macropad2040picoprobe.vid.5=0x239a
+adafruit_macropad2040picoprobe.pid.5=0x8104
+adafruit_macropad2040picoprobe.vid.6=0x239a
+adafruit_macropad2040picoprobe.pid.6=0xc004
+adafruit_macropad2040picoprobe.vid.7=0x239a
+adafruit_macropad2040picoprobe.pid.7=0xc104
 adafruit_macropad2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x8107
 adafruit_macropad2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_macropad2040picoprobe.build.board=ADAFRUIT_MACROPAD_RP2040
@@ -4000,6 +4322,20 @@ adafruit_macropad2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 adafruit_macropad2040picodebug.name=Adafruit MacroPad RP2040 (pico-debug)
 adafruit_macropad2040picodebug.vid.0=0x1209
 adafruit_macropad2040picodebug.pid.0=0x2488
+adafruit_macropad2040picodebug.vid.1=0x1209
+adafruit_macropad2040picodebug.pid.1=0x2588
+adafruit_macropad2040picodebug.vid.2=0x1209
+adafruit_macropad2040picodebug.pid.2=0x6488
+adafruit_macropad2040picodebug.vid.3=0x1209
+adafruit_macropad2040picodebug.pid.3=0x6588
+adafruit_macropad2040picodebug.vid.4=0x1209
+adafruit_macropad2040picodebug.pid.4=0xa488
+adafruit_macropad2040picodebug.vid.5=0x1209
+adafruit_macropad2040picodebug.pid.5=0xa588
+adafruit_macropad2040picodebug.vid.6=0x1209
+adafruit_macropad2040picodebug.pid.6=0xe488
+adafruit_macropad2040picodebug.vid.7=0x1209
+adafruit_macropad2040picodebug.pid.7=0xe588
 adafruit_macropad2040picodebug.build.usbpid=-DSERIALUSB_PID=0x8107
 adafruit_macropad2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_macropad2040picodebug.build.board=ADAFRUIT_MACROPAD_RP2040
@@ -4181,6 +4517,20 @@ adafruit_macropad2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 adafruit_kb2040.name=Adafruit KB2040
 adafruit_kb2040.vid.0=0x239a
 adafruit_kb2040.pid.0=0x8105
+adafruit_kb2040.vid.1=0x239a
+adafruit_kb2040.pid.1=0x8105
+adafruit_kb2040.vid.2=0x239a
+adafruit_kb2040.pid.2=0xc105
+adafruit_kb2040.vid.3=0x239a
+adafruit_kb2040.pid.3=0xc105
+adafruit_kb2040.vid.4=0x239a
+adafruit_kb2040.pid.4=0x8105
+adafruit_kb2040.vid.5=0x239a
+adafruit_kb2040.pid.5=0x8105
+adafruit_kb2040.vid.6=0x239a
+adafruit_kb2040.pid.6=0xc105
+adafruit_kb2040.vid.7=0x239a
+adafruit_kb2040.pid.7=0xc105
 adafruit_kb2040.build.usbpid=-DSERIALUSB_PID=0x8105
 adafruit_kb2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_kb2040.build.board=ADAFRUIT_KB2040_RP2040
@@ -4364,6 +4714,20 @@ adafruit_kb2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_kb2040picoprobe.name=Adafruit KB2040 (Picoprobe)
 adafruit_kb2040picoprobe.vid.0=0x239a
 adafruit_kb2040picoprobe.pid.0=0x0004
+adafruit_kb2040picoprobe.vid.1=0x239a
+adafruit_kb2040picoprobe.pid.1=0x0104
+adafruit_kb2040picoprobe.vid.2=0x239a
+adafruit_kb2040picoprobe.pid.2=0x4004
+adafruit_kb2040picoprobe.vid.3=0x239a
+adafruit_kb2040picoprobe.pid.3=0x4104
+adafruit_kb2040picoprobe.vid.4=0x239a
+adafruit_kb2040picoprobe.pid.4=0x8004
+adafruit_kb2040picoprobe.vid.5=0x239a
+adafruit_kb2040picoprobe.pid.5=0x8104
+adafruit_kb2040picoprobe.vid.6=0x239a
+adafruit_kb2040picoprobe.pid.6=0xc004
+adafruit_kb2040picoprobe.vid.7=0x239a
+adafruit_kb2040picoprobe.pid.7=0xc104
 adafruit_kb2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x8105
 adafruit_kb2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_kb2040picoprobe.build.board=ADAFRUIT_KB2040_RP2040
@@ -4547,6 +4911,20 @@ adafruit_kb2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 adafruit_kb2040picodebug.name=Adafruit KB2040 (pico-debug)
 adafruit_kb2040picodebug.vid.0=0x1209
 adafruit_kb2040picodebug.pid.0=0x2488
+adafruit_kb2040picodebug.vid.1=0x1209
+adafruit_kb2040picodebug.pid.1=0x2588
+adafruit_kb2040picodebug.vid.2=0x1209
+adafruit_kb2040picodebug.pid.2=0x6488
+adafruit_kb2040picodebug.vid.3=0x1209
+adafruit_kb2040picodebug.pid.3=0x6588
+adafruit_kb2040picodebug.vid.4=0x1209
+adafruit_kb2040picodebug.pid.4=0xa488
+adafruit_kb2040picodebug.vid.5=0x1209
+adafruit_kb2040picodebug.pid.5=0xa588
+adafruit_kb2040picodebug.vid.6=0x1209
+adafruit_kb2040picodebug.pid.6=0xe488
+adafruit_kb2040picodebug.vid.7=0x1209
+adafruit_kb2040picodebug.pid.7=0xe588
 adafruit_kb2040picodebug.build.usbpid=-DSERIALUSB_PID=0x8105
 adafruit_kb2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_kb2040picodebug.build.board=ADAFRUIT_KB2040_RP2040
@@ -4728,6 +5106,20 @@ adafruit_kb2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 arduino_nano_connect.name=Arduino Nano RP2040 Connect
 arduino_nano_connect.vid.0=0x2341
 arduino_nano_connect.pid.0=0x0058
+arduino_nano_connect.vid.1=0x2341
+arduino_nano_connect.pid.1=0x0158
+arduino_nano_connect.vid.2=0x2341
+arduino_nano_connect.pid.2=0x4058
+arduino_nano_connect.vid.3=0x2341
+arduino_nano_connect.pid.3=0x4158
+arduino_nano_connect.vid.4=0x2341
+arduino_nano_connect.pid.4=0x8058
+arduino_nano_connect.vid.5=0x2341
+arduino_nano_connect.pid.5=0x8158
+arduino_nano_connect.vid.6=0x2341
+arduino_nano_connect.pid.6=0xc058
+arduino_nano_connect.vid.7=0x2341
+arduino_nano_connect.pid.7=0xc158
 arduino_nano_connect.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connect.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connect.build.board=NANO_RP2040_CONNECT
@@ -4959,6 +5351,20 @@ arduino_nano_connect.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_I
 arduino_nano_connectpicoprobe.name=Arduino Nano RP2040 Connect (Picoprobe)
 arduino_nano_connectpicoprobe.vid.0=0x2341
 arduino_nano_connectpicoprobe.pid.0=0x0004
+arduino_nano_connectpicoprobe.vid.1=0x2341
+arduino_nano_connectpicoprobe.pid.1=0x0104
+arduino_nano_connectpicoprobe.vid.2=0x2341
+arduino_nano_connectpicoprobe.pid.2=0x4004
+arduino_nano_connectpicoprobe.vid.3=0x2341
+arduino_nano_connectpicoprobe.pid.3=0x4104
+arduino_nano_connectpicoprobe.vid.4=0x2341
+arduino_nano_connectpicoprobe.pid.4=0x8004
+arduino_nano_connectpicoprobe.vid.5=0x2341
+arduino_nano_connectpicoprobe.pid.5=0x8104
+arduino_nano_connectpicoprobe.vid.6=0x2341
+arduino_nano_connectpicoprobe.pid.6=0xc004
+arduino_nano_connectpicoprobe.vid.7=0x2341
+arduino_nano_connectpicoprobe.pid.7=0xc104
 arduino_nano_connectpicoprobe.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connectpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connectpicoprobe.build.board=NANO_RP2040_CONNECT
@@ -5190,6 +5596,20 @@ arduino_nano_connectpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 arduino_nano_connectpicodebug.name=Arduino Nano RP2040 Connect (pico-debug)
 arduino_nano_connectpicodebug.vid.0=0x1209
 arduino_nano_connectpicodebug.pid.0=0x2488
+arduino_nano_connectpicodebug.vid.1=0x1209
+arduino_nano_connectpicodebug.pid.1=0x2588
+arduino_nano_connectpicodebug.vid.2=0x1209
+arduino_nano_connectpicodebug.pid.2=0x6488
+arduino_nano_connectpicodebug.vid.3=0x1209
+arduino_nano_connectpicodebug.pid.3=0x6588
+arduino_nano_connectpicodebug.vid.4=0x1209
+arduino_nano_connectpicodebug.pid.4=0xa488
+arduino_nano_connectpicodebug.vid.5=0x1209
+arduino_nano_connectpicodebug.pid.5=0xa588
+arduino_nano_connectpicodebug.vid.6=0x1209
+arduino_nano_connectpicodebug.pid.6=0xe488
+arduino_nano_connectpicodebug.vid.7=0x1209
+arduino_nano_connectpicodebug.pid.7=0xe588
 arduino_nano_connectpicodebug.build.usbpid=-DSERIALUSB_PID=0x0058
 arduino_nano_connectpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connectpicodebug.build.board=NANO_RP2040_CONNECT
@@ -5419,6 +5839,20 @@ arduino_nano_connectpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 cytron_maker_nano_rp2040.name=Cytron Maker Nano RP2040
 cytron_maker_nano_rp2040.vid.0=0x2e8a
 cytron_maker_nano_rp2040.pid.0=0x100f
+cytron_maker_nano_rp2040.vid.1=0x2e8a
+cytron_maker_nano_rp2040.pid.1=0x110f
+cytron_maker_nano_rp2040.vid.2=0x2e8a
+cytron_maker_nano_rp2040.pid.2=0x500f
+cytron_maker_nano_rp2040.vid.3=0x2e8a
+cytron_maker_nano_rp2040.pid.3=0x510f
+cytron_maker_nano_rp2040.vid.4=0x2e8a
+cytron_maker_nano_rp2040.pid.4=0x900f
+cytron_maker_nano_rp2040.vid.5=0x2e8a
+cytron_maker_nano_rp2040.pid.5=0x910f
+cytron_maker_nano_rp2040.vid.6=0x2e8a
+cytron_maker_nano_rp2040.pid.6=0xd00f
+cytron_maker_nano_rp2040.vid.7=0x2e8a
+cytron_maker_nano_rp2040.pid.7=0xd10f
 cytron_maker_nano_rp2040.build.usbpid=-DSERIALUSB_PID=0x100f
 cytron_maker_nano_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_nano_rp2040.build.board=CYTRON_MAKER_NANO_RP2040
@@ -5566,6 +6000,20 @@ cytron_maker_nano_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 cytron_maker_nano_rp2040picoprobe.name=Cytron Maker Nano RP2040 (Picoprobe)
 cytron_maker_nano_rp2040picoprobe.vid.0=0x2e8a
 cytron_maker_nano_rp2040picoprobe.pid.0=0x0004
+cytron_maker_nano_rp2040picoprobe.vid.1=0x2e8a
+cytron_maker_nano_rp2040picoprobe.pid.1=0x0104
+cytron_maker_nano_rp2040picoprobe.vid.2=0x2e8a
+cytron_maker_nano_rp2040picoprobe.pid.2=0x4004
+cytron_maker_nano_rp2040picoprobe.vid.3=0x2e8a
+cytron_maker_nano_rp2040picoprobe.pid.3=0x4104
+cytron_maker_nano_rp2040picoprobe.vid.4=0x2e8a
+cytron_maker_nano_rp2040picoprobe.pid.4=0x8004
+cytron_maker_nano_rp2040picoprobe.vid.5=0x2e8a
+cytron_maker_nano_rp2040picoprobe.pid.5=0x8104
+cytron_maker_nano_rp2040picoprobe.vid.6=0x2e8a
+cytron_maker_nano_rp2040picoprobe.pid.6=0xc004
+cytron_maker_nano_rp2040picoprobe.vid.7=0x2e8a
+cytron_maker_nano_rp2040picoprobe.pid.7=0xc104
 cytron_maker_nano_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x100f
 cytron_maker_nano_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_nano_rp2040picoprobe.build.board=CYTRON_MAKER_NANO_RP2040
@@ -5713,6 +6161,20 @@ cytron_maker_nano_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 cytron_maker_nano_rp2040picodebug.name=Cytron Maker Nano RP2040 (pico-debug)
 cytron_maker_nano_rp2040picodebug.vid.0=0x1209
 cytron_maker_nano_rp2040picodebug.pid.0=0x2488
+cytron_maker_nano_rp2040picodebug.vid.1=0x1209
+cytron_maker_nano_rp2040picodebug.pid.1=0x2588
+cytron_maker_nano_rp2040picodebug.vid.2=0x1209
+cytron_maker_nano_rp2040picodebug.pid.2=0x6488
+cytron_maker_nano_rp2040picodebug.vid.3=0x1209
+cytron_maker_nano_rp2040picodebug.pid.3=0x6588
+cytron_maker_nano_rp2040picodebug.vid.4=0x1209
+cytron_maker_nano_rp2040picodebug.pid.4=0xa488
+cytron_maker_nano_rp2040picodebug.vid.5=0x1209
+cytron_maker_nano_rp2040picodebug.pid.5=0xa588
+cytron_maker_nano_rp2040picodebug.vid.6=0x1209
+cytron_maker_nano_rp2040picodebug.pid.6=0xe488
+cytron_maker_nano_rp2040picodebug.vid.7=0x1209
+cytron_maker_nano_rp2040picodebug.pid.7=0xe588
 cytron_maker_nano_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x100f
 cytron_maker_nano_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_nano_rp2040picodebug.build.board=CYTRON_MAKER_NANO_RP2040
@@ -5858,6 +6320,20 @@ cytron_maker_nano_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 cytron_maker_pi_rp2040.name=Cytron Maker Pi RP2040
 cytron_maker_pi_rp2040.vid.0=0x2e8a
 cytron_maker_pi_rp2040.pid.0=0x1000
+cytron_maker_pi_rp2040.vid.1=0x2e8a
+cytron_maker_pi_rp2040.pid.1=0x1100
+cytron_maker_pi_rp2040.vid.2=0x2e8a
+cytron_maker_pi_rp2040.pid.2=0x5000
+cytron_maker_pi_rp2040.vid.3=0x2e8a
+cytron_maker_pi_rp2040.pid.3=0x5100
+cytron_maker_pi_rp2040.vid.4=0x2e8a
+cytron_maker_pi_rp2040.pid.4=0x9000
+cytron_maker_pi_rp2040.vid.5=0x2e8a
+cytron_maker_pi_rp2040.pid.5=0x9100
+cytron_maker_pi_rp2040.vid.6=0x2e8a
+cytron_maker_pi_rp2040.pid.6=0xd000
+cytron_maker_pi_rp2040.vid.7=0x2e8a
+cytron_maker_pi_rp2040.pid.7=0xd100
 cytron_maker_pi_rp2040.build.usbpid=-DSERIALUSB_PID=0x1000
 cytron_maker_pi_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_pi_rp2040.build.board=CYTRON_MAKER_PI_RP2040
@@ -6005,6 +6481,20 @@ cytron_maker_pi_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP
 cytron_maker_pi_rp2040picoprobe.name=Cytron Maker Pi RP2040 (Picoprobe)
 cytron_maker_pi_rp2040picoprobe.vid.0=0x2e8a
 cytron_maker_pi_rp2040picoprobe.pid.0=0x0004
+cytron_maker_pi_rp2040picoprobe.vid.1=0x2e8a
+cytron_maker_pi_rp2040picoprobe.pid.1=0x0104
+cytron_maker_pi_rp2040picoprobe.vid.2=0x2e8a
+cytron_maker_pi_rp2040picoprobe.pid.2=0x4004
+cytron_maker_pi_rp2040picoprobe.vid.3=0x2e8a
+cytron_maker_pi_rp2040picoprobe.pid.3=0x4104
+cytron_maker_pi_rp2040picoprobe.vid.4=0x2e8a
+cytron_maker_pi_rp2040picoprobe.pid.4=0x8004
+cytron_maker_pi_rp2040picoprobe.vid.5=0x2e8a
+cytron_maker_pi_rp2040picoprobe.pid.5=0x8104
+cytron_maker_pi_rp2040picoprobe.vid.6=0x2e8a
+cytron_maker_pi_rp2040picoprobe.pid.6=0xc004
+cytron_maker_pi_rp2040picoprobe.vid.7=0x2e8a
+cytron_maker_pi_rp2040picoprobe.pid.7=0xc104
 cytron_maker_pi_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x1000
 cytron_maker_pi_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_pi_rp2040picoprobe.build.board=CYTRON_MAKER_PI_RP2040
@@ -6152,6 +6642,20 @@ cytron_maker_pi_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6
 cytron_maker_pi_rp2040picodebug.name=Cytron Maker Pi RP2040 (pico-debug)
 cytron_maker_pi_rp2040picodebug.vid.0=0x1209
 cytron_maker_pi_rp2040picodebug.pid.0=0x2488
+cytron_maker_pi_rp2040picodebug.vid.1=0x1209
+cytron_maker_pi_rp2040picodebug.pid.1=0x2588
+cytron_maker_pi_rp2040picodebug.vid.2=0x1209
+cytron_maker_pi_rp2040picodebug.pid.2=0x6488
+cytron_maker_pi_rp2040picodebug.vid.3=0x1209
+cytron_maker_pi_rp2040picodebug.pid.3=0x6588
+cytron_maker_pi_rp2040picodebug.vid.4=0x1209
+cytron_maker_pi_rp2040picodebug.pid.4=0xa488
+cytron_maker_pi_rp2040picodebug.vid.5=0x1209
+cytron_maker_pi_rp2040picodebug.pid.5=0xa588
+cytron_maker_pi_rp2040picodebug.vid.6=0x1209
+cytron_maker_pi_rp2040picodebug.pid.6=0xe488
+cytron_maker_pi_rp2040picodebug.vid.7=0x1209
+cytron_maker_pi_rp2040picodebug.pid.7=0xe588
 cytron_maker_pi_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x1000
 cytron_maker_pi_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_pi_rp2040picodebug.build.board=CYTRON_MAKER_PI_RP2040
@@ -6297,6 +6801,20 @@ cytron_maker_pi_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6
 flyboard2040_core.name=DeRuiLab FlyBoard2040Core
 flyboard2040_core.vid.0=0x2e8a
 flyboard2040_core.pid.0=0x008a
+flyboard2040_core.vid.1=0x2e8a
+flyboard2040_core.pid.1=0x018a
+flyboard2040_core.vid.2=0x2e8a
+flyboard2040_core.pid.2=0x408a
+flyboard2040_core.vid.3=0x2e8a
+flyboard2040_core.pid.3=0x418a
+flyboard2040_core.vid.4=0x2e8a
+flyboard2040_core.pid.4=0x808a
+flyboard2040_core.vid.5=0x2e8a
+flyboard2040_core.pid.5=0x818a
+flyboard2040_core.vid.6=0x2e8a
+flyboard2040_core.pid.6=0xc08a
+flyboard2040_core.vid.7=0x2e8a
+flyboard2040_core.pid.7=0xc18a
 flyboard2040_core.build.usbpid=-DSERIALUSB_PID=0x008a
 flyboard2040_core.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 flyboard2040_core.build.board=FLYBOARD2040_CORE
@@ -6456,6 +6974,20 @@ flyboard2040_core.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4
 flyboard2040_corepicoprobe.name=DeRuiLab FlyBoard2040Core (Picoprobe)
 flyboard2040_corepicoprobe.vid.0=0x2e8a
 flyboard2040_corepicoprobe.pid.0=0x0004
+flyboard2040_corepicoprobe.vid.1=0x2e8a
+flyboard2040_corepicoprobe.pid.1=0x0104
+flyboard2040_corepicoprobe.vid.2=0x2e8a
+flyboard2040_corepicoprobe.pid.2=0x4004
+flyboard2040_corepicoprobe.vid.3=0x2e8a
+flyboard2040_corepicoprobe.pid.3=0x4104
+flyboard2040_corepicoprobe.vid.4=0x2e8a
+flyboard2040_corepicoprobe.pid.4=0x8004
+flyboard2040_corepicoprobe.vid.5=0x2e8a
+flyboard2040_corepicoprobe.pid.5=0x8104
+flyboard2040_corepicoprobe.vid.6=0x2e8a
+flyboard2040_corepicoprobe.pid.6=0xc004
+flyboard2040_corepicoprobe.vid.7=0x2e8a
+flyboard2040_corepicoprobe.pid.7=0xc104
 flyboard2040_corepicoprobe.build.usbpid=-DSERIALUSB_PID=0x008a
 flyboard2040_corepicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 flyboard2040_corepicoprobe.build.board=FLYBOARD2040_CORE
@@ -6615,6 +7147,20 @@ flyboard2040_corepicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -D
 flyboard2040_corepicodebug.name=DeRuiLab FlyBoard2040Core (pico-debug)
 flyboard2040_corepicodebug.vid.0=0x1209
 flyboard2040_corepicodebug.pid.0=0x2488
+flyboard2040_corepicodebug.vid.1=0x1209
+flyboard2040_corepicodebug.pid.1=0x2588
+flyboard2040_corepicodebug.vid.2=0x1209
+flyboard2040_corepicodebug.pid.2=0x6488
+flyboard2040_corepicodebug.vid.3=0x1209
+flyboard2040_corepicodebug.pid.3=0x6588
+flyboard2040_corepicodebug.vid.4=0x1209
+flyboard2040_corepicodebug.pid.4=0xa488
+flyboard2040_corepicodebug.vid.5=0x1209
+flyboard2040_corepicodebug.pid.5=0xa588
+flyboard2040_corepicodebug.vid.6=0x1209
+flyboard2040_corepicodebug.pid.6=0xe488
+flyboard2040_corepicodebug.vid.7=0x1209
+flyboard2040_corepicodebug.pid.7=0xe588
 flyboard2040_corepicodebug.build.usbpid=-DSERIALUSB_PID=0x008a
 flyboard2040_corepicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 flyboard2040_corepicodebug.build.board=FLYBOARD2040_CORE
@@ -6772,6 +7318,20 @@ flyboard2040_corepicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -D
 dfrobot_beetle_rp2040.name=DFRobot Beetle RP2040
 dfrobot_beetle_rp2040.vid.0=0x3343
 dfrobot_beetle_rp2040.pid.0=0x4253
+dfrobot_beetle_rp2040.vid.1=0x3343
+dfrobot_beetle_rp2040.pid.1=0x4353
+dfrobot_beetle_rp2040.vid.2=0x3343
+dfrobot_beetle_rp2040.pid.2=0x4253
+dfrobot_beetle_rp2040.vid.3=0x3343
+dfrobot_beetle_rp2040.pid.3=0x4353
+dfrobot_beetle_rp2040.vid.4=0x3343
+dfrobot_beetle_rp2040.pid.4=0xc253
+dfrobot_beetle_rp2040.vid.5=0x3343
+dfrobot_beetle_rp2040.pid.5=0xc353
+dfrobot_beetle_rp2040.vid.6=0x3343
+dfrobot_beetle_rp2040.pid.6=0xc253
+dfrobot_beetle_rp2040.vid.7=0x3343
+dfrobot_beetle_rp2040.pid.7=0xc353
 dfrobot_beetle_rp2040.build.usbpid=-DSERIALUSB_PID=0x4253
 dfrobot_beetle_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 dfrobot_beetle_rp2040.build.board=DFROBOT_BEETLE_RP2040
@@ -6919,6 +7479,20 @@ dfrobot_beetle_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_
 dfrobot_beetle_rp2040picoprobe.name=DFRobot Beetle RP2040 (Picoprobe)
 dfrobot_beetle_rp2040picoprobe.vid.0=0x3343
 dfrobot_beetle_rp2040picoprobe.pid.0=0x0004
+dfrobot_beetle_rp2040picoprobe.vid.1=0x3343
+dfrobot_beetle_rp2040picoprobe.pid.1=0x0104
+dfrobot_beetle_rp2040picoprobe.vid.2=0x3343
+dfrobot_beetle_rp2040picoprobe.pid.2=0x4004
+dfrobot_beetle_rp2040picoprobe.vid.3=0x3343
+dfrobot_beetle_rp2040picoprobe.pid.3=0x4104
+dfrobot_beetle_rp2040picoprobe.vid.4=0x3343
+dfrobot_beetle_rp2040picoprobe.pid.4=0x8004
+dfrobot_beetle_rp2040picoprobe.vid.5=0x3343
+dfrobot_beetle_rp2040picoprobe.pid.5=0x8104
+dfrobot_beetle_rp2040picoprobe.vid.6=0x3343
+dfrobot_beetle_rp2040picoprobe.pid.6=0xc004
+dfrobot_beetle_rp2040picoprobe.vid.7=0x3343
+dfrobot_beetle_rp2040picoprobe.pid.7=0xc104
 dfrobot_beetle_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x4253
 dfrobot_beetle_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 dfrobot_beetle_rp2040picoprobe.build.board=DFROBOT_BEETLE_RP2040
@@ -7066,6 +7640,20 @@ dfrobot_beetle_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 dfrobot_beetle_rp2040picodebug.name=DFRobot Beetle RP2040 (pico-debug)
 dfrobot_beetle_rp2040picodebug.vid.0=0x1209
 dfrobot_beetle_rp2040picodebug.pid.0=0x2488
+dfrobot_beetle_rp2040picodebug.vid.1=0x1209
+dfrobot_beetle_rp2040picodebug.pid.1=0x2588
+dfrobot_beetle_rp2040picodebug.vid.2=0x1209
+dfrobot_beetle_rp2040picodebug.pid.2=0x6488
+dfrobot_beetle_rp2040picodebug.vid.3=0x1209
+dfrobot_beetle_rp2040picodebug.pid.3=0x6588
+dfrobot_beetle_rp2040picodebug.vid.4=0x1209
+dfrobot_beetle_rp2040picodebug.pid.4=0xa488
+dfrobot_beetle_rp2040picodebug.vid.5=0x1209
+dfrobot_beetle_rp2040picodebug.pid.5=0xa588
+dfrobot_beetle_rp2040picodebug.vid.6=0x1209
+dfrobot_beetle_rp2040picodebug.pid.6=0xe488
+dfrobot_beetle_rp2040picodebug.vid.7=0x1209
+dfrobot_beetle_rp2040picodebug.pid.7=0xe588
 dfrobot_beetle_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x4253
 dfrobot_beetle_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 dfrobot_beetle_rp2040picodebug.build.board=DFROBOT_BEETLE_RP2040
@@ -7206,11 +7794,987 @@ dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.
 dfrobot_beetle_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
+# ElectronicCats HunterCat NFC RP2040
+# -----------------------------------
+electroniccats_bombercat.name=ElectronicCats HunterCat NFC RP2040
+electroniccats_bombercat.vid.0=0x1209
+electroniccats_bombercat.pid.0=0x1209
+electroniccats_bombercat.vid.1=0x1209
+electroniccats_bombercat.pid.1=0x1309
+electroniccats_bombercat.vid.2=0x1209
+electroniccats_bombercat.pid.2=0x5209
+electroniccats_bombercat.vid.3=0x1209
+electroniccats_bombercat.pid.3=0x5309
+electroniccats_bombercat.vid.4=0x1209
+electroniccats_bombercat.pid.4=0x9209
+electroniccats_bombercat.vid.5=0x1209
+electroniccats_bombercat.pid.5=0x9309
+electroniccats_bombercat.vid.6=0x1209
+electroniccats_bombercat.pid.6=0xd209
+electroniccats_bombercat.vid.7=0x1209
+electroniccats_bombercat.pid.7=0xd309
+electroniccats_bombercat.build.usbpid=-DSERIALUSB_PID=0x1209
+electroniccats_bombercat.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+electroniccats_bombercat.build.board=ELECTRONICCATS_BOMBERCAT
+electroniccats_bombercat.build.mcu=cortex-m0plus
+electroniccats_bombercat.build.variant=electroniccats_bombercat
+electroniccats_bombercat.upload.tool=uf2conv
+electroniccats_bombercat.upload.maximum_size=2097152
+electroniccats_bombercat.upload.maximum_data_size=262144
+electroniccats_bombercat.upload.wait_for_upload_port=true
+electroniccats_bombercat.upload.erase_cmd=
+electroniccats_bombercat.serial.disableDTR=false
+electroniccats_bombercat.serial.disableRTS=false
+electroniccats_bombercat.build.f_cpu=125000000
+electroniccats_bombercat.build.led=
+electroniccats_bombercat.build.core=rp2040
+electroniccats_bombercat.build.ldscript=memmap_default.ld
+electroniccats_bombercat.build.ram_length=256k
+electroniccats_bombercat.build.boot2=boot2_w25q080_2_padded_checksum
+electroniccats_bombercat.build.vid=0x1209
+electroniccats_bombercat.build.pid=0x1209
+electroniccats_bombercat.build.usb_manufacturer="ElectronicCats"
+electroniccats_bombercat.build.usb_product="HunterCat NFC RP2040"
+electroniccats_bombercat.menu.flash.2097152_0=2MB (no FS)
+electroniccats_bombercat.menu.flash.2097152_0.upload.maximum_size=2093056
+electroniccats_bombercat.menu.flash.2097152_0.build.flash_length=2093056
+electroniccats_bombercat.menu.flash.2097152_0.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_0.build.fs_start=270528512
+electroniccats_bombercat.menu.flash.2097152_0.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+electroniccats_bombercat.menu.flash.2097152_65536.upload.maximum_size=2027520
+electroniccats_bombercat.menu.flash.2097152_65536.build.flash_length=2027520
+electroniccats_bombercat.menu.flash.2097152_65536.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_65536.build.fs_start=270462976
+electroniccats_bombercat.menu.flash.2097152_65536.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+electroniccats_bombercat.menu.flash.2097152_131072.upload.maximum_size=1961984
+electroniccats_bombercat.menu.flash.2097152_131072.build.flash_length=1961984
+electroniccats_bombercat.menu.flash.2097152_131072.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_131072.build.fs_start=270397440
+electroniccats_bombercat.menu.flash.2097152_131072.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+electroniccats_bombercat.menu.flash.2097152_262144.upload.maximum_size=1830912
+electroniccats_bombercat.menu.flash.2097152_262144.build.flash_length=1830912
+electroniccats_bombercat.menu.flash.2097152_262144.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_262144.build.fs_start=270266368
+electroniccats_bombercat.menu.flash.2097152_262144.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+electroniccats_bombercat.menu.flash.2097152_524288.upload.maximum_size=1568768
+electroniccats_bombercat.menu.flash.2097152_524288.build.flash_length=1568768
+electroniccats_bombercat.menu.flash.2097152_524288.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_524288.build.fs_start=270004224
+electroniccats_bombercat.menu.flash.2097152_524288.build.fs_end=270528512
+electroniccats_bombercat.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+electroniccats_bombercat.menu.flash.2097152_1048576.upload.maximum_size=1044480
+electroniccats_bombercat.menu.flash.2097152_1048576.build.flash_length=1044480
+electroniccats_bombercat.menu.flash.2097152_1048576.build.eeprom_start=270528512
+electroniccats_bombercat.menu.flash.2097152_1048576.build.fs_start=269479936
+electroniccats_bombercat.menu.flash.2097152_1048576.build.fs_end=270528512
+electroniccats_bombercat.menu.freq.133=133 MHz
+electroniccats_bombercat.menu.freq.133.build.f_cpu=133000000L
+electroniccats_bombercat.menu.freq.50=50 MHz
+electroniccats_bombercat.menu.freq.50.build.f_cpu=50000000L
+electroniccats_bombercat.menu.freq.100=100 MHz
+electroniccats_bombercat.menu.freq.100.build.f_cpu=100000000L
+electroniccats_bombercat.menu.freq.120=120 MHz
+electroniccats_bombercat.menu.freq.120.build.f_cpu=120000000L
+electroniccats_bombercat.menu.freq.125=125 MHz
+electroniccats_bombercat.menu.freq.125.build.f_cpu=125000000L
+electroniccats_bombercat.menu.freq.150=150 MHz (Overclock)
+electroniccats_bombercat.menu.freq.150.build.f_cpu=150000000L
+electroniccats_bombercat.menu.freq.175=175 MHz (Overclock)
+electroniccats_bombercat.menu.freq.175.build.f_cpu=175000000L
+electroniccats_bombercat.menu.freq.200=200 MHz (Overclock)
+electroniccats_bombercat.menu.freq.200.build.f_cpu=200000000L
+electroniccats_bombercat.menu.freq.225=225 MHz (Overclock)
+electroniccats_bombercat.menu.freq.225.build.f_cpu=225000000L
+electroniccats_bombercat.menu.freq.240=240 MHz (Overclock)
+electroniccats_bombercat.menu.freq.240.build.f_cpu=240000000L
+electroniccats_bombercat.menu.freq.250=250 MHz (Overclock)
+electroniccats_bombercat.menu.freq.250.build.f_cpu=250000000L
+electroniccats_bombercat.menu.freq.275=275 MHz (Overclock)
+electroniccats_bombercat.menu.freq.275.build.f_cpu=275000000L
+electroniccats_bombercat.menu.freq.300=300 MHz (Overclock)
+electroniccats_bombercat.menu.freq.300.build.f_cpu=300000000L
+electroniccats_bombercat.menu.opt.Small=Small (-Os) (standard)
+electroniccats_bombercat.menu.opt.Small.build.flags.optimize=-Os
+electroniccats_bombercat.menu.opt.Optimize=Optimize (-O)
+electroniccats_bombercat.menu.opt.Optimize.build.flags.optimize=-O
+electroniccats_bombercat.menu.opt.Optimize2=Optimize More (-O2)
+electroniccats_bombercat.menu.opt.Optimize2.build.flags.optimize=-O2
+electroniccats_bombercat.menu.opt.Optimize3=Optimize Even More (-O3)
+electroniccats_bombercat.menu.opt.Optimize3.build.flags.optimize=-O3
+electroniccats_bombercat.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+electroniccats_bombercat.menu.opt.Fast.build.flags.optimize=-Ofast
+electroniccats_bombercat.menu.opt.Debug=Debug (-Og)
+electroniccats_bombercat.menu.opt.Debug.build.flags.optimize=-Og
+electroniccats_bombercat.menu.rtti.Disabled=Disabled
+electroniccats_bombercat.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+electroniccats_bombercat.menu.rtti.Enabled=Enabled
+electroniccats_bombercat.menu.rtti.Enabled.build.flags.rtti=
+electroniccats_bombercat.menu.stackprotect.Disabled=Disabled
+electroniccats_bombercat.menu.stackprotect.Disabled.build.flags.stackprotect=
+electroniccats_bombercat.menu.stackprotect.Enabled=Enabled
+electroniccats_bombercat.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+electroniccats_bombercat.menu.exceptions.Disabled=Disabled
+electroniccats_bombercat.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+electroniccats_bombercat.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+electroniccats_bombercat.menu.exceptions.Enabled=Enabled
+electroniccats_bombercat.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+electroniccats_bombercat.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+electroniccats_bombercat.menu.dbgport.Disabled=Disabled
+electroniccats_bombercat.menu.dbgport.Disabled.build.debug_port=
+electroniccats_bombercat.menu.dbgport.Serial=Serial
+electroniccats_bombercat.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+electroniccats_bombercat.menu.dbgport.Serial1=Serial1
+electroniccats_bombercat.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+electroniccats_bombercat.menu.dbgport.Serial2=Serial2
+electroniccats_bombercat.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+electroniccats_bombercat.menu.dbglvl.None=None
+electroniccats_bombercat.menu.dbglvl.None.build.debug_level=
+electroniccats_bombercat.menu.dbglvl.Core=Core
+electroniccats_bombercat.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+electroniccats_bombercat.menu.dbglvl.SPI=SPI
+electroniccats_bombercat.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+electroniccats_bombercat.menu.dbglvl.Wire=Wire
+electroniccats_bombercat.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+electroniccats_bombercat.menu.dbglvl.All=All
+electroniccats_bombercat.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+electroniccats_bombercat.menu.dbglvl.NDEBUG=NDEBUG
+electroniccats_bombercat.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+electroniccats_bombercat.menu.usbstack.picosdk=Pico SDK
+electroniccats_bombercat.menu.usbstack.picosdk.build.usbstack_flags=
+electroniccats_bombercat.menu.usbstack.tinyusb=Adafruit TinyUSB
+electroniccats_bombercat.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+electroniccats_bombercat.menu.ipstack.ipv4only=IPv4 Only
+electroniccats_bombercat.menu.ipstack.ipv4only.build.libpico=libpico.a
+electroniccats_bombercat.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+electroniccats_bombercat.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+electroniccats_bombercat.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+electroniccats_bombercat.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
+# ElectronicCats HunterCat NFC RP2040 (Picoprobe)
+# -----------------------------------
+electroniccats_bombercatpicoprobe.name=ElectronicCats HunterCat NFC RP2040 (Picoprobe)
+electroniccats_bombercatpicoprobe.vid.0=0x1209
+electroniccats_bombercatpicoprobe.pid.0=0x0004
+electroniccats_bombercatpicoprobe.vid.1=0x1209
+electroniccats_bombercatpicoprobe.pid.1=0x0104
+electroniccats_bombercatpicoprobe.vid.2=0x1209
+electroniccats_bombercatpicoprobe.pid.2=0x4004
+electroniccats_bombercatpicoprobe.vid.3=0x1209
+electroniccats_bombercatpicoprobe.pid.3=0x4104
+electroniccats_bombercatpicoprobe.vid.4=0x1209
+electroniccats_bombercatpicoprobe.pid.4=0x8004
+electroniccats_bombercatpicoprobe.vid.5=0x1209
+electroniccats_bombercatpicoprobe.pid.5=0x8104
+electroniccats_bombercatpicoprobe.vid.6=0x1209
+electroniccats_bombercatpicoprobe.pid.6=0xc004
+electroniccats_bombercatpicoprobe.vid.7=0x1209
+electroniccats_bombercatpicoprobe.pid.7=0xc104
+electroniccats_bombercatpicoprobe.build.usbpid=-DSERIALUSB_PID=0x1209
+electroniccats_bombercatpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+electroniccats_bombercatpicoprobe.build.board=ELECTRONICCATS_BOMBERCAT
+electroniccats_bombercatpicoprobe.build.mcu=cortex-m0plus
+electroniccats_bombercatpicoprobe.build.variant=electroniccats_bombercat
+electroniccats_bombercatpicoprobe.upload.tool=picoprobe
+electroniccats_bombercatpicoprobe.upload.maximum_size=2097152
+electroniccats_bombercatpicoprobe.upload.maximum_data_size=262144
+electroniccats_bombercatpicoprobe.upload.wait_for_upload_port=true
+electroniccats_bombercatpicoprobe.upload.erase_cmd=
+electroniccats_bombercatpicoprobe.serial.disableDTR=false
+electroniccats_bombercatpicoprobe.serial.disableRTS=false
+electroniccats_bombercatpicoprobe.build.f_cpu=125000000
+electroniccats_bombercatpicoprobe.build.led=
+electroniccats_bombercatpicoprobe.build.core=rp2040
+electroniccats_bombercatpicoprobe.build.ldscript=memmap_default.ld
+electroniccats_bombercatpicoprobe.build.ram_length=256k
+electroniccats_bombercatpicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
+electroniccats_bombercatpicoprobe.build.vid=0x1209
+electroniccats_bombercatpicoprobe.build.pid=0x1209
+electroniccats_bombercatpicoprobe.build.usb_manufacturer="ElectronicCats"
+electroniccats_bombercatpicoprobe.build.usb_product="HunterCat NFC RP2040 (Picoprobe)"
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0=2MB (no FS)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.flash_length=2093056
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.fs_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_0.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.upload.maximum_size=2027520
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.flash_length=2027520
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.fs_start=270462976
+electroniccats_bombercatpicoprobe.menu.flash.2097152_65536.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.upload.maximum_size=1961984
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.flash_length=1961984
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.fs_start=270397440
+electroniccats_bombercatpicoprobe.menu.flash.2097152_131072.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.upload.maximum_size=1830912
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.flash_length=1830912
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.fs_start=270266368
+electroniccats_bombercatpicoprobe.menu.flash.2097152_262144.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.upload.maximum_size=1568768
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.flash_length=1568768
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.fs_start=270004224
+electroniccats_bombercatpicoprobe.menu.flash.2097152_524288.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.upload.maximum_size=1044480
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.flash_length=1044480
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.eeprom_start=270528512
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.fs_start=269479936
+electroniccats_bombercatpicoprobe.menu.flash.2097152_1048576.build.fs_end=270528512
+electroniccats_bombercatpicoprobe.menu.freq.133=133 MHz
+electroniccats_bombercatpicoprobe.menu.freq.133.build.f_cpu=133000000L
+electroniccats_bombercatpicoprobe.menu.freq.50=50 MHz
+electroniccats_bombercatpicoprobe.menu.freq.50.build.f_cpu=50000000L
+electroniccats_bombercatpicoprobe.menu.freq.100=100 MHz
+electroniccats_bombercatpicoprobe.menu.freq.100.build.f_cpu=100000000L
+electroniccats_bombercatpicoprobe.menu.freq.120=120 MHz
+electroniccats_bombercatpicoprobe.menu.freq.120.build.f_cpu=120000000L
+electroniccats_bombercatpicoprobe.menu.freq.125=125 MHz
+electroniccats_bombercatpicoprobe.menu.freq.125.build.f_cpu=125000000L
+electroniccats_bombercatpicoprobe.menu.freq.150=150 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.150.build.f_cpu=150000000L
+electroniccats_bombercatpicoprobe.menu.freq.175=175 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.175.build.f_cpu=175000000L
+electroniccats_bombercatpicoprobe.menu.freq.200=200 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.200.build.f_cpu=200000000L
+electroniccats_bombercatpicoprobe.menu.freq.225=225 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.225.build.f_cpu=225000000L
+electroniccats_bombercatpicoprobe.menu.freq.240=240 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.240.build.f_cpu=240000000L
+electroniccats_bombercatpicoprobe.menu.freq.250=250 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.250.build.f_cpu=250000000L
+electroniccats_bombercatpicoprobe.menu.freq.275=275 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.275.build.f_cpu=275000000L
+electroniccats_bombercatpicoprobe.menu.freq.300=300 MHz (Overclock)
+electroniccats_bombercatpicoprobe.menu.freq.300.build.f_cpu=300000000L
+electroniccats_bombercatpicoprobe.menu.opt.Small=Small (-Os) (standard)
+electroniccats_bombercatpicoprobe.menu.opt.Small.build.flags.optimize=-Os
+electroniccats_bombercatpicoprobe.menu.opt.Optimize=Optimize (-O)
+electroniccats_bombercatpicoprobe.menu.opt.Optimize.build.flags.optimize=-O
+electroniccats_bombercatpicoprobe.menu.opt.Optimize2=Optimize More (-O2)
+electroniccats_bombercatpicoprobe.menu.opt.Optimize2.build.flags.optimize=-O2
+electroniccats_bombercatpicoprobe.menu.opt.Optimize3=Optimize Even More (-O3)
+electroniccats_bombercatpicoprobe.menu.opt.Optimize3.build.flags.optimize=-O3
+electroniccats_bombercatpicoprobe.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+electroniccats_bombercatpicoprobe.menu.opt.Fast.build.flags.optimize=-Ofast
+electroniccats_bombercatpicoprobe.menu.opt.Debug=Debug (-Og)
+electroniccats_bombercatpicoprobe.menu.opt.Debug.build.flags.optimize=-Og
+electroniccats_bombercatpicoprobe.menu.rtti.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+electroniccats_bombercatpicoprobe.menu.rtti.Enabled=Enabled
+electroniccats_bombercatpicoprobe.menu.rtti.Enabled.build.flags.rtti=
+electroniccats_bombercatpicoprobe.menu.stackprotect.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.stackprotect.Disabled.build.flags.stackprotect=
+electroniccats_bombercatpicoprobe.menu.stackprotect.Enabled=Enabled
+electroniccats_bombercatpicoprobe.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+electroniccats_bombercatpicoprobe.menu.exceptions.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+electroniccats_bombercatpicoprobe.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+electroniccats_bombercatpicoprobe.menu.exceptions.Enabled=Enabled
+electroniccats_bombercatpicoprobe.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+electroniccats_bombercatpicoprobe.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+electroniccats_bombercatpicoprobe.menu.dbgport.Disabled=Disabled
+electroniccats_bombercatpicoprobe.menu.dbgport.Disabled.build.debug_port=
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial=Serial
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial1=Serial1
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial2=Serial2
+electroniccats_bombercatpicoprobe.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+electroniccats_bombercatpicoprobe.menu.dbglvl.None=None
+electroniccats_bombercatpicoprobe.menu.dbglvl.None.build.debug_level=
+electroniccats_bombercatpicoprobe.menu.dbglvl.Core=Core
+electroniccats_bombercatpicoprobe.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+electroniccats_bombercatpicoprobe.menu.dbglvl.SPI=SPI
+electroniccats_bombercatpicoprobe.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+electroniccats_bombercatpicoprobe.menu.dbglvl.Wire=Wire
+electroniccats_bombercatpicoprobe.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+electroniccats_bombercatpicoprobe.menu.dbglvl.All=All
+electroniccats_bombercatpicoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+electroniccats_bombercatpicoprobe.menu.dbglvl.NDEBUG=NDEBUG
+electroniccats_bombercatpicoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+electroniccats_bombercatpicoprobe.menu.usbstack.picosdk=Pico SDK
+electroniccats_bombercatpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+electroniccats_bombercatpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
+electroniccats_bombercatpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4only=IPv4 Only
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+electroniccats_bombercatpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
+# ElectronicCats HunterCat NFC RP2040 (pico-debug)
+# -----------------------------------
+electroniccats_bombercatpicodebug.name=ElectronicCats HunterCat NFC RP2040 (pico-debug)
+electroniccats_bombercatpicodebug.vid.0=0x1209
+electroniccats_bombercatpicodebug.pid.0=0x2488
+electroniccats_bombercatpicodebug.vid.1=0x1209
+electroniccats_bombercatpicodebug.pid.1=0x2588
+electroniccats_bombercatpicodebug.vid.2=0x1209
+electroniccats_bombercatpicodebug.pid.2=0x6488
+electroniccats_bombercatpicodebug.vid.3=0x1209
+electroniccats_bombercatpicodebug.pid.3=0x6588
+electroniccats_bombercatpicodebug.vid.4=0x1209
+electroniccats_bombercatpicodebug.pid.4=0xa488
+electroniccats_bombercatpicodebug.vid.5=0x1209
+electroniccats_bombercatpicodebug.pid.5=0xa588
+electroniccats_bombercatpicodebug.vid.6=0x1209
+electroniccats_bombercatpicodebug.pid.6=0xe488
+electroniccats_bombercatpicodebug.vid.7=0x1209
+electroniccats_bombercatpicodebug.pid.7=0xe588
+electroniccats_bombercatpicodebug.build.usbpid=-DSERIALUSB_PID=0x1209
+electroniccats_bombercatpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+electroniccats_bombercatpicodebug.build.board=ELECTRONICCATS_BOMBERCAT
+electroniccats_bombercatpicodebug.build.mcu=cortex-m0plus
+electroniccats_bombercatpicodebug.build.variant=electroniccats_bombercat
+electroniccats_bombercatpicodebug.upload.tool=picodebug
+electroniccats_bombercatpicodebug.upload.maximum_size=2097152
+electroniccats_bombercatpicodebug.upload.maximum_data_size=245760
+electroniccats_bombercatpicodebug.upload.wait_for_upload_port=true
+electroniccats_bombercatpicodebug.upload.erase_cmd=
+electroniccats_bombercatpicodebug.serial.disableDTR=false
+electroniccats_bombercatpicodebug.serial.disableRTS=false
+electroniccats_bombercatpicodebug.build.f_cpu=125000000
+electroniccats_bombercatpicodebug.build.led=
+electroniccats_bombercatpicodebug.build.core=rp2040
+electroniccats_bombercatpicodebug.build.ldscript=memmap_default.ld
+electroniccats_bombercatpicodebug.build.ram_length=240k
+electroniccats_bombercatpicodebug.build.boot2=boot2_w25q080_2_padded_checksum
+electroniccats_bombercatpicodebug.build.vid=0x1209
+electroniccats_bombercatpicodebug.build.pid=0x1209
+electroniccats_bombercatpicodebug.build.usb_manufacturer="ElectronicCats"
+electroniccats_bombercatpicodebug.build.usb_product="HunterCat NFC RP2040 (pico-debug)"
+electroniccats_bombercatpicodebug.menu.flash.2097152_0=2MB (no FS)
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.upload.maximum_size=2093056
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.flash_length=2093056
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.fs_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_0.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.upload.maximum_size=2027520
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.flash_length=2027520
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.fs_start=270462976
+electroniccats_bombercatpicodebug.menu.flash.2097152_65536.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.upload.maximum_size=1961984
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.flash_length=1961984
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.fs_start=270397440
+electroniccats_bombercatpicodebug.menu.flash.2097152_131072.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.upload.maximum_size=1830912
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.flash_length=1830912
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.fs_start=270266368
+electroniccats_bombercatpicodebug.menu.flash.2097152_262144.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.upload.maximum_size=1568768
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.flash_length=1568768
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.fs_start=270004224
+electroniccats_bombercatpicodebug.menu.flash.2097152_524288.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.upload.maximum_size=1044480
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.flash_length=1044480
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.eeprom_start=270528512
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.fs_start=269479936
+electroniccats_bombercatpicodebug.menu.flash.2097152_1048576.build.fs_end=270528512
+electroniccats_bombercatpicodebug.menu.freq.133=133 MHz
+electroniccats_bombercatpicodebug.menu.freq.133.build.f_cpu=133000000L
+electroniccats_bombercatpicodebug.menu.freq.50=50 MHz
+electroniccats_bombercatpicodebug.menu.freq.50.build.f_cpu=50000000L
+electroniccats_bombercatpicodebug.menu.freq.100=100 MHz
+electroniccats_bombercatpicodebug.menu.freq.100.build.f_cpu=100000000L
+electroniccats_bombercatpicodebug.menu.freq.120=120 MHz
+electroniccats_bombercatpicodebug.menu.freq.120.build.f_cpu=120000000L
+electroniccats_bombercatpicodebug.menu.freq.125=125 MHz
+electroniccats_bombercatpicodebug.menu.freq.125.build.f_cpu=125000000L
+electroniccats_bombercatpicodebug.menu.freq.150=150 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.150.build.f_cpu=150000000L
+electroniccats_bombercatpicodebug.menu.freq.175=175 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.175.build.f_cpu=175000000L
+electroniccats_bombercatpicodebug.menu.freq.200=200 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.200.build.f_cpu=200000000L
+electroniccats_bombercatpicodebug.menu.freq.225=225 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.225.build.f_cpu=225000000L
+electroniccats_bombercatpicodebug.menu.freq.240=240 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.240.build.f_cpu=240000000L
+electroniccats_bombercatpicodebug.menu.freq.250=250 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.250.build.f_cpu=250000000L
+electroniccats_bombercatpicodebug.menu.freq.275=275 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.275.build.f_cpu=275000000L
+electroniccats_bombercatpicodebug.menu.freq.300=300 MHz (Overclock)
+electroniccats_bombercatpicodebug.menu.freq.300.build.f_cpu=300000000L
+electroniccats_bombercatpicodebug.menu.opt.Small=Small (-Os) (standard)
+electroniccats_bombercatpicodebug.menu.opt.Small.build.flags.optimize=-Os
+electroniccats_bombercatpicodebug.menu.opt.Optimize=Optimize (-O)
+electroniccats_bombercatpicodebug.menu.opt.Optimize.build.flags.optimize=-O
+electroniccats_bombercatpicodebug.menu.opt.Optimize2=Optimize More (-O2)
+electroniccats_bombercatpicodebug.menu.opt.Optimize2.build.flags.optimize=-O2
+electroniccats_bombercatpicodebug.menu.opt.Optimize3=Optimize Even More (-O3)
+electroniccats_bombercatpicodebug.menu.opt.Optimize3.build.flags.optimize=-O3
+electroniccats_bombercatpicodebug.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+electroniccats_bombercatpicodebug.menu.opt.Fast.build.flags.optimize=-Ofast
+electroniccats_bombercatpicodebug.menu.opt.Debug=Debug (-Og)
+electroniccats_bombercatpicodebug.menu.opt.Debug.build.flags.optimize=-Og
+electroniccats_bombercatpicodebug.menu.rtti.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+electroniccats_bombercatpicodebug.menu.rtti.Enabled=Enabled
+electroniccats_bombercatpicodebug.menu.rtti.Enabled.build.flags.rtti=
+electroniccats_bombercatpicodebug.menu.stackprotect.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.stackprotect.Disabled.build.flags.stackprotect=
+electroniccats_bombercatpicodebug.menu.stackprotect.Enabled=Enabled
+electroniccats_bombercatpicodebug.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+electroniccats_bombercatpicodebug.menu.exceptions.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+electroniccats_bombercatpicodebug.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+electroniccats_bombercatpicodebug.menu.exceptions.Enabled=Enabled
+electroniccats_bombercatpicodebug.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+electroniccats_bombercatpicodebug.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+electroniccats_bombercatpicodebug.menu.dbgport.Disabled=Disabled
+electroniccats_bombercatpicodebug.menu.dbgport.Disabled.build.debug_port=
+electroniccats_bombercatpicodebug.menu.dbgport.Serial=Serial
+electroniccats_bombercatpicodebug.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+electroniccats_bombercatpicodebug.menu.dbgport.Serial1=Serial1
+electroniccats_bombercatpicodebug.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+electroniccats_bombercatpicodebug.menu.dbgport.Serial2=Serial2
+electroniccats_bombercatpicodebug.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+electroniccats_bombercatpicodebug.menu.dbglvl.None=None
+electroniccats_bombercatpicodebug.menu.dbglvl.None.build.debug_level=
+electroniccats_bombercatpicodebug.menu.dbglvl.Core=Core
+electroniccats_bombercatpicodebug.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+electroniccats_bombercatpicodebug.menu.dbglvl.SPI=SPI
+electroniccats_bombercatpicodebug.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+electroniccats_bombercatpicodebug.menu.dbglvl.Wire=Wire
+electroniccats_bombercatpicodebug.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+electroniccats_bombercatpicodebug.menu.dbglvl.All=All
+electroniccats_bombercatpicodebug.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+electroniccats_bombercatpicodebug.menu.dbglvl.NDEBUG=NDEBUG
+electroniccats_bombercatpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+electroniccats_bombercatpicodebug.menu.usbstack.nousb=No USB
+electroniccats_bombercatpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4only=IPv4 Only
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+electroniccats_bombercatpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
+# ExtremeElectronics RC2040
+# -----------------------------------
+extelec_rc2040.name=ExtremeElectronics RC2040
+extelec_rc2040.vid.0=0x2e8a
+extelec_rc2040.pid.0=0xee20
+extelec_rc2040.vid.1=0x2e8a
+extelec_rc2040.pid.1=0xef20
+extelec_rc2040.vid.2=0x2e8a
+extelec_rc2040.pid.2=0xee20
+extelec_rc2040.vid.3=0x2e8a
+extelec_rc2040.pid.3=0xef20
+extelec_rc2040.vid.4=0x2e8a
+extelec_rc2040.pid.4=0xee20
+extelec_rc2040.vid.5=0x2e8a
+extelec_rc2040.pid.5=0xef20
+extelec_rc2040.vid.6=0x2e8a
+extelec_rc2040.pid.6=0xee20
+extelec_rc2040.vid.7=0x2e8a
+extelec_rc2040.pid.7=0xef20
+extelec_rc2040.build.usbpid=-DSERIALUSB_PID=0xee20
+extelec_rc2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+extelec_rc2040.build.board=EXTREMEELEXTRONICS_RC2040
+extelec_rc2040.build.mcu=cortex-m0plus
+extelec_rc2040.build.variant=extelec_rc2040
+extelec_rc2040.upload.tool=uf2conv
+extelec_rc2040.upload.maximum_size=2097152
+extelec_rc2040.upload.maximum_data_size=262144
+extelec_rc2040.upload.wait_for_upload_port=true
+extelec_rc2040.upload.erase_cmd=
+extelec_rc2040.serial.disableDTR=false
+extelec_rc2040.serial.disableRTS=false
+extelec_rc2040.build.f_cpu=125000000
+extelec_rc2040.build.led=
+extelec_rc2040.build.core=rp2040
+extelec_rc2040.build.ldscript=memmap_default.ld
+extelec_rc2040.build.ram_length=256k
+extelec_rc2040.build.boot2=boot2_w25q080_2_padded_checksum
+extelec_rc2040.build.vid=0x2e8a
+extelec_rc2040.build.pid=0xee20
+extelec_rc2040.build.usb_manufacturer="ExtremeElectronics"
+extelec_rc2040.build.usb_product="RC2040"
+extelec_rc2040.menu.flash.2097152_0=2MB (no FS)
+extelec_rc2040.menu.flash.2097152_0.upload.maximum_size=2093056
+extelec_rc2040.menu.flash.2097152_0.build.flash_length=2093056
+extelec_rc2040.menu.flash.2097152_0.build.eeprom_start=270528512
+extelec_rc2040.menu.flash.2097152_0.build.fs_start=270528512
+extelec_rc2040.menu.flash.2097152_0.build.fs_end=270528512
+extelec_rc2040.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+extelec_rc2040.menu.flash.2097152_65536.upload.maximum_size=2027520
+extelec_rc2040.menu.flash.2097152_65536.build.flash_length=2027520
+extelec_rc2040.menu.flash.2097152_65536.build.eeprom_start=270528512
+extelec_rc2040.menu.flash.2097152_65536.build.fs_start=270462976
+extelec_rc2040.menu.flash.2097152_65536.build.fs_end=270528512
+extelec_rc2040.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+extelec_rc2040.menu.flash.2097152_131072.upload.maximum_size=1961984
+extelec_rc2040.menu.flash.2097152_131072.build.flash_length=1961984
+extelec_rc2040.menu.flash.2097152_131072.build.eeprom_start=270528512
+extelec_rc2040.menu.flash.2097152_131072.build.fs_start=270397440
+extelec_rc2040.menu.flash.2097152_131072.build.fs_end=270528512
+extelec_rc2040.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+extelec_rc2040.menu.flash.2097152_262144.upload.maximum_size=1830912
+extelec_rc2040.menu.flash.2097152_262144.build.flash_length=1830912
+extelec_rc2040.menu.flash.2097152_262144.build.eeprom_start=270528512
+extelec_rc2040.menu.flash.2097152_262144.build.fs_start=270266368
+extelec_rc2040.menu.flash.2097152_262144.build.fs_end=270528512
+extelec_rc2040.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+extelec_rc2040.menu.flash.2097152_524288.upload.maximum_size=1568768
+extelec_rc2040.menu.flash.2097152_524288.build.flash_length=1568768
+extelec_rc2040.menu.flash.2097152_524288.build.eeprom_start=270528512
+extelec_rc2040.menu.flash.2097152_524288.build.fs_start=270004224
+extelec_rc2040.menu.flash.2097152_524288.build.fs_end=270528512
+extelec_rc2040.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+extelec_rc2040.menu.flash.2097152_1048576.upload.maximum_size=1044480
+extelec_rc2040.menu.flash.2097152_1048576.build.flash_length=1044480
+extelec_rc2040.menu.flash.2097152_1048576.build.eeprom_start=270528512
+extelec_rc2040.menu.flash.2097152_1048576.build.fs_start=269479936
+extelec_rc2040.menu.flash.2097152_1048576.build.fs_end=270528512
+extelec_rc2040.menu.freq.133=133 MHz
+extelec_rc2040.menu.freq.133.build.f_cpu=133000000L
+extelec_rc2040.menu.freq.50=50 MHz
+extelec_rc2040.menu.freq.50.build.f_cpu=50000000L
+extelec_rc2040.menu.freq.100=100 MHz
+extelec_rc2040.menu.freq.100.build.f_cpu=100000000L
+extelec_rc2040.menu.freq.120=120 MHz
+extelec_rc2040.menu.freq.120.build.f_cpu=120000000L
+extelec_rc2040.menu.freq.125=125 MHz
+extelec_rc2040.menu.freq.125.build.f_cpu=125000000L
+extelec_rc2040.menu.freq.150=150 MHz (Overclock)
+extelec_rc2040.menu.freq.150.build.f_cpu=150000000L
+extelec_rc2040.menu.freq.175=175 MHz (Overclock)
+extelec_rc2040.menu.freq.175.build.f_cpu=175000000L
+extelec_rc2040.menu.freq.200=200 MHz (Overclock)
+extelec_rc2040.menu.freq.200.build.f_cpu=200000000L
+extelec_rc2040.menu.freq.225=225 MHz (Overclock)
+extelec_rc2040.menu.freq.225.build.f_cpu=225000000L
+extelec_rc2040.menu.freq.240=240 MHz (Overclock)
+extelec_rc2040.menu.freq.240.build.f_cpu=240000000L
+extelec_rc2040.menu.freq.250=250 MHz (Overclock)
+extelec_rc2040.menu.freq.250.build.f_cpu=250000000L
+extelec_rc2040.menu.freq.275=275 MHz (Overclock)
+extelec_rc2040.menu.freq.275.build.f_cpu=275000000L
+extelec_rc2040.menu.freq.300=300 MHz (Overclock)
+extelec_rc2040.menu.freq.300.build.f_cpu=300000000L
+extelec_rc2040.menu.opt.Small=Small (-Os) (standard)
+extelec_rc2040.menu.opt.Small.build.flags.optimize=-Os
+extelec_rc2040.menu.opt.Optimize=Optimize (-O)
+extelec_rc2040.menu.opt.Optimize.build.flags.optimize=-O
+extelec_rc2040.menu.opt.Optimize2=Optimize More (-O2)
+extelec_rc2040.menu.opt.Optimize2.build.flags.optimize=-O2
+extelec_rc2040.menu.opt.Optimize3=Optimize Even More (-O3)
+extelec_rc2040.menu.opt.Optimize3.build.flags.optimize=-O3
+extelec_rc2040.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+extelec_rc2040.menu.opt.Fast.build.flags.optimize=-Ofast
+extelec_rc2040.menu.opt.Debug=Debug (-Og)
+extelec_rc2040.menu.opt.Debug.build.flags.optimize=-Og
+extelec_rc2040.menu.rtti.Disabled=Disabled
+extelec_rc2040.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+extelec_rc2040.menu.rtti.Enabled=Enabled
+extelec_rc2040.menu.rtti.Enabled.build.flags.rtti=
+extelec_rc2040.menu.stackprotect.Disabled=Disabled
+extelec_rc2040.menu.stackprotect.Disabled.build.flags.stackprotect=
+extelec_rc2040.menu.stackprotect.Enabled=Enabled
+extelec_rc2040.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+extelec_rc2040.menu.exceptions.Disabled=Disabled
+extelec_rc2040.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+extelec_rc2040.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+extelec_rc2040.menu.exceptions.Enabled=Enabled
+extelec_rc2040.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+extelec_rc2040.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+extelec_rc2040.menu.dbgport.Disabled=Disabled
+extelec_rc2040.menu.dbgport.Disabled.build.debug_port=
+extelec_rc2040.menu.dbgport.Serial=Serial
+extelec_rc2040.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+extelec_rc2040.menu.dbgport.Serial1=Serial1
+extelec_rc2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+extelec_rc2040.menu.dbgport.Serial2=Serial2
+extelec_rc2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+extelec_rc2040.menu.dbglvl.None=None
+extelec_rc2040.menu.dbglvl.None.build.debug_level=
+extelec_rc2040.menu.dbglvl.Core=Core
+extelec_rc2040.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+extelec_rc2040.menu.dbglvl.SPI=SPI
+extelec_rc2040.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+extelec_rc2040.menu.dbglvl.Wire=Wire
+extelec_rc2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+extelec_rc2040.menu.dbglvl.All=All
+extelec_rc2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+extelec_rc2040.menu.dbglvl.NDEBUG=NDEBUG
+extelec_rc2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+extelec_rc2040.menu.usbstack.picosdk=Pico SDK
+extelec_rc2040.menu.usbstack.picosdk.build.usbstack_flags=
+extelec_rc2040.menu.usbstack.tinyusb=Adafruit TinyUSB
+extelec_rc2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+extelec_rc2040.menu.ipstack.ipv4only=IPv4 Only
+extelec_rc2040.menu.ipstack.ipv4only.build.libpico=libpico.a
+extelec_rc2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+extelec_rc2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+extelec_rc2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+extelec_rc2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
+# ExtremeElectronics RC2040 (Picoprobe)
+# -----------------------------------
+extelec_rc2040picoprobe.name=ExtremeElectronics RC2040 (Picoprobe)
+extelec_rc2040picoprobe.vid.0=0x2e8a
+extelec_rc2040picoprobe.pid.0=0x0004
+extelec_rc2040picoprobe.vid.1=0x2e8a
+extelec_rc2040picoprobe.pid.1=0x0104
+extelec_rc2040picoprobe.vid.2=0x2e8a
+extelec_rc2040picoprobe.pid.2=0x4004
+extelec_rc2040picoprobe.vid.3=0x2e8a
+extelec_rc2040picoprobe.pid.3=0x4104
+extelec_rc2040picoprobe.vid.4=0x2e8a
+extelec_rc2040picoprobe.pid.4=0x8004
+extelec_rc2040picoprobe.vid.5=0x2e8a
+extelec_rc2040picoprobe.pid.5=0x8104
+extelec_rc2040picoprobe.vid.6=0x2e8a
+extelec_rc2040picoprobe.pid.6=0xc004
+extelec_rc2040picoprobe.vid.7=0x2e8a
+extelec_rc2040picoprobe.pid.7=0xc104
+extelec_rc2040picoprobe.build.usbpid=-DSERIALUSB_PID=0xee20
+extelec_rc2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+extelec_rc2040picoprobe.build.board=EXTREMEELEXTRONICS_RC2040
+extelec_rc2040picoprobe.build.mcu=cortex-m0plus
+extelec_rc2040picoprobe.build.variant=extelec_rc2040
+extelec_rc2040picoprobe.upload.tool=picoprobe
+extelec_rc2040picoprobe.upload.maximum_size=2097152
+extelec_rc2040picoprobe.upload.maximum_data_size=262144
+extelec_rc2040picoprobe.upload.wait_for_upload_port=true
+extelec_rc2040picoprobe.upload.erase_cmd=
+extelec_rc2040picoprobe.serial.disableDTR=false
+extelec_rc2040picoprobe.serial.disableRTS=false
+extelec_rc2040picoprobe.build.f_cpu=125000000
+extelec_rc2040picoprobe.build.led=
+extelec_rc2040picoprobe.build.core=rp2040
+extelec_rc2040picoprobe.build.ldscript=memmap_default.ld
+extelec_rc2040picoprobe.build.ram_length=256k
+extelec_rc2040picoprobe.build.boot2=boot2_w25q080_2_padded_checksum
+extelec_rc2040picoprobe.build.vid=0x2e8a
+extelec_rc2040picoprobe.build.pid=0xee20
+extelec_rc2040picoprobe.build.usb_manufacturer="ExtremeElectronics"
+extelec_rc2040picoprobe.build.usb_product="RC2040 (Picoprobe)"
+extelec_rc2040picoprobe.menu.flash.2097152_0=2MB (no FS)
+extelec_rc2040picoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
+extelec_rc2040picoprobe.menu.flash.2097152_0.build.flash_length=2093056
+extelec_rc2040picoprobe.menu.flash.2097152_0.build.eeprom_start=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_0.build.fs_start=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_0.build.fs_end=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+extelec_rc2040picoprobe.menu.flash.2097152_65536.upload.maximum_size=2027520
+extelec_rc2040picoprobe.menu.flash.2097152_65536.build.flash_length=2027520
+extelec_rc2040picoprobe.menu.flash.2097152_65536.build.eeprom_start=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_65536.build.fs_start=270462976
+extelec_rc2040picoprobe.menu.flash.2097152_65536.build.fs_end=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+extelec_rc2040picoprobe.menu.flash.2097152_131072.upload.maximum_size=1961984
+extelec_rc2040picoprobe.menu.flash.2097152_131072.build.flash_length=1961984
+extelec_rc2040picoprobe.menu.flash.2097152_131072.build.eeprom_start=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_131072.build.fs_start=270397440
+extelec_rc2040picoprobe.menu.flash.2097152_131072.build.fs_end=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+extelec_rc2040picoprobe.menu.flash.2097152_262144.upload.maximum_size=1830912
+extelec_rc2040picoprobe.menu.flash.2097152_262144.build.flash_length=1830912
+extelec_rc2040picoprobe.menu.flash.2097152_262144.build.eeprom_start=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_262144.build.fs_start=270266368
+extelec_rc2040picoprobe.menu.flash.2097152_262144.build.fs_end=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+extelec_rc2040picoprobe.menu.flash.2097152_524288.upload.maximum_size=1568768
+extelec_rc2040picoprobe.menu.flash.2097152_524288.build.flash_length=1568768
+extelec_rc2040picoprobe.menu.flash.2097152_524288.build.eeprom_start=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_524288.build.fs_start=270004224
+extelec_rc2040picoprobe.menu.flash.2097152_524288.build.fs_end=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+extelec_rc2040picoprobe.menu.flash.2097152_1048576.upload.maximum_size=1044480
+extelec_rc2040picoprobe.menu.flash.2097152_1048576.build.flash_length=1044480
+extelec_rc2040picoprobe.menu.flash.2097152_1048576.build.eeprom_start=270528512
+extelec_rc2040picoprobe.menu.flash.2097152_1048576.build.fs_start=269479936
+extelec_rc2040picoprobe.menu.flash.2097152_1048576.build.fs_end=270528512
+extelec_rc2040picoprobe.menu.freq.133=133 MHz
+extelec_rc2040picoprobe.menu.freq.133.build.f_cpu=133000000L
+extelec_rc2040picoprobe.menu.freq.50=50 MHz
+extelec_rc2040picoprobe.menu.freq.50.build.f_cpu=50000000L
+extelec_rc2040picoprobe.menu.freq.100=100 MHz
+extelec_rc2040picoprobe.menu.freq.100.build.f_cpu=100000000L
+extelec_rc2040picoprobe.menu.freq.120=120 MHz
+extelec_rc2040picoprobe.menu.freq.120.build.f_cpu=120000000L
+extelec_rc2040picoprobe.menu.freq.125=125 MHz
+extelec_rc2040picoprobe.menu.freq.125.build.f_cpu=125000000L
+extelec_rc2040picoprobe.menu.freq.150=150 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.150.build.f_cpu=150000000L
+extelec_rc2040picoprobe.menu.freq.175=175 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.175.build.f_cpu=175000000L
+extelec_rc2040picoprobe.menu.freq.200=200 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.200.build.f_cpu=200000000L
+extelec_rc2040picoprobe.menu.freq.225=225 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.225.build.f_cpu=225000000L
+extelec_rc2040picoprobe.menu.freq.240=240 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.240.build.f_cpu=240000000L
+extelec_rc2040picoprobe.menu.freq.250=250 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.250.build.f_cpu=250000000L
+extelec_rc2040picoprobe.menu.freq.275=275 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.275.build.f_cpu=275000000L
+extelec_rc2040picoprobe.menu.freq.300=300 MHz (Overclock)
+extelec_rc2040picoprobe.menu.freq.300.build.f_cpu=300000000L
+extelec_rc2040picoprobe.menu.opt.Small=Small (-Os) (standard)
+extelec_rc2040picoprobe.menu.opt.Small.build.flags.optimize=-Os
+extelec_rc2040picoprobe.menu.opt.Optimize=Optimize (-O)
+extelec_rc2040picoprobe.menu.opt.Optimize.build.flags.optimize=-O
+extelec_rc2040picoprobe.menu.opt.Optimize2=Optimize More (-O2)
+extelec_rc2040picoprobe.menu.opt.Optimize2.build.flags.optimize=-O2
+extelec_rc2040picoprobe.menu.opt.Optimize3=Optimize Even More (-O3)
+extelec_rc2040picoprobe.menu.opt.Optimize3.build.flags.optimize=-O3
+extelec_rc2040picoprobe.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+extelec_rc2040picoprobe.menu.opt.Fast.build.flags.optimize=-Ofast
+extelec_rc2040picoprobe.menu.opt.Debug=Debug (-Og)
+extelec_rc2040picoprobe.menu.opt.Debug.build.flags.optimize=-Og
+extelec_rc2040picoprobe.menu.rtti.Disabled=Disabled
+extelec_rc2040picoprobe.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+extelec_rc2040picoprobe.menu.rtti.Enabled=Enabled
+extelec_rc2040picoprobe.menu.rtti.Enabled.build.flags.rtti=
+extelec_rc2040picoprobe.menu.stackprotect.Disabled=Disabled
+extelec_rc2040picoprobe.menu.stackprotect.Disabled.build.flags.stackprotect=
+extelec_rc2040picoprobe.menu.stackprotect.Enabled=Enabled
+extelec_rc2040picoprobe.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+extelec_rc2040picoprobe.menu.exceptions.Disabled=Disabled
+extelec_rc2040picoprobe.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+extelec_rc2040picoprobe.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+extelec_rc2040picoprobe.menu.exceptions.Enabled=Enabled
+extelec_rc2040picoprobe.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+extelec_rc2040picoprobe.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+extelec_rc2040picoprobe.menu.dbgport.Disabled=Disabled
+extelec_rc2040picoprobe.menu.dbgport.Disabled.build.debug_port=
+extelec_rc2040picoprobe.menu.dbgport.Serial=Serial
+extelec_rc2040picoprobe.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+extelec_rc2040picoprobe.menu.dbgport.Serial1=Serial1
+extelec_rc2040picoprobe.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+extelec_rc2040picoprobe.menu.dbgport.Serial2=Serial2
+extelec_rc2040picoprobe.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+extelec_rc2040picoprobe.menu.dbglvl.None=None
+extelec_rc2040picoprobe.menu.dbglvl.None.build.debug_level=
+extelec_rc2040picoprobe.menu.dbglvl.Core=Core
+extelec_rc2040picoprobe.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+extelec_rc2040picoprobe.menu.dbglvl.SPI=SPI
+extelec_rc2040picoprobe.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+extelec_rc2040picoprobe.menu.dbglvl.Wire=Wire
+extelec_rc2040picoprobe.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+extelec_rc2040picoprobe.menu.dbglvl.All=All
+extelec_rc2040picoprobe.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+extelec_rc2040picoprobe.menu.dbglvl.NDEBUG=NDEBUG
+extelec_rc2040picoprobe.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+extelec_rc2040picoprobe.menu.usbstack.picosdk=Pico SDK
+extelec_rc2040picoprobe.menu.usbstack.picosdk.build.usbstack_flags=
+extelec_rc2040picoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
+extelec_rc2040picoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+extelec_rc2040picoprobe.menu.ipstack.ipv4only=IPv4 Only
+extelec_rc2040picoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
+extelec_rc2040picoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+extelec_rc2040picoprobe.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+extelec_rc2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+extelec_rc2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
+# ExtremeElectronics RC2040 (pico-debug)
+# -----------------------------------
+extelec_rc2040picodebug.name=ExtremeElectronics RC2040 (pico-debug)
+extelec_rc2040picodebug.vid.0=0x1209
+extelec_rc2040picodebug.pid.0=0x2488
+extelec_rc2040picodebug.vid.1=0x1209
+extelec_rc2040picodebug.pid.1=0x2588
+extelec_rc2040picodebug.vid.2=0x1209
+extelec_rc2040picodebug.pid.2=0x6488
+extelec_rc2040picodebug.vid.3=0x1209
+extelec_rc2040picodebug.pid.3=0x6588
+extelec_rc2040picodebug.vid.4=0x1209
+extelec_rc2040picodebug.pid.4=0xa488
+extelec_rc2040picodebug.vid.5=0x1209
+extelec_rc2040picodebug.pid.5=0xa588
+extelec_rc2040picodebug.vid.6=0x1209
+extelec_rc2040picodebug.pid.6=0xe488
+extelec_rc2040picodebug.vid.7=0x1209
+extelec_rc2040picodebug.pid.7=0xe588
+extelec_rc2040picodebug.build.usbpid=-DSERIALUSB_PID=0xee20
+extelec_rc2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+extelec_rc2040picodebug.build.board=EXTREMEELEXTRONICS_RC2040
+extelec_rc2040picodebug.build.mcu=cortex-m0plus
+extelec_rc2040picodebug.build.variant=extelec_rc2040
+extelec_rc2040picodebug.upload.tool=picodebug
+extelec_rc2040picodebug.upload.maximum_size=2097152
+extelec_rc2040picodebug.upload.maximum_data_size=245760
+extelec_rc2040picodebug.upload.wait_for_upload_port=true
+extelec_rc2040picodebug.upload.erase_cmd=
+extelec_rc2040picodebug.serial.disableDTR=false
+extelec_rc2040picodebug.serial.disableRTS=false
+extelec_rc2040picodebug.build.f_cpu=125000000
+extelec_rc2040picodebug.build.led=
+extelec_rc2040picodebug.build.core=rp2040
+extelec_rc2040picodebug.build.ldscript=memmap_default.ld
+extelec_rc2040picodebug.build.ram_length=240k
+extelec_rc2040picodebug.build.boot2=boot2_w25q080_2_padded_checksum
+extelec_rc2040picodebug.build.vid=0x2e8a
+extelec_rc2040picodebug.build.pid=0xee20
+extelec_rc2040picodebug.build.usb_manufacturer="ExtremeElectronics"
+extelec_rc2040picodebug.build.usb_product="RC2040 (pico-debug)"
+extelec_rc2040picodebug.menu.flash.2097152_0=2MB (no FS)
+extelec_rc2040picodebug.menu.flash.2097152_0.upload.maximum_size=2093056
+extelec_rc2040picodebug.menu.flash.2097152_0.build.flash_length=2093056
+extelec_rc2040picodebug.menu.flash.2097152_0.build.eeprom_start=270528512
+extelec_rc2040picodebug.menu.flash.2097152_0.build.fs_start=270528512
+extelec_rc2040picodebug.menu.flash.2097152_0.build.fs_end=270528512
+extelec_rc2040picodebug.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+extelec_rc2040picodebug.menu.flash.2097152_65536.upload.maximum_size=2027520
+extelec_rc2040picodebug.menu.flash.2097152_65536.build.flash_length=2027520
+extelec_rc2040picodebug.menu.flash.2097152_65536.build.eeprom_start=270528512
+extelec_rc2040picodebug.menu.flash.2097152_65536.build.fs_start=270462976
+extelec_rc2040picodebug.menu.flash.2097152_65536.build.fs_end=270528512
+extelec_rc2040picodebug.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+extelec_rc2040picodebug.menu.flash.2097152_131072.upload.maximum_size=1961984
+extelec_rc2040picodebug.menu.flash.2097152_131072.build.flash_length=1961984
+extelec_rc2040picodebug.menu.flash.2097152_131072.build.eeprom_start=270528512
+extelec_rc2040picodebug.menu.flash.2097152_131072.build.fs_start=270397440
+extelec_rc2040picodebug.menu.flash.2097152_131072.build.fs_end=270528512
+extelec_rc2040picodebug.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+extelec_rc2040picodebug.menu.flash.2097152_262144.upload.maximum_size=1830912
+extelec_rc2040picodebug.menu.flash.2097152_262144.build.flash_length=1830912
+extelec_rc2040picodebug.menu.flash.2097152_262144.build.eeprom_start=270528512
+extelec_rc2040picodebug.menu.flash.2097152_262144.build.fs_start=270266368
+extelec_rc2040picodebug.menu.flash.2097152_262144.build.fs_end=270528512
+extelec_rc2040picodebug.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+extelec_rc2040picodebug.menu.flash.2097152_524288.upload.maximum_size=1568768
+extelec_rc2040picodebug.menu.flash.2097152_524288.build.flash_length=1568768
+extelec_rc2040picodebug.menu.flash.2097152_524288.build.eeprom_start=270528512
+extelec_rc2040picodebug.menu.flash.2097152_524288.build.fs_start=270004224
+extelec_rc2040picodebug.menu.flash.2097152_524288.build.fs_end=270528512
+extelec_rc2040picodebug.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+extelec_rc2040picodebug.menu.flash.2097152_1048576.upload.maximum_size=1044480
+extelec_rc2040picodebug.menu.flash.2097152_1048576.build.flash_length=1044480
+extelec_rc2040picodebug.menu.flash.2097152_1048576.build.eeprom_start=270528512
+extelec_rc2040picodebug.menu.flash.2097152_1048576.build.fs_start=269479936
+extelec_rc2040picodebug.menu.flash.2097152_1048576.build.fs_end=270528512
+extelec_rc2040picodebug.menu.freq.133=133 MHz
+extelec_rc2040picodebug.menu.freq.133.build.f_cpu=133000000L
+extelec_rc2040picodebug.menu.freq.50=50 MHz
+extelec_rc2040picodebug.menu.freq.50.build.f_cpu=50000000L
+extelec_rc2040picodebug.menu.freq.100=100 MHz
+extelec_rc2040picodebug.menu.freq.100.build.f_cpu=100000000L
+extelec_rc2040picodebug.menu.freq.120=120 MHz
+extelec_rc2040picodebug.menu.freq.120.build.f_cpu=120000000L
+extelec_rc2040picodebug.menu.freq.125=125 MHz
+extelec_rc2040picodebug.menu.freq.125.build.f_cpu=125000000L
+extelec_rc2040picodebug.menu.freq.150=150 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.150.build.f_cpu=150000000L
+extelec_rc2040picodebug.menu.freq.175=175 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.175.build.f_cpu=175000000L
+extelec_rc2040picodebug.menu.freq.200=200 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.200.build.f_cpu=200000000L
+extelec_rc2040picodebug.menu.freq.225=225 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.225.build.f_cpu=225000000L
+extelec_rc2040picodebug.menu.freq.240=240 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.240.build.f_cpu=240000000L
+extelec_rc2040picodebug.menu.freq.250=250 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.250.build.f_cpu=250000000L
+extelec_rc2040picodebug.menu.freq.275=275 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.275.build.f_cpu=275000000L
+extelec_rc2040picodebug.menu.freq.300=300 MHz (Overclock)
+extelec_rc2040picodebug.menu.freq.300.build.f_cpu=300000000L
+extelec_rc2040picodebug.menu.opt.Small=Small (-Os) (standard)
+extelec_rc2040picodebug.menu.opt.Small.build.flags.optimize=-Os
+extelec_rc2040picodebug.menu.opt.Optimize=Optimize (-O)
+extelec_rc2040picodebug.menu.opt.Optimize.build.flags.optimize=-O
+extelec_rc2040picodebug.menu.opt.Optimize2=Optimize More (-O2)
+extelec_rc2040picodebug.menu.opt.Optimize2.build.flags.optimize=-O2
+extelec_rc2040picodebug.menu.opt.Optimize3=Optimize Even More (-O3)
+extelec_rc2040picodebug.menu.opt.Optimize3.build.flags.optimize=-O3
+extelec_rc2040picodebug.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+extelec_rc2040picodebug.menu.opt.Fast.build.flags.optimize=-Ofast
+extelec_rc2040picodebug.menu.opt.Debug=Debug (-Og)
+extelec_rc2040picodebug.menu.opt.Debug.build.flags.optimize=-Og
+extelec_rc2040picodebug.menu.rtti.Disabled=Disabled
+extelec_rc2040picodebug.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+extelec_rc2040picodebug.menu.rtti.Enabled=Enabled
+extelec_rc2040picodebug.menu.rtti.Enabled.build.flags.rtti=
+extelec_rc2040picodebug.menu.stackprotect.Disabled=Disabled
+extelec_rc2040picodebug.menu.stackprotect.Disabled.build.flags.stackprotect=
+extelec_rc2040picodebug.menu.stackprotect.Enabled=Enabled
+extelec_rc2040picodebug.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+extelec_rc2040picodebug.menu.exceptions.Disabled=Disabled
+extelec_rc2040picodebug.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+extelec_rc2040picodebug.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+extelec_rc2040picodebug.menu.exceptions.Enabled=Enabled
+extelec_rc2040picodebug.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+extelec_rc2040picodebug.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+extelec_rc2040picodebug.menu.dbgport.Disabled=Disabled
+extelec_rc2040picodebug.menu.dbgport.Disabled.build.debug_port=
+extelec_rc2040picodebug.menu.dbgport.Serial=Serial
+extelec_rc2040picodebug.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+extelec_rc2040picodebug.menu.dbgport.Serial1=Serial1
+extelec_rc2040picodebug.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+extelec_rc2040picodebug.menu.dbgport.Serial2=Serial2
+extelec_rc2040picodebug.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+extelec_rc2040picodebug.menu.dbglvl.None=None
+extelec_rc2040picodebug.menu.dbglvl.None.build.debug_level=
+extelec_rc2040picodebug.menu.dbglvl.Core=Core
+extelec_rc2040picodebug.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+extelec_rc2040picodebug.menu.dbglvl.SPI=SPI
+extelec_rc2040picodebug.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+extelec_rc2040picodebug.menu.dbglvl.Wire=Wire
+extelec_rc2040picodebug.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+extelec_rc2040picodebug.menu.dbglvl.All=All
+extelec_rc2040picodebug.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE
+extelec_rc2040picodebug.menu.dbglvl.NDEBUG=NDEBUG
+extelec_rc2040picodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+extelec_rc2040picodebug.menu.usbstack.nousb=No USB
+extelec_rc2040picodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+extelec_rc2040picodebug.menu.ipstack.ipv4only=IPv4 Only
+extelec_rc2040picodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
+extelec_rc2040picodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+extelec_rc2040picodebug.menu.ipstack.ipv4ipv6=IPv4 and IPv6
+extelec_rc2040picodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
+extelec_rc2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+
+# -----------------------------------
 # iLabs Challenger 2040 LTE
 # -----------------------------------
 challenger_2040_lte.name=iLabs Challenger 2040 LTE
 challenger_2040_lte.vid.0=0x2e8a
 challenger_2040_lte.pid.0=0x100b
+challenger_2040_lte.vid.1=0x2e8a
+challenger_2040_lte.pid.1=0x110b
+challenger_2040_lte.vid.2=0x2e8a
+challenger_2040_lte.pid.2=0x500b
+challenger_2040_lte.vid.3=0x2e8a
+challenger_2040_lte.pid.3=0x510b
+challenger_2040_lte.vid.4=0x2e8a
+challenger_2040_lte.pid.4=0x900b
+challenger_2040_lte.vid.5=0x2e8a
+challenger_2040_lte.pid.5=0x910b
+challenger_2040_lte.vid.6=0x2e8a
+challenger_2040_lte.pid.6=0xd00b
+challenger_2040_lte.vid.7=0x2e8a
+challenger_2040_lte.pid.7=0xd10b
 challenger_2040_lte.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_lte.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_lte.build.board=CHALLENGER_2040_LTE_RP2040
@@ -7394,6 +8958,20 @@ challenger_2040_lte.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IP
 challenger_2040_ltepicoprobe.name=iLabs Challenger 2040 LTE (Picoprobe)
 challenger_2040_ltepicoprobe.vid.0=0x2e8a
 challenger_2040_ltepicoprobe.pid.0=0x0004
+challenger_2040_ltepicoprobe.vid.1=0x2e8a
+challenger_2040_ltepicoprobe.pid.1=0x0104
+challenger_2040_ltepicoprobe.vid.2=0x2e8a
+challenger_2040_ltepicoprobe.pid.2=0x4004
+challenger_2040_ltepicoprobe.vid.3=0x2e8a
+challenger_2040_ltepicoprobe.pid.3=0x4104
+challenger_2040_ltepicoprobe.vid.4=0x2e8a
+challenger_2040_ltepicoprobe.pid.4=0x8004
+challenger_2040_ltepicoprobe.vid.5=0x2e8a
+challenger_2040_ltepicoprobe.pid.5=0x8104
+challenger_2040_ltepicoprobe.vid.6=0x2e8a
+challenger_2040_ltepicoprobe.pid.6=0xc004
+challenger_2040_ltepicoprobe.vid.7=0x2e8a
+challenger_2040_ltepicoprobe.pid.7=0xc104
 challenger_2040_ltepicoprobe.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_ltepicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_ltepicoprobe.build.board=CHALLENGER_2040_LTE_RP2040
@@ -7577,6 +9155,20 @@ challenger_2040_ltepicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 
 challenger_2040_ltepicodebug.name=iLabs Challenger 2040 LTE (pico-debug)
 challenger_2040_ltepicodebug.vid.0=0x1209
 challenger_2040_ltepicodebug.pid.0=0x2488
+challenger_2040_ltepicodebug.vid.1=0x1209
+challenger_2040_ltepicodebug.pid.1=0x2588
+challenger_2040_ltepicodebug.vid.2=0x1209
+challenger_2040_ltepicodebug.pid.2=0x6488
+challenger_2040_ltepicodebug.vid.3=0x1209
+challenger_2040_ltepicodebug.pid.3=0x6588
+challenger_2040_ltepicodebug.vid.4=0x1209
+challenger_2040_ltepicodebug.pid.4=0xa488
+challenger_2040_ltepicodebug.vid.5=0x1209
+challenger_2040_ltepicodebug.pid.5=0xa588
+challenger_2040_ltepicodebug.vid.6=0x1209
+challenger_2040_ltepicodebug.pid.6=0xe488
+challenger_2040_ltepicodebug.vid.7=0x1209
+challenger_2040_ltepicodebug.pid.7=0xe588
 challenger_2040_ltepicodebug.build.usbpid=-DSERIALUSB_PID=0x100b
 challenger_2040_ltepicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_ltepicodebug.build.board=CHALLENGER_2040_LTE_RP2040
@@ -7758,6 +9350,20 @@ challenger_2040_ltepicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 
 challenger_2040_lora.name=iLabs Challenger 2040 LoRa
 challenger_2040_lora.vid.0=0x2e8a
 challenger_2040_lora.pid.0=0x1023
+challenger_2040_lora.vid.1=0x2e8a
+challenger_2040_lora.pid.1=0x1123
+challenger_2040_lora.vid.2=0x2e8a
+challenger_2040_lora.pid.2=0x5023
+challenger_2040_lora.vid.3=0x2e8a
+challenger_2040_lora.pid.3=0x5123
+challenger_2040_lora.vid.4=0x2e8a
+challenger_2040_lora.pid.4=0x9023
+challenger_2040_lora.vid.5=0x2e8a
+challenger_2040_lora.pid.5=0x9123
+challenger_2040_lora.vid.6=0x2e8a
+challenger_2040_lora.pid.6=0xd023
+challenger_2040_lora.vid.7=0x2e8a
+challenger_2040_lora.pid.7=0xd123
 challenger_2040_lora.build.usbpid=-DSERIALUSB_PID=0x1023
 challenger_2040_lora.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_lora.build.board=CHALLENGER_2040_LORA_RP2040
@@ -7941,6 +9547,20 @@ challenger_2040_lora.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_I
 challenger_2040_lorapicoprobe.name=iLabs Challenger 2040 LoRa (Picoprobe)
 challenger_2040_lorapicoprobe.vid.0=0x2e8a
 challenger_2040_lorapicoprobe.pid.0=0x0004
+challenger_2040_lorapicoprobe.vid.1=0x2e8a
+challenger_2040_lorapicoprobe.pid.1=0x0104
+challenger_2040_lorapicoprobe.vid.2=0x2e8a
+challenger_2040_lorapicoprobe.pid.2=0x4004
+challenger_2040_lorapicoprobe.vid.3=0x2e8a
+challenger_2040_lorapicoprobe.pid.3=0x4104
+challenger_2040_lorapicoprobe.vid.4=0x2e8a
+challenger_2040_lorapicoprobe.pid.4=0x8004
+challenger_2040_lorapicoprobe.vid.5=0x2e8a
+challenger_2040_lorapicoprobe.pid.5=0x8104
+challenger_2040_lorapicoprobe.vid.6=0x2e8a
+challenger_2040_lorapicoprobe.pid.6=0xc004
+challenger_2040_lorapicoprobe.vid.7=0x2e8a
+challenger_2040_lorapicoprobe.pid.7=0xc104
 challenger_2040_lorapicoprobe.build.usbpid=-DSERIALUSB_PID=0x1023
 challenger_2040_lorapicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_lorapicoprobe.build.board=CHALLENGER_2040_LORA_RP2040
@@ -8124,6 +9744,20 @@ challenger_2040_lorapicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 challenger_2040_lorapicodebug.name=iLabs Challenger 2040 LoRa (pico-debug)
 challenger_2040_lorapicodebug.vid.0=0x1209
 challenger_2040_lorapicodebug.pid.0=0x2488
+challenger_2040_lorapicodebug.vid.1=0x1209
+challenger_2040_lorapicodebug.pid.1=0x2588
+challenger_2040_lorapicodebug.vid.2=0x1209
+challenger_2040_lorapicodebug.pid.2=0x6488
+challenger_2040_lorapicodebug.vid.3=0x1209
+challenger_2040_lorapicodebug.pid.3=0x6588
+challenger_2040_lorapicodebug.vid.4=0x1209
+challenger_2040_lorapicodebug.pid.4=0xa488
+challenger_2040_lorapicodebug.vid.5=0x1209
+challenger_2040_lorapicodebug.pid.5=0xa588
+challenger_2040_lorapicodebug.vid.6=0x1209
+challenger_2040_lorapicodebug.pid.6=0xe488
+challenger_2040_lorapicodebug.vid.7=0x1209
+challenger_2040_lorapicodebug.pid.7=0xe588
 challenger_2040_lorapicodebug.build.usbpid=-DSERIALUSB_PID=0x1023
 challenger_2040_lorapicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_lorapicodebug.build.board=CHALLENGER_2040_LORA_RP2040
@@ -8305,6 +9939,20 @@ challenger_2040_lorapicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 challenger_2040_subghz.name=iLabs Challenger 2040 SubGHz
 challenger_2040_subghz.vid.0=0x2e8a
 challenger_2040_subghz.pid.0=0x1032
+challenger_2040_subghz.vid.1=0x2e8a
+challenger_2040_subghz.pid.1=0x1132
+challenger_2040_subghz.vid.2=0x2e8a
+challenger_2040_subghz.pid.2=0x5032
+challenger_2040_subghz.vid.3=0x2e8a
+challenger_2040_subghz.pid.3=0x5132
+challenger_2040_subghz.vid.4=0x2e8a
+challenger_2040_subghz.pid.4=0x9032
+challenger_2040_subghz.vid.5=0x2e8a
+challenger_2040_subghz.pid.5=0x9132
+challenger_2040_subghz.vid.6=0x2e8a
+challenger_2040_subghz.pid.6=0xd032
+challenger_2040_subghz.vid.7=0x2e8a
+challenger_2040_subghz.pid.7=0xd132
 challenger_2040_subghz.build.usbpid=-DSERIALUSB_PID=0x1032
 challenger_2040_subghz.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_subghz.build.board=CHALLENGER_2040_SUBGHZ_RP2040
@@ -8488,6 +10136,20 @@ challenger_2040_subghz.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP
 challenger_2040_subghzpicoprobe.name=iLabs Challenger 2040 SubGHz (Picoprobe)
 challenger_2040_subghzpicoprobe.vid.0=0x2e8a
 challenger_2040_subghzpicoprobe.pid.0=0x0004
+challenger_2040_subghzpicoprobe.vid.1=0x2e8a
+challenger_2040_subghzpicoprobe.pid.1=0x0104
+challenger_2040_subghzpicoprobe.vid.2=0x2e8a
+challenger_2040_subghzpicoprobe.pid.2=0x4004
+challenger_2040_subghzpicoprobe.vid.3=0x2e8a
+challenger_2040_subghzpicoprobe.pid.3=0x4104
+challenger_2040_subghzpicoprobe.vid.4=0x2e8a
+challenger_2040_subghzpicoprobe.pid.4=0x8004
+challenger_2040_subghzpicoprobe.vid.5=0x2e8a
+challenger_2040_subghzpicoprobe.pid.5=0x8104
+challenger_2040_subghzpicoprobe.vid.6=0x2e8a
+challenger_2040_subghzpicoprobe.pid.6=0xc004
+challenger_2040_subghzpicoprobe.vid.7=0x2e8a
+challenger_2040_subghzpicoprobe.pid.7=0xc104
 challenger_2040_subghzpicoprobe.build.usbpid=-DSERIALUSB_PID=0x1032
 challenger_2040_subghzpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_subghzpicoprobe.build.board=CHALLENGER_2040_SUBGHZ_RP2040
@@ -8671,6 +10333,20 @@ challenger_2040_subghzpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6
 challenger_2040_subghzpicodebug.name=iLabs Challenger 2040 SubGHz (pico-debug)
 challenger_2040_subghzpicodebug.vid.0=0x1209
 challenger_2040_subghzpicodebug.pid.0=0x2488
+challenger_2040_subghzpicodebug.vid.1=0x1209
+challenger_2040_subghzpicodebug.pid.1=0x2588
+challenger_2040_subghzpicodebug.vid.2=0x1209
+challenger_2040_subghzpicodebug.pid.2=0x6488
+challenger_2040_subghzpicodebug.vid.3=0x1209
+challenger_2040_subghzpicodebug.pid.3=0x6588
+challenger_2040_subghzpicodebug.vid.4=0x1209
+challenger_2040_subghzpicodebug.pid.4=0xa488
+challenger_2040_subghzpicodebug.vid.5=0x1209
+challenger_2040_subghzpicodebug.pid.5=0xa588
+challenger_2040_subghzpicodebug.vid.6=0x1209
+challenger_2040_subghzpicodebug.pid.6=0xe488
+challenger_2040_subghzpicodebug.vid.7=0x1209
+challenger_2040_subghzpicodebug.pid.7=0xe588
 challenger_2040_subghzpicodebug.build.usbpid=-DSERIALUSB_PID=0x1032
 challenger_2040_subghzpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_subghzpicodebug.build.board=CHALLENGER_2040_SUBGHZ_RP2040
@@ -8852,6 +10528,20 @@ challenger_2040_subghzpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6
 challenger_2040_wifi.name=iLabs Challenger 2040 WiFi
 challenger_2040_wifi.vid.0=0x2e8a
 challenger_2040_wifi.pid.0=0x1006
+challenger_2040_wifi.vid.1=0x2e8a
+challenger_2040_wifi.pid.1=0x1106
+challenger_2040_wifi.vid.2=0x2e8a
+challenger_2040_wifi.pid.2=0x5006
+challenger_2040_wifi.vid.3=0x2e8a
+challenger_2040_wifi.pid.3=0x5106
+challenger_2040_wifi.vid.4=0x2e8a
+challenger_2040_wifi.pid.4=0x9006
+challenger_2040_wifi.vid.5=0x2e8a
+challenger_2040_wifi.pid.5=0x9106
+challenger_2040_wifi.vid.6=0x2e8a
+challenger_2040_wifi.pid.6=0xd006
+challenger_2040_wifi.vid.7=0x2e8a
+challenger_2040_wifi.pid.7=0xd106
 challenger_2040_wifi.build.usbpid=-DSERIALUSB_PID=0x1006
 challenger_2040_wifi.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_wifi.build.board=CHALLENGER_2040_WIFI_RP2040
@@ -9036,6 +10726,20 @@ challenger_2040_wifi.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_I
 challenger_2040_wifipicoprobe.name=iLabs Challenger 2040 WiFi (Picoprobe)
 challenger_2040_wifipicoprobe.vid.0=0x2e8a
 challenger_2040_wifipicoprobe.pid.0=0x0004
+challenger_2040_wifipicoprobe.vid.1=0x2e8a
+challenger_2040_wifipicoprobe.pid.1=0x0104
+challenger_2040_wifipicoprobe.vid.2=0x2e8a
+challenger_2040_wifipicoprobe.pid.2=0x4004
+challenger_2040_wifipicoprobe.vid.3=0x2e8a
+challenger_2040_wifipicoprobe.pid.3=0x4104
+challenger_2040_wifipicoprobe.vid.4=0x2e8a
+challenger_2040_wifipicoprobe.pid.4=0x8004
+challenger_2040_wifipicoprobe.vid.5=0x2e8a
+challenger_2040_wifipicoprobe.pid.5=0x8104
+challenger_2040_wifipicoprobe.vid.6=0x2e8a
+challenger_2040_wifipicoprobe.pid.6=0xc004
+challenger_2040_wifipicoprobe.vid.7=0x2e8a
+challenger_2040_wifipicoprobe.pid.7=0xc104
 challenger_2040_wifipicoprobe.build.usbpid=-DSERIALUSB_PID=0x1006
 challenger_2040_wifipicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_wifipicoprobe.build.board=CHALLENGER_2040_WIFI_RP2040
@@ -9220,6 +10924,20 @@ challenger_2040_wifipicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 challenger_2040_wifipicodebug.name=iLabs Challenger 2040 WiFi (pico-debug)
 challenger_2040_wifipicodebug.vid.0=0x1209
 challenger_2040_wifipicodebug.pid.0=0x2488
+challenger_2040_wifipicodebug.vid.1=0x1209
+challenger_2040_wifipicodebug.pid.1=0x2588
+challenger_2040_wifipicodebug.vid.2=0x1209
+challenger_2040_wifipicodebug.pid.2=0x6488
+challenger_2040_wifipicodebug.vid.3=0x1209
+challenger_2040_wifipicodebug.pid.3=0x6588
+challenger_2040_wifipicodebug.vid.4=0x1209
+challenger_2040_wifipicodebug.pid.4=0xa488
+challenger_2040_wifipicodebug.vid.5=0x1209
+challenger_2040_wifipicodebug.pid.5=0xa588
+challenger_2040_wifipicodebug.vid.6=0x1209
+challenger_2040_wifipicodebug.pid.6=0xe488
+challenger_2040_wifipicodebug.vid.7=0x1209
+challenger_2040_wifipicodebug.pid.7=0xe588
 challenger_2040_wifipicodebug.build.usbpid=-DSERIALUSB_PID=0x1006
 challenger_2040_wifipicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_wifipicodebug.build.board=CHALLENGER_2040_WIFI_RP2040
@@ -9401,7 +11119,21 @@ challenger_2040_wifipicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 # -----------------------------------
 challenger_2040_wifi_ble.name=iLabs Challenger 2040 WiFi/BLE
 challenger_2040_wifi_ble.vid.0=0x2e8a
-challenger_2040_wifi_ble.pid.0=0x102C
+challenger_2040_wifi_ble.pid.0=0x102c
+challenger_2040_wifi_ble.vid.1=0x2e8a
+challenger_2040_wifi_ble.pid.1=0x112c
+challenger_2040_wifi_ble.vid.2=0x2e8a
+challenger_2040_wifi_ble.pid.2=0x502c
+challenger_2040_wifi_ble.vid.3=0x2e8a
+challenger_2040_wifi_ble.pid.3=0x512c
+challenger_2040_wifi_ble.vid.4=0x2e8a
+challenger_2040_wifi_ble.pid.4=0x902c
+challenger_2040_wifi_ble.vid.5=0x2e8a
+challenger_2040_wifi_ble.pid.5=0x912c
+challenger_2040_wifi_ble.vid.6=0x2e8a
+challenger_2040_wifi_ble.pid.6=0xd02c
+challenger_2040_wifi_ble.vid.7=0x2e8a
+challenger_2040_wifi_ble.pid.7=0xd12c
 challenger_2040_wifi_ble.build.usbpid=-DSERIALUSB_PID=0x102C
 challenger_2040_wifi_ble.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi_ble.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
@@ -9586,6 +11318,20 @@ challenger_2040_wifi_ble.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 challenger_2040_wifi_blepicoprobe.name=iLabs Challenger 2040 WiFi/BLE (Picoprobe)
 challenger_2040_wifi_blepicoprobe.vid.0=0x2e8a
 challenger_2040_wifi_blepicoprobe.pid.0=0x0004
+challenger_2040_wifi_blepicoprobe.vid.1=0x2e8a
+challenger_2040_wifi_blepicoprobe.pid.1=0x0104
+challenger_2040_wifi_blepicoprobe.vid.2=0x2e8a
+challenger_2040_wifi_blepicoprobe.pid.2=0x4004
+challenger_2040_wifi_blepicoprobe.vid.3=0x2e8a
+challenger_2040_wifi_blepicoprobe.pid.3=0x4104
+challenger_2040_wifi_blepicoprobe.vid.4=0x2e8a
+challenger_2040_wifi_blepicoprobe.pid.4=0x8004
+challenger_2040_wifi_blepicoprobe.vid.5=0x2e8a
+challenger_2040_wifi_blepicoprobe.pid.5=0x8104
+challenger_2040_wifi_blepicoprobe.vid.6=0x2e8a
+challenger_2040_wifi_blepicoprobe.pid.6=0xc004
+challenger_2040_wifi_blepicoprobe.vid.7=0x2e8a
+challenger_2040_wifi_blepicoprobe.pid.7=0xc104
 challenger_2040_wifi_blepicoprobe.build.usbpid=-DSERIALUSB_PID=0x102C
 challenger_2040_wifi_blepicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi_blepicoprobe.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
@@ -9770,6 +11516,20 @@ challenger_2040_wifi_blepicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 challenger_2040_wifi_blepicodebug.name=iLabs Challenger 2040 WiFi/BLE (pico-debug)
 challenger_2040_wifi_blepicodebug.vid.0=0x1209
 challenger_2040_wifi_blepicodebug.pid.0=0x2488
+challenger_2040_wifi_blepicodebug.vid.1=0x1209
+challenger_2040_wifi_blepicodebug.pid.1=0x2588
+challenger_2040_wifi_blepicodebug.vid.2=0x1209
+challenger_2040_wifi_blepicodebug.pid.2=0x6488
+challenger_2040_wifi_blepicodebug.vid.3=0x1209
+challenger_2040_wifi_blepicodebug.pid.3=0x6588
+challenger_2040_wifi_blepicodebug.vid.4=0x1209
+challenger_2040_wifi_blepicodebug.pid.4=0xa488
+challenger_2040_wifi_blepicodebug.vid.5=0x1209
+challenger_2040_wifi_blepicodebug.pid.5=0xa588
+challenger_2040_wifi_blepicodebug.vid.6=0x1209
+challenger_2040_wifi_blepicodebug.pid.6=0xe488
+challenger_2040_wifi_blepicodebug.vid.7=0x1209
+challenger_2040_wifi_blepicodebug.pid.7=0xe588
 challenger_2040_wifi_blepicodebug.build.usbpid=-DSERIALUSB_PID=0x102C
 challenger_2040_wifi_blepicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi_blepicodebug.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
@@ -9952,6 +11712,20 @@ challenger_2040_wifi_blepicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 challenger_nb_2040_wifi.name=iLabs Challenger NB 2040 WiFi
 challenger_nb_2040_wifi.vid.0=0x2e8a
 challenger_nb_2040_wifi.pid.0=0x100d
+challenger_nb_2040_wifi.vid.1=0x2e8a
+challenger_nb_2040_wifi.pid.1=0x110d
+challenger_nb_2040_wifi.vid.2=0x2e8a
+challenger_nb_2040_wifi.pid.2=0x500d
+challenger_nb_2040_wifi.vid.3=0x2e8a
+challenger_nb_2040_wifi.pid.3=0x510d
+challenger_nb_2040_wifi.vid.4=0x2e8a
+challenger_nb_2040_wifi.pid.4=0x900d
+challenger_nb_2040_wifi.vid.5=0x2e8a
+challenger_nb_2040_wifi.pid.5=0x910d
+challenger_nb_2040_wifi.vid.6=0x2e8a
+challenger_nb_2040_wifi.pid.6=0xd00d
+challenger_nb_2040_wifi.vid.7=0x2e8a
+challenger_nb_2040_wifi.pid.7=0xd10d
 challenger_nb_2040_wifi.build.usbpid=-DSERIALUSB_PID=0x100d
 challenger_nb_2040_wifi.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifi.build.board=CHALLENGER_NB_2040_WIFI_RP2040
@@ -10136,6 +11910,20 @@ challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWI
 challenger_nb_2040_wifipicoprobe.name=iLabs Challenger NB 2040 WiFi (Picoprobe)
 challenger_nb_2040_wifipicoprobe.vid.0=0x2e8a
 challenger_nb_2040_wifipicoprobe.pid.0=0x0004
+challenger_nb_2040_wifipicoprobe.vid.1=0x2e8a
+challenger_nb_2040_wifipicoprobe.pid.1=0x0104
+challenger_nb_2040_wifipicoprobe.vid.2=0x2e8a
+challenger_nb_2040_wifipicoprobe.pid.2=0x4004
+challenger_nb_2040_wifipicoprobe.vid.3=0x2e8a
+challenger_nb_2040_wifipicoprobe.pid.3=0x4104
+challenger_nb_2040_wifipicoprobe.vid.4=0x2e8a
+challenger_nb_2040_wifipicoprobe.pid.4=0x8004
+challenger_nb_2040_wifipicoprobe.vid.5=0x2e8a
+challenger_nb_2040_wifipicoprobe.pid.5=0x8104
+challenger_nb_2040_wifipicoprobe.vid.6=0x2e8a
+challenger_nb_2040_wifipicoprobe.pid.6=0xc004
+challenger_nb_2040_wifipicoprobe.vid.7=0x2e8a
+challenger_nb_2040_wifipicoprobe.pid.7=0xc104
 challenger_nb_2040_wifipicoprobe.build.usbpid=-DSERIALUSB_PID=0x100d
 challenger_nb_2040_wifipicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifipicoprobe.build.board=CHALLENGER_NB_2040_WIFI_RP2040
@@ -10320,6 +12108,20 @@ challenger_nb_2040_wifipicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV
 challenger_nb_2040_wifipicodebug.name=iLabs Challenger NB 2040 WiFi (pico-debug)
 challenger_nb_2040_wifipicodebug.vid.0=0x1209
 challenger_nb_2040_wifipicodebug.pid.0=0x2488
+challenger_nb_2040_wifipicodebug.vid.1=0x1209
+challenger_nb_2040_wifipicodebug.pid.1=0x2588
+challenger_nb_2040_wifipicodebug.vid.2=0x1209
+challenger_nb_2040_wifipicodebug.pid.2=0x6488
+challenger_nb_2040_wifipicodebug.vid.3=0x1209
+challenger_nb_2040_wifipicodebug.pid.3=0x6588
+challenger_nb_2040_wifipicodebug.vid.4=0x1209
+challenger_nb_2040_wifipicodebug.pid.4=0xa488
+challenger_nb_2040_wifipicodebug.vid.5=0x1209
+challenger_nb_2040_wifipicodebug.pid.5=0xa588
+challenger_nb_2040_wifipicodebug.vid.6=0x1209
+challenger_nb_2040_wifipicodebug.pid.6=0xe488
+challenger_nb_2040_wifipicodebug.vid.7=0x1209
+challenger_nb_2040_wifipicodebug.pid.7=0xe588
 challenger_nb_2040_wifipicodebug.build.usbpid=-DSERIALUSB_PID=0x100d
 challenger_nb_2040_wifipicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifipicodebug.build.board=CHALLENGER_NB_2040_WIFI_RP2040
@@ -10502,6 +12304,20 @@ challenger_nb_2040_wifipicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV
 challenger_2040_sdrtc.name=iLabs Challenger 2040 SD/RTC
 challenger_2040_sdrtc.vid.0=0x2e8a
 challenger_2040_sdrtc.pid.0=0x102d
+challenger_2040_sdrtc.vid.1=0x2e8a
+challenger_2040_sdrtc.pid.1=0x112d
+challenger_2040_sdrtc.vid.2=0x2e8a
+challenger_2040_sdrtc.pid.2=0x502d
+challenger_2040_sdrtc.vid.3=0x2e8a
+challenger_2040_sdrtc.pid.3=0x512d
+challenger_2040_sdrtc.vid.4=0x2e8a
+challenger_2040_sdrtc.pid.4=0x902d
+challenger_2040_sdrtc.vid.5=0x2e8a
+challenger_2040_sdrtc.pid.5=0x912d
+challenger_2040_sdrtc.vid.6=0x2e8a
+challenger_2040_sdrtc.pid.6=0xd02d
+challenger_2040_sdrtc.vid.7=0x2e8a
+challenger_2040_sdrtc.pid.7=0xd12d
 challenger_2040_sdrtc.build.usbpid=-DSERIALUSB_PID=0x102d
 challenger_2040_sdrtc.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_sdrtc.build.board=CHALLENGER_NB_2040_SDRTC_RP2040
@@ -10685,6 +12501,20 @@ challenger_2040_sdrtc.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_
 challenger_2040_sdrtcpicoprobe.name=iLabs Challenger 2040 SD/RTC (Picoprobe)
 challenger_2040_sdrtcpicoprobe.vid.0=0x2e8a
 challenger_2040_sdrtcpicoprobe.pid.0=0x0004
+challenger_2040_sdrtcpicoprobe.vid.1=0x2e8a
+challenger_2040_sdrtcpicoprobe.pid.1=0x0104
+challenger_2040_sdrtcpicoprobe.vid.2=0x2e8a
+challenger_2040_sdrtcpicoprobe.pid.2=0x4004
+challenger_2040_sdrtcpicoprobe.vid.3=0x2e8a
+challenger_2040_sdrtcpicoprobe.pid.3=0x4104
+challenger_2040_sdrtcpicoprobe.vid.4=0x2e8a
+challenger_2040_sdrtcpicoprobe.pid.4=0x8004
+challenger_2040_sdrtcpicoprobe.vid.5=0x2e8a
+challenger_2040_sdrtcpicoprobe.pid.5=0x8104
+challenger_2040_sdrtcpicoprobe.vid.6=0x2e8a
+challenger_2040_sdrtcpicoprobe.pid.6=0xc004
+challenger_2040_sdrtcpicoprobe.vid.7=0x2e8a
+challenger_2040_sdrtcpicoprobe.pid.7=0xc104
 challenger_2040_sdrtcpicoprobe.build.usbpid=-DSERIALUSB_PID=0x102d
 challenger_2040_sdrtcpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_sdrtcpicoprobe.build.board=CHALLENGER_NB_2040_SDRTC_RP2040
@@ -10868,6 +12698,20 @@ challenger_2040_sdrtcpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 challenger_2040_sdrtcpicodebug.name=iLabs Challenger 2040 SD/RTC (pico-debug)
 challenger_2040_sdrtcpicodebug.vid.0=0x1209
 challenger_2040_sdrtcpicodebug.pid.0=0x2488
+challenger_2040_sdrtcpicodebug.vid.1=0x1209
+challenger_2040_sdrtcpicodebug.pid.1=0x2588
+challenger_2040_sdrtcpicodebug.vid.2=0x1209
+challenger_2040_sdrtcpicodebug.pid.2=0x6488
+challenger_2040_sdrtcpicodebug.vid.3=0x1209
+challenger_2040_sdrtcpicodebug.pid.3=0x6588
+challenger_2040_sdrtcpicodebug.vid.4=0x1209
+challenger_2040_sdrtcpicodebug.pid.4=0xa488
+challenger_2040_sdrtcpicodebug.vid.5=0x1209
+challenger_2040_sdrtcpicodebug.pid.5=0xa588
+challenger_2040_sdrtcpicodebug.vid.6=0x1209
+challenger_2040_sdrtcpicodebug.pid.6=0xe488
+challenger_2040_sdrtcpicodebug.vid.7=0x1209
+challenger_2040_sdrtcpicodebug.pid.7=0xe588
 challenger_2040_sdrtcpicodebug.build.usbpid=-DSERIALUSB_PID=0x102d
 challenger_2040_sdrtcpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_sdrtcpicodebug.build.board=CHALLENGER_NB_2040_SDRTC_RP2040
@@ -11049,6 +12893,20 @@ challenger_2040_sdrtcpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 ilabs_rpico32.name=iLabs RPICO32
 ilabs_rpico32.vid.0=0x2e8a
 ilabs_rpico32.pid.0=0x1010
+ilabs_rpico32.vid.1=0x2e8a
+ilabs_rpico32.pid.1=0x1110
+ilabs_rpico32.vid.2=0x2e8a
+ilabs_rpico32.pid.2=0x5010
+ilabs_rpico32.vid.3=0x2e8a
+ilabs_rpico32.pid.3=0x5110
+ilabs_rpico32.vid.4=0x2e8a
+ilabs_rpico32.pid.4=0x9010
+ilabs_rpico32.vid.5=0x2e8a
+ilabs_rpico32.pid.5=0x9110
+ilabs_rpico32.vid.6=0x2e8a
+ilabs_rpico32.pid.6=0xd010
+ilabs_rpico32.vid.7=0x2e8a
+ilabs_rpico32.pid.7=0xd110
 ilabs_rpico32.build.usbpid=-DSERIALUSB_PID=0x1010
 ilabs_rpico32.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 ilabs_rpico32.build.board=ILABS_2040_RPICO32_RP2040
@@ -11232,6 +13090,20 @@ ilabs_rpico32.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 ilabs_rpico32picoprobe.name=iLabs RPICO32 (Picoprobe)
 ilabs_rpico32picoprobe.vid.0=0x2e8a
 ilabs_rpico32picoprobe.pid.0=0x0004
+ilabs_rpico32picoprobe.vid.1=0x2e8a
+ilabs_rpico32picoprobe.pid.1=0x0104
+ilabs_rpico32picoprobe.vid.2=0x2e8a
+ilabs_rpico32picoprobe.pid.2=0x4004
+ilabs_rpico32picoprobe.vid.3=0x2e8a
+ilabs_rpico32picoprobe.pid.3=0x4104
+ilabs_rpico32picoprobe.vid.4=0x2e8a
+ilabs_rpico32picoprobe.pid.4=0x8004
+ilabs_rpico32picoprobe.vid.5=0x2e8a
+ilabs_rpico32picoprobe.pid.5=0x8104
+ilabs_rpico32picoprobe.vid.6=0x2e8a
+ilabs_rpico32picoprobe.pid.6=0xc004
+ilabs_rpico32picoprobe.vid.7=0x2e8a
+ilabs_rpico32picoprobe.pid.7=0xc104
 ilabs_rpico32picoprobe.build.usbpid=-DSERIALUSB_PID=0x1010
 ilabs_rpico32picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 ilabs_rpico32picoprobe.build.board=ILABS_2040_RPICO32_RP2040
@@ -11415,6 +13287,20 @@ ilabs_rpico32picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP
 ilabs_rpico32picodebug.name=iLabs RPICO32 (pico-debug)
 ilabs_rpico32picodebug.vid.0=0x1209
 ilabs_rpico32picodebug.pid.0=0x2488
+ilabs_rpico32picodebug.vid.1=0x1209
+ilabs_rpico32picodebug.pid.1=0x2588
+ilabs_rpico32picodebug.vid.2=0x1209
+ilabs_rpico32picodebug.pid.2=0x6488
+ilabs_rpico32picodebug.vid.3=0x1209
+ilabs_rpico32picodebug.pid.3=0x6588
+ilabs_rpico32picodebug.vid.4=0x1209
+ilabs_rpico32picodebug.pid.4=0xa488
+ilabs_rpico32picodebug.vid.5=0x1209
+ilabs_rpico32picodebug.pid.5=0xa588
+ilabs_rpico32picodebug.vid.6=0x1209
+ilabs_rpico32picodebug.pid.6=0xe488
+ilabs_rpico32picodebug.vid.7=0x1209
+ilabs_rpico32picodebug.pid.7=0xe588
 ilabs_rpico32picodebug.build.usbpid=-DSERIALUSB_PID=0x1010
 ilabs_rpico32picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 ilabs_rpico32picodebug.build.board=ILABS_2040_RPICO32_RP2040
@@ -11596,6 +13482,20 @@ ilabs_rpico32picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP
 melopero_shake_rp2040.name=Melopero Shake RP2040
 melopero_shake_rp2040.vid.0=0x2e8a
 melopero_shake_rp2040.pid.0=0x1005
+melopero_shake_rp2040.vid.1=0x2e8a
+melopero_shake_rp2040.pid.1=0x1105
+melopero_shake_rp2040.vid.2=0x2e8a
+melopero_shake_rp2040.pid.2=0x5005
+melopero_shake_rp2040.vid.3=0x2e8a
+melopero_shake_rp2040.pid.3=0x5105
+melopero_shake_rp2040.vid.4=0x2e8a
+melopero_shake_rp2040.pid.4=0x9005
+melopero_shake_rp2040.vid.5=0x2e8a
+melopero_shake_rp2040.pid.5=0x9105
+melopero_shake_rp2040.vid.6=0x2e8a
+melopero_shake_rp2040.pid.6=0xd005
+melopero_shake_rp2040.vid.7=0x2e8a
+melopero_shake_rp2040.pid.7=0xd105
 melopero_shake_rp2040.build.usbpid=-DSERIALUSB_PID=0x1005
 melopero_shake_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_shake_rp2040.build.board=MELOPERO_SHAKE_RP2040
@@ -11827,6 +13727,20 @@ melopero_shake_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_
 melopero_shake_rp2040picoprobe.name=Melopero Shake RP2040 (Picoprobe)
 melopero_shake_rp2040picoprobe.vid.0=0x2e8a
 melopero_shake_rp2040picoprobe.pid.0=0x0004
+melopero_shake_rp2040picoprobe.vid.1=0x2e8a
+melopero_shake_rp2040picoprobe.pid.1=0x0104
+melopero_shake_rp2040picoprobe.vid.2=0x2e8a
+melopero_shake_rp2040picoprobe.pid.2=0x4004
+melopero_shake_rp2040picoprobe.vid.3=0x2e8a
+melopero_shake_rp2040picoprobe.pid.3=0x4104
+melopero_shake_rp2040picoprobe.vid.4=0x2e8a
+melopero_shake_rp2040picoprobe.pid.4=0x8004
+melopero_shake_rp2040picoprobe.vid.5=0x2e8a
+melopero_shake_rp2040picoprobe.pid.5=0x8104
+melopero_shake_rp2040picoprobe.vid.6=0x2e8a
+melopero_shake_rp2040picoprobe.pid.6=0xc004
+melopero_shake_rp2040picoprobe.vid.7=0x2e8a
+melopero_shake_rp2040picoprobe.pid.7=0xc104
 melopero_shake_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x1005
 melopero_shake_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_shake_rp2040picoprobe.build.board=MELOPERO_SHAKE_RP2040
@@ -12058,6 +13972,20 @@ melopero_shake_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 melopero_shake_rp2040picodebug.name=Melopero Shake RP2040 (pico-debug)
 melopero_shake_rp2040picodebug.vid.0=0x1209
 melopero_shake_rp2040picodebug.pid.0=0x2488
+melopero_shake_rp2040picodebug.vid.1=0x1209
+melopero_shake_rp2040picodebug.pid.1=0x2588
+melopero_shake_rp2040picodebug.vid.2=0x1209
+melopero_shake_rp2040picodebug.pid.2=0x6488
+melopero_shake_rp2040picodebug.vid.3=0x1209
+melopero_shake_rp2040picodebug.pid.3=0x6588
+melopero_shake_rp2040picodebug.vid.4=0x1209
+melopero_shake_rp2040picodebug.pid.4=0xa488
+melopero_shake_rp2040picodebug.vid.5=0x1209
+melopero_shake_rp2040picodebug.pid.5=0xa588
+melopero_shake_rp2040picodebug.vid.6=0x1209
+melopero_shake_rp2040picodebug.pid.6=0xe488
+melopero_shake_rp2040picodebug.vid.7=0x1209
+melopero_shake_rp2040picodebug.pid.7=0xe588
 melopero_shake_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x1005
 melopero_shake_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_shake_rp2040picodebug.build.board=MELOPERO_SHAKE_RP2040
@@ -12287,6 +14215,20 @@ melopero_shake_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 solderparty_rp2040_stamp.name=Solder Party RP2040 Stamp
 solderparty_rp2040_stamp.vid.0=0x1209
 solderparty_rp2040_stamp.pid.0=0xa182
+solderparty_rp2040_stamp.vid.1=0x1209
+solderparty_rp2040_stamp.pid.1=0xa182
+solderparty_rp2040_stamp.vid.2=0x1209
+solderparty_rp2040_stamp.pid.2=0xe182
+solderparty_rp2040_stamp.vid.3=0x1209
+solderparty_rp2040_stamp.pid.3=0xe182
+solderparty_rp2040_stamp.vid.4=0x1209
+solderparty_rp2040_stamp.pid.4=0xa182
+solderparty_rp2040_stamp.vid.5=0x1209
+solderparty_rp2040_stamp.pid.5=0xa182
+solderparty_rp2040_stamp.vid.6=0x1209
+solderparty_rp2040_stamp.pid.6=0xe182
+solderparty_rp2040_stamp.vid.7=0x1209
+solderparty_rp2040_stamp.pid.7=0xe182
 solderparty_rp2040_stamp.build.usbpid=-DSERIALUSB_PID=0xa182
 solderparty_rp2040_stamp.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 solderparty_rp2040_stamp.build.board=SOLDERPARTY_RP2040_STAMP
@@ -12470,6 +14412,20 @@ solderparty_rp2040_stamp.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 solderparty_rp2040_stamppicoprobe.name=Solder Party RP2040 Stamp (Picoprobe)
 solderparty_rp2040_stamppicoprobe.vid.0=0x1209
 solderparty_rp2040_stamppicoprobe.pid.0=0x0004
+solderparty_rp2040_stamppicoprobe.vid.1=0x1209
+solderparty_rp2040_stamppicoprobe.pid.1=0x0104
+solderparty_rp2040_stamppicoprobe.vid.2=0x1209
+solderparty_rp2040_stamppicoprobe.pid.2=0x4004
+solderparty_rp2040_stamppicoprobe.vid.3=0x1209
+solderparty_rp2040_stamppicoprobe.pid.3=0x4104
+solderparty_rp2040_stamppicoprobe.vid.4=0x1209
+solderparty_rp2040_stamppicoprobe.pid.4=0x8004
+solderparty_rp2040_stamppicoprobe.vid.5=0x1209
+solderparty_rp2040_stamppicoprobe.pid.5=0x8104
+solderparty_rp2040_stamppicoprobe.vid.6=0x1209
+solderparty_rp2040_stamppicoprobe.pid.6=0xc004
+solderparty_rp2040_stamppicoprobe.vid.7=0x1209
+solderparty_rp2040_stamppicoprobe.pid.7=0xc104
 solderparty_rp2040_stamppicoprobe.build.usbpid=-DSERIALUSB_PID=0xa182
 solderparty_rp2040_stamppicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 solderparty_rp2040_stamppicoprobe.build.board=SOLDERPARTY_RP2040_STAMP
@@ -12653,6 +14609,20 @@ solderparty_rp2040_stamppicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 solderparty_rp2040_stamppicodebug.name=Solder Party RP2040 Stamp (pico-debug)
 solderparty_rp2040_stamppicodebug.vid.0=0x1209
 solderparty_rp2040_stamppicodebug.pid.0=0x2488
+solderparty_rp2040_stamppicodebug.vid.1=0x1209
+solderparty_rp2040_stamppicodebug.pid.1=0x2588
+solderparty_rp2040_stamppicodebug.vid.2=0x1209
+solderparty_rp2040_stamppicodebug.pid.2=0x6488
+solderparty_rp2040_stamppicodebug.vid.3=0x1209
+solderparty_rp2040_stamppicodebug.pid.3=0x6588
+solderparty_rp2040_stamppicodebug.vid.4=0x1209
+solderparty_rp2040_stamppicodebug.pid.4=0xa488
+solderparty_rp2040_stamppicodebug.vid.5=0x1209
+solderparty_rp2040_stamppicodebug.pid.5=0xa588
+solderparty_rp2040_stamppicodebug.vid.6=0x1209
+solderparty_rp2040_stamppicodebug.pid.6=0xe488
+solderparty_rp2040_stamppicodebug.vid.7=0x1209
+solderparty_rp2040_stamppicodebug.pid.7=0xe588
 solderparty_rp2040_stamppicodebug.build.usbpid=-DSERIALUSB_PID=0xa182
 solderparty_rp2040_stamppicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 solderparty_rp2040_stamppicodebug.build.board=SOLDERPARTY_RP2040_STAMP
@@ -12834,6 +14804,20 @@ solderparty_rp2040_stamppicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 sparkfun_promicrorp2040.name=SparkFun ProMicro RP2040
 sparkfun_promicrorp2040.vid.0=0x1b4f
 sparkfun_promicrorp2040.pid.0=0x0026
+sparkfun_promicrorp2040.vid.1=0x1b4f
+sparkfun_promicrorp2040.pid.1=0x0126
+sparkfun_promicrorp2040.vid.2=0x1b4f
+sparkfun_promicrorp2040.pid.2=0x4026
+sparkfun_promicrorp2040.vid.3=0x1b4f
+sparkfun_promicrorp2040.pid.3=0x4126
+sparkfun_promicrorp2040.vid.4=0x1b4f
+sparkfun_promicrorp2040.pid.4=0x8026
+sparkfun_promicrorp2040.vid.5=0x1b4f
+sparkfun_promicrorp2040.pid.5=0x8126
+sparkfun_promicrorp2040.vid.6=0x1b4f
+sparkfun_promicrorp2040.pid.6=0xc026
+sparkfun_promicrorp2040.vid.7=0x1b4f
+sparkfun_promicrorp2040.pid.7=0xc126
 sparkfun_promicrorp2040.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_promicrorp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2040.build.board=SPARKFUN_PROMICRO_RP2040
@@ -13065,6 +15049,20 @@ sparkfun_promicrorp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWI
 sparkfun_promicrorp2040picoprobe.name=SparkFun ProMicro RP2040 (Picoprobe)
 sparkfun_promicrorp2040picoprobe.vid.0=0x1b4f
 sparkfun_promicrorp2040picoprobe.pid.0=0x0004
+sparkfun_promicrorp2040picoprobe.vid.1=0x1b4f
+sparkfun_promicrorp2040picoprobe.pid.1=0x0104
+sparkfun_promicrorp2040picoprobe.vid.2=0x1b4f
+sparkfun_promicrorp2040picoprobe.pid.2=0x4004
+sparkfun_promicrorp2040picoprobe.vid.3=0x1b4f
+sparkfun_promicrorp2040picoprobe.pid.3=0x4104
+sparkfun_promicrorp2040picoprobe.vid.4=0x1b4f
+sparkfun_promicrorp2040picoprobe.pid.4=0x8004
+sparkfun_promicrorp2040picoprobe.vid.5=0x1b4f
+sparkfun_promicrorp2040picoprobe.pid.5=0x8104
+sparkfun_promicrorp2040picoprobe.vid.6=0x1b4f
+sparkfun_promicrorp2040picoprobe.pid.6=0xc004
+sparkfun_promicrorp2040picoprobe.vid.7=0x1b4f
+sparkfun_promicrorp2040picoprobe.pid.7=0xc104
 sparkfun_promicrorp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_promicrorp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2040picoprobe.build.board=SPARKFUN_PROMICRO_RP2040
@@ -13296,6 +15294,20 @@ sparkfun_promicrorp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV
 sparkfun_promicrorp2040picodebug.name=SparkFun ProMicro RP2040 (pico-debug)
 sparkfun_promicrorp2040picodebug.vid.0=0x1209
 sparkfun_promicrorp2040picodebug.pid.0=0x2488
+sparkfun_promicrorp2040picodebug.vid.1=0x1209
+sparkfun_promicrorp2040picodebug.pid.1=0x2588
+sparkfun_promicrorp2040picodebug.vid.2=0x1209
+sparkfun_promicrorp2040picodebug.pid.2=0x6488
+sparkfun_promicrorp2040picodebug.vid.3=0x1209
+sparkfun_promicrorp2040picodebug.pid.3=0x6588
+sparkfun_promicrorp2040picodebug.vid.4=0x1209
+sparkfun_promicrorp2040picodebug.pid.4=0xa488
+sparkfun_promicrorp2040picodebug.vid.5=0x1209
+sparkfun_promicrorp2040picodebug.pid.5=0xa588
+sparkfun_promicrorp2040picodebug.vid.6=0x1209
+sparkfun_promicrorp2040picodebug.pid.6=0xe488
+sparkfun_promicrorp2040picodebug.vid.7=0x1209
+sparkfun_promicrorp2040picodebug.pid.7=0xe588
 sparkfun_promicrorp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_promicrorp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2040picodebug.build.board=SPARKFUN_PROMICRO_RP2040
@@ -13525,6 +15537,20 @@ sparkfun_promicrorp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV
 sparkfun_thingplusrp2040.name=SparkFun Thing Plus RP2040
 sparkfun_thingplusrp2040.vid.0=0x1b4f
 sparkfun_thingplusrp2040.pid.0=0x0026
+sparkfun_thingplusrp2040.vid.1=0x1b4f
+sparkfun_thingplusrp2040.pid.1=0x0126
+sparkfun_thingplusrp2040.vid.2=0x1b4f
+sparkfun_thingplusrp2040.pid.2=0x4026
+sparkfun_thingplusrp2040.vid.3=0x1b4f
+sparkfun_thingplusrp2040.pid.3=0x4126
+sparkfun_thingplusrp2040.vid.4=0x1b4f
+sparkfun_thingplusrp2040.pid.4=0x8026
+sparkfun_thingplusrp2040.vid.5=0x1b4f
+sparkfun_thingplusrp2040.pid.5=0x8126
+sparkfun_thingplusrp2040.vid.6=0x1b4f
+sparkfun_thingplusrp2040.pid.6=0xc026
+sparkfun_thingplusrp2040.vid.7=0x1b4f
+sparkfun_thingplusrp2040.pid.7=0xc126
 sparkfun_thingplusrp2040.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_thingplusrp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_thingplusrp2040.build.board=SPARKFUN_THINGPLUS_RP2040
@@ -13756,6 +15782,20 @@ sparkfun_thingplusrp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 sparkfun_thingplusrp2040picoprobe.name=SparkFun Thing Plus RP2040 (Picoprobe)
 sparkfun_thingplusrp2040picoprobe.vid.0=0x1b4f
 sparkfun_thingplusrp2040picoprobe.pid.0=0x0004
+sparkfun_thingplusrp2040picoprobe.vid.1=0x1b4f
+sparkfun_thingplusrp2040picoprobe.pid.1=0x0104
+sparkfun_thingplusrp2040picoprobe.vid.2=0x1b4f
+sparkfun_thingplusrp2040picoprobe.pid.2=0x4004
+sparkfun_thingplusrp2040picoprobe.vid.3=0x1b4f
+sparkfun_thingplusrp2040picoprobe.pid.3=0x4104
+sparkfun_thingplusrp2040picoprobe.vid.4=0x1b4f
+sparkfun_thingplusrp2040picoprobe.pid.4=0x8004
+sparkfun_thingplusrp2040picoprobe.vid.5=0x1b4f
+sparkfun_thingplusrp2040picoprobe.pid.5=0x8104
+sparkfun_thingplusrp2040picoprobe.vid.6=0x1b4f
+sparkfun_thingplusrp2040picoprobe.pid.6=0xc004
+sparkfun_thingplusrp2040picoprobe.vid.7=0x1b4f
+sparkfun_thingplusrp2040picoprobe.pid.7=0xc104
 sparkfun_thingplusrp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_thingplusrp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_thingplusrp2040picoprobe.build.board=SPARKFUN_THINGPLUS_RP2040
@@ -13987,6 +16027,20 @@ sparkfun_thingplusrp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 sparkfun_thingplusrp2040picodebug.name=SparkFun Thing Plus RP2040 (pico-debug)
 sparkfun_thingplusrp2040picodebug.vid.0=0x1209
 sparkfun_thingplusrp2040picodebug.pid.0=0x2488
+sparkfun_thingplusrp2040picodebug.vid.1=0x1209
+sparkfun_thingplusrp2040picodebug.pid.1=0x2588
+sparkfun_thingplusrp2040picodebug.vid.2=0x1209
+sparkfun_thingplusrp2040picodebug.pid.2=0x6488
+sparkfun_thingplusrp2040picodebug.vid.3=0x1209
+sparkfun_thingplusrp2040picodebug.pid.3=0x6588
+sparkfun_thingplusrp2040picodebug.vid.4=0x1209
+sparkfun_thingplusrp2040picodebug.pid.4=0xa488
+sparkfun_thingplusrp2040picodebug.vid.5=0x1209
+sparkfun_thingplusrp2040picodebug.pid.5=0xa588
+sparkfun_thingplusrp2040picodebug.vid.6=0x1209
+sparkfun_thingplusrp2040picodebug.pid.6=0xe488
+sparkfun_thingplusrp2040picodebug.vid.7=0x1209
+sparkfun_thingplusrp2040picodebug.pid.7=0xe588
 sparkfun_thingplusrp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x0026
 sparkfun_thingplusrp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_thingplusrp2040picodebug.build.board=SPARKFUN_THINGPLUS_RP2040
@@ -14216,6 +16270,20 @@ sparkfun_thingplusrp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 upesy_rp2040_devkit.name=uPesy RP2040 DevKit
 upesy_rp2040_devkit.vid.0=0x2e8a
 upesy_rp2040_devkit.pid.0=0x1007
+upesy_rp2040_devkit.vid.1=0x2e8a
+upesy_rp2040_devkit.pid.1=0x1107
+upesy_rp2040_devkit.vid.2=0x2e8a
+upesy_rp2040_devkit.pid.2=0x5007
+upesy_rp2040_devkit.vid.3=0x2e8a
+upesy_rp2040_devkit.pid.3=0x5107
+upesy_rp2040_devkit.vid.4=0x2e8a
+upesy_rp2040_devkit.pid.4=0x9007
+upesy_rp2040_devkit.vid.5=0x2e8a
+upesy_rp2040_devkit.pid.5=0x9107
+upesy_rp2040_devkit.vid.6=0x2e8a
+upesy_rp2040_devkit.pid.6=0xd007
+upesy_rp2040_devkit.vid.7=0x2e8a
+upesy_rp2040_devkit.pid.7=0xd107
 upesy_rp2040_devkit.build.usbpid=-DSERIALUSB_PID=0x1007
 upesy_rp2040_devkit.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 upesy_rp2040_devkit.build.board=UPESY_RP2040_DEVKIT
@@ -14363,6 +16431,20 @@ upesy_rp2040_devkit.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IP
 upesy_rp2040_devkitpicoprobe.name=uPesy RP2040 DevKit (Picoprobe)
 upesy_rp2040_devkitpicoprobe.vid.0=0x2e8a
 upesy_rp2040_devkitpicoprobe.pid.0=0x0004
+upesy_rp2040_devkitpicoprobe.vid.1=0x2e8a
+upesy_rp2040_devkitpicoprobe.pid.1=0x0104
+upesy_rp2040_devkitpicoprobe.vid.2=0x2e8a
+upesy_rp2040_devkitpicoprobe.pid.2=0x4004
+upesy_rp2040_devkitpicoprobe.vid.3=0x2e8a
+upesy_rp2040_devkitpicoprobe.pid.3=0x4104
+upesy_rp2040_devkitpicoprobe.vid.4=0x2e8a
+upesy_rp2040_devkitpicoprobe.pid.4=0x8004
+upesy_rp2040_devkitpicoprobe.vid.5=0x2e8a
+upesy_rp2040_devkitpicoprobe.pid.5=0x8104
+upesy_rp2040_devkitpicoprobe.vid.6=0x2e8a
+upesy_rp2040_devkitpicoprobe.pid.6=0xc004
+upesy_rp2040_devkitpicoprobe.vid.7=0x2e8a
+upesy_rp2040_devkitpicoprobe.pid.7=0xc104
 upesy_rp2040_devkitpicoprobe.build.usbpid=-DSERIALUSB_PID=0x1007
 upesy_rp2040_devkitpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 upesy_rp2040_devkitpicoprobe.build.board=UPESY_RP2040_DEVKIT
@@ -14510,6 +16592,20 @@ upesy_rp2040_devkitpicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 
 upesy_rp2040_devkitpicodebug.name=uPesy RP2040 DevKit (pico-debug)
 upesy_rp2040_devkitpicodebug.vid.0=0x1209
 upesy_rp2040_devkitpicodebug.pid.0=0x2488
+upesy_rp2040_devkitpicodebug.vid.1=0x1209
+upesy_rp2040_devkitpicodebug.pid.1=0x2588
+upesy_rp2040_devkitpicodebug.vid.2=0x1209
+upesy_rp2040_devkitpicodebug.pid.2=0x6488
+upesy_rp2040_devkitpicodebug.vid.3=0x1209
+upesy_rp2040_devkitpicodebug.pid.3=0x6588
+upesy_rp2040_devkitpicodebug.vid.4=0x1209
+upesy_rp2040_devkitpicodebug.pid.4=0xa488
+upesy_rp2040_devkitpicodebug.vid.5=0x1209
+upesy_rp2040_devkitpicodebug.pid.5=0xa588
+upesy_rp2040_devkitpicodebug.vid.6=0x1209
+upesy_rp2040_devkitpicodebug.pid.6=0xe488
+upesy_rp2040_devkitpicodebug.vid.7=0x1209
+upesy_rp2040_devkitpicodebug.pid.7=0xe588
 upesy_rp2040_devkitpicodebug.build.usbpid=-DSERIALUSB_PID=0x1007
 upesy_rp2040_devkitpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 upesy_rp2040_devkitpicodebug.build.board=UPESY_RP2040_DEVKIT
@@ -14650,14 +16746,28 @@ upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 upesy_rp2040_devkitpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040
+# Seeed XIAO RP2040
 # -----------------------------------
-seeed_xiao_rp2040.name=Seeed XAIO RP2040
+seeed_xiao_rp2040.name=Seeed XIAO RP2040
 seeed_xiao_rp2040.vid.0=0x2e8a
 seeed_xiao_rp2040.pid.0=0x000a
+seeed_xiao_rp2040.vid.1=0x2e8a
+seeed_xiao_rp2040.pid.1=0x010a
+seeed_xiao_rp2040.vid.2=0x2e8a
+seeed_xiao_rp2040.pid.2=0x400a
+seeed_xiao_rp2040.vid.3=0x2e8a
+seeed_xiao_rp2040.pid.3=0x410a
+seeed_xiao_rp2040.vid.4=0x2e8a
+seeed_xiao_rp2040.pid.4=0x800a
+seeed_xiao_rp2040.vid.5=0x2e8a
+seeed_xiao_rp2040.pid.5=0x810a
+seeed_xiao_rp2040.vid.6=0x2e8a
+seeed_xiao_rp2040.pid.6=0xc00a
+seeed_xiao_rp2040.vid.7=0x2e8a
+seeed_xiao_rp2040.pid.7=0xc10a
 seeed_xiao_rp2040.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040.build.mcu=cortex-m0plus
 seeed_xiao_rp2040.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040.upload.tool=uf2conv
@@ -14676,7 +16786,7 @@ seeed_xiao_rp2040.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040.build.vid=0x2e8a
 seeed_xiao_rp2040.build.pid=0x000a
 seeed_xiao_rp2040.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040.build.usb_product="XAIO RP2040"
+seeed_xiao_rp2040.build.usb_product="XIAO RP2040"
 seeed_xiao_rp2040.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040.menu.flash.2097152_0.build.flash_length=2093056
@@ -14797,14 +16907,28 @@ seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040 (Picoprobe)
+# Seeed XIAO RP2040 (Picoprobe)
 # -----------------------------------
-seeed_xiao_rp2040picoprobe.name=Seeed XAIO RP2040 (Picoprobe)
+seeed_xiao_rp2040picoprobe.name=Seeed XIAO RP2040 (Picoprobe)
 seeed_xiao_rp2040picoprobe.vid.0=0x2e8a
 seeed_xiao_rp2040picoprobe.pid.0=0x0004
+seeed_xiao_rp2040picoprobe.vid.1=0x2e8a
+seeed_xiao_rp2040picoprobe.pid.1=0x0104
+seeed_xiao_rp2040picoprobe.vid.2=0x2e8a
+seeed_xiao_rp2040picoprobe.pid.2=0x4004
+seeed_xiao_rp2040picoprobe.vid.3=0x2e8a
+seeed_xiao_rp2040picoprobe.pid.3=0x4104
+seeed_xiao_rp2040picoprobe.vid.4=0x2e8a
+seeed_xiao_rp2040picoprobe.pid.4=0x8004
+seeed_xiao_rp2040picoprobe.vid.5=0x2e8a
+seeed_xiao_rp2040picoprobe.pid.5=0x8104
+seeed_xiao_rp2040picoprobe.vid.6=0x2e8a
+seeed_xiao_rp2040picoprobe.pid.6=0xc004
+seeed_xiao_rp2040picoprobe.vid.7=0x2e8a
+seeed_xiao_rp2040picoprobe.pid.7=0xc104
 seeed_xiao_rp2040picoprobe.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040picoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040picoprobe.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040picoprobe.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040picoprobe.build.mcu=cortex-m0plus
 seeed_xiao_rp2040picoprobe.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040picoprobe.upload.tool=picoprobe
@@ -14823,7 +16947,7 @@ seeed_xiao_rp2040picoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040picoprobe.build.vid=0x2e8a
 seeed_xiao_rp2040picoprobe.build.pid=0x000a
 seeed_xiao_rp2040picoprobe.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040picoprobe.build.usb_product="XAIO RP2040 (Picoprobe)"
+seeed_xiao_rp2040picoprobe.build.usb_product="XIAO RP2040 (Picoprobe)"
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040picoprobe.menu.flash.2097152_0.build.flash_length=2093056
@@ -14944,14 +17068,28 @@ seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
 seeed_xiao_rp2040picoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 
 # -----------------------------------
-# Seeed XAIO RP2040 (pico-debug)
+# Seeed XIAO RP2040 (pico-debug)
 # -----------------------------------
-seeed_xiao_rp2040picodebug.name=Seeed XAIO RP2040 (pico-debug)
+seeed_xiao_rp2040picodebug.name=Seeed XIAO RP2040 (pico-debug)
 seeed_xiao_rp2040picodebug.vid.0=0x1209
 seeed_xiao_rp2040picodebug.pid.0=0x2488
+seeed_xiao_rp2040picodebug.vid.1=0x1209
+seeed_xiao_rp2040picodebug.pid.1=0x2588
+seeed_xiao_rp2040picodebug.vid.2=0x1209
+seeed_xiao_rp2040picodebug.pid.2=0x6488
+seeed_xiao_rp2040picodebug.vid.3=0x1209
+seeed_xiao_rp2040picodebug.pid.3=0x6588
+seeed_xiao_rp2040picodebug.vid.4=0x1209
+seeed_xiao_rp2040picodebug.pid.4=0xa488
+seeed_xiao_rp2040picodebug.vid.5=0x1209
+seeed_xiao_rp2040picodebug.pid.5=0xa588
+seeed_xiao_rp2040picodebug.vid.6=0x1209
+seeed_xiao_rp2040picodebug.pid.6=0xe488
+seeed_xiao_rp2040picodebug.vid.7=0x1209
+seeed_xiao_rp2040picodebug.pid.7=0xe588
 seeed_xiao_rp2040picodebug.build.usbpid=-DSERIALUSB_PID=0x000a
 seeed_xiao_rp2040picodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-seeed_xiao_rp2040picodebug.build.board=SEEED_XAIO_RP2040
+seeed_xiao_rp2040picodebug.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040picodebug.build.mcu=cortex-m0plus
 seeed_xiao_rp2040picodebug.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040picodebug.upload.tool=picodebug
@@ -14970,7 +17108,7 @@ seeed_xiao_rp2040picodebug.build.boot2=boot2_w25q080_2_padded_checksum
 seeed_xiao_rp2040picodebug.build.vid=0x2e8a
 seeed_xiao_rp2040picodebug.build.pid=0x000a
 seeed_xiao_rp2040picodebug.build.usb_manufacturer="Seeed"
-seeed_xiao_rp2040picodebug.build.usb_product="XAIO RP2040 (pico-debug)"
+seeed_xiao_rp2040picodebug.build.usb_product="XIAO RP2040 (pico-debug)"
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0=2MB (no FS)
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0.upload.maximum_size=2093056
 seeed_xiao_rp2040picodebug.menu.flash.2097152_0.build.flash_length=2093056
@@ -15094,6 +17232,20 @@ seeed_xiao_rp2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -D
 wiznet_5100s_evb_pico.name=WIZnet W5100S-EVB-Pico
 wiznet_5100s_evb_pico.vid.0=0x2e8a
 wiznet_5100s_evb_pico.pid.0=0x1027
+wiznet_5100s_evb_pico.vid.1=0x2e8a
+wiznet_5100s_evb_pico.pid.1=0x1127
+wiznet_5100s_evb_pico.vid.2=0x2e8a
+wiznet_5100s_evb_pico.pid.2=0x5027
+wiznet_5100s_evb_pico.vid.3=0x2e8a
+wiznet_5100s_evb_pico.pid.3=0x5127
+wiznet_5100s_evb_pico.vid.4=0x2e8a
+wiznet_5100s_evb_pico.pid.4=0x9027
+wiznet_5100s_evb_pico.vid.5=0x2e8a
+wiznet_5100s_evb_pico.pid.5=0x9127
+wiznet_5100s_evb_pico.vid.6=0x2e8a
+wiznet_5100s_evb_pico.pid.6=0xd027
+wiznet_5100s_evb_pico.vid.7=0x2e8a
+wiznet_5100s_evb_pico.pid.7=0xd127
 wiznet_5100s_evb_pico.build.usbpid=-DSERIALUSB_PID=0x1027
 wiznet_5100s_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5100s_evb_pico.build.board=WIZNET_5100S_EVB_PICO
@@ -15241,6 +17393,20 @@ wiznet_5100s_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_
 wiznet_5100s_evb_picopicoprobe.name=WIZnet W5100S-EVB-Pico (Picoprobe)
 wiznet_5100s_evb_picopicoprobe.vid.0=0x2e8a
 wiznet_5100s_evb_picopicoprobe.pid.0=0x0004
+wiznet_5100s_evb_picopicoprobe.vid.1=0x2e8a
+wiznet_5100s_evb_picopicoprobe.pid.1=0x0104
+wiznet_5100s_evb_picopicoprobe.vid.2=0x2e8a
+wiznet_5100s_evb_picopicoprobe.pid.2=0x4004
+wiznet_5100s_evb_picopicoprobe.vid.3=0x2e8a
+wiznet_5100s_evb_picopicoprobe.pid.3=0x4104
+wiznet_5100s_evb_picopicoprobe.vid.4=0x2e8a
+wiznet_5100s_evb_picopicoprobe.pid.4=0x8004
+wiznet_5100s_evb_picopicoprobe.vid.5=0x2e8a
+wiznet_5100s_evb_picopicoprobe.pid.5=0x8104
+wiznet_5100s_evb_picopicoprobe.vid.6=0x2e8a
+wiznet_5100s_evb_picopicoprobe.pid.6=0xc004
+wiznet_5100s_evb_picopicoprobe.vid.7=0x2e8a
+wiznet_5100s_evb_picopicoprobe.pid.7=0xc104
 wiznet_5100s_evb_picopicoprobe.build.usbpid=-DSERIALUSB_PID=0x1027
 wiznet_5100s_evb_picopicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5100s_evb_picopicoprobe.build.board=WIZNET_5100S_EVB_PICO
@@ -15388,6 +17554,20 @@ wiznet_5100s_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 wiznet_5100s_evb_picopicodebug.name=WIZnet W5100S-EVB-Pico (pico-debug)
 wiznet_5100s_evb_picopicodebug.vid.0=0x1209
 wiznet_5100s_evb_picopicodebug.pid.0=0x2488
+wiznet_5100s_evb_picopicodebug.vid.1=0x1209
+wiznet_5100s_evb_picopicodebug.pid.1=0x2588
+wiznet_5100s_evb_picopicodebug.vid.2=0x1209
+wiznet_5100s_evb_picopicodebug.pid.2=0x6488
+wiznet_5100s_evb_picopicodebug.vid.3=0x1209
+wiznet_5100s_evb_picopicodebug.pid.3=0x6588
+wiznet_5100s_evb_picopicodebug.vid.4=0x1209
+wiznet_5100s_evb_picopicodebug.pid.4=0xa488
+wiznet_5100s_evb_picopicodebug.vid.5=0x1209
+wiznet_5100s_evb_picopicodebug.pid.5=0xa588
+wiznet_5100s_evb_picopicodebug.vid.6=0x1209
+wiznet_5100s_evb_picopicodebug.pid.6=0xe488
+wiznet_5100s_evb_picopicodebug.vid.7=0x1209
+wiznet_5100s_evb_picopicodebug.pid.7=0xe588
 wiznet_5100s_evb_picopicodebug.build.usbpid=-DSERIALUSB_PID=0x1027
 wiznet_5100s_evb_picopicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5100s_evb_picopicodebug.build.board=WIZNET_5100S_EVB_PICO
@@ -15533,6 +17713,20 @@ wiznet_5100s_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=
 wiznet_wizfi360_evb_pico.name=WIZnet WizFi360-EVB-Pico
 wiznet_wizfi360_evb_pico.vid.0=0x2e8a
 wiznet_wizfi360_evb_pico.pid.0=0x1028
+wiznet_wizfi360_evb_pico.vid.1=0x2e8a
+wiznet_wizfi360_evb_pico.pid.1=0x1128
+wiznet_wizfi360_evb_pico.vid.2=0x2e8a
+wiznet_wizfi360_evb_pico.pid.2=0x5028
+wiznet_wizfi360_evb_pico.vid.3=0x2e8a
+wiznet_wizfi360_evb_pico.pid.3=0x5128
+wiznet_wizfi360_evb_pico.vid.4=0x2e8a
+wiznet_wizfi360_evb_pico.pid.4=0x9028
+wiznet_wizfi360_evb_pico.vid.5=0x2e8a
+wiznet_wizfi360_evb_pico.pid.5=0x9128
+wiznet_wizfi360_evb_pico.vid.6=0x2e8a
+wiznet_wizfi360_evb_pico.pid.6=0xd028
+wiznet_wizfi360_evb_pico.vid.7=0x2e8a
+wiznet_wizfi360_evb_pico.pid.7=0xd128
 wiznet_wizfi360_evb_pico.build.usbpid=-DSERIALUSB_PID=0x1028
 wiznet_wizfi360_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_wizfi360_evb_pico.build.board=WIZNET_WIZFI360_EVB_PICO
@@ -15680,6 +17874,20 @@ wiznet_wizfi360_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 wiznet_wizfi360_evb_picopicoprobe.name=WIZnet WizFi360-EVB-Pico (Picoprobe)
 wiznet_wizfi360_evb_picopicoprobe.vid.0=0x2e8a
 wiznet_wizfi360_evb_picopicoprobe.pid.0=0x0004
+wiznet_wizfi360_evb_picopicoprobe.vid.1=0x2e8a
+wiznet_wizfi360_evb_picopicoprobe.pid.1=0x0104
+wiznet_wizfi360_evb_picopicoprobe.vid.2=0x2e8a
+wiznet_wizfi360_evb_picopicoprobe.pid.2=0x4004
+wiznet_wizfi360_evb_picopicoprobe.vid.3=0x2e8a
+wiznet_wizfi360_evb_picopicoprobe.pid.3=0x4104
+wiznet_wizfi360_evb_picopicoprobe.vid.4=0x2e8a
+wiznet_wizfi360_evb_picopicoprobe.pid.4=0x8004
+wiznet_wizfi360_evb_picopicoprobe.vid.5=0x2e8a
+wiznet_wizfi360_evb_picopicoprobe.pid.5=0x8104
+wiznet_wizfi360_evb_picopicoprobe.vid.6=0x2e8a
+wiznet_wizfi360_evb_picopicoprobe.pid.6=0xc004
+wiznet_wizfi360_evb_picopicoprobe.vid.7=0x2e8a
+wiznet_wizfi360_evb_picopicoprobe.pid.7=0xc104
 wiznet_wizfi360_evb_picopicoprobe.build.usbpid=-DSERIALUSB_PID=0x1028
 wiznet_wizfi360_evb_picopicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_wizfi360_evb_picopicoprobe.build.board=WIZNET_WIZFI360_EVB_PICO
@@ -15827,6 +18035,20 @@ wiznet_wizfi360_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 wiznet_wizfi360_evb_picopicodebug.name=WIZnet WizFi360-EVB-Pico (pico-debug)
 wiznet_wizfi360_evb_picopicodebug.vid.0=0x1209
 wiznet_wizfi360_evb_picopicodebug.pid.0=0x2488
+wiznet_wizfi360_evb_picopicodebug.vid.1=0x1209
+wiznet_wizfi360_evb_picopicodebug.pid.1=0x2588
+wiznet_wizfi360_evb_picopicodebug.vid.2=0x1209
+wiznet_wizfi360_evb_picopicodebug.pid.2=0x6488
+wiznet_wizfi360_evb_picopicodebug.vid.3=0x1209
+wiznet_wizfi360_evb_picopicodebug.pid.3=0x6588
+wiznet_wizfi360_evb_picopicodebug.vid.4=0x1209
+wiznet_wizfi360_evb_picopicodebug.pid.4=0xa488
+wiznet_wizfi360_evb_picopicodebug.vid.5=0x1209
+wiznet_wizfi360_evb_picopicodebug.pid.5=0xa588
+wiznet_wizfi360_evb_picopicodebug.vid.6=0x1209
+wiznet_wizfi360_evb_picopicodebug.pid.6=0xe488
+wiznet_wizfi360_evb_picopicodebug.vid.7=0x1209
+wiznet_wizfi360_evb_picopicodebug.pid.7=0xe588
 wiznet_wizfi360_evb_picopicodebug.build.usbpid=-DSERIALUSB_PID=0x1028
 wiznet_wizfi360_evb_picopicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_wizfi360_evb_picopicodebug.build.board=WIZNET_WIZFI360_EVB_PICO
@@ -15972,6 +18194,20 @@ wiznet_wizfi360_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IP
 wiznet_5500_evb_pico.name=WIZnet W5500-EVB-Pico
 wiznet_5500_evb_pico.vid.0=0x2e8a
 wiznet_5500_evb_pico.pid.0=0x1029
+wiznet_5500_evb_pico.vid.1=0x2e8a
+wiznet_5500_evb_pico.pid.1=0x1129
+wiznet_5500_evb_pico.vid.2=0x2e8a
+wiznet_5500_evb_pico.pid.2=0x5029
+wiznet_5500_evb_pico.vid.3=0x2e8a
+wiznet_5500_evb_pico.pid.3=0x5129
+wiznet_5500_evb_pico.vid.4=0x2e8a
+wiznet_5500_evb_pico.pid.4=0x9029
+wiznet_5500_evb_pico.vid.5=0x2e8a
+wiznet_5500_evb_pico.pid.5=0x9129
+wiznet_5500_evb_pico.vid.6=0x2e8a
+wiznet_5500_evb_pico.pid.6=0xd029
+wiznet_5500_evb_pico.vid.7=0x2e8a
+wiznet_5500_evb_pico.pid.7=0xd129
 wiznet_5500_evb_pico.build.usbpid=-DSERIALUSB_PID=0x1029
 wiznet_5500_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5500_evb_pico.build.board=WIZNET_5500_EVB_PICO
@@ -16119,6 +18355,20 @@ wiznet_5500_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_I
 wiznet_5500_evb_picopicoprobe.name=WIZnet W5500-EVB-Pico (Picoprobe)
 wiznet_5500_evb_picopicoprobe.vid.0=0x2e8a
 wiznet_5500_evb_picopicoprobe.pid.0=0x0004
+wiznet_5500_evb_picopicoprobe.vid.1=0x2e8a
+wiznet_5500_evb_picopicoprobe.pid.1=0x0104
+wiznet_5500_evb_picopicoprobe.vid.2=0x2e8a
+wiznet_5500_evb_picopicoprobe.pid.2=0x4004
+wiznet_5500_evb_picopicoprobe.vid.3=0x2e8a
+wiznet_5500_evb_picopicoprobe.pid.3=0x4104
+wiznet_5500_evb_picopicoprobe.vid.4=0x2e8a
+wiznet_5500_evb_picopicoprobe.pid.4=0x8004
+wiznet_5500_evb_picopicoprobe.vid.5=0x2e8a
+wiznet_5500_evb_picopicoprobe.pid.5=0x8104
+wiznet_5500_evb_picopicoprobe.vid.6=0x2e8a
+wiznet_5500_evb_picopicoprobe.pid.6=0xc004
+wiznet_5500_evb_picopicoprobe.vid.7=0x2e8a
+wiznet_5500_evb_picopicoprobe.pid.7=0xc104
 wiznet_5500_evb_picopicoprobe.build.usbpid=-DSERIALUSB_PID=0x1029
 wiznet_5500_evb_picopicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5500_evb_picopicoprobe.build.board=WIZNET_5500_EVB_PICO
@@ -16266,6 +18516,20 @@ wiznet_5500_evb_picopicoprobe.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 wiznet_5500_evb_picopicodebug.name=WIZnet W5500-EVB-Pico (pico-debug)
 wiznet_5500_evb_picopicodebug.vid.0=0x1209
 wiznet_5500_evb_picopicodebug.pid.0=0x2488
+wiznet_5500_evb_picopicodebug.vid.1=0x1209
+wiznet_5500_evb_picopicodebug.pid.1=0x2588
+wiznet_5500_evb_picopicodebug.vid.2=0x1209
+wiznet_5500_evb_picopicodebug.pid.2=0x6488
+wiznet_5500_evb_picopicodebug.vid.3=0x1209
+wiznet_5500_evb_picopicodebug.pid.3=0x6588
+wiznet_5500_evb_picopicodebug.vid.4=0x1209
+wiznet_5500_evb_picopicodebug.pid.4=0xa488
+wiznet_5500_evb_picopicodebug.vid.5=0x1209
+wiznet_5500_evb_picopicodebug.pid.5=0xa588
+wiznet_5500_evb_picopicodebug.vid.6=0x1209
+wiznet_5500_evb_picopicodebug.pid.6=0xe488
+wiznet_5500_evb_picopicodebug.vid.7=0x1209
+wiznet_5500_evb_picopicodebug.pid.7=0xe588
 wiznet_5500_evb_picopicodebug.build.usbpid=-DSERIALUSB_PID=0x1029
 wiznet_5500_evb_picopicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5500_evb_picopicodebug.build.board=WIZNET_5500_EVB_PICO
@@ -16411,6 +18675,20 @@ wiznet_5500_evb_picopicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1
 generic.name=Generic RP2040
 generic.vid.0=0x2e8a
 generic.pid.0=0xf00a
+generic.vid.1=0x2e8a
+generic.pid.1=0xf10a
+generic.vid.2=0x2e8a
+generic.pid.2=0xf00a
+generic.vid.3=0x2e8a
+generic.pid.3=0xf10a
+generic.vid.4=0x2e8a
+generic.pid.4=0xf00a
+generic.vid.5=0x2e8a
+generic.pid.5=0xf10a
+generic.vid.6=0x2e8a
+generic.pid.6=0xf00a
+generic.vid.7=0x2e8a
+generic.pid.7=0xf10a
 generic.build.usbpid=-DSERIALUSB_PID=0xf00a
 generic.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 generic.build.board=GENERIC_RP2040
@@ -16586,6 +18864,20 @@ generic.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4
 genericpicoprobe.name=Generic RP2040 (Picoprobe)
 genericpicoprobe.vid.0=0x2e8a
 genericpicoprobe.pid.0=0x0004
+genericpicoprobe.vid.1=0x2e8a
+genericpicoprobe.pid.1=0x0104
+genericpicoprobe.vid.2=0x2e8a
+genericpicoprobe.pid.2=0x4004
+genericpicoprobe.vid.3=0x2e8a
+genericpicoprobe.pid.3=0x4104
+genericpicoprobe.vid.4=0x2e8a
+genericpicoprobe.pid.4=0x8004
+genericpicoprobe.vid.5=0x2e8a
+genericpicoprobe.pid.5=0x8104
+genericpicoprobe.vid.6=0x2e8a
+genericpicoprobe.pid.6=0xc004
+genericpicoprobe.vid.7=0x2e8a
+genericpicoprobe.pid.7=0xc104
 genericpicoprobe.build.usbpid=-DSERIALUSB_PID=0xf00a
 genericpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 genericpicoprobe.build.board=GENERIC_RP2040
@@ -16761,6 +19053,20 @@ genericpicoprobe.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w
 genericpicodebug.name=Generic RP2040 (pico-debug)
 genericpicodebug.vid.0=0x1209
 genericpicodebug.pid.0=0x2488
+genericpicodebug.vid.1=0x1209
+genericpicodebug.pid.1=0x2588
+genericpicodebug.vid.2=0x1209
+genericpicodebug.pid.2=0x6488
+genericpicodebug.vid.3=0x1209
+genericpicodebug.pid.3=0x6588
+genericpicodebug.vid.4=0x1209
+genericpicodebug.pid.4=0xa488
+genericpicodebug.vid.5=0x1209
+genericpicodebug.pid.5=0xa588
+genericpicodebug.vid.6=0x1209
+genericpicodebug.pid.6=0xe488
+genericpicodebug.vid.7=0x1209
+genericpicodebug.pid.7=0xe588
 genericpicodebug.build.usbpid=-DSERIALUSB_PID=0xf00a
 genericpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 genericpicodebug.build.board=GENERIC_RP2040

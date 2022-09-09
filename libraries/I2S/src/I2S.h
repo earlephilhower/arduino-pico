@@ -74,7 +74,7 @@ public:
         return write((uint32_t)s);
     }
 
-    // Write 32 bit value to port, user responsbile for packing/alignment, etc.
+    // Write 32 bit value to port, user responsible for packing/alignment, etc.
     size_t write(int32_t val, bool sync);
 
     // Write sample to I2S port, will block until completed
@@ -83,7 +83,7 @@ public:
     size_t write24(int32_t l, int32_t r); // Note that 24b must have values left-aligned (i.e. 0xABCDEF00)
     size_t write32(int32_t l, int32_t r);
 
-    // Read 32 bit value to port, user responsbile for packing/alignment, etc.
+    // Read 32 bit value to port, user responsible for packing/alignment, etc.
     size_t read(int32_t *val, bool sync);
 
     // Read samples from I2S port, will block until data available

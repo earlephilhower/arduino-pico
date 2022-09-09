@@ -370,3 +370,8 @@ size_t SerialPIO::write(uint8_t c) {
 SerialPIO::operator bool() {
     return _running;
 }
+
+#ifdef ARDUINO_NANO_RP2040_CONNECT
+// NINA updates
+SerialPIO Serial3(SERIAL3_TX, SERIAL3_RX);
+#endif

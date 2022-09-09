@@ -171,12 +171,16 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         break;
     }
     uart_set_format(_uart, bits, stop, parity);
+    _fcnTx = gpio_get_function(_tx);
+    _fcnRx = gpio_get_function(_rx);
     gpio_set_function(_tx, GPIO_FUNC_UART);
     gpio_set_function(_rx, GPIO_FUNC_UART);
     if (_rts != UART_PIN_NOT_DEFINED) {
+        _fcnRts = gpio_get_function(_rts);
         gpio_set_function(_rts, GPIO_FUNC_UART);
     }
     if (_cts != UART_PIN_NOT_DEFINED) {
+        _fcnCts = gpio_get_function(_cts);
         gpio_set_function(_cts, GPIO_FUNC_UART);
     }
     uart_set_hw_flow(_uart, _rts != UART_PIN_NOT_DEFINED, _cts != UART_PIN_NOT_DEFINED);
@@ -211,6 +215,7 @@ void SerialUART::end() {
             irq_set_enabled(UART1_IRQ, false);
         }
     }
+
     // Paranoia - ensure nobody else is using anything here at the same time
     mutex_enter_blocking(&_mutex);
     mutex_enter_blocking(&_fifoMutex);
@@ -219,6 +224,16 @@ void SerialUART::end() {
     // Reset the mutexes once all is off/cleaned up
     mutex_exit(&_fifoMutex);
     mutex_exit(&_mutex);
+
+    // Restore pin functions
+    gpio_set_function(_tx, _fcnTx);
+    gpio_set_function(_rx, _fcnRx);
+    if (_rts != UART_PIN_NOT_DEFINED) {
+        gpio_set_function(_rts, _fcnRts);
+    }
+    if (_cts != UART_PIN_NOT_DEFINED) {
+        gpio_set_function(_cts, _fcnCts);
+    }
 }
 
 void SerialUART::_pumpFIFO() {
@@ -292,7 +307,7 @@ int SerialUART::available() {
     } else {
         _pumpFIFO();
     }
-    return (_writer - _reader) % _fifoSize;
+    return (_fifoSize + _writer - _reader) % _fifoSize;
 }
 
 int SerialUART::availableForWrite() {

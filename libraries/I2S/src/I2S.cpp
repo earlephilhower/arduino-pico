@@ -78,7 +78,7 @@ bool I2S::setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample) 
 bool I2S::setFrequency(int newFreq) {
     _freq = newFreq;
     if (_running) {
-        float bitClk = _freq * _bps * 2.0;
+        float bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
         pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
     }
     return true;

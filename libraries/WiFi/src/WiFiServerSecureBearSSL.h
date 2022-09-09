@@ -65,7 +65,7 @@ public:
 
     // If awaiting connection available and authenticated (i.e. client cert), return it.
     WiFiClientSecure accept(); // https://www.arduino.cc/en/Reference/EthernetServerAccept
-    WiFiClientSecure available(uint8_t* status = NULL) __attribute__((deprecated("Renamed to accept().")));
+    WiFiClientSecure available(uint8_t* status = nullptr);
 
     WiFiServerSecure& operator=(const WiFiServerSecure&) = default;
 

@@ -3,7 +3,7 @@
 	url = https://github.com/earlephilhower/ArduinoCore-API.git
 [submodule "pico-sdk"]
 	path = pico-sdk
-	url = https://github.com/raspberrypi/pico-sdk.git
+	url = https://github.com/earlephilhower/pico-sdk.git
 [submodule "system/pyserial"]
 	path = tools/pyserial
 	url = https://github.com/pyserial/pyserial.git
@@ -31,3 +31,9 @@
 [submodule "tools/libbearssl/bearssl"]
 	path = tools/libbearssl/bearssl
 	url = https://github.com/earlephilhower/bearssl-esp8266.git
+[submodule "ota/uzlib"]
+	path = ota/uzlib
+	url = https://github.com/pfalcon/uzlib.git
+[submodule "libraries/http_parser/lib/http-parser"]
+	path = libraries/http-parser/lib/http-parser
+	url = https://github.com/nodejs/http-parser.git

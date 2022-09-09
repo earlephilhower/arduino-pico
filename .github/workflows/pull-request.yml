@@ -20,7 +20,7 @@ jobs:
     - name: Run codespell
       uses: codespell-project/actions-codespell@master
       with:
-        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./libraries/FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server
+        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./libraries/FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino
         ignore_words_list: ser,dout
 
 # Consistent style
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        chunk: [0, 1, 2, 3]
+        chunk: [0, 1, 2, 3, 4, 5]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -76,7 +76,7 @@ jobs:
         TRAVIS_BUILD_DIR: ${{ github.workspace }}
         TRAVIS_TAG: ${{ github.ref }}
         BUILD_PARITY: custom
-        mod: 4
+        mod: 6
         rem: ${{ matrix.chunk }}
       run: |
         cd pico-sdk
@@ -221,3 +221,5 @@ jobs:
       run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" -O "build_flags=-DUSE_TINYUSB" libraries/Adafruit_TinyUSB_Arduino/examples/CDC/cdc_multi/cdc_multi.ino
     - name: Build WiFi Example
       run: pio ci --board=rpipicow -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/WiFi/examples/ScanNetworks/ScanNetworks.ino
+    - name: Build Signed OTA Example
+      run: pio ci --board=rpipicow -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/ArduinoOTA/examples/SignedOTA/SignedOTA.ino

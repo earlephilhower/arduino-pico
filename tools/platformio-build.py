@@ -112,6 +112,8 @@ env.Append(
         "ARDUINO_ARCH_RP2040",
         ("F_CPU", "$BOARD_F_CPU"),
         ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
+        "ARM_MATH_CM0_FAMILY",
+        "ARM_MATH_CM0_PLUS",
     ],
 
     CPPPATH=[
@@ -146,6 +148,7 @@ env.Append(
 
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
+        File(os.path.join(FRAMEWORK_DIR, "lib", "ota.o")),
         libpico,
         File(os.path.join(FRAMEWORK_DIR, "lib", "libbearssl.a")),
         "m", "c", stdcpp_lib, "c"]
@@ -297,6 +300,11 @@ if variant != "":
     env.Append(CPPPATH=[
         os.path.join(FRAMEWORK_DIR, "variants", variant)
     ])
+
+    env.Append(CPPDEFINES=[
+        ("ARDUINO_VARIANT", '\\"' + variant + '\\"'),
+    ])
+
 
     # link variant's source files as object files into the binary.
     # otherwise weak function overriding won't work in the linking stage.

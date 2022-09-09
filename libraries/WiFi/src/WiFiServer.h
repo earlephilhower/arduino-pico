@@ -79,7 +79,8 @@ public:
     WiFiServer(uint16_t port);
     virtual ~WiFiServer() {}
     WiFiClient accept(); // https://www.arduino.cc/en/Reference/EthernetServerAccept
-    WiFiClient available(uint8_t* status = NULL);
+    WiFiClient available(uint8_t* status = nullptr);
+
     bool hasClient();
     // hasClientData():
     // returns the amount of data available from the first client

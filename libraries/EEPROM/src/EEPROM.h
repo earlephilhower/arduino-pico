@@ -19,8 +19,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef EEPROM_h
-#define EEPROM_h
+#pragma once
 
 #include <stddef.h>
 #include <stdint.h>
@@ -62,6 +61,10 @@ public:
         return t;
     }
 
+    template<typename T>
+    const T &update(int const address, const T &t) {
+        return put(address, t);
+    }
     size_t length() {
         return _size;
     }
@@ -81,6 +84,3 @@ protected:
 };
 
 extern EEPROMClass EEPROM;
-
-#endif
-

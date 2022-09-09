@@ -36,7 +36,6 @@
 #define CYW43_WL_GPIO_LED_PIN 0
 #endif
 
-
 volatile bool __inLWIP = false;
 
 // note same code
@@ -89,7 +88,7 @@ semaphore_t cyw43_irq_sem;
 
 // Called in low priority pendsv interrupt only to do lwip processing and check cyw43 sleep
 static void periodic_worker(void) {
-#if CYW43_USE_STATS
+#if CYW43_USE_STATS && LWIP_SYS_CHECK_MS
     static uint32_t counter;
     if (counter++ % (30000 / LWIP_SYS_CHECK_MS) == 0) {
         cyw43_dump_stats();

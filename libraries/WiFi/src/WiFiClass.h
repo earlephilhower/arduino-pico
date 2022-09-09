@@ -75,11 +75,72 @@ public:
     int begin(const char* ssid, const char *passphrase);
 
     bool connected();
+    int8_t waitForConnectResult(unsigned long timeoutLength = 60000) {
+        uint32_t now = millis();
+        while (millis() - now < timeoutLength) {
+            if (status() != WL_DISCONNECTED) {
+                return status();
+            }
+            delay(10);
+        }
+        return -1;
+    }
 
     uint8_t beginAP(const char *ssid);
     uint8_t beginAP(const char *ssid, uint8_t channel);
     uint8_t beginAP(const char *ssid, const char* passphrase);
     uint8_t beginAP(const char *ssid, const char* passphrase, uint8_t channel);
+
+    // ESP8266 compatible calls
+    bool softAP(const char* ssid, const char* psk = nullptr, int channel = 1, int ssid_hidden = 0, int max_connection = 4) {
+        (void) ssid_hidden;
+        (void) max_connection;
+        return beginAP(ssid, psk, channel) == WL_CONNECTED;
+    }
+
+    bool softAP(const String& ssid, const String& psk = "", int channel = 1, int ssid_hidden = 0, int max_connection = 4) {
+        (void) ssid_hidden;
+        (void) max_connection;
+        if (psk != "") {
+            return beginAP(ssid.c_str(), psk.c_str(), channel) == WL_CONNECTED;
+        } else {
+            return beginAP(ssid.c_str(), channel) == WL_CONNECTED;
+        }
+    }
+
+    bool softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet) {
+        config(local_ip, local_ip, gateway, subnet);
+        return true;
+    }
+
+    bool softAPdisconnect(bool wifioff = false) {
+        (void) wifioff;
+        disconnect();
+        return true;
+    }
+
+    uint8_t softAPgetStationNum();
+
+    IPAddress softAPIP() {
+        return localIP();
+    }
+
+    uint8_t* softAPmacAddress(uint8_t* mac) {
+        return macAddress(mac);
+    }
+
+    String softAPmacAddress(void) {
+        uint8_t mac[8];
+        macAddress(mac);
+        char buff[32];
+        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+        return String(buff);
+    }
+
+    String softAPSSID() {
+        return String(SSID());
+    }
+
 
     // TODO - EAP is not supported by the driver.  Maybe some way of user-level wap-supplicant in the future?
     //uint8_t beginEnterprise(const char* ssid, const char* username, const char* password);
@@ -137,6 +198,7 @@ public:
 
     */
     void setHostname(const char* name);
+    const char *getHostname();
 
     /*
         Disconnect from the network
@@ -153,6 +215,13 @@ public:
         return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
     */
     uint8_t* macAddress(uint8_t* mac);
+    String macAddress(void) {
+        uint8_t mac[8];
+        macAddress(mac);
+        char buff[32];
+        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+        return String(buff);
+    }
 
     /*
         Get the interface IP address.

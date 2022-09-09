@@ -141,24 +141,24 @@ void SPIClassRP2040::transfer(void *buf, size_t count) {
     DEBUGSPI("SPI::transfer completed\n");
 }
 
-void SPIClassRP2040::transfer(void *txbuf, void *rxbuf, size_t count) {
+void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
     if (!_initted) {
         return;
     }
 
     DEBUGSPI("SPI::transfer(%p, %p, %d)\n", txbuf, rxbuf, count);
-    uint8_t *txbuff = reinterpret_cast<uint8_t *>(txbuf);
+    const uint8_t *txbuff = reinterpret_cast<const uint8_t *>(txbuf);
     uint8_t *rxbuff = reinterpret_cast<uint8_t *>(rxbuf);
 
     // MSB version is easy!
     if (_spis.getBitOrder() == MSBFIRST) {
         spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
 
-        if (rxbuf == NULL) { // transmit only!
+        if (rxbuf == nullptr) { // transmit only!
             spi_write_blocking(_spi, txbuff, count);
             return;
         }
-        if (txbuf == NULL) { // receive only!
+        if (txbuf == nullptr) { // receive only!
             spi_read_blocking(_spi, 0xFF, rxbuff, count);
             return;
         }

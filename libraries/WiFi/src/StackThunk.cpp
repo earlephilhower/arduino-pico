@@ -1,3 +1,22 @@
+/*
+    StackThunk - Implements a simple 2nd stack for BSSL and others
+    Copyright (c) 2022 Earle F. Philhower, III.  All rights reserved.
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -5,9 +24,9 @@
 
 extern "C" {
 
-    uint32_t *stack_thunk_ptr = NULL;
-    uint32_t *stack_thunk_top = NULL;
-    uint32_t *stack_thunk_save = NULL;  /* Saved A1 while in BearSSL */
+    uint32_t *stack_thunk_ptr = nullptr;
+    uint32_t *stack_thunk_top = nullptr;
+    uint32_t *stack_thunk_save = nullptr;  /* Saved A1 while in BearSSL */
     uint32_t stack_thunk_refcnt = 0;
 
     /* Largest stack usage seen in the wild at  6120 */
@@ -28,7 +47,7 @@ extern "C" {
                 abort();
             }
             stack_thunk_top = stack_thunk_ptr + _stackSize - 1;
-            stack_thunk_save = NULL;
+            stack_thunk_save = nullptr;
             stack_thunk_repaint();
         }
     }
@@ -42,9 +61,9 @@ extern "C" {
         stack_thunk_refcnt--;
         if (!stack_thunk_refcnt) {
             free(stack_thunk_ptr);
-            stack_thunk_ptr = NULL;
-            stack_thunk_top = NULL;
-            stack_thunk_save = NULL;
+            stack_thunk_ptr = nullptr;
+            stack_thunk_top = nullptr;
+            stack_thunk_save = nullptr;
         }
     }
 

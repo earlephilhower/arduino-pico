@@ -24,7 +24,8 @@
 
 #include <Arduino.h>
 #include <bearssl/bearssl.h>
-//#include <Updater.h>
+#include <Updater.h>
+#include <StackThunk.h>
 
 // Internal opaque structures, not needed by user applications
 namespace brssl {
@@ -196,7 +197,6 @@ private:
     br_ssl_session_cache_lru _cache;
 };
 
-#if 0
 
 // Updater SHA256 hash and signature verification
 class HashSHA256 : public UpdaterHashClass {
@@ -230,7 +230,6 @@ private:
     PublicKey *_pubKey;
 };
 
-#endif
 
 };
 

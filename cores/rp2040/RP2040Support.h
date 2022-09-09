@@ -21,7 +21,9 @@
 #include <hardware/clocks.h>
 #include <hardware/irq.h>
 #include <hardware/pio.h>
+#include <pico/unique_id.h>
 #include <hardware/exception.h>
+#include <hardware/watchdog.h>
 #include <hardware/structs/rosc.h>
 #include <hardware/structs/systick.h>
 #include <pico/multicore.h>
@@ -29,6 +31,8 @@
 #include "CoreMutex.h"
 #include "ccount.pio.h"
 #include <malloc.h>
+
+#include "_freertos.h"
 
 extern "C" volatile bool __otherCoreIdled;
 
@@ -86,6 +90,11 @@ public:
         if (!_multicore) {
             return;
         }
+        __holdUpPendSV = 1;
+        if (__isFreeRTOS) {
+            vTaskPreemptionDisable(nullptr);
+            vTaskSuspendAll();
+        }
         mutex_enter_blocking(&_idleMutex);
         __otherCoreIdled = false;
         multicore_fifo_push_blocking(_GOTOSLEEP);
@@ -98,6 +107,12 @@ public:
         }
         mutex_exit(&_idleMutex);
         __otherCoreIdled = false;
+        if (__isFreeRTOS) {
+            xTaskResumeAll();
+            vTaskPreemptionEnable(nullptr);
+        }
+        __holdUpPendSV = 0;
+
         // Other core will exit busy-loop and return to operation
         // once __otherCoreIdled == false.
     }
@@ -223,7 +238,7 @@ public:
     // Convert from microseconds to PIO clock cycles
     static int usToPIOCycles(int us) {
         // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
-        return (us * (clock_get_hz(clk_sys) / 1000000));
+        return (us * (clock_get_hz(clk_sys) / 1'000'000));
     }
 
     // Get current clock frequency
@@ -286,6 +301,25 @@ public:
         multicore_reset_core1();
         fifo.clear();
         multicore_launch_core1(main1);
+    }
+
+    void reboot() {
+        watchdog_reboot(0, 0, 10);
+        while (1) {
+            continue;
+        }
+    }
+
+    inline void restart() {
+        reboot();
+    }
+
+    const char *getChipID() {
+        static char id[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = { 0 };
+        if (!id[0]) {
+            pico_get_unique_board_id_string(id, sizeof(id));
+        }
+        return id;
     }
 
     // Multicore comms FIFO

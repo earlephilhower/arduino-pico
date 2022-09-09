@@ -17,8 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef __SD_H__
-#define __SD_H__
+#pragma once
 
 #include <Arduino.h>
 #include <FS.h>
@@ -32,8 +31,12 @@
 
 class SDClass {
 public:
-    boolean begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED) {
-        SDFS.setConfig(SDFSConfig(csPin, cfg));
+    boolean begin(uint8_t csPin, HardwareSPI &spi) {
+        SDFS.setConfig(SDFSConfig(csPin, SPI_HALF_SPEED, spi));
+        return (boolean)SDFS.begin();
+    }
+    boolean begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED, HardwareSPI &spi = SPI) {
+        SDFS.setConfig(SDFSConfig(csPin, cfg, spi));
         return (boolean)SDFS.begin();
     }
 
@@ -213,6 +216,4 @@ static inline uint8_t FAT_SECOND(uint16_t fatTime) {
 
 #if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_SD)
 extern SDClass SD;
-#endif
-
 #endif

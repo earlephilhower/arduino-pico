@@ -98,9 +98,19 @@ The included ``SD`` library is the Arduino standard one.  Please refer to
 the [Arduino SD reference](https://www.arduino.cc/en/reference/SD) for
 more information.
 
+Using Second SPI port for SD
+----------------------------
+The ``SD`` library ``begin()`` has been modified to allow you to use the
+second SPI port, ``SPI1``.  Just use the following call in place of
+``SD.begin(cspin)``
+
+.. code:: cpp
+
+    SD.begin(cspin, SPI1);
+
 
 File system object (LittleFS/SD/SDFS)
---------------------------------------------
+-------------------------------------
 
 setConfig
 ~~~~~~~~~

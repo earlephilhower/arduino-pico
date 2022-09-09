@@ -63,11 +63,11 @@ public:
     err_t abort() {
         if (_pcb) {
             DEBUGV(":abort\r\n");
-            tcp_arg(_pcb, NULL);
-            tcp_sent(_pcb, NULL);
-            tcp_recv(_pcb, NULL);
-            tcp_err(_pcb, NULL);
-            tcp_poll(_pcb, NULL, 0);
+            tcp_arg(_pcb, nullptr);
+            tcp_sent(_pcb, nullptr);
+            tcp_recv(_pcb, nullptr);
+            tcp_err(_pcb, nullptr);
+            tcp_poll(_pcb, nullptr, 0);
             LWIPMutex m;  // Block the timer sys_check_timeouts call
             tcp_abort(_pcb);
             _pcb = nullptr;
@@ -79,11 +79,11 @@ public:
         err_t err = ERR_OK;
         if (_pcb) {
             DEBUGV(":close\r\n");
-            tcp_arg(_pcb, NULL);
-            tcp_sent(_pcb, NULL);
-            tcp_recv(_pcb, NULL);
-            tcp_err(_pcb, NULL);
-            tcp_poll(_pcb, NULL, 0);
+            tcp_arg(_pcb, nullptr);
+            tcp_sent(_pcb, nullptr);
+            tcp_recv(_pcb, nullptr);
+            tcp_err(_pcb, nullptr);
+            tcp_poll(_pcb, nullptr, 0);
             LWIPMutex m;  // Block the timer sys_check_timeouts call
             err = tcp_close(_pcb);
             if (err != ERR_OK) {
@@ -374,6 +374,23 @@ public:
         return _write_from_source(ds, dl);
     }
 
+    size_t write(Stream& stream) {
+        if (!_pcb) {
+            return 0;
+        }
+        size_t sent = 0;
+        while (stream.available()) {
+            char b;
+            b = stream.read();
+            if (write(&b, 1)) {
+                sent ++;
+            } else {
+                break;
+            }
+        }
+        return sent;
+    }
+
     void keepAlive(uint16_t idle_sec = TCP_DEFAULT_KEEPALIVE_IDLE_SEC, uint16_t intv_sec = TCP_DEFAULT_KEEPALIVE_INTERVAL_SEC, uint8_t count = TCP_DEFAULT_KEEPALIVE_COUNT) {
         if (idle_sec && intv_sec && count) {
             _pcb->so_options |= SOF_KEEPALIVE;
@@ -491,6 +508,7 @@ protected:
         DEBUGV(":wr %d %d\r\n", _datalen - _written, _written);
 
         bool has_written = false;
+        int scale = 0;
 
         while (_written < _datalen) {
             if (state() == CLOSED) {
@@ -501,6 +519,10 @@ protected:
             {
                 LWIPMutex m;  // Block the timer sys_check_timeouts call, just for this call
                 next_chunk_size = std::min((size_t)tcp_sndbuf(_pcb), remaining);
+                // Potentially reduce transmit size if we are tight on memory, but only if it doesn't return a 0 chunk size
+                if (next_chunk_size > (size_t)(1 << scale)) {
+                    next_chunk_size >>= scale;
+                }
             }
             if (!next_chunk_size) {
                 break;
@@ -531,6 +553,13 @@ protected:
             if (err == ERR_OK) {
                 _written += next_chunk_size;
                 has_written = true;
+            } else if (err == ERR_MEM) {
+                if (scale < 4) {
+                    // Retry sending at 1/2 the chunk size
+                    scale ++;
+                } else {
+                    break;
+                }
             } else {
                 // ERR_MEM(-1) is a valid error meaning
                 // "come back later". It leaves state() opened
@@ -622,10 +651,10 @@ protected:
     void _error(err_t err) {
         (void) err;
         DEBUGV(":er %d 0x%08x\r\n", (int) err, (uint32_t) _datasource);
-        tcp_arg(_pcb, NULL);
-        tcp_sent(_pcb, NULL);
-        tcp_recv(_pcb, NULL);
-        tcp_err(_pcb, NULL);
+        tcp_arg(_pcb, nullptr);
+        tcp_sent(_pcb, nullptr);
+        tcp_recv(_pcb, nullptr);
+        tcp_err(_pcb, nullptr);
         _pcb = nullptr;
         _notify_error();
     }

@@ -72,10 +72,12 @@
       }
 */
 
-#ifndef __ADDRLIST_H
-#define __ADDRLIST_H
+#pragma once
 
 #include <IPAddress.h>
+#include <api/String.h>
+using IPAddress = arduino::IPAddress;
+using String = arduino::String;
 #include <lwip/netif.h>
 
 #if LWIP_IPV6
@@ -251,6 +253,3 @@ inline AddressList::const_iterator   end(const AddressList& a) {
 } // esp8266
 
 extern esp8266::AddressListImplementation::AddressList addrList;
-
-
-#endif
