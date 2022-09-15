@@ -217,6 +217,7 @@ size_t I2S::_writeNatural(int32_t s) {
     case 16:
         _holdWord |= s & 0xffff;
         if (_wasHolding) {
+            _holdWord = _holdWord<<1;
             auto ret = write(_holdWord, true);
             _holdWord = 0;
             _wasHolding = 0;
