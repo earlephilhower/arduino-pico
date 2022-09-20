@@ -28,6 +28,7 @@
 #include <hardware/structs/systick.h>
 #include <pico/multicore.h>
 #include <pico/util/queue.h>
+#include <pico/sleep.h>
 #include "CoreMutex.h"
 #include "ccount.pio.h"
 #include <malloc.h>
@@ -312,6 +313,18 @@ public:
 
     inline void restart() {
         reboot();
+    }
+
+    void wdt_begin(uint32_t delay_ms) {
+        watchdog_enable(delay_ms, 1);
+    }
+
+    void wdt_reset() {
+        watchdog_reset();
+    }
+
+    void sleep_until_ms(uint32_t ms) {
+        sleep_ms(ms);
     }
 
     const char *getChipID() {
