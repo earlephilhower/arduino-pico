@@ -319,7 +319,7 @@ public:
     }
 
     void wdt_reset() {
-        watchdog_reset();
+        watchdog_reboot();
     }
 
     const char *getChipID() {
