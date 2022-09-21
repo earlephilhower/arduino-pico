@@ -37,11 +37,6 @@ void rp2040.reboot()
 ~~~~~~~~~~~~~~~~~~~~
 Forces a hardware reboot of the Pico.
 
-void rp2040.sleep_until_ms(uint32_t ms)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Performs a low power sleep (WFE) for
-a desired amount of time, in ms.
-
 Hardware Watchdog
 _________________
 
