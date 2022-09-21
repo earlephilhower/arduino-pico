@@ -28,7 +28,6 @@
 #include <hardware/structs/systick.h>
 #include <pico/multicore.h>
 #include <pico/util/queue.h>
-#include <pico/sleep.h>
 #include "CoreMutex.h"
 #include "ccount.pio.h"
 #include <malloc.h>
@@ -321,10 +320,6 @@ public:
 
     void wdt_reset() {
         watchdog_reset();
-    }
-
-    void sleep_until_ms(uint32_t ms) {
-        sleep_ms(ms);
     }
 
     const char *getChipID() {
