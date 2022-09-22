@@ -72,7 +72,6 @@ cat << EOF > exclude.txt
 .travis.yml
 package
 doc
-ArduinoCore-API
 EOF
 # Also include all files which are ignored by git
 git ls-files --other --directory >> exclude.txt
