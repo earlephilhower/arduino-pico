@@ -36,10 +36,10 @@
 #define PIN_SPI0_SCK        (31u)
 #define PIN_SPI0_SS         (31u)
 
-#define PIN_SPI1_MISO       (31u)
-#define PIN_SPI1_MOSI       (31u)
-#define PIN_SPI1_SCK        (31u)
-#define PIN_SPI1_SS         (31u)
+#define PIN_SPI1_MISO       (11u)
+#define PIN_SPI1_MOSI       (12u)
+#define PIN_SPI1_SCK        (10u)
+#define PIN_SPI1_SS         (15u)
 
 // Wire
 #define PIN_WIRE0_SDA       (16u)
@@ -48,10 +48,8 @@
 #define PIN_WIRE1_SDA       (2u)
 #define PIN_WIRE1_SCL       (3u)
 
-
-
 #define SERIAL_HOWMANY      (2u)
-#define SPI_HOWMANY         (0u)
+#define SPI_HOWMANY         (2u)
 #define WIRE_HOWMANY        (2u)
 
 #include "../generic/common.h"
