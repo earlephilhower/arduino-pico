@@ -37,6 +37,20 @@ void rp2040.reboot()
 ~~~~~~~~~~~~~~~~~~~~
 Forces a hardware reboot of the Pico.
 
+Hardware Watchdog
+_________________
+
+void rp2040.wdt_begin(uint32_t delay_ms)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enables the hardware watchdog timer with a delay value of delay_ms
+microseconds. Note that on the RP2040, once this function has called, the
+hardware watchdog can _not_ be disabled.
+
+void rp2040.wdt_reset()
+~~~~~~~~~~~~~~~~
+Reloads the watchdog's counter with the amount of time set by wdt_begin.
+
+
 Memory Information
 ------------------
 

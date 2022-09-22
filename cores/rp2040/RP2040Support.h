@@ -314,6 +314,14 @@ public:
         reboot();
     }
 
+    void wdt_begin(uint32_t delay_ms) {
+        watchdog_enable(delay_ms, 1);
+    }
+
+    void wdt_reset() {
+        watchdog_update();
+    }
+
     const char *getChipID() {
         static char id[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = { 0 };
         if (!id[0]) {
