@@ -12,6 +12,7 @@ menu.exceptions=C++ Exceptions
 menu.dbgport=Debug Port
 menu.dbglvl=Debug Level
 menu.boot2=Boot Stage 2
+menu.wificountry=WiFi Region
 menu.usbstack=USB Stack
 menu.ipstack=IP Stack
 
@@ -650,6 +651,110 @@ rpipicow.menu.usbstack.picosdk=Pico SDK
 rpipicow.menu.usbstack.picosdk.build.usbstack_flags=
 rpipicow.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipicow.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicow.menu.wificountry.worldwide=Worldwide
+rpipicow.menu.wificountry.worldwide.build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
+rpipicow.menu.wificountry.australia=Australia
+rpipicow.menu.wificountry.australia.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRALIA
+rpipicow.menu.wificountry.austria=Austria
+rpipicow.menu.wificountry.austria.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRIA
+rpipicow.menu.wificountry.belgium=Belgium
+rpipicow.menu.wificountry.belgium.build.wificc=-DWIFICC=CYW43_COUNTRY_BELGIUM
+rpipicow.menu.wificountry.brazil=Brazil
+rpipicow.menu.wificountry.brazil.build.wificc=-DWIFICC=CYW43_COUNTRY_BRAZIL
+rpipicow.menu.wificountry.canada=Canada
+rpipicow.menu.wificountry.canada.build.wificc=-DWIFICC=CYW43_COUNTRY_CANADA
+rpipicow.menu.wificountry.chile=Chile
+rpipicow.menu.wificountry.chile.build.wificc=-DWIFICC=CYW43_COUNTRY_CHILE
+rpipicow.menu.wificountry.china=China
+rpipicow.menu.wificountry.china.build.wificc=-DWIFICC=CYW43_COUNTRY_CHINA
+rpipicow.menu.wificountry.colombia=Colombia
+rpipicow.menu.wificountry.colombia.build.wificc=-DWIFICC=CYW43_COUNTRY_COLOMBIA
+rpipicow.menu.wificountry.czech_republic=Czech Republic
+rpipicow.menu.wificountry.czech_republic.build.wificc=-DWIFICC=CYW43_COUNTRY_CZECH_REPUBLIC
+rpipicow.menu.wificountry.denmark=Denmark
+rpipicow.menu.wificountry.denmark.build.wificc=-DWIFICC=CYW43_COUNTRY_DENMARK
+rpipicow.menu.wificountry.estonia=Estonia
+rpipicow.menu.wificountry.estonia.build.wificc=-DWIFICC=CYW43_COUNTRY_ESTONIA
+rpipicow.menu.wificountry.finland=Finland
+rpipicow.menu.wificountry.finland.build.wificc=-DWIFICC=CYW43_COUNTRY_FINLAND
+rpipicow.menu.wificountry.france=France
+rpipicow.menu.wificountry.france.build.wificc=-DWIFICC=CYW43_COUNTRY_FRANCE
+rpipicow.menu.wificountry.germany=Germany
+rpipicow.menu.wificountry.germany.build.wificc=-DWIFICC=CYW43_COUNTRY_GERMANY
+rpipicow.menu.wificountry.greece=Greece
+rpipicow.menu.wificountry.greece.build.wificc=-DWIFICC=CYW43_COUNTRY_GREECE
+rpipicow.menu.wificountry.hong_kong=Hong Kong
+rpipicow.menu.wificountry.hong_kong.build.wificc=-DWIFICC=CYW43_COUNTRY_HONG_KONG
+rpipicow.menu.wificountry.hungary=Hungary
+rpipicow.menu.wificountry.hungary.build.wificc=-DWIFICC=CYW43_COUNTRY_HUNGARY
+rpipicow.menu.wificountry.iceland=Iceland
+rpipicow.menu.wificountry.iceland.build.wificc=-DWIFICC=CYW43_COUNTRY_ICELAND
+rpipicow.menu.wificountry.india=India
+rpipicow.menu.wificountry.india.build.wificc=-DWIFICC=CYW43_COUNTRY_INDIA
+rpipicow.menu.wificountry.israel=Israel
+rpipicow.menu.wificountry.israel.build.wificc=-DWIFICC=CYW43_COUNTRY_ISRAEL
+rpipicow.menu.wificountry.italy=Italy
+rpipicow.menu.wificountry.italy.build.wificc=-DWIFICC=CYW43_COUNTRY_ITALY
+rpipicow.menu.wificountry.japan=Japan
+rpipicow.menu.wificountry.japan.build.wificc=-DWIFICC=CYW43_COUNTRY_JAPAN
+rpipicow.menu.wificountry.kenya=Kenya
+rpipicow.menu.wificountry.kenya.build.wificc=-DWIFICC=CYW43_COUNTRY_KENYA
+rpipicow.menu.wificountry.latvia=Latvia
+rpipicow.menu.wificountry.latvia.build.wificc=-DWIFICC=CYW43_COUNTRY_LATVIA
+rpipicow.menu.wificountry.liechtenstein=Liechtenstein
+rpipicow.menu.wificountry.liechtenstein.build.wificc=-DWIFICC=CYW43_COUNTRY_LIECHTENSTEIN
+rpipicow.menu.wificountry.lithuania=Lithuania
+rpipicow.menu.wificountry.lithuania.build.wificc=-DWIFICC=CYW43_COUNTRY_LITHUANIA
+rpipicow.menu.wificountry.luxembourg=Luxembourg
+rpipicow.menu.wificountry.luxembourg.build.wificc=-DWIFICC=CYW43_COUNTRY_LUXEMBOURG
+rpipicow.menu.wificountry.malaysia=Malaysia
+rpipicow.menu.wificountry.malaysia.build.wificc=-DWIFICC=CYW43_COUNTRY_MALAYSIA
+rpipicow.menu.wificountry.malta=Malta
+rpipicow.menu.wificountry.malta.build.wificc=-DWIFICC=CYW43_COUNTRY_MALTA
+rpipicow.menu.wificountry.mexico=Mexico
+rpipicow.menu.wificountry.mexico.build.wificc=-DWIFICC=CYW43_COUNTRY_MEXICO
+rpipicow.menu.wificountry.netherlands=Netherlands
+rpipicow.menu.wificountry.netherlands.build.wificc=-DWIFICC=CYW43_COUNTRY_NETHERLANDS
+rpipicow.menu.wificountry.new_zealand=New Zealand
+rpipicow.menu.wificountry.new_zealand.build.wificc=-DWIFICC=CYW43_COUNTRY_NEW_ZEALAND
+rpipicow.menu.wificountry.nigeria=Nigeria
+rpipicow.menu.wificountry.nigeria.build.wificc=-DWIFICC=CYW43_COUNTRY_NIGERIA
+rpipicow.menu.wificountry.norway=Norway
+rpipicow.menu.wificountry.norway.build.wificc=-DWIFICC=CYW43_COUNTRY_NORWAY
+rpipicow.menu.wificountry.peru=Peru
+rpipicow.menu.wificountry.peru.build.wificc=-DWIFICC=CYW43_COUNTRY_PERU
+rpipicow.menu.wificountry.philippines=Philippines
+rpipicow.menu.wificountry.philippines.build.wificc=-DWIFICC=CYW43_COUNTRY_PHILIPPINES
+rpipicow.menu.wificountry.poland=Poland
+rpipicow.menu.wificountry.poland.build.wificc=-DWIFICC=CYW43_COUNTRY_POLAND
+rpipicow.menu.wificountry.portugal=Portugal
+rpipicow.menu.wificountry.portugal.build.wificc=-DWIFICC=CYW43_COUNTRY_PORTUGAL
+rpipicow.menu.wificountry.singapore=Singapore
+rpipicow.menu.wificountry.singapore.build.wificc=-DWIFICC=CYW43_COUNTRY_SINGAPORE
+rpipicow.menu.wificountry.slovakia=Slovakia
+rpipicow.menu.wificountry.slovakia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVAKIA
+rpipicow.menu.wificountry.slovenia=Slovenia
+rpipicow.menu.wificountry.slovenia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVENIA
+rpipicow.menu.wificountry.south_africa=South Africa
+rpipicow.menu.wificountry.south_africa.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_AFRICA
+rpipicow.menu.wificountry.south_korea=South Korea
+rpipicow.menu.wificountry.south_korea.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_KOREA
+rpipicow.menu.wificountry.spain=Spain
+rpipicow.menu.wificountry.spain.build.wificc=-DWIFICC=CYW43_COUNTRY_SPAIN
+rpipicow.menu.wificountry.sweden=Sweden
+rpipicow.menu.wificountry.sweden.build.wificc=-DWIFICC=CYW43_COUNTRY_SWEDEN
+rpipicow.menu.wificountry.switzerland=Switzerland
+rpipicow.menu.wificountry.switzerland.build.wificc=-DWIFICC=CYW43_COUNTRY_SWITZERLAND
+rpipicow.menu.wificountry.taiwan=Taiwan
+rpipicow.menu.wificountry.taiwan.build.wificc=-DWIFICC=CYW43_COUNTRY_TAIWAN
+rpipicow.menu.wificountry.thailand=Thailand
+rpipicow.menu.wificountry.thailand.build.wificc=-DWIFICC=CYW43_COUNTRY_THAILAND
+rpipicow.menu.wificountry.turkey=Turkey
+rpipicow.menu.wificountry.turkey.build.wificc=-DWIFICC=CYW43_COUNTRY_TURKEY
+rpipicow.menu.wificountry.uk=UK
+rpipicow.menu.wificountry.uk.build.wificc=-DWIFICC=CYW43_COUNTRY_UK
+rpipicow.menu.wificountry.usa=USA
+rpipicow.menu.wificountry.usa.build.wificc=-DWIFICC=CYW43_COUNTRY_USA
 rpipicow.menu.ipstack.ipv4only=IPv4 Only
 rpipicow.menu.ipstack.ipv4only.build.libpico=libpico.a
 rpipicow.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
@@ -811,6 +916,110 @@ rpipicowpicoprobe.menu.usbstack.picosdk=Pico SDK
 rpipicowpicoprobe.menu.usbstack.picosdk.build.usbstack_flags=
 rpipicowpicoprobe.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipicowpicoprobe.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+rpipicowpicoprobe.menu.wificountry.worldwide=Worldwide
+rpipicowpicoprobe.menu.wificountry.worldwide.build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
+rpipicowpicoprobe.menu.wificountry.australia=Australia
+rpipicowpicoprobe.menu.wificountry.australia.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRALIA
+rpipicowpicoprobe.menu.wificountry.austria=Austria
+rpipicowpicoprobe.menu.wificountry.austria.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRIA
+rpipicowpicoprobe.menu.wificountry.belgium=Belgium
+rpipicowpicoprobe.menu.wificountry.belgium.build.wificc=-DWIFICC=CYW43_COUNTRY_BELGIUM
+rpipicowpicoprobe.menu.wificountry.brazil=Brazil
+rpipicowpicoprobe.menu.wificountry.brazil.build.wificc=-DWIFICC=CYW43_COUNTRY_BRAZIL
+rpipicowpicoprobe.menu.wificountry.canada=Canada
+rpipicowpicoprobe.menu.wificountry.canada.build.wificc=-DWIFICC=CYW43_COUNTRY_CANADA
+rpipicowpicoprobe.menu.wificountry.chile=Chile
+rpipicowpicoprobe.menu.wificountry.chile.build.wificc=-DWIFICC=CYW43_COUNTRY_CHILE
+rpipicowpicoprobe.menu.wificountry.china=China
+rpipicowpicoprobe.menu.wificountry.china.build.wificc=-DWIFICC=CYW43_COUNTRY_CHINA
+rpipicowpicoprobe.menu.wificountry.colombia=Colombia
+rpipicowpicoprobe.menu.wificountry.colombia.build.wificc=-DWIFICC=CYW43_COUNTRY_COLOMBIA
+rpipicowpicoprobe.menu.wificountry.czech_republic=Czech Republic
+rpipicowpicoprobe.menu.wificountry.czech_republic.build.wificc=-DWIFICC=CYW43_COUNTRY_CZECH_REPUBLIC
+rpipicowpicoprobe.menu.wificountry.denmark=Denmark
+rpipicowpicoprobe.menu.wificountry.denmark.build.wificc=-DWIFICC=CYW43_COUNTRY_DENMARK
+rpipicowpicoprobe.menu.wificountry.estonia=Estonia
+rpipicowpicoprobe.menu.wificountry.estonia.build.wificc=-DWIFICC=CYW43_COUNTRY_ESTONIA
+rpipicowpicoprobe.menu.wificountry.finland=Finland
+rpipicowpicoprobe.menu.wificountry.finland.build.wificc=-DWIFICC=CYW43_COUNTRY_FINLAND
+rpipicowpicoprobe.menu.wificountry.france=France
+rpipicowpicoprobe.menu.wificountry.france.build.wificc=-DWIFICC=CYW43_COUNTRY_FRANCE
+rpipicowpicoprobe.menu.wificountry.germany=Germany
+rpipicowpicoprobe.menu.wificountry.germany.build.wificc=-DWIFICC=CYW43_COUNTRY_GERMANY
+rpipicowpicoprobe.menu.wificountry.greece=Greece
+rpipicowpicoprobe.menu.wificountry.greece.build.wificc=-DWIFICC=CYW43_COUNTRY_GREECE
+rpipicowpicoprobe.menu.wificountry.hong_kong=Hong Kong
+rpipicowpicoprobe.menu.wificountry.hong_kong.build.wificc=-DWIFICC=CYW43_COUNTRY_HONG_KONG
+rpipicowpicoprobe.menu.wificountry.hungary=Hungary
+rpipicowpicoprobe.menu.wificountry.hungary.build.wificc=-DWIFICC=CYW43_COUNTRY_HUNGARY
+rpipicowpicoprobe.menu.wificountry.iceland=Iceland
+rpipicowpicoprobe.menu.wificountry.iceland.build.wificc=-DWIFICC=CYW43_COUNTRY_ICELAND
+rpipicowpicoprobe.menu.wificountry.india=India
+rpipicowpicoprobe.menu.wificountry.india.build.wificc=-DWIFICC=CYW43_COUNTRY_INDIA
+rpipicowpicoprobe.menu.wificountry.israel=Israel
+rpipicowpicoprobe.menu.wificountry.israel.build.wificc=-DWIFICC=CYW43_COUNTRY_ISRAEL
+rpipicowpicoprobe.menu.wificountry.italy=Italy
+rpipicowpicoprobe.menu.wificountry.italy.build.wificc=-DWIFICC=CYW43_COUNTRY_ITALY
+rpipicowpicoprobe.menu.wificountry.japan=Japan
+rpipicowpicoprobe.menu.wificountry.japan.build.wificc=-DWIFICC=CYW43_COUNTRY_JAPAN
+rpipicowpicoprobe.menu.wificountry.kenya=Kenya
+rpipicowpicoprobe.menu.wificountry.kenya.build.wificc=-DWIFICC=CYW43_COUNTRY_KENYA
+rpipicowpicoprobe.menu.wificountry.latvia=Latvia
+rpipicowpicoprobe.menu.wificountry.latvia.build.wificc=-DWIFICC=CYW43_COUNTRY_LATVIA
+rpipicowpicoprobe.menu.wificountry.liechtenstein=Liechtenstein
+rpipicowpicoprobe.menu.wificountry.liechtenstein.build.wificc=-DWIFICC=CYW43_COUNTRY_LIECHTENSTEIN
+rpipicowpicoprobe.menu.wificountry.lithuania=Lithuania
+rpipicowpicoprobe.menu.wificountry.lithuania.build.wificc=-DWIFICC=CYW43_COUNTRY_LITHUANIA
+rpipicowpicoprobe.menu.wificountry.luxembourg=Luxembourg
+rpipicowpicoprobe.menu.wificountry.luxembourg.build.wificc=-DWIFICC=CYW43_COUNTRY_LUXEMBOURG
+rpipicowpicoprobe.menu.wificountry.malaysia=Malaysia
+rpipicowpicoprobe.menu.wificountry.malaysia.build.wificc=-DWIFICC=CYW43_COUNTRY_MALAYSIA
+rpipicowpicoprobe.menu.wificountry.malta=Malta
+rpipicowpicoprobe.menu.wificountry.malta.build.wificc=-DWIFICC=CYW43_COUNTRY_MALTA
+rpipicowpicoprobe.menu.wificountry.mexico=Mexico
+rpipicowpicoprobe.menu.wificountry.mexico.build.wificc=-DWIFICC=CYW43_COUNTRY_MEXICO
+rpipicowpicoprobe.menu.wificountry.netherlands=Netherlands
+rpipicowpicoprobe.menu.wificountry.netherlands.build.wificc=-DWIFICC=CYW43_COUNTRY_NETHERLANDS
+rpipicowpicoprobe.menu.wificountry.new_zealand=New Zealand
+rpipicowpicoprobe.menu.wificountry.new_zealand.build.wificc=-DWIFICC=CYW43_COUNTRY_NEW_ZEALAND
+rpipicowpicoprobe.menu.wificountry.nigeria=Nigeria
+rpipicowpicoprobe.menu.wificountry.nigeria.build.wificc=-DWIFICC=CYW43_COUNTRY_NIGERIA
+rpipicowpicoprobe.menu.wificountry.norway=Norway
+rpipicowpicoprobe.menu.wificountry.norway.build.wificc=-DWIFICC=CYW43_COUNTRY_NORWAY
+rpipicowpicoprobe.menu.wificountry.peru=Peru
+rpipicowpicoprobe.menu.wificountry.peru.build.wificc=-DWIFICC=CYW43_COUNTRY_PERU
+rpipicowpicoprobe.menu.wificountry.philippines=Philippines
+rpipicowpicoprobe.menu.wificountry.philippines.build.wificc=-DWIFICC=CYW43_COUNTRY_PHILIPPINES
+rpipicowpicoprobe.menu.wificountry.poland=Poland
+rpipicowpicoprobe.menu.wificountry.poland.build.wificc=-DWIFICC=CYW43_COUNTRY_POLAND
+rpipicowpicoprobe.menu.wificountry.portugal=Portugal
+rpipicowpicoprobe.menu.wificountry.portugal.build.wificc=-DWIFICC=CYW43_COUNTRY_PORTUGAL
+rpipicowpicoprobe.menu.wificountry.singapore=Singapore
+rpipicowpicoprobe.menu.wificountry.singapore.build.wificc=-DWIFICC=CYW43_COUNTRY_SINGAPORE
+rpipicowpicoprobe.menu.wificountry.slovakia=Slovakia
+rpipicowpicoprobe.menu.wificountry.slovakia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVAKIA
+rpipicowpicoprobe.menu.wificountry.slovenia=Slovenia
+rpipicowpicoprobe.menu.wificountry.slovenia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVENIA
+rpipicowpicoprobe.menu.wificountry.south_africa=South Africa
+rpipicowpicoprobe.menu.wificountry.south_africa.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_AFRICA
+rpipicowpicoprobe.menu.wificountry.south_korea=South Korea
+rpipicowpicoprobe.menu.wificountry.south_korea.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_KOREA
+rpipicowpicoprobe.menu.wificountry.spain=Spain
+rpipicowpicoprobe.menu.wificountry.spain.build.wificc=-DWIFICC=CYW43_COUNTRY_SPAIN
+rpipicowpicoprobe.menu.wificountry.sweden=Sweden
+rpipicowpicoprobe.menu.wificountry.sweden.build.wificc=-DWIFICC=CYW43_COUNTRY_SWEDEN
+rpipicowpicoprobe.menu.wificountry.switzerland=Switzerland
+rpipicowpicoprobe.menu.wificountry.switzerland.build.wificc=-DWIFICC=CYW43_COUNTRY_SWITZERLAND
+rpipicowpicoprobe.menu.wificountry.taiwan=Taiwan
+rpipicowpicoprobe.menu.wificountry.taiwan.build.wificc=-DWIFICC=CYW43_COUNTRY_TAIWAN
+rpipicowpicoprobe.menu.wificountry.thailand=Thailand
+rpipicowpicoprobe.menu.wificountry.thailand.build.wificc=-DWIFICC=CYW43_COUNTRY_THAILAND
+rpipicowpicoprobe.menu.wificountry.turkey=Turkey
+rpipicowpicoprobe.menu.wificountry.turkey.build.wificc=-DWIFICC=CYW43_COUNTRY_TURKEY
+rpipicowpicoprobe.menu.wificountry.uk=UK
+rpipicowpicoprobe.menu.wificountry.uk.build.wificc=-DWIFICC=CYW43_COUNTRY_UK
+rpipicowpicoprobe.menu.wificountry.usa=USA
+rpipicowpicoprobe.menu.wificountry.usa.build.wificc=-DWIFICC=CYW43_COUNTRY_USA
 rpipicowpicoprobe.menu.ipstack.ipv4only=IPv4 Only
 rpipicowpicoprobe.menu.ipstack.ipv4only.build.libpico=libpico.a
 rpipicowpicoprobe.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
@@ -970,6 +1179,110 @@ rpipicowpicodebug.menu.dbglvl.NDEBUG=NDEBUG
 rpipicowpicodebug.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipicowpicodebug.menu.usbstack.nousb=No USB
 rpipicowpicodebug.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+rpipicowpicodebug.menu.wificountry.worldwide=Worldwide
+rpipicowpicodebug.menu.wificountry.worldwide.build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
+rpipicowpicodebug.menu.wificountry.australia=Australia
+rpipicowpicodebug.menu.wificountry.australia.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRALIA
+rpipicowpicodebug.menu.wificountry.austria=Austria
+rpipicowpicodebug.menu.wificountry.austria.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRIA
+rpipicowpicodebug.menu.wificountry.belgium=Belgium
+rpipicowpicodebug.menu.wificountry.belgium.build.wificc=-DWIFICC=CYW43_COUNTRY_BELGIUM
+rpipicowpicodebug.menu.wificountry.brazil=Brazil
+rpipicowpicodebug.menu.wificountry.brazil.build.wificc=-DWIFICC=CYW43_COUNTRY_BRAZIL
+rpipicowpicodebug.menu.wificountry.canada=Canada
+rpipicowpicodebug.menu.wificountry.canada.build.wificc=-DWIFICC=CYW43_COUNTRY_CANADA
+rpipicowpicodebug.menu.wificountry.chile=Chile
+rpipicowpicodebug.menu.wificountry.chile.build.wificc=-DWIFICC=CYW43_COUNTRY_CHILE
+rpipicowpicodebug.menu.wificountry.china=China
+rpipicowpicodebug.menu.wificountry.china.build.wificc=-DWIFICC=CYW43_COUNTRY_CHINA
+rpipicowpicodebug.menu.wificountry.colombia=Colombia
+rpipicowpicodebug.menu.wificountry.colombia.build.wificc=-DWIFICC=CYW43_COUNTRY_COLOMBIA
+rpipicowpicodebug.menu.wificountry.czech_republic=Czech Republic
+rpipicowpicodebug.menu.wificountry.czech_republic.build.wificc=-DWIFICC=CYW43_COUNTRY_CZECH_REPUBLIC
+rpipicowpicodebug.menu.wificountry.denmark=Denmark
+rpipicowpicodebug.menu.wificountry.denmark.build.wificc=-DWIFICC=CYW43_COUNTRY_DENMARK
+rpipicowpicodebug.menu.wificountry.estonia=Estonia
+rpipicowpicodebug.menu.wificountry.estonia.build.wificc=-DWIFICC=CYW43_COUNTRY_ESTONIA
+rpipicowpicodebug.menu.wificountry.finland=Finland
+rpipicowpicodebug.menu.wificountry.finland.build.wificc=-DWIFICC=CYW43_COUNTRY_FINLAND
+rpipicowpicodebug.menu.wificountry.france=France
+rpipicowpicodebug.menu.wificountry.france.build.wificc=-DWIFICC=CYW43_COUNTRY_FRANCE
+rpipicowpicodebug.menu.wificountry.germany=Germany
+rpipicowpicodebug.menu.wificountry.germany.build.wificc=-DWIFICC=CYW43_COUNTRY_GERMANY
+rpipicowpicodebug.menu.wificountry.greece=Greece
+rpipicowpicodebug.menu.wificountry.greece.build.wificc=-DWIFICC=CYW43_COUNTRY_GREECE
+rpipicowpicodebug.menu.wificountry.hong_kong=Hong Kong
+rpipicowpicodebug.menu.wificountry.hong_kong.build.wificc=-DWIFICC=CYW43_COUNTRY_HONG_KONG
+rpipicowpicodebug.menu.wificountry.hungary=Hungary
+rpipicowpicodebug.menu.wificountry.hungary.build.wificc=-DWIFICC=CYW43_COUNTRY_HUNGARY
+rpipicowpicodebug.menu.wificountry.iceland=Iceland
+rpipicowpicodebug.menu.wificountry.iceland.build.wificc=-DWIFICC=CYW43_COUNTRY_ICELAND
+rpipicowpicodebug.menu.wificountry.india=India
+rpipicowpicodebug.menu.wificountry.india.build.wificc=-DWIFICC=CYW43_COUNTRY_INDIA
+rpipicowpicodebug.menu.wificountry.israel=Israel
+rpipicowpicodebug.menu.wificountry.israel.build.wificc=-DWIFICC=CYW43_COUNTRY_ISRAEL
+rpipicowpicodebug.menu.wificountry.italy=Italy
+rpipicowpicodebug.menu.wificountry.italy.build.wificc=-DWIFICC=CYW43_COUNTRY_ITALY
+rpipicowpicodebug.menu.wificountry.japan=Japan
+rpipicowpicodebug.menu.wificountry.japan.build.wificc=-DWIFICC=CYW43_COUNTRY_JAPAN
+rpipicowpicodebug.menu.wificountry.kenya=Kenya
+rpipicowpicodebug.menu.wificountry.kenya.build.wificc=-DWIFICC=CYW43_COUNTRY_KENYA
+rpipicowpicodebug.menu.wificountry.latvia=Latvia
+rpipicowpicodebug.menu.wificountry.latvia.build.wificc=-DWIFICC=CYW43_COUNTRY_LATVIA
+rpipicowpicodebug.menu.wificountry.liechtenstein=Liechtenstein
+rpipicowpicodebug.menu.wificountry.liechtenstein.build.wificc=-DWIFICC=CYW43_COUNTRY_LIECHTENSTEIN
+rpipicowpicodebug.menu.wificountry.lithuania=Lithuania
+rpipicowpicodebug.menu.wificountry.lithuania.build.wificc=-DWIFICC=CYW43_COUNTRY_LITHUANIA
+rpipicowpicodebug.menu.wificountry.luxembourg=Luxembourg
+rpipicowpicodebug.menu.wificountry.luxembourg.build.wificc=-DWIFICC=CYW43_COUNTRY_LUXEMBOURG
+rpipicowpicodebug.menu.wificountry.malaysia=Malaysia
+rpipicowpicodebug.menu.wificountry.malaysia.build.wificc=-DWIFICC=CYW43_COUNTRY_MALAYSIA
+rpipicowpicodebug.menu.wificountry.malta=Malta
+rpipicowpicodebug.menu.wificountry.malta.build.wificc=-DWIFICC=CYW43_COUNTRY_MALTA
+rpipicowpicodebug.menu.wificountry.mexico=Mexico
+rpipicowpicodebug.menu.wificountry.mexico.build.wificc=-DWIFICC=CYW43_COUNTRY_MEXICO
+rpipicowpicodebug.menu.wificountry.netherlands=Netherlands
+rpipicowpicodebug.menu.wificountry.netherlands.build.wificc=-DWIFICC=CYW43_COUNTRY_NETHERLANDS
+rpipicowpicodebug.menu.wificountry.new_zealand=New Zealand
+rpipicowpicodebug.menu.wificountry.new_zealand.build.wificc=-DWIFICC=CYW43_COUNTRY_NEW_ZEALAND
+rpipicowpicodebug.menu.wificountry.nigeria=Nigeria
+rpipicowpicodebug.menu.wificountry.nigeria.build.wificc=-DWIFICC=CYW43_COUNTRY_NIGERIA
+rpipicowpicodebug.menu.wificountry.norway=Norway
+rpipicowpicodebug.menu.wificountry.norway.build.wificc=-DWIFICC=CYW43_COUNTRY_NORWAY
+rpipicowpicodebug.menu.wificountry.peru=Peru
+rpipicowpicodebug.menu.wificountry.peru.build.wificc=-DWIFICC=CYW43_COUNTRY_PERU
+rpipicowpicodebug.menu.wificountry.philippines=Philippines
+rpipicowpicodebug.menu.wificountry.philippines.build.wificc=-DWIFICC=CYW43_COUNTRY_PHILIPPINES
+rpipicowpicodebug.menu.wificountry.poland=Poland
+rpipicowpicodebug.menu.wificountry.poland.build.wificc=-DWIFICC=CYW43_COUNTRY_POLAND
+rpipicowpicodebug.menu.wificountry.portugal=Portugal
+rpipicowpicodebug.menu.wificountry.portugal.build.wificc=-DWIFICC=CYW43_COUNTRY_PORTUGAL
+rpipicowpicodebug.menu.wificountry.singapore=Singapore
+rpipicowpicodebug.menu.wificountry.singapore.build.wificc=-DWIFICC=CYW43_COUNTRY_SINGAPORE
+rpipicowpicodebug.menu.wificountry.slovakia=Slovakia
+rpipicowpicodebug.menu.wificountry.slovakia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVAKIA
+rpipicowpicodebug.menu.wificountry.slovenia=Slovenia
+rpipicowpicodebug.menu.wificountry.slovenia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVENIA
+rpipicowpicodebug.menu.wificountry.south_africa=South Africa
+rpipicowpicodebug.menu.wificountry.south_africa.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_AFRICA
+rpipicowpicodebug.menu.wificountry.south_korea=South Korea
+rpipicowpicodebug.menu.wificountry.south_korea.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_KOREA
+rpipicowpicodebug.menu.wificountry.spain=Spain
+rpipicowpicodebug.menu.wificountry.spain.build.wificc=-DWIFICC=CYW43_COUNTRY_SPAIN
+rpipicowpicodebug.menu.wificountry.sweden=Sweden
+rpipicowpicodebug.menu.wificountry.sweden.build.wificc=-DWIFICC=CYW43_COUNTRY_SWEDEN
+rpipicowpicodebug.menu.wificountry.switzerland=Switzerland
+rpipicowpicodebug.menu.wificountry.switzerland.build.wificc=-DWIFICC=CYW43_COUNTRY_SWITZERLAND
+rpipicowpicodebug.menu.wificountry.taiwan=Taiwan
+rpipicowpicodebug.menu.wificountry.taiwan.build.wificc=-DWIFICC=CYW43_COUNTRY_TAIWAN
+rpipicowpicodebug.menu.wificountry.thailand=Thailand
+rpipicowpicodebug.menu.wificountry.thailand.build.wificc=-DWIFICC=CYW43_COUNTRY_THAILAND
+rpipicowpicodebug.menu.wificountry.turkey=Turkey
+rpipicowpicodebug.menu.wificountry.turkey.build.wificc=-DWIFICC=CYW43_COUNTRY_TURKEY
+rpipicowpicodebug.menu.wificountry.uk=UK
+rpipicowpicodebug.menu.wificountry.uk.build.wificc=-DWIFICC=CYW43_COUNTRY_UK
+rpipicowpicodebug.menu.wificountry.usa=USA
+rpipicowpicodebug.menu.wificountry.usa.build.wificc=-DWIFICC=CYW43_COUNTRY_USA
 rpipicowpicodebug.menu.ipstack.ipv4only=IPv4 Only
 rpipicowpicodebug.menu.ipstack.ipv4only.build.libpico=libpico.a
 rpipicowpicodebug.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1

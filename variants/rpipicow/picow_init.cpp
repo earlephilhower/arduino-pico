@@ -20,6 +20,10 @@
 
 #include <pico/cyw43_arch.h>
 
+#ifndef WIFICC
+#define WIFICC CYW43_COUNTRY_WORLDWIDE
+#endif
+
 extern "C" void initVariant() {
-    cyw43_arch_init();
+    cyw43_arch_init_with_country(WIFICC);
 }
