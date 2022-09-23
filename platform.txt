@@ -95,6 +95,7 @@ build.flags.stackprotect=
 build.libpico=libpico.a
 build.boot2=boot2_generic_03h_4_padded_checksum
 build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
 
 # Allow Pico boards do be auto-discovered by the IDE
 discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/discovery.py"
