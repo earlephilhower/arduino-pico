@@ -83,6 +83,17 @@ def BuildWithoutUSBStack(name):
     print("%s.menu.usbstack.nousb=No USB" % (name))
     print('%s.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"' % (name))
 
+def BuildCountry(name):
+    countries = [ "Worldwide", "Australia", "Austria", "Belgium", "Brazil", "Canada", "Chile", "China", "Colombia", "Czech Republic",
+                  "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hong Kong", "Hungary", "Iceland", "India", "Israel",
+                  "Italy", "Japan", "Kenya", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malaysia", "Malta", "Mexico",
+                  "Netherlands", "New Zealand", "Nigeria", "Norway", "Peru", "Philippines", "Poland", "Portugal", "Singapore", "Slovakia",
+                  "Slovenia", "South Africa", "South Korea", "Spain", "Sweden", "Switzerland", "Taiwan", "Thailand", "Turkey", "UK", "USA"]
+    for c in countries:
+        sane = c.replace(" ", "_").upper()
+        print("%s.menu.wificountry.%s=%s" % (name, sane.lower(), c))
+        print("%s.menu.wificountry.%s.build.wificc=-DWIFICC=CYW43_COUNTRY_%s" % (name, sane.lower(), sane))
+
 def BuildIPStack(name):
     print("%s.menu.ipstack.ipv4only=IPv4 Only" % (name))
     print('%s.menu.ipstack.ipv4only.build.libpico=libpico.a' % (name))
@@ -151,6 +162,7 @@ def BuildGlobalMenuList():
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
+    print("menu.wificountry=WiFi Region")
     print("menu.usbstack=USB Stack")
     print("menu.ipstack=IP Stack")
 
@@ -190,6 +202,8 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
             BuildWithoutUSBStack(n)
         else:
             BuildUSBStack(n)
+        if name == "rpipicow":
+            BuildCountry(n)
         BuildIPStack(n)
         if name == "generic":
             BuildBoot(n)
