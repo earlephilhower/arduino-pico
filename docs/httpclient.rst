@@ -27,12 +27,12 @@ WiFiClientSecure documentation for more details.
 
     // Error checking is left as an exercise for the reader...
     HTTPClient https;
-    https.setInsecure(); // Use certs, but do not check their authenticity
+    https.setInsecure();  // Use certs, but do not check their authenticity
     if (https.begin("https://my.secure.server/url")) {
-        if (http.GET() > 0) {
-            String data = http.getString();
+        if (https.GET() > 0) {
+            String data = https.getString();
         }
-        http.end();
+        https.end();
     }
 
 Unlike the ESP8266 and ESP32 ``HTTPClient`` implementations it is not necessary
