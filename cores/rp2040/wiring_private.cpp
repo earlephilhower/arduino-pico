@@ -81,6 +81,15 @@ void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     }
 }
 
+// To be called when appropriately protected w/IRQ and mutex protects
+static void _detachInterruptInternal(pin_size_t pin) {
+    auto irq = _map.find(pin);
+    if (irq != _map.end()) {
+        gpio_set_irq_enabled(pin, 0x0f /* all */, false);
+        _map.erase(pin);
+    }
+}
+
 extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode) {
     CoreMutex m(&_irqMutex);
     if (!m) {
@@ -97,7 +106,7 @@ extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus 
     default:      return;  // ERROR
     }
     noInterrupts();
-    detachInterrupt(pin);
+    _detachInterruptInternal(pin);
     CBInfo cb(callback);
     _map.insert({pin, cb});
     gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
@@ -134,10 +143,6 @@ extern "C" void detachInterrupt(pin_size_t pin) {
     }
 
     noInterrupts();
-    auto irq = _map.find(pin);
-    if (irq != _map.end()) {
-        gpio_set_irq_enabled(pin, 0x0f /* all */, false);
-        _map.erase(pin);
-    }
+    _detachInterruptInternal(pin);
     interrupts();
 }
