@@ -21,21 +21,37 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#pragma once
+#include "Arduino.h"
+#include "CoreMutex.h"
 
-#include "pico/mutex.h"
-#include "_freertos.h"
-
-class CoreMutex {
-public:
-    CoreMutex(mutex_t *mutex, bool debugEnable = true);
-    ~CoreMutex();
-
-    operator bool() {
-        return _acquired;
+CoreMutex::CoreMutex(mutex_t *mutex, bool debugEnable) {
+    _mutex = mutex;
+    _acquired = false;
+    if (__isFreeRTOS) {
+        auto m = __get_freertos_mutex_for_ptr(mutex);
+        __freertos_mutex_take(m);
+    } else {
+        uint32_t owner;
+        if (!mutex_try_enter(_mutex, &owner)) {
+            if (owner == get_core_num()) { // Deadlock!
+                if (debugEnable) {
+                    DEBUGCORE("CoreMutex - Deadlock detected!\n");
+                }
+                return;
+            }
+            mutex_enter_blocking(_mutex);
+        }
     }
+    _acquired = true;
+}
 
-private:
-    mutex_t *_mutex;
-    bool _acquired;
-};
+CoreMutex::~CoreMutex() {
+    if (_acquired) {
+        if (__isFreeRTOS) {
+            auto m = __get_freertos_mutex_for_ptr(_mutex);
+            __freertos_mutex_give(m);
+        } else {
+            mutex_exit(_mutex);
+        }
+    }
+}
