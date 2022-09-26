@@ -69,7 +69,7 @@ bool SerialUART::setRTS(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({3, 15, 19}) /* UART0 */,
                                     __bitset({7, 11, 23, 27})  /* UART1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+    if ((!_running) && ((pin == UART_PIN_NOT_DEFINED) || ((1 << pin) & valid[uart_get_index(_uart)]))) {
         _rts = pin;
         return true;
     }
@@ -86,7 +86,7 @@ bool SerialUART::setCTS(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({2, 14, 18}) /* UART0 */,
                                     __bitset({6, 10, 22, 26})  /* UART1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+    if ((!_running) && ((pin == UART_PIN_NOT_DEFINED) || ((1 << pin) & valid[uart_get_index(_uart)]))) {
         _cts = pin;
         return true;
     }
