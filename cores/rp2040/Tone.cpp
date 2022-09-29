@@ -28,6 +28,7 @@ typedef struct {
     pin_size_t pin;
     PIO pio;
     int sm;
+    int off;
     alarm_id_t alarm;
 } Tone;
 
@@ -38,10 +39,18 @@ auto_init_mutex(_toneMutex);
 static PIOProgram _tone2Pgm(&tone2_program);
 static std::map<pin_size_t, Tone *> _toneMap;
 
+static inline bool pio_sm_get_enabled(PIO pio, uint sm) {
+    check_pio_param(pio);
+    check_sm_param(sm);
+    return (pio->ctrl & ~(1u << sm)) & (1 << sm);
+}
+
 int64_t _stopTonePIO(alarm_id_t id, void *user_data) {
     (void) id;
     Tone *tone = (Tone *)user_data;
     tone->alarm = 0;
+    digitalWrite(tone->pin, LOW);
+    pinMode(tone->pin, OUTPUT);
     pio_sm_set_enabled(tone->pio, tone->sm, false);
     return 0;
 }
@@ -72,14 +81,12 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         newTone = new Tone();
         newTone->pin = pin;
         pinMode(pin, OUTPUT);
-        int off;
-        if (!_tone2Pgm.prepare(&newTone->pio, &newTone->sm, &off)) {
+        if (!_tone2Pgm.prepare(&newTone->pio, &newTone->sm, &newTone->off)) {
             DEBUGCORE("ERROR: tone unable to start, out of PIO resources\n");
             // ERROR, no free slots
             delete newTone;
             return;
         }
-        tone2_program_init(newTone->pio, newTone->sm, off, pin);
         newTone->alarm = 0;
     } else {
         newTone = entry->second;
@@ -87,6 +94,9 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
             cancel_alarm(newTone->alarm);
             newTone->alarm = 0;
         }
+    }
+    if (!pio_sm_get_enabled(newTone->pio, newTone->sm)) {
+        tone2_program_init(newTone->pio, newTone->sm, newTone->off, pin);
     }
     pio_sm_clear_fifos(newTone->pio, newTone->sm); // Remove any old updates that haven't yet taken effect
     pio_sm_put_blocking(newTone->pio, newTone->sm, RP2040::usToPIOCycles(us));
