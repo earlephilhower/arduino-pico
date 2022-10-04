@@ -70,3 +70,12 @@ int rp2040.getTotalHeap()
 Returns the total heap that was available to this program at compile time (i.e.
 the Pico RAM size minus things like the ``.data`` and ``.bss`` sections and other
 overhead).
+
+Bootloader
+----------
+
+void rp2040.enableDoubleResetBootloader()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add a call anywhere in the sketch to ``rp2040.enableDoubleResetBootloader()`` and
+the core will check for a double-tap on reset, and if found will start the USB
+bootloader.
