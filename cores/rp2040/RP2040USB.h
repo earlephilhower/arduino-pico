@@ -24,8 +24,8 @@
 // Weak function definitions for each type of endpoint
 extern void __USBInstallSerial() __attribute__((weak));
 extern void __USBInstallKeyboard() __attribute__((weak));
+extern void __USBInstallJoystick() __attribute__((weak));
 extern void __USBInstallMouse() __attribute__((weak));
-extern void __USBInstallMIDI() __attribute__((weak));
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't
 // have multiple cores updating the TUSB state in parallel
@@ -34,6 +34,7 @@ extern mutex_t __usb_mutex;
 // HID report ID inquiry (report ID will vary depending on the number/type of other HID)
 int __USBGetKeyboardReportID();
 int __USBGetMouseReportID();
+int __USBGetJoystickReportID();
 
 // Called by main() to init the USB HW/SW.
 void __USBStart();

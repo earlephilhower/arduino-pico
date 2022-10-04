@@ -9,16 +9,13 @@ function skip_ino()
     read -d '' skiplist << EOL || true
 /#attic/
 /AvrAdcLogger/
-/BackwardCompatibility/
 /examplesV1/
-/ExFatFormatter/
-/ExFatLogger/
-/ExFatUnicodeTest/
 /RtcTimestampTest/
 /SoftwareSpi/
-/STM32Test/
+/TeensyDmaAdcLogger/
 /TeensyRtcTimestamp/
 /TeensySdioDemo/
+/TeensySdioLogger/
 /UserChipSelectFunction/
 /UserSPIDriver/
 /Adafruit_TinyUSB_Arduino/
@@ -164,7 +161,7 @@ function install_libraries()
 function install_ide()
 {
     local idever='nightly'
-    local ideurl='https://www.arduino.cc/download.php?f=/arduino-nightly'
+    local ideurl='https://downloads.arduino.cc/arduino-nightly' #'https://www.arduino.cc/download.php?f=/arduino-nightly'
 
     #local idever='1.8.10'
     #local ideurl="https://downloads.arduino.cc/arduino-$idever"
@@ -215,7 +212,7 @@ function install_ide()
     cat rp2040/platform.local.txt
     echo -e "\n----\n"
     cd rp2040/tools
-    python3 get.py -q
+    python3 get.py
     if [ "$WINDOWS" = "1" ]; then
         # Because the symlinks don't work well under Win32, we need to add the path to this copy, not the original...
         relbin=$(realpath $PWD/../system/arm-none-eabi/bin)
@@ -229,12 +226,10 @@ function install_arduino()
 {
     local debug=$1
     # Install Arduino IDE and required libraries
-    echo -e "travis_fold:start:sketch_test_env_prepare"
     cd $TRAVIS_BUILD_DIR
     install_ide $HOME/arduino_ide $TRAVIS_BUILD_DIR $debug
     cd $TRAVIS_BUILD_DIR
     install_libraries
-    echo -e "travis_fold:end:sketch_test_env_prepare"
 }
 
 function build_sketches_with_arduino()
@@ -244,15 +239,11 @@ function build_sketches_with_arduino()
     local build_extra=$3
 
     # Compile sketches
-    echo -e "travis_fold:start:sketch_test"
     build_sketches $HOME/arduino_ide $HOME/arduino_ide/examples "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
     build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
-    echo -e "travis_fold:end:sketch_test"
 
     # Generate size report
-    echo -e "travis_fold:start:size_report"
     cat size.log
-    echo -e "travis_fold:end:size_report"
 }
 
 

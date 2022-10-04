@@ -228,17 +228,29 @@ def to_str(b):
 def get_drives():
     drives = []
     if sys.platform == "win32":
-        r = subprocess.check_output(["wmic", "PATH", "Win32_LogicalDisk",
-                                     "get", "DeviceID,", "VolumeName,",
-                                     "FileSystem,", "DriveType"])
+        try:
+            r = subprocess.check_output(["wmic", "PATH", "Win32_LogicalDisk",
+                                         "get", "DeviceID,", "VolumeName,",
+                                         "FileSystem,", "DriveType"])
+        except:
+            try:
+                nul = open("nul:", "r")
+                r = subprocess.check_output(["powershell", "-NonInteractive", "-Command",
+                                            "Get-WmiObject -class Win32_LogicalDisk | "
+                                            "Format-Table -Property DeviceID, DriveType, Filesystem, VolumeName"],
+                                            stdin = nul)
+                nul.close()
+            except:
+                print("Unable to build drive list");
+                sys.exit(1)
         for line in to_str(r).split('\n'):
             words = re.split('\s+', line)
             if len(words) >= 3 and words[1] == "2" and words[2] == "FAT":
                 drives.append(words[0])
     else:
-        rootpath = "/media"
+        rootpath = "/run/media"
         if not os.path.isdir(rootpath):
-            rootpath = "/run/media"
+            rootpath = "/media"
         if not os.path.isdir(rootpath):
             rootpath = "/opt/media"
         if sys.platform == "darwin":
@@ -250,6 +262,21 @@ def get_drives():
         for d in os.listdir(rootpath):
             drives.append(os.path.join(rootpath, d))
 
+        if (len(drives) == 0) and (sys.platform == "linux"):
+            globexpr = "/dev/disk/by-id/usb-RPI_RP2*-part1"
+            rpidisk = glob.glob(globexpr)
+            if len(rpidisk) > 0:
+                try:
+                    cmd = ["udisksctl", "mount", "--block-device", os.path.realpath(rpidisk[0])]
+                    proc_out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    if proc_out.returncode == 0:
+                        stdoutput = proc_out.stdout.decode("UTF-8")
+                        match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
+                        if match:
+                            drives = [match.group(1)]
+                except Exception as ex:
+                    print("Exception executing udisksctl. Exception: {}".format(ex))
+                    # If it fails, no problem since it was a heroic attempt
 
     def has_info(d):
         try:
@@ -318,17 +345,14 @@ def main():
     if args.serial:
         if str(args.serial).startswith("/dev/tty") or str(args.serial).startswith("COM") or str(args.serial).startswith("/dev/cu"):
             try:
-                print("Resetting "+str(args.serial))
+                print("Resetting " + str(args.serial))
                 try:
                     ser = serial.Serial(args.serial, 1200)
                     ser.dtr = False
                 except:
-                    pass
-                # Probably should be smart and check for device appearance or something
-                time.sleep(10)
+                    pass # Ignore error in the case it is already in upload mode
             except:
                 pass
-
     if args.list:
         list_drives()
     else:
@@ -357,14 +381,11 @@ def main():
             if args.output == None:
                 args.output = "flash." + ext
         else:
-            drives = get_drives()
-            if (len(drives) == 0) and (sys.platform == "linux"):
-                rpidisk = glob.glob("/dev/disk/by-id/usb-RPI_RP2*-part1")
-                try:
-                    subprocess.run(["udisksctl", "mount", "--block-device", os.path.realpath(rpidisk[0])])
-                    drives = get_drives()
-                except:
-                    pass # If it fails, no problem since it was a heroic attempt
+            now = time.time()
+            drives = []
+            while (time.time() - now < 10.0) and (len(drives) == 0):
+                time.sleep(0.5) # Avoid 100% CPU use while waiting for drive to appear
+                drives = get_drives()
 
         if args.output:
             write_file(args.output, outbuf)

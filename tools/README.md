@@ -25,10 +25,14 @@ rely on existence of `sed` command.
 
 ## makeboards.py
 Generates `boards.txt` programmatically.  Never edit the `boards.txt` file
-manually, use `python3 tools/makeboards.py > boards.py`.  Change the script
+manually, use `python3 tools/makeboards.py`.  Change the script
 as necessary to add any add'l fields or menus required.  Used because the
 `boards.txt` file is very repetitive and it's safer to generate with code
 than by hand.
+
+## makever.py
+Updates the version info prior to a release in platform.txt, package.json,
+and the version header.   Run from root of the repo.
 
 ## libpico/make-libpico.sh
 Builds the libpico.a file as well as the bootloader stage2 binaries.

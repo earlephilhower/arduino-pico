@@ -90,8 +90,8 @@ extern "C" int _gettimeofday(struct timeval *tv, void *tz) {
     (void) tz;
     uint64_t now_us = to_us_since_boot(get_absolute_time()) + __timedelta_us;
     if (tv) {
-        tv->tv_sec = now_us / 1000000L;
-        tv->tv_usec = now_us % 1000000L;
+        tv->tv_sec = now_us / 1'000'000L;
+        tv->tv_usec = now_us % 1'000'000L;
     }
     return 0;
 }
@@ -101,11 +101,18 @@ extern "C" int settimeofday(const struct timeval *tv, const struct timezone *tz)
     uint64_t now_us = to_us_since_boot(get_absolute_time());
     if (tv) {
         uint64_t newnow_us;
-        newnow_us = tv->tv_sec * 1000000L;
+        newnow_us = tv->tv_sec * 1'000'000L;
         newnow_us += tv->tv_usec;
         __timedelta_us = newnow_us - now_us;
     }
     return 0;
+}
+
+// For NTP
+extern "C" void __setSystemTime(unsigned long long sec, unsigned long usec) {
+    uint64_t now_us = to_us_since_boot(get_absolute_time());
+    uint64_t newnow_us = sec * 1'000'000LL + usec;
+    __timedelta_us = newnow_us - now_us;
 }
 
 extern "C" int _isatty(int file) {

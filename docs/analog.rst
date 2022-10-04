@@ -13,6 +13,11 @@ int analogRead(pin_size_t pin = A0..A3)
 Returns a value from 0...4095 correspionding to the ADC reading
 of the specific pin.
 
+void analogReadResolution(int bits)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Determines the resolution (in bits) of the value returned by the analogRead() function.
+Default resolution is 10bit.
+
 float analogReadTemp()
 ~~~~~~~~~~~~~~~~~~~~~~
 Returns the temperature, in Celsius, of the onboard thermal sensor.
@@ -30,10 +35,21 @@ While up to 16 PWM channels can be generated, they are not independent
 and there are significant restrictions as to allowed pins in parallel.
 See the `RP2040 datasheet <https://datasheets.raspberrypi.org/rp2040/rp2040-datasheet.pdf>`_ for full details.
 
+Analog Output Restrictions
+--------------------------
+
+The PWM generator source clock restricts the legal combinations of
+frequency and ranges.  For example, at 1MHz only about 6 bits of range
+are possible.  When you define an ``analogWriteFreq`` and ``analogWriteRange``
+that can't be fulfilled by the hardware, the frequency will be preserved
+but the accuracy (range) will be reduced automatically.  Your code will
+still send in the range you specify, but the core itself will transparently
+map it into the allowable PWN range.
+
 void analogWriteFreq(uint32_t freq)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the master PWM frequency used (i.e. how often the PWM output cycles).
-From 100Hz to 60KHz are supported.
+From 100Hz to 1MHz are supported.
 
 void analogWriteRange(uint32_t range) and analogWriteResolution(int res)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

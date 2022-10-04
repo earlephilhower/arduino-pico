@@ -17,8 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef __SD_H__
-#define __SD_H__
+#pragma once
 
 #include <Arduino.h>
 #include <FS.h>
@@ -32,8 +31,12 @@
 
 class SDClass {
 public:
-    boolean begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED) {
-        SDFS.setConfig(SDFSConfig(csPin, cfg));
+    boolean begin(uint8_t csPin, HardwareSPI &spi) {
+        SDFS.setConfig(SDFSConfig(csPin, SPI_HALF_SPEED, spi));
+        return (boolean)SDFS.begin();
+    }
+    boolean begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED, HardwareSPI &spi = SPI) {
+        SDFS.setConfig(SDFSConfig(csPin, cfg, spi));
         return (boolean)SDFS.begin();
     }
 
@@ -135,8 +138,8 @@ public:
     size_t size() {
         uint64_t sz = size64();
 #ifdef DEBUG_ESP_PORT
-        if (sz > (uint64_t)SIZE_MAX) {
-            DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld>= 4GB).  Please update source to use size64().\n"), sz);
+        if (sz > std::numeric_limits<uint32_t>::max()) {
+            DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use size64().\n"), (long long)sz);
         }
 #endif
         return (size_t)sz;
@@ -191,9 +194,6 @@ private:
 
 
 // Expose FatStructs.h helpers for MS-DOS date/time for use with dateTimeCallback
-static inline uint16_t FAT_DATE(uint16_t year, uint8_t month, uint8_t day) {
-    return (year - 1980) << 9 | month << 5 | day;
-}
 static inline uint16_t FAT_YEAR(uint16_t fatDate) {
     return 1980 + (fatDate >> 9);
 }
@@ -202,9 +202,6 @@ static inline uint8_t FAT_MONTH(uint16_t fatDate) {
 }
 static inline uint8_t FAT_DAY(uint16_t fatDate) {
     return fatDate & 0X1F;
-}
-static inline uint16_t FAT_TIME(uint8_t hour, uint8_t minute, uint8_t second) {
-    return hour << 11 | minute << 5 | second >> 1;
 }
 static inline uint8_t FAT_HOUR(uint16_t fatTime) {
     return fatTime >> 11;
@@ -219,6 +216,4 @@ static inline uint8_t FAT_SECOND(uint16_t fatTime) {
 
 #if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_SD)
 extern SDClass SD;
-#endif
-
 #endif

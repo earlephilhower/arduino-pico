@@ -1,0 +1,60 @@
+# Syntax Coloring Map For FreeRTOS
+# https://arduino.github.io/arduino-cli/library-specification/#keywords
+# Formatted by a single true tab (not spaces)
+
+# Datatypes (KEYWORD1)
+StackType_t	KEYWORD1
+BaseType_t	KEYWORD1
+UBaseType_t	KEYWORD1
+TickType_t	KEYWORD1
+
+TaskHandle_t	KEYWORD1
+QueueHandle_t	KEYWORD1
+TimerHandle_t	KEYWORD1
+SemaphoreHandle_t	KEYWORD1
+StreamBufferHandle_t	KEYWORD1
+MessageBufferHandle_t	KEYWORD1
+EventGroupHandle_t	KEYWORD1
+
+# Methods and Functions (KEYWORD2)
+xSemaphoreCreateMutex	KEYWORD2
+xSemaphoreCreateBinary	KEYWORD2
+xSemaphoreTake	KEYWORD2
+xSemaphoreTakeFromISR	KEYWORD2
+xSemaphoreGive	KEYWORD2
+xSemaphoreGiveFromISR	KEYWORD2
+xTaskCreate	KEYWORD2
+vTaskDelete	KEYWORD2
+vTaskDelay	KEYWORD2
+xTaskDelayUntil	KEYWORD2
+xQueueCreate	KEYWORD2
+xQueueSend	KEYWORD2
+xQueueReceive	KEYWORD2
+pcTaskGetName KEYWORD2
+ulTaskNotifyTake	KEYWORD2
+vTaskNotifyGiveFromISR	KEYWORD2
+taskYIELD	KEYWORD2
+vTaskSuspend	KEYWORD2
+vTaskResume	KEYWORD2
+xTaskResumeFromISR	KEYWORD2
+xTaskGetTickCount	KEYWORD2
+xTaskGetTickCountFromISR	KEYWORD2
+uxTaskGetNumberOfTasks	KEYWORD2
+uxTaskGetStackHighWaterMark	KEYWORD2
+
+# Instances (KEYWORD2)
+
+# Structures (KEYWORD3)
+TaskParameters_t	KEYWORD3
+TaskStatus_t	KEYWORD3
+ListItem_t	KEYWORD3
+MiniListItem_t	KEYWORD3
+HeapStats_t	KEYWORD3
+
+# Constants (LITERAL1)
+portUSE_WDTO	LITERAL1
+portTICK_PERIOD_MS	LITERAL1
+configTICK_RATE_HZ	LITERAL1
+configCPU_CLOCK_HZ	LITERAL1
+configMAX_PRIORITIES	LITERAL1
+configMINIMAL_STACK_SIZE	LITERAL1

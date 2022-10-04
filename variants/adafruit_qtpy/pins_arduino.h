@@ -6,13 +6,17 @@
 // LEDs not pinned out
 #define PIN_LED        (31u)
 
-// Serial
-#define PIN_SERIAL1_TX (20u)
-#define PIN_SERIAL1_RX (5u)
+// NeoPixel
+#define PIN_NEOPIXEL   (12u)
+#define NEOPIXEL_POWER (11u)
 
-// Not pinned out
-#define PIN_SERIAL2_TX (31u)
-#define PIN_SERIAL2_RX (31u)
+// Serial1
+#define PIN_SERIAL1_TX (28u) // marked A1 on the Board
+#define PIN_SERIAL1_RX (29u) // marked A0 on the Board
+
+// Serial2
+#define PIN_SERIAL2_TX (20u) // marked TX on the Board
+#define PIN_SERIAL2_RX (5u)  // marked RX on the Board
 
 // SPI
 #define PIN_SPI0_MISO  (4u)
@@ -37,5 +41,11 @@
 #define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (1u)
 #define WIRE_HOWMANY   (2u)
+
+// Pin overrides specific to the QT Py RP2040
+#define __PIN_A0 (29u)
+#define __PIN_A1 (28u)
+#define __PIN_A2 (27u)
+#define __PIN_A3 (26u)
 
 #include "../generic/common.h"

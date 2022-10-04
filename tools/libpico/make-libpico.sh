@@ -8,10 +8,22 @@ export PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
 rm -rf build
 mkdir build
 cd build
-cmake ..
+cmake .. -DIPV6=0
 make -j
+
+# Put everything in its place
 mv libpico.a ../../../lib/.
-mv generated/pico_base/pico/version.h ../../../lib/pico_base/pico/.
+mv generated/pico_base/pico/version.h ../../../include/pico_base/pico/.
+cp ../lwipopts.h ../../../include/.
+cp ../tusb_config.h ../../../include/.
+
+cd ..
+rm -rf build
+mkdir build
+cd build
+cmake .. -DIPV6=1
+make -j
+mv libpico.a ../../../lib/libpico-ipv6.a
 
 rm -rf boot
 mkdir boot
@@ -23,6 +35,7 @@ for type in boot2_generic_03h boot2_is25lp080 boot2_w25q080 boot2_w25x10cl; do
         arm-none-eabi-gcc -march=armv6-m -mcpu=cortex-m0plus -mthumb -O3 \
                          -DNDEBUG -DPICO_FLASH_SPI_CLKDIV=$div \
                          -c "$PICO_SDK_PATH/src/rp2_common/boot_stage2/$type.S" \
+                         -I "$PICO_SDK_PATH/src/boards/include/boards/" \
                          -I "$PICO_SDK_PATH/src/rp2040/hardware_regs/include/" \
                          -I "$PICO_SDK_PATH/src/rp2_common/pico_platform/include/" \
                          -I "$PICO_SDK_PATH/src/rp2_common/boot_stage2/asminclude/" \

@@ -1,0 +1,72 @@
+RP2040 Helper Class
+===================
+
+Some of the core functionality of the RP2040 chip powering the Raspberry Pi
+Pico is exposed in the RP2040 class variable ``rp2040``.
+
+Core Internals
+--------------
+
+int rp2040.f_cpu()
+~~~~~~~~~~~~~~~~~~
+Returns the current frequency of the core clock.  This is read at runtime,
+versus the constant ``F_CPU`` macro that is also available.  This is useful
+in cases where your code changes the core clock (i.e. low power modes, etc.)
+
+uint32_t rp2040.getCycleCount()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Returns a 32-bit cycle count from then the core started running.  Because it
+is only 32-bits, and the Pico runs at 133MHz, this value can loop around
+in a matter of seconds.
+
+uint64_t rp2040.getCycleCount64()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Returns a 64-bit cycle count from then the core started running.  This value
+should never loop around in normal mode (at 133MHz it would take over 4,000
+years to overflow).
+
+uint32_t rp2040.hwrand32()
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Returns a 32-bit value derived from the CPU cycle counter and the ROSC
+oscillator.  Because the ROSC bit is not a true random number generator, the
+values returned may not meet the most stringent random tests.  **If your
+application needs absolute bulletproof random numbers, consider using
+dedicated external hardware.**
+
+void rp2040.reboot()
+~~~~~~~~~~~~~~~~~~~~
+Forces a hardware reboot of the Pico.
+
+Hardware Watchdog
+_________________
+
+void rp2040.wdt_begin(uint32_t delay_ms)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enables the hardware watchdog timer with a delay value of delay_ms
+microseconds. Note that on the RP2040, once this function has called, the
+hardware watchdog can _not_ be disabled.
+
+void rp2040.wdt_reset()
+~~~~~~~~~~~~~~~~
+Reloads the watchdog's counter with the amount of time set by wdt_begin.
+
+
+Memory Information
+------------------
+
+int rp2040.getFreeHeap()
+~~~~~~~~~~~~~~~~~~~~~~~~
+Returns the number of bytes free for heap allocation (i.e. malloc, new).  Note
+that because there is some overhead, and there may be heap fragmentation,
+this number is an *upper bound* and you generally will only be able to allocate
+less than this returned number.
+
+int rp2040.getUsedHeap()
+~~~~~~~~~~~~~~~~~~~~~~~~
+Returns the number of bytes allocated out of the heap.
+
+int rp2040.getTotalHeap()
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Returns the total heap that was available to this program at compile time (i.e.
+the Pico RAM size minus things like the ``.data`` and ``.bss`` sections and other
+overhead).

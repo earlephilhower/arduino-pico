@@ -14,10 +14,10 @@
 #define pdm_pio_wrap 1
 
 static const uint16_t pdm_pio_program_instructions[] = {
-            //     .wrap_target
-    0x9040, //  0: push   iffull noblock  side 1     
-    0x4001, //  1: in     pins, 1         side 0     
-            //     .wrap
+    //     .wrap_target
+    0x9040, //  0: push   iffull noblock  side 1
+    0x4001, //  1: in     pins, 1         side 0
+    //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
@@ -36,20 +36,21 @@ static inline pio_sm_config pdm_pio_program_get_default_config(uint offset) {
 
 #include "hardware/gpio.h"
 static inline void pdm_pio_program_init(PIO pio, uint sm, uint offset, uint clkPin, uint dataPin, float clkDiv) {
-  pio_sm_config c = pdm_pio_program_get_default_config(offset);
-  sm_config_set_sideset(&c, 1, false, false);
-  //sm_config_set_in_shift(&c, false, true, 8);
-  sm_config_set_in_shift(&c, false, false, 8);
-  sm_config_set_in_pins(&c, dataPin);
-  sm_config_set_sideset_pins(&c, clkPin);
-  sm_config_set_clkdiv(&c, clkDiv);
-  pio_sm_set_consecutive_pindirs(pio, sm, dataPin, 1, false);
-  pio_sm_set_consecutive_pindirs(pio, sm, clkPin, 1, true);
-  pio_sm_set_pins_with_mask(pio, sm, 0, (1u << clkPin) );
-  //pio_gpio_init(pio, dataPin);
-  pio_gpio_init(pio, clkPin);
-  pio_sm_init(pio, sm, offset, &c);
-  pio_sm_set_enabled(pio, sm, true);
+    pio_sm_config c = pdm_pio_program_get_default_config(offset);
+    sm_config_set_sideset(&c, 1, false, false);
+    //sm_config_set_in_shift(&c, false, true, 8);
+    sm_config_set_in_shift(&c, false, false, 8);
+    sm_config_set_in_pins(&c, dataPin);
+    sm_config_set_sideset_pins(&c, clkPin);
+    sm_config_set_clkdiv(&c, clkDiv);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
+    pio_sm_set_consecutive_pindirs(pio, sm, dataPin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, clkPin, 1, true);
+    pio_sm_set_pins_with_mask(pio, sm, 0, (1u << clkPin));
+    //pio_gpio_init(pio, dataPin);
+    pio_gpio_init(pio, clkPin);
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
 }
 
 #endif

@@ -6,6 +6,10 @@
 // LEDs
 #define PIN_LED        (11u)
 
+// NeoPixel
+#define PIN_NEOPIXEL   (17u)
+#define NEOPIXEL_POWER (16u)
+
 // Serial
 #define PIN_SERIAL1_TX (0u)
 #define PIN_SERIAL1_RX (1u)
@@ -27,15 +31,13 @@
 #define PIN_SPI1_SS    (31u)
 
 // Wire
-#define PIN_WIRE0_SDA  (2u)
-#define PIN_WIRE0_SCL  (3u)
-
-// Not pinned out
-#define PIN_WIRE1_SDA  (31u)
-#define PIN_WIRE1_SCL  (31u)
+#define PIN_WIRE0_SDA  (24u)
+#define PIN_WIRE0_SCL  (25u)
+#define PIN_WIRE1_SDA  (2u)
+#define PIN_WIRE1_SCL  (3u)
 
 #define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (1u)
-#define WIRE_HOWMANY   (1u)
+#define WIRE_HOWMANY   (2u)
 
 #include "../generic/common.h"

@@ -23,22 +23,28 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
+#include <queue>
 #include "CoreMutex.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
 
+#define UART_PIN_NOT_DEFINED      (255u)
 class SerialUART : public HardwareSerial {
 public:
-    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx);
+    SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size_t rts = UART_PIN_NOT_DEFINED, pin_size_t cts = UART_PIN_NOT_DEFINED);
 
     // Select the pinout.  Call before .begin()
     bool setRX(pin_size_t pin);
     bool setTX(pin_size_t pin);
+    bool setRTS(pin_size_t pin);
+    bool setCTS(pin_size_t pin);
     bool setPinout(pin_size_t tx, pin_size_t rx) {
         bool ret = setRX(rx);
         ret &= setTX(tx);
         return ret;
     }
+    bool setFIFOSize(size_t size);
+    bool setPollingMode(bool mode = true);
 
     void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
@@ -54,15 +60,30 @@ public:
     virtual size_t write(uint8_t c) override;
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
+    bool overflow();
     operator bool() override;
+
+    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
+    void _handleIRQ(bool inIRQ = true);
 
 private:
     bool _running = false;
     uart_inst_t *_uart;
     pin_size_t _tx, _rx;
+    pin_size_t _rts, _cts;
+    enum gpio_function _fcnTx, _fcnRx, _fcnRts, _fcnCts;
     int _baud;
-    int _peek;
     mutex_t _mutex;
+    bool _polling = false;
+    bool _overflow;
+
+    // Lockless, IRQ-handled circular queue
+    uint32_t _writer;
+    uint32_t _reader;
+    size_t   _fifoSize = 32;
+    uint8_t *_queue;
+    mutex_t  _fifoMutex; // Only needed when non-IRQ updates _writer
+    void _pumpFIFO(); // User space FIFO transfer
 };
 
 extern SerialUART Serial1; // HW UART 0

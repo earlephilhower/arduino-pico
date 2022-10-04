@@ -72,7 +72,6 @@ cat << EOF > exclude.txt
 .travis.yml
 package
 doc
-ArduinoCore-API
 EOF
 # Also include all files which are ignored by git
 git ls-files --other --directory >> exclude.txt
@@ -108,21 +107,15 @@ cat $srcdir/platform.txt | \
 sed 's/^runtime.tools.pqt-.*.path=.*//g' | \
 sed 's/^tools.uf2conv.cmd=.*//g' | \
 sed 's/^#tools.uf2conv.cmd=/tools.uf2conv.cmd=/g' | \
+sed 's/^tools.uf2conv.network_cmd=.*//g' | \
+sed 's/^#tools.uf2conv.network_cmd=/tools.uf2conv.network_cmd=/g' | \
 sed 's/^tools.picoprobe.cmd=.*//g' | \
 sed 's/^#tools.picoprobe.cmd=/tools.picoprobe.cmd=/g' | \
+sed 's/^tools.picodebug.cmd=.*//g' | \
+sed 's/^#tools.picodebug.cmd=/tools.picodebug.cmd=/g' | \
 sed "s/version=.*/version=$ver/g" |\
 sed -E "s/name=([a-zA-Z0-9\ -]+).*/name=\1($ver)/g"\
  > $outdir/platform.txt
-
-# Put core version and short hash of git version into core_version.h
-ver_define=`echo $plain_ver | tr "[:lower:].\055" "[:upper:]_"`
-echo Ver define: $ver_define
-echo \#define ARDUINO_RP2040_GIT_VER 0x`git rev-parse --short=8 HEAD 2>/dev/null` >$outdir/cores/rp2040/core_version.h
-echo \#define ARDUINO_RP2040_GIT_DESC `git describe --tags 2>/dev/null` >>$outdir/cores/rp2040/core_version.h
-echo \#define ARDUINO_RP2040_RELEASE_$ver_define >>$outdir/cores/rp2040/core_version.h
-echo \#define ARDUINO_RP2040_RELEASE \"$ver_define\" >>$outdir/cores/rp2040/core_version.h
-
-sed -i 's/"version": .*/"version": "'$visible_ver'"/' $outdir/package.json
 
 # Zip the package
 pushd package/versions/$visible_ver

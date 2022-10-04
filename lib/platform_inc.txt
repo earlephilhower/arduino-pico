@@ -1,8 +1,5 @@
 -iwithprefixbefore/cores/rp2040/api/deprecated-avr-comp/
--iwithprefixbefore/lib/pico_base/
--iwithprefixbefore/pico-extras/src/common/pico_audio/include
--iwithprefixbefore/pico-extras/src/common/pico_util_buffer/include
--iwithprefixbefore/pico-extras/src/rp2_common/pico_audio_i2s/include
+-iwithprefixbefore/include/pico_base/
 -iwithprefixbefore/pico-sdk/lib/tinyusb/src/
 -iwithprefixbefore/pico-sdk/src/boards/include
 -iwithprefixbefore/pico-sdk/src/common/pico_base/include
@@ -15,6 +12,9 @@
 -iwithprefixbefore/pico-sdk/src/common/pico_util/include
 -iwithprefixbefore/pico-sdk/src/rp2040/hardware_regs/include
 -iwithprefixbefore/pico-sdk/src/rp2040/hardware_structs/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/cmsis/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/cmsis/stub/CMSIS/Core/Include
+-iwithprefixbefore/pico-sdk/src/rp2_common/cmsis/stub/CMSIS/Device/RaspberryPi/RP2040/Include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_adc/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_base/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_claim/include
@@ -25,7 +25,9 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_flash/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_gpio/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_i2c/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_interp/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_irq/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_rtc/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pio/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pll/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pwm/include
@@ -38,9 +40,11 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_watchdog/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_xosc/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_bootrom/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_cyw43_arch/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_double/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_float/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_int64_ops/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_lwip/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_multicore/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_printf/include
@@ -48,3 +52,5 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_stdio/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_stdio_uart/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_unique_id/include
+-iwithprefixbefore/pico-sdk/lib/cyw43-driver/src
+-iwithprefixbefore/pico-sdk/lib/lwip/src/include

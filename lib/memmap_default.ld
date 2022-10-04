@@ -55,6 +55,28 @@ SECTIONS
     ASSERT(__boot2_end__ - __boot2_start__ == 256,
         "ERROR: Pico second stage bootloader must be 256 bytes in size")
 
+    .ota : {
+        /* Start image with OTA */
+        KEEP (*(.OTA))
+        /* Align to the last 16-bytes of the OTA region */
+        /* If anyone has a better way of doing this, please submit a PR! */
+       /* . = __flash_binary_start + 0x2ff0;
+        LONG(__FS_START__)
+        LONG(__FS_END__)
+        LONG(__EEPROM_START__)
+        LONG(__FLASH_LENGTH__)*/
+    } > FLASH
+
+    .partition : {
+        /* Align to the last 16-bytes of the OTA region */
+        /* If anyone has a better way of doing this, please submit a PR! */
+        . = __flash_binary_start + 0x2ff0;
+        LONG(__FS_START__)
+        LONG(__FS_END__)
+        LONG(__EEPROM_START__)
+        LONG(__FLASH_LENGTH__)
+    } > FLASH
+
     /* The second stage will always enter the image at the start of .text.
        The debugger will use the ELF entry point, which is the _entry_point
        symbol if present, otherwise defaults to start of .text.
@@ -92,7 +114,7 @@ SECTIONS
     } > FLASH
 
     .rodata : {
-        *(EXCLUDE_FILE(*libgcc.a: *libc.a:*lib_a-mem*.o *libm.a:) .rodata*)
+        *(EXCLUDE_FILE(*libgcc.a: *libc.a:*lib_a-mem*.o *libm.a:) .rodata* .big_const*)
         . = ALIGN(4);
         *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.flashdata*)))
         . = ALIGN(4);
@@ -110,15 +132,6 @@ SECTIONS
     } > FLASH
     __exidx_end = .;
 
-    /* Machine inspectable binary information */
-    . = ALIGN(4);
-    __binary_info_start = .;
-    .binary_info :
-    {
-        KEEP(*(.binary_info.keep.*))
-        *(.binary_info.*)
-    } > FLASH
-    __binary_info_end = .;
     . = ALIGN(4);
 
     /* End of .text-like segments */

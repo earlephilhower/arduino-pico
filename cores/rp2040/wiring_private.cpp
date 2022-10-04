@@ -45,25 +45,48 @@ extern "C" void noInterrupts() {
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
 // dispatch to the real callback manually
 auto_init_mutex(_irqMutex);
-static std::map<pin_size_t, voidFuncPtr> _map;
+class CBInfo {
+public:
+    CBInfo(voidFuncPtr cb) : _cb(cb), _useParam(false), _param(nullptr) { };
+    CBInfo(voidFuncPtrParam cbParam, void *param) : _cbParam(cbParam), _useParam(true), _param(param) { };
+    void callback() {
+        if (_useParam && _cbParam) {
+            _cbParam(_param);
+        } else if (_cb) {
+            _cb();
+        }
+    }
+private:
+    union {
+        voidFuncPtr _cb;
+        voidFuncPtrParam _cbParam;
+    };
+    bool _useParam;
+    void *_param;
+};
+
+
+static std::map<pin_size_t, CBInfo> _map;
 
 void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     (void) events;
     // Only need to lock around the std::map check, not the whole IRQ callback
-    voidFuncPtr cb = nullptr;
-    {
-        CoreMutex m(&_irqMutex);
-        if (m) {
-            auto irq = _map.find(gpio);
-            if (irq != _map.end()) {
-                cb = irq->second;
-            }
+    CoreMutex m(&_irqMutex);
+    if (m) {
+        auto irq = _map.find(gpio);
+        if (irq != _map.end()) {
+            auto cb = irq->second;
+            cb.callback();
         }
     }
-    if (cb) {
-        cb(); // Do the callback
-    } else {
-        // ERROR, but we're in an IRQ so do nothing
+}
+
+// To be called when appropriately protected w/IRQ and mutex protects
+static void _detachInterruptInternal(pin_size_t pin) {
+    auto irq = _map.find(pin);
+    if (irq != _map.end()) {
+        gpio_set_irq_enabled(pin, 0x0f /* all */, false);
+        _map.erase(pin);
     }
 }
 
@@ -83,8 +106,32 @@ extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus 
     default:      return;  // ERROR
     }
     noInterrupts();
+    _detachInterruptInternal(pin);
+    CBInfo cb(callback);
+    _map.insert({pin, cb});
+    gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
+    interrupts();
+}
+
+void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus mode, void *param) {
+    CoreMutex m(&_irqMutex);
+    if (!m) {
+        return;
+    }
+
+    uint32_t events;
+    switch (mode) {
+    case LOW:     events = 1; break;
+    case HIGH:    events = 2; break;
+    case FALLING: events = 4; break;
+    case RISING:  events = 8; break;
+    case CHANGE:  events = 4 | 8; break;
+    default:      return;  // ERROR
+    }
+    noInterrupts();
     detachInterrupt(pin);
-    _map.insert({pin, callback});
+    CBInfo cb(callback, param);
+    _map.insert({pin, cb});
     gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
     interrupts();
 }
@@ -96,10 +143,6 @@ extern "C" void detachInterrupt(pin_size_t pin) {
     }
 
     noInterrupts();
-    auto irq = _map.find(pin);
-    if (irq != _map.end()) {
-        gpio_set_irq_enabled(pin, 0x0f /* all */, false);
-        _map.erase(pin);
-    }
+    _detachInterruptInternal(pin);
     interrupts();
 }
