@@ -13,7 +13,7 @@
 
 // PICO_CONFIG: PICO_BOOTSEL_VIA_DOUBLE_RESET_TIMEOUT_MS, Window of opportunity for a second press of a reset button to enter BOOTSEL mode (milliseconds), type=int, default=200, group=pico_bootsel_via_double_reset
 #ifndef PICO_BOOTSEL_VIA_DOUBLE_RESET_TIMEOUT_MS
-#define PICO_BOOTSEL_VIA_DOUBLE_RESET_TIMEOUT_MS 200
+#define PICO_BOOTSEL_VIA_DOUBLE_RESET_TIMEOUT_MS 350
 #endif
 
 // PICO_CONFIG: PICO_BOOTSEL_VIA_DOUBLE_RESET_ACTIVITY_LED, Optionally define a pin to use as bootloader activity LED when BOOTSEL mode is entered via reset double tap, type=int, min=0, max=29, group=pico_bootsel_via_double_reset
@@ -43,7 +43,9 @@ static const uint32_t magic_token[] = {
     0xf01681de, 0xbd729b29, 0xd359be7a,
 };
 
-static uint32_t __uninitialized_ram(magic_location)[count_of(magic_token)];
+// Place our marker on the 2nd core's stack...which will not have been touched when this code is executing
+static uint32_t *magic_location = (uint32_t*)0x20040000;
+//static uint32_t __uninitialized_ram(magic_location)[count_of(magic_token)];
 
 /*  Check for double reset and enter BOOTSEL mode if detected
 
