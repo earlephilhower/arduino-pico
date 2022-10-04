@@ -65,25 +65,14 @@ Them hit the upload button and your sketch should upload and run.
 In some cases the Pico will encounter a hard hang and its USB port will not respond to the auto-reset request.  Should this happen, just
 follow the initial procedure of holding the BOOTSEL button down while plugging in the Pico to enter the ROM bootloader.
 
-Unable to Upload First Sketch
------------------------------
-If the Arduino IDE has never seen a serial port from a working device (Pico, AVR, or any other serial port), you
-may not be able to install using the prior directions because the ``Tools->Port`` menu will be grayed out and
-empty.  In this case, a special workaround identified by @fjansson in `this issue report <https://github.com/earlephilhower/arduino-pico/issues/688>`_ .
+Uploading the First Sketch
+--------------------------
+The first time you upload a sketch to a board, you'll need to use the built-in ROM bootloader to handle the upload and not a serial port.
 
-To allow subsequent uploads to automatically work, you will need to manually install a UF2 binary onto the Raspberry Pi Pico one time to
-allow it to present a Serial port for the Arduino IDE to detect and save. 
-
-Perform the following steps to program a dummy sketch:
-
-1. Open a new, empty sketch (doesn't work with a read-only example sketch).
-2. Compile it by pressing the "Verify" checkmark button.
-3. Select the ``Sketch -> Export Compiled Binary`` menu. Select a location e.g. the desktop. A folder is created there, containing a file ending in .uf2
-4. Copy this file to the Pico's drive, by drag and drop in the Explorer.
-
-The Pico restarts and now now has a serial port. Now the Port menu in Arduino is not gray anymore, select the port there.
-After this, normal uploading from the Arduino editor should work.
-
+1. Hold the BOOTSEL button while plugging in the board.
+2. Select ``Tools->Port->UF2 Board`` from the menu.
+3. Upload as normal.
+4. After the board boots up, select the new serial port from the ``Tools->Port`` menu.
 
 Windows 7 Driver Notes
 ----------------------
