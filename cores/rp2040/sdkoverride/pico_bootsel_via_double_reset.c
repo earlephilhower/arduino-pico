@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2021 Raspberry Pi (Trading) Ltd.
- *
- * Hacked by EFP3 to allow disabling unless requested
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
+    Copyright (c) 2021 Raspberry Pi (Trading) Ltd.
+
+    Hacked by EFP3 to allow disabling unless requested
+
+    SPDX-License-Identifier: BSD-3-Clause
+*/
 
 #include "pico.h"
 #include "pico/time.h"
@@ -24,14 +24,14 @@
 #endif
 
 /** \defgroup pico_bootsel_via_double_reset pico_bootsel_via_double_reset
- *
- * When the 'pico_bootsel_via_double_reset' library is linked, a function is
- * injected before main() which will detect when the system has been reset
- * twice in quick succession, and enter the USB ROM bootloader (BOOTSEL mode)
- * when this happens. This allows a double tap of a reset button on a
- * development board to be used to enter the ROM bootloader, provided this
- * library is always linked.
- */
+
+    When the 'pico_bootsel_via_double_reset' library is linked, a function is
+    injected before main() which will detect when the system has been reset
+    twice in quick succession, and enter the USB ROM bootloader (BOOTSEL mode)
+    when this happens. This allows a double tap of a reset button on a
+    development board to be used to enter the ROM bootloader, provided this
+    library is always linked.
+*/
 
 #if !PICO_NO_BI_BOOTSEL_VIA_DOUBLE_RESET
 bi_decl(bi_program_feature("double reset -> BOOTSEL"));
@@ -40,25 +40,25 @@ bi_decl(bi_program_feature("double reset -> BOOTSEL"));
 // Doesn't make any sense for a RAM only binary
 #if !PICO_NO_FLASH
 static const uint32_t magic_token[] = {
-        0xf01681de, 0xbd729b29, 0xd359be7a,
+    0xf01681de, 0xbd729b29, 0xd359be7a,
 };
 
 static uint32_t __uninitialized_ram(magic_location)[count_of(magic_token)];
 
-/* Check for double reset and enter BOOTSEL mode if detected
- *
- * This function is registered to run automatically before main(). The
- * algorithm is:
- *
- *   1. Check for magic token in memory; enter BOOTSEL mode if found.
- *   2. Initialise that memory with that magic token.
- *   3. Do nothing for a short while (few hundred ms).
- *   4. Clear the magic token.
- *   5. Continue with normal boot.
- *
- * Resetting the device twice quickly will interrupt step 3, leaving the token
- * in place so that the second boot will go to the bootloader.
- */
+/*  Check for double reset and enter BOOTSEL mode if detected
+
+    This function is registered to run automatically before main(). The
+    algorithm is:
+
+     1. Check for magic token in memory; enter BOOTSEL mode if found.
+     2. Initialise that memory with that magic token.
+     3. Do nothing for a short while (few hundred ms).
+     4. Clear the magic token.
+     5. Continue with normal boot.
+
+    Resetting the device twice quickly will interrupt step 3, leaving the token
+    in place so that the second boot will go to the bootloader.
+*/
 
 /*static*/ void __attribute__((constructor)) boot_double_tap_check(void) {
     for (uint i = 0; i < count_of(magic_token); i++) {
