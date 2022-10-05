@@ -20,7 +20,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=Raspberry Pi RP2040 Boards
-version=2.5.4
+version=2.6.0
 
 runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
@@ -42,7 +42,7 @@ compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
 compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
 
 compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=0 {build.lwipdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
-compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}"
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/include"
 compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.flags.cmsis}
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
@@ -98,7 +98,10 @@ build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
 build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
 
 # Allow Pico boards do be auto-discovered by the IDE
-discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/discovery.py"
+#discovery.rp2040.pattern={runtime.tools.pqt-python3.path}/python3 -I "{runtime.platform.path}/tools/pluggable_discovery.py"
+discovery.rp2040.pattern={runtime.platform.path}/system/python3/python3 -I "{runtime.platform.path}/tools/pluggable_discovery.py"
+#pluggable_discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/pluggable_discovery.py"
+pluggable_discovery.rp2040.pattern="{runtime.platform.path}/system/python3/python3" -I "{runtime.platform.path}/tools/pluggable_discovery.py"
 
 
 # Compile patterns
@@ -149,6 +152,12 @@ recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build
 recipe.size.regex=^(?:\.boot2|\.text|\.rodata|\.ARM\.extab|\.ARM\.exidx)\s+([0-9]+).*
 recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_data)\s+([0-9]+).*
 
+upload.tool.uf2conv=uf2conv
+upload.tool.serial=uf2conv
+upload.tool.network=uf2conv-network
+upload.tool.picoprobe=picoprobe
+upload.tool.picodebug=picodebug
+
 tools.uf2conv.path=
 # Because the variable expansion doesn't allow one tool to find another, the following lines
 # will point to "{runtime.platform.path}/tools/python3/python3" in GIT and
@@ -162,6 +171,14 @@ tools.uf2conv.upload.params.verbose=
 tools.uf2conv.upload.params.quiet=
 tools.uf2conv.upload.pattern="{cmd}" -I "{runtime.platform.path}/tools/uf2conv.py" --serial "{serial.port}" --family RP2040 --deploy "{build.path}/{build.project_name}.uf2"
 tools.uf2conv.upload.network_pattern="{network_cmd}" -I "{runtime.platform.path}/tools/espota.py" -i "{serial.port}" -p "{network.port}" "--auth={network.password}" -f "{build.path}/{build.project_name}.bin"
+
+#tools.uf2conv-network.cmd={runtime.tools.pqt-python3.path}/python3
+tools.uf2conv-network.cmd={runtime.platform.path}/system/python3/python3
+tools.uf2conv-network.upload.protocol=uf2
+tools.uf2conv-network.upload.params.verbose=
+tools.uf2conv-network.upload.params.quiet=
+tools.uf2conv-network.upload.pattern="{cmd}" -I "{runtime.platform.path}/tools/espota.py" -i "{upload.port.address}" -p "{upload.port.properties.port}" "--auth={upload.field.password}" -f "{build.path}/{build.project_name}.bin"
+
 
 #tools.picoprobe.cmd={runtime.tools.pqt-openocd.path}
 tools.picoprobe.cmd={runtime.platform.path}/system/openocd

@@ -113,6 +113,12 @@ sed 's/^tools.picoprobe.cmd=.*//g' | \
 sed 's/^#tools.picoprobe.cmd=/tools.picoprobe.cmd=/g' | \
 sed 's/^tools.picodebug.cmd=.*//g' | \
 sed 's/^#tools.picodebug.cmd=/tools.picodebug.cmd=/g' | \
+sed 's/^discovery.rp2040.pattern=.*//g' | \
+sed 's/^#discovery.rp2040.pattern=/discovery.rp2040.pattern=/g' | \
+sed 's/^pluggable_discovery.rp2040.pattern=.*//g' | \
+sed 's/^#pluggable_discovery.rp2040.pattern=/pluggable_discovery.rp2040.pattern=/g'  | \
+sed 's/^tools.uf2conv-network.cmd=.*//g' | \
+sed 's/^#tools.uf2conv-network.cmd=/tools.uf2conv-network.cmd=/g' | \
 sed "s/version=.*/version=$ver/g" |\
 sed -E "s/name=([a-zA-Z0-9\ -]+).*/name=\1($ver)/g"\
  > $outdir/platform.txt

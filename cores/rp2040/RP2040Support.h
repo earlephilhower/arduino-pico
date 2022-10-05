@@ -314,6 +314,8 @@ public:
         reboot();
     }
 
+    static void enableDoubleResetBootloader();
+
     void wdt_begin(uint32_t delay_ms) {
         watchdog_enable(delay_ms, 1);
     }
