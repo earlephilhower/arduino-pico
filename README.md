@@ -34,6 +34,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Invector Labs Challenger RP2040 SubGHz
 * Invector Labs Challenger RP2040 SD/RTC
 * Invector Labs RPICO32
+* Melopero Cookie RP2040
 * Melopero Shake RP2040
 * Seeed XIAO RP2040
 * Solder Party RP2040 Stamp
