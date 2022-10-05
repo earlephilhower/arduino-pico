@@ -102,7 +102,7 @@ def BuildIPStack(name):
     print('%s.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a' % (name))
     print('%s.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1' % (name))
 
-def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, pwr, boarddefine, variant, uploadtool, flashsize, ramsize, boot2, extra):
+def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, pwr, boarddefine, variant, uploadtool, flashsize, ramsize, boot2, dbg, extra):
     prettyname = vendor_name + " " + product_name
     print()
     print("# -----------------------------------")
@@ -134,6 +134,7 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("%s.build.core=rp2040" % (name))
     print("%s.build.ldscript=memmap_default.ld" % (name))
     print("%s.build.ram_length=%dk" % (name, ramsize / 1024))
+    print("%s.build.debugscript=%s" % (name, dbg))
     print("%s.build.boot2=%s" % (name, boot2))
     print("%s.build.vid=%s" % (name, vid))
     print("%s.build.pid=%s" % (name, pid))
@@ -175,15 +176,17 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
             fssizelist.append(i * 1024 * 1024)
         vidtouse = vid;
         ramsizekb = 256;
+        dbg = "picoprobe.tcl"
         if a == "picoprobe":
             pidtouse = '0x0004'
         elif a == "picodebug":
             vidtouse = '0x1209'
             pidtouse = '0x2488'
             ramsizekb = 240;
+            dbg = "picodebug.tcl"
         else:
             pidtouse = pid
-        BuildHeader(n, vendor_name, p, vidtouse, pidtouse, vid, pid, pwr, boarddefine, name, c, flashsizemb * 1024 * 1024, ramsizekb * 1024, boot2, extra)
+        BuildHeader(n, vendor_name, p, vidtouse, pidtouse, vid, pid, pwr, boarddefine, name, c, flashsizemb * 1024 * 1024, ramsizekb * 1024, boot2, dbg, extra)
         if name == "generic":
             BuildFlashMenu(n, 2*1024*1024, [0, 1*1024*1024])
             BuildFlashMenu(n, 4*1024*1024, [0, 2*1024*1024])

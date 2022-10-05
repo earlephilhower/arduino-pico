@@ -27,7 +27,7 @@ runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
 runtime.tools.pqt-mklittlefs.path={runtime.platform.path}/system/mklittlefs
 runtime.tools.pqt-pioasm.path={runtime.platform.path}/system/pioasm
 runtime.tools.pqt-elf2uf2.path={runtime.platform.path}/system/elf2uf2
-
+runtime.tools.pqt-openocd.path={runtime.platform.path}/system/openocd
 compiler.path={runtime.tools.pqt-gcc.path}/bin/
 
 compiler.libraries.ldflags=
@@ -96,6 +96,7 @@ build.libpico=libpico.a
 build.boot2=boot2_generic_03h_4_padded_checksum
 build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
 build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
+build.debugscript=picoprobe.tcl
 
 # Allow Pico boards do be auto-discovered by the IDE
 #discovery.rp2040.pattern={runtime.tools.pqt-python3.path}/python3 -I "{runtime.platform.path}/tools/pluggable_discovery.py"
@@ -151,6 +152,19 @@ recipe.output.save_file={build.project_name}.{build.variant}.{build.preferred_ou
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
 recipe.size.regex=^(?:\.boot2|\.text|\.rodata|\.ARM\.extab|\.ARM\.exidx)\s+([0-9]+).*
 recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_data)\s+([0-9]+).*
+
+
+# Debugging
+debug.executable={build.path}/{build.project_name}.elf
+debug.toolchain=gcc
+debug.toolchain.path={runtime.tools.pqt-gcc.path}/bin/
+debug.toolchain.prefix=arm-none-eabi-
+debug.server=openocd
+debug.server.openocd.path={runtime.tools.pqt-openocd.path}/bin/openocd
+debug.server.openocd.scripts_dir={runtime.tools.pqt-openocd.path}/share/openocd/scripts/
+debug.server.openocd.script={runtime.platform.path}/lib/{build.debugscript}
+
+
 
 upload.tool.uf2conv=uf2conv
 upload.tool.serial=uf2conv
