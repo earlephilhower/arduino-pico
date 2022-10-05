@@ -42,7 +42,7 @@ compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
 compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
 
 compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=0 {build.lwipdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
-compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}"
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/include"
 compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.flags.cmsis}
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
