@@ -408,6 +408,7 @@ void LwipIntfDev<RawDev>::end() {
     RawDev::end();
     netif_remove(&_netif);
     memset(&_netif, 0, sizeof(_netif));
+    _started = false;
 }
 
 
