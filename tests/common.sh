@@ -47,7 +47,7 @@ END {
 '
 
     if [ -z "$elf_file" ]; then
-        printf "sketch                       data     rodata   bss      text      dram     flash\n"
+        printf "\n%-28s %-8s %-8s %-8s %-8s %-8s %-8s\n" sketch data rodata bss text dram flash
         return 0
     fi
 
@@ -89,7 +89,9 @@ function build_sketches()
             mv $build_dir/build.options.json.tmp $build_dir/build.options.json
             # Set the time of the cached core.a file to the future so the GIT header
             # we regen won't cause the builder to throw it out and rebuild from scratch.
-            touch -d 'now + 1 day' $cache_dir/core/*.a
+            local tomorrow=$((`date +%s` + 24 * 3600))
+            local tomdate=$(date -d@$tomorrow +%Y%m%d%H%M)
+            touch -t $tomdate $cache_dir/core/*.a
         fi
 
         # Clear out the last built sketch, map, elf, bin files, but leave the compiled
