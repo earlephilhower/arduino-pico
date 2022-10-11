@@ -31,27 +31,29 @@ EOL
 
 function print_size_info()
 {
-    elf_file=$1
+    local elf_file=$1
+    local awk_script='
+/^\.data/ || /^\.rodata/ || /^\.bss/ || /^\.text/{
+    size[$1] = $2
+}
+END {
+    total_ram = size[".data"] + size[".rodata"] + size[".bss"]
+    total_flash = size[".data"] + size[".rodata"] + size[".text"]
+    printf "%-28s %-8d %-8d %-8d %-8d %-8d %-8d\n",
+            sketch_name,
+            size[".data"], size[".rodata"], size[".bss"], size[".text"],
+            total_ram, total_flash
+}
+'
 
     if [ -z "$elf_file" ]; then
         printf "sketch                       data     rodata   bss      text      dram     flash\n"
         return 0
     fi
 
-    elf_name=$(basename $elf_file)
-    sketch_name="${elf_name%.*}"
-    # echo $sketch_name
-    arm-none-eabi-size --format=sysv $elf_file | sed s/irom0.text/irom0text/g > size.txt
-    declare -A segments
-    for seg in data rodata bss text irom0text; do
-        segments[$seg]=$(grep ^.$seg size.txt | awk '{sum += $2} END {print sum}')
-    done
-
-    total_ram=$((${segments[data]} + ${segments[rodata]} + ${segments[bss]}))
-    total_flash=$((${segments[data]} + ${segments[rodata]} + ${segments[text]}))
-
-    printf "%-28s %-8d %-8d %-8d %-8d %-8d     %-8d %-8d\n" $sketch_name ${segments[data]} ${segments[rodata]} ${segments[bss]} ${segments[text]} $total_ram $total_flash
-    return 0
+    local elf_name=$(basename $elf_file)
+    arm-none-eabi-size --format=sysv $elf_file | \
+        awk -v sketch_name="${elf_name%.*}" "$awk_script" -
 }
 
 function build_sketches()
