@@ -43,7 +43,7 @@ const char *password = STAPSK;
 
 WebServer server(80);
 
-const int led = 13;
+const int led = LED_BUILTIN;
 
 void handleRoot() {
   digitalWrite(led, 1);
