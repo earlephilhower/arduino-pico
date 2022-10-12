@@ -280,7 +280,10 @@ void HTTPServer::httpHandleClient() {
     }
 
     if (!keepCurrentClient) {
-        _currentClient = nullptr;
+        if (_currentClient) {
+            delete _currentClient;
+            _currentClient = nullptr;
+        }
         _currentStatus = HC_NONE;
         _currentUpload.reset();
     }
