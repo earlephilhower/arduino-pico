@@ -46,6 +46,7 @@ WebServer server(80);
 const int led = LED_BUILTIN;
 
 void handleRoot() {
+  static int cnt = 0;
   digitalWrite(led, 1);
   char temp[400];
   int sec = millis() / 1000;
@@ -65,11 +66,13 @@ void handleRoot() {
   <body>\
     <h1>Hello from the Pico W!</h1>\
     <p>Uptime: %02d:%02d:%02d</p>\
+    <p>Free Memory: %d</p>\
+    <p>Page Count: %d</p>\
     <img src=\"/test.svg\" />\
   </body>\
 </html>",
 
-           hr, min % 60, sec % 60);
+           hr, min % 60, sec % 60, rp2040.getFreeHeap(), ++cnt);
   server.send(200, "text/html", temp);
   digitalWrite(led, 0);
 }
