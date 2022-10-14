@@ -145,3 +145,7 @@
 -Wl,--wrap=trunc
 -Wl,--wrap=truncf
 -Wl,--wrap=__getreent
+-Wl,--wrap=malloc
+-Wl,--wrap=calloc
+-Wl,--wrap=realloc
+-Wl,--wrap=free
