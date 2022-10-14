@@ -22,24 +22,30 @@
 #include <CoreMutex.h>
 #include <hardware/gpio.h>
 #include <hardware/sync.h>
-#include <stack>
 #include <map>
 
 // Support nested IRQ disable/re-enable
-static std::stack<uint32_t> _irqStack[2];
+#define maxIRQs 15
+static uint32_t _irqStackTop[2] = { 0, 0 };
+static uint32_t _irqStack[2][maxIRQs];
 
 extern "C" void interrupts() {
-    if (_irqStack[get_core_num()].empty()) {
+    auto core = get_core_num();
+    if (!_irqStackTop[core]) {
         // ERROR
         return;
     }
-    auto oldIrqs = _irqStack[get_core_num()].top();
-    _irqStack[get_core_num()].pop();
-    restore_interrupts(oldIrqs);
+    restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
 }
 
 extern "C" void noInterrupts() {
-    _irqStack[get_core_num()].push(save_and_disable_interrupts());
+    auto core = get_core_num();
+    if (_irqStackTop[core] == maxIRQs) {
+        // ERROR
+        panic("IRQ stack overflow");
+    }
+
+    _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
 }
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
