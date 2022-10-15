@@ -18,7 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include <LWIPMutex.h>
+#include "pico/mutex.h"
 #include "lwip/pbuf.h"
 #include "lwip/udp.h"
 #include "lwip/tcp.h"
@@ -26,8 +26,11 @@
 #include "lwip/raw.h"
 #include "lwip/timeouts.h"
 
-#if 0
-extern "C" volatile bool __inLWIP;
+// Global indicator that we're inside an LWIP block
+extern "C" {
+    volatile bool __inLWIP = false;
+}
+
 auto_init_recursive_mutex(__mtxLWIP);
 
 class LWIPMutex {
@@ -42,9 +45,10 @@ public:
 
     ~LWIPMutex() {
         noInterrupts();
-        recursive_mutex_enter_blocking(&__mtxLWIP);
-        __inLWIP = true;
-        _ref++;
+        if (0 == --_ref) {
+            __inLWIP = false;
+        }
+        recursive_mutex_exit(&__mtxLWIP);
         interrupts();
     }
 
@@ -52,7 +56,7 @@ private:
     static int _ref;
 };
 int LWIPMutex::_ref = 0;
-#endif
+
 
 extern "C" {
 
