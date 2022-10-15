@@ -97,6 +97,6 @@ target_link_libraries(pico
 )
 
 add_custom_command(TARGET pico POST_BUILD
-	COMMAND ar d libpico.a stdio.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj cyw43_arch_threadsafe_background.c.obj
+	COMMAND ar d libpico.a stdio.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj cyw43_arch_threadsafe_background.c.obj pico_malloc.c.obj
 	COMMAND ar q libpico.a pico-sdk/src/rp2_common/cyw43_driver/cyw43_resource.o
 )

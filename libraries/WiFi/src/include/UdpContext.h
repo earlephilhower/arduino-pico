@@ -29,6 +29,8 @@ extern "C" {
 
 #include <AddrList.h>
 #include <Arduino.h>
+#include "lwip/timeouts.h"
+
 //#include <PolledTimeout.h>
 
 #define PBUF_ALIGNER_ADJUST 4
@@ -383,6 +385,7 @@ public:
         uint32_t start = millis();
         while (((err = trySend(addr, port, /* keep buffer on error */true)) != ERR_OK) && (millis() - start < timeoutMs)) {
             delay(1);
+            sys_check_timeouts();
         }
         if (err != ERR_OK) {
             cancelBuffer();    // get rid of buffer kept on error after timeout

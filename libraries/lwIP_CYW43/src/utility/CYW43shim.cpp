@@ -39,6 +39,7 @@ extern "C" {
 
 
 netif *CYW43::_netif = nullptr;
+extern "C" volatile bool __inLWIP;
 
 CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
     (void) cs;
@@ -99,7 +100,20 @@ uint16_t CYW43::readFrame(uint8_t* buffer, uint16_t bufsize) {
     return 0;
 }
 
-// CB from the cyg32_driver
+//#define MAXWAIT 16
+//static struct pbuf *_pbufWaiting[MAXWAIT];
+//static bool _pbufHold(struct pbuf *p) {
+//    for (int i = 0; i < MAXWAIT; i++) {
+//        if (!_pbufWaiting[i]) {
+//            _pbufWaiting[i] = p;
+//            return true;
+//        }
+//    }
+//    return false;
+//}
+
+
+// CB from the cyw43 driver
 extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
     //cyw43_t *self = (cyw43_t *)cb_data
     (void) cb_data;
@@ -114,7 +128,7 @@ extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, co
         struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
         if (p != nullptr) {
             pbuf_take(p, buf, len);
-            if (netif->input(p, netif) != ERR_OK) {
+            if (__inLWIP || (netif->input(p, netif) != ERR_OK)) {
                 pbuf_free(p);
             }
             CYW43_STAT_INC(PACKET_IN_COUNT);

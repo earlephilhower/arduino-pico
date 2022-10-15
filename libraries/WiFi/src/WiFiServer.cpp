@@ -56,8 +56,6 @@ void WiFiServer::begin(uint16_t port, uint8_t backlog) {
     }
     _port = port;
 
-    LWIPMutex m;  // Block the timer sys_check_timeouts call
-
     tcp_pcb* pcb = tcp_new();
     if (!pcb) {
         return;
@@ -134,7 +132,6 @@ WiFiClient WiFiServer::accept() {
 
         // pcb can be null when peer has already closed the connection
         if (_unclaimed->getPCB()) {
-            LWIPMutex m;  // Block the timer sys_check_timeouts call
             // give permission to lwIP to accept one more peer
             tcp_backlog_accepted(_unclaimed->getPCB());
         }
@@ -162,7 +159,6 @@ void WiFiServer::close() {
     if (!_listen_pcb) {
         return;
     }
-    LWIPMutex m;  // Block the timer sys_check_timeouts call
     tcp_close(_listen_pcb);
     _listen_pcb = nullptr;
 }
@@ -197,7 +193,6 @@ err_t WiFiServer::_accept(tcp_pcb* apcb, err_t err) {
     // https://www.nongnu.org/lwip/2_1_x/group__tcp__raw.html#gaeff14f321d1eecd0431611f382fcd338
 
     // increase lwIP's backlog
-    LWIPMutex m;  // Block the timer sys_check_timeouts call
     tcp_backlog_delayed(apcb);
 
     _unclaimed = slist_append_tail(_unclaimed, client);

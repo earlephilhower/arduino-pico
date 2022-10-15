@@ -36,7 +36,7 @@
 #define CYW43_WL_GPIO_LED_PIN 0
 #endif
 
-volatile bool __inLWIP = false;
+extern volatile bool __inLWIP;
 
 // note same code
 #if PICO_CYW43_ARCH_THREADSAFE_BACKGROUND

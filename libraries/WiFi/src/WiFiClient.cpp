@@ -130,8 +130,6 @@ int WiFiClient::connect(IPAddress ip, uint16_t port) {
         _client = nullptr;
     }
 
-    LWIPMutex m;  // Block the timer sys_check_timeouts call
-
     tcp_pcb* pcb = tcp_new();
     if (!pcb) {
         return 0;
