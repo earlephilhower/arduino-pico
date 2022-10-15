@@ -667,24 +667,44 @@ protected:
         return ERR_OK;
     }
 
+    // We may receive a nullptr as arg in the case when an IRQ happens during a shutdown sequence
+    // In that case, just ignore the CB
     static err_t _s_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *pb, err_t err) {
-        return reinterpret_cast<ClientContext*>(arg)->_recv(tpcb, pb, err);
+        if (arg) {
+            return reinterpret_cast<ClientContext*>(arg)->_recv(tpcb, pb, err);
+        } else {
+            return ERR_OK;
+        }
     }
 
     static void _s_error(void *arg, err_t err) {
-        reinterpret_cast<ClientContext*>(arg)->_error(err);
+        if (arg) {
+            reinterpret_cast<ClientContext*>(arg)->_error(err);
+        }
     }
 
     static err_t _s_poll(void *arg, struct tcp_pcb *tpcb) {
-        return reinterpret_cast<ClientContext*>(arg)->_poll(tpcb);
+        if (arg) {
+            return reinterpret_cast<ClientContext*>(arg)->_poll(tpcb);
+        } else {
+            return ERR_OK;
+        }
     }
 
     static err_t _s_acked(void *arg, struct tcp_pcb *tpcb, uint16_t len) {
-        return reinterpret_cast<ClientContext*>(arg)->_acked(tpcb, len);
+        if (arg) {
+            return reinterpret_cast<ClientContext*>(arg)->_acked(tpcb, len);
+        } else {
+            return ERR_OK;
+        }
     }
 
     static err_t _s_connected(void* arg, struct tcp_pcb *pcb, err_t err) {
-        return reinterpret_cast<ClientContext*>(arg)->_connected(pcb, err);
+        if (arg) {
+            return reinterpret_cast<ClientContext*>(arg)->_connected(pcb, err);
+        } else {
+            return ERR_OK;
+        }
     }
 
 private:
