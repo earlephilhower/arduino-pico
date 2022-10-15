@@ -27,6 +27,8 @@ class WiFiClient;
 typedef void (*discard_cb_t)(void*, ClientContext*);
 
 #include <assert.h>
+#include "lwip/timeouts.h"
+
 //#include <esp_priv.h>
 //#include <coredecls.h>
 
@@ -36,6 +38,7 @@ template <typename T>
 inline void esp_delay(const uint32_t timeout_ms, T&& blocked, const uint32_t intvl_ms) {
     const auto start_ms = millis();
     while ((((uint32_t)millis() - start_ms) < timeout_ms) && blocked()) {
+        sys_check_timeouts();
         delay(intvl_ms);
     }
 }
@@ -68,7 +71,6 @@ public:
             tcp_recv(_pcb, nullptr);
             tcp_err(_pcb, nullptr);
             tcp_poll(_pcb, nullptr, 0);
-            LWIPMutex m;  // Block the timer sys_check_timeouts call
             tcp_abort(_pcb);
             _pcb = nullptr;
         }
@@ -84,7 +86,6 @@ public:
             tcp_recv(_pcb, nullptr);
             tcp_err(_pcb, nullptr);
             tcp_poll(_pcb, nullptr, 0);
-            LWIPMutex m;  // Block the timer sys_check_timeouts call
             err = tcp_close(_pcb);
             if (err != ERR_OK) {
                 DEBUGV(":tc err %d\r\n", (int) err);
@@ -136,7 +137,6 @@ public:
             ip6_addr_assign_zone(ip_2_ip6(addr), IP6_UNKNOWN, netif_default);
         }
 #endif
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         err_t err = tcp_connect(_pcb, addr, port, &ClientContext::_s_connected);
         if (err != ERR_OK) {
             return 0;
@@ -162,7 +162,6 @@ public:
     }
 
     size_t availableForWrite() const {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         return _pcb ? tcp_sndbuf(_pcb) : 0;
     }
 
@@ -170,7 +169,6 @@ public:
         if (!_pcb) {
             return;
         }
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         if (nodelay) {
             tcp_nagle_disable(_pcb);
         } else {
@@ -182,7 +180,6 @@ public:
         if (!_pcb) {
             return false;
         }
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         return tcp_nagle_disabled(_pcb);
     }
 
@@ -300,7 +297,6 @@ public:
         if (!_rx_buf) {
             return;
         }
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         if (_pcb) {
             tcp_recved(_pcb, (size_t) _rx_buf->tot_len);
         }
@@ -332,7 +328,6 @@ public:
                 return false;
             }
 
-            LWIPMutex m;  // Block the timer sys_check_timeouts call
 
             // force lwIP to send what can be sent
             tcp_output(_pcb);
@@ -517,7 +512,6 @@ protected:
             const auto remaining = _datalen - _written;
             size_t next_chunk_size;
             {
-                LWIPMutex m;  // Block the timer sys_check_timeouts call, just for this call
                 next_chunk_size = std::min((size_t)tcp_sndbuf(_pcb), remaining);
                 // Potentially reduce transmit size if we are tight on memory, but only if it doesn't return a 0 chunk size
                 if (next_chunk_size > (size_t)(1 << scale)) {
@@ -571,7 +565,6 @@ protected:
             // lwIP's tcp_output doc: "Find out what we can send and send it"
             // *with respect to Nagle*
             // more info: https://lists.gnu.org/archive/html/lwip-users/2017-11/msg00134.html
-            LWIPMutex m;  // Block the timer sys_check_timeouts call
             tcp_output(_pcb);
         }
 
@@ -596,7 +589,6 @@ protected:
 
     void _consume(size_t size) {
         ptrdiff_t left = _rx_buf->len - _rx_buf_offset - size;
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         if (left > 0) {
             _rx_buf_offset += size;
         } else if (!_rx_buf->next) {
@@ -638,7 +630,6 @@ protected:
 
         if (_rx_buf) {
             DEBUGV(":rch %d, %d\r\n", _rx_buf->tot_len, pb->tot_len);
-            LWIPMutex m;  // Block the timer sys_check_timeouts call
             pbuf_cat(_rx_buf, pb);
         } else {
             DEBUGV(":rn %d\r\n", pb->tot_len);

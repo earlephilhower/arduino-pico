@@ -29,7 +29,8 @@ extern "C" {
 
 #include <AddrList.h>
 #include <Arduino.h>
-#include <LWIPMutex.h>
+#include "lwip/timeouts.h"
+
 //#include <PolledTimeout.h>
 
 #define PBUF_ALIGNER_ADJUST 4
@@ -51,7 +52,6 @@ public:
         , _tx_buf_head(0)
         , _tx_buf_cur(0)
         , _tx_buf_offset(0) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         _pcb = udp_new();
 #if LWIP_IPV6
         // local_ip defaults to 0.0.0.0
@@ -64,7 +64,6 @@ public:
     }
 
     ~UdpContext() {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         udp_remove(_pcb);
         _pcb = 0;
         if (_tx_buf_head) {
@@ -105,14 +104,12 @@ public:
     }
 
     bool listen(const IPAddress& addr, uint16_t port) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         udp_recv(_pcb, &_s_recv, (void *) this);
         err_t err = udp_bind(_pcb, addr, port);
         return err == ERR_OK;
     }
 
     void disconnect() {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         udp_disconnect(_pcb);
     }
 
@@ -135,14 +132,12 @@ public:
                 }
             assert(addr.isV4());
         }
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         udp_set_multicast_netif_addr(_pcb, ip_2_ip4((const ip_addr_t*)addr));
     }
 
 #else // !LWIP_IPV6
 
     void setMulticastInterface(const IPAddress& addr) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         udp_set_multicast_netif_addr(_pcb, ip_2_ip4((const ip_addr_t*)addr));
     }
 
@@ -152,7 +147,6 @@ public:
         Add a netif (by its index) as the multicast interface
     */
     void setMulticastInterface(netif* p_pNetIf) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         udp_set_multicast_netif_index(_pcb, (p_pNetIf ? netif_get_index(p_pNetIf) : NETIF_NO_INDEX));
     }
 
@@ -164,7 +158,6 @@ public:
     }
 
     void setMulticastTTL(int ttl) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
 #ifdef LWIP_MAYBE_XCC
         _mcast_ttl = ttl;
 #else
@@ -181,7 +174,6 @@ public:
 #ifdef DEBUG_ESP_CORE
     // this helper is ready to be used when debugging UDP
     void printChain(const pbuf* pb, const char* msg, size_t n) const {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         // printf the pb pbuf chain, buffered and all at once
         char buf[128];
         int l = snprintf(buf, sizeof(buf), "UDP: %s %u: ", msg, n);
@@ -245,7 +237,6 @@ public:
     }
 
     bool next() {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         if (!_rx_buf) {
             return false;
         }
@@ -304,7 +295,6 @@ public:
             return -1;
         }
 
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         char c = pbuf_get_at(_rx_buf, _rx_buf_offset);
         _consume(1);
         return c;
@@ -315,7 +305,6 @@ public:
             return 0;
         }
 
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         size_t max_size = _rx_buf_size - _rx_buf_offset;
         size = (size < max_size) ? size : max_size;
         DEBUGV(":urd %d, %d, %d\r\n", size, _rx_buf_size, _rx_buf_offset);
@@ -339,7 +328,6 @@ public:
             return -1;
         }
 
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         return pbuf_get_at(_rx_buf, _rx_buf_offset);
     }
 
@@ -353,7 +341,6 @@ public:
     }
 
     size_t append(const char* data, size_t size) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         if (!_tx_buf_head || _tx_buf_head->tot_len < _tx_buf_offset + size) {
             _reserve(_tx_buf_offset + size);
         }
@@ -381,7 +368,6 @@ public:
     }
 
     void cancelBuffer() {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         if (_tx_buf_head) {
             pbuf_free(_tx_buf_head);
         }
@@ -399,6 +385,7 @@ public:
         uint32_t start = millis();
         while (((err = trySend(addr, port, /* keep buffer on error */true)) != ERR_OK) && (millis() - start < timeoutMs)) {
             delay(1);
+            sys_check_timeouts();
         }
         if (err != ERR_OK) {
             cancelBuffer();    // get rid of buffer kept on error after timeout
@@ -409,7 +396,6 @@ public:
 private:
 
     err_t trySend(const ip_addr_t* addr, uint16_t port, bool keepBufferOnError) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         size_t data_size = _tx_buf_offset;
         pbuf* tx_copy = pbuf_alloc(PBUF_TRANSPORT, data_size, PBUF_RAM);
         if (tx_copy) {
@@ -459,7 +445,6 @@ private:
     }
 
     void _reserve(size_t size) {
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         const size_t pbuf_unit_size = 128;
         if (!_tx_buf_head) {
             _tx_buf_head = pbuf_alloc(PBUF_TRANSPORT, pbuf_unit_size, PBUF_RAM);
@@ -500,7 +485,6 @@ private:
     void _recv(udp_pcb *upcb, pbuf *pb,
                const ip_addr_t *srcaddr, u16_t srcport) {
         (void) upcb;
-        LWIPMutex m;  // Block the timer sys_check_timeouts call
         // check receive pbuf chain depth
         // optimization path: cache the pbuf chain length
         {

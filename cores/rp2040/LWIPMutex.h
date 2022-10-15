@@ -27,15 +27,8 @@ extern "C" volatile bool __inLWIP;
 
 class LWIPMutex {
 public:
-    LWIPMutex() {
-        __inLWIP = true;
-        _ref++;
-    }
-    ~LWIPMutex() {
-        if (0 == --_ref) {
-            __inLWIP = false;
-        }
-    }
+    LWIPMutex();
+    ~LWIPMutex();
 private:
     static int _ref;
 };

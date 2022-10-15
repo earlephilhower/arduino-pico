@@ -22,7 +22,6 @@
 #include "RP2040USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
-#include "LWIPMutex.h"
 #include <reent.h>
 
 RP2040 rp2040;
@@ -32,8 +31,6 @@ extern "C" {
 };
 
 mutex_t _pioMutex;
-
-int LWIPMutex::_ref = 0;
 
 extern void setup();
 extern void loop();

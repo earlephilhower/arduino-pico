@@ -3,8 +3,6 @@
 #include "wl_definitions.h"
 #include "wl_types.h"
 
-#include "LWIPMutex.h"
-
 #include "WiFiClass.h"
 #include "WiFiClient.h"
 #include "WiFiServer.h"

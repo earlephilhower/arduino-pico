@@ -24,7 +24,6 @@
 #include <wl_definitions.h>
 struct tcp_pcb;
 
-#include <LWIPMutex.h>
 #include <Server.h>
 #include <IPAddress.h>
 #include <lwip/err.h>
