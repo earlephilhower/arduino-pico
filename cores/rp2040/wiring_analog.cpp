@@ -73,12 +73,16 @@ extern "C" void analogWriteResolution(int res) {
 
 extern "C" void analogWrite(pin_size_t pin, int val) {
     CoreMutex m(&_dacMutex);
+    
+    static bool pwmInitted[PINS_COUNT] = { false };
+    static bool pwmScaleInitted = false;
 
-    if ((pin > 29) || !m) {
+    if ((pin > PINS_COUNT - 1) || !m) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
-    }
-    if (!pwmInitted) {
+    }   
+    if (!pwmScaleInitted) {
+        pwmScaleInitted = true;
         // For low frequencies, we need to scale the output max value up to achieve lower periods
         analogWritePseudoScale = 1;
         while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
@@ -93,25 +97,22 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
             analogScale /= 2;
             DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%d\n", analogWriteSlowScale, analogScale);
         }
+    }
+    if (!pwmInitted[pin]) {
         pwm_config c = pwm_get_default_config();
         pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / ((float)analogScale * analogFreq));
-        pwm_config_set_wrap(&c, analogScale - 1);
-        for (int i = 0; i < 30; i++) {
-            pwm_init(pwm_gpio_to_slice_num(i), &c, true);
-        }
-        pwmInitted = true;
+        pwm_config_set_wrap(&c, analogScale - 1);       
+        pwm_init(pwm_gpio_to_slice_num(pin), &c, true);
+        pwmInitted[pin] = true;   
     }
-
     val <<= analogWritePseudoScale;
     val >>= analogWriteSlowScale;
-
     if (val < 0) {
         val = 0;
     } else if ((uint32_t)val > analogScale) {
         val = analogScale;
     }
-
-    gpio_set_function(pin, GPIO_FUNC_PWM);
+    gpio_set_function(pin, GPIO_FUNC_PWM);    
     pwm_set_gpio_level(pin, val);
 }
 
