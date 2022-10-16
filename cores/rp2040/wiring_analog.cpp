@@ -81,23 +81,23 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
     }   
-	if (!pwmScaleInitted) {
-		pwmScaleInitted = true;
-		// For low frequencies, we need to scale the output max value up to achieve lower periods
-		analogWritePseudoScale = 1;
-		while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
-			analogWritePseudoScale++;
-			analogScale *= 2;
-			DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%d\n", analogWritePseudoScale, analogScale);
-		}
-		// For high frequencies, we need to scale the output max value down to actually hit the frequency target
-		analogWriteSlowScale = 1;
-		while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) < 1.0) && (analogScale >= 6)) {
-			analogWriteSlowScale++;
-			analogScale /= 2;
-			DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%d\n", analogWriteSlowScale, analogScale);
-		}
-	}
+    if (!pwmScaleInitted) {
+        pwmScaleInitted = true;
+        // For low frequencies, we need to scale the output max value up to achieve lower periods
+        analogWritePseudoScale = 1;
+        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
+            analogWritePseudoScale++;
+            analogScale *= 2;
+            DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%d\n", analogWritePseudoScale, analogScale);
+        }
+        // For high frequencies, we need to scale the output max value down to actually hit the frequency target
+        analogWriteSlowScale = 1;
+        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) < 1.0) && (analogScale >= 6)) {
+            analogWriteSlowScale++;
+            analogScale /= 2;
+            DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%d\n", analogWriteSlowScale, analogScale);
+        }
+    }
     if (!pwmInitted[pin]) {
         pwm_config c = pwm_get_default_config();
         pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / ((float)analogScale * analogFreq));
