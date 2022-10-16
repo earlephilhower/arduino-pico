@@ -42,9 +42,9 @@ extern "C" void analogWriteFreq(uint32_t freq) {
     if (freq < 100) {
         DEBUGCORE("ERROR: analogWriteFreq too low (%d)\n", freq);
         analogFreq = 100;
-    } else if (freq > 1'000'000) {
+    } else if (freq > 10'000'000) {
         DEBUGCORE("ERROR: analogWriteFreq too high (%d)\n", freq);
-        analogFreq = 1'000'000;
+        analogFreq = 10'000'000;
     } else {
         analogFreq = freq;
     }
@@ -55,7 +55,7 @@ extern "C" void analogWriteRange(uint32_t range) {
     if (range == analogScale) {
         return;
     }
-    if ((range >= 15) && (range <= 65535)) {
+    if ((range >= 3) && (range <= 65535)) {
         analogScale = range;
         pwmInitted = false;
     } else {
@@ -64,7 +64,7 @@ extern "C" void analogWriteRange(uint32_t range) {
 }
 
 extern "C" void analogWriteResolution(int res) {
-    if ((res >= 4) && (res <= 16)) {
+    if ((res >= 2) && (res <= 16)) {
         analogWriteRange((1 << res) - 1);
     } else {
         DEBUGCORE("ERROR: analogWriteResolution out of range (%d)\n", res);
@@ -81,22 +81,21 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
     if (!pwmInitted) {
         // For low frequencies, we need to scale the output max value up to achieve lower periods
         analogWritePseudoScale = 1;
-        while (((clock_get_hz(clk_sys) / (float)(analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
+        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
             analogWritePseudoScale++;
             analogScale *= 2;
             DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%d\n", analogWritePseudoScale, analogScale);
         }
         // For high frequencies, we need to scale the output max value down to actually hit the frequency target
         analogWriteSlowScale = 1;
-        while (((clock_get_hz(clk_sys) / (float)(analogScale * analogFreq)) < 2.0) && (analogScale > 32)) {
+        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) < 1.0) && (analogScale >= 6)) {
             analogWriteSlowScale++;
             analogScale /= 2;
             DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%d\n", analogWriteSlowScale, analogScale);
         }
-
         pwm_config c = pwm_get_default_config();
-        pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / (float)(analogScale * analogFreq));
-        pwm_config_set_wrap(&c, analogScale);
+        pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / ((float)analogScale * analogFreq));
+        pwm_config_set_wrap(&c, analogScale - 1);
         for (int i = 0; i < 30; i++) {
             pwm_init(pwm_gpio_to_slice_num(i), &c, true);
         }
