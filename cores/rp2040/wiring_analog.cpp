@@ -28,7 +28,7 @@
 
 static uint32_t analogScale = 255;
 static uint32_t analogFreq = 1000;
-static bool pwmInitted = false;
+static uint32_t pwmInitted = 0;
 static bool adcInitted = false;
 static uint16_t analogWritePseudoScale = 1;
 static uint16_t analogWriteSlowScale = 1;
@@ -48,7 +48,7 @@ extern "C" void analogWriteFreq(uint32_t freq) {
     } else {
         analogFreq = freq;
     }
-    pwmInitted = false;
+    pwmInitted = 0;
 }
 
 extern "C" void analogWriteRange(uint32_t range) {
@@ -57,7 +57,7 @@ extern "C" void analogWriteRange(uint32_t range) {
     }
     if ((range >= 3) && (range <= 65535)) {
         analogScale = range;
-        pwmInitted = false;
+        pwmInitted = 0;
     } else {
         DEBUGCORE("ERROR: analogWriteRange out of range (%d)\n", range);
     }
@@ -78,7 +78,7 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
     }
-    if (!pwmInitted) {
+    if (!(pwmInitted & (1 << pin))) {
         // For low frequencies, we need to scale the output max value up to achieve lower periods
         analogWritePseudoScale = 1;
         while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
@@ -96,10 +96,8 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         pwm_config c = pwm_get_default_config();
         pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / ((float)analogScale * analogFreq));
         pwm_config_set_wrap(&c, analogScale - 1);
-        for (int i = 0; i < 30; i++) {
-            pwm_init(pwm_gpio_to_slice_num(i), &c, true);
-        }
-        pwmInitted = true;
+        pwm_init(pwm_gpio_to_slice_num(pin), &c, true);
+        pwmInitted |= 1 << pin;
     }
 
     val <<= analogWritePseudoScale;
