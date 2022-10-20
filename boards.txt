@@ -21641,6 +21641,8 @@ generic.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 generic.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 generic.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 generic.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
+generic.menu.boot2.boot2_w25q64jv_4_padded_checksum=W25Q64JV QSPI /4
+generic.menu.boot2.boot2_w25q64jv_4_padded_checksum.build.boot2=boot2_w25q64jv_4_padded_checksum
 
 # -----------------------------------
 # Generic RP2040 (Picoprobe)
@@ -21831,6 +21833,8 @@ genericpicoprobe.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 genericpicoprobe.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 genericpicoprobe.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 genericpicoprobe.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
+genericpicoprobe.menu.boot2.boot2_w25q64jv_4_padded_checksum=W25Q64JV QSPI /4
+genericpicoprobe.menu.boot2.boot2_w25q64jv_4_padded_checksum.build.boot2=boot2_w25q64jv_4_padded_checksum
 
 # -----------------------------------
 # Generic RP2040 (pico-debug)
@@ -22019,3 +22023,5 @@ genericpicodebug.menu.boot2.boot2_w25x10cl_2_padded_checksum=W25X10CL QSPI /2
 genericpicodebug.menu.boot2.boot2_w25x10cl_2_padded_checksum.build.boot2=boot2_w25x10cl_2_padded_checksum
 genericpicodebug.menu.boot2.boot2_w25x10cl_4_padded_checksum=W25X10CL QSPI /4
 genericpicodebug.menu.boot2.boot2_w25x10cl_4_padded_checksum.build.boot2=boot2_w25x10cl_4_padded_checksum
+genericpicodebug.menu.boot2.boot2_w25q64jv_4_padded_checksum=W25Q64JV QSPI /4
+genericpicodebug.menu.boot2.boot2_w25q64jv_4_padded_checksum.build.boot2=boot2_w25q64jv_4_padded_checksum
