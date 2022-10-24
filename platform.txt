@@ -166,12 +166,6 @@ debug.server.openocd.script={runtime.platform.path}/lib/{build.debugscript}
 
 
 
-upload.tool.uf2conv=uf2conv
-upload.tool.serial=uf2conv
-upload.tool.network=uf2conv-network
-upload.tool.picoprobe=picoprobe
-upload.tool.picodebug=picodebug
-
 tools.uf2conv.path=
 # Because the variable expansion doesn't allow one tool to find another, the following lines
 # will point to "{runtime.platform.path}/tools/python3/python3" in GIT and
