@@ -323,9 +323,9 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid) {
     return: signed value
 */
 int32_t WiFiClass::RSSI() {
-    #ifndef CYW43_IOCTL_GET_RSSI
-    #define CYW43_IOCTL_GET_RSSI 0xFE
-    #endif
+#ifndef CYW43_IOCTL_GET_RSSI
+#define CYW43_IOCTL_GET_RSSI 0xFE
+#endif
 
     int32_t rssi;
     cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_RSSI, sizeof rssi, (uint8_t *)&rssi, CYW43_ITF_STA);
