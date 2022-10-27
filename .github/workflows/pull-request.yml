@@ -6,6 +6,10 @@ name: Arduino-Pico CI
 on:
   pull_request:
 
+env:
+  TRAVIS_BUILD_DIR: ${{ github.workspace }}
+  TRAVIS_TAG: ${{ github.ref }}
+
 
 jobs:
 
@@ -46,10 +50,6 @@ jobs:
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
-#    - name: Check Arduino API copy is clean
-#      run: |
-#        git submodule update --init ./ArduinoCore-API
-#        diff -r ./cores/rp2040/api ./ArduinoCore-API/api
 
 # Build all examples on linux (core and Arduino IDE)
   build-linux:
@@ -73,8 +73,6 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketches
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         BUILD_PARITY: custom
         mod: 6
         rem: ${{ matrix.chunk }}
@@ -103,8 +101,6 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketches
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         BUILD_PARITY: custom
       run: |
         cd pico-sdk
@@ -131,8 +127,6 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketch
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         WINDOWS: 1
         BUILD_PARITY: custom
         mod: 500
@@ -166,8 +160,6 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketch
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         MACOSX: 1
         BUILD_PARITY: custom
         mod: 500
