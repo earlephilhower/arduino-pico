@@ -144,7 +144,7 @@ jobs:
 # Single build under macOS to ensure the Mac toolchain is good.
   build-mac:
     name: Mac
-    runs-on: macOS-latest
+    runs-on: macOS-12
     steps:
     - uses: actions/checkout@v3
       with:
@@ -199,6 +199,8 @@ jobs:
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: Set up Python
       uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
     - name: Install PlatformIO
       run: |
         python -m pip install --upgrade pip
