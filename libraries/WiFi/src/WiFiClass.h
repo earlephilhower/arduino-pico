@@ -267,6 +267,10 @@ public:
     */
     int32_t RSSI();
 
+
+    /* Return the current network channel */
+    int channel();
+
     /*
         Return the Encryption Type associated with the network
 

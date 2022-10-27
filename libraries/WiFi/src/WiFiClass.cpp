@@ -314,9 +314,29 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid) {
 #ifndef CYW43_IOCTL_GET_BSSID
 #define CYW43_IOCTL_GET_BSSID ( (uint32_t)23 * 2 )
 #endif
-    cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_BSSID, WL_MAC_ADDR_LENGTH, bssid, CYW43_ITF_STA);
+
+    if (_wifi.connected()) {
+        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_BSSID, WL_MAC_ADDR_LENGTH, bssid, CYW43_ITF_STA);
+    } else {
+        memset(bssid, 0, WL_MAC_ADDR_LENGTH);
+    }
     return bssid;
 }
+
+int WiFiClass::channel() {
+#ifndef CYW43_IOCTL_GET_CHANNEL
+#define CYW43_IOCTL_GET_CHANNEL 0x3a
+#endif
+
+    int32_t channel;
+    if (_wifi.connected()) {
+        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_CHANNEL, sizeof channel, (uint8_t *)&channel, CYW43_ITF_STA);
+    } else {
+        channel = -1;
+    }
+    return channel;
+}
+
 
 /*
     Return the current RSSI /Received Signal Strength in dBm)
@@ -330,7 +350,11 @@ int32_t WiFiClass::RSSI() {
 #endif
 
     int32_t rssi;
-    cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_RSSI, sizeof rssi, (uint8_t *)&rssi, CYW43_ITF_STA);
+    if (_wifi.connected()) {
+        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_RSSI, sizeof rssi, (uint8_t *)&rssi, CYW43_ITF_STA);
+    } else {
+        rssi = -255;
+    }
     return rssi;
 }
 
