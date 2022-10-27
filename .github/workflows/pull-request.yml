@@ -62,7 +62,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
@@ -90,7 +90,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
@@ -116,7 +116,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Windows toolchain
@@ -149,7 +149,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Mac toolchain
@@ -198,7 +198,7 @@ jobs:
         path: ~/.platformio
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
     - name: Install PlatformIO
       run: |
         python -m pip install --upgrade pip
