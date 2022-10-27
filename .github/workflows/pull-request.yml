@@ -6,6 +6,10 @@ name: Arduino-Pico CI
 on:
   pull_request:
 
+env:
+  TRAVIS_BUILD_DIR: ${{ github.workspace }}
+  TRAVIS_TAG: ${{ github.ref }}
+
 
 jobs:
 
@@ -20,7 +24,7 @@ jobs:
     - name: Run codespell
       uses: codespell-project/actions-codespell@master
       with:
-        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./libraries/FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino
+        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./libraries/FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino,./.git
         ignore_words_list: ser,dout
 
 # Consistent style
@@ -46,10 +50,6 @@ jobs:
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
-#    - name: Check Arduino API copy is clean
-#      run: |
-#        git submodule update --init ./ArduinoCore-API
-#        diff -r ./cores/rp2040/api ./ArduinoCore-API/api
 
 # Build all examples on linux (core and Arduino IDE)
   build-linux:
@@ -62,19 +62,17 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
       id: cache-linux
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketches
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         BUILD_PARITY: custom
         mod: 6
         rem: ${{ matrix.chunk }}
@@ -92,19 +90,17 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
       id: cache-linux
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketches
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         BUILD_PARITY: custom
       run: |
         cd pico-sdk
@@ -120,19 +116,17 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Windows toolchain
       id: cache-windows
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketch
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         WINDOWS: 1
         BUILD_PARITY: custom
         mod: 500
@@ -150,24 +144,22 @@ jobs:
 # Single build under macOS to ensure the Mac toolchain is good.
   build-mac:
     name: Mac
-    runs-on: macOS-latest
+    runs-on: macOS-12
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     - name: Cache Mac toolchain
       id: cache-mac
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
     - name: Build Sketch
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
-        TRAVIS_TAG: ${{ github.ref }}
         MACOSX: 1
         BUILD_PARITY: custom
         mod: 500
@@ -194,19 +186,21 @@ jobs:
         git submodule update --init
         cd ../..
     - name: Cache pip
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     - name: Cache PlatformIO
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.platformio
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
     - name: Install PlatformIO
       run: |
         python -m pip install --upgrade pip
