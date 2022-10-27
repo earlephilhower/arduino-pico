@@ -40,8 +40,6 @@ Please note that WiFi on the Pico W is a work-in-progress and there are some imp
 
   * Combined STA/AP mode is not supported
 
-  * Certain WiFi status values (RSSI, BSSID, etc.) are not available.
-
 * Multicore is supported, but only one core may run ``WiFi`` code.
 
   * FreeRTOS is not yet supported due to the requirement for a very different LWIP implementation.  PRs always appreciated!
