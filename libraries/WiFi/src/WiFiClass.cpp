@@ -311,8 +311,10 @@ const char* WiFiClass::SSID() {
     return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
 */
 uint8_t* WiFiClass::BSSID(uint8_t* bssid) {
-    // TODO - driver does not return this?!
-    memset(bssid, 0xee, WL_MAC_ADDR_LENGTH);
+#ifndef CYW43_IOCTL_GET_BSSID
+#define CYW43_IOCTL_GET_BSSID ( (uint32_t)23 * 2 )
+#endif
+    cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_BSSID, WL_MAC_ADDR_LENGTH, bssid, CYW43_ITF_STA);
     return bssid;
 }
 
