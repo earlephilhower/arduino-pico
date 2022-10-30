@@ -281,9 +281,23 @@ public:
     /*
         Start scan WiFi networks available
 
+        param async: whether to perform asynchronous scan
+
         return: Number of discovered networks
     */
-    int8_t scanNetworks();
+    int8_t scanNetworks(bool async = false);
+
+    /*
+        Return number of scanned WiFi networks
+
+        return: Number of discovered networks
+    */
+    int8_t scanComplete();
+
+    /*
+        Delete scan results
+    */
+    void scanDelete();
 
     /*
         Return the SSID discovered during the network scan.

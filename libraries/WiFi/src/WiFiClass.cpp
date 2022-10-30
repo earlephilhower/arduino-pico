@@ -396,7 +396,7 @@ int WiFiClass::_scanCB(void *env, const cyw43_ev_scan_result_t *result) {
 
     return: Number of discovered networks
 */
-int8_t WiFiClass::scanNetworks() {
+int8_t WiFiClass::scanNetworks(bool async) {
     cyw43_wifi_scan_options_t scan_options;
     memset(&scan_options, 0, sizeof(scan_options));
     _scan.clear();
@@ -409,11 +409,29 @@ int8_t WiFiClass::scanNetworks() {
     if (err) {
         return 0;
     }
-    uint32_t now = millis();
-    while (cyw43_wifi_scan_active(&cyw43_state) && (millis() - now < 10000)) {
-        delay(10);
+    if (!async) {
+        uint32_t now = millis();
+        while (cyw43_wifi_scan_active(&cyw43_state) && (millis() - now < 10000)) {
+            delay(10);
+        }
+        return _scan.size();
+    } else {
+        return -1;
     }
-    return _scan.size();
+}
+
+int8_t WiFiClass::scanComplete()
+{
+    if (cyw43_wifi_scan_active(&cyw43_state)) {
+        return -1;
+    } else {
+        return _scan.size();
+    }
+}
+
+void WiFiClass::scanDelete()
+{
+    _scan.clear();
 }
 
 /*
