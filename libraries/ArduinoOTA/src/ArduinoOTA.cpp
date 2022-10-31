@@ -110,7 +110,7 @@ void ArduinoOTAClass::begin(bool useMDNS) {
     _useMDNS = useMDNS;
 
     if (!_hostname.length()) {
-        char tmp[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1];
+        char tmp[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 6];
         sprintf(tmp, "pico-%s", rp2040.getChipID());
         _hostname = tmp;
     }
