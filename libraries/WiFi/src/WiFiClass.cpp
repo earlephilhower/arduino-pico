@@ -44,17 +44,20 @@ const char* WiFiClass::firmwareVersion() {
     return PICO_SDK_VERSION_STRING;
 }
 
-void WiFiClass::mode(_wifiModeESP m) {
+void WiFiClass::mode(WiFiMode_t m) {
     _calledESP = true;
     switch (m) {
-    case WIFI_OFF:
+    case WiFiMode_t::WIFI_OFF:
         end();
         break;
-    case WIFI_AP:
-        _modeESP = WIFI_AP;
+    case WiFiMode_t::WIFI_AP:
+        _modeESP = WiFiMode_t::WIFI_AP;
         break;
-    case WIFI_STA:
-        _modeESP = WIFI_STA;
+    case WiFiMode_t::WIFI_STA:
+        _modeESP = WiFiMode_t::WIFI_STA;
+        break;
+    case WiFiMode_t::WIFI_AP_STA:
+        _modeESP = WiFiMode_t::WIFI_STA;
         break;
     }
 }
@@ -86,7 +89,7 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
 
     _ssid = ssid;
     _password = passphrase;
-    _wifi.setSSID(ssid);
+    _wifi.setSSID(_ssid.c_str());
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
     _wifi.setSTA();
@@ -123,7 +126,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 
     _ssid = ssid;
     _password = passphrase;
-    _wifi.setSSID(ssid);
+    _wifi.setSSID(_ssid.c_str());
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
     _wifi.setAP();
@@ -234,7 +237,7 @@ const char *WiFiClass::getHostname() {
 
     return: one value of wl_status_t enum
 */
-int WiFiClass::disconnect(void) {
+int WiFiClass::disconnect(bool wifi_off __unused) {
     if (_dhcpServer) {
         dhcp_server_deinit(_dhcpServer);
         free(_dhcpServer);
@@ -300,7 +303,7 @@ IPAddress WiFiClass::gatewayIP() {
 
     return: ssid string
 */
-const char* WiFiClass::SSID() {
+const String &WiFiClass::SSID() {
     return _ssid;
 }
 
@@ -420,8 +423,7 @@ int8_t WiFiClass::scanNetworks(bool async) {
     }
 }
 
-int8_t WiFiClass::scanComplete()
-{
+int8_t WiFiClass::scanComplete() {
     if (cyw43_wifi_scan_active(&cyw43_state)) {
         return -1;
     } else {
@@ -429,8 +431,7 @@ int8_t WiFiClass::scanComplete()
     }
 }
 
-void WiFiClass::scanDelete()
-{
+void WiFiClass::scanDelete() {
     _scan.clear();
 }
 

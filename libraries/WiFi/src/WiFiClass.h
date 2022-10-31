@@ -35,7 +35,7 @@
 
 typedef void(*FeedHostProcessorWatchdogFuncPointer)();
 
-typedef enum { WIFI_STA, WIFI_AP, WIFI_OFF } _wifiModeESP; // For ESP8266 compatibility
+typedef enum { WIFI_OFF = 0, WIFI_STA = 1, WIFI_AP = 2, WIFI_AP_STA = 3 } WiFiMode_t; // For ESP8266 compatibility
 
 class WiFiClass {
 public:
@@ -46,7 +46,18 @@ public:
     */
     static const char* firmwareVersion();
 
-    void mode(_wifiModeESP m); // For ESP8266 compatibility
+    void mode(WiFiMode_t m); // For ESP8266 compatibility
+
+    WiFiMode_t getMode() {
+        if (_wifiHWInitted) {
+            if (_apMode) {
+                return WiFiMode_t::WIFI_AP;
+            } else {
+                return WiFiMode_t::WIFI_STA;
+            }
+        }
+        return WiFiMode_t::WIFI_OFF;
+    };
 
     /*  Start WiFi connection for OPEN networks
 
@@ -138,7 +149,7 @@ public:
     }
 
     String softAPSSID() {
-        return String(SSID());
+        return SSID();
     }
 
 
@@ -205,7 +216,7 @@ public:
 
         return: one value of wl_status_t enum
     */
-    int disconnect(void);
+    int disconnect(bool wifi_off = false);
 
     void end(void);
 
@@ -249,7 +260,7 @@ public:
 
         return: ssid string
     */
-    const char* SSID();
+    const String &SSID();
 
     /*
         Return the current BSSID associated with the network.
@@ -371,8 +382,8 @@ public:
 
 private:
     int _timeout = 10000;
-    const char * _ssid = nullptr;
-    const char * _password = nullptr;
+    String _ssid;
+    String _password;
     bool _wifiHWInitted = false;
     bool _apMode = false;
 
@@ -385,7 +396,7 @@ private:
 
     // ESP compat
     bool _calledESP = false; // Should we behave like the ESP8266 for connect?
-    _wifiModeESP _modeESP = WIFI_STA;
+    WiFiMode_t _modeESP = WIFI_STA;
 };
 
 extern WiFiClass WiFi;
