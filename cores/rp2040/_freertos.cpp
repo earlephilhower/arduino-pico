@@ -44,7 +44,7 @@ extern "C" SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m) {
             // Make a new mutex
             SemaphoreHandle_t fm = __freertos_mutex_create();
             if (fm == nullptr)
-              return nullptr;
+                return nullptr;
 
             _map[i].src = m;
             _map[i].dst = fm;
