@@ -325,7 +325,7 @@ public:
     }
 
     const char *getChipID() {
-        static char id[PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = { 0 };
+        static char id[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = { 0 };
         if (!id[0]) {
             pico_get_unique_board_id_string(id, sizeof(id));
         }
