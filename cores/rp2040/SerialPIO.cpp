@@ -259,9 +259,11 @@ void SerialPIO::end() {
     }
     if (_tx != NOPIN) {
         pio_sm_set_enabled(_txPIO, _txSM, false);
+        pio_sm_unclaim(_txPIO, _txSM);
     }
     if (_rx != NOPIN) {
         pio_sm_set_enabled(_rxPIO, _rxSM, false);
+        pio_sm_unclaim(_rxPIO, _rxSM);
         _pioSP[pio_get_index(_rxPIO)][_rxSM] = nullptr;
         // If no more active, disable the IRQ
         auto pioNum = pio_get_index(_rxPIO);
