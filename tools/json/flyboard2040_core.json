@@ -2,7 +2,7 @@
   "build": {
     "arduino": {
       "earlephilhower": {
-        "boot2_source": "boot2_generic_03h_4_padded_checksum.S",
+        "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x2E8A",
         "usb_pid": "0x008A"
       }

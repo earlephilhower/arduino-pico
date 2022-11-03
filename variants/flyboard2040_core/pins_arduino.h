@@ -27,8 +27,8 @@
 #define PIN_SPI1_SS    (13u)
 
 // Wire
-#define PIN_WIRE0_SDA  (6u)
-#define PIN_WIRE0_SCL  (7u)
+#define PIN_WIRE0_SDA  (16u)
+#define PIN_WIRE0_SCL  (17u)
 
 #define PIN_WIRE1_SDA  (14u)
 #define PIN_WIRE1_SCL  (15u)
