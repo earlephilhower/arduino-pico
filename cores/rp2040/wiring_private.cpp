@@ -135,7 +135,7 @@ void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus m
     default:      return;  // ERROR
     }
     noInterrupts();
-    detachInterrupt(pin);
+    _detachInterruptInternal(pin);
     CBInfo cb(callback, param);
     _map.insert({pin, cb});
     gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
