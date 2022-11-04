@@ -26,9 +26,14 @@
 #include "pico/mutex.h"
 #include "_freertos.h"
 
+enum {
+    DebugEnable = 1,
+    FromISR = 1 << 1,
+};
+
 class CoreMutex {
 public:
-    CoreMutex(mutex_t *mutex, bool debugEnable = true);
+    CoreMutex(mutex_t *mutex, uint8_t option = DebugEnable);
     ~CoreMutex();
 
     operator bool() {
@@ -38,4 +43,5 @@ public:
 private:
     mutex_t *_mutex;
     bool _acquired;
+    u_int8_t _option;
 };
