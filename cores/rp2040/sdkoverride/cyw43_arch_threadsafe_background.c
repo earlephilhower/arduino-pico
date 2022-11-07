@@ -6,7 +6,7 @@
 
 // Taken from the Pico-SDK v1.4.0 and hacked by EFP3 to allow overriding the LWIP setup
 
-#include <stdio.h>
+//#include <stdio.h>
 
 #include "pico/cyw43_arch.h"
 #include "pico/mutex.h"
