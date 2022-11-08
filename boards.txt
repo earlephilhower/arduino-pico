@@ -5481,22 +5481,14 @@ adafruit_kb2040picodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLW
 # -----------------------------------
 arduino_nano_connect.name=Arduino Nano RP2040 Connect
 arduino_nano_connect.vid.0=0x2341
-arduino_nano_connect.pid.0=0x0058
+arduino_nano_connect.pid.0=0x005e
 arduino_nano_connect.vid.1=0x2341
-arduino_nano_connect.pid.1=0x0158
+arduino_nano_connect.pid.1=0x805e
 arduino_nano_connect.vid.2=0x2341
-arduino_nano_connect.pid.2=0x4058
+arduino_nano_connect.pid.2=0x015e
 arduino_nano_connect.vid.3=0x2341
-arduino_nano_connect.pid.3=0x4158
-arduino_nano_connect.vid.4=0x2341
-arduino_nano_connect.pid.4=0x8058
-arduino_nano_connect.vid.5=0x2341
-arduino_nano_connect.pid.5=0x8158
-arduino_nano_connect.vid.6=0x2341
-arduino_nano_connect.pid.6=0xc058
-arduino_nano_connect.vid.7=0x2341
-arduino_nano_connect.pid.7=0xc158
-arduino_nano_connect.build.usbpid=-DSERIALUSB_PID=0x0058
+arduino_nano_connect.pid.3=0x025e
+arduino_nano_connect.build.usbpid=-DSERIALUSB_PID=0x005e
 arduino_nano_connect.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connect.build.board=NANO_RP2040_CONNECT
 arduino_nano_connect.build.mcu=cortex-m0plus
@@ -5518,7 +5510,7 @@ arduino_nano_connect.build.ram_length=256k
 arduino_nano_connect.build.debugscript=picoprobe.tcl
 arduino_nano_connect.build.boot2=boot2_w25q080_2_padded_checksum
 arduino_nano_connect.build.vid=0x2341
-arduino_nano_connect.build.pid=0x0058
+arduino_nano_connect.build.pid=0x005e
 arduino_nano_connect.build.usb_manufacturer="Arduino"
 arduino_nano_connect.build.usb_product="Nano RP2040 Connect"
 arduino_nano_connect.menu.flash.16777216_0=16MB (no FS)
@@ -5744,7 +5736,7 @@ arduino_nano_connectpicoprobe.vid.6=0x2341
 arduino_nano_connectpicoprobe.pid.6=0xc004
 arduino_nano_connectpicoprobe.vid.7=0x2341
 arduino_nano_connectpicoprobe.pid.7=0xc104
-arduino_nano_connectpicoprobe.build.usbpid=-DSERIALUSB_PID=0x0058
+arduino_nano_connectpicoprobe.build.usbpid=-DSERIALUSB_PID=0x005e
 arduino_nano_connectpicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connectpicoprobe.build.board=NANO_RP2040_CONNECT
 arduino_nano_connectpicoprobe.build.mcu=cortex-m0plus
@@ -5765,7 +5757,7 @@ arduino_nano_connectpicoprobe.build.ram_length=256k
 arduino_nano_connectpicoprobe.build.debugscript=picoprobe.tcl
 arduino_nano_connectpicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 arduino_nano_connectpicoprobe.build.vid=0x2341
-arduino_nano_connectpicoprobe.build.pid=0x0058
+arduino_nano_connectpicoprobe.build.pid=0x005e
 arduino_nano_connectpicoprobe.build.usb_manufacturer="Arduino"
 arduino_nano_connectpicoprobe.build.usb_product="Nano RP2040 Connect (Picoprobe)"
 arduino_nano_connectpicoprobe.menu.flash.16777216_0=16MB (no FS)
@@ -5991,7 +5983,7 @@ arduino_nano_connectpicodebug.vid.6=0x1209
 arduino_nano_connectpicodebug.pid.6=0xe488
 arduino_nano_connectpicodebug.vid.7=0x1209
 arduino_nano_connectpicodebug.pid.7=0xe588
-arduino_nano_connectpicodebug.build.usbpid=-DSERIALUSB_PID=0x0058
+arduino_nano_connectpicodebug.build.usbpid=-DSERIALUSB_PID=0x005e
 arduino_nano_connectpicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connectpicodebug.build.board=NANO_RP2040_CONNECT
 arduino_nano_connectpicodebug.build.mcu=cortex-m0plus
@@ -6012,7 +6004,7 @@ arduino_nano_connectpicodebug.build.ram_length=240k
 arduino_nano_connectpicodebug.build.debugscript=picodebug.tcl
 arduino_nano_connectpicodebug.build.boot2=boot2_w25q080_2_padded_checksum
 arduino_nano_connectpicodebug.build.vid=0x2341
-arduino_nano_connectpicodebug.build.pid=0x0058
+arduino_nano_connectpicodebug.build.pid=0x005e
 arduino_nano_connectpicodebug.build.usb_manufacturer="Arduino"
 arduino_nano_connectpicodebug.build.usb_product="Nano RP2040 Connect (pico-debug)"
 arduino_nano_connectpicodebug.menu.flash.16777216_0=16MB (no FS)
