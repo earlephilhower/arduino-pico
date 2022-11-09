@@ -110,15 +110,24 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("# %s" % (prettyname))
     print("# -----------------------------------")
     print("%s.name=%s" % (name, prettyname))
-    usb = 0;
-    for kb in [ "0", "0x8000" ]:
-        for ms in [ "0", "0x4000" ]:
-            for jy in [ "0", "0x0100" ]:
-                thispid = int(pidtouse, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
-                print("%s.vid.%d=%s" % (name, usb, vidtouse))
-                print("%s.pid.%d=0x%04x" % (name, usb, thispid))
-                usb = usb + 1
-    print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid))
+    usb = 0
+    if type(pidtouse) == list:
+        for tp in pid:
+            print("%s.vid.%d=%s" % (name, usb, vidtouse))
+            print("%s.pid.%d=0x%04x" % (name, usb, int(tp, 16)))
+            usb = usb + 1
+    else:
+        for kb in [ "0", "0x8000" ]:
+            for ms in [ "0", "0x4000" ]:
+                for jy in [ "0", "0x0100" ]:
+                    thispid = int(pidtouse, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
+                    print("%s.vid.%d=%s" % (name, usb, vidtouse))
+                    print("%s.pid.%d=0x%04x" % (name, usb, thispid))
+                    usb = usb + 1
+    if type(pid) == list:
+        print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid[0]))
+    else:
+        print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
     print("%s.build.mcu=cortex-m0plus" % (name))
@@ -141,7 +150,10 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("%s.build.debugscript=%s" % (name, dbg))
     print("%s.build.boot2=%s" % (name, boot2))
     print("%s.build.vid=%s" % (name, vid))
-    print("%s.build.pid=%s" % (name, pid))
+    if type(pid) == list:
+        print("%s.build.pid=%s" % (name, pid[0]))
+    else:
+        print("%s.build.pid=%s" % (name, pid))
     print('%s.build.usb_manufacturer="%s"' % (name, vendor_name))
     print('%s.build.usb_product="%s"' % (name, product_name))
     if extra != None:
@@ -221,6 +233,8 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
     pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
 def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra):
+    if type(pid) == list:
+        pid = pid[0]
     if extra != None:
         m_extra = ' '
         for m_item in extra:
@@ -321,7 +335,7 @@ MakeBoard("adafruit_macropad2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8
 MakeBoard("adafruit_kb2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 
 # Arduino
-MakeBoard("arduino_nano_connect", "Arduino", "Nano RP2040 Connect", "0x2341", "0x0058", 250, "NANO_RP2040_CONNECT", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("arduino_nano_connect", "Arduino", "Nano RP2040 Connect", "0x2341", ["0x005e", "0x805e", "0x015e", "0x025e"] , 250, "NANO_RP2040_CONNECT", 16, "boot2_w25q080_2_padded_checksum")
 
 # BridgeTek
 MakeBoard("bridgetek_idm2040-7a", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040-7A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
@@ -337,7 +351,7 @@ MakeBoard("datanoisetv_picoadk", "DatanoiseTV", "PicoADK", "0x2e8a", "0x000a", 2
 MakeBoard("degz_mizu", "Degz", "Mizu", "0x2e8a", "0x000a", 250, "DEGZ_MIZU", 8, "boot2_generic_03h_4_padded_checksum")
 
 # DeRuiLab
-MakeBoard("flyboard2040_core", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a", 500, "FLYBOARD2040_CORE", 4, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("flyboard2040_core", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a", 500, "FLYBOARD2040_CORE", 4, "boot2_w25q080_2_padded_checksum")
 
 # DFRobot
 MakeBoard("dfrobot_beetle_rp2040", "DFRobot", "Beetle RP2040", "0x3343", "0x4253", 250, "DFROBOT_BEETLE_RP2040", 2, "boot2_w25q080_2_padded_checksum")

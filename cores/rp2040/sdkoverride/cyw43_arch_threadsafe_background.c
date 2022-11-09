@@ -6,7 +6,7 @@
 
 // Taken from the Pico-SDK v1.4.0 and hacked by EFP3 to allow overriding the LWIP setup
 
-#include <stdio.h>
+//#include <stdio.h>
 
 #include "pico/cyw43_arch.h"
 #include "pico/mutex.h"
@@ -145,7 +145,7 @@ static void gpio_irq_handler(void) {
 static void low_priority_irq_handler(void) {
     assert(cyw43_core_num == get_core_num());
     if (recursive_mutex_try_enter(&cyw43_mutex, NULL)) {
-        if (recursive_mutex_enter_count(&cyw43_mutex) != 1) {
+        if (__inLWIP || (recursive_mutex_enter_count(&cyw43_mutex) != 1)) {
             low_priority_irq_missed = true;
             CYW43_STAT_INC(PENDSV_DISABLED_COUNT);
         } else {
