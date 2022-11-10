@@ -217,10 +217,10 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
         BuildExceptions(n)
         BuildDebugPort(n)
         BuildDebugLevel(n)
-        if a == "picodebug":
-            BuildWithoutUSBStack(n)
-        else:
+        if a != "picodebug":
             BuildUSBStack(n)
+        if a != "picoprobe":
+            BuildWithoutUSBStack(n)
         if name == "rpipicow":
             BuildCountry(n)
         BuildIPStack(n)
