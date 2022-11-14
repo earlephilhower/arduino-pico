@@ -59,7 +59,7 @@ volatile bool __usbInitted = false;
 
 static void __core0(void *params) {
     (void) params;
-#ifndef NO_USB
+#if !defined(NO_USB) && !defined(USE_TINYUSB)
     while (!__usbInitted) {
         delay(1);
     }
@@ -81,7 +81,7 @@ static void __core0(void *params) {
 
 static void __core1(void *params) {
     (void) params;
-#ifndef NO_USB
+#if !defined(NO_USB) && !defined(USE_TINYUSB)
     while (!__usbInitted) {
         delay(1);
     }
