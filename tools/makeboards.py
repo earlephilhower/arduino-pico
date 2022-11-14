@@ -70,7 +70,7 @@ def BuildBoot(name):
             ("IS25LP080 QSPI /2", "boot2_is25lp080_2_padded_checksum"), ("IS25LP080 QSPI /4", "boot2_is25lp080_4_padded_checksum"),
             ("W25Q080 QSPI /2", "boot2_w25q080_2_padded_checksum"), ("W25Q080 QSPI /4", "boot2_w25q080_4_padded_checksum"),
             ("W25X10CL QSPI /2", "boot2_w25x10cl_2_padded_checksum"), ("W25X10CL QSPI /4", "boot2_w25x10cl_4_padded_checksum"),
-            ("W25Q64JV QSPI /4", "boot2_w25q64jv_4_padded_checksum") ]:
+            ("W25Q64JV QSPI /4", "boot2_w25q64jv_4_padded_checksum"), ("W25Q16JVxQ QSPI /4", "boot2_w25q16jvxq_4_padded_checksum") ]:
         print("%s.menu.boot2.%s=%s" % (name, l[1], l[0]))
         print("%s.menu.boot2.%s.build.boot2=%s" % (name, l[1], l[1]))
 
