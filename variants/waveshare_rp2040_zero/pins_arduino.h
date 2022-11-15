@@ -59,8 +59,8 @@
 #define PIN_WIRE1_SDA  (26u)
 #define PIN_WIRE1_SCL  (27u)
   
-#define SERIAL_HOWMANY (1u)
+#define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (2u)
-#define WIRE_HOWMANY   (1u)
+#define WIRE_HOWMANY   (2u)
 
 #include "../generic/common.h"
