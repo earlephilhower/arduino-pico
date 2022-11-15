@@ -9,7 +9,7 @@
 // https://www.mischianti.org/wp-content/uploads/2022/09/Waveshare-rp2040-zero-Raspberry-Pi-Pico-alternative-pinout.jpg
 
 /*
-                Pin#			  Pin#
+                Pin#              Pin#
                     ___(_____)___
               5v 1 |   *USB C*   | 23 GPIO0
              GND 2 |             | 22 GPIO1
@@ -20,7 +20,7 @@
           GPIO26 7 |             | 17 GPIO6
           GPIO15 8 |             | 16 GPIO7
           GPIO14 9 |__|_|_|_|_|__| 15 GPIO8
-                      1 1 1 1 1            
+                      1 1 1 1 1
                       0 1 2 3 4
 
                     Pin10 = GPIO13
