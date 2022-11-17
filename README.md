@@ -23,6 +23,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * BridgeTek IDM2040-7A
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
+* DatanoiseTV PicoADK+
 * Degz Mizu
 * DeRuiLab FlyBoard2040 Core
 * DFRobot Beetle RP2040
