@@ -4,7 +4,7 @@
       "earlephilhower": {
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
         "usb_vid": "0x239A",
-        "usb_pid": "0x80F7"
+        "usb_pid": "0x8121"
       }
     },
     "core": "earlephilhower",
@@ -18,7 +18,7 @@
       ],
       [
         "0x239A",
-        "0x80F7"
+        "0x8121"
       ]
     ],
     "mcu": "rp2040",

@@ -1905,7 +1905,7 @@ adafruit_featherpicodebug.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DL
 # -----------------------------------
 adafruit_feather_scorpio.name=Adafruit Feather RP2040 SCORPIO
 adafruit_feather_scorpio.vid.0=0x239a
-adafruit_feather_scorpio.pid.0=0x80f7
+adafruit_feather_scorpio.pid.0=0x8121
 adafruit_feather_scorpio.vid.1=0x239a
 adafruit_feather_scorpio.pid.1=0x81f7
 adafruit_feather_scorpio.vid.2=0x239a
@@ -1913,14 +1913,14 @@ adafruit_feather_scorpio.pid.2=0xc0f7
 adafruit_feather_scorpio.vid.3=0x239a
 adafruit_feather_scorpio.pid.3=0xc1f7
 adafruit_feather_scorpio.vid.4=0x239a
-adafruit_feather_scorpio.pid.4=0x80f7
+adafruit_feather_scorpio.pid.4=0x8121
 adafruit_feather_scorpio.vid.5=0x239a
 adafruit_feather_scorpio.pid.5=0x81f7
 adafruit_feather_scorpio.vid.6=0x239a
 adafruit_feather_scorpio.pid.6=0xc0f7
 adafruit_feather_scorpio.vid.7=0x239a
 adafruit_feather_scorpio.pid.7=0xc1f7
-adafruit_feather_scorpio.build.usbpid=-DSERIALUSB_PID=0x80f7
+adafruit_feather_scorpio.build.usbpid=-DSERIALUSB_PID=0x8121
 adafruit_feather_scorpio.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_scorpio.build.board=ADAFRUIT_FEATHER_RP2040_SCORPIO
 adafruit_feather_scorpio.build.mcu=cortex-m0plus
@@ -1942,7 +1942,7 @@ adafruit_feather_scorpio.build.ram_length=256k
 adafruit_feather_scorpio.build.debugscript=picoprobe.tcl
 adafruit_feather_scorpio.build.boot2=boot2_w25q080_2_padded_checksum
 adafruit_feather_scorpio.build.vid=0x239a
-adafruit_feather_scorpio.build.pid=0x80f7
+adafruit_feather_scorpio.build.pid=0x8121
 adafruit_feather_scorpio.build.usb_manufacturer="Adafruit"
 adafruit_feather_scorpio.build.usb_product="Feather RP2040 SCORPIO"
 adafruit_feather_scorpio.menu.flash.8388608_0=8MB (no FS)
@@ -2120,7 +2120,7 @@ adafruit_feather_scorpiopicoprobe.vid.6=0x239a
 adafruit_feather_scorpiopicoprobe.pid.6=0xc004
 adafruit_feather_scorpiopicoprobe.vid.7=0x239a
 adafruit_feather_scorpiopicoprobe.pid.7=0xc104
-adafruit_feather_scorpiopicoprobe.build.usbpid=-DSERIALUSB_PID=0x80f7
+adafruit_feather_scorpiopicoprobe.build.usbpid=-DSERIALUSB_PID=0x8121
 adafruit_feather_scorpiopicoprobe.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_scorpiopicoprobe.build.board=ADAFRUIT_FEATHER_RP2040_SCORPIO
 adafruit_feather_scorpiopicoprobe.build.mcu=cortex-m0plus
@@ -2141,7 +2141,7 @@ adafruit_feather_scorpiopicoprobe.build.ram_length=256k
 adafruit_feather_scorpiopicoprobe.build.debugscript=picoprobe.tcl
 adafruit_feather_scorpiopicoprobe.build.boot2=boot2_w25q080_2_padded_checksum
 adafruit_feather_scorpiopicoprobe.build.vid=0x239a
-adafruit_feather_scorpiopicoprobe.build.pid=0x80f7
+adafruit_feather_scorpiopicoprobe.build.pid=0x8121
 adafruit_feather_scorpiopicoprobe.build.usb_manufacturer="Adafruit"
 adafruit_feather_scorpiopicoprobe.build.usb_product="Feather RP2040 SCORPIO (Picoprobe)"
 adafruit_feather_scorpiopicoprobe.menu.flash.8388608_0=8MB (no FS)
@@ -2319,7 +2319,7 @@ adafruit_feather_scorpiopicodebug.vid.6=0x1209
 adafruit_feather_scorpiopicodebug.pid.6=0xe488
 adafruit_feather_scorpiopicodebug.vid.7=0x1209
 adafruit_feather_scorpiopicodebug.pid.7=0xe588
-adafruit_feather_scorpiopicodebug.build.usbpid=-DSERIALUSB_PID=0x80f7
+adafruit_feather_scorpiopicodebug.build.usbpid=-DSERIALUSB_PID=0x8121
 adafruit_feather_scorpiopicodebug.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_scorpiopicodebug.build.board=ADAFRUIT_FEATHER_RP2040_SCORPIO
 adafruit_feather_scorpiopicodebug.build.mcu=cortex-m0plus
@@ -2340,7 +2340,7 @@ adafruit_feather_scorpiopicodebug.build.ram_length=240k
 adafruit_feather_scorpiopicodebug.build.debugscript=picodebug.tcl
 adafruit_feather_scorpiopicodebug.build.boot2=boot2_w25q080_2_padded_checksum
 adafruit_feather_scorpiopicodebug.build.vid=0x239a
-adafruit_feather_scorpiopicodebug.build.pid=0x80f7
+adafruit_feather_scorpiopicodebug.build.pid=0x8121
 adafruit_feather_scorpiopicodebug.build.usb_manufacturer="Adafruit"
 adafruit_feather_scorpiopicodebug.build.usb_product="Feather RP2040 SCORPIO (pico-debug)"
 adafruit_feather_scorpiopicodebug.menu.flash.8388608_0=8MB (no FS)
