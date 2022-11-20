@@ -42,13 +42,13 @@ public:
 #endif
 
 #ifdef PIN_I2S_DOUT
-        if(_isOutput == OUTPUT) {
+        if (_isOutput == OUTPUT) {
             _pinDOUT = PIN_I2S_DOUT;
         }
 #endif
 
 #ifdef PIN_I2S_DIN
-        if(_isOutput == INPUT) {
+        if (_isOutput == INPUT) {
             _pinDOUT = PIN_I2S_DIN;
         }
 #endif
