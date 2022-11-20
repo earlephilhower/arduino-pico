@@ -37,20 +37,21 @@ public:
 
     bool begin(long sampleRate) {
         setFrequency(sampleRate);
-        #ifdef PIN_I2S_BCLK
+#ifdef PIN_I2S_BCLK
         _pinBCLK = PIN_I2S_BCLK;
-        #endif
+#endif
 
-        #ifdef PIN_I2S_DOUT
+#ifdef PIN_I2S_DOUT
         if(_isOutput == OUTPUT) {
             _pinDOUT = PIN_I2S_DOUT;
         }
-        #endif
-        #ifdef PIN_I2S_DIN
+#endif
+
+#ifdef PIN_I2S_DIN
         if(_isOutput == INPUT) {
             _pinDOUT = PIN_I2S_DIN;
         }
-        #endif
+#endif
         return begin();
     }
 
