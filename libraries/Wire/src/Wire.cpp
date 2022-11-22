@@ -141,7 +141,22 @@ void TwoWire::begin(uint8_t addr) {
 }
 
 void TwoWire::onIRQ() {
-    if (_i2c->hw->intr_stat & (1 << 12)) {
+    // Make a local copy of the IRQ status up front.  If it changes while we're
+    // running the IRQ callback will fire again after returning.  Avoids potential
+    // race conditions
+    volatile uint32_t irqstat = _i2c->hw->intr_stat;
+
+    // First, pull off any data available
+    if (irqstat & (1 << 2)) {
+        // RX_FULL
+        if (_slaveStartDet && (_buffLen < (int)sizeof(_buff))) {
+            _buff[_buffLen++] = _i2c->hw->data_cmd & 0xff;
+        } else {
+            _i2c->hw->data_cmd;
+        }
+    }
+    // RESTART_DET
+    if (irqstat & (1 << 12)) {
         if (_onReceiveCallback && _buffLen) {
             _onReceiveCallback(_buffLen);
         }
@@ -150,13 +165,15 @@ void TwoWire::onIRQ() {
         _slaveStartDet = false;
         _i2c->hw->clr_restart_det;
     }
-    if (_i2c->hw->intr_stat & (1 << 10)) {
+    // START_DET
+    if (irqstat & (1 << 10)) {
         _buffLen = 0;
         _buffOff = 0;
         _slaveStartDet = true;
         _i2c->hw->clr_start_det;
     }
-    if (_i2c->hw->intr_stat & (1 << 9)) {
+    // STOP_DET
+    if (irqstat & (1 << 9)) {
         if (_onReceiveCallback && _buffLen) {
             _onReceiveCallback(_buffLen);
         }
@@ -165,24 +182,16 @@ void TwoWire::onIRQ() {
         _slaveStartDet = false;
         _i2c->hw->clr_stop_det;
     }
-    if (_i2c->hw->intr_stat & (1 << 6)) {
-        // TX_ABRT
+    // TX_ABRT
+    if (irqstat & (1 << 6)) {
         _i2c->hw->clr_tx_abrt;
     }
-    if (_i2c->hw->intr_stat & (1 << 5)) {
-        // RD_REQ
+    // RD_REQ
+    if (irqstat & (1 << 5)) {
         if (_onRequestCallback) {
             _onRequestCallback();
         }
         _i2c->hw->clr_rd_req;
-    }
-    if (_i2c->hw->intr_stat & (1 << 2)) {
-        // RX_FULL
-        if (_slaveStartDet && (_buffLen < (int)sizeof(_buff))) {
-            _buff[_buffLen++] = _i2c->hw->data_cmd & 0xff;
-        } else {
-            _i2c->hw->data_cmd;
-        }
     }
 }
 
