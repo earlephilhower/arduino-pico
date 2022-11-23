@@ -27,11 +27,26 @@ I2S::I2S(PinMode direction) {
     _running = false;
     _bps = 16;
     _writtenHalf = false;
+    _isOutput = direction == OUTPUT;
     _pinBCLK = 26;
     _pinDOUT = 28;
+#ifdef PIN_I2S_BCLK
+    _pinBCLK = PIN_I2S_BCLK;
+#endif
+
+#ifdef PIN_I2S_DOUT
+    if (_isOutput) {
+        _pinDOUT = PIN_I2S_DOUT;
+    }
+#endif
+
+#ifdef PIN_I2S_DIN
+    if (!_isOutput) {
+        _pinDOUT = PIN_I2S_DIN;
+    }
+#endif
     _freq = 48000;
     _arb = nullptr;
-    _isOutput = direction == OUTPUT;
     _cb = nullptr;
     _buffers = 8;
     _bufferWords = 16;
