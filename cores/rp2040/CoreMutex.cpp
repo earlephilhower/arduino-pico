@@ -24,17 +24,22 @@
 #include "Arduino.h"
 #include "CoreMutex.h"
 
-CoreMutex::CoreMutex(mutex_t *mutex, bool debugEnable) {
+CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _mutex = mutex;
     _acquired = false;
+    _option = option;
     if (__isFreeRTOS) {
         auto m = __get_freertos_mutex_for_ptr(mutex);
-        __freertos_mutex_take(m);
+        if (_option & FromISR) {
+            __freertos_mutex_take_from_isr(m);
+        } else {
+            __freertos_mutex_take(m);
+        }
     } else {
         uint32_t owner;
         if (!mutex_try_enter(_mutex, &owner)) {
             if (owner == get_core_num()) { // Deadlock!
-                if (debugEnable) {
+                if (_option & DebugEnable) {
                     DEBUGCORE("CoreMutex - Deadlock detected!\n");
                 }
                 return;
@@ -49,7 +54,11 @@ CoreMutex::~CoreMutex() {
     if (_acquired) {
         if (__isFreeRTOS) {
             auto m = __get_freertos_mutex_for_ptr(_mutex);
-            __freertos_mutex_give(m);
+            if (_option & FromISR) {
+                __freertos_mutex_give_from_isr(m);
+            } else {
+                __freertos_mutex_give(m);
+            }
         } else {
             mutex_exit(_mutex);
         }

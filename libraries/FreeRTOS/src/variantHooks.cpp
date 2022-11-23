@@ -414,12 +414,20 @@ extern "C" {
         xSemaphoreTake(mtx, portMAX_DELAY);
     }
 
+    void __freertos_mutex_take_from_isr(SemaphoreHandle_t mtx) {
+        xSemaphoreTakeFromISR(mtx, NULL);
+    }
+
     int __freertos_mutex_try_take(SemaphoreHandle_t mtx) {
         return xSemaphoreTake(mtx, 0);
     }
 
     void __freertos_mutex_give(SemaphoreHandle_t mtx) {
         xSemaphoreGive(mtx);
+    }
+
+    void __freertos_mutex_give_from_isr(SemaphoreHandle_t mtx) {
+        xSemaphoreGiveFromISR(mtx, NULL);
     }
 
     void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
