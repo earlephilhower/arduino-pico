@@ -35,13 +35,13 @@ I2S::I2S(PinMode direction) {
 #endif
 
 #ifdef PIN_I2S_DOUT
-    if (_isOutput == OUTPUT) {
+    if (_isOutput) {
         _pinDOUT = PIN_I2S_DOUT;
     }
 #endif
 
 #ifdef PIN_I2S_DIN
-    if (_isOutput == INPUT) {
+    if (!_isOutput) {
         _pinDOUT = PIN_I2S_DIN;
     }
 #endif
