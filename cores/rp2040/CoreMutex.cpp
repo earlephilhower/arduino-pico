@@ -55,7 +55,7 @@ CoreMutex::~CoreMutex() {
         if (__isFreeRTOS) {
             auto m = __get_freertos_mutex_for_ptr(_mutex);
             if (_option & FromISR) {
-                 __freertos_mutex_give_from_isr(m);
+                __freertos_mutex_give_from_isr(m);
             } else {
                 __freertos_mutex_give(m);
             }
