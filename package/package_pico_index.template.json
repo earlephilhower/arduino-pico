@@ -27,6 +27,9 @@
                      "name": "Adafruit Feather RP2040"
                   },
                   {
+                     "name": "Adafruit Feather RP2040 SCORPIO"
+                  },
+                  {
                      "name": "Adafruit ItsyBitsy RP2040"
                   },
                   {
@@ -124,6 +127,9 @@
                   },
                   {
                      "name": "Seeed XIAO RP2040"
+                  },
+                  {
+                     "name": "Waveshare RP2040 Zero"
                   },
                   {
                      "name": "WIZnet W5100S-EVB-Pico"

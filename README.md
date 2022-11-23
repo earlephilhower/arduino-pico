@@ -13,6 +13,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
 * Adafruit Feather RP2040
+* Adafruit Feather RP2040 SCORPIO
 * Adafruit ItsyBitsy RP2040
 * Adafruit KB2040
 * Adafruit Macropad RP2040
@@ -45,6 +46,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * SparkFun ProMicro RP2040
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
+* Waveshare RP2040 Zero
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
