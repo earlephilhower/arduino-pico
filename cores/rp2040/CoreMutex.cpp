@@ -30,10 +30,11 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _option = option;
     if (__isFreeRTOS) {
         auto m = __get_freertos_mutex_for_ptr(mutex);
-        if (_option & FromISR)
+        if (_option & FromISR) {
             __freertos_mutex_take_from_isr(m);
-        else
+        } else {
             __freertos_mutex_take(m);
+        }
     } else {
         uint32_t owner;
         if (!mutex_try_enter(_mutex, &owner)) {
@@ -53,7 +54,7 @@ CoreMutex::~CoreMutex() {
     if (_acquired) {
         if (__isFreeRTOS) {
             auto m = __get_freertos_mutex_for_ptr(_mutex);
-            if(_option & FromISR) {
+            if (_option & FromISR) {
                  __freertos_mutex_give_from_isr(m);
             } else {
                 __freertos_mutex_give(m);
