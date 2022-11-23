@@ -38,7 +38,7 @@ void rp2040.reboot()
 Forces a hardware reboot of the Pico.
 
 Hardware Watchdog
-_________________
+-----------------
 
 void rp2040.wdt_begin(uint32_t delay_ms)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
