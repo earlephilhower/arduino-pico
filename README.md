@@ -13,6 +13,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
 * Adafruit Feather RP2040
+* Adafruit Feather RP2040 SCORPIO
 * Adafruit ItsyBitsy RP2040
 * Adafruit KB2040
 * Adafruit Macropad RP2040
