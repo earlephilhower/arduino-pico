@@ -54,7 +54,7 @@ void EEPROMClass::begin(size_t size) {
     } else if (!_data) {
         _data = new uint8_t[size];
     }
-    
+
     _size = size;
 
     memcpy(_data, _sector, _size);
