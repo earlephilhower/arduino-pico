@@ -125,7 +125,6 @@ extern "C" int main() {
     }
 #endif
 
-#ifndef NO_USB
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             rp2040.fifo.begin(2);
@@ -134,7 +133,6 @@ extern "C" int main() {
         }
         rp2040.fifo.registerCore();
     }
-#endif
 
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
