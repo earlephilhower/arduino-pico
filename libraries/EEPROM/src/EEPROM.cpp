@@ -45,7 +45,7 @@ void EEPROMClass::begin(size_t size) {
         size = 4096;
     }
 
-    _size = (size + 255) & (~255);  // Flash writes limited to 256 byte boundaries
+    size = (size + 255) & (~255);  // Flash writes limited to 256 byte boundaries
 
     // In case begin() is called a 2nd+ time, don't reallocate if size is the same
     if (_data && size != _size) {
@@ -54,6 +54,8 @@ void EEPROMClass::begin(size_t size) {
     } else if (!_data) {
         _data = new uint8_t[size];
     }
+    
+    _size = size;
 
     memcpy(_data, _sector, _size);
 
