@@ -132,6 +132,21 @@
                      "name": "Waveshare RP2040 Zero"
                   },
                   {
+                     "name": "Waveshare RP2040 One"
+                  },
+                  {
+                     "name": "Waveshare RP2040 Plus 4MB"
+                  },
+                  {
+                     "name": "Waveshare RP2040 Plus 16MB"
+                  },
+                  {
+                     "name": "Waveshare RP2040 LCD 0.96"
+                  },
+                  {
+                     "name": "Waveshare RP2040 LCD 1.28"
+                  },
+                  {
                      "name": "WIZnet W5100S-EVB-Pico"
                   },
                   {
