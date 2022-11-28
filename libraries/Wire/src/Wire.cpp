@@ -140,37 +140,49 @@ void TwoWire::begin(uint8_t addr) {
     _running = true;
 }
 
+// See: https://github.com/earlephilhower/arduino-pico/issues/979#issuecomment-1328237128
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
 void TwoWire::onIRQ() {
     // Make a local copy of the IRQ status up front.  If it changes while we're
     // running the IRQ callback will fire again after returning.  Avoids potential
     // race conditions
-    volatile uint32_t irqstat = _i2c->hw->intr_stat;
+    uint32_t irqstat = _i2c->hw->intr_stat;
+    if (irqstat == 0) {
+        return;
+    }
 
     // First, pull off any data available
     if (irqstat & (1 << 2)) {
         // RX_FULL
-        if (_slaveStartDet && (_buffLen < (int)sizeof(_buff))) {
+        if (_buffLen < (int)sizeof(_buff)) {
             _buff[_buffLen++] = _i2c->hw->data_cmd & 0xff;
         } else {
             _i2c->hw->data_cmd;
         }
+    }
+    // RD_REQ
+    if (irqstat & (1 << 5)) {
+        if (_onRequestCallback) {
+            _onRequestCallback();
+        }
+        _i2c->hw->clr_rd_req;
+    }
+    // TX_ABRT
+    if (irqstat & (1 << 6)) {
+        _i2c->hw->clr_tx_abrt;
+    }
+    // START_DET
+    if (irqstat & (1 << 10)) {
+        _slaveStartDet = true;
+        _i2c->hw->clr_start_det;
     }
     // RESTART_DET
     if (irqstat & (1 << 12)) {
         if (_onReceiveCallback && _buffLen) {
             _onReceiveCallback(_buffLen);
         }
-        _buffLen = 0;
-        _buffOff = 0;
-        _slaveStartDet = false;
         _i2c->hw->clr_restart_det;
-    }
-    // START_DET
-    if (irqstat & (1 << 10)) {
-        _buffLen = 0;
-        _buffOff = 0;
-        _slaveStartDet = true;
-        _i2c->hw->clr_start_det;
     }
     // STOP_DET
     if (irqstat & (1 << 9)) {
@@ -182,18 +194,8 @@ void TwoWire::onIRQ() {
         _slaveStartDet = false;
         _i2c->hw->clr_stop_det;
     }
-    // TX_ABRT
-    if (irqstat & (1 << 6)) {
-        _i2c->hw->clr_tx_abrt;
-    }
-    // RD_REQ
-    if (irqstat & (1 << 5)) {
-        if (_onRequestCallback) {
-            _onRequestCallback();
-        }
-        _i2c->hw->clr_rd_req;
-    }
 }
+#pragma GCC pop_options
 
 void TwoWire::end() {
     if (!_running) {
