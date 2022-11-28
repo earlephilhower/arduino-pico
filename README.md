@@ -47,6 +47,10 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
 * Waveshare RP2040 Zero
+* Waveshare RP2040 One
+* Waveshare RP2040 Plus
+* Waveshare RP2040 LCD 0.96
+* Waveshare RP2040 LCD 1.28
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
