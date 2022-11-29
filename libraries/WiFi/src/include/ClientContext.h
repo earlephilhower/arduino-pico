@@ -374,12 +374,22 @@ public:
             return 0;
         }
         size_t sent = 0;
+        uint8_t buff[128];
         while (stream.available()) {
-            char b;
-            b = stream.read();
-            if (write(&b, 1)) {
-                sent ++;
+            // Stream only lets you read 1 byte at a time, so buffer in local copy
+            size_t i;
+            for (i = 0; (i < sizeof(buff)) && stream.available(); i++) {
+                buff[i] = stream.read();
+            }
+            if (i) {
+                // Send as a single packet
+                int len = write((const char *)buff, i);
+                sent += len;
+                if (len != (int)i) {
+                    break; // Write error...
+                }
             } else {
+                // Out of data...
                 break;
             }
         }
