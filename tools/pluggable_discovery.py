@@ -54,6 +54,7 @@ def scanner():
     scannerGo = True
 
 def main():
+    global scannerGo
     while True:
         cmdline = input()
         cmd = cmdline.split()[0]
