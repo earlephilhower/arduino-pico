@@ -1,4 +1,4 @@
-// Simple logger with USB uplaod to PC
+// Simple logger with USB upload to PC
 // Uses SingleFileDrive to export an onboard LittleFS file to the computer
 // The PC can open/copy the file, and then the user can delete it to restart
 
