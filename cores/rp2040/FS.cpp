@@ -192,13 +192,12 @@ File File::openNextFile() {
 String File::readString() {
     String ret;
     ret.reserve(size() - position());
-    char temp[256 + 1];
-    int countRead = readBytes(temp, sizeof(temp) - 1);
-    while (countRead > 0) {
-        temp[countRead] = 0;
-        ret += temp;
-        countRead = readBytes(temp, sizeof(temp) - 1);
-    }
+    uint8_t temp[256];
+    int countRead;
+    do {
+        countRead = read(temp, sizeof(temp));
+        ret.concat(temp, countRead);
+    } while (countRead > 0);
     return ret;
 }
 
