@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S \
+for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleFileDrive \
            ./libraries/LittleFS/src ./libraries/LittleFS/examples \
            ./libraries/rp2040 ./libraries/SD ./libraries/ESP8266SdFat \
            ./libraries/Servo ./libraries/SPI ./libraries/Wire ./libraries/PDM \

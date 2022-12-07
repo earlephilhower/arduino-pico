@@ -68,9 +68,11 @@ static int __usb_task_irq;
 #define USBD_STR_SERIAL (0x03)
 #define USBD_STR_CDC (0x04)
 
-
 #define EPNUM_HID   0x83
 
+#define USBD_MSC_EPOUT 0x03
+#define USBD_MSC_EPIN 0x84
+#define USBD_MSC_EPSIZE 64
 
 const uint8_t *tud_descriptor_device_cb(void) {
     static tusb_desc_device_t usbd_desc_device = {
@@ -89,7 +91,7 @@ const uint8_t *tud_descriptor_device_cb(void) {
         .iSerialNumber = USBD_STR_SERIAL,
         .bNumConfigurations = 1
     };
-    if (__USBInstallSerial && !__USBInstallKeyboard && !__USBInstallMouse && !__USBInstallJoystick) {
+    if (__USBInstallSerial && !__USBInstallKeyboard && !__USBInstallMouse && !__USBInstallJoystick && !__USBInstallMassStorage) {
         // Can use as-is, this is the default USB case
         return (const uint8_t *)&usbd_desc_device;
     }
@@ -102,6 +104,9 @@ const uint8_t *tud_descriptor_device_cb(void) {
     }
     if (__USBInstallJoystick) {
         usbd_desc_device.idProduct |= 0x0100;
+    }
+    if (__USBInstallMassStorage) {
+        usbd_desc_device.idProduct ^= 0x2000;
     }
     // Set the device class to 0 to indicate multiple device classes
     usbd_desc_device.bDeviceClass = 0;
@@ -223,7 +228,7 @@ void __SetupUSBDescriptor() {
     if (!usbd_desc_cfg) {
         bool hasHID = __USBInstallKeyboard || __USBInstallMouse || __USBInstallJoystick;
 
-        uint8_t interface_count = (__USBInstallSerial ? 2 : 0) + (hasHID ? 1 : 0);
+        uint8_t interface_count = (__USBInstallSerial ? 2 : 0) + (hasHID ? 1 : 0) + (__USBInstallMassStorage ? 1 : 0);
 
         uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
@@ -238,7 +243,12 @@ void __SetupUSBDescriptor() {
             TUD_HID_DESCRIPTOR(hid_itf, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 10)
         };
 
-        int usbd_desc_len = TUD_CONFIG_DESC_LEN + (__USBInstallSerial ? sizeof(cdc_desc) : 0) + (hasHID ? sizeof(hid_desc) : 0);
+        uint8_t msd_itf = interface_count - 1;
+        uint8_t msd_desc[TUD_MSC_DESC_LEN] = {
+            TUD_MSC_DESCRIPTOR(msd_itf, 0, USBD_MSC_EPOUT, USBD_MSC_EPIN, USBD_MSC_EPSIZE)
+        };
+
+        int usbd_desc_len = TUD_CONFIG_DESC_LEN + (__USBInstallSerial ? sizeof(cdc_desc) : 0) + (hasHID ? sizeof(hid_desc) : 0) + (__USBInstallMassStorage ? sizeof(msd_desc) : 0);
 
         uint8_t tud_cfg_desc[TUD_CONFIG_DESC_LEN] = {
             // Config number, interface count, string index, total length, attribute, power in mA
@@ -259,6 +269,10 @@ void __SetupUSBDescriptor() {
             if (hasHID) {
                 memcpy(ptr, hid_desc, sizeof(hid_desc));
                 ptr += sizeof(hid_desc);
+            }
+            if (__USBInstallMassStorage) {
+                memcpy(ptr, msd_desc, sizeof(msd_desc));
+                ptr += sizeof(msd_desc);
             }
         }
     }
@@ -366,5 +380,56 @@ extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_r
     (void) buffer;
     (void) bufsize;
 }
+
+extern "C" int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize) __attribute__((weak));
+extern "C" int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize) {
+    (void) lun;
+    (void) lba;
+    (void) offset;
+    (void) buffer;
+    (void) bufsize;
+    return -1;
+}
+
+extern "C" bool tud_msc_test_unit_ready_cb(uint8_t lun) __attribute__((weak));
+extern "C" bool tud_msc_test_unit_ready_cb(uint8_t lun) {
+    (void) lun;
+    return false;
+}
+
+extern "C" int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize) __attribute__((weak));
+extern "C" int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize) {
+    (void) lun;
+    (void) lba;
+    (void) offset;
+    (void) buffer;
+    (void) bufsize;
+    return -1;
+}
+
+extern "C" int32_t tud_msc_scsi_cb(uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, uint16_t bufsize) __attribute__((weak));
+extern "C" int32_t tud_msc_scsi_cb(uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, uint16_t bufsize) {
+    (void) lun;
+    (void) scsi_cmd;
+    (void) buffer;
+    (void) bufsize;
+    return 0;
+}
+
+extern "C" void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size) __attribute__((weak));
+extern "C" void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size) {
+    (void) lun;
+    *block_count = 0;
+    *block_size = 0;
+}
+
+extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]) __attribute__((weak));
+extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]) {
+    (void) lun;
+    vendor_id[0] = 0;
+    product_id[0] = 0;
+    product_rev[0] = 0;
+}
+
 
 #endif
