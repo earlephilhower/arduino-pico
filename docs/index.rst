@@ -39,6 +39,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
 
+   Single File USB Drive <singlefile>
+
    FreeRTOS SMP (multicore) <freertos>
 
    WiFi (Pico-W Support) <wifi>
