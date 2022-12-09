@@ -390,7 +390,12 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
     // ICR is write-to-clear
     uart_get_hw(_uart)->icr = UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
     while (uart_is_readable(_uart)) {
-        auto val = uart_getc(_uart);
+        uint32_t raw = uart_get_hw(_uart)->dr;
+        if (raw & 0x700) {
+            // Framing, Parity, or Break.  Ignore this bad char
+            continue;
+        }
+        uint8_t val = raw & 0xff;
         auto next_writer = _writer + 1;
         if (next_writer == _fifoSize) {
             next_writer = 0;
