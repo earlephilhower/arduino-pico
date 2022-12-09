@@ -13,7 +13,6 @@ SingleFileDrive	KEYWORD1
 #######################################
 
 singleFileDrive KEYWORD1
-setFile	KEYWORD1
 onDelete	KEYWORD1
 onPlug  KEYWORD1
 onUnplug        KEYWORD1
