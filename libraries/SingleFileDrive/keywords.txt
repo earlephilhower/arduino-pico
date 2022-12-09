@@ -1,0 +1,22 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SingleFileDrive	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+singleFileDrive KEYWORD1
+onDelete	KEYWORD1
+onPlug  KEYWORD1
+onUnplug        KEYWORD1
+
+#######################################
+# Constants (LITERAL1)
+#######################################
