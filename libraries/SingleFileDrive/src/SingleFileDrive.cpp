@@ -53,13 +53,12 @@ void SingleFileDrive::onUnplug(void (*cb)(uint32_t), uint32_t cbData) {
     _cbUnplugData = cbData;
 }
 
-bool SingleFileDrive::begin(const char *localFile, const char *FILENAME, const char *EXT) {
+bool SingleFileDrive::begin(const char *localFile, const char *dosFile) {
     if (_started) {
         return false;
     }
     _localFile = strdup(localFile);
-    _FILENAME = strdup(FILENAME);
-    _EXT = strdup(EXT);
+    _dosFile = strdup(dosFile);
     _started = true;
     return true;
 }
@@ -67,11 +66,9 @@ bool SingleFileDrive::begin(const char *localFile, const char *FILENAME, const c
 void SingleFileDrive::end() {
     _started = false;
     free(_localFile);
-    free(_FILENAME);
-    free(_EXT);
+    free(_dosFile);
     _localFile = nullptr;
-    _FILENAME = nullptr;
-    _EXT = nullptr;
+    _dosFile = nullptr;
 }
 
 void SingleFileDrive::bootSector(char buff[512]) {
@@ -94,6 +91,16 @@ void SingleFileDrive::bootSector(char buff[512]) {
     buff[0x1ff] = 0xff;
 }
 
+static char _toLegalFATChar(char c) {
+    const char *odds = "!#$%&'()-@^_`{}~";
+    c = toupper(c);
+    if (((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'Z')) || strchr(odds, c)) {
+        return c;
+    } else {
+        return '~';
+    }
+}
+
 void SingleFileDrive::directorySector(char buff[512]) {
     const uint8_t lbl[] = {
         0x50, 0x49, 0x43, 0x4f, 0x44, 0x49, 0x53, 0x4b, 0x20, 0x20, 0x20, 0x08, 0x00, 0x00, 0xac, 0x56,
@@ -101,23 +108,68 @@ void SingleFileDrive::directorySector(char buff[512]) {
     }; //, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
     memset(buff, 0, 512);
     memcpy(buff, lbl, sizeof(lbl));
-    // space-pad
-    memset(buff + 32, ' ', 8 + 3);
-    for (int i = 0; i < 8 && _FILENAME[i]; i++) {
-        buff[32 + i] = toupper(_FILENAME[i]);
+    buff += 32; // Skip the just-set label
+
+    // Create a legal 11-char UPPERCASE FILENAME WITH 0x20 PAD
+    char SFN[11];
+    memset(SFN, ' ', 11);
+    for (int i = 0; (i < 8) && _dosFile[i] && (_dosFile[i] != '.'); i++) {
+        SFN[i] = _toLegalFATChar(_dosFile[i]);
     }
-    for (int i = 0; i < 3 && _EXT[i]; i++) {
-        buff[32 + 8 + i] = toupper(_EXT[i]);
+    char *dot = _dosFile + strlen(_dosFile) - 1;
+    while ((dot >= _dosFile) && (*dot != '.')) {
+        dot--;
     }
-    buff[32 + 0x0b] = 0x20; // ATTR = Archive
+    if (*dot == '.') {
+        dot++;
+        for (int i = 0; (i < 3) && dot[i]; i++) {
+            SFN[8 + i] = _toLegalFATChar(dot[i]);
+        }
+    }
+    uint8_t chksum = 0; // for LFN
+    for (int i = 0; i < 11; i++) {
+        chksum = (chksum >> 1) + (chksum << 7) + SFN[i];
+    }
+
+    // Create LFN structure
+    int entries = (strlen(_dosFile) + 12) / 13; // round up
+    for (int i = 0; i < entries; i++) {
+        *buff++ = (entries - i) | (i == 0 ? 0x40 : 0);
+        const char *partname = _dosFile + 13 * (entries - i - 1);
+        for (int j = 0; j < 13; j++) {
+            uint16_t u;
+            if (j > (int)strlen(partname)) {
+                u = 0xffff;
+            } else {
+                u = partname[j] & 0xff;
+            }
+            *buff++ = u & 0xff;
+            *buff++ = (u >> 8) & 0xff;
+            if (j == 4) {
+                *buff++ = 0x0f; // LFN ATTR
+                *buff++ = 0;
+                *buff++ = chksum;
+            } else if (j == 10) {
+                *buff++ = 0;
+                *buff++ = 0;
+            }
+        }
+    }
+
+    // Create SFN
+    memset(buff, 0, 32);
+    for (int i = 0; i < 11; i++) {
+        buff[i] = SFN[i];
+    }
+    buff[0x0b] = 0x20; // ATTR = Archive
     // Ignore creation data/time, etc.
-    buff[32 + 0x1a] = 0x03; // Starting cluster 3
+    buff[0x1a] = 0x03; // Starting cluster 3
     File f = LittleFS.open(_localFile, "r");
     int size = f.size();
     f.close();
-    buff[32 + 0x1c] = size & 255;
-    buff[32 + 0x1d] = (size >> 8) & 255;
-    buff[32 + 0x1e] = (size >> 16) & 255; // 16MB or smaller
+    buff[0x1c] = size & 255;
+    buff[0x1d] = (size >> 8) & 255;
+    buff[0x1e] = (size >> 16) & 255; // 16MB or smaller
 }
 
 void SingleFileDrive::fatSector(char fat[512]) {

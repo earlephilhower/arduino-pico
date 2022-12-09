@@ -26,7 +26,7 @@ public:
     SingleFileDrive();
     ~SingleFileDrive();
 
-    bool begin(const char *localFile, const char *FILENAME, const char *EXT);
+    bool begin(const char *localFile, const char *dosFile);
     void end();
 
     void onDelete(void (*cb)(uint32_t), uint32_t cbData = 0);
@@ -48,8 +48,7 @@ private:
 private:
     bool _started = false;
     char *_localFile = nullptr;
-    char *_FILENAME = nullptr;
-    char *_EXT = nullptr;
+    char *_dosFile = nullptr;
 
     void (*_cbDelete)(uint32_t) = nullptr;
     uint32_t _cbDeleteData = 0;

@@ -50,7 +50,7 @@ void setup() {
   singleFileDrive.onDelete(deleteCSV);
   singleFileDrive.onPlug(plug);
   singleFileDrive.onUnplug(unplug);
-  singleFileDrive.begin("data.csv", "DATA", "CSV");
+  singleFileDrive.begin("data.csv", "Recorded data from the Raspberry Pi Pico.csv");
 
   // Find the last written data
   File f = LittleFS.open("data.csv", "r");
