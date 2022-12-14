@@ -381,7 +381,7 @@ public:
     void feedWatchdog();
 
 private:
-    int _timeout = 10000;
+    int _timeout = 15000;
     String _ssid;
     String _password;
     bool _wifiHWInitted = false;
