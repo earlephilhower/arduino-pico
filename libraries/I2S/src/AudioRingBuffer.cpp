@@ -215,7 +215,10 @@ int AudioRingBuffer::available() {
     }
     int avail;
     avail = _wordsPerBuffer - _userOff;
-    avail += ((_bufferCount + _curBuffer - _userBuffer) % _bufferCount) * _wordsPerBuffer;
+    avail += ((_bufferCount + _curBuffer - _userBuffer) % _bufferCount) * _wordsPerBuffer /* total other buffers */ - _wordsPerBuffer /* minus the one currently being output */;
+    if (avail < 0) {
+        avail = 0; // Should never hit
+    }
     return avail;
 }
 
