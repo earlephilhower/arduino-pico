@@ -374,7 +374,7 @@ public:
             return 0;
         }
         size_t sent = 0;
-        uint8_t buff[128];
+        uint8_t buff[256];
         while (stream.available()) {
             // Stream only lets you read 1 byte at a time, so buffer in local copy
             size_t i;
