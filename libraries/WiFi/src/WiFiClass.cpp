@@ -565,12 +565,17 @@ unsigned long WiFiClass::getTime() {
     return millis();
 }
 
-void WiFiClass::lowPowerMode() {
+void WiFiClass::aggressiveLowPowerMode() {
     cyw43_wifi_pm(&cyw43_state, CYW43_AGGRESSIVE_PM);
 }
 
-void WiFiClass::noLowPowerMode() {
+void WiFiClass::defaultLowPowerMode() {
     cyw43_wifi_pm(&cyw43_state, CYW43_DEFAULT_PM);
+}
+
+// The difference between the default CYW43_DEFAULT_PM (0xA11142) and not low power (0xA11140) is that it changed from "Powersave mode on specified interface with High throughput" to "No Powersave mode". All other parameters stayed the same.
+void WiFiClass::noLowPowerMode() {
+    cyw43_wifi_pm(&cyw43_state, 0xA11140);
 }
 
 int WiFiClass::ping(const char* hostname, uint8_t ttl) {

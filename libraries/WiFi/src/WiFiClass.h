@@ -368,7 +368,8 @@ public:
 
     unsigned long getTime();
 
-    void lowPowerMode();
+    void aggressiveLowPowerMode();
+    void defaultLowPowerMode();
     void noLowPowerMode();
 
     int ping(const char* hostname, uint8_t ttl = 128);

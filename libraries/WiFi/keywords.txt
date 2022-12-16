@@ -57,7 +57,8 @@ beginEnterprise	KEYWORD2
 setHostname	KEYWORD2
 end	KEYWORD2
 getTime	KEYWORD2
-lowPowerMode	KEYWORD2
+aggressiveLowPowerMode	KEYWORD2
+defaultLowPowerMode	KEYWORD2
 noLowPowerMode	KEYWORD2
 ping	KEYWORD2
 beginMulticast	KEYWORD2
