@@ -99,6 +99,7 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
     if (!_wifi.begin()) {
         return WL_IDLE_STATUS;
     }
+    noLowPowerMode();
     // Enable CYW43 event debugging (make sure Debug Port is set)
     //cyw43_state.trace_flags = 0xffff;
     while (!_calledESP && ((millis() - start < (uint32_t)2 * _timeout)) && !connected()) {
@@ -134,6 +135,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
     if (!_wifi.begin()) {
         return WL_IDLE_STATUS;
     }
+    noLowPowerMode();
     IPAddress gw = _wifi.gatewayIP();
     if (!gw.isSet()) {
         gw = IPAddress(192, 168, 42, 1);
