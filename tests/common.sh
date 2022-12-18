@@ -80,7 +80,8 @@ function build_sketches()
             continue  # Not ours to do
         fi
 
-        if [ -e $cache_dir/core/*.a ]; then
+        cacheas=( $cache_dir/core/*.a )
+        if [ -e ${cacheas[0]} ]; then
             # We need to preserve the build.options.json file and replace the last .ino
             # with this sketch's ino file, or builder will throw everything away.
             jq '."sketchLocation" = "'$sketch'"' $build_dir/build.options.json > $build_dir/build.options.json.tmp
