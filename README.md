@@ -25,7 +25,6 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
 * DatanoiseTV PicoADK+
-* Degz Mizu
 * DeRuiLab FlyBoard2040 Core
 * DFRobot Beetle RP2040
 * ElectronicCats Hunter Cat NFC
@@ -47,6 +46,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 * SparkFun ProMicro RP2040
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
+* Viyalab Mizu RP2040
 * Waveshare RP2040 Zero
 * Waveshare RP2040 One
 * Waveshare RP2040 Plus

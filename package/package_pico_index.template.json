@@ -63,9 +63,6 @@
                      "name": "DatanoiseTV PicoADK"
                   },
                   {
-                     "name": "Degz Mizu"
-                  },
-                  {
                      "name": "DeRuiLab FlyBoard2040Core"
                   },
                   {
@@ -130,6 +127,9 @@
                   },
                   {
                      "name": "Seeed XIAO RP2040"
+                  },
+                  {
+                     "name": "Viyalab Mizu RP2040"
                   },
                   {
                      "name": "Waveshare RP2040 Zero"
