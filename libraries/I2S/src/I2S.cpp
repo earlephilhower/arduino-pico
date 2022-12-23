@@ -153,10 +153,13 @@ void I2S::end() {
 }
 
 int I2S::available() {
-    if (!_running || _isOutput) {
+    if (!_running) {
         return 0;
+    } else if (_isOutput) {
+        return availableForWrite(); // Do what I mean, not what I say
+    } else {
+        return _arb->available();
     }
-    return _arb->available();
 }
 
 int I2S::read() {

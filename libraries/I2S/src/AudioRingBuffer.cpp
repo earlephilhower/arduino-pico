@@ -32,20 +32,41 @@ static AudioRingBuffer* __channelMap[12];      // Lets the IRQ handler figure ou
 
 AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction) {
     _running = false;
-    _silenceSample = silenceSample;
+
+    // Need at least 2 DMA buffers and 1 user or this isn't going to work at all
+    if (bufferCount < 3) {
+        bufferCount = 3;
+    }
+
     _bufferCount = bufferCount;
     _wordsPerBuffer = bufferWords;
     _isOutput = direction == OUTPUT;
     _overunderflow = false;
     _callback = nullptr;
-    _userBuffer = -1;
     _userOff = 0;
+
+    // Create the silence buffer, fill with appropriate value
+    _silence = new AudioBuffer;
+    _silence->next = nullptr;
+    _silence->buff = new uint32_t[_wordsPerBuffer];
+    for (uint32_t x = 0; x < _wordsPerBuffer; x++) {
+        _silence->buff[x] = silenceSample;
+    }
+
+    // No filled buffers yet
+    _filled = nullptr;
+
+    // Create all buffers on the empty chain
+    _empty = nullptr;
     for (size_t i = 0; i < bufferCount; i++) {
         auto ab = new AudioBuffer;
         ab->buff = new uint32_t[_wordsPerBuffer];
-        ab->empty = true;
-        _buffers.push_back(ab);
+        ab->next = nullptr;
+        _addToList(&_empty, ab);
     }
+
+    _active[0] = _silence;
+    _active[1] = _silence;
 }
 
 AudioRingBuffer::~AudioRingBuffer() {
@@ -55,12 +76,6 @@ AudioRingBuffer::~AudioRingBuffer() {
             dma_channel_unclaim(_channelDMA[i]);
             __channelMap[_channelDMA[i]] = nullptr;
         }
-        while (_buffers.size()) {
-            auto ab = _buffers.back();
-            _buffers.pop_back();
-            delete[] ab->buff;
-            delete ab;
-        }
         __channelCount--;
         if (!__channelCount) {
             irq_set_enabled(DMA_IRQ_0, false);
@@ -68,6 +83,22 @@ AudioRingBuffer::~AudioRingBuffer() {
             irq_remove_handler(DMA_IRQ_0, _irq);
         }
     }
+    for (int i = 0; i < 2; i++) {
+        if (_active[i] != _silence) {
+            _deleteAudioBuffer(_active[i]);
+        }
+    }
+    while (_filled) {
+        auto x = _filled->next;
+        _deleteAudioBuffer(_filled);
+        _filled = x;
+    }
+    while (_empty) {
+        auto x = _empty->next;
+        _deleteAudioBuffer(_empty);
+        _empty = x;
+    }
+    _deleteAudioBuffer(_silence);
 }
 
 void AudioRingBuffer::setCallback(void (*fn)()) {
@@ -76,15 +107,7 @@ void AudioRingBuffer::setCallback(void (*fn)()) {
 
 bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
     _running = true;
-    // Set all buffers to silence, empty
-    for (auto buff : _buffers) {
-        buff->empty = true;
-        if (_isOutput) {
-            for (uint32_t x = 0; x < _wordsPerBuffer; x++) {
-                buff->buff[x] = _silenceSample;
-            }
-        }
-    }
+
     // Get ping and pong DMA channels
     for (auto i = 0; i < 2; i++) {
         _channelDMA[i] = dma_claim_unused_channel(true);
@@ -112,9 +135,10 @@ bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
         channel_config_set_irq_quiet(&c, false); // Need IRQs
 
         if (_isOutput) {
-            dma_channel_configure(_channelDMA[i], &c, pioFIFOAddr, _buffers[i]->buff, _wordsPerBuffer, false);
+            dma_channel_configure(_channelDMA[i], &c, pioFIFOAddr, _silence->buff, _wordsPerBuffer, false);
         } else {
-            dma_channel_configure(_channelDMA[i], &c, _buffers[i]->buff, pioFIFOAddr, _wordsPerBuffer, false);
+            _active[i] = _takeFromList(&_empty);
+            dma_channel_configure(_channelDMA[i], &c, _active[i]->buff, pioFIFOAddr, _wordsPerBuffer, false);
         }
         dma_channel_set_irq0_enabled(_channelDMA[i], true);
         __channelMap[_channelDMA[i]] = this;
@@ -124,8 +148,7 @@ bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
         irq_add_shared_handler(DMA_IRQ_0, _irq, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
         irq_set_enabled(DMA_IRQ_0, true);
     }
-    _curBuffer = 0;
-    _nextBuffer = 2 % _bufferCount;
+
     dma_channel_start(_channelDMA[0]);
     return true;
 }
@@ -134,33 +157,19 @@ bool AudioRingBuffer::write(uint32_t v, bool sync) {
     if (!_running || !_isOutput) {
         return false;
     }
-    if (_userBuffer == -1) {
-        // First write or overflow, pick spot 2 buffers out
-        _userBuffer = (_nextBuffer + 2) % _bufferCount;
-        _userOff = 0;
-    }
-    if (!_buffers[_userBuffer]->empty) {
+    if (!_empty) {
         if (!sync) {
             return false;
         } else {
-            while (!_buffers[_userBuffer]->empty) {
+            volatile AudioBuffer **p = (volatile AudioBuffer **)&_empty;
+            while (!*p) {
                 /* noop busy wait */
             }
         }
     }
-    if (_userBuffer == _curBuffer) {
-        if (!sync) {
-            return false;
-        } else {
-            while (_userBuffer == _curBuffer) {
-                /* noop busy wait */
-            }
-        }
-    }
-    _buffers[_userBuffer]->buff[_userOff++] = v;
+    _empty->buff[_userOff++] = v;
     if (_userOff == _wordsPerBuffer) {
-        _buffers[_userBuffer]->empty = false;
-        _userBuffer = (_userBuffer + 1) % _bufferCount;
+        _addToList(&_filled, _takeFromList(&_empty));
         _userOff = 0;
     }
     return true;
@@ -170,33 +179,20 @@ bool AudioRingBuffer::read(uint32_t *v, bool sync) {
     if (!_running || _isOutput) {
         return false;
     }
-    if (_userBuffer == -1) {
-        // First write or overflow, pick last filled buffer
-        _userBuffer = (_curBuffer - 1 + _bufferCount) % _bufferCount;
-        _userOff = 0;
-    }
-    if (_buffers[_userBuffer]->empty) {
+
+    if (!_filled) {
         if (!sync) {
             return false;
         } else {
-            while (_buffers[_userBuffer]->empty) {
+            volatile AudioBuffer **p = (volatile AudioBuffer **)&_filled;
+            while (!*p) {
                 /* noop busy wait */
             }
         }
     }
-    if (_userBuffer == _curBuffer) {
-        if (!sync) {
-            return false;
-        } else {
-            while (_userBuffer == _curBuffer) {
-                /* noop busy wait */
-            }
-        }
-    }
-    auto ret = _buffers[_userBuffer]->buff[_userOff++];
+    auto ret = _filled->buff[_userOff++];
     if (_userOff == _wordsPerBuffer) {
-        _buffers[_userBuffer]->empty = true;
-        _userBuffer = (_userBuffer + 1) % _bufferCount;
+        _addToList(&_empty, _takeFromList(&_filled));
         _userOff = 0;
     }
     *v = ret;
@@ -210,40 +206,57 @@ bool AudioRingBuffer::getOverUnderflow() {
 }
 
 int AudioRingBuffer::available() {
-    if (!_running) {
+    AudioBuffer *p = _isOutput ? _empty : _filled;
+
+    if (!_running || !p) {
+        // No buffers available...
         return 0;
     }
-    int avail;
-    avail = _wordsPerBuffer - _userOff;
-    avail += ((_bufferCount + _curBuffer - _userBuffer) % _bufferCount) * _wordsPerBuffer /* total other buffers */ - _wordsPerBuffer /* minus the one currently being output */;
-    if (avail < 0) {
-        avail = 0; // Should never hit
+
+    int avail = _wordsPerBuffer - _userOff; // Currently available in this buffer
+
+    // Each add'l buffer has wpb spaces...
+    auto x = p->next;
+    while (x) {
+        avail += _wordsPerBuffer;
+        x = x->next;
     }
     return avail;
 }
 
 void AudioRingBuffer::flush() {
-    while (_curBuffer != _userBuffer) {
-        // busy wait
+    volatile AudioRingBuffer **a = (volatile AudioRingBuffer **)&_active[0];
+    volatile AudioRingBuffer **b = (volatile AudioRingBuffer **)&_active[1];
+    volatile AudioRingBuffer **c = (volatile AudioRingBuffer **)&_filled;
+    while (*c && (*b != (volatile AudioRingBuffer *)_silence) && (*a != (volatile AudioRingBuffer *)_silence)) {
+        // busy wait until all user written data enroute
     }
 }
 
 void __not_in_flash_func(AudioRingBuffer::_dmaIRQ)(int channel) {
     if (_isOutput) {
-        for (uint32_t x = 0; x < _wordsPerBuffer; x++) {
-            _buffers[_curBuffer]->buff[x] = _silenceSample;
+        if (_active[0] != _silence) {
+            _addToList(&_empty, _active[1]);
         }
-        _buffers[_curBuffer]-> empty = true;
-        _overunderflow = _overunderflow | _buffers[_nextBuffer]->empty;
-        dma_channel_set_read_addr(channel, _buffers[_nextBuffer]->buff, false);
+        _active[0] = _active[1];
+        if (!_filled) {
+            _active[1] = _silence;
+        } else {
+            _active[1] = _takeFromList(&_filled);
+        }
+        _overunderflow = _overunderflow | (_active[1] == _silence);
+        dma_channel_set_read_addr(channel, _active[0]->buff, false);
     } else {
-        _buffers[_curBuffer]-> empty = false;
-        _overunderflow = _overunderflow | !_buffers[_nextBuffer]->empty;
-        dma_channel_set_write_addr(channel, _buffers[_nextBuffer]->buff, false);
+        if (_empty) {
+            _addToList(&_filled, _active[0]);
+            _active[0] = _active[1];
+            _active[1] = _takeFromList(&_empty);
+        } else {
+            _overunderflow = true;
+        }
+        dma_channel_set_write_addr(channel, _active[0]->buff, false);
     }
     dma_channel_set_trans_count(channel, _wordsPerBuffer, false);
-    _curBuffer = (_curBuffer + 1) % _bufferCount;
-    _nextBuffer = (_nextBuffer + 1) % _bufferCount;
     dma_channel_acknowledge_irq0(channel);
     if (_callback) {
         _callback();
