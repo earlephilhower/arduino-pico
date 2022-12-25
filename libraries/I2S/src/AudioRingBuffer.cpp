@@ -236,7 +236,7 @@ void AudioRingBuffer::flush() {
 void __not_in_flash_func(AudioRingBuffer::_dmaIRQ)(int channel) {
     if (_isOutput) {
         if (_active[0] != _silence) {
-            _addToList(&_empty, _active[1]);
+            _addToList(&_empty, _active[0]);
         }
         _active[0] = _active[1];
         if (!_filled) {
