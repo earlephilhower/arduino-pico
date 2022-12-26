@@ -153,23 +153,28 @@ bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
     return true;
 }
 
+// Following 2 routines use volatile because the IRQ may update the "this"
+// pointer and change the list head while we are waiting.  Volatile will
+// cause GCC to keep re-reading from memory and not use cached value read
+// on the first pass.
+
 bool AudioRingBuffer::write(uint32_t v, bool sync) {
     if (!_running || !_isOutput) {
         return false;
     }
-    if (!_empty) {
+    AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_empty;
+    if (!*p) {
         if (!sync) {
             return false;
         } else {
-            volatile AudioBuffer **p = (volatile AudioBuffer **)&_empty;
             while (!*p) {
                 /* noop busy wait */
             }
         }
     }
-    _empty->buff[_userOff++] = v;
+    (*p)->buff[_userOff++] = v;
     if (_userOff == _wordsPerBuffer) {
-        _addToList(&_filled, _takeFromList(&_empty));
+        _addToList(&_filled, _takeFromList(p));
         _userOff = 0;
     }
     return true;
@@ -180,19 +185,19 @@ bool AudioRingBuffer::read(uint32_t *v, bool sync) {
         return false;
     }
 
-    if (!_filled) {
+    AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_filled;
+    if (!*p) {
         if (!sync) {
             return false;
         } else {
-            volatile AudioBuffer **p = (volatile AudioBuffer **)&_filled;
             while (!*p) {
                 /* noop busy wait */
             }
         }
     }
-    auto ret = _filled->buff[_userOff++];
+    auto ret = (*p)->buff[_userOff++];
     if (_userOff == _wordsPerBuffer) {
-        _addToList(&_empty, _takeFromList(&_filled));
+        _addToList(&_empty, _takeFromList(p));
         _userOff = 0;
     }
     *v = ret;
