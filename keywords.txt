@@ -54,6 +54,9 @@ SerialPIO	KEYWORD2
 setFIFOSize	KEYWORD2
 setPollingMode	KEYWORD2
 
+digitalWriteFast	KEYWORD2
+digitalReadFast	KEYWORD2
+
 enableDoubleResetBootloader	KEYWORD2
 
 OUTPUT_2MA	LITERAL1
