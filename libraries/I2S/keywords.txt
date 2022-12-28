@@ -18,6 +18,7 @@ setBCLK	KEYWORD2
 setDATA	KEYWORD2
 setBitsPerSample	KEYWORD2
 setFrequency	KEYWORD2
+setBuffers	KEYWORD2
 
 read8	KEYWORD2
 read16	KEYWORD2
