@@ -21,6 +21,8 @@
 #include "Arduino.h"
 #include <hardware/gpio.h>
 
+extern void __clearADCPin(pin_size_t p);
+
 static PinMode _pm[30];
 
 extern "C" void pinMode(pin_size_t ulPin, PinMode ulMode) __attribute__((weak, alias("__pinMode")));
@@ -75,6 +77,10 @@ extern "C" void __pinMode(pin_size_t ulPin, PinMode ulMode) {
         return;
     }
     _pm[ulPin] = ulMode;
+
+    if ((ulPin >= std::min(A0, A3)) && (ulPin <= std::max(A0, A3))) {
+        __clearADCPin(ulPin);
+    }
 }
 
 extern "C" void digitalWrite(pin_size_t ulPin, PinStatus ulVal) __attribute__((weak, alias("__digitalWrite")));

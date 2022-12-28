@@ -26,6 +26,8 @@
 #include <hardware/pll.h>
 #include <hardware/adc.h>
 
+void __clearADCPin(pin_size_t p);
+
 static uint32_t analogScale = 255;
 static uint32_t analogFreq = 1000;
 static uint32_t pwmInitted = 0;
@@ -81,6 +83,7 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
     }
+    __clearADCPin(pin);
     if (!scaleInitted) {
         // For low frequencies, we need to scale the output max value up to achieve lower periods
         analogWritePseudoScale = 1;
@@ -121,6 +124,14 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
 
 auto_init_mutex(_adcMutex);
 static int _readBits = 10;
+static int _lastADCMux = 0;
+static bool _adcGPIOInit[29];
+
+void __clearADCPin(pin_size_t p) {
+    if (p < 29) {
+        _adcGPIOInit[p] = false;
+    }
+}
 
 extern "C" int analogRead(pin_size_t pin) {
     CoreMutex m(&_adcMutex);
@@ -136,8 +147,14 @@ extern "C" int analogRead(pin_size_t pin) {
         adc_init();
         adcInitted = true;
     }
-    adc_gpio_init(pin);
-    adc_select_input(pin - minPin);
+    if (!_adcGPIOInit[pin]) {
+        adc_gpio_init(pin);
+        _adcGPIOInit[pin] = true;
+    }
+    if (_lastADCMux != pin) {
+        adc_select_input(pin - minPin);
+        _lastADCMux = pin;
+    }
     return (_readBits < 12) ? adc_read() >> (12 - _readBits) : adc_read() << (_readBits - 12);
 }
 
@@ -151,6 +168,7 @@ extern "C" float analogReadTemp() {
         adc_init();
         adcInitted = true;
     }
+    _lastADCMux = 0;
     adc_set_temp_sensor_enabled(true);
     delay(1); // Allow things to settle.  Without this, readings can be erratic
     adc_select_input(4); // Temperature sensor
