@@ -49,7 +49,7 @@ I2S::I2S(PinMode direction) {
     _arb = nullptr;
     _cb = nullptr;
     _buffers = 8;
-    _bufferWords = 16;
+    _bufferWords = 0;
     _silenceSample = 0;
 }
 
@@ -135,6 +135,9 @@ bool I2S::begin() {
     } else if (_bps == 16) {
         uint16_t a = _silenceSample & 0xffff;
         _silenceSample = (a << 16) | a;
+    }
+    if (!_bufferWords) {
+        _bufferWords = 16 * (_bps == 32 ? 2 : 1);
     }
     _arb = new AudioRingBuffer(_buffers, _bufferWords, _silenceSample, _isOutput ? OUTPUT : INPUT);
     _arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm]);
