@@ -68,8 +68,8 @@ void noInterrupts();
 #define portOutputRegister(port)    ((volatile uint32_t*) sio_hw->gpio_out)
 #define portInputRegister(port)     ((volatile uint32_t*) sio_hw->gpio_in)
 #define portModeRegister(port)      ((volatile uint32_t*) sio_hw->gpio_oe)
-#define digitalWriteFast(pin, val)  gpio_put(pin, val ? 1 : 0)
-#define digitalReadFast(pin)        (gpio_get(pin) ? 1 : 0)
+#define digitalWriteFast(pin, val)  (val ? gpio_set_mask (1 << pin) : gpio_clr_mask(1 << pin))
+#define digitalReadFast(pin)        gpio_get(pin)
 
 // ADC RP2040-specific calls
 void analogReadResolution(int bits);
