@@ -43,27 +43,59 @@ private:
     void _dmaIRQ(int channel);
     static void _irq();
 
-    typedef struct {
+    typedef struct AudioBuffer {
+        struct AudioBuffer *next;
         uint32_t *buff;
-        volatile bool empty;
     } AudioBuffer;
 
     bool _running = false;
-    std::vector<AudioBuffer*> _buffers;
-    volatile int _curBuffer;
-    volatile int _nextBuffer;
-    size_t _chunkSampleCount;
+
+    AudioBuffer *_silence = nullptr; // A single silence buffer to be looped on underflow
+    AudioBuffer *_filled = nullptr;  // List of buffers ready to be played
+    AudioBuffer *_empty = nullptr;   // List of buffers waiting to be filled. *_empty = currently writing
+    AudioBuffer *_active[2] = { nullptr, nullptr }; // The 2 buffers currently in use for DMA
+
+    // Can't use std::list because we need to put in RAM for IRQ use, so roll our own
+    void __not_in_flash_func(_addToList)(AudioBuffer **list, AudioBuffer *element) {
+        noInterrupts();
+        // Find end of list, if any
+        while ((*list) && ((*list)->next != nullptr)) {
+            list = &(*list)->next;
+        }
+        if (*list) {
+            (*list)->next = element;
+        } else {
+            *list = element;
+        }
+        element->next = nullptr; // Belt and braces
+        interrupts();
+    }
+
+    AudioBuffer *__not_in_flash_func(_takeFromList)(AudioBuffer **list) {
+        noInterrupts();
+        auto ret = *list;
+        if (ret) {
+            *list = ret->next;
+        }
+        interrupts();
+        return ret;
+    }
+
+    void _deleteAudioBuffer(AudioBuffer *ab) {
+        delete[] ab->buff;
+        delete ab;
+    }
+
     int _bitsPerSample;
     size_t _wordsPerBuffer;
     size_t _bufferCount;
     bool _isOutput;
-    int32_t _silenceSample;
+
     int _channelDMA[2];
     void (*_callback)();
 
     bool _overunderflow;
 
     // User buffer pointer
-    int _userBuffer = -1;
     size_t _userOff = 0;
 };
