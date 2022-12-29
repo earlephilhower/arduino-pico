@@ -156,7 +156,7 @@ extern "C" int analogRead(pin_size_t pin) {
     return (_readBits < 12) ? adc_read() >> (12 - _readBits) : adc_read() << (_readBits - 12);
 }
 
-extern "C" float analogReadTemp() {
+extern "C" float analogReadTemp(float vref) {
     CoreMutex m(&_adcMutex);
 
     if (!m) {
@@ -172,7 +172,7 @@ extern "C" float analogReadTemp() {
     adc_select_input(4); // Temperature sensor
     int v = adc_read();
     adc_set_temp_sensor_enabled(false);
-    float t = 27.0f - ((v * 3.3f / 4096.0f) - 0.706f) / 0.001721f; // From the datasheet
+    float t = 27.0f - ((v * vref / pow(2, _readBits)) - 0.706f) / 0.001721f; // From the datasheet
     return t;
 }
 

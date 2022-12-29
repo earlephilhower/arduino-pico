@@ -73,7 +73,7 @@ void noInterrupts();
 
 // ADC RP2040-specific calls
 void analogReadResolution(int bits);
-float analogReadTemp();  // Returns core temp in Centigrade
+float analogReadTemp(float vref = 3.3);  // Returns core temp in Centigrade
 
 // PWM RP2040-specific calls
 void analogWriteFreq(uint32_t freq);
