@@ -21,7 +21,6 @@
 
 #pragma once
 #include <Arduino.h>
-#include <vector>
 #include "AudioRingBuffer.h"
 
 class I2S : public Stream {

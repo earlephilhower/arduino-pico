@@ -21,7 +21,6 @@
 
 #pragma once
 #include <Arduino.h>
-#include <vector>
 
 class AudioRingBuffer {
 public:
