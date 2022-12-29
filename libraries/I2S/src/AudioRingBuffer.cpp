@@ -20,11 +20,8 @@
 */
 
 #include <Arduino.h>
-#include <vector>
 #include "hardware/dma.h"
 #include "hardware/irq.h"
-#include "hardware/pio.h"
-#include "pio_i2s.pio.h"
 #include "AudioRingBuffer.h"
 
 static int              __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
@@ -230,10 +227,10 @@ int AudioRingBuffer::available() {
 }
 
 void AudioRingBuffer::flush() {
-    volatile AudioRingBuffer **a = (volatile AudioRingBuffer **)&_active[0];
-    volatile AudioRingBuffer **b = (volatile AudioRingBuffer **)&_active[1];
-    volatile AudioRingBuffer **c = (volatile AudioRingBuffer **)&_filled;
-    while (*c && (*b != (volatile AudioRingBuffer *)_silence) && (*a != (volatile AudioRingBuffer *)_silence)) {
+    AudioBuffer ** volatile a = (AudioBuffer ** volatile)&_active[0];
+    AudioBuffer ** volatile b = (AudioBuffer ** volatile)&_active[1];
+    AudioBuffer ** volatile c = (AudioBuffer ** volatile)&_filled;
+    while (*c && (*b != (AudioBuffer * volatile)_silence) && (*a != (AudioBuffer * volatile)_silence)) {
         // busy wait until all user written data enroute
     }
 }
