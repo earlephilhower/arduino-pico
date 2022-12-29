@@ -123,14 +123,12 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
 }
 
 auto_init_mutex(_adcMutex);
-static int _readBits = 10;
-static int _lastADCMux = 0;
-static bool _adcGPIOInit[29];
+static uint8_t _readBits = 10;
+static uint8_t _lastADCMux = 0;
+static uint32_t _adcGPIOInit = 0;
 
 void __clearADCPin(pin_size_t p) {
-    if (p < 29) {
-        _adcGPIOInit[p] = false;
-    }
+    _adcGPIOInit &= ~(1 << p);
 }
 
 extern "C" int analogRead(pin_size_t pin) {
@@ -147,9 +145,9 @@ extern "C" int analogRead(pin_size_t pin) {
         adc_init();
         adcInitted = true;
     }
-    if (!_adcGPIOInit[pin]) {
+    if (!(_adcGPIOInit & (1 << pin))) {
         adc_gpio_init(pin);
-        _adcGPIOInit[pin] = true;
+        _adcGPIOInit |= 1 << pin;
     }
     if (_lastADCMux != pin) {
         adc_select_input(pin - minPin);
