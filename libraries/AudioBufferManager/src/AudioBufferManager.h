@@ -1,6 +1,6 @@
 /*
-    AudioRingBuffer for Rasperry Pi Pico
-    Implements a ring buffer for PIO DMA for I2S read or write
+    AudioBufferManager for Rasperry Pi Pico
+    Implements a DMA controlled linked-list series of buffers
 
     Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
@@ -21,11 +21,12 @@
 
 #pragma once
 #include <Arduino.h>
+#include "hardware/dma.h"
 
-class AudioRingBuffer {
+class AudioBufferManager {
 public:
-    AudioRingBuffer(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction = OUTPUT);
-    ~AudioRingBuffer();
+    AudioBufferManager(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction = OUTPUT, enum dma_channel_transfer_size dmaSize = DMA_SIZE_32);
+    ~AudioBufferManager();
 
     void setCallback(void (*fn)());
 
@@ -88,6 +89,7 @@ private:
     int _bitsPerSample;
     size_t _wordsPerBuffer;
     size_t _bufferCount;
+    enum dma_channel_transfer_size _dmaSize;
     bool _isOutput;
 
     int _channelDMA[2];

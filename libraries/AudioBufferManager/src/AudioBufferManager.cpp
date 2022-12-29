@@ -1,6 +1,6 @@
 /*
-    AudioRingBuffer for Raspnerry Pi Pico RP2040
-    Implements a ring buffer for PIO DMA for I2S read or write
+    AudioBufferManager for Raspnerry Pi Pico RP2040
+    Implements a DMA controlled linked-list series of buffers
 
     Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
@@ -22,12 +22,12 @@
 #include <Arduino.h>
 #include "hardware/dma.h"
 #include "hardware/irq.h"
-#include "AudioRingBuffer.h"
+#include "AudioBufferManager.h"
 
-static int              __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
-static AudioRingBuffer* __channelMap[12];      // Lets the IRQ handler figure out where to dispatch to
+static int                 __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
+static AudioBufferManager* __channelMap[12];      // Lets the IRQ handler figure out where to dispatch to
 
-AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction) {
+AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction, enum dma_channel_transfer_size dmaSize) {
     _running = false;
 
     // Need at least 2 DMA buffers and 1 user or this isn't going to work at all
@@ -38,6 +38,7 @@ AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferWords, int32_t
     _bufferCount = bufferCount;
     _wordsPerBuffer = bufferWords;
     _isOutput = direction == OUTPUT;
+    _dmaSize = dmaSize;
     _overunderflow = false;
     _callback = nullptr;
     _userOff = 0;
@@ -66,7 +67,7 @@ AudioRingBuffer::AudioRingBuffer(size_t bufferCount, size_t bufferWords, int32_t
     _active[1] = _silence;
 }
 
-AudioRingBuffer::~AudioRingBuffer() {
+AudioBufferManager::~AudioBufferManager() {
     if (_running) {
         for (auto i = 0; i < 2; i++) {
             dma_channel_set_irq0_enabled(_channelDMA[i], false);
@@ -98,11 +99,11 @@ AudioRingBuffer::~AudioRingBuffer() {
     _deleteAudioBuffer(_silence);
 }
 
-void AudioRingBuffer::setCallback(void (*fn)()) {
+void AudioBufferManager::setCallback(void (*fn)()) {
     _callback = fn;
 }
 
-bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
+bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
     _running = true;
 
     // Get ping and pong DMA channels
@@ -119,7 +120,7 @@ bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
     // Need to know both channels to set up ping-pong, so do in 2 stages
     for (auto i = 0; i < 2; i++) {
         dma_channel_config c = dma_channel_get_default_config(_channelDMA[i]);
-        channel_config_set_transfer_data_size(&c, DMA_SIZE_32); // 32b transfers into PIO FIFO
+        channel_config_set_transfer_data_size(&c, _dmaSize); // 16b/32b transfers into PIO FIFO
         if (_isOutput) {
             channel_config_set_read_increment(&c, true); // Reading incrementing addresses
             channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
@@ -155,7 +156,7 @@ bool AudioRingBuffer::begin(int dreq, volatile void *pioFIFOAddr) {
 // cause GCC to keep re-reading from memory and not use cached value read
 // on the first pass.
 
-bool AudioRingBuffer::write(uint32_t v, bool sync) {
+bool AudioBufferManager::write(uint32_t v, bool sync) {
     if (!_running || !_isOutput) {
         return false;
     }
@@ -177,7 +178,7 @@ bool AudioRingBuffer::write(uint32_t v, bool sync) {
     return true;
 }
 
-bool AudioRingBuffer::read(uint32_t *v, bool sync) {
+bool AudioBufferManager::read(uint32_t *v, bool sync) {
     if (!_running || _isOutput) {
         return false;
     }
@@ -201,13 +202,13 @@ bool AudioRingBuffer::read(uint32_t *v, bool sync) {
     return true;
 }
 
-bool AudioRingBuffer::getOverUnderflow() {
+bool AudioBufferManager::getOverUnderflow() {
     bool hold = _overunderflow;
     _overunderflow = false;
     return hold;
 }
 
-int AudioRingBuffer::available() {
+int AudioBufferManager::available() {
     AudioBuffer *p = _isOutput ? _empty : _filled;
 
     if (!_running || !p) {
@@ -226,7 +227,7 @@ int AudioRingBuffer::available() {
     return avail;
 }
 
-void AudioRingBuffer::flush() {
+void AudioBufferManager::flush() {
     AudioBuffer ** volatile a = (AudioBuffer ** volatile)&_active[0];
     AudioBuffer ** volatile b = (AudioBuffer ** volatile)&_active[1];
     AudioBuffer ** volatile c = (AudioBuffer ** volatile)&_filled;
@@ -235,7 +236,7 @@ void AudioRingBuffer::flush() {
     }
 }
 
-void __not_in_flash_func(AudioRingBuffer::_dmaIRQ)(int channel) {
+void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
     if (_isOutput) {
         if (_active[0] != _silence) {
             _addToList(&_empty, _active[0]);
@@ -265,7 +266,7 @@ void __not_in_flash_func(AudioRingBuffer::_dmaIRQ)(int channel) {
     }
 }
 
-void __not_in_flash_func(AudioRingBuffer::_irq)() {
+void __not_in_flash_func(AudioBufferManager::_irq)() {
     for (size_t i = 0; i < sizeof(__channelMap); i++) {
         if (dma_channel_get_irq0_status(i) && __channelMap[i]) {
             __channelMap[i]->_dmaIRQ(i);
