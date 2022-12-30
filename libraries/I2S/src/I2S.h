@@ -21,7 +21,7 @@
 
 #pragma once
 #include <Arduino.h>
-#include "AudioRingBuffer.h"
+#include "AudioBufferManager.h"
 
 class I2S : public Stream {
 public:
@@ -120,7 +120,7 @@ private:
 
     void (*_cb)();
 
-    AudioRingBuffer *_arb;
+    AudioBufferManager *_arb;
     PIOProgram *_i2s;
     PIO _pio;
     int _sm;
