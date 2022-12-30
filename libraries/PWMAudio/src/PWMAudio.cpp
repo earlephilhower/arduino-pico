@@ -25,7 +25,6 @@
 
 PWMAudio::PWMAudio(pin_size_t pin) {
     _running = false;
-    _writtenHalf = false;
     _pin = pin;
     _freq = 48000;
     _arb = nullptr;
@@ -89,7 +88,7 @@ bool PWMAudio::begin() {
 
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
 
-    _arb = new AudioBufferManager(_buffers, _bufferWords, 0x80008000, OUTPUT);
+    _arb = new AudioBufferManager(_buffers, _bufferWords, 0x80008000, OUTPUT, DMA_SIZE_32);
     _arb->begin(pwm_get_dreq(pwm_gpio_to_slice_num(_pin)), (volatile void*)ccAddr);
     _arb->setCallback(_cb);
 
@@ -136,18 +135,9 @@ size_t PWMAudio::write(int16_t val, bool sync) {
     // Adjust to the real range
     sample *= _pwmScale;
     sample >>= 16;
-
-    if (!_writtenHalf) {
-        _holdWord = sample & 0xffff;
-        _writtenHalf = true;
-        return 1;
-    }
-    _holdWord = (_holdWord & 0xffff) | (sample << 16);
-    auto ret = _arb->write(_holdWord, sync);
-    if (ret) {
-        _writtenHalf = false;
-    }
-    return ret;
+    // Duplicate sample since we don't care which PWM channel
+    sample = (sample & 0xffff) | (sample << 16);
+    return _arb->write(sample, sync);
 }
 
 size_t PWMAudio::write(const uint8_t *buffer, size_t size) {

@@ -74,9 +74,6 @@ private:
 
     bool _running;
 
-    bool     _writtenHalf = false;
-    uint32_t _holdWord = 0;
-
     void (*_cb)();
 
     AudioBufferManager *_arb;
