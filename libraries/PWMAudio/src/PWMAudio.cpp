@@ -64,7 +64,7 @@ void PWMAudio::onTransmit(void(*fn)(void)) {
 bool PWMAudio::begin() {
     if (_stereo && (_pin & 1)) {
         // Illegal, need to have consecutive pins on the same PWM slice
-        Serial.printf("ERRROR: PWMAudio stereo mode requires pin be even\n");
+        Serial.printf("ERROR: PWMAudio stereo mode requires pin be even\n");
         return false;
     }
 
