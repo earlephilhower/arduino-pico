@@ -15,7 +15,7 @@ Multiple ``PWMAudio`` devices are supported, depending on availability of
 DMA channels.
 
 The interface for the ``PWMAudio`` device is very similar to the ``I2S``
-device, and most code can be ported simply by instantating a ``PWMAudio``
+device, and most code can be ported simply by instantiating a ``PWMAudio``
 object in lieu of an ``I2S`` object.
 
 PWM Class API
