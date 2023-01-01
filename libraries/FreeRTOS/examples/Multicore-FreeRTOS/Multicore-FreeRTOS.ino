@@ -30,7 +30,7 @@ void ps() {
   Serial.printf("# Tasks: %d\n", tasks);
   Serial.println("ID, NAME, STATE, PRIO, CYCLES");
   for (int i=0; i < tasks; i++) {
-    Serial.printf("%d: %-16s %-10s %d %lu\n", i, pxTaskStatusArray[i].pcTaskName, eTaskStateName[pxTaskStatusArray[i].eCurrentState], pxTaskStatusArray[i].uxCurrentPriority, pxTaskStatusArray[i].ulRunTimeCounter);
+    Serial.printf("%d: %-16s %-10s %d %lu\n", i, pxTaskStatusArray[i].pcTaskName, eTaskStateName[pxTaskStatusArray[i].eCurrentState], (int)pxTaskStatusArray[i].uxCurrentPriority, pxTaskStatusArray[i].ulRunTimeCounter);
   }
   delete[] pxTaskStatusArray;
 }
