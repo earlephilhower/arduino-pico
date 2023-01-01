@@ -69,7 +69,7 @@ void setup() {
     cnt++;
   }
 
-  Serial.printf("Starting acquisition at %d\n", cnt);
+  Serial.printf("Starting acquisition at %lu\n", cnt);
 }
 
 void loop() {

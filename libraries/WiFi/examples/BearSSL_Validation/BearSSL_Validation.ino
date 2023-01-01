@@ -76,7 +76,7 @@ void fetchURL(BearSSL::WiFiClientSecure *client, const char *host, const uint16_
     } while (millis() < to);
   }
   client->stop();
-  Serial.printf("BSSL stack used: %d\n-------\n\n", stack_thunk_get_max_usage());
+  Serial.printf("BSSL stack used: %lu\n-------\n\n", stack_thunk_get_max_usage());
 }
 
 void fetchNoConfig() {

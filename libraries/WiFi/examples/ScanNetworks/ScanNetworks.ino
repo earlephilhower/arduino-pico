@@ -24,7 +24,7 @@ const char *encToString(uint8_t enc) {
 
 void loop() {
   delay(5000);
-  Serial.printf("Beginning scan at %d\n", millis());
+  Serial.printf("Beginning scan at %lu\n", millis());
   auto cnt = WiFi.scanNetworks();
   if (!cnt) {
     Serial.printf("No networks found\n");
@@ -34,7 +34,7 @@ void loop() {
     for (auto i = 0; i < cnt; i++) {
       uint8_t bssid[6];
       WiFi.BSSID(i, bssid);
-      Serial.printf("%32s %5s %17s %2d %4d\n", WiFi.SSID(i), encToString(WiFi.encryptionType(i)), macToString(bssid), WiFi.channel(i), WiFi.RSSI(i));
+      Serial.printf("%32s %5s %17s %2d %4ld\n", WiFi.SSID(i), encToString(WiFi.encryptionType(i)), macToString(bssid), WiFi.channel(i), WiFi.RSSI(i));
     }
   }
   Serial.printf("\n--- Sleeping ---\n\n\n");
