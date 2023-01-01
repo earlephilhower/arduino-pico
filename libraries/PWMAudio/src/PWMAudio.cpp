@@ -23,7 +23,7 @@
 #include <hardware/pwm.h>
 
 
-PWMAudio::PWMAudio(pin_size_t pin) {
+PWMAudio::PWMAudio(pin_size_t pin, bool stereo) {
     _running = false;
     _pin = pin;
     _freq = 48000;
@@ -31,6 +31,7 @@ PWMAudio::PWMAudio(pin_size_t pin) {
     _cb = nullptr;
     _buffers = 8;
     _bufferWords = 0;
+    _stereo = stereo;
 }
 
 PWMAudio::~PWMAudio() {
@@ -61,7 +62,14 @@ void PWMAudio::onTransmit(void(*fn)(void)) {
 }
 
 bool PWMAudio::begin() {
+    if (_stereo && (_pin & 1)) {
+        // Illegal, need to have consecutive pins on the same PWM slice
+        Serial.printf("ERRROR: PWMAudio stereo mode requires pin be even\n");
+        return false;
+    }
+
     _running = true;
+    _wasHolding = false;
 
     if (!_bufferWords) {
         _bufferWords = 16;
@@ -84,7 +92,9 @@ bool PWMAudio::begin() {
     pwm_config_set_wrap(&c, _pwmScale);
     pwm_init(pwm_gpio_to_slice_num(_pin), &c, true);
     gpio_set_function(_pin, GPIO_FUNC_PWM);
+    gpio_set_function(_pin + 1, GPIO_FUNC_PWM);
     pwm_set_gpio_level(_pin, (0x8000 * _pwmScale) >> 16);
+    pwm_set_gpio_level(_pin + 1, (0x8000 * _pwmScale) >> 16);
 
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
 
@@ -135,9 +145,24 @@ size_t PWMAudio::write(int16_t val, bool sync) {
     // Adjust to the real range
     sample *= _pwmScale;
     sample >>= 16;
-    // Duplicate sample since we don't care which PWM channel
-    sample = (sample & 0xffff) | (sample << 16);
-    return _arb->write(sample, sync);
+    if (!_stereo) {
+        // Duplicate sample since we don't care which PWM channel
+        sample = (sample & 0xffff) | (sample << 16);
+        return _arb->write(sample, sync);
+    } else {
+        if (_wasHolding) {
+            _holdWord = (_holdWord & 0xffff) | (sample << 16);
+            auto ret = _arb->write(_holdWord, sync);
+            if (ret) {
+                _wasHolding = false;
+            }
+            return ret;
+        } else {
+            _holdWord = sample;
+            _wasHolding = true;
+            return true;
+        }
+    }
 }
 
 size_t PWMAudio::write(const uint8_t *buffer, size_t size) {

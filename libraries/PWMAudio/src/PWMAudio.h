@@ -25,7 +25,7 @@
 
 class PWMAudio : public Stream {
 public:
-    PWMAudio(pin_size_t pin);
+    PWMAudio(pin_size_t pin, bool stereo = false);
     virtual ~PWMAudio();
 
     bool setBuffers(size_t buffers, size_t bufferWords);
@@ -65,6 +65,8 @@ public:
 
 private:
     pin_size_t _pin;
+    bool _stereo;
+
     int _freq;
 
     size_t _buffers;
@@ -73,6 +75,9 @@ private:
     uint32_t _pwmScale;
 
     bool _running;
+
+    bool _wasHolding;
+    uint32_t _holdWord;
 
     void (*_cb)();
 
