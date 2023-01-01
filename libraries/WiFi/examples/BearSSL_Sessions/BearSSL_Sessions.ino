@@ -113,7 +113,7 @@ void loop() {
   client.setTrustAnchors(&cert);
   fetchURL(&client, host, port, path);
   finish = millis();
-  Serial.printf("Total time: %dms\n", finish - start);
+  Serial.printf("Total time: %lums\n", finish - start);
 
   BearSSL::Session session;
   client.setSession(&session);
@@ -122,21 +122,21 @@ void loop() {
   client.setTrustAnchors(&cert);
   fetchURL(&client, host, port, path);
   finish = millis();
-  Serial.printf("Total time: %dms\n", finish - start);
+  Serial.printf("Total time: %lums\n", finish - start);
 
   Serial.printf("Connecting with the just initialized session...");
   start = millis();
   client.setTrustAnchors(&cert);
   fetchURL(&client, host, port, path);
   finish = millis();
-  Serial.printf("Total time: %dms\n", finish - start);
+  Serial.printf("Total time: %lums\n", finish - start);
 
   Serial.printf("Connecting again with the initialized session...");
   start = millis();
   client.setTrustAnchors(&cert);
   fetchURL(&client, host, port, path);
   finish = millis();
-  Serial.printf("Total time: %dms\n", finish - start);
+  Serial.printf("Total time: %lums\n", finish - start);
 
   delay(10000);  // Avoid DDOSing github
 }
