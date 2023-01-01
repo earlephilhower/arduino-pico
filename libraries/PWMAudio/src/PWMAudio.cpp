@@ -92,9 +92,11 @@ bool PWMAudio::begin() {
     pwm_config_set_wrap(&c, _pwmScale);
     pwm_init(pwm_gpio_to_slice_num(_pin), &c, true);
     gpio_set_function(_pin, GPIO_FUNC_PWM);
-    gpio_set_function(_pin + 1, GPIO_FUNC_PWM);
     pwm_set_gpio_level(_pin, (0x8000 * _pwmScale) >> 16);
-    pwm_set_gpio_level(_pin + 1, (0x8000 * _pwmScale) >> 16);
+    if (_stereo) {
+        gpio_set_function(_pin + 1, GPIO_FUNC_PWM);
+        pwm_set_gpio_level(_pin + 1, (0x8000 * _pwmScale) >> 16);
+    }
 
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
 
