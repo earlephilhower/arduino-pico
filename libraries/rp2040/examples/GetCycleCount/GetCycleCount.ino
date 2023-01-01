@@ -6,7 +6,7 @@ void setup() {
   uint32_t a = rp2040.getCycleCount();
   delay(1000);
   uint32_t b = rp2040.getCycleCount();
-  Serial.printf("There are %d cycles in one second.\n\n\n", b - a);
+  Serial.printf("There are %lu cycles in one second.\n\n\n", b - a);
 
   delay(3000);
 
@@ -16,6 +16,6 @@ void setup() {
 }
 
 void loop() {
-  Serial.printf("%15u - %15llu\n", rp2040.getCycleCount(), rp2040.getCycleCount64());
+  Serial.printf("%15lu - %15llu\n", rp2040.getCycleCount(), rp2040.getCycleCount64());
   delay(1500);
 }
