@@ -30,6 +30,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    Digital I/O <digital>
    EEPROM <eeprom>
    I2S Audio <i2s>
+   PWM Audio <pwm>
    Serial USB and UARTs <serial>
    "Software Serial" PIO UART <piouart>
    Servo <servo>
