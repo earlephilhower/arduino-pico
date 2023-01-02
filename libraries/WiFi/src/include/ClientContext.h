@@ -651,7 +651,7 @@ protected:
 
     void _error(err_t err) {
         (void) err;
-        DEBUGV(":er %d 0x%08x\r\n", (int) err, (uint32_t) _datasource);
+        DEBUGV(":er %d 0x%08lx\r\n", (int) err, (uint32_t) _datasource);
         tcp_arg(_pcb, nullptr);
         tcp_sent(_pcb, nullptr);
         tcp_recv(_pcb, nullptr);

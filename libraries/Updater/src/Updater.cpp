@@ -129,7 +129,7 @@ bool UpdaterClass::begin(size_t size, int command) {
     _command = command;
 
 #ifdef DEBUG_UPDATER
-    DEBUG_UPDATER.printf_P(PSTR("[begin] _startAddress:     0x%08X (%d)\n"), _startAddress, _startAddress);
+    DEBUG_UPDATER.printf_P(PSTR("[begin] _startAddress:     0x%08lX (%lu)\n"), _startAddress, _startAddress);
     DEBUG_UPDATER.printf_P(PSTR("[begin] _size:             0x%08zX (%zd)\n"), _size, _size);
 #endif
 
@@ -188,7 +188,7 @@ bool UpdaterClass::end(bool evenIfRemaining) {
             _fp.read((uint8_t *)&sigLen, sizeof(uint32_t));
         }
 #ifdef DEBUG_UPDATER
-        DEBUG_UPDATER.printf_P(PSTR("[Updater] sigLen: %d\n"), sigLen);
+        DEBUG_UPDATER.printf_P(PSTR("[Updater] sigLen: %lu\n"), sigLen);
 #endif
         if (sigLen != expectedSigLen) {
             _setError(UPDATE_ERROR_SIGN);
@@ -276,7 +276,7 @@ bool UpdaterClass::end(bool evenIfRemaining) {
         picoOTA.addFile("firmware.bin");
         picoOTA.commit();
 #ifdef DEBUG_UPDATER
-        DEBUG_UPDATER.printf_P(PSTR("Staged: address:0x%08X, size:0x%08zX\n"), _startAddress, _size);
+        DEBUG_UPDATER.printf_P(PSTR("Staged: address:0x%08lX, size:0x%08zX\n"), _startAddress, _size);
 #endif
     }
 

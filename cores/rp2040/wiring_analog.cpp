@@ -43,10 +43,10 @@ extern "C" void analogWriteFreq(uint32_t freq) {
         return;
     }
     if (freq < 100) {
-        DEBUGCORE("ERROR: analogWriteFreq too low (%d)\n", freq);
+        DEBUGCORE("ERROR: analogWriteFreq too low (%lu)\n", freq);
         analogFreq = 100;
     } else if (freq > 10'000'000) {
-        DEBUGCORE("ERROR: analogWriteFreq too high (%d)\n", freq);
+        DEBUGCORE("ERROR: analogWriteFreq too high (%lu)\n", freq);
         analogFreq = 10'000'000;
     } else {
         analogFreq = freq;
@@ -64,7 +64,7 @@ extern "C" void analogWriteRange(uint32_t range) {
         pwmInitted = 0;
         scaleInitted = false;
     } else {
-        DEBUGCORE("ERROR: analogWriteRange out of range (%d)\n", range);
+        DEBUGCORE("ERROR: analogWriteRange out of range (%lu)\n", range);
     }
 }
 
@@ -90,14 +90,14 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
             analogWritePseudoScale++;
             analogScale *= 2;
-            DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%d\n", analogWritePseudoScale, analogScale);
+            DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%lu\n", analogWritePseudoScale, analogScale);
         }
         // For high frequencies, we need to scale the output max value down to actually hit the frequency target
         analogWriteSlowScale = 1;
         while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) < 1.0) && (analogScale >= 6)) {
             analogWriteSlowScale++;
             analogScale /= 2;
-            DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%d\n", analogWriteSlowScale, analogScale);
+            DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%lu\n", analogWriteSlowScale, analogScale);
         }
         scaleInitted = true;
     }
