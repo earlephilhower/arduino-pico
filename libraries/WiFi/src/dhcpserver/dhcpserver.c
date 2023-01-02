@@ -184,8 +184,8 @@ static void dhcp_server_process(void *arg, struct udp_pcb *upcb, struct pbuf *p,
     (void)src_addr;
     (void)src_port;
 
-    // This is around 548 bytes
-    dhcp_msg_t dhcp_msg;
+    // This is around 548 bytes, so make static so it will live in the heap, not the stack (too large)
+    static dhcp_msg_t dhcp_msg;
 
 #define DHCP_MIN_SIZE (240 + 3)
     if (p->tot_len < DHCP_MIN_SIZE) {
