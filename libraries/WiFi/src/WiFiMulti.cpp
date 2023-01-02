@@ -78,7 +78,7 @@ uint8_t WiFiMulti::run(uint32_t to) {
     for (int i = 0; i < cnt; i++) {
         if (WiFi.RSSI(i) > maxRSSID) {
             for (auto j = _list.begin(); j != _list.end(); j++) {
-                DEBUGV("[WIFIMULTI] Checking for '%s' at %d\n", WiFi.SSID(i), WiFi.RSSI(i));
+                DEBUGV("[WIFIMULTI] Checking for '%s' at %ld\n", WiFi.SSID(i), WiFi.RSSI(i));
                 if (!strcmp(j->ssid, WiFi.SSID(i))) {
                     hit = j;
                     maxRSSID = WiFi.RSSI(i);

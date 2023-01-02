@@ -109,7 +109,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         if (ret > 0) {
             newTone->alarm = ret;
         } else {
-            DEBUGCORE("ERROR: Unable to allocate timer for tone(%d, %d, %d)\n",
+            DEBUGCORE("ERROR: Unable to allocate timer for tone(%d, %d, %lu)\n",
                       pin, frequency, duration);
         }
     }
