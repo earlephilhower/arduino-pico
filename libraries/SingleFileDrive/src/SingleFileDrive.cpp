@@ -245,30 +245,29 @@ int32_t SingleFileDrive::read10(uint32_t lba, uint32_t offset, void* buffer, uin
     }
 
     uint32_t toread = bufsize;
-    char buff[512];
     uint8_t *curbuff = (uint8_t *)buffer;
 
     while (bufsize > 0) {
         if (lba == 0) {
-            bootSector(buff);
+            bootSector(_sectBuff);
         } else if ((lba == 128) || (lba == 256)) {
-            fatSector(buff);
+            fatSector(_sectBuff);
         } else if (lba == 384) {
-            directorySector(buff);
+            directorySector(_sectBuff);
         } else if (lba >= 640) {
             File f = LittleFS.open(_localFile, "r");
             f.seek((lba - 640) * 512);
-            f.read((uint8_t*)buff, 512);
+            f.read((uint8_t*)_sectBuff, 512);
             f.close();
         } else {
-            memset(buff, 0, sizeof(buff));
+            memset(_sectBuff, 0, sizeof(_sectBuff));
         }
 
         uint32_t cplen = 512 - offset;
         if (bufsize < cplen) {
             cplen = bufsize;
         }
-        memcpy(curbuff, buff + offset, cplen);
+        memcpy(curbuff, _sectBuff + offset, cplen);
         curbuff += cplen;
         offset = 0;
         lba++;

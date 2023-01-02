@@ -50,6 +50,8 @@ private:
     char *_localFile = nullptr;
     char *_dosFile = nullptr;
 
+    char _sectBuff[512]; // Read sector region
+
     void (*_cbDelete)(uint32_t) = nullptr;
     uint32_t _cbDeleteData = 0;
 
