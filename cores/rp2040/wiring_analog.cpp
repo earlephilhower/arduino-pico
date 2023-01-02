@@ -172,7 +172,7 @@ extern "C" float analogReadTemp(float vref) {
     adc_select_input(4); // Temperature sensor
     int v = adc_read();
     adc_set_temp_sensor_enabled(false);
-    float t = 27.0f - ((v * vref / pow(2, _readBits)) - 0.706f) / 0.001721f; // From the datasheet
+    float t = 27.0f - ((v * vref / 4096.0f) - 0.706f) / 0.001721f; // From the datasheet
     return t;
 }
 
