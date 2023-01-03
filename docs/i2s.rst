@@ -58,6 +58,12 @@ Sets the word clock frequency, but does not start the I2S device if not
 already running.  May be called after ``I2S::begin()`` to change the
 sample rate on-the-fly.
 
+bool setLSBJFormat()
+~~~~~~~~~~~~~~~~~~~~
+Enables LSB-J format for I2S output.  In this mode the MSB comes out at the
+same time as the LRCLK changes, and not the normal 1-cycle delay.  Useful for
+DAC chips like the PT8211.
+
 bool begin()/begin(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Start the I2S device up with the given sample rate, or with the value set
