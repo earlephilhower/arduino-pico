@@ -43,10 +43,20 @@ Call before ``PWMAudio::begin()``.
 When running at high sample rates, it is recommended to increase the
 ``bufferWords`` to 32 or higher (i.e. ``pwm.setBuffers(4, 32);`` ).
 
+bool setPin(pin_size_t pin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adjusts the pin to connect to the PWM audio output.  Only legal before
+``PWMAudio::begin()``.
+
+bool setStereo(bool stereo)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adjusts the mono/stereo setting of the PWM audio output.  Only legal before
+``PWMAudio::begin()``.
+
 bool setFrequency(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sets the sample frequency, but does not start the PWM device.  Should be called
-before ``PWMAudio::begin`` .
+Sets the sample frequency, but does not start the PWM device (however if the
+device was already running, it will wontinue to run at the new frequency).
 
 bool begin()/begin(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
