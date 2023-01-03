@@ -69,10 +69,12 @@ AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, i
 
 AudioBufferManager::~AudioBufferManager() {
     if (_running) {
+        _running = false;
         for (auto i = 0; i < 2; i++) {
             dma_channel_set_irq0_enabled(_channelDMA[i], false);
-            dma_channel_unclaim(_channelDMA[i]);
             __channelMap[_channelDMA[i]] = nullptr;
+            dma_channel_abort(_channelDMA[i]);
+            dma_channel_unclaim(_channelDMA[i]);
         }
         __channelCount--;
         if (!__channelCount) {
@@ -237,6 +239,9 @@ void AudioBufferManager::flush() {
 }
 
 void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
+    if (!_running) {
+        return;
+    }
     if (_isOutput) {
         if (_active[0] != _silence) {
             _addToList(&_empty, _active[0]);
