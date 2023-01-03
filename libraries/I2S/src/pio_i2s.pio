@@ -50,17 +50,17 @@ right:
 
 ;                           +----- WCLK
 ;                           |+---- BCLK
-    mov x, y         side 0b11
-left:
-    out pins, 1      side 0b00
-    jmp x--, left    side 0b01
-    out pins, 1      side 0b00
-
     mov x, y         side 0b01
+left:
+    out pins, 1      side 0b10
+    jmp x--, left    side 0b11
+    out pins, 1      side 0b10
+
+    mov x, y         side 0b11
 right:
-    out pins, 1      side 0b10
-    jmp x--, right   side 0b11
-    out pins, 1      side 0b10
+    out pins, 1      side 0b00
+    jmp x--, right   side 0b01
+    out pins, 1      side 0b00
     ; Loop back to beginning...
 
 
