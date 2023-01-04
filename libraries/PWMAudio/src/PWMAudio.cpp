@@ -35,6 +35,7 @@ PWMAudio::PWMAudio(pin_size_t pin, bool stereo) {
 }
 
 PWMAudio::~PWMAudio() {
+    end();
 }
 
 bool PWMAudio::setBuffers(size_t buffers, size_t bufferWords) {
@@ -46,11 +47,48 @@ bool PWMAudio::setBuffers(size_t buffers, size_t bufferWords) {
     return true;
 }
 
-bool PWMAudio::setFrequency(int newFreq) {
+bool PWMAudio::setPin(pin_size_t pin) {
     if (_running) {
         return false;
     }
+    _pin = pin;
+    return true;
+}
+
+bool PWMAudio::setStereo(bool stereo) {
+    if (_running) {
+        return false;
+    }
+    _stereo = stereo;
+    return true;
+}
+
+bool PWMAudio::setFrequency(int newFreq) {
     _freq = newFreq;
+
+    // Figure out the scale factor for PWM values
+    float fPWM = 65535.0 * _freq; // ideal
+
+    if (fPWM > clock_get_hz(clk_sys)) {
+        // Need to downscale the range to hit the frequency target
+        float pwmMax = (float) clock_get_hz(clk_sys) /(float) _freq;
+        _pwmScale = pwmMax;
+        fPWM = clock_get_hz(clk_sys);
+    } else {
+        _pwmScale = 1 << 16;
+    }
+
+    pwm_config c = pwm_get_default_config();
+    pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / fPWM);
+    pwm_config_set_wrap(&c, _pwmScale);
+    pwm_init(pwm_gpio_to_slice_num(_pin), &c, _running);
+    gpio_set_function(_pin, GPIO_FUNC_PWM);
+    pwm_set_gpio_level(_pin, (0x8000 * _pwmScale) >> 16);
+    if (_stereo) {
+        gpio_set_function(_pin + 1, GPIO_FUNC_PWM);
+        pwm_set_gpio_level(_pin + 1, (0x8000 * _pwmScale) >> 16);
+    }
+
     return true;
 }
 
@@ -75,28 +113,7 @@ bool PWMAudio::begin() {
         _bufferWords = 16;
     }
 
-    // Figure out the scale factor for PWM values
-    float fPWM = 65535.0 * _freq; // ideal
-
-    if (fPWM > clock_get_hz(clk_sys)) {
-        // Need to downscale the range to hit the frequency target
-        float pwmMax = (float) clock_get_hz(clk_sys) /(float) _freq;
-        _pwmScale = pwmMax;
-        fPWM = clock_get_hz(clk_sys);
-    } else {
-        _pwmScale = 1 << 16;
-    }
-
-    pwm_config c = pwm_get_default_config();
-    pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / fPWM);
-    pwm_config_set_wrap(&c, _pwmScale);
-    pwm_init(pwm_gpio_to_slice_num(_pin), &c, true);
-    gpio_set_function(_pin, GPIO_FUNC_PWM);
-    pwm_set_gpio_level(_pin, (0x8000 * _pwmScale) >> 16);
-    if (_stereo) {
-        gpio_set_function(_pin + 1, GPIO_FUNC_PWM);
-        pwm_set_gpio_level(_pin + 1, (0x8000 * _pwmScale) >> 16);
-    }
+    setFrequency(_freq);
 
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
 
@@ -108,9 +125,15 @@ bool PWMAudio::begin() {
 }
 
 void PWMAudio::end() {
-    _running = false;
-    delete _arb;
-    _arb = nullptr;
+    if (_running) {
+        _running = false;
+        pinMode(_pin, OUTPUT);
+        if (_stereo) {
+            pinMode(_pin + 1, OUTPUT);
+        }
+        delete _arb;
+        _arb = nullptr;
+    }
 }
 
 int PWMAudio::available() {

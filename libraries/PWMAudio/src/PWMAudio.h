@@ -25,11 +25,13 @@
 
 class PWMAudio : public Stream {
 public:
-    PWMAudio(pin_size_t pin, bool stereo = false);
+    PWMAudio(pin_size_t pin = 0, bool stereo = false);
     virtual ~PWMAudio();
 
     bool setBuffers(size_t buffers, size_t bufferWords);
     bool setFrequency(int newFreq);
+    bool setPin(pin_size_t pin);
+    bool setStereo(bool stereo = true);
 
     bool begin(long sampleRate) {
         setFrequency(sampleRate);
