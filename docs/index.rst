@@ -31,6 +31,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    EEPROM <eeprom>
    I2S Audio <i2s>
    PWM Audio <pwm>
+   Microphone (and Analog Sensor) Input <adc>
    Serial USB and UARTs <serial>
    "Software Serial" PIO UART <piouart>
    Servo <servo>

@@ -118,7 +118,7 @@ private:
     bool _writtenHalf;
 
     int32_t _holdWord = 0;
-    int _wasHolding = 0;
+    int _isHolding = 0;
 
     void (*_cb)();
 
