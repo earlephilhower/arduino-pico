@@ -71,7 +71,7 @@ bool PWMAudio::setFrequency(int newFreq) {
 
     if (fPWM > clock_get_hz(clk_sys)) {
         // Need to downscale the range to hit the frequency target
-        float pwmMax = (float) clock_get_hz(clk_sys) /(float) _freq;
+        float pwmMax = (float) clock_get_hz(clk_sys) / (float) _freq;
         _pwmScale = pwmMax;
         fPWM = clock_get_hz(clk_sys);
     } else {
@@ -166,7 +166,7 @@ size_t PWMAudio::write(int16_t val, bool sync) {
         return 0;
     }
     // Go from signed -32K...32K to unsigned 0...64K
-    uint32_t sample = (uint32_t) (val + 0x8000); 
+    uint32_t sample = (uint32_t)(val + 0x8000);
     // Adjust to the real range
     sample *= _pwmScale;
     sample >>= 16;

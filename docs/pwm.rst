@@ -36,8 +36,7 @@ in mono mode applies.
 
 bool setBuffers(size_t buffers, size_t bufferWords)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Set the number of DMA buffers and their size in 32-bit words as well as
-the word to fill when no data is available to send to the PWM hardware.
+Set the number of DMA buffers and their size in 32-bit words.
 Call before ``PWMAudio::begin()``.
 
 When running at high sample rates, it is recommended to increase the

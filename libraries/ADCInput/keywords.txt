@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+ADCInput	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+end	KEYWORD2
+
+setPins	KEYWORD2
+setFrequency	KEYWORD2
+setBuffers	KEYWORD2
+
+onReceive	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################

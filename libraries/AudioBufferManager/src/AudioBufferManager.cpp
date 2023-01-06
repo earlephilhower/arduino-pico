@@ -59,6 +59,7 @@ AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, i
     for (size_t i = 0; i < bufferCount; i++) {
         auto ab = new AudioBuffer;
         ab->buff = new uint32_t[_wordsPerBuffer];
+        bzero(ab->buff, _wordsPerBuffer * 4);
         ab->next = nullptr;
         _addToList(&_empty, ab);
     }
@@ -135,10 +136,10 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
         channel_config_set_irq_quiet(&c, false); // Need IRQs
 
         if (_isOutput) {
-            dma_channel_configure(_channelDMA[i], &c, pioFIFOAddr, _silence->buff, _wordsPerBuffer, false);
+            dma_channel_configure(_channelDMA[i], &c, pioFIFOAddr, _silence->buff, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
         } else {
             _active[i] = _takeFromList(&_empty);
-            dma_channel_configure(_channelDMA[i], &c, _active[i]->buff, pioFIFOAddr, _wordsPerBuffer, false);
+            dma_channel_configure(_channelDMA[i], &c, _active[i]->buff, pioFIFOAddr, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
         }
         dma_channel_set_irq0_enabled(_channelDMA[i], true);
         __channelMap[_channelDMA[i]] = this;
@@ -264,7 +265,7 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
         }
         dma_channel_set_write_addr(channel, _active[0]->buff, false);
     }
-    dma_channel_set_trans_count(channel, _wordsPerBuffer, false);
+    dma_channel_set_trans_count(channel, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
     dma_channel_acknowledge_irq0(channel);
     if (_callback) {
         _callback();

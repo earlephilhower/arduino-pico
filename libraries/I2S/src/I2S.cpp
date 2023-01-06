@@ -188,9 +188,9 @@ int I2S::read() {
         return _peekSaved;
     }
 
-    if (_wasHolding <= 0) {
+    if (_isHolding <= 0) {
         read(&_holdWord, true);
-        _wasHolding = 32;
+        _isHolding = 32;
     }
 
     int ret;
@@ -198,18 +198,18 @@ int I2S::read() {
     case 8:
         ret = _holdWord >> 24;
         _holdWord <<= 8;
-        _wasHolding -= 8;
+        _isHolding -= 8;
         return ret;
     case 16:
         ret = _holdWord >> 16;
         _holdWord <<=  16;
-        _wasHolding -= 32;
+        _isHolding -= 32;
         return ret;
     case 24:
     case 32:
     default:
         ret = _holdWord;
-        _wasHolding = 0;
+        _isHolding = 0;
         return ret;
     }
 }
@@ -238,26 +238,26 @@ size_t I2S::_writeNatural(int32_t s) {
     switch (_bps) {
     case 8:
         _holdWord |= s & 0xff;
-        if (_wasHolding >= 24) {
+        if (_isHolding >= 24) {
             auto ret = write(_holdWord, true);
             _holdWord = 0;
-            _wasHolding = 0;
+            _isHolding = 0;
             return ret;
         } else {
             _holdWord <<= 8;
-            _wasHolding += 8;
+            _isHolding += 8;
             return 1;
         }
     case 16:
         _holdWord |= s & 0xffff;
-        if (_wasHolding) {
+        if (_isHolding) {
             auto ret = write(_holdWord, true);
             _holdWord = 0;
-            _wasHolding = 0;
+            _isHolding = 0;
             return ret;
         } else {
             _holdWord <<= 16;
-            _wasHolding = 16;
+            _isHolding = 16;
             return 1;
         }
     case 24:
@@ -314,13 +314,13 @@ bool I2S::read8(int8_t *l, int8_t *r) {
     if (!_running || _isOutput) {
         return false;
     }
-    if (_wasHolding) {
+    if (_isHolding) {
         *l = (_holdWord >> 8) & 0xff;
         *r = (_holdWord >> 0) & 0xff;
-        _wasHolding = 0;
+        _isHolding = 0;
     } else {
         read(&_holdWord, true);
-        _wasHolding = 16;
+        _isHolding = 16;
         *l = (_holdWord >> 24) & 0xff;
         *r = (_holdWord >> 16) & 0xff;
     }
