@@ -17,6 +17,7 @@ end	KEYWORD2
 setPin	KEYWORD2
 setFrequency	KEYWORD2
 setBuffers	KEYWORD2
+setStereo	KEYWORD2
 
 onTransmit	KEYWORD2
 

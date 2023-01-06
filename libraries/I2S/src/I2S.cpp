@@ -161,11 +161,14 @@ bool I2S::begin() {
 }
 
 void I2S::end() {
-    _running = false;
-    delete _arb;
-    _arb = nullptr;
-    delete _i2s;
-    _i2s = nullptr;
+    if (_running) {
+        pio_sm_set_enabled(_pio, _sm, false);
+        _running = false;
+        delete _arb;
+        _arb = nullptr;
+        delete _i2s;
+        _i2s = nullptr;
+    }
 }
 
 int I2S::available() {
