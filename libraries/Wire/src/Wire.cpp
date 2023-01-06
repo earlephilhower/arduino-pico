@@ -182,6 +182,9 @@ void TwoWire::onIRQ() {
         if (_onReceiveCallback && _buffLen) {
             _onReceiveCallback(_buffLen);
         }
+        _buffLen = 0;
+        _buffOff = 0;
+        _slaveStartDet = false;
         _i2c->hw->clr_restart_det;
     }
     // STOP_DET
