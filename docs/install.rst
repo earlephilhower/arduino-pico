@@ -17,6 +17,15 @@ it suggests.  Otherwise the Pico board may not be detected.  Also, if trying
 out the 2.0 beta Arduino please install the release 1.8 version beforehand
 to ensure needed device drivers are present.
 
+**Note for Linux Users**: If you installed the Arduino IDE using Flatpak, which 
+is common in Pop!_OS, Fedora, and Mint, among others, you may need to configure 
+Flatpak to allow the IDE access to files outside your home folder. The RP2040 
+device is sometimes mounted as a folder in /opt or /media, which Flatpak will 
+prevent the Arduino IDE from accessing. For Arduino IDE V2, override the filesystem
+restriction using ``flatpak override --user --filesystem=host cc.arduino.IDE2`` . For 
+For Arduino IDE < V2, use ``flatpak override --user --filesystem=host cc.arduino.arduinoide``.
+
+
 1. Open up the Arduino IDE and go to File->Preferences.
 2. In the dialog that pops up, enter the following URL in the "Additional Boards Manager URLs" field:  https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
 
