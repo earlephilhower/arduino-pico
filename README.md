@@ -168,6 +168,9 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * FreeRTOS SMP support
 * Overclocking and underclocking from the menus
 * digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
+* Analog stereo audio in using DMA and the built-in ADC
+* Analog stereo audio out using PWM hardware
+* USB drive mode for data loggers (SingleFileDrive)
 * Peripherals:  SPI master, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input, I2S audio output, Servo
 * printf (i.e. debug) output over USB serial
 
