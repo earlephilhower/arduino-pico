@@ -9,6 +9,19 @@ installation.
 
 Installing via Arduino Boards Manager
 -------------------------------------
+1. Open up the Arduino IDE and go to File->Preferences.
+2. In the dialog that pops up, enter the following URL in the "Additional Boards Manager URLs" field:  https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+
+   .. image:: images/install1.png
+
+3. Hit OK to close the dialog.
+4. Go to Tools->Boards->Board Manager in the IDE
+5. Type "pico" in the search box and select "Add":
+
+   .. image:: images/install2.png
+
+Arduino IDE Installation Warning
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **Note for Windows Users**: Please do not use the Windows Store version of
 the actual Arduino application because it has issues detecting attached Pico
 boards.  Use the "Windows ZIP" or plain "Windows" executable (EXE) download
@@ -24,18 +37,6 @@ device is sometimes mounted as a folder in /opt or /media, which Flatpak will
 prevent the Arduino IDE from accessing. For Arduino IDE V2, override the filesystem
 restriction using ``flatpak override --user --filesystem=host cc.arduino.IDE2`` . For 
 For Arduino IDE < V2, use ``flatpak override --user --filesystem=host cc.arduino.arduinoide``.
-
-
-1. Open up the Arduino IDE and go to File->Preferences.
-2. In the dialog that pops up, enter the following URL in the "Additional Boards Manager URLs" field:  https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
-
-   .. image:: images/install1.png
-
-3. Hit OK to close the dialog.
-4. Go to Tools->Boards->Board Manager in the IDE
-5. Type "pico" in the search box and select "Add":
-
-   .. image:: images/install2.png
 
 Installing via GIT
 ------------------
