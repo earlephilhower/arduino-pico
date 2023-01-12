@@ -79,8 +79,6 @@ def BuildUSBStack(name):
     print('%s.menu.usbstack.picosdk.build.usbstack_flags=' % (name))
     print("%s.menu.usbstack.tinyusb=Adafruit TinyUSB" % (name))
     print('%s.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"' % (name))
-
-def BuildWithoutUSBStack(name):
     print("%s.menu.usbstack.nousb=No USB" % (name))
     print('%s.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"' % (name))
 
@@ -103,7 +101,26 @@ def BuildIPStack(name):
     print('%s.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a' % (name))
     print('%s.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1' % (name))
 
-def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, pwr, boarddefine, variant, uploadtool, networkuploadtool, flashsize, ramsize, boot2, dbg, extra):
+def BuildUploadMethodMenu(name):
+    for a, b, c, d, e, f in [ ["default", "Default (UF2)", 256, "picoprobe.tcl", "uf2conv", "uf2conv-network"],
+                              ["picotool", "Picotool", 256, "picoprobe.tcl", "picotool", None],
+                              ["picoprobe", "Picoprobe", 256, "picoprobe.tcl", "picoprobe", None],
+                              ["picodebug", "Pico-Debug", 240, "picodebug.tcl", "picodebug", None] ]:
+        print("%s.menu.uploadmethod.%s=%s" % (name, a, b))
+        print("%s.menu.uploadmethod.%s.build.ram_length=%dk" % (name, a, c))
+        print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
+        # For pico-debug, need to disable USB unconditionally
+        if a == "picodebug":
+            print("%s.menu.uploadmethod.%s.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico" % (name, a))
+        elif a == "picotool":
+            print("%s.menu.uploadmethod.%s.build.picodebugflags=-DENABLE_PICOTOOL_USB" % (name, a))
+        print("%s.menu.uploadmethod.%s.upload.maximum_data_size=%d" % (name, a, c * 1024))
+        print("%s.menu.uploadmethod.%s.upload.tool=%s" % (name, a, e))
+        print("%s.menu.uploadmethod.%s.upload.tool.default=%s" % (name, a, e))
+        if f != None:
+            print("%s.menu.uploadmethod.%s.upload.tool.network=%s" % (name, a, f))
+
+def BuildHeader(name, vendor_name, product_name, vid, pid, pwr, boarddefine, variant, flashsize, boot2, extra):
     prettyname = vendor_name + " " + product_name
     print()
     print("# -----------------------------------")
@@ -111,17 +128,17 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("# -----------------------------------")
     print("%s.name=%s" % (name, prettyname))
     usb = 0
-    if type(pidtouse) == list:
+    if type(pid) == list:
         for tp in pid:
-            print("%s.vid.%d=%s" % (name, usb, vidtouse))
+            print("%s.vid.%d=%s" % (name, usb, vid))
             print("%s.pid.%d=0x%04x" % (name, usb, int(tp, 16)))
             usb = usb + 1
     else:
         for kb in [ "0", "0x8000" ]:
             for ms in [ "0", "0x4000" ]:
                 for jy in [ "0", "0x0100" ]:
-                    thispid = int(pidtouse, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
-                    print("%s.vid.%d=%s" % (name, usb, vidtouse))
+                    thispid = int(pid, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
+                    print("%s.vid.%d=%s" % (name, usb, vid))
                     print("%s.pid.%d=0x%04x" % (name, usb, thispid))
                     usb = usb + 1
     if type(pid) == list:
@@ -132,12 +149,7 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("%s.build.board=%s" % (name, boarddefine))
     print("%s.build.mcu=cortex-m0plus" % (name))
     print("%s.build.variant=%s" % (name, variant))
-    print("%s.upload.tool=%s" % (name, uploadtool))
-    print("%s.upload.tool.default=%s" % (name, uploadtool))
-    if networkuploadtool != None:
-        print("%s.upload.tool.network=%s" % (name, networkuploadtool))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
-    print("%s.upload.maximum_data_size=%d" % (name, ramsize))
     print("%s.upload.wait_for_upload_port=true" % (name))
     print("%s.upload.erase_cmd=" % (name))
     print("%s.serial.disableDTR=false" % (name))
@@ -146,8 +158,6 @@ def BuildHeader(name, vendor_name, product_name, vidtouse, pidtouse, vid, pid, p
     print("%s.build.led=" % (name))
     print("%s.build.core=rp2040" % (name))
     print("%s.build.ldscript=memmap_default.ld" % (name))
-    print("%s.build.ram_length=%dk" % (name, ramsize / 1024))
-    print("%s.build.debugscript=%s" % (name, dbg))
     print("%s.build.boot2=%s" % (name, boot2))
     print("%s.build.vid=%s" % (name, vid))
     if type(pid) == list:
@@ -182,49 +192,34 @@ def BuildGlobalMenuList():
     print("menu.wificountry=WiFi Region")
     print("menu.usbstack=USB Stack")
     print("menu.ipstack=IP Stack")
+    print("menu.uploadmethod=Upload Method")
 
 def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra = None):
-    for a, b, c, d in [ ["", "", "uf2conv", "uf2conv-network"], ["picoprobe", " (Picoprobe)", "picoprobe", None], ["picodebug", " (pico-debug)", "picodebug", None]]:
-        n = name + a
-        p = product_name + b
-        fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
-        for i in range(1, flashsizemb):
-            fssizelist.append(i * 1024 * 1024)
-        vidtouse = vid;
-        ramsizekb = 256;
-        dbg = "picoprobe.tcl"
-        if a == "picoprobe":
-            pidtouse = '0x0004'
-        elif a == "picodebug":
-            vidtouse = '0x1209'
-            pidtouse = '0x2488'
-            ramsizekb = 240;
-            dbg = "picodebug.tcl"
-        else:
-            pidtouse = pid
-        BuildHeader(n, vendor_name, p, vidtouse, pidtouse, vid, pid, pwr, boarddefine, name, c, d, flashsizemb * 1024 * 1024, ramsizekb * 1024, boot2, dbg, extra)
-        if name == "generic":
-            BuildFlashMenu(n, 2*1024*1024, [0, 1*1024*1024])
-            BuildFlashMenu(n, 4*1024*1024, [0, 2*1024*1024])
-            BuildFlashMenu(n, 8*1024*1024, [0, 4*1024*1024])
-            BuildFlashMenu(n, 16*1024*1024, [0, 8*1024*1024])
-        else:
-            BuildFlashMenu(n, flashsizemb * 1024 * 1024, fssizelist)
-        BuildFreq(n)
-        BuildOptimize(n)
-        BuildRTTI(n)
-        BuildStackProtect(n)
-        BuildExceptions(n)
-        BuildDebugPort(n)
-        BuildDebugLevel(n)
-        if a != "picodebug":
-            BuildUSBStack(n)
-        BuildWithoutUSBStack(n)
-        if name == "rpipicow":
-            BuildCountry(n)
-        BuildIPStack(n)
-        if name == "generic":
-            BuildBoot(n)
+    fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
+    for i in range(1, flashsizemb):
+        fssizelist.append(i * 1024 * 1024)
+    BuildHeader(name, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, boot2, extra)
+    if name == "generic":
+        BuildFlashMenu(name, 2*1024*1024, [0, 1*1024*1024])
+        BuildFlashMenu(name, 4*1024*1024, [0, 2*1024*1024])
+        BuildFlashMenu(name, 8*1024*1024, [0, 4*1024*1024])
+        BuildFlashMenu(name, 16*1024*1024, [0, 8*1024*1024])
+    else:
+        BuildFlashMenu(name, flashsizemb * 1024 * 1024, fssizelist)
+    BuildFreq(name)
+    BuildOptimize(name)
+    BuildRTTI(name)
+    BuildStackProtect(name)
+    BuildExceptions(name)
+    BuildDebugPort(name)
+    BuildDebugLevel(name)
+    BuildUSBStack(name)
+    if name == "rpipicow":
+        BuildCountry(name)
+    BuildIPStack(name)
+    if name == "generic":
+        BuildBoot(name)
+    BuildUploadMethodMenu(name)
     MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra)
     global pkgjson
     thisbrd = {}

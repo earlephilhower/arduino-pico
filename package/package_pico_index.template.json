@@ -192,6 +192,11 @@
                      "packager": "rp2040",
                      "version": "1.5.0-a-5007782",
                      "name": "pqt-openocd"
+                  },
+                  {
+                     "packager": "rp2040",
+                     "version": "1.5.0-a-03f2812",
+                     "name": "pqt-picotool"
                   }
                ],
                "help": {
@@ -200,6 +205,61 @@
             }
          ],
          "tools": [
+            {
+               "version": "1.5.0-a-03f2812",
+               "name": "pqt-picotool",
+               "systems": [
+                  {
+                     "host": "aarch64-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.5.0-a/aarch64-linux-gnu.picotool-03f2812.230113.tar.gz",
+                     "archiveFileName": "aarch64-linux-gnu.picotool-03f2812.230113.tar.gz",
+                     "checksum": "SHA-256:3816240a6aef8da61895227df3b1b5d7a7f95456a9e7737e25252886f649d2f3",
+                     "size": "171807"
+                  },
+                  {
+                     "host": "arm-linux-gnueabihf",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.5.0-a/arm-linux-gnueabihf.picotool-03f2812.230113.tar.gz",
+                     "archiveFileName": "arm-linux-gnueabihf.picotool-03f2812.230113.tar.gz",
+                     "checksum": "SHA-256:454e1a0ce9a546626bca73cdff74dfb0e06bf6603b13d5a3a4a4f0c0968fd65d",
+                     "size": "152809"
+                  },
+                  {
+                     "host": "i686-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.5.0-a/i686-linux-gnu.picotool-03f2812.230113.tar.gz",
+                     "archiveFileName": "i686-linux-gnu.picotool-03f2812.230113.tar.gz",
+                     "checksum": "SHA-256:fee7f93d65bb3db42a9fcf5683e2b038ab13875b1d5bedb304facb92e6469a37",
+                     "size": "183571"
+                  },
+                  {
+                     "host": "i686-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.5.0-a/i686-w64-mingw32.picotool-03f2812.230113.zip",
+                     "archiveFileName": "i686-w64-mingw32.picotool-03f2812.230113.zip",
+                     "checksum": "SHA-256:8a37063d44e306b9315618962cd8dc14b815e998ba960a38099e45bb14bcda90",
+                     "size": "352766"
+                  },
+                  {
+                     "host": "x86_64-apple-darwin",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.5.0-a/x86_64-apple-darwin14.picotool-03f2812.230113.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin14.picotool-03f2812.230113.tar.gz",
+                     "checksum": "SHA-256:5b2f77ee33a7a757546ab526d3e477300bf01e787e645f64aa86daac6b19a510",
+                     "size": "852449"
+                  },
+                  {
+                     "host": "x86_64-pc-linux-gnu",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.5.0-a/x86_64-linux-gnu.picotool-03f2812.230113.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.picotool-03f2812.230113.tar.gz",
+                     "checksum": "SHA-256:c6168c6948ec781ead9637ecddc357004aa0fbaca19a634a48fbfc4e48860d1a",
+                     "size": "131509"
+                  },
+                  {
+                     "host": "x86_64-mingw32",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.5.0-a/x86_64-w64-mingw32.picotool-03f2812.230113.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.picotool-03f2812.230113.zip",
+                     "checksum": "SHA-256:a5bded215b886bc8dc35520d2ae696c56e370ef6e92ca7d3a47fe82db362afa7",
+                     "size": "337118"
+                  }
+               ]
+            },
             {
                "version": "1.5.0-a-5007782",
                "name": "pqt-openocd",

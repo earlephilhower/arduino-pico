@@ -9,6 +9,7 @@
 -iwithprefixbefore/pico-sdk/src/common/pico_stdlib/include
 -iwithprefixbefore/pico-sdk/src/common/pico_sync/include
 -iwithprefixbefore/pico-sdk/src/common/pico_time/include
+-iwithprefixbefore/pico-sdk/src/common/pico_usb_reset_interface/include
 -iwithprefixbefore/pico-sdk/src/common/pico_util/include
 -iwithprefixbefore/pico-sdk/src/rp2040/hardware_regs/include
 -iwithprefixbefore/pico-sdk/src/rp2040/hardware_structs/include
