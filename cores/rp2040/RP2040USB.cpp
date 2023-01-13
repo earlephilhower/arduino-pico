@@ -33,6 +33,10 @@
 #include "hardware/irq.h"
 #include "pico/mutex.h"
 #include "pico/unique_id.h"
+#include "pico/usb_reset_interface.h"
+#include "hardware/watchdog.h"
+#include "pico/bootrom.h"
+#include <device/usbd_pvt.h>
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't
 // have multiple cores updating the TUSB state in parallel
@@ -67,12 +71,18 @@ static int __usb_task_irq;
 #define USBD_STR_PRODUCT (0x02)
 #define USBD_STR_SERIAL (0x03)
 #define USBD_STR_CDC (0x04)
+#define USBD_STR_RPI_RESET (0x05)
 
 #define EPNUM_HID   0x83
 
 #define USBD_MSC_EPOUT 0x03
 #define USBD_MSC_EPIN 0x84
 #define USBD_MSC_EPSIZE 64
+
+#define TUD_RPI_RESET_DESCRIPTOR(_itfnum, _stridx) \
+  /* Interface */\
+  9, TUSB_DESC_INTERFACE, _itfnum, 0, 0, TUSB_CLASS_VENDOR_SPECIFIC, RESET_INTERFACE_SUBCLASS, RESET_INTERFACE_PROTOCOL, _stridx,
+
 
 const uint8_t *tud_descriptor_device_cb(void) {
     static tusb_desc_device_t usbd_desc_device = {
@@ -250,6 +260,14 @@ void __SetupUSBDescriptor() {
 
         int usbd_desc_len = TUD_CONFIG_DESC_LEN + (__USBInstallSerial ? sizeof(cdc_desc) : 0) + (hasHID ? sizeof(hid_desc) : 0) + (__USBInstallMassStorage ? sizeof(msd_desc) : 0);
 
+#ifdef ENABLE_PICOTOOL_USB
+        uint8_t picotool_itf = interface_count++;
+        uint8_t picotool_desc[] = {
+            TUD_RPI_RESET_DESCRIPTOR(picotool_itf, USBD_STR_RPI_RESET)
+        };
+        usbd_desc_len += sizeof(picotool_desc);
+#endif
+
         uint8_t tud_cfg_desc[TUD_CONFIG_DESC_LEN] = {
             // Config number, interface count, string index, total length, attribute, power in mA
             TUD_CONFIG_DESCRIPTOR(1, interface_count, USBD_STR_0, usbd_desc_len, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA)
@@ -274,6 +292,10 @@ void __SetupUSBDescriptor() {
                 memcpy(ptr, msd_desc, sizeof(msd_desc));
                 ptr += sizeof(msd_desc);
             }
+#ifdef ENABLE_PICOTOOL_USB
+            memcpy(ptr, picotool_desc, sizeof(picotool_desc));
+            ptr += sizeof(picotool_desc);
+#endif
         }
     }
 }
@@ -291,6 +313,9 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
         [USBD_STR_PRODUCT] = "PicoArduino",
         [USBD_STR_SERIAL] = idString,
         [USBD_STR_CDC] = "Board CDC",
+#ifdef ENABLE_PICOTOOL_USB
+        [USBD_STR_RPI_RESET] = "Reset",
+#endif
     };
 
     if (!idString[0]) {
@@ -430,6 +455,86 @@ extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t pr
     product_id[0] = 0;
     product_rev[0] = 0;
 }
+
+
+
+#ifdef ENABLE_PICOTOOL_USB
+
+static uint8_t _picotool_itf_num;
+
+static void resetd_init() {
+}
+
+static void resetd_reset(uint8_t rhport) {
+    (void) rhport;
+    _picotool_itf_num = 0;
+}
+
+static uint16_t resetd_open(uint8_t rhport,
+                            tusb_desc_interface_t const *itf_desc, uint16_t max_len) {
+    (void) rhport;
+    TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass &&
+              RESET_INTERFACE_SUBCLASS == itf_desc->bInterfaceSubClass &&
+              RESET_INTERFACE_PROTOCOL == itf_desc->bInterfaceProtocol, 0);
+
+    uint16_t const drv_len = sizeof(tusb_desc_interface_t);
+    TU_VERIFY(max_len >= drv_len, 0);
+
+    _picotool_itf_num = itf_desc->bInterfaceNumber;
+    return drv_len;
+}
+
+// Support for parameterized reset via vendor interface control request
+static bool resetd_control_xfer_cb(uint8_t rhport, uint8_t stage,
+                                   tusb_control_request_t const *request) {
+    (void) rhport;
+    // nothing to do with DATA & ACK stage
+    if (stage != CONTROL_STAGE_SETUP) {
+        return true;
+    }
+
+    if (request->wIndex == _picotool_itf_num) {
+        if (request->bRequest == RESET_REQUEST_BOOTSEL) {
+            reset_usb_boot(0, (request->wValue & 0x7f));
+            // does not return, otherwise we'd return true
+        }
+
+        if (request->bRequest == RESET_REQUEST_FLASH) {
+            watchdog_reboot(0, 0, 100);
+            return true;
+        }
+
+    }
+    return false;
+}
+
+static bool resetd_xfer_cb(uint8_t rhport, uint8_t ep_addr,
+                           xfer_result_t result, uint32_t xferred_bytes) {
+    (void) rhport;
+    (void) ep_addr;
+    (void) result;
+    (void) xferred_bytes;
+    return true;
+}
+
+static usbd_class_driver_t const _resetd_driver = {
+#if CFG_TUSB_DEBUG >= 2
+    .name = "RESET",
+#endif
+    .init             = resetd_init,
+    .reset            = resetd_reset,
+    .open             = resetd_open,
+    .control_xfer_cb  = resetd_control_xfer_cb,
+    .xfer_cb          = resetd_xfer_cb,
+    .sof              = NULL
+};
+
+// Implement callback to add our custom driver
+usbd_class_driver_t const *usbd_app_driver_get_cb(uint8_t *driver_count) {
+    *driver_count = 1;
+    return &_resetd_driver;
+}
+#endif
 
 
 #endif

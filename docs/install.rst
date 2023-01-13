@@ -135,6 +135,22 @@ For detailed usage information, please check the repo documentation available at
 
 * https://arduino-pico.readthedocs.io/en/latest/fs.html
 
+Uploading Sketches with Picotool
+--------------------------------
+Because the Picotool uses a custom device driver in the Pico to handle upload, when using the ``Upload Method->Picotool`` mode custom code needs to be run on the Pico which is not included by default for compatibility and code savings.
+
+So for the first sketch you will need to rebuild (with the ``Upload Method->Picotool`` selected in them menus) and then manually hold down BOOTSEL and insert the Pico USB cable to enter the ROM bootloader.
+
+After the initial upload, as long as the running binary was built using the ``Picotool`` upload method, then the normal upload process should work.
+
+Note that for Ubuntu and other Linux operating systems you may need to add the following lines to a new `udev` config file(``99-picotool.rules``) to allow normal users to access the special USB device the Pico exports:
+
+.. code::
+
+        echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0003", MODE="660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-Picotool.rules
+        echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000a", MODE="660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-Picotool.rules
+        sudo udevadm control --reload
+
 Uploading Sketches with Picoprobe
 ---------------------------------
 If you have built a Raspberry Pi Picoprobe, you can use OpenOCD to handle your sketch uploads and for debugging with GDB.
