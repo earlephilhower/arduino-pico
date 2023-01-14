@@ -132,6 +132,9 @@
                      "name": "Seeed XIAO RP2040"
                   },
                   {
+                     "name": "VCC-GND YD RP2040"
+                  },
+                  {
                      "name": "Viyalab Mizu RP2040"
                   },
                   {
