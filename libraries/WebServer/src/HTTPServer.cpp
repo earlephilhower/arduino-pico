@@ -249,20 +249,32 @@ void HTTPServer::httpHandleClient() {
         case HC_WAIT_READ:
             // Wait for data from client to become available
             if (_currentClient->available()) {
-                if (_parseRequest(_currentClient)) {
-                    // because HTTP_MAX_SEND_WAIT is expressed in milliseconds,
-                    // it must be divided by 1000
+                switch (_parseRequest(_currentClient)) {
+                case CLIENT_REQUEST_CAN_CONTINUE:
+                    // Because HTTP_MAX_SEND_WAIT is expressed in milliseconds, it must be divided by 1000
                     _currentClient->setTimeout(HTTP_MAX_SEND_WAIT / 1000);
                     _contentLength = CONTENT_LENGTH_NOT_SET;
                     _handleRequest();
-
-                    // Fix for issue with Chrome based browsers: https://github.com/espressif/arduino-esp32/issues/3652
-                    //           if (_currentClient->connected()) {
-                    //             _currentStatus = HC_WAIT_CLOSE;
-                    //             _statusChange = millis();
-                    //             keepCurrentClient = true;
-                    //           }
-                }
+                /* fallthrough */
+                case CLIENT_REQUEST_IS_HANDLED:
+                    if (_currentClient->connected() || _currentClient->available()) {
+                        _currentStatus = HC_WAIT_CLOSE;
+                        _statusChange = millis();
+                        keepCurrentClient = true;
+                    } else {
+                        log_v("webserver: peer has closed after served\n");
+                    }
+                    break;
+                case CLIENT_MUST_STOP:
+                    log_v("Close client\n");
+                    _currentClient->stop();
+                    break;
+                case CLIENT_IS_GIVEN:
+                    // client must not be stopped but must not be handled here anymore
+                    // (example: tcp connection given to websocket)
+                    log_v("Give client\n");
+                    break;
+                } // switch _parseRequest()
             } else { // !_currentClient->available()
                 if (millis() - _statusChange <= HTTP_MAX_DATA_WAIT) {
                     keepCurrentClient = true;
