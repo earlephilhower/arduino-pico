@@ -12,6 +12,7 @@ See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for m
 # Supported Boards
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
+* 0xCB Helios
 * Adafruit Feather RP2040
 * Adafruit Feather RP2040 SCORPIO
 * Adafruit ItsyBitsy RP2040
