@@ -78,7 +78,7 @@ static char* readBytesWithTimeout(WiFiClient* client, size_t maxLength, size_t& 
     return buf;
 }
 
-bool HTTPServer::_parseRequest(WiFiClient* client) {
+HTTPServer::ClientFuture HTTPServer::_parseRequest(WiFiClient* client) {
     // Read the first line of HTTP request
     String req = client->readStringUntil('\r');
     client->readStringUntil('\n');
@@ -93,7 +93,7 @@ bool HTTPServer::_parseRequest(WiFiClient* client) {
     int addr_end = req.indexOf(' ', addr_start + 1);
     if (addr_start == -1 || addr_end == -1) {
         log_e("Invalid request: %s", req.c_str());
-        return false;
+        return CLIENT_MUST_STOP;
     }
 
     String methodStr = req.substring(0, addr_start);
@@ -110,6 +110,13 @@ bool HTTPServer::_parseRequest(WiFiClient* client) {
     _chunked = false;
     _clientContentLength = 0;  // not known yet, or invalid
 
+    if (_hook) {
+        auto whatNow = _hook(methodStr, url, client, mime::getContentType);
+        if (whatNow != CLIENT_REQUEST_CAN_CONTINUE) {
+            return whatNow;
+        }
+    }
+
     HTTPMethod method = HTTP_ANY;
     size_t num_methods = sizeof(_http_method_str) / sizeof(const char *);
     for (size_t i = 0; i < num_methods; i++) {
@@ -120,7 +127,7 @@ bool HTTPServer::_parseRequest(WiFiClient* client) {
     }
     if (method == HTTP_ANY) {
         log_e("Unknown HTTP Method: %s", methodStr.c_str());
-        return false;
+        return CLIENT_MUST_STOP;
     }
     _currentMethod = method;
 
@@ -186,7 +193,7 @@ bool HTTPServer::_parseRequest(WiFiClient* client) {
             char* plainBuf = readBytesWithTimeout(client, _clientContentLength, plainLength, HTTP_MAX_POST_WAIT);
             if ((int)plainLength < (int)_clientContentLength) {
                 free(plainBuf);
-                return false;
+                return CLIENT_MUST_STOP;
             }
             if (_clientContentLength > 0) {
                 if (isEncoded) {
@@ -214,7 +221,7 @@ bool HTTPServer::_parseRequest(WiFiClient* client) {
             // it IS a form
             _parseArguments(searchStr);
             if (!_parseForm(client, boundaryStr, _clientContentLength)) {
-                return false;
+                return CLIENT_MUST_STOP;
             }
         }
     } else {
@@ -249,7 +256,7 @@ bool HTTPServer::_parseRequest(WiFiClient* client) {
     log_v("Request: %s", url.c_str());
     log_v(" Arguments: %s", searchStr.c_str());
 
-    return true;
+    return CLIENT_REQUEST_CAN_CONTINUE;
 }
 
 bool HTTPServer::_collectHeader(const char* headerName, const char* headerValue) {
