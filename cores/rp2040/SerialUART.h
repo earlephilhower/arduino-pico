@@ -66,6 +66,11 @@ public:
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
     void _handleIRQ(bool inIRQ = true);
 
+    // Allows the user to sleep until a break is received (self-clears the flag
+    // on read)
+    void setBreakReceived();
+    bool getBreakReceived();
+
 private:
     bool _running = false;
     uart_inst_t *_uart;
@@ -76,6 +81,7 @@ private:
     mutex_t _mutex;
     bool _polling = false;
     bool _overflow;
+    bool _break;
 
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;
