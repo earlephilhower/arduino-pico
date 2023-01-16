@@ -383,7 +383,7 @@ bool SerialUART::getBreakReceived()
 	return false;
     }
 
-    bool break_recieved = _break;
+    bool break_received = _break;
     _break = false;
     return break_received;
 }
