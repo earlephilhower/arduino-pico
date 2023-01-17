@@ -48,6 +48,8 @@ enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 #define CONTENT_LENGTH_UNKNOWN ((size_t) -1)
 #define CONTENT_LENGTH_NOT_SET ((size_t) -2)
 
+#define WEBSERVER_HAS_HOOK 1
+
 class HTTPServer;
 
 typedef struct {
@@ -183,6 +185,25 @@ public:
         return _currentClient->write(file);
     }
 
+    // Hook
+    enum ClientFuture { CLIENT_REQUEST_CAN_CONTINUE, CLIENT_REQUEST_IS_HANDLED, CLIENT_MUST_STOP, CLIENT_IS_GIVEN };
+    typedef String(*ContentTypeFunction)(const String&);
+    using HookFunction = std::function<ClientFuture(const String& method, const String& url, WiFiClient* client, ContentTypeFunction contentType)>;
+    void addHook(HookFunction hook) {
+        if (_hook) {
+            auto previousHook = _hook;
+            _hook = [previousHook, hook](const String & method, const String & url, WiFiClient * client, ContentTypeFunction contentType) {
+                auto whatNow = previousHook(method, url, client, contentType);
+                if (whatNow == CLIENT_REQUEST_CAN_CONTINUE) {
+                    return hook(method, url, client, contentType);
+                }
+                return whatNow;
+            };
+        } else {
+            _hook = hook;
+        }
+    }
+
 protected:
     virtual size_t _currentClientWrite(const char* b, size_t l) {
         return _currentClient->write(b, l);
@@ -193,7 +214,7 @@ protected:
     void _addRequestHandler(RequestHandler* handler);
     void _handleRequest();
     void _finalizeResponse();
-    bool _parseRequest(WiFiClient* client);
+    ClientFuture _parseRequest(WiFiClient* client);
     void _parseArguments(String data);
     static String _responseCodeToString(int code);
     bool _parseForm(WiFiClient* client, String boundary, uint32_t len);
@@ -249,4 +270,6 @@ protected:
     String           _snonce;  // Store noance and opaque for future comparison
     String           _sopaque;
     String           _srealm;  // Store the Auth realm between Calls
+
+    HookFunction     _hook;
 };
