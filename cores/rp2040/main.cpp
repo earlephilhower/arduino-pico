@@ -170,3 +170,28 @@ extern "C" struct _reent *__wrap___getreent() {
         return _impure_ptr1;
     }
 }
+
+// ESP8266 internal debug routine
+extern void hexdump(const void* mem, uint32_t len, uint8_t cols)  __attribute__((weak));
+void hexdump(const void* mem, uint32_t len, uint8_t cols) {
+    const char* src = (const char*)mem;
+    printf("\n[HEXDUMP] Address: %p len: 0x%lX (%ld)", src, len, len);
+    while (len > 0) {
+        uint32_t linesize = cols > len ? len : cols;
+        printf("\n[%p] 0x%04x: ", src, (int)(src - (const char*)mem));
+        for (uint32_t i = 0; i < linesize; i++) {
+            printf("%02x ", *(src + i));
+        }
+        printf("  ");
+        for (uint32_t i = linesize; i < cols; i++) {
+            printf("   ");
+        }
+        for (uint32_t i = 0; i < linesize; i++) {
+            unsigned char c = *(src + i);
+            putc(isprint(c) ? c : '.', stdout);
+        }
+        src += linesize;
+        len -= linesize;
+    }
+    printf("\n");
+}

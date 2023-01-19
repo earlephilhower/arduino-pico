@@ -44,6 +44,11 @@ public:
     using Print::write;
     operator bool() override;
 
+    // ESP8266 compat
+    void setDebugOutput(bool unused) {
+        (void) unused;
+    }
+
 private:
     bool _running = false;
 };
