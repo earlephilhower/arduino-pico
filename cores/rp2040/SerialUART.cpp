@@ -367,7 +367,7 @@ SerialUART::operator bool() {
 }
 
 void SerialUART::setBreakReceived() {
-    CoreMutex m(&_mutex);
+    CoreMutex m(&_fifoMutex);
     if (!_running || !m) {
         return;
     }
@@ -376,9 +376,15 @@ void SerialUART::setBreakReceived() {
 }
 
 bool SerialUART::getBreakReceived() {
-    CoreMutex m(&_mutex);
+    CoreMutex m(&_fifoMutex);
     if (!_running || !m) {
         return false;
+    }
+
+    if (_polling) {
+        _handleIRQ(false);
+    } else {
+        _pumpFIFO();
     }
 
     bool break_received = _break;
