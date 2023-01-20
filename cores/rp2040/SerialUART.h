@@ -73,7 +73,6 @@ public:
 
     // Allows the user to sleep until a break is received (self-clears the flag
     // on read)
-    void setBreakReceived();
     bool getBreakReceived();
 
 private:
