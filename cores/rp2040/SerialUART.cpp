@@ -367,8 +367,7 @@ SerialUART::operator bool() {
 }
 
 bool SerialUART::getBreakReceived() {
-    CoreMutex m(&_fifoMutex);
-    if (!_running || !m) {
+    if (!_running) {
         return false;
     }
 
@@ -378,8 +377,12 @@ bool SerialUART::getBreakReceived() {
         _pumpFIFO();
     }
 
+    uint32_t owner;
+    mutex_enter(&_fifoMutex, &owner);
     bool break_received = _break;
     _break = false;
+    mutex_exit(&fifoMutex);
+
     return break_received;
 }
 
