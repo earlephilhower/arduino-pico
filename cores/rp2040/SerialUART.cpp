@@ -370,7 +370,7 @@ void SerialUART::setBreakReceived()
 {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
-	return;
+        return;
     }
 
     _break = true;
@@ -380,7 +380,7 @@ bool SerialUART::getBreakReceived()
 {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
-	return false;
+        return false;
     }
 
     bool break_received = _break;
@@ -414,11 +414,11 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
     uart_get_hw(_uart)->icr = UART_UARTICR_RTIC_BITS | UART_UARTICR_RXIC_BITS;
     while (uart_is_readable(_uart)) {
         uint32_t raw = uart_get_hw(_uart)->dr;
-	if (raw & 0x400) {
-	    // break!
-	    setBreakReceived();
-	    continue;
-	} else if (raw & 0x300) {
+        if (raw & 0x400) {
+            // break!
+            setBreakReceived();
+            continue;
+        } else if (raw & 0x300) {
             // Framing, Parity Error.  Ignore this bad char
             continue;
         }
