@@ -366,8 +366,7 @@ SerialUART::operator bool() {
     return _running;
 }
 
-void SerialUART::setBreakReceived()
-{
+void SerialUART::setBreakReceived() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return;
@@ -376,8 +375,7 @@ void SerialUART::setBreakReceived()
     _break = true;
 }
 
-bool SerialUART::getBreakReceived()
-{
+bool SerialUART::getBreakReceived() {
     CoreMutex m(&_mutex);
     if (!_running || !m) {
         return false;
