@@ -63,6 +63,11 @@ public:
     bool overflow();
     operator bool() override;
 
+    // ESP8266 compat
+    void setDebugOutput(bool unused) {
+        (void) unused;
+    }
+
     // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
     void _handleIRQ(bool inIRQ = true);
 

@@ -18,6 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#pragma once
+
 #if !defined(DEBUG_RP2040_PORT)
 #define DEBUGV(...) do { } while(0)
 #define DEBUGCORE(...) do { } while(0)
@@ -43,4 +45,8 @@
 #else
 #define DEBUGSPI(...) do { } while(0)
 #endif
+#endif
+
+#ifdef __cplusplus
+extern void hexdump(const void* mem, uint32_t len, uint8_t cols = 16);
 #endif
