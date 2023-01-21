@@ -289,13 +289,22 @@ int SerialUART::read() {
 }
 
 bool SerialUART::overflow() {
-    CoreMutex m(&_mutex);
-    if (!_running || !m) {
+    if (!_running) {
         return false;
     }
-    bool hold = _overflow;
+
+    if (_polling) {
+        _handleIRQ(false);
+    } else {
+        _pumpFIFO();
+    }
+
+    mutex_enter_blocking(&_fifoMutex);
+    bool ovf = _overflow;
     _overflow = false;
-    return hold;
+    mutex_exit(&_fifoMutex);
+
+    return ovf;
 }
 
 int SerialUART::available() {
