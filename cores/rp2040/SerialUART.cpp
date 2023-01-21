@@ -377,8 +377,7 @@ bool SerialUART::getBreakReceived() {
         _pumpFIFO();
     }
 
-    uint32_t owner;
-    mutex_enter_blocking(&_fifoMutex, &owner);
+    mutex_enter_blocking(&_fifoMutex);
     bool break_received = _break;
     _break = false;
     mutex_exit(&_fifoMutex);
