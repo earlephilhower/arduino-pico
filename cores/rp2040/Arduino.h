@@ -107,6 +107,9 @@ extern bool __isFreeRTOS;
 
 #ifdef __cplusplus
 
+// emptyString is an ESP-ism, a constant string with ""
+extern const String emptyString;
+
 #ifdef USE_TINYUSB
 // Needed for declaring Serial
 #include "Adafruit_USBD_CDC.h"

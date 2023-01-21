@@ -381,6 +381,15 @@ public:
     void setFeedWatchdogFunc(FeedHostProcessorWatchdogFuncPointer func);
     void feedWatchdog();
 
+    // ESP8266 compatibility
+    void persistent(bool unused) {
+        (void) unused;
+    }
+
+    void hostname(const char *name) {
+        setHostname(name);
+    }
+
 private:
     int _timeout = 15000;
     String _ssid;
