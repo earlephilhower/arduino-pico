@@ -378,10 +378,10 @@ bool SerialUART::getBreakReceived() {
     }
 
     uint32_t owner;
-    mutex_enter(&_fifoMutex, &owner);
+    mutex_enter_blocking(&_fifoMutex, &owner);
     bool break_received = _break;
     _break = false;
-    mutex_exit(&fifoMutex);
+    mutex_exit(&_fifoMutex);
 
     return break_received;
 }
