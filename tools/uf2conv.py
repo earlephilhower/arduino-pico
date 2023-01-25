@@ -265,36 +265,12 @@ def get_drives():
             if len(words) >= 3 and words[1] == "2" and words[2] == "FAT":
                 drives.append(words[0])
     else:
-        # On linux the presense of a dir is meaningless.
-        #rootpath = "/run/media"
-        #if not os.path.isdir(rootpath):
-        #    rootpath = "/media"
-        #if not os.path.isdir(rootpath):
-        #    rootpath = "/opt/media"
         if sys.platform == "darwin":
-            rootpath = "/Volumes"
+            possibly_anydir("/Volumes", drives)
         elif sys.platform == "linux":
-            '''
-                tmp = rootpath + "/" + os.environ["USER"]
-            if os.path.isdir(tmp):
-                rootpath = tmp
-        for d in os.listdir(rootpath):
-            drives.append(os.path.join(rootpath, d))
-            '''
-            '''
-            Generate a list and scan those.
-            # First add the usual suspects.
-            # Then Scan a returned list instead
-            '''
-            u="/" + os.environ["USER"]
-            possibly_anydir("/mnt", drives)
-            possibly_any("/media", drives, u)
-            possibly_any("/opt/media", drives, u)
-            possibly_any("/run/media", drives, u)
-            possibly_any("/var/run/media", drives, u)
-            # Add from udisksctl info?
-
-        if (len(drives) == 0) and (sys.platform == "linux"):
+            # Do first since a race condition is possible.
+            time.sleep(2) 
+            # GUI desktop is required (X.org) that supports freedesktop.
             globexpr = "/dev/disk/by-id/usb-RPI_RP2*-part1"
             rpidisk = glob.glob(globexpr)
             if len(rpidisk) > 0:
@@ -309,6 +285,19 @@ def get_drives():
                 except Exception as ex:
                     print("Exception executing udisksctl. Exception: {}".format(ex))
                     # If it fails, no problem since it was a heroic attempt
+            '''
+            Generate a list and scan those too.
+            First add the usual suspects.
+            Then Scan a returned list.
+            '''
+            u="/" + os.environ["USER"]
+            possibly_anydir("/mnt", drives)
+            possibly_any("/media", drives, u)
+            possibly_any("/opt/media", drives, u)
+            possibly_any("/run/media", drives, u)
+            possibly_any("/var/run/media", drives, u)
+            # Add from udisksctl info?
+            # Add from /proc/mounts?
 
     def has_info(d):
         try:
