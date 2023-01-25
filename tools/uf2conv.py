@@ -269,7 +269,7 @@ def get_drives():
             possibly_anydir("/Volumes", drives)
         elif sys.platform == "linux":
             # Do first since a race condition is possible.
-            time.sleep(2) 
+            time.sleep(10) 
             # GUI desktop is required (X.org) that supports freedesktop.
             globexpr = "/dev/disk/by-id/usb-RPI_RP2*-part1"
             rpidisk = glob.glob(globexpr)
