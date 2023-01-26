@@ -240,6 +240,10 @@ def get_drives():
                                             "Format-Table -Property DeviceID, DriveType, Filesystem, VolumeName"],
                                             stdin = nul)
                 nul.close()
+            except FileNotFoundError:
+                print("ERROR: Unable to execute powershell or wmic commands, can't continue.")
+                print("ERROR: Please make sure either PowerShell or WMIC is installed and in your %PATH%.")
+                sys.exit(1)
             except:
                 print("Unable to build drive list");
                 sys.exit(1)
