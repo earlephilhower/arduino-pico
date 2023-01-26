@@ -269,7 +269,7 @@ def get_drives():
             possibly_anydir("/Volumes", drives)
         elif sys.platform == "linux":
             # Do first since a race condition is possible.
-            time.sleep(10) 
+            time.sleep(2)
             # GUI desktop is required (X.org) that supports freedesktop.
             globexpr = "/dev/disk/by-id/usb-RPI_RP2*-part1"
             rpidisk = glob.glob(globexpr)
@@ -368,8 +368,17 @@ def main():
             try:
                 print("Resetting " + str(args.serial))
                 try:
-                    ser = serial.Serial(args.serial, 1200)
+                    ser = serial.Serial()
+                    ser.port = args.serial
+                    ser.open()
+                    ser.baudrate = 9600
+                    ser.dtr = True
+                    ser.rts = True
+                    time.sleep(1)
                     ser.dtr = False
+                    ser.rts = False
+                    ser.baudrate = 1200
+                    ser.close()
                 except:
                     pass # Ignore error in the case it is already in upload mode
             except:
