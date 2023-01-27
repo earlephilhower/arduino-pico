@@ -33,6 +33,7 @@
 #include "pico/mutex.h"
 #include "hardware/watchdog.h"
 #include "pico/unique_id.h"
+#include "hardware/resets.h"
 
 #ifndef DISABLE_USB_SERIAL
 // Ensure we are installed in the USB chain
@@ -176,6 +177,15 @@ static bool _rts = false;
 static int _bps = 115200;
 static void CheckSerialReset() {
     if ((_bps == 1200) && (!_dtr)) {
+        // execute any pending tasks, so the host is happy
+        for(int i=0; i<1000; i++) tud_task();
+        // disable nvic irq, so that we don't get bothered anymore
+        NVIC_DisableIRQ((IRQn_Type) USBCTRL_IRQ);
+        // reset the whole USB hardware block
+        reset_block(RESETS_RESET_USBCTRL_BITS);
+        unreset_block(RESETS_RESET_USBCTRL_BITS);
+        // delay a bit...
+        for(int i=0;i<100000;i++);
         reset_usb_boot(0, 0);
         while (1); // WDT will fire here
     }
