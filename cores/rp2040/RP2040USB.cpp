@@ -46,12 +46,11 @@ mutex_t __usb_mutex;
 #define USB_TASK_INTERVAL 1000
 static int __usb_task_irq;
 
-// USB VID/PID (note that PID can change depending on the add'l interfaces)
+#ifndef USBD_VID
 #define USBD_VID (0x2E8A) // Raspberry Pi
+#endif
 
-#ifdef SERIALUSB_PID
-#define USBD_PID (SERIALUSB_PID)
-#else
+#ifndef USBD_PID
 #define USBD_PID (0x000a) // Raspberry Pi Pico SDK CDC
 #endif
 

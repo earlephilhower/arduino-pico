@@ -142,10 +142,11 @@ def BuildHeader(name, vendor_name, product_name, vid, pid, pwr, boarddefine, var
                     print("%s.vid.%d=%s" % (name, usb, vid))
                     print("%s.pid.%d=0x%04x" % (name, usb, thispid))
                     usb = usb + 1
+    print("%s.build.usbvid=-DUSBD_VID=%s" % (name, vid))
     if type(pid) == list:
-        print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid[0]))
+        print("%s.build.usbpid=-DUSBD_PID=%s" % (name, pid[0]))
     else:
-        print("%s.build.usbpid=-DSERIALUSB_PID=%s" % (name, pid))
+        print("%s.build.usbpid=-DUSBD_PID=%s" % (name, pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
     print("%s.build.mcu=cortex-m0plus" % (name))
@@ -160,11 +161,6 @@ def BuildHeader(name, vendor_name, product_name, vid, pid, pwr, boarddefine, var
     print("%s.build.core=rp2040" % (name))
     print("%s.build.ldscript=memmap_default.ld" % (name))
     print("%s.build.boot2=%s" % (name, boot2))
-    print("%s.build.vid=%s" % (name, vid))
-    if type(pid) == list:
-        print("%s.build.pid=%s" % (name, pid[0]))
-    else:
-        print("%s.build.pid=%s" % (name, pid))
     print('%s.build.usb_manufacturer="%s"' % (name, vendor_name))
     print('%s.build.usb_product="%s"' % (name, product_name))
     if extra != None:

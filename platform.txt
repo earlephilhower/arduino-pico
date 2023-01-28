@@ -43,7 +43,7 @@ compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
 compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
 
 compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=0 {build.lwipdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
-compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 -DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 {build.usbpid} {build.usbvid} {build.usbpwr} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/include"
 compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.flags.cmsis} {build.picodebugflags}
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
@@ -114,13 +114,13 @@ pluggable_discovery.rp2040.pattern="{runtime.platform.path}/system/python3/pytho
 recipe.hooks.sketch.prebuild.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/signing.py" --mode header --publickey "{build.source.path}/public.key" --out "{build.path}/core/Updater_Signing.h"
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.usbpid} {build.usbpwr} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {includes} "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -I "{build.path}/core" {compiler.cpp.flags} {build.usbpid} {build.usbpwr} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {build.wificc} {includes} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -I "{build.path}/core" {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {build.wificc} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile S files
-recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {build.usbpid} {build.usbpwr} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
 
 ## Create archives
 # archive_file_path is needed for backwards compatibility with IDE 1.6.5 or older, IDE 1.6.6 or newer overrides this value
