@@ -125,7 +125,7 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
     spi_set_format(_spi, 16, cpol(), cpha(), SPI_MSB_FIRST);
     DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
     spi_write16_read16_blocking(_spi, &data, &ret, 1);
-    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
+    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverse16Bit(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
 }
