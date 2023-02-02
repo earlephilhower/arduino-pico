@@ -134,6 +134,20 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     _overflow = false;
     _queue = new uint8_t[_fifoSize];
     _baud = baud;
+
+    _fcnTx = gpio_get_function(_tx);
+    _fcnRx = gpio_get_function(_rx);
+    gpio_set_function(_tx, GPIO_FUNC_UART);
+    gpio_set_function(_rx, GPIO_FUNC_UART);
+    if (_rts != UART_PIN_NOT_DEFINED) {
+        _fcnRts = gpio_get_function(_rts);
+        gpio_set_function(_rts, GPIO_FUNC_UART);
+    }
+    if (_cts != UART_PIN_NOT_DEFINED) {
+        _fcnCts = gpio_get_function(_cts);
+        gpio_set_function(_cts, GPIO_FUNC_UART);
+    }
+
     uart_init(_uart, baud);
     int bits, stop;
     uart_parity_t parity;
@@ -171,18 +185,6 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         break;
     }
     uart_set_format(_uart, bits, stop, parity);
-    _fcnTx = gpio_get_function(_tx);
-    _fcnRx = gpio_get_function(_rx);
-    gpio_set_function(_tx, GPIO_FUNC_UART);
-    gpio_set_function(_rx, GPIO_FUNC_UART);
-    if (_rts != UART_PIN_NOT_DEFINED) {
-        _fcnRts = gpio_get_function(_rts);
-        gpio_set_function(_rts, GPIO_FUNC_UART);
-    }
-    if (_cts != UART_PIN_NOT_DEFINED) {
-        _fcnCts = gpio_get_function(_cts);
-        gpio_set_function(_cts, GPIO_FUNC_UART);
-    }
     uart_set_hw_flow(_uart, _rts != UART_PIN_NOT_DEFINED, _cts != UART_PIN_NOT_DEFINED);
     _writer = 0;
     _reader = 0;
