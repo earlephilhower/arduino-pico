@@ -20,7 +20,7 @@ uint8_t rawBuffer1[RAW_BUFFER_SIZE];
 uint8_t* rawBuffer[2] = {rawBuffer0, rawBuffer1};
 volatile int rawBufferIndex = 0;
 
-int decimation = 64;
+int decimation = 128;
 
 // final buffer is the one to be filled with PCM data
 int16_t* volatile finalBuffer;
@@ -45,6 +45,7 @@ PDMClass::PDMClass(int dinPin, int clkPin, int pwrPin) :
     _channels(-1),
     _samplerate(-1),
     _init(-1),
+    _cutSamples(100),
     _dmaChannel(0),
     _pio(nullptr),
     _smIdx(-1),
@@ -55,6 +56,12 @@ PDMClass::~PDMClass() {
 }
 
 int PDMClass::begin(int channels, int sampleRate) {
+
+    if (_init == 1) {
+        //ERROR: please call end first
+        return 0;
+    }
+
     //_channels = channels; // only one channel available
 
     // clear the final buffers
@@ -63,32 +70,45 @@ int PDMClass::begin(int channels, int sampleRate) {
     int finalBufferLength = _doubleBuffer.availableForWrite() / sizeof(int16_t);
     _doubleBuffer.swap(0);
 
-    int rawBufferLength = RAW_BUFFER_SIZE / (decimation / 8);
-    // Saturate number of samples. Remaining bytes are dropped.
-    if (rawBufferLength > finalBufferLength) {
-        rawBufferLength = finalBufferLength;
-    }
+  // The mic accepts an input clock from 1.2 to 3.25 Mhz
+  // Setup the decimation factor accordingly
+  if ((sampleRate * decimation * 2) > 3250000) {
+    decimation = 64;
+  }
 
-    /* Initialize Open PDM library */
-    filter.Fs = sampleRate;
-    filter.nSamples = rawBufferLength;
-    filter.LP_HZ = sampleRate / 2;
-    filter.HP_HZ = 10;
-    filter.In_MicChannels = 1;
-    filter.Out_MicChannels = 1;
-    filter.Decimation = decimation;
-    if (_gain == -1) {
-        _gain = FILTER_GAIN;
-    }
-    filter.filterGain = _gain;
-    Open_PDM_Filter_Init(&filter);
+  // Sanity check, abort if still over 3.25Mhz
+  if ((sampleRate * decimation * 2) > 3250000) {
+    //ERROR:  Sample rate too high, the mic would glitch
+    return -1;
+  }
+
+  int rawBufferLength = RAW_BUFFER_SIZE / (decimation / 8);
+  // Saturate number of samples. Remaining bytes are dropped.
+  if (rawBufferLength > finalBufferLength) {
+    rawBufferLength = finalBufferLength;
+  }
+
+  /* Initialize Open PDM library */
+  filter.Fs = sampleRate;
+  filter.MaxVolume = 1;
+  filter.nSamples = rawBufferLength;
+  filter.LP_HZ = sampleRate/2;
+  filter.HP_HZ = 10;
+  filter.In_MicChannels = 1;
+  filter.Out_MicChannels = 1;
+  filter.Decimation = decimation;
+  if(_gain == -1) {
+    _gain = FILTER_GAIN;
+  }
+  filter.filterGain = _gain;
+  Open_PDM_Filter_Init(&filter);
 
     // Configure PIO state machine
     float clkDiv = (float)clock_get_hz(clk_sys) / sampleRate / decimation / 2;
 
     if (!_pdmPgm.prepare(&_pio, &_smIdx, &_pgmOffset)) {
         // ERROR, no free slots
-        return -1;
+        return 0;
     }
     pdm_pio_program_init(_pio, _smIdx, _pgmOffset, _clkPin, _dinPin, clkDiv);
 
@@ -118,14 +138,30 @@ int PDMClass::begin(int channels, int sampleRate) {
                           true                // Start immediately
                          );
 
-    _init = 1;
+  _cutSamples = 100;
 
-    return 1;
+  _init = 1;
+
+  return 1;
 }
 
 void PDMClass::end() {
+
+    if ( _init!=1 ) {
+        return;
+    }
+
+    dma_channel_set_irq0_enabled(_dmaChannel, false);
     dma_channel_abort(_dmaChannel);
+    dma_channel_unclaim(_dmaChannel);
+    irq_remove_handler(DMA_IRQ_0, dmaHandler);
+    pio_remove_program(_pio,  &pdm_pio_program, _pgmOffset);
+    pio_sm_unclaim (_pio, _smIdx);
     pinMode(_clkPin, INPUT);
+    rawBufferIndex=0;
+    _pgmOffset=-1;
+
+    _init=0;
 }
 
 int PDMClass::available() {
@@ -163,7 +199,6 @@ void PDMClass::setBufferSize(int bufferSize) {
 }
 
 void PDMClass::IrqHandler(bool halftranfer) {
-    static int cutSamples = 100;
 
     // Clear the interrupt request.
     dma_hw->ints0 = 1u << _dmaChannel;
@@ -171,23 +206,24 @@ void PDMClass::IrqHandler(bool halftranfer) {
     int shadowIndex = rawBufferIndex ^ 1;
     dma_channel_set_write_addr(_dmaChannel, rawBuffer[shadowIndex], true);
 
-    if (_doubleBuffer.available()) {
-        // buffer overflow, stop
-        return end();
+  if (!_doubleBuffer.available()) {
+    // fill final buffer with PCM samples
+    if (filter.Decimation == 128) {
+      Open_PDM_Filter_128(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
+    } else {
+      Open_PDM_Filter_64(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
     }
 
-    // fill final buffer with PCM samples
-    Open_PDM_Filter_64(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
-
-    if (cutSamples) {
-        memset(finalBuffer, 0, cutSamples);
-        cutSamples = 0;
+    if (_cutSamples) {
+      memset(finalBuffer, 0, _cutSamples);
+      _cutSamples = 0;
     }
 
     // swap final buffer and raw buffers' indexes
     finalBuffer = (int16_t*)_doubleBuffer.data();
     _doubleBuffer.swap(filter.nSamples * sizeof(int16_t));
     rawBufferIndex = shadowIndex;
+  }
 
     if (_onReceive) {
         _onReceive();

@@ -38,12 +38,19 @@ public:
 
     //PORTENTA_H7 min -12 max 51
     //NANO 33 BLE SENSe min 0 max 80
+    //NICLA_VISION min 0 max 8
     void setGain(int gain);
     void setBufferSize(int bufferSize);
     size_t getBufferSize();
 
     // private:
     void IrqHandler(bool halftranfer);
+
+    // Hardware peripherals used
+    uint _dmaChannel;
+    PIO _pio;
+    int _smIdx;
+    int _pgmOffset;
 
 private:
     int _dinPin;
@@ -56,11 +63,13 @@ private:
     int _gain;
     int _init;
 
+    int _cutSamples;
+
     // Hardware peripherals used
-    uint _dmaChannel;
-    PIO _pio;
-    int _smIdx;
-    int _pgmOffset;
+    // uint _dmaChannel;
+    // PIO _pio;
+    // int _smIdx;
+    // int _pgmOffset;
 
     PDMDoubleBuffer _doubleBuffer;
 
