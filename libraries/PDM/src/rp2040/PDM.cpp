@@ -155,7 +155,6 @@ void PDMClass::end() {
     dma_channel_abort(_dmaChannel);
     dma_channel_unclaim(_dmaChannel);
     irq_remove_handler(DMA_IRQ_0, dmaHandler);
-    pio_remove_program(_pio,  &pdm_pio_program, _pgmOffset);
     pio_sm_unclaim(_pio, _smIdx);
     pinMode(_clkPin, INPUT);
     rawBufferIndex = 0;

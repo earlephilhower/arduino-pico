@@ -46,12 +46,6 @@ public:
     // private:
     void IrqHandler(bool halftranfer);
 
-    // Hardware peripherals used
-    uint _dmaChannel;
-    PIO _pio;
-    int _smIdx;
-    int _pgmOffset;
-
 private:
     int _dinPin;
     int _clkPin;
@@ -66,10 +60,10 @@ private:
     int _cutSamples;
 
     // Hardware peripherals used
-    // uint _dmaChannel;
-    // PIO _pio;
-    // int _smIdx;
-    // int _pgmOffset;
+    uint _dmaChannel;
+    PIO _pio;
+    int _smIdx;
+    int _pgmOffset;
 
     PDMDoubleBuffer _doubleBuffer;
 
