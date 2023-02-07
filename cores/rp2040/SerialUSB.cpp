@@ -175,12 +175,14 @@ SerialUSB::operator bool() {
 static bool _dtr = false;
 static bool _rts = false;
 static int _bps = 115200;
-static volatile bool _rebooting = false;
+static bool _rebooting = false;
 static void CheckSerialReset() {
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
         _rebooting = true;
         // execute any pending tasks, so the host is happy
-        for(int i=0; i<1000; i++) tud_task();
+        for(int i=0; i<1000; i++) {
+            tud_task();
+        }
         // disable nvic irq, so that we don't get bothered anymore
         irq_set_enabled(USBCTRL_IRQ, false);
         // reset the whole USB hardware block
