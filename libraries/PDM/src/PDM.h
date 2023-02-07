@@ -38,6 +38,7 @@ public:
 
     //PORTENTA_H7 min -12 max 51
     //NANO 33 BLE SENSe min 0 max 80
+    //NICLA_VISION min 0 max 8
     void setGain(int gain);
     void setBufferSize(int bufferSize);
     size_t getBufferSize();
@@ -55,6 +56,8 @@ private:
 
     int _gain;
     int _init;
+
+    int _cutSamples;
 
     // Hardware peripherals used
     uint _dmaChannel;
