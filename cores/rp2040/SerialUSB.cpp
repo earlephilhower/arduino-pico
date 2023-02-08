@@ -180,7 +180,7 @@ static void CheckSerialReset() {
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
         _rebooting = true;
         // execute any pending tasks, so the host is happy
-        for(int i=0; i<1000; i++) {
+        for (int i=0; i<1000; i++) {
             tud_task();
         }
         // disable nvic irq, so that we don't get bothered anymore
