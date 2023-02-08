@@ -23,11 +23,49 @@
 #include <FS.h>
 #include <SDFS.h>
 
-#undef FILE_READ
-#define FILE_READ O_READ
-#undef FILE_WRITE
-#define FILE_WRITE (O_READ | O_WRITE | O_CREAT | O_APPEND)
 
+inline constexpr uint8_t SDClassFileRead { FILE_READ };
+#undef FILE_READ
+#define FILE_READ SDClassFileRead
+
+inline constexpr uint8_t SDClassFileWrite { FILE_WRITE | O_APPEND };
+#undef FILE_WRITE
+#define FILE_WRITE SDClassFileWrite
+
+
+static inline constexpr const char* SDClassFileMode(uint8_t mode) {
+    bool read = false;
+    bool write = false;
+
+    switch (mode & O_ACCMODE) {
+    case O_RDONLY:
+        read = true;
+        break;
+    case O_WRONLY:
+        write = true;
+        break;
+    case O_RDWR:
+        read = true;
+        write = true;
+        break;
+    }
+
+    const bool append = (mode & O_APPEND) > 0;
+
+    if (read && !write)            {
+        return "r";
+    } else if (!read &&  write && !append) {
+        return "w+";
+    } else if (!read &&  write &&  append) {
+        return "a";
+    } else if (read &&  write && !append) {
+        return "w+";    // may be a bug in FS::mode interpretation, "r+" seems proper
+    } else if (read &&  write &&  append) {
+        return "a+";
+    }
+
+    return "r";
+}
 
 class SDClass {
 public:
@@ -48,7 +86,7 @@ public:
     }
 
     File open(const char *filename, int mode = FILE_READ) {
-        return SDFS.open(filename, getMode(mode));
+        return SDFS.open(filename, SDClassFileMode(mode));
     }
 
     File open(const char *filename, const char *mode) {
@@ -161,25 +199,6 @@ public:
     }
 
 private:
-    const char *getMode(uint8_t mode) {
-        bool read = (mode & O_READ) ? true : false;
-        bool write = (mode & O_WRITE) ? true : false;
-        bool append = (mode & O_APPEND) ? true : false;
-        if (read & !write)           {
-            return "r";
-        } else if (!read &  write & !append) {
-            return "w+";
-        } else if (!read &  write &  append) {
-            return "a";
-        } else if (read &  write & !append) {
-            return "w+";    // may be a bug in FS::mode interpretation, "r+" seems proper
-        } else if (read &  write &  append) {
-            return "a+";
-        } else                                 {
-            return "r";
-        }
-    }
-
     static time_t wrapperTimeCB(void) {
         extern void (*__SD__userDateTimeCB)(uint16_t*, uint16_t*);
         if (__SD__userDateTimeCB) {
