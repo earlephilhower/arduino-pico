@@ -70,11 +70,14 @@ target_link_libraries(pico
 	hardware_watchdog
 	hardware_xosc
 	cmsis
+	cyw43_driver_picow
+	pico_async_context
 	pico_bit_ops
 	pico_bootrom
 	pico_bootsel_via_double_reset
 	pico_cxx_options
 	pico_cyw43_arch_none
+	pico_cyw43_driver
 	pico_divider
 	pico_double
 	pico_fix
@@ -87,6 +90,7 @@ target_link_libraries(pico
 	pico_mem_ops
 	pico_multicore
 	pico_platform
+	pico_rand
 	pico_runtime
 	pico_standard_link
 	pico_stdlib
@@ -97,6 +101,6 @@ target_link_libraries(pico
 )
 
 add_custom_command(TARGET pico POST_BUILD
-	COMMAND ar d libpico.a stdio.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj cyw43_arch_threadsafe_background.c.obj pico_malloc.c.obj
-	COMMAND ar q libpico.a pico-sdk/src/rp2_common/cyw43_driver/cyw43_resource.o
+	COMMAND ar d libpico.a stdio.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj pico_malloc.c.obj
+	COMMAND ar q libpico.a pico-sdk/src/rp2_common/pico_cyw43_driver/cyw43_resource.o
 )
