@@ -69,6 +69,7 @@ AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, i
 }
 
 AudioBufferManager::~AudioBufferManager() {
+    noInterrupts();
     if (_running) {
         _running = false;
         for (auto i = 0; i < 2; i++) {
@@ -76,6 +77,7 @@ AudioBufferManager::~AudioBufferManager() {
             __channelMap[_channelDMA[i]] = nullptr;
             dma_channel_abort(_channelDMA[i]);
             dma_channel_unclaim(_channelDMA[i]);
+            dma_channel_acknowledge_irq0(_channelDMA[i]);
         }
         __channelCount--;
         if (!__channelCount) {
@@ -84,6 +86,7 @@ AudioBufferManager::~AudioBufferManager() {
             irq_remove_handler(DMA_IRQ_0, _irq);
         }
     }
+    interrupts();
     for (int i = 0; i < 2; i++) {
         if (_active[i] != _silence) {
             _deleteAudioBuffer(_active[i]);

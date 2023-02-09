@@ -86,6 +86,9 @@ public:
     int begin(const char* ssid, const char *passphrase);
 
     bool connected();
+    bool isConnected() {
+        return connected();
+    }
     int8_t waitForConnectResult(unsigned long timeoutLength = 60000) {
         uint32_t now = millis();
         while (millis() - now < timeoutLength) {
