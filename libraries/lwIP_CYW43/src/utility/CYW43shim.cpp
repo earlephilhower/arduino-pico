@@ -65,7 +65,11 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
 
         // Not currently possible to hook up igmp_mac_filter and mld_mac_filter
         // TODO: implement igmp_mac_filter and mld_mac_filter
-//        cyw43_set_allmulti(_self, true);
+#if LWIP_IPV6
+        // Implement cyw43_set_allmulti(_self, true) using exposed ioctl call
+        uint8_t allmulti_true[] = { 'a', 'l', 'l', 'm', 'u', 'l', 't', 'i', 0, 1, 0, 0, 0 };
+        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_SET_VAR, sizeof allmulti_true, allmulti_true, CYW43_ITF_STA);
+#endif
 
         if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
             return false;
