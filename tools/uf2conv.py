@@ -268,9 +268,6 @@ def get_drives():
         if sys.platform == "darwin":
             possibly_anydir("/Volumes", drives)
         elif sys.platform == "linux":
-            # Do first since a race condition is possible.
-            time.sleep(2)
-            # GUI desktop is required (X.org) that supports freedesktop.
             globexpr = "/dev/disk/by-id/usb-RPI_RP2*-part1"
             rpidisk = glob.glob(globexpr)
             if len(rpidisk) > 0:
@@ -373,10 +370,8 @@ def main():
                     ser.open()
                     ser.baudrate = 9600
                     ser.dtr = True
-                    ser.rts = True
-                    time.sleep(1)
+                    time.sleep(0.1)
                     ser.dtr = False
-                    ser.rts = False
                     ser.baudrate = 1200
                     ser.close()
                 except:
@@ -414,7 +409,7 @@ def main():
             now = time.time()
             drives = []
             while (time.time() - now < 10.0) and (len(drives) == 0):
-                time.sleep(0.5) # Avoid 100% CPU use while waiting for drive to appear
+                time.sleep(1.0) # Avoid 100% CPU use while waiting for drive to appear
                 drives = get_drives()
 
         if args.output:
@@ -425,7 +420,18 @@ def main():
         for d in drives:
             print("Flashing %s (%s)" % (d, board_id(d)))
             write_file(d + "/NEW.UF2", outbuf)
-        time.sleep(2)
+
+        # Wait until serial port (if defined) re-appears, or 2s timeout unless UF2 drive direct upload
+        try:
+            if args.serial != "UF2 Board":
+                timeout = time.time() + 2.0
+                while time.time() < timeout:
+                    if os.access(args.serial, os.W_OK):
+                        break
+                    time.sleep(0.2)
+        except:
+            pass
+
 
 if __name__ == "__main__":
     main()
