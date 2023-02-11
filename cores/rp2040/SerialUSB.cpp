@@ -33,6 +33,7 @@
 #include "pico/mutex.h"
 #include "hardware/watchdog.h"
 #include "pico/unique_id.h"
+#include "hardware/resets.h"
 
 #ifndef DISABLE_USB_SERIAL
 // Ensure we are installed in the USB chain
@@ -174,8 +175,18 @@ SerialUSB::operator bool() {
 static bool _dtr = false;
 static bool _rts = false;
 static int _bps = 115200;
+static bool _rebooting = false;
 static void CheckSerialReset() {
-    if ((_bps == 1200) && (!_dtr)) {
+    __holdUpPendSV = 1; // Ensure we don't get swapped out by FreeRTOS
+    if (!_rebooting && (_bps == 1200) && (!_dtr)) {
+        _rebooting = true;
+        // Disable NVIC IRQ, so that we don't get bothered anymore
+        irq_set_enabled(USBCTRL_IRQ, false);
+        // Reset the whole USB hardware block
+        reset_block(RESETS_RESET_USBCTRL_BITS);
+        unreset_block(RESETS_RESET_USBCTRL_BITS);
+        // Delay a bit, so the PC can figure out that we have disconnected.
+        sleep_ms(3);
         reset_usb_boot(0, 0);
         while (1); // WDT will fire here
     }
