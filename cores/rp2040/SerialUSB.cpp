@@ -180,16 +180,12 @@ static void CheckSerialReset() {
     __holdUpPendSV = 1; // Ensure we don't get swapped out by FreeRTOS
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
         _rebooting = true;
-        // execute any pending tasks, so the host is happy
-        for (int i = 0; i < 1000; i++) {
-            tud_task();
-        }
-        // disable nvic irq, so that we don't get bothered anymore
+        // Disable NVIC IRQ, so that we don't get bothered anymore
         irq_set_enabled(USBCTRL_IRQ, false);
-        // reset the whole USB hardware block
+        // Reset the whole USB hardware block
         reset_block(RESETS_RESET_USBCTRL_BITS);
         unreset_block(RESETS_RESET_USBCTRL_BITS);
-        // delay a bit, so the PC can figure out that we have disconnected.
+        // Delay a bit, so the PC can figure out that we have disconnected.
         sleep_ms(3);
         reset_usb_boot(0, 0);
         while (1); // WDT will fire here
