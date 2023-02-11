@@ -162,9 +162,23 @@ public:
 
 private:
     const char *getMode(uint8_t mode) {
-        bool read = (mode & O_READ) ? true : false;
-        bool write = (mode & O_WRITE) ? true : false;
-        bool append = (mode & O_APPEND) ? true : false;
+        bool read = false;
+        bool write = false;
+
+        switch (mode & O_ACCMODE) {
+        case O_RDONLY:
+            read = true;
+            break;
+        case O_WRONLY:
+            write = true;
+            break;
+        case O_RDWR:
+            read = true;
+            write = true;
+            break;
+        }
+        const bool append = (mode & O_APPEND) > 0;
+
         if (read & !write)           {
             return "r";
         } else if (!read &  write & !append) {
