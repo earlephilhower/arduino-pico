@@ -177,6 +177,7 @@ static bool _rts = false;
 static int _bps = 115200;
 static bool _rebooting = false;
 static void CheckSerialReset() {
+    __holdUpPendSV = 1; // Ensure we don't get swapped out by FreeRTOS
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
         _rebooting = true;
         // execute any pending tasks, so the host is happy
