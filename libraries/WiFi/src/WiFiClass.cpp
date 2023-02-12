@@ -158,6 +158,22 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 }
 #endif
 
+uint8_t WiFiClass::softAPgetStationNum() {
+    if (!_apMode || !_wifiHWInitted) {
+        return 0;
+    }
+    int m;
+    cyw43_wifi_ap_get_max_stas(&cyw43_state, &m);
+    uint8_t *macs = (uint8_t*)malloc(m * 6);
+    if (!macs) {
+        return 0;
+    }
+    cyw43_wifi_ap_get_stas(&cyw43_state, &m, macs);
+    free(macs);
+    return m;
+}
+
+
 bool WiFiClass::connected() {
     return (_apMode && _wifiHWInitted) || (_wifi.connected() && localIP().isSet() && (cyw43_wifi_link_status(&cyw43_state, _apMode ? 1 : 0) == CYW43_LINK_JOIN));
 }
