@@ -41,13 +41,13 @@ Hardware Watchdog
 -----------------
 
 void rp2040.wdt_begin(uint32_t delay_ms)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Enables the hardware watchdog timer with a delay value of delay_ms
 milliseconds. Note that on the RP2040, once this function has called, the
 hardware watchdog can _not_ be disabled.
 
 void rp2040.wdt_reset()
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 Reloads the watchdog's counter with the amount of time set by wdt_begin.
 
 

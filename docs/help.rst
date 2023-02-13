@@ -1,5 +1,5 @@
-Getting Help and Contributing
-=============================
+Getting Help
+============
 
 This is a community supported project and has multiple ways to get assistance.
 Posting complete details, in a polite and organized way will get the best
