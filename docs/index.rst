@@ -16,7 +16,9 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    :maxdepth: 2
    :caption: Contents:
 
-   Getting Help and Contributing <help>
+   Getting Help <help>
+   Contributing <contrib>
+
    Installation <install>
    IDE Menus <ide>
 
