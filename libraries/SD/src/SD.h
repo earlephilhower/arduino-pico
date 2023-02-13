@@ -26,7 +26,7 @@
 #undef FILE_READ
 #define FILE_READ O_READ
 #undef FILE_WRITE
-#define FILE_WRITE (O_READ | O_WRITE | O_CREAT | O_APPEND)
+#define FILE_WRITE (O_RDWR | O_CREAT | O_APPEND)
 
 
 class SDClass {
