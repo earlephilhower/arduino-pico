@@ -33,6 +33,27 @@ Try and only change one thing per pull request.  That makes it easier to
 review and prioritize.  Opening up a separate PR per change also helps keep
 track of them when release messages are generated.
 
+Adding a New Board
+------------------
+
+To add a new RP2040 board you will need to update the ``tools/makeboards.py``
+script.  Do *NOT* manually edit ``boards.txt``, that file is machine generated.
+You will need to add a ``MakeBoard`` call at the end of the file.  Please be sure
+to add your board so that it sorts alphabetically, starting with the company name
+and then the board name.  Otherwise it is hard to find a specific board in the menu.
+
+Run ``python3 tools/makeboards.py`` to update the ``boards.txt`` file and generate
+a Platform.IO JSON file in the ``tools/json`` directory.
+
+In your ``git commit`` be sure to add the newly generated ``tools/json/XXX.json``
+file as well as the modified ``makeboards`` script and ``boards.txt`` and the
+Arduino packaging JSON ``package/package_pico_index.template.json``.  You should
+also add a note in the ``README.md`` file listing your new board.
+
+Submit the updated commit as a PR and, if all goes well, your board will be in
+on the next core release.
+
+
 Porting Libraries and Applications to the Core
 ----------------------------------------------
 
