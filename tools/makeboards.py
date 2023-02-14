@@ -105,7 +105,8 @@ def BuildIPStack(name):
 def BuildUploadMethodMenu(name):
     for a, b, c, d, e, f in [ ["default", "Default (UF2)", 256, "picoprobe.tcl", "uf2conv", "uf2conv-network"],
                               ["picotool", "Picotool", 256, "picoprobe.tcl", "picotool", None],
-                              ["picoprobe", "Picoprobe", 256, "picoprobe.tcl", "picoprobe", None],
+                              ["picoprobe", "Picoprobe (openOCD)", 256, "picoprobe.tcl", "picoprobe", None],
+                              ["picoprobe_pyocd", "Picoprobe (pyOCD)", 256, "picoprobe.tcl", "picoprobe_pyocd", None],
                               ["picodebug", "Pico-Debug", 240, "picodebug.tcl", "picodebug", None] ]:
         print("%s.menu.uploadmethod.%s=%s" % (name, a, b))
         print("%s.menu.uploadmethod.%s.build.ram_length=%dk" % (name, a, c))

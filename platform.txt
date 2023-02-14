@@ -209,3 +209,10 @@ tools.picodebug.upload.protocol=pico-debug
 tools.picodebug.upload.params.verbose=
 tools.picodebug.upload.params.quiet=
 tools.picodebug.upload.pattern="{cmd}/bin/openocd" -f "board/pico-debug.cfg" -s "{cmd}/share/openocd/scripts" -c "program {{build.path}/{build.project_name}.elf} verify reset exit"
+
+#tools.picoprobe_pyocd.cmd={runtime.tools.pqt-pyocd.path}
+tools.picoprobe_pyocd.cmd=pyocd
+tools.picoprobe_pyocd.upload.protocol=pyocd
+tools.picoprobe_pyocd.upload.params.verbose=
+tools.picoprobe_pyocd.upload.params.quiet=
+tools.picoprobe_pyocd.upload.pattern="{cmd}" flash -t rp2040 "{build.path}/{build.project_name}.elf"
