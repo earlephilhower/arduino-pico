@@ -246,6 +246,11 @@ public:
         return clock_get_hz(clk_sys);
     }
 
+    // Get current CPU core number
+    static int cpuid() {
+        return sio_hw->cpuid;
+    }
+
     // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
     volatile uint64_t _epoch = 0;
     inline uint32_t getCycleCount() {
