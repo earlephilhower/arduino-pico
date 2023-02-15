@@ -28,7 +28,7 @@ typedef struct {
 } FMMap;
 
 static FMMap *_map = nullptr;
-extern "C" SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m) {
+SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
     if (!_map) {
         _map = (FMMap *)calloc(sizeof(FMMap), 16);
     }
@@ -42,7 +42,12 @@ extern "C" SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m) {
     for (int i = 0; i < 16; i++) {
         if (_map[i].src == nullptr) {
             // Make a new mutex
-            SemaphoreHandle_t fm = __freertos_mutex_create();
+            SemaphoreHandle_t fm;
+            if (recursive) {
+                fm = _freertos_recursive_mutex_create();
+            } else {
+                fm = __freertos_mutex_create();
+            }
             if (fm == nullptr) {
                 return nullptr;
             }
