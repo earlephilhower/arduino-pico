@@ -13,6 +13,10 @@ Returns the current frequency of the core clock.  This is read at runtime,
 versus the constant ``F_CPU`` macro that is also available.  This is useful
 in cases where your code changes the core clock (i.e. low power modes, etc.)
 
+int rp2040.cpuid()
+~~~~~~~~~~~~~~~~~~
+Returns the current core ID (0 or 1) of the executing task.
+
 uint32_t rp2040.getCycleCount()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Returns a 32-bit cycle count from then the core started running.  Because it
@@ -41,13 +45,13 @@ Hardware Watchdog
 -----------------
 
 void rp2040.wdt_begin(uint32_t delay_ms)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Enables the hardware watchdog timer with a delay value of delay_ms
 milliseconds. Note that on the RP2040, once this function has called, the
 hardware watchdog can _not_ be disabled.
 
 void rp2040.wdt_reset()
-~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 Reloads the watchdog's counter with the amount of time set by wdt_begin.
 
 

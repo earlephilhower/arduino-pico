@@ -80,7 +80,7 @@ static SemaphoreHandle_t __getFreeRTOSMutex(_LOCK_T lock) {
     } else if (l == &__lock___arc4random_mutex) {
         return __lock___arc4random_mutex_freertos;
     }
-    return nullptr;
+    return __get_freertos_mutex_for_ptr(l, false);
 }
 
 static SemaphoreHandle_t __getFreeRTOSRecursiveMutex(_LOCK_T lock) {
@@ -96,12 +96,18 @@ static SemaphoreHandle_t __getFreeRTOSRecursiveMutex(_LOCK_T lock) {
     } else if (l == &__lock___env_recursive_mutex) {
         return __lock___env_recursive_mutex_freertos;
     }
-    return nullptr;
+    return __get_freertos_mutex_for_ptr((mutex_t *)l, true);
 }
 
 void __retarget_lock_init(_LOCK_T *lock) {
     if (__freeRTOSinitted) {
-        /* Already done in initFreeRTOSMutexes() */
+        mutex_t *l = (mutex_t *)lock;
+        if ((l == &__lock___at_quick_exit_mutex) || (l == &__lock___tz_mutex) || (l == &__lock___dd_hash_mutex) || (l == &__lock___arc4random_mutex)) {
+            /* Already done in initFreeRTOSMutexes() */
+        } else {
+            // Will init the mutex as well
+            __get_freertos_mutex_for_ptr(l, false);
+        }
     } else {
         mutex_init((mutex_t*) lock);
     }
@@ -109,7 +115,13 @@ void __retarget_lock_init(_LOCK_T *lock) {
 
 void __retarget_lock_init_recursive(_LOCK_T *lock) {
     if (__freeRTOSinitted) {
-        /* Already done in initFreeRTOSMutexes() */
+        recursive_mutex_t *l = (recursive_mutex_t *)lock;
+        if ((l == &__lock___sinit_recursive_mutex) || (l == &__lock___sfp_recursive_mutex) || (l == &__lock___atexit_recursive_mutex) || (l == &__lock___malloc_recursive_mutex) || (l == &__lock___env_recursive_mutex)) {
+            /* Already done in initFreeRTOSMutexes() */
+        } else {
+            // Will init the mutex as well
+            __get_freertos_mutex_for_ptr((mutex_t *)l, true);
+        }
     } else {
         recursive_mutex_init((recursive_mutex_t*) lock);
     }

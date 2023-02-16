@@ -14,12 +14,12 @@ Returns a value from 0...4095 correspionding to the ADC reading
 of the specific pin.
 
 void analogReadResolution(int bits)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Determines the resolution (in bits) of the value returned by the analogRead() function.
 Default resolution is 10bit.
 
 float analogReadTemp(float vref = 3.3f)
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Returns the temperature, in Celsius, of the onboard thermal sensor.
 If you have a custom Vref for the ADC on your RP2040 board, you can pass it in as a parameter.  Calling with no parameters assumes the normal, 3.3V Vref.
 This reading is not exceedingly accurate and of relatively low

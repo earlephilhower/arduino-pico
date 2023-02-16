@@ -364,6 +364,7 @@ def main():
         if str(args.serial).startswith("/dev/tty") or str(args.serial).startswith("COM") or str(args.serial).startswith("/dev/cu"):
             try:
                 print("Resetting " + str(args.serial))
+                sys.stdout.flush()
                 try:
                     ser = serial.Serial()
                     ser.port = args.serial
@@ -401,11 +402,14 @@ def main():
             outbuf = convert_to_uf2(inpbuf)
         print("Converting to %s, output size: %d, start address: 0x%x" %
               (ext, len(outbuf), appstartaddr))
+        sys.stdout.flush()
         if args.convert or ext != "uf2":
             drives = []
             if args.output == None:
                 args.output = "flash." + ext
         else:
+            print("Scanning for RP2040 devices")
+            sys.stdout.flush()
             now = time.time()
             drives = []
             while (time.time() - now < 10.0) and (len(drives) == 0):
@@ -419,6 +423,7 @@ def main():
                 error("No drive to deploy.")
         for d in drives:
             print("Flashing %s (%s)" % (d, board_id(d)))
+            sys.stdout.flush()
             write_file(d + "/NEW.UF2", outbuf)
 
         # Wait until serial port (if defined) re-appears, or 2s timeout unless UF2 drive direct upload

@@ -9,6 +9,9 @@ This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosys
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
 
+# Contributing
+Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blob/master/docs/contrib.rst) for more information on submitting pull requests and porting libraries or sketches to this core.
+
 # Supported Boards
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
