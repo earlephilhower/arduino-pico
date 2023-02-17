@@ -23,20 +23,27 @@
 
 MEMORY
 {
-    FLASH(rx) : ORIGIN = 0x10000100, LENGTH = 16384k
-    RAM(rwx) : ORIGIN =  0x20000000, LENGTH = 256k
+    FLASH(rx) :      ORIGIN = 0x10000100, LENGTH = 16384k
+    RAM(rwx) :       ORIGIN = 0x20000000, LENGTH = 212k
+    /* We split RAM into main (where the flash->ram code will be copied) and GLOBALS which has all large arrays */
+    /* By placing those arrays at the end of RAM we can avoid overwriting uninitialize_ram from the main app as */
+    /* long as those vars are stored after 12K by using an alignment value in the main app linker file. */
+    GLOBALS(rwx) :   ORIGIN = 0x20035000, LENGTH = 44k
     SCRATCH_X(rwx) : ORIGIN = 0x20040000, LENGTH = 4k
     SCRATCH_Y(rwx) : ORIGIN = 0x20041000, LENGTH = 4k
 }
 
 ENTRY(_entry_point)
 
-SECTIONS
-{
+SECTIONS {
     /* Second stage bootloader is prepended to the image. It must be 256 bytes big
        and checksummed. It is usually built by the boot_stage2 target
        in the Raspberry Pi Pico SDK
     */
+
+    /* Make sure the globals are not copied/etc.  They're empty RAM we will init ourselves */
+    .globals (NOLOAD) : {
+    } > GLOBALS
 
     .flash_begin : {
         __flash_binary_start = .;
@@ -72,14 +79,12 @@ SECTIONS
         . = ALIGN(4);
     } > FLASH
 
-    .ARM.extab :
-    {
+    .ARM.extab : {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH
 
     __exidx_start = .;
-    .ARM.exidx :
-    {
+    .ARM.exidx : {
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
     } > FLASH
     __exidx_end = .;
@@ -188,7 +193,7 @@ SECTIONS
     } > SCRATCH_Y AT > FLASH
     __scratch_y_source__ = LOADADDR(.scratch_y);
 
-    .bss  : {
+    .bss : {
         . = ALIGN(4);
         __bss_start__ = .;
         *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.bss*)))
@@ -197,8 +202,7 @@ SECTIONS
         __bss_end__ = .;
     } > RAM
 
-    .heap (COPY):
-    {
+    .heap (COPY): {
         __end__ = .;
         end = __end__;
         *(.heap*)
@@ -214,12 +218,10 @@ SECTIONS
     /* by default we put core 0 stack at the end of scratch Y, so that if core 1
      * stack is not used then all of SCRATCH_X is free.
      */
-    .stack1_dummy (COPY):
-    {
+    .stack1_dummy (COPY): {
         *(.stack1*)
     } > SCRATCH_X
-    .stack_dummy (COPY):
-    {
+    .stack_dummy (COPY): {
         *(.stack*)
     } > SCRATCH_Y
 

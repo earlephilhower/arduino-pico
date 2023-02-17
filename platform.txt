@@ -153,7 +153,7 @@ recipe.output.save_file={build.project_name}.{build.variant}.{build.preferred_ou
 ## Compute size
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
 recipe.size.regex=^(?:\.boot2|\.text|\.rodata|\.ARM\.extab|\.ARM\.exidx)\s+([0-9]+).*
-recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_data)\s+([0-9]+).*
+recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_ram|\.uninitialized_data)\s+([0-9]+).*
 
 
 # Debugging

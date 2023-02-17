@@ -26,6 +26,8 @@
 #include "../libraries/LittleFS/lib/littlefs/lfs_util.h"
 #include "./uzlib/src/uzlib.h"
 
+OTACmdPage __attribute__((section (".globals"))) _ota_cmd;
+
 static lfs_t _lfs;
 static struct lfs_config  _lfs_cfg;
 
@@ -70,9 +72,9 @@ static int lfs_flash_sync(const struct lfs_config *c) {
     return 0;
 }
 
-uint8_t _read_buffer[256];
-uint8_t _prog_buffer[256];
-uint8_t _lookahead_buffer[256];
+uint8_t __attribute__((section (".globals"))) _read_buffer[256];
+uint8_t __attribute__((section (".globals"))) _prog_buffer[256];
+uint8_t __attribute__((section (".globals"))) _lookahead_buffer[256];
 bool lfsMount(uint8_t *start, uint32_t blockSize, uint32_t size) {
     _start = start;
     _blockSize = blockSize;
@@ -104,16 +106,16 @@ bool lfsMount(uint8_t *start, uint32_t blockSize, uint32_t size) {
 static bool _gzip = false;
 static lfs_file_t _file;
 
-static unsigned char __attribute__((aligned(4))) uzlib_read_buff[4096];
-static unsigned char gzip_dict[32768];
-static uint8_t _flash_buff[4096]; // no room for this on the stack
-static struct uzlib_uncomp m_uncomp;
+unsigned char __attribute__((section (".globals"))) uzlib_read_buff[4096];
+unsigned char __attribute__((section (".globals"))) gzip_dict[32768];
+uint8_t __attribute__((section (".globals")))_flash_buff[4096]; // no room for this on the stack
+struct uzlib_uncomp __attribute__((section (".globals"))) m_uncomp;
 
-static uint8_t _ota_buff[256];
-static struct lfs_file_config _ota_cfg = { (void *)_ota_buff, NULL, 0 };
+uint8_t __attribute__((section (".globals")))_ota_buff[256];
+struct lfs_file_config _ota_cfg = { (void *)_ota_buff, NULL, 0 };
 
-static uint8_t _file_buff[256];
-static struct lfs_file_config _file_cfg = { (void *)_file_buff, NULL, 0 };
+uint8_t __attribute__((section (".globals")))_file_buff[256];
+struct lfs_file_config _file_cfg = { (void *)_file_buff, NULL, 0 };
 
 bool lfsReadOTA(OTACmdPage *ota, uint32_t *blockToErase) {
     lfs_file_t f;

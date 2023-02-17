@@ -50,6 +50,8 @@ target_compile_definitions(ota PUBLIC
 target_compile_options(ota PUBLIC
 	-fno-exceptions
 	-Os
+        -Wall
+        -Werror
 	$<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 )
 
