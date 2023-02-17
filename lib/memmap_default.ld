@@ -218,11 +218,11 @@ SECTIONS
     } > RAM
 
     /* At most one of the following two will be engaged, depending on the SDK version */
-    .uninitialized_ram BLOCK(16k) (NOLOAD) : {
+    .uninitialized_ram MAX(0x20003000, .) (NOLOAD) : {
         *(.uninitialized_ram*)
     } > RAM
 
-    .uninitialized_data BLOCK(16k) (NOLOAD) : {
+    .uninitialized_data MAX(0x20003000, .) (NOLOAD) : {
         *(.uninitialized_data*)
     } > RAM
 
