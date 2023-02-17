@@ -53,8 +53,7 @@ void dumphex(uint32_t x) {
 #endif
 }
 
-static OTACmdPage _ota_cmd;
-
+extern OTACmdPage _ota_cmd;
 void do_ota() {
     if (*__FS_START__ == *__FS_END__) {
         return;
@@ -165,7 +164,7 @@ void do_ota() {
 
 #pragma GCC push_options
 #pragma GCC optimize("O0")
-int main(int a, unsigned char **b) {
+int main(int a, char **b) {
     (void) a;
     (void) b;
 
@@ -190,7 +189,7 @@ int main(int a, unsigned char **b) {
     fcn();
 
     // Should never get here!
-    return 0;
+    return *sp;
 }
 #pragma GCC pop_options
 
