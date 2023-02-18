@@ -19,6 +19,9 @@
 */
 
 #include <pico/cyw43_arch.h>
+#include "hardware/resets.h"
+#include "hardware/gpio.h"
+#include "hardware/adc.h"
 
 #ifndef WIFICC
 #define WIFICC CYW43_COUNTRY_WORLDWIDE
@@ -46,7 +49,7 @@ static bool CheckPicoW() {
 
     if (gp25) {
         return true; // Can't tell, so assume yes
-    } else if (adc < 200) {
+    } else if (adc29 < 200) {
         return true; // PicoW
     } else {
         return false;
