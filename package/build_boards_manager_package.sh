@@ -111,6 +111,8 @@ sed 's/^tools.uf2conv.network_cmd=.*//g' | \
 sed 's/^#tools.uf2conv.network_cmd=/tools.uf2conv.network_cmd=/g' | \
 sed 's/^tools.picoprobe.cmd=.*//g' | \
 sed 's/^#tools.picoprobe.cmd=/tools.picoprobe.cmd=/g' | \
+sed 's/^tools.picoprobe_cmsis_dap.cmd=.*//g' | \
+sed 's/^#tools.picoprobe_cmsis_dap.cmd=/tools.picoprobe_cmsis_dap.cmd=/g' | \
 sed 's/^tools.picotool.cmd=.*//g' | \
 sed 's/^#tools.picotool.cmd=/tools.picotool.cmd=/g' | \
 sed 's/^tools.picodebug.cmd=.*//g' | \
