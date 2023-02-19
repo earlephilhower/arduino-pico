@@ -44,6 +44,8 @@ restartCore1	KEYWORD2
 reboot	KEYWORD2
 restart	KEYWORD2
 
+isPicoW	KEYWORD2
+
 getChipID	KEYWORD2
 
 hwrand32	KEYWORD2

@@ -75,6 +75,15 @@ Returns the total heap that was available to this program at compile time (i.e.
 the Pico RAM size minus things like the ``.data`` and ``.bss`` sections and other
 overhead).
 
+Hardware Identification
+-----------------------
+
+bool isPicoW()
+~~~~~~~~~~~~~~
+Returns the core's best guess if this code is running on a Raspberry Pi Pico W.
+This would let you, possibly, use the same UF2 for Pico and PicoW by simply not
+doing any WiFi calls.
+
 Bootloader
 ----------
 

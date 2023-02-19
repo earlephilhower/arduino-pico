@@ -346,6 +346,16 @@ public:
         return get_rand_32();
     }
 
+    bool isPicoW() {
+#if !defined(ARDUINO_RASPBERRY_PI_PICO_W)
+        return false;
+#else
+        extern bool __isPicoW;
+        return __isPicoW;
+#endif
+    }
+
+
 private:
     static void _SystickHandler() {
         rp2040._epoch += 1LL << 24;

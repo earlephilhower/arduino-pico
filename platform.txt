@@ -20,7 +20,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=Raspberry Pi RP2040 Boards
-version=2.7.2
+version=2.7.3
 
 runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
@@ -153,7 +153,7 @@ recipe.output.save_file={build.project_name}.{build.variant}.{build.preferred_ou
 ## Compute size
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
 recipe.size.regex=^(?:\.boot2|\.text|\.rodata|\.ARM\.extab|\.ARM\.exidx)\s+([0-9]+).*
-recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_data)\s+([0-9]+).*
+recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_ram|\.uninitialized_data)\s+([0-9]+).*
 
 
 # Debugging
@@ -202,6 +202,13 @@ tools.picoprobe.upload.protocol=picoprobe
 tools.picoprobe.upload.params.verbose=
 tools.picoprobe.upload.params.quiet=
 tools.picoprobe.upload.pattern="{cmd}/bin/openocd" -f "interface/picoprobe.cfg" -f "target/rp2040.cfg" -s "{cmd}/share/openocd/scripts" -c "program {{build.path}/{build.project_name}.elf} verify reset exit"
+
+#tools.picoprobe_cmsis_dap.cmd={runtime.tools.pqt-openocd.path}
+tools.picoprobe_cmsis_dap.cmd={runtime.platform.path}/system/openocd
+tools.picoprobe_cmsis_dap.upload.protocol=picoprobe_cmsis_dap
+tools.picoprobe_cmsis_dap.upload.params.verbose=
+tools.picoprobe_cmsis_dap.upload.params.quiet=
+tools.picoprobe_cmsis_dap.upload.pattern="{cmd}/bin/openocd" -f "interface/cmsis-dap.cfg" -f "target/rp2040.cfg" -s "{cmd}/share/openocd/scripts" -c "adapter speed 5000" -c "program {{build.path}/{build.project_name}.elf} verify reset exit"
 
 #tools.picodebug.cmd={runtime.tools.pqt-openocd.path}
 tools.picodebug.cmd={runtime.platform.path}/system/openocd

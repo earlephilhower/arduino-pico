@@ -135,7 +135,6 @@ void SPIClassRP2040::transfer(void *buf, size_t count) {
     uint8_t *buff = reinterpret_cast<uint8_t *>(buf);
     for (size_t i = 0; i < count; i++) {
         *buff = transfer(*buff);
-        *buff = (_spis.getBitOrder() == MSBFIRST) ? *buff : reverseByte(*buff);
         buff++;
     }
     DEBUGSPI("SPI::transfer completed\n");
