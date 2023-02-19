@@ -27,6 +27,4 @@
 
 extern "C" void initVariant() {
     cyw43_arch_init_with_country(WIFICC);
-    async_context_t *context = cyw43_arch_async_context();
-    lwip_nosys_init(context);
 }

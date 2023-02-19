@@ -117,7 +117,7 @@ uint16_t CYW43::readFrame(uint8_t* buffer, uint16_t bufsize) {
 
 
 // CB from the cyw43 driver
-extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
+extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
     //cyw43_t *self = (cyw43_t *)cb_data
     (void) cb_data;
     (void) itf;
@@ -139,7 +139,7 @@ extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, co
     }
 }
 
-extern "C" void cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
+extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
     if (CYW43::_netif) {
@@ -147,7 +147,7 @@ extern "C" void cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
     }
 }
 
-extern "C" void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
+extern "C" void __wrap_cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
     if (CYW43::_netif) {
@@ -156,7 +156,7 @@ extern "C" void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
 }
 
-extern "C" int cyw43_tcpip_link_status(cyw43_t *self, int itf) {
+extern "C" int __wrap_cyw43_tcpip_link_status(cyw43_t *self, int itf) {
     //if ((CYW43::_netif->flags & (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP))
     //  Fake this since it's only used in the SDK
     if ((CYW43::_netif->flags & (NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_LINK_UP)) {
@@ -167,12 +167,11 @@ extern "C" int cyw43_tcpip_link_status(cyw43_t *self, int itf) {
 }
 
 // CBs from the SDK, not needed here as we do TCP later in the game
-extern "C" void cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
+extern "C" void __wrap_cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
 }
-extern "C" void cyw43_cb_tcpip_deinit(cyw43_t *self, int itf) {
+extern "C" void __wrap_cyw43_cb_tcpip_deinit(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
 }
-

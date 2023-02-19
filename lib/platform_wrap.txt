@@ -200,3 +200,10 @@
 -Wl,--wrap=raw_bind
 -Wl,--wrap=raw_sendto
 -Wl,--wrap=raw_remove
+
+-Wl,--wrap=cyw43_cb_process_ethernet
+-Wl,--wrap=cyw43_cb_tcpip_set_link_up
+-Wl,--wrap=cyw43_cb_tcpip_set_link_down
+-Wl,--wrap=cyw43_tcpip_link_status
+-Wl,--wrap=cyw43_cb_tcpip_init
+-Wl,--wrap=cyw43_cb_tcpip_deinit
