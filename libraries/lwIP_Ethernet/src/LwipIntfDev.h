@@ -186,7 +186,7 @@ int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, i
         _dns_lookup_pending = true;
         uint32_t now = millis();
         while ((millis() - now < (uint32_t)timeout_ms) && _dns_lookup_pending) {
-            sys_check_timeouts();
+            //sys_check_timeouts();
             delay(10);
         }
         _dns_lookup_pending = false;
@@ -250,7 +250,7 @@ int LwipIntfDev<RawDev>::ping(IPAddress host, uint8_t ttl, uint32_t _timeout) {
         raw_sendto(ping_pcb, p, host);
         uint32_t now = millis();
         while ((millis() - now < _timeout) && (_ping_ttl < 0)) {
-            sys_check_timeouts();
+            //sys_check_timeouts();
             delay(1);
         }
         pbuf_free(p);
