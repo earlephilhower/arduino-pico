@@ -39,7 +39,6 @@ extern "C" {
 
 
 netif *CYW43::_netif = nullptr;
-extern "C" volatile bool __inLWIP;
 
 CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
     (void) cs;
@@ -132,7 +131,7 @@ extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, co
         struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
         if (p != nullptr) {
             pbuf_take(p, buf, len);
-            if (__inLWIP || (netif->input(p, netif) != ERR_OK)) {
+            if ( (netif->input(p, netif) != ERR_OK)) {
                 pbuf_free(p);
             }
             CYW43_STAT_INC(PACKET_IN_COUNT);

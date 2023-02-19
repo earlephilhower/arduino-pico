@@ -76,7 +76,7 @@ target_link_libraries(pico
 	pico_bootrom
 	pico_bootsel_via_double_reset
 	pico_cxx_options
-	pico_cyw43_arch_none
+	pico_cyw43_arch_threadsafe_background
 	pico_cyw43_driver
 	pico_divider
 	pico_double
