@@ -19,6 +19,7 @@
 */
 
 #include <pico/cyw43_arch.h>
+#include <pico/lwip_nosys.h>
 
 #ifndef WIFICC
 #define WIFICC CYW43_COUNTRY_WORLDWIDE
@@ -26,4 +27,6 @@
 
 extern "C" void initVariant() {
     cyw43_arch_init_with_country(WIFICC);
+    async_context_t *context = cyw43_arch_async_context();
+    lwip_nosys_init(context);
 }
