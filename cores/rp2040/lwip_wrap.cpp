@@ -255,10 +255,15 @@ extern "C" {
         return __real_udp_sendto_if(pcb, p, dst_ip, dst_port, netif);
     }
 
+    // sys_check_timeouts is sepcial case because the async process will call it.  If we're already in a timeout check, just do a noop
+    auto_init_mutex(__sys_check_timeouts_mtx);
     extern void __real_sys_check_timeouts(void);
     void __wrap_sys_check_timeouts(void) {
-        LWIPMutex m;
-        __real_sys_check_timeouts();
+        uint32_t owner;
+        if (mutex_try_enter(&__sys_check_timeouts_mtx, &owner)) {
+            __real_sys_check_timeouts();
+            mutex_exit(&__sys_check_timeouts_mtx);
+        }
     }
 
     extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);

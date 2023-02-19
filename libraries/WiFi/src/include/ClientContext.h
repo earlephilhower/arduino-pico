@@ -38,7 +38,7 @@ template <typename T>
 inline void esp_delay(const uint32_t timeout_ms, T&& blocked, const uint32_t intvl_ms) {
     const auto start_ms = millis();
     while ((((uint32_t)millis() - start_ms) < timeout_ms) && blocked()) {
-        //sys_check_timeouts();
+        sys_check_timeouts();
         delay(intvl_ms);
     }
 }

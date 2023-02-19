@@ -190,6 +190,7 @@
 -Wl,--wrap=udp_recv
 -Wl,--wrap=udp_sendto_if
 
+-Wl,--wrap=sys_check_timeouts
 
 -Wl,--wrap=dns_gethostbyname
 -Wl,--wrap=dns_gethostbyname_addrtype

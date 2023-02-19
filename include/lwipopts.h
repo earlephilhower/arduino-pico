@@ -28,7 +28,7 @@ extern unsigned long get_rand_32(void);
 #define MEMP_NUM_TCP_SEG            32
 #define MEMP_NUM_ARP_QUEUE          10
 #define PBUF_POOL_SIZE              24
-#define LWIP_ARP                    4
+#define LWIP_ARP                    2
 #define LWIP_ETHERNET               1
 #define LWIP_ICMP                   1
 #define LWIP_RAW                    1
