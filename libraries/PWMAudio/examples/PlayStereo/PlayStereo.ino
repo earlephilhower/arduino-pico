@@ -28,8 +28,8 @@ void cb() {
     double now = ((double)cnt) / (double)freq;
     int fl = freqL << 7; // Prescale by 128 to avoid FP math later on
     int fr = freqR << 7; // Prescale by 128 to avoid FP math later on
-    pwm.write((uint16_t)(al * sineTable[(int)(now * fl) & 127]));
-    pwm.write((uint16_t)(ar * sineTable[(int)(now * fr) & 127]));
+    pwm.write((int16_t)(al * sineTable[(int)(now * fl) & 127]));
+    pwm.write((int16_t)(ar * sineTable[(int)(now * fr) & 127]));
     cnt++;
   }
 }
