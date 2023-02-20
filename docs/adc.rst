@@ -47,7 +47,7 @@ Adjusts the pin to record.  Only legal before ``ADCInput::begin()``.
 bool setFrequency(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the ADC sampling frequency, but does not start recording (however if the
-device was already running, it will wontinue to run at the new frequency).  Note
+device was already running, it will continue to run at the new frequency).  Note
 that every pin requested will be sampled at this frequency, one after the other.
 That is, if you have code like this:
 
