@@ -64,6 +64,7 @@ public:
         param ssid: Pointer to the SSID string.
     */
     int begin(const char* ssid);
+    int beginBSSID(const char* ssid, const uint8_t *bssid);
 
     /*  Start WiFi connection with WEP encryption.
         Configure a key into the device. The key type (WEP-40, WEP-104)
