@@ -48,6 +48,7 @@ CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
     (void) spi;
     (void) intrpin;
     _netif = nullptr;
+    bzero(_bssid, sizeof(_bssid));
 }
 
 bool CYW43::begin(const uint8_t* address, netif* netif) {
@@ -73,10 +74,18 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
         cyw43_ioctl(&cyw43_state, CYW43_IOCTL_SET_VAR, sizeof allmulti_true, allmulti_true, CYW43_ITF_STA);
 #endif
 
-        if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
-            return false;
+        if (_bssid[0] | _bssid[1] | _bssid[2] | _bssid[3] | _bssid[4] | _bssid[5]) {
+            if (cyw43_arch_wifi_connect_bssid_timeout_ms(_ssid, _bssid, _password, authmode, _timeout)) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
-            return true;
+            if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
+                return false;
+            } else {
+                return true;
+            }
         }
     } else {
         _itf = 1;

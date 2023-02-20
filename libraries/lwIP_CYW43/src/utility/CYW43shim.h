@@ -73,6 +73,11 @@ public:
     void setSSID(const char *p) {
         _ssid = p;
     }
+
+    void setBSSID(const uint8_t *bssid) {
+        memcpy(_bssid, bssid, sizeof(_bssid));
+    }
+
     void setPassword(const char *p) {
         _password = p;
     }
@@ -99,4 +104,5 @@ protected:
     int      _itf;
     const char *_ssid = nullptr;
     const char *_password = nullptr;
+    uint8_t _bssid[6];
 };

@@ -79,7 +79,7 @@ int WiFiClass::begin(const char* ssid) {
     param passphrase: Passphrase. Valid characters in a passphrase
           must be between ASCII 32-126 (decimal).
 */
-int WiFiClass::begin(const char* ssid, const char *passphrase) {
+int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bssid) {
     // Simple ESP8266 compatibility hack
     if (_modeESP == WIFI_AP) {
         return beginAP(ssid, passphrase);
@@ -89,7 +89,13 @@ int WiFiClass::begin(const char* ssid, const char *passphrase) {
 
     _ssid = ssid;
     _password = passphrase;
+    if (bssid) {
+        memcpy(_bssid, bssid, sizeof(_bssid));
+    } else {
+        bzero(_bssid, sizeof(_bssid));
+    }
     _wifi.setSSID(_ssid.c_str());
+    _wifi.setBSSID(_bssid);
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
     _wifi.setSTA();

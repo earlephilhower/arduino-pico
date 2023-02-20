@@ -82,8 +82,9 @@ public:
         param ssid: Pointer to the SSID string.
         param passphrase: Passphrase. Valid characters in a passphrase
               must be between ASCII 32-126 (decimal).
+        param bssid: If non-null, the BSSID associated w/the SSID to connect to
     */
-    int begin(const char* ssid, const char *passphrase);
+    int begin(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     bool connected();
     bool isConnected() {
@@ -396,6 +397,7 @@ public:
 private:
     int _timeout = 15000;
     String _ssid;
+    uint8_t _bssid[6];
     String _password;
     bool _wifiHWInitted = false;
     bool _apMode = false;
