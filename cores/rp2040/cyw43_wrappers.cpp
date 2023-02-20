@@ -40,6 +40,9 @@ extern "C" {
 
 // The core can't directly call a library, so put in a dummy weak one to be overridden by one in lwip_cyw43 library
 extern struct netif *__getCYW43Netif() __attribute__((weak));
+struct netif *__getCYW43Netif() {
+    return nullptr;
+}
 
 // CB from the cyw43 driver
 extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
