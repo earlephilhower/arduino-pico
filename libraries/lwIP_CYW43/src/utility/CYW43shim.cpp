@@ -37,8 +37,11 @@ extern "C" {
 #define WIFI_JOIN_STATE_KEYED   (0x0800)
 #define WIFI_JOIN_STATE_ALL     (0x0e01)
 
-
 netif *CYW43::_netif = nullptr;
+
+struct netif *__getCYW43Netif() {
+    return CYW43::_netif;
+}
 
 CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
     (void) cs;
@@ -88,7 +91,6 @@ void CYW43::end() {
     cyw43_deinit(&cyw43_state);
 }
 
-
 uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {
     if (0 == cyw43_send_ethernet(_self, _itf, datalen, data, false)) {
         return datalen;
@@ -101,77 +103,4 @@ uint16_t CYW43::readFrame(uint8_t* buffer, uint16_t bufsize) {
     (void) buffer;
     (void) bufsize;
     return 0;
-}
-
-//#define MAXWAIT 16
-//static struct pbuf *_pbufWaiting[MAXWAIT];
-//static bool _pbufHold(struct pbuf *p) {
-//    for (int i = 0; i < MAXWAIT; i++) {
-//        if (!_pbufWaiting[i]) {
-//            _pbufWaiting[i] = p;
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-
-// CB from the cyw43 driver
-extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
-    //cyw43_t *self = (cyw43_t *)cb_data
-    (void) cb_data;
-    (void) itf;
-    struct netif *netif = CYW43::_netif; // &self->netif[itf];
-#if CYW43_NETUTILS
-    if (self->trace_flags) {
-        cyw43_ethernet_trace(self, netif, len, buf, NETUTILS_TRACE_NEWLINE);
-    }
-#endif
-    if (netif->flags & NETIF_FLAG_LINK_UP) {
-        struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
-        if (p != nullptr) {
-            pbuf_take(p, buf, len);
-            if ( (netif->input(p, netif) != ERR_OK)) {
-                pbuf_free(p);
-            }
-            CYW43_STAT_INC(PACKET_IN_COUNT);
-        }
-    }
-}
-
-extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
-    if (CYW43::_netif) {
-        netif_set_link_up(CYW43::_netif);
-    }
-}
-
-extern "C" void __wrap_cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
-    if (CYW43::_netif) {
-        netif_set_link_down(CYW43::_netif);
-    }
-    self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
-}
-
-extern "C" int __wrap_cyw43_tcpip_link_status(cyw43_t *self, int itf) {
-    //if ((CYW43::_netif->flags & (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP))
-    //  Fake this since it's only used in the SDK
-    if ((CYW43::_netif->flags & (NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_LINK_UP)) {
-        return CYW43_LINK_UP;
-    } else {
-        return cyw43_wifi_link_status(self, itf);
-    }
-}
-
-// CBs from the SDK, not needed here as we do TCP later in the game
-extern "C" void __wrap_cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
-}
-extern "C" void __wrap_cyw43_cb_tcpip_deinit(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
 }

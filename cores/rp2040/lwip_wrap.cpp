@@ -255,7 +255,7 @@ extern "C" {
         return __real_udp_sendto_if(pcb, p, dst_ip, dst_port, netif);
     }
 
-    // sys_check_timeouts is sepcial case because the async process will call it.  If we're already in a timeout check, just do a noop
+    // sys_check_timeouts is special case because the async process will call it.  If we're already in a timeout check, just do a noop
     auto_init_mutex(__sys_check_timeouts_mtx);
     extern void __real_sys_check_timeouts(void);
     void __wrap_sys_check_timeouts(void) {
