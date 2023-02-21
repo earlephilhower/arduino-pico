@@ -16,6 +16,7 @@ mv libpico.a ../../../lib/.
 mv generated/pico_base/pico/version.h ../../../include/pico_base/pico/.
 cp ../lwipopts.h ../../../include/.
 cp ../tusb_config.h ../../../include/.
+cp ../btstack_config.h ../../../include/.
 
 cd ..
 rm -rf build

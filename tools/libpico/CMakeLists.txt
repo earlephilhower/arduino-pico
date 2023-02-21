@@ -98,6 +98,9 @@ target_link_libraries(pico
 	pico_util
 	tinyusb
 	tinyusb_device_unmarked
+        pico_btstack_ble
+        pico_btstack_classic
+        pico_btstack_cyw43
 )
 
 add_custom_command(TARGET pico POST_BUILD
