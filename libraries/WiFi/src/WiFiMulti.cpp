@@ -60,8 +60,8 @@ bool WiFiMulti::addAP(const char *ssid, const char *pass) {
 
 uint8_t WiFiMulti::run(uint32_t to) {
     struct _scanAP {
-        char ssid[33];
-        char psk[33];
+        char *ssid;
+        char *psk;
         uint8_t bssid[6];
         int rssi;
     };
@@ -83,10 +83,8 @@ uint8_t WiFiMulti::run(uint32_t to) {
         for (auto j = _list.begin(); j != _list.end(); j++) {
             if (!strcmp(j->ssid, WiFi.SSID(i))) {
                 _scanAP itm;
-                strncpy(itm.ssid, WiFi.SSID(i), sizeof(itm.ssid));
-                itm.ssid[sizeof(itm.ssid) - 1] = 0;
-                strncpy(itm.psk, j->pass, sizeof(itm.psk));
-                itm.psk[sizeof(itm.psk) - 1] = 0;
+                itm.ssid = j->ssid;
+                itm.psk = j->pass;
                 WiFi.BSSID(i, itm.bssid);
                 itm.rssi = WiFi.RSSI(i);
                 _scanList.push_front(itm);
@@ -107,7 +105,7 @@ uint8_t WiFiMulti::run(uint32_t to) {
         DEBUGV("[WIFIMULTI] Connecting to: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d\n", j->ssid,
                j->bssid[0], j->bssid[1], j->bssid[2], j->bssid[3], j->bssid[4], j->bssid[5], j->rssi);
         uint32_t start = millis();
-        if (j->psk[0]) {
+        if (j->psk) {
             WiFi.begin(j->ssid, j->psk, j->bssid);
         } else {
             WiFi.beginBSSID(j->ssid, j->bssid);
