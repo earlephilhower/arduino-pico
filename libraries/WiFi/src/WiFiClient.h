@@ -47,7 +47,7 @@ protected:
     WiFiClient(ClientContext* client);
 
 public:
-    WiFiClient();
+    WiFiClient(int timeout = 5000);
     virtual ~WiFiClient();
     WiFiClient(const WiFiClient&);
     WiFiClient& operator=(const WiFiClient&);

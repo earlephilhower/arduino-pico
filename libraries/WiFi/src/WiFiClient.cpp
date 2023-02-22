@@ -59,9 +59,9 @@ template<>
 WiFiClient* SList<WiFiClient>::_s_first = 0;
 
 
-WiFiClient::WiFiClient()
+WiFiClient::WiFiClient(int timeout)
     : _client(0), _owned(0) {
-    _timeout = 5000;
+    _timeout = timeout;
     WiFiClient::_add(this);
 }
 
