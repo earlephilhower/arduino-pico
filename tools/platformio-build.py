@@ -80,10 +80,11 @@ env.Replace(
 )
 
 # pico support library depends on ipv6 enable/disable
+libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))
 if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
-    libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico-ipv6.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-ipv6-nobtc-noble.a"))
 else:
-    libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-noipv6-nobtc-noble.a"))
 
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
@@ -96,7 +97,7 @@ env.Append(
         "-mthumb",
         "-ffunction-sections",
         "-fdata-sections"
-        # -iprefix etc. added lader if in build mode
+        # -iprefix etc. added later if in build mode
     ],
 
     CFLAGS=[
@@ -150,6 +151,7 @@ env.Append(
     LIBS=[
         File(os.path.join(FRAMEWORK_DIR, "lib", "ota.o")),
         libpico,
+        libpicow,
         File(os.path.join(FRAMEWORK_DIR, "lib", "libbearssl.a")),
         "m", "c", stdcpp_lib, "c"]
 )

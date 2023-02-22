@@ -14,7 +14,7 @@ menu.dbglvl=Debug Level
 menu.boot2=Boot Stage 2
 menu.wificountry=WiFi Region
 menu.usbstack=USB Stack
-menu.ipstack=IP Stack
+menu.ipbtstack=IP/Bluetooth Stack
 menu.uploadmethod=Upload Method
 
 # -----------------------------------
@@ -169,12 +169,18 @@ rpipico.menu.usbstack.tinyusb=Adafruit TinyUSB
 rpipico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 rpipico.menu.usbstack.nousb=No USB
 rpipico.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-rpipico.menu.ipstack.ipv4only=IPv4 Only
-rpipico.menu.ipstack.ipv4only.build.libpico=libpico.a
-rpipico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-rpipico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-rpipico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-rpipico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+rpipico.menu.ipbtstack.ipv4only=IPv4 Only
+rpipico.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+rpipico.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipico.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+rpipico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+rpipico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+rpipico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+rpipico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+rpipico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+rpipico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+rpipico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+rpipico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 rpipico.menu.uploadmethod.default=Default (UF2)
 rpipico.menu.uploadmethod.default.build.ram_length=256k
 rpipico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -465,12 +471,18 @@ rpipicow.menu.wificountry.uk=UK
 rpipicow.menu.wificountry.uk.build.wificc=-DWIFICC=CYW43_COUNTRY_UK
 rpipicow.menu.wificountry.usa=USA
 rpipicow.menu.wificountry.usa.build.wificc=-DWIFICC=CYW43_COUNTRY_USA
-rpipicow.menu.ipstack.ipv4only=IPv4 Only
-rpipicow.menu.ipstack.ipv4only.build.libpico=libpico.a
-rpipicow.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-rpipicow.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-rpipicow.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-rpipicow.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+rpipicow.menu.ipbtstack.ipv4only=IPv4 Only
+rpipicow.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+rpipicow.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+rpipicow.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+rpipicow.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+rpipicow.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+rpipicow.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+rpipicow.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+rpipicow.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+rpipicow.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+rpipicow.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+rpipicow.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 rpipicow.menu.uploadmethod.default=Default (UF2)
 rpipicow.menu.uploadmethod.default.build.ram_length=256k
 rpipicow.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -741,12 +753,18 @@ rpipicow.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 0xcb_helios.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 0xcb_helios.menu.usbstack.nousb=No USB
 0xcb_helios.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-0xcb_helios.menu.ipstack.ipv4only=IPv4 Only
-0xcb_helios.menu.ipstack.ipv4only.build.libpico=libpico.a
-0xcb_helios.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-0xcb_helios.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-0xcb_helios.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-0xcb_helios.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+0xcb_helios.menu.ipbtstack.ipv4only=IPv4 Only
+0xcb_helios.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+0xcb_helios.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+0xcb_helios.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+0xcb_helios.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+0xcb_helios.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+0xcb_helios.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+0xcb_helios.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+0xcb_helios.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+0xcb_helios.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+0xcb_helios.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+0xcb_helios.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 0xcb_helios.menu.uploadmethod.default=Default (UF2)
 0xcb_helios.menu.uploadmethod.default.build.ram_length=256k
 0xcb_helios.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -969,12 +987,18 @@ adafruit_feather.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_feather.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_feather.menu.usbstack.nousb=No USB
 adafruit_feather.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_feather.menu.ipstack.ipv4only=IPv4 Only
-adafruit_feather.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_feather.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_feather.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_feather.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_feather.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_feather.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_feather.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_feather.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_feather.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_feather.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_feather.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_feather.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_feather.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_feather.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_feather.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_feather.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_feather.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_feather.menu.uploadmethod.default=Default (UF2)
 adafruit_feather.menu.uploadmethod.default.build.ram_length=256k
 adafruit_feather.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1197,12 +1221,18 @@ adafruit_feather_scorpio.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_feather_scorpio.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_feather_scorpio.menu.usbstack.nousb=No USB
 adafruit_feather_scorpio.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_feather_scorpio.menu.ipstack.ipv4only=IPv4 Only
-adafruit_feather_scorpio.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_feather_scorpio.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_feather_scorpio.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_feather_scorpio.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_feather_scorpio.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_feather_scorpio.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_feather_scorpio.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_feather_scorpio.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_feather_scorpio.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_feather_scorpio.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_feather_scorpio.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_feather_scorpio.menu.uploadmethod.default=Default (UF2)
 adafruit_feather_scorpio.menu.uploadmethod.default.build.ram_length=256k
 adafruit_feather_scorpio.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1425,12 +1455,18 @@ adafruit_itsybitsy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_itsybitsy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_itsybitsy.menu.usbstack.nousb=No USB
 adafruit_itsybitsy.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_itsybitsy.menu.ipstack.ipv4only=IPv4 Only
-adafruit_itsybitsy.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_itsybitsy.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_itsybitsy.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_itsybitsy.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_itsybitsy.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_itsybitsy.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_itsybitsy.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_itsybitsy.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_itsybitsy.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_itsybitsy.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_itsybitsy.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_itsybitsy.menu.uploadmethod.default=Default (UF2)
 adafruit_itsybitsy.menu.uploadmethod.default.build.ram_length=256k
 adafruit_itsybitsy.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1653,12 +1689,18 @@ adafruit_qtpy.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_qtpy.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_qtpy.menu.usbstack.nousb=No USB
 adafruit_qtpy.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_qtpy.menu.ipstack.ipv4only=IPv4 Only
-adafruit_qtpy.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_qtpy.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_qtpy.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_qtpy.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_qtpy.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_qtpy.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_qtpy.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_qtpy.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_qtpy.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_qtpy.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_qtpy.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_qtpy.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_qtpy.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_qtpy.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_qtpy.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_qtpy.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_qtpy.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_qtpy.menu.uploadmethod.default=Default (UF2)
 adafruit_qtpy.menu.uploadmethod.default.build.ram_length=256k
 adafruit_qtpy.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1881,12 +1923,18 @@ adafruit_stemmafriend.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_stemmafriend.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_stemmafriend.menu.usbstack.nousb=No USB
 adafruit_stemmafriend.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_stemmafriend.menu.ipstack.ipv4only=IPv4 Only
-adafruit_stemmafriend.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_stemmafriend.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_stemmafriend.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_stemmafriend.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_stemmafriend.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_stemmafriend.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_stemmafriend.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_stemmafriend.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_stemmafriend.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_stemmafriend.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_stemmafriend.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_stemmafriend.menu.uploadmethod.default=Default (UF2)
 adafruit_stemmafriend.menu.uploadmethod.default.build.ram_length=256k
 adafruit_stemmafriend.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2109,12 +2157,18 @@ adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_trinkeyrp2040qt.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_trinkeyrp2040qt.menu.usbstack.nousb=No USB
 adafruit_trinkeyrp2040qt.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_trinkeyrp2040qt.menu.ipstack.ipv4only=IPv4 Only
-adafruit_trinkeyrp2040qt.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_trinkeyrp2040qt.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_trinkeyrp2040qt.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_trinkeyrp2040qt.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_trinkeyrp2040qt.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_trinkeyrp2040qt.menu.uploadmethod.default=Default (UF2)
 adafruit_trinkeyrp2040qt.menu.uploadmethod.default.build.ram_length=256k
 adafruit_trinkeyrp2040qt.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2337,12 +2391,18 @@ adafruit_macropad2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_macropad2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_macropad2040.menu.usbstack.nousb=No USB
 adafruit_macropad2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_macropad2040.menu.ipstack.ipv4only=IPv4 Only
-adafruit_macropad2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_macropad2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_macropad2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_macropad2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_macropad2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_macropad2040.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_macropad2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_macropad2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_macropad2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_macropad2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_macropad2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_macropad2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_macropad2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_macropad2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_macropad2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_macropad2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_macropad2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_macropad2040.menu.uploadmethod.default=Default (UF2)
 adafruit_macropad2040.menu.uploadmethod.default.build.ram_length=256k
 adafruit_macropad2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2565,12 +2625,18 @@ adafruit_kb2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 adafruit_kb2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 adafruit_kb2040.menu.usbstack.nousb=No USB
 adafruit_kb2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-adafruit_kb2040.menu.ipstack.ipv4only=IPv4 Only
-adafruit_kb2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-adafruit_kb2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-adafruit_kb2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-adafruit_kb2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-adafruit_kb2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_kb2040.menu.ipbtstack.ipv4only=IPv4 Only
+adafruit_kb2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+adafruit_kb2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+adafruit_kb2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+adafruit_kb2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+adafruit_kb2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+adafruit_kb2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+adafruit_kb2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+adafruit_kb2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_kb2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+adafruit_kb2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+adafruit_kb2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 adafruit_kb2040.menu.uploadmethod.default=Default (UF2)
 adafruit_kb2040.menu.uploadmethod.default.build.ram_length=256k
 adafruit_kb2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2833,12 +2899,18 @@ arduino_nano_connect.menu.usbstack.tinyusb=Adafruit TinyUSB
 arduino_nano_connect.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 arduino_nano_connect.menu.usbstack.nousb=No USB
 arduino_nano_connect.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-arduino_nano_connect.menu.ipstack.ipv4only=IPv4 Only
-arduino_nano_connect.menu.ipstack.ipv4only.build.libpico=libpico.a
-arduino_nano_connect.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-arduino_nano_connect.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-arduino_nano_connect.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-arduino_nano_connect.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+arduino_nano_connect.menu.ipbtstack.ipv4only=IPv4 Only
+arduino_nano_connect.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+arduino_nano_connect.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+arduino_nano_connect.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+arduino_nano_connect.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+arduino_nano_connect.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+arduino_nano_connect.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+arduino_nano_connect.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+arduino_nano_connect.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+arduino_nano_connect.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+arduino_nano_connect.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+arduino_nano_connect.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 arduino_nano_connect.menu.uploadmethod.default=Default (UF2)
 arduino_nano_connect.menu.uploadmethod.default.build.ram_length=256k
 arduino_nano_connect.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3062,12 +3134,18 @@ bridgetek_idm2040-7a.menu.usbstack.tinyusb=Adafruit TinyUSB
 bridgetek_idm2040-7a.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 bridgetek_idm2040-7a.menu.usbstack.nousb=No USB
 bridgetek_idm2040-7a.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-bridgetek_idm2040-7a.menu.ipstack.ipv4only=IPv4 Only
-bridgetek_idm2040-7a.menu.ipstack.ipv4only.build.libpico=libpico.a
-bridgetek_idm2040-7a.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-bridgetek_idm2040-7a.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-bridgetek_idm2040-7a.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-bridgetek_idm2040-7a.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4only=IPv4 Only
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 bridgetek_idm2040-7a.menu.uploadmethod.default=Default (UF2)
 bridgetek_idm2040-7a.menu.uploadmethod.default.build.ram_length=256k
 bridgetek_idm2040-7a.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3254,12 +3332,18 @@ cytron_maker_nano_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_nano_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 cytron_maker_nano_rp2040.menu.usbstack.nousb=No USB
 cytron_maker_nano_rp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-cytron_maker_nano_rp2040.menu.ipstack.ipv4only=IPv4 Only
-cytron_maker_nano_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-cytron_maker_nano_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-cytron_maker_nano_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-cytron_maker_nano_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-cytron_maker_nano_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4only=IPv4 Only
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 cytron_maker_nano_rp2040.menu.uploadmethod.default=Default (UF2)
 cytron_maker_nano_rp2040.menu.uploadmethod.default.build.ram_length=256k
 cytron_maker_nano_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3446,12 +3530,18 @@ cytron_maker_pi_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 cytron_maker_pi_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 cytron_maker_pi_rp2040.menu.usbstack.nousb=No USB
 cytron_maker_pi_rp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-cytron_maker_pi_rp2040.menu.ipstack.ipv4only=IPv4 Only
-cytron_maker_pi_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-cytron_maker_pi_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-cytron_maker_pi_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-cytron_maker_pi_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-cytron_maker_pi_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4only=IPv4 Only
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 cytron_maker_pi_rp2040.menu.uploadmethod.default=Default (UF2)
 cytron_maker_pi_rp2040.menu.uploadmethod.default.build.ram_length=256k
 cytron_maker_pi_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3638,12 +3728,18 @@ datanoisetv_picoadk.menu.usbstack.tinyusb=Adafruit TinyUSB
 datanoisetv_picoadk.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 datanoisetv_picoadk.menu.usbstack.nousb=No USB
 datanoisetv_picoadk.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-datanoisetv_picoadk.menu.ipstack.ipv4only=IPv4 Only
-datanoisetv_picoadk.menu.ipstack.ipv4only.build.libpico=libpico.a
-datanoisetv_picoadk.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-datanoisetv_picoadk.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-datanoisetv_picoadk.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-datanoisetv_picoadk.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+datanoisetv_picoadk.menu.ipbtstack.ipv4only=IPv4 Only
+datanoisetv_picoadk.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+datanoisetv_picoadk.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+datanoisetv_picoadk.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+datanoisetv_picoadk.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+datanoisetv_picoadk.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 datanoisetv_picoadk.menu.uploadmethod.default=Default (UF2)
 datanoisetv_picoadk.menu.uploadmethod.default.build.ram_length=256k
 datanoisetv_picoadk.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3842,12 +3938,18 @@ flyboard2040_core.menu.usbstack.tinyusb=Adafruit TinyUSB
 flyboard2040_core.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 flyboard2040_core.menu.usbstack.nousb=No USB
 flyboard2040_core.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-flyboard2040_core.menu.ipstack.ipv4only=IPv4 Only
-flyboard2040_core.menu.ipstack.ipv4only.build.libpico=libpico.a
-flyboard2040_core.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-flyboard2040_core.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-flyboard2040_core.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-flyboard2040_core.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+flyboard2040_core.menu.ipbtstack.ipv4only=IPv4 Only
+flyboard2040_core.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+flyboard2040_core.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+flyboard2040_core.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+flyboard2040_core.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+flyboard2040_core.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+flyboard2040_core.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+flyboard2040_core.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+flyboard2040_core.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+flyboard2040_core.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+flyboard2040_core.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+flyboard2040_core.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 flyboard2040_core.menu.uploadmethod.default=Default (UF2)
 flyboard2040_core.menu.uploadmethod.default.build.ram_length=256k
 flyboard2040_core.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4034,12 +4136,18 @@ dfrobot_beetle_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 dfrobot_beetle_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 dfrobot_beetle_rp2040.menu.usbstack.nousb=No USB
 dfrobot_beetle_rp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-dfrobot_beetle_rp2040.menu.ipstack.ipv4only=IPv4 Only
-dfrobot_beetle_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-dfrobot_beetle_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-dfrobot_beetle_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-dfrobot_beetle_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-dfrobot_beetle_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4only=IPv4 Only
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 dfrobot_beetle_rp2040.menu.uploadmethod.default=Default (UF2)
 dfrobot_beetle_rp2040.menu.uploadmethod.default.build.ram_length=256k
 dfrobot_beetle_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4226,12 +4334,18 @@ electroniccats_huntercat_nfc.menu.usbstack.tinyusb=Adafruit TinyUSB
 electroniccats_huntercat_nfc.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 electroniccats_huntercat_nfc.menu.usbstack.nousb=No USB
 electroniccats_huntercat_nfc.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-electroniccats_huntercat_nfc.menu.ipstack.ipv4only=IPv4 Only
-electroniccats_huntercat_nfc.menu.ipstack.ipv4only.build.libpico=libpico.a
-electroniccats_huntercat_nfc.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-electroniccats_huntercat_nfc.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-electroniccats_huntercat_nfc.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-electroniccats_huntercat_nfc.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4only=IPv4 Only
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 electroniccats_huntercat_nfc.menu.uploadmethod.default=Default (UF2)
 electroniccats_huntercat_nfc.menu.uploadmethod.default.build.ram_length=256k
 electroniccats_huntercat_nfc.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4418,12 +4532,18 @@ extelec_rc2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 extelec_rc2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 extelec_rc2040.menu.usbstack.nousb=No USB
 extelec_rc2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-extelec_rc2040.menu.ipstack.ipv4only=IPv4 Only
-extelec_rc2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-extelec_rc2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-extelec_rc2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-extelec_rc2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-extelec_rc2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+extelec_rc2040.menu.ipbtstack.ipv4only=IPv4 Only
+extelec_rc2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+extelec_rc2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+extelec_rc2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+extelec_rc2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+extelec_rc2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+extelec_rc2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+extelec_rc2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+extelec_rc2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+extelec_rc2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+extelec_rc2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+extelec_rc2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 extelec_rc2040.menu.uploadmethod.default=Default (UF2)
 extelec_rc2040.menu.uploadmethod.default.build.ram_length=256k
 extelec_rc2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4646,12 +4766,18 @@ challenger_2040_lte.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lte.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_2040_lte.menu.usbstack.nousb=No USB
 challenger_2040_lte.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_2040_lte.menu.ipstack.ipv4only=IPv4 Only
-challenger_2040_lte.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_2040_lte.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_2040_lte.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_2040_lte.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_2040_lte.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_lte.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2040_lte.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_2040_lte.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_lte.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2040_lte.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_2040_lte.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_lte.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2040_lte.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_2040_lte.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_lte.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2040_lte.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_2040_lte.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_2040_lte.menu.uploadmethod.default=Default (UF2)
 challenger_2040_lte.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_lte.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4874,12 +5000,18 @@ challenger_2040_lora.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_lora.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_2040_lora.menu.usbstack.nousb=No USB
 challenger_2040_lora.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_2040_lora.menu.ipstack.ipv4only=IPv4 Only
-challenger_2040_lora.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_2040_lora.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_2040_lora.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_2040_lora.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_2040_lora.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_lora.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2040_lora.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_2040_lora.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_lora.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2040_lora.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_2040_lora.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_lora.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2040_lora.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_2040_lora.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_lora.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2040_lora.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_2040_lora.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_2040_lora.menu.uploadmethod.default=Default (UF2)
 challenger_2040_lora.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_lora.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5102,12 +5234,18 @@ challenger_2040_subghz.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_subghz.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_2040_subghz.menu.usbstack.nousb=No USB
 challenger_2040_subghz.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_2040_subghz.menu.ipstack.ipv4only=IPv4 Only
-challenger_2040_subghz.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_2040_subghz.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_2040_subghz.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_2040_subghz.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_2040_subghz.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_subghz.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2040_subghz.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_2040_subghz.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_subghz.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2040_subghz.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_2040_subghz.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_subghz.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2040_subghz.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_2040_subghz.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_subghz.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2040_subghz.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_2040_subghz.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_2040_subghz.menu.uploadmethod.default=Default (UF2)
 challenger_2040_subghz.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_subghz.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5331,12 +5469,18 @@ challenger_2040_wifi.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifi.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_2040_wifi.menu.usbstack.nousb=No USB
 challenger_2040_wifi.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_2040_wifi.menu.ipstack.ipv4only=IPv4 Only
-challenger_2040_wifi.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_2040_wifi.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_2040_wifi.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_2040_wifi.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_2040_wifi.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_wifi.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2040_wifi.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_2040_wifi.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifi.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_wifi.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_wifi.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_2040_wifi.menu.uploadmethod.default=Default (UF2)
 challenger_2040_wifi.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_wifi.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5560,12 +5704,18 @@ challenger_2040_wifi_ble.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_wifi_ble.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_2040_wifi_ble.menu.usbstack.nousb=No USB
 challenger_2040_wifi_ble.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_2040_wifi_ble.menu.ipstack.ipv4only=IPv4 Only
-challenger_2040_wifi_ble.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_2040_wifi_ble.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_2040_wifi_ble.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_2040_wifi_ble.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_2040_wifi_ble.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_2040_wifi_ble.menu.uploadmethod.default=Default (UF2)
 challenger_2040_wifi_ble.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_wifi_ble.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5789,12 +5939,18 @@ challenger_nb_2040_wifi.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_nb_2040_wifi.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_nb_2040_wifi.menu.usbstack.nousb=No USB
 challenger_nb_2040_wifi.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_nb_2040_wifi.menu.ipstack.ipv4only=IPv4 Only
-challenger_nb_2040_wifi.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_nb_2040_wifi.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_nb_2040_wifi.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_nb_2040_wifi.menu.uploadmethod.default=Default (UF2)
 challenger_nb_2040_wifi.menu.uploadmethod.default.build.ram_length=256k
 challenger_nb_2040_wifi.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6017,12 +6173,18 @@ challenger_2040_sdrtc.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_sdrtc.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_2040_sdrtc.menu.usbstack.nousb=No USB
 challenger_2040_sdrtc.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_2040_sdrtc.menu.ipstack.ipv4only=IPv4 Only
-challenger_2040_sdrtc.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_2040_sdrtc.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_2040_sdrtc.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_2040_sdrtc.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_2040_sdrtc.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_sdrtc.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2040_sdrtc.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_2040_sdrtc.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_sdrtc.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2040_sdrtc.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_2040_sdrtc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_2040_sdrtc.menu.uploadmethod.default=Default (UF2)
 challenger_2040_sdrtc.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_sdrtc.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6245,12 +6407,18 @@ challenger_2040_nfc.menu.usbstack.tinyusb=Adafruit TinyUSB
 challenger_2040_nfc.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 challenger_2040_nfc.menu.usbstack.nousb=No USB
 challenger_2040_nfc.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-challenger_2040_nfc.menu.ipstack.ipv4only=IPv4 Only
-challenger_2040_nfc.menu.ipstack.ipv4only.build.libpico=libpico.a
-challenger_2040_nfc.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-challenger_2040_nfc.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-challenger_2040_nfc.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-challenger_2040_nfc.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_nfc.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2040_nfc.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+challenger_2040_nfc.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2040_nfc.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2040_nfc.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+challenger_2040_nfc.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2040_nfc.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2040_nfc.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+challenger_2040_nfc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_nfc.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2040_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+challenger_2040_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 challenger_2040_nfc.menu.uploadmethod.default=Default (UF2)
 challenger_2040_nfc.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_nfc.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6473,12 +6641,18 @@ ilabs_rpico32.menu.usbstack.tinyusb=Adafruit TinyUSB
 ilabs_rpico32.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 ilabs_rpico32.menu.usbstack.nousb=No USB
 ilabs_rpico32.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-ilabs_rpico32.menu.ipstack.ipv4only=IPv4 Only
-ilabs_rpico32.menu.ipstack.ipv4only.build.libpico=libpico.a
-ilabs_rpico32.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-ilabs_rpico32.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-ilabs_rpico32.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-ilabs_rpico32.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+ilabs_rpico32.menu.ipbtstack.ipv4only=IPv4 Only
+ilabs_rpico32.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+ilabs_rpico32.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+ilabs_rpico32.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+ilabs_rpico32.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+ilabs_rpico32.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+ilabs_rpico32.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+ilabs_rpico32.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+ilabs_rpico32.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+ilabs_rpico32.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+ilabs_rpico32.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+ilabs_rpico32.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 ilabs_rpico32.menu.uploadmethod.default=Default (UF2)
 ilabs_rpico32.menu.uploadmethod.default.build.ram_length=256k
 ilabs_rpico32.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6701,12 +6875,18 @@ melopero_cookie_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 melopero_cookie_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 melopero_cookie_rp2040.menu.usbstack.nousb=No USB
 melopero_cookie_rp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-melopero_cookie_rp2040.menu.ipstack.ipv4only=IPv4 Only
-melopero_cookie_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-melopero_cookie_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-melopero_cookie_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-melopero_cookie_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-melopero_cookie_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+melopero_cookie_rp2040.menu.ipbtstack.ipv4only=IPv4 Only
+melopero_cookie_rp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+melopero_cookie_rp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+melopero_cookie_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+melopero_cookie_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+melopero_cookie_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 melopero_cookie_rp2040.menu.uploadmethod.default=Default (UF2)
 melopero_cookie_rp2040.menu.uploadmethod.default.build.ram_length=256k
 melopero_cookie_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6977,12 +7157,18 @@ melopero_shake_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 melopero_shake_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 melopero_shake_rp2040.menu.usbstack.nousb=No USB
 melopero_shake_rp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-melopero_shake_rp2040.menu.ipstack.ipv4only=IPv4 Only
-melopero_shake_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-melopero_shake_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-melopero_shake_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-melopero_shake_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-melopero_shake_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+melopero_shake_rp2040.menu.ipbtstack.ipv4only=IPv4 Only
+melopero_shake_rp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+melopero_shake_rp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+melopero_shake_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+melopero_shake_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+melopero_shake_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 melopero_shake_rp2040.menu.uploadmethod.default=Default (UF2)
 melopero_shake_rp2040.menu.uploadmethod.default.build.ram_length=256k
 melopero_shake_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7181,12 +7367,18 @@ nullbits_bit_c_pro.menu.usbstack.tinyusb=Adafruit TinyUSB
 nullbits_bit_c_pro.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 nullbits_bit_c_pro.menu.usbstack.nousb=No USB
 nullbits_bit_c_pro.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-nullbits_bit_c_pro.menu.ipstack.ipv4only=IPv4 Only
-nullbits_bit_c_pro.menu.ipstack.ipv4only.build.libpico=libpico.a
-nullbits_bit_c_pro.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-nullbits_bit_c_pro.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-nullbits_bit_c_pro.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-nullbits_bit_c_pro.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+nullbits_bit_c_pro.menu.ipbtstack.ipv4only=IPv4 Only
+nullbits_bit_c_pro.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+nullbits_bit_c_pro.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+nullbits_bit_c_pro.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+nullbits_bit_c_pro.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+nullbits_bit_c_pro.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 nullbits_bit_c_pro.menu.uploadmethod.default=Default (UF2)
 nullbits_bit_c_pro.menu.uploadmethod.default.build.ram_length=256k
 nullbits_bit_c_pro.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7409,12 +7601,18 @@ pimoroni_pga2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 pimoroni_pga2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 pimoroni_pga2040.menu.usbstack.nousb=No USB
 pimoroni_pga2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-pimoroni_pga2040.menu.ipstack.ipv4only=IPv4 Only
-pimoroni_pga2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-pimoroni_pga2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-pimoroni_pga2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-pimoroni_pga2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-pimoroni_pga2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+pimoroni_pga2040.menu.ipbtstack.ipv4only=IPv4 Only
+pimoroni_pga2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+pimoroni_pga2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+pimoroni_pga2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+pimoroni_pga2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+pimoroni_pga2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+pimoroni_pga2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+pimoroni_pga2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+pimoroni_pga2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+pimoroni_pga2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+pimoroni_pga2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+pimoroni_pga2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 pimoroni_pga2040.menu.uploadmethod.default=Default (UF2)
 pimoroni_pga2040.menu.uploadmethod.default.build.ram_length=256k
 pimoroni_pga2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7637,12 +7835,18 @@ solderparty_rp2040_stamp.menu.usbstack.tinyusb=Adafruit TinyUSB
 solderparty_rp2040_stamp.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 solderparty_rp2040_stamp.menu.usbstack.nousb=No USB
 solderparty_rp2040_stamp.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-solderparty_rp2040_stamp.menu.ipstack.ipv4only=IPv4 Only
-solderparty_rp2040_stamp.menu.ipstack.ipv4only.build.libpico=libpico.a
-solderparty_rp2040_stamp.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-solderparty_rp2040_stamp.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-solderparty_rp2040_stamp.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-solderparty_rp2040_stamp.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4only=IPv4 Only
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 solderparty_rp2040_stamp.menu.uploadmethod.default=Default (UF2)
 solderparty_rp2040_stamp.menu.uploadmethod.default.build.ram_length=256k
 solderparty_rp2040_stamp.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7913,12 +8117,18 @@ sparkfun_promicrorp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_promicrorp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 sparkfun_promicrorp2040.menu.usbstack.nousb=No USB
 sparkfun_promicrorp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-sparkfun_promicrorp2040.menu.ipstack.ipv4only=IPv4 Only
-sparkfun_promicrorp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-sparkfun_promicrorp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-sparkfun_promicrorp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-sparkfun_promicrorp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-sparkfun_promicrorp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4only=IPv4 Only
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 sparkfun_promicrorp2040.menu.uploadmethod.default=Default (UF2)
 sparkfun_promicrorp2040.menu.uploadmethod.default.build.ram_length=256k
 sparkfun_promicrorp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8189,12 +8399,18 @@ sparkfun_thingplusrp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 sparkfun_thingplusrp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 sparkfun_thingplusrp2040.menu.usbstack.nousb=No USB
 sparkfun_thingplusrp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-sparkfun_thingplusrp2040.menu.ipstack.ipv4only=IPv4 Only
-sparkfun_thingplusrp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-sparkfun_thingplusrp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-sparkfun_thingplusrp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-sparkfun_thingplusrp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-sparkfun_thingplusrp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4only=IPv4 Only
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 sparkfun_thingplusrp2040.menu.uploadmethod.default=Default (UF2)
 sparkfun_thingplusrp2040.menu.uploadmethod.default.build.ram_length=256k
 sparkfun_thingplusrp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8381,12 +8597,18 @@ upesy_rp2040_devkit.menu.usbstack.tinyusb=Adafruit TinyUSB
 upesy_rp2040_devkit.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 upesy_rp2040_devkit.menu.usbstack.nousb=No USB
 upesy_rp2040_devkit.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-upesy_rp2040_devkit.menu.ipstack.ipv4only=IPv4 Only
-upesy_rp2040_devkit.menu.ipstack.ipv4only.build.libpico=libpico.a
-upesy_rp2040_devkit.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-upesy_rp2040_devkit.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-upesy_rp2040_devkit.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-upesy_rp2040_devkit.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+upesy_rp2040_devkit.menu.ipbtstack.ipv4only=IPv4 Only
+upesy_rp2040_devkit.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+upesy_rp2040_devkit.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+upesy_rp2040_devkit.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+upesy_rp2040_devkit.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+upesy_rp2040_devkit.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 upesy_rp2040_devkit.menu.uploadmethod.default=Default (UF2)
 upesy_rp2040_devkit.menu.uploadmethod.default.build.ram_length=256k
 upesy_rp2040_devkit.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8573,12 +8795,18 @@ seeed_xiao_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 seeed_xiao_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 seeed_xiao_rp2040.menu.usbstack.nousb=No USB
 seeed_xiao_rp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-seeed_xiao_rp2040.menu.ipstack.ipv4only=IPv4 Only
-seeed_xiao_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-seeed_xiao_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-seeed_xiao_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-seeed_xiao_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+seeed_xiao_rp2040.menu.ipbtstack.ipv4only=IPv4 Only
+seeed_xiao_rp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+seeed_xiao_rp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+seeed_xiao_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+seeed_xiao_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+seeed_xiao_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 seeed_xiao_rp2040.menu.uploadmethod.default=Default (UF2)
 seeed_xiao_rp2040.menu.uploadmethod.default.build.ram_length=256k
 seeed_xiao_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8849,12 +9077,18 @@ vccgnd_yd_rp2040.menu.usbstack.tinyusb=Adafruit TinyUSB
 vccgnd_yd_rp2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 vccgnd_yd_rp2040.menu.usbstack.nousb=No USB
 vccgnd_yd_rp2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-vccgnd_yd_rp2040.menu.ipstack.ipv4only=IPv4 Only
-vccgnd_yd_rp2040.menu.ipstack.ipv4only.build.libpico=libpico.a
-vccgnd_yd_rp2040.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-vccgnd_yd_rp2040.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-vccgnd_yd_rp2040.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-vccgnd_yd_rp2040.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4only=IPv4 Only
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 vccgnd_yd_rp2040.menu.uploadmethod.default=Default (UF2)
 vccgnd_yd_rp2040.menu.uploadmethod.default.build.ram_length=256k
 vccgnd_yd_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9077,12 +9311,18 @@ viyalab_mizu.menu.usbstack.tinyusb=Adafruit TinyUSB
 viyalab_mizu.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 viyalab_mizu.menu.usbstack.nousb=No USB
 viyalab_mizu.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-viyalab_mizu.menu.ipstack.ipv4only=IPv4 Only
-viyalab_mizu.menu.ipstack.ipv4only.build.libpico=libpico.a
-viyalab_mizu.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-viyalab_mizu.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-viyalab_mizu.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-viyalab_mizu.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+viyalab_mizu.menu.ipbtstack.ipv4only=IPv4 Only
+viyalab_mizu.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+viyalab_mizu.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+viyalab_mizu.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+viyalab_mizu.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+viyalab_mizu.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+viyalab_mizu.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+viyalab_mizu.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+viyalab_mizu.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+viyalab_mizu.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+viyalab_mizu.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+viyalab_mizu.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 viyalab_mizu.menu.uploadmethod.default=Default (UF2)
 viyalab_mizu.menu.uploadmethod.default.build.ram_length=256k
 viyalab_mizu.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9269,12 +9509,18 @@ waveshare_rp2040_zero.menu.usbstack.tinyusb=Adafruit TinyUSB
 waveshare_rp2040_zero.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 waveshare_rp2040_zero.menu.usbstack.nousb=No USB
 waveshare_rp2040_zero.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-waveshare_rp2040_zero.menu.ipstack.ipv4only=IPv4 Only
-waveshare_rp2040_zero.menu.ipstack.ipv4only.build.libpico=libpico.a
-waveshare_rp2040_zero.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-waveshare_rp2040_zero.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-waveshare_rp2040_zero.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-waveshare_rp2040_zero.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_zero.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2040_zero.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+waveshare_rp2040_zero.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_zero.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2040_zero.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+waveshare_rp2040_zero.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 waveshare_rp2040_zero.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_zero.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_zero.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9473,12 +9719,18 @@ waveshare_rp2040_one.menu.usbstack.tinyusb=Adafruit TinyUSB
 waveshare_rp2040_one.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 waveshare_rp2040_one.menu.usbstack.nousb=No USB
 waveshare_rp2040_one.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-waveshare_rp2040_one.menu.ipstack.ipv4only=IPv4 Only
-waveshare_rp2040_one.menu.ipstack.ipv4only.build.libpico=libpico.a
-waveshare_rp2040_one.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-waveshare_rp2040_one.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-waveshare_rp2040_one.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-waveshare_rp2040_one.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_one.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2040_one.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+waveshare_rp2040_one.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_one.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2040_one.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+waveshare_rp2040_one.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 waveshare_rp2040_one.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_one.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_one.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9677,12 +9929,18 @@ waveshare_rp2040_plus_4mb.menu.usbstack.tinyusb=Adafruit TinyUSB
 waveshare_rp2040_plus_4mb.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 waveshare_rp2040_plus_4mb.menu.usbstack.nousb=No USB
 waveshare_rp2040_plus_4mb.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-waveshare_rp2040_plus_4mb.menu.ipstack.ipv4only=IPv4 Only
-waveshare_rp2040_plus_4mb.menu.ipstack.ipv4only.build.libpico=libpico.a
-waveshare_rp2040_plus_4mb.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-waveshare_rp2040_plus_4mb.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-waveshare_rp2040_plus_4mb.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-waveshare_rp2040_plus_4mb.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 waveshare_rp2040_plus_4mb.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_plus_4mb.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_plus_4mb.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9953,12 +10211,18 @@ waveshare_rp2040_plus_16mb.menu.usbstack.tinyusb=Adafruit TinyUSB
 waveshare_rp2040_plus_16mb.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 waveshare_rp2040_plus_16mb.menu.usbstack.nousb=No USB
 waveshare_rp2040_plus_16mb.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-waveshare_rp2040_plus_16mb.menu.ipstack.ipv4only=IPv4 Only
-waveshare_rp2040_plus_16mb.menu.ipstack.ipv4only.build.libpico=libpico.a
-waveshare_rp2040_plus_16mb.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-waveshare_rp2040_plus_16mb.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-waveshare_rp2040_plus_16mb.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-waveshare_rp2040_plus_16mb.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 waveshare_rp2040_plus_16mb.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_plus_16mb.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_plus_16mb.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10145,12 +10409,18 @@ waveshare_rp2040_lcd_0_96.menu.usbstack.tinyusb=Adafruit TinyUSB
 waveshare_rp2040_lcd_0_96.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 waveshare_rp2040_lcd_0_96.menu.usbstack.nousb=No USB
 waveshare_rp2040_lcd_0_96.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-waveshare_rp2040_lcd_0_96.menu.ipstack.ipv4only=IPv4 Only
-waveshare_rp2040_lcd_0_96.menu.ipstack.ipv4only.build.libpico=libpico.a
-waveshare_rp2040_lcd_0_96.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-waveshare_rp2040_lcd_0_96.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-waveshare_rp2040_lcd_0_96.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-waveshare_rp2040_lcd_0_96.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10337,12 +10607,18 @@ waveshare_rp2040_lcd_1_28.menu.usbstack.tinyusb=Adafruit TinyUSB
 waveshare_rp2040_lcd_1_28.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 waveshare_rp2040_lcd_1_28.menu.usbstack.nousb=No USB
 waveshare_rp2040_lcd_1_28.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-waveshare_rp2040_lcd_1_28.menu.ipstack.ipv4only=IPv4 Only
-waveshare_rp2040_lcd_1_28.menu.ipstack.ipv4only.build.libpico=libpico.a
-waveshare_rp2040_lcd_1_28.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-waveshare_rp2040_lcd_1_28.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-waveshare_rp2040_lcd_1_28.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-waveshare_rp2040_lcd_1_28.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10529,12 +10805,18 @@ wiznet_5100s_evb_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5100s_evb_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 wiznet_5100s_evb_pico.menu.usbstack.nousb=No USB
 wiznet_5100s_evb_pico.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-wiznet_5100s_evb_pico.menu.ipstack.ipv4only=IPv4 Only
-wiznet_5100s_evb_pico.menu.ipstack.ipv4only.build.libpico=libpico.a
-wiznet_5100s_evb_pico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-wiznet_5100s_evb_pico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-wiznet_5100s_evb_pico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-wiznet_5100s_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4only=IPv4 Only
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 wiznet_5100s_evb_pico.menu.uploadmethod.default=Default (UF2)
 wiznet_5100s_evb_pico.menu.uploadmethod.default.build.ram_length=256k
 wiznet_5100s_evb_pico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10721,12 +11003,18 @@ wiznet_wizfi360_evb_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_wizfi360_evb_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 wiznet_wizfi360_evb_pico.menu.usbstack.nousb=No USB
 wiznet_wizfi360_evb_pico.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-wiznet_wizfi360_evb_pico.menu.ipstack.ipv4only=IPv4 Only
-wiznet_wizfi360_evb_pico.menu.ipstack.ipv4only.build.libpico=libpico.a
-wiznet_wizfi360_evb_pico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-wiznet_wizfi360_evb_pico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-wiznet_wizfi360_evb_pico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-wiznet_wizfi360_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4only=IPv4 Only
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 wiznet_wizfi360_evb_pico.menu.uploadmethod.default=Default (UF2)
 wiznet_wizfi360_evb_pico.menu.uploadmethod.default.build.ram_length=256k
 wiznet_wizfi360_evb_pico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10913,12 +11201,18 @@ wiznet_5500_evb_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
 wiznet_5500_evb_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 wiznet_5500_evb_pico.menu.usbstack.nousb=No USB
 wiznet_5500_evb_pico.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-wiznet_5500_evb_pico.menu.ipstack.ipv4only=IPv4 Only
-wiznet_5500_evb_pico.menu.ipstack.ipv4only.build.libpico=libpico.a
-wiznet_5500_evb_pico.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-wiznet_5500_evb_pico.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-wiznet_5500_evb_pico.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-wiznet_5500_evb_pico.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4only=IPv4 Only
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 wiznet_5500_evb_pico.menu.uploadmethod.default=Default (UF2)
 wiznet_5500_evb_pico.menu.uploadmethod.default.build.ram_length=256k
 wiznet_5500_evb_pico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -11117,12 +11411,18 @@ generic.menu.usbstack.tinyusb=Adafruit TinyUSB
 generic.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
 generic.menu.usbstack.nousb=No USB
 generic.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-generic.menu.ipstack.ipv4only=IPv4 Only
-generic.menu.ipstack.ipv4only.build.libpico=libpico.a
-generic.menu.ipstack.ipv4only.build.lwipdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-generic.menu.ipstack.ipv4ipv6=IPv4 and IPv6
-generic.menu.ipstack.ipv4ipv6.build.libpico=libpico-ipv6.a
-generic.menu.ipstack.ipv4ipv6.build.lwipdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+generic.menu.ipbtstack.ipv4only=IPv4 Only
+generic.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+generic.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+generic.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+generic.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+generic.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+generic.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+generic.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+generic.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+generic.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+generic.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+generic.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 generic.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4

@@ -8,23 +8,15 @@ export PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
 rm -rf build
 mkdir build
 cd build
-cmake .. -DIPV6=0
-make -j
+cmake ..
+make -j V=1
 
 # Put everything in its place
-mv libpico.a ../../../lib/.
+mv *.a ../../../lib/.
 mv generated/pico_base/pico/version.h ../../../include/pico_base/pico/.
 cp ../lwipopts.h ../../../include/.
 cp ../tusb_config.h ../../../include/.
 cp ../btstack_config.h ../../../include/.
-
-cd ..
-rm -rf build
-mkdir build
-cd build
-cmake .. -DIPV6=1
-make -j
-mv libpico.a ../../../lib/libpico-ipv6.a
 
 rm -rf boot
 mkdir boot

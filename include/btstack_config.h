@@ -1,18 +1,20 @@
-#ifndef _PICO_BTSTACK_BTSTACK_CONFIG_H
-#define _PICO_BTSTACK_BTSTACK_CONFIG_H
+#pragma once
 
 // BTstack features that can be enabled
-#define ENABLE_LE_PERIPHERAL
-#define ENABLE_LE_CENTRAL
-#define ENABLE_L2CAP_LE_CREDIT_BASED_FLOW_CONTROL_MODE
 #define ENABLE_LOG_INFO
 #define ENABLE_LOG_ERROR
 #define ENABLE_PRINTF_HEXDUMP
 #define ENABLE_SCO_OVER_HCI
-#undef ENABLE_CLASSIC
-#define ENABLE_CLASSIC 1
-#undef ENABLE_BLE
-#define ENABLE_BLE 1
+
+#ifdef ENABLE_CLASSIC
+#define ENABLE_L2CAP_ENHANCED_RETRANSMISSION_MODE
+#endif
+
+#ifdef ENABLE_BLE
+#define ENABLE_L2CAP_LE_CREDIT_BASED_FLOW_CONTROL_MODE
+#define ENABLE_LE_PERIPHERAL
+#define ENABLE_LE_CENTRAL
+#endif
 
 // BTstack configuration. buffers, sizes, ...
 #define HCI_OUTGOING_PRE_BUFFER_SIZE 4
@@ -70,12 +72,3 @@
 #define ENABLE_MICRO_ECC_FOR_LE_SECURE_CONNECTIONS
 
 #undef HAVE_BTSTACK_STDIN
-
-// To get the audio demos working even with HCI dump at 115200, this truncates long ACL packetws
-//#define HCI_DUMP_STDOUT_MAX_SIZE_ACL 100
-
-#ifdef ENABLE_CLASSIC
-#define ENABLE_L2CAP_ENHANCED_RETRANSMISSION_MODE
-#endif
-
-#endif // MICROPY_INCLUDED_EXTMOD_BTSTACK_BTSTACK_CONFIG_H
