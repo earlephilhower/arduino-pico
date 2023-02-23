@@ -42,6 +42,7 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_xosc/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_async_context/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_bootrom/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_btstack/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_cyw43_arch/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_cyw43_driver/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_double/include
@@ -59,3 +60,4 @@
 -iwithprefixbefore/pico-sdk/lib/cyw43-driver/src
 -iwithprefixbefore/pico-sdk/lib/lwip/src/include
 -iwithprefixbefore/pico-sdk/lib/btstack/src
+-iwithprefixbefore/pico-sdk/lib/btstack/platform/embedded
