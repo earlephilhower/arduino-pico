@@ -12,7 +12,6 @@ cmake ..
 make -j V=1
 
 # Put everything in its place
-mv *.a ../../../lib/.
 mv generated/pico_base/pico/version.h ../../../include/pico_base/pico/.
 cp ../lwipopts.h ../../../include/.
 cp ../tusb_config.h ../../../include/.
