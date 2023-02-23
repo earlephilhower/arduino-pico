@@ -24,7 +24,12 @@ extern "C" void __pinMode(pin_size_t pin, PinMode mode);
 extern "C" void __digitalWrite(pin_size_t pin, PinStatus val);
 extern "C" PinStatus __digitalRead(pin_size_t pin);
 
+extern bool  __isPicoW;
+
 extern "C" void pinMode(pin_size_t pin, PinMode mode) {
+    if (!__isPicoW && (pin == PIN_LED)) {
+        pin = 25;  // Silently swap in the Pico's LED
+    }
     if (pin < 32) {
         __pinMode(pin, mode);
     } else {
@@ -33,6 +38,9 @@ extern "C" void pinMode(pin_size_t pin, PinMode mode) {
 }
 
 extern "C" void digitalWrite(pin_size_t pin, PinStatus val) {
+    if (!__isPicoW && (pin == PIN_LED)) {
+        pin = 25;  // Silently swap in the Pico's LED
+    }
     if (pin < 32) {
         __digitalWrite(pin, val);
     } else {
@@ -41,6 +49,9 @@ extern "C" void digitalWrite(pin_size_t pin, PinStatus val) {
 }
 
 extern "C" PinStatus digitalRead(pin_size_t pin) {
+    if (!__isPicoW && (pin == PIN_LED)) {
+        pin = 25;  // Silently swap in the Pico's LED
+    }
     if (pin < 32) {
         return __digitalRead(pin);
     } else {
