@@ -301,15 +301,15 @@ void __SetupUSBDescriptor() {
 
 const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
     (void) langid;
-#define DESC_STR_MAX (20)
+#define DESC_STR_MAX (32)
     static uint16_t desc_str[DESC_STR_MAX];
 
     static char idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 2 + 1];
 
     static const char *const usbd_desc_str[] = {
         [USBD_STR_0] = "",
-        [USBD_STR_MANUF] = "Raspberry Pi",
-        [USBD_STR_PRODUCT] = "PicoArduino",
+        [USBD_STR_MANUF] = USB_MANUFACTURER,
+        [USBD_STR_PRODUCT] = USB_PRODUCT,
         [USBD_STR_SERIAL] = idString,
         [USBD_STR_CDC] = "Board CDC",
 #ifdef ENABLE_PICOTOOL_USB
