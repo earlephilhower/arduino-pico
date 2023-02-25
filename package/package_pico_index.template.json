@@ -18,6 +18,24 @@
                "archiveFileName": "",
                "boards": [
                   {
+                     "name": "ProPatch 128 Rev0 Master UCU v1.3"
+                  },
+                  {
+                     "name": "ProPatch 128 Rev0 RTB UCU v1.3"
+                  },
+                  {
+                     "name": "ProPatch 128 Rev0 Master UCU v1.4"
+                  },
+                  {
+                     "name": "ProPatch 128 Rev0 RTB UCU v1.4"
+                  },
+                  {
+                     "name": "ProPatch 128 Rev0 Master UCU (test)"
+                  },
+                  {
+                     "name": "ProPatch 128 Rev0 RTB UCU (test)"
+                  },
+                  {
                      "name": "Raspberry Pi Pico"
                   },
                   {

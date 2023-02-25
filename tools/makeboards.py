@@ -335,6 +335,16 @@ BuildGlobalMenuList()
 # alphabetically starting with the company name and then the board name.
 # Otherwise it is difficult to find a specific board in the menu.
 
+# DCA.io ProPatch 128
+MakeBoard("pp128r0_master_v13", "ProPatch 128 Rev0", "Master UCU v1.3", "0x2e8a", "0xf00a", 250, "PP128R0_MASTER_V13", 2, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("pp128r0_rtb_v13", "ProPatch 128 Rev0", "RTB UCU v1.3", "0x2e8a", "0xf00a", 250, "PP128R0_RTB_V13", 2, "boot2_w25q16jvxq_4_padded_checksum")
+
+MakeBoard("pp128r0_master_v14", "ProPatch 128 Rev0", "Master UCU v1.4", "0x2e8a", "0xf00a", 250, "PP128R0_MASTER_V14", 2, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("pp128r0_rtb_v14", "ProPatch 128 Rev0", "RTB UCU v1.4", "0x2e8a", "0xf00a", 250, "PP128R0_RTB_V14", 2, "boot2_w25q16jvxq_4_padded_checksum")
+
+MakeBoard("pp128r0_master_test", "ProPatch 128 Rev0", "Master UCU (test)", "0x2e8a", "0xf00a", 250, "PP128R0_MASTER_TEST", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("pp128r0_rtb_test", "ProPatch 128 Rev0", "RTB UCU (test)", "0x2e8a", "0xf00a", 250, "PP128R0_RTB_TEST", 2, "boot2_w25q080_2_padded_checksum")
+
 # Raspberry Pi
 MakeBoard("rpipico", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, "boot2_w25q080_2_padded_checksum")
