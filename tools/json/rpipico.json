@@ -32,10 +32,10 @@
   "frameworks": [
     "arduino"
   ],
-  "name": "Pico",
+  "name": "Pico (Copy to RAM)",
   "upload": {
     "maximum_ram_size": 270336,
-    "maximum_size": 2097152,
+    "maximum_size": 0,
     "require_upload_port": true,
     "native_usb": true,
     "use_1200bps_touch": true,
