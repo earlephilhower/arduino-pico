@@ -412,7 +412,7 @@ BuildGlobalMenuList()
 # Raspberry Pi
 MakeBoard("rpipico", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoardRAM("rpipico", "Raspberry Pi", "Pico (Copy to RAM)", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoardRAM("rpipicoram", "Raspberry Pi", "Pico (Copy to RAM)", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
 
 # 0xCB
 MakeBoard("0xcb_helios", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, "boot2_w25q128jvxq_4_padded_checksum")
