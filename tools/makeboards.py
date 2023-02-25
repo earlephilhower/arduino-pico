@@ -3,6 +3,22 @@ import os
 import sys
 import json
 
+def BuildFlashMenuRAM(name, flashsize, fssizelist):
+    for fssize in fssizelist:
+        if fssize == 0:
+            fssizename = "no FS"
+        elif fssize < 1024 * 1024:
+            fssizename = "Sketch: %dKB, FS: %dKB" % ((flashsize - fssize) / 1024, fssize / 1024)
+        else:
+            fssizename = "Sketch: %dMB, FS: %dMB" % ((flashsize - fssize) / (1024 * 1024), fssize / (1024 * 1024))
+        mn="%d_%d" % (flashsize, fssize)
+        print("%s.menu.flash.%s=%dMB (%s)" % (name, mn, flashsize / (1024 * 1024), fssizename))
+        print("%s.menu.flash.%s.upload.maximum_size=0" % (name, mn))
+        print("%s.menu.flash.%s.build.flash_length=%d" % (name, mn, flashsize - 4096 - fssize))
+        print("%s.menu.flash.%s.build.eeprom_start=%d" % (name, mn, int("0x10000000",0) + flashsize - 4096))
+        print("%s.menu.flash.%s.build.fs_start=%d" % (name, mn, int("0x10000000",0) + flashsize - 4096 - fssize))
+        print("%s.menu.flash.%s.build.fs_end=%d" % (name, mn, int("0x10000000",0) + flashsize - 4096))
+
 def BuildFlashMenu(name, flashsize, fssizelist):
     for fssize in fssizelist:
         if fssize == 0:
@@ -122,6 +138,54 @@ def BuildUploadMethodMenu(name):
         if f != None:
             print("%s.menu.uploadmethod.%s.upload.tool.network=%s" % (name, a, f))
 
+def BuildHeaderRAM(name, vendor_name, product_name, vid, pid, pwr, boarddefine, variant, flashsize, boot2, extra):
+    prettyname = vendor_name + " " + product_name
+    print()
+    print("# -----------------------------------")
+    print("# %s" % (prettyname))
+    print("# -----------------------------------")
+    print("%s.name=%s" % (name, prettyname))
+    usb = 0
+    if type(pid) == list:
+        for tp in pid:
+            print("%s.vid.%d=%s" % (name, usb, vid))
+            print("%s.pid.%d=0x%04x" % (name, usb, int(tp, 16)))
+            usb = usb + 1
+    else:
+        for kb in [ "0", "0x8000" ]:
+            for ms in [ "0", "0x4000" ]:
+                for jy in [ "0", "0x0100" ]:
+                    thispid = int(pid, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
+                    print("%s.vid.%d=%s" % (name, usb, vid))
+                    print("%s.pid.%d=0x%04x" % (name, usb, thispid))
+                    usb = usb + 1
+    print("%s.build.usbvid=-DUSBD_VID=%s" % (name, vid))
+    if type(pid) == list:
+        print("%s.build.usbpid=-DUSBD_PID=%s" % (name, pid[0]))
+    else:
+        print("%s.build.usbpid=-DUSBD_PID=%s" % (name, pid))
+    print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
+    print("%s.build.board=%s" % (name, boarddefine))
+    print("%s.build.mcu=cortex-m0plus" % (name))
+    print("%s.build.variant=%s" % (name, variant))
+    print("%s.upload.maximum_size=%d" % (name, flashsize))
+    print("%s.upload.wait_for_upload_port=true" % (name))
+    print("%s.upload.erase_cmd=" % (name))
+    print("%s.serial.disableDTR=false" % (name))
+    print("%s.serial.disableRTS=false" % (name))
+    print("%s.build.f_cpu=125000000" % (name))
+    print("%s.build.led=" % (name))
+    print("%s.build.core=rp2040" % (name))
+    print("%s.build.ldscript=memmap_copy_to_ram.ld" % (name))
+    print("%s.build.boot2=%s" % (name, boot2))
+    print('%s.build.usb_manufacturer="%s"' % (name, vendor_name))
+    print('%s.build.usb_product="%s"' % (name, product_name))
+    if extra != None:
+        m_extra = ''
+        for m_item in extra:
+            m_extra += '-D' + m_item + ' '
+        print('%s.build.extra_flags=%s' % (name, m_extra.rstrip()))
+
 def BuildHeader(name, vendor_name, product_name, vid, pid, pwr, boarddefine, variant, flashsize, boot2, extra):
     prettyname = vendor_name + " " + product_name
     print()
@@ -191,6 +255,38 @@ def BuildGlobalMenuList():
     print("menu.usbstack=USB Stack")
     print("menu.ipstack=IP Stack")
     print("menu.uploadmethod=Upload Method")
+
+def MakeBoardRAM(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra = None):
+    fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
+    for i in range(1, flashsizemb):
+        fssizelist.append(i * 1024 * 1024)
+    BuildHeaderRAM(name, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, boot2, extra)
+    if name == "generic":
+        BuildFlashMenuRAM(name, 2*1024*1024, [0, 1*1024*1024])
+        BuildFlashMenuRAM(name, 4*1024*1024, [0, 2*1024*1024])
+        BuildFlashMenuRAM(name, 8*1024*1024, [0, 4*1024*1024])
+        BuildFlashMenuRAM(name, 16*1024*1024, [0, 8*1024*1024])
+    else:
+        BuildFlashMenuRAM(name, flashsizemb * 1024 * 1024, fssizelist)
+    BuildFreq(name)
+    BuildOptimize(name)
+    BuildRTTI(name)
+    BuildStackProtect(name)
+    BuildExceptions(name)
+    BuildDebugPort(name)
+    BuildDebugLevel(name)
+    BuildUSBStack(name)
+    if name == "rpipicow":
+        BuildCountry(name)
+    BuildIPStack(name)
+    if name == "generic":
+        BuildBoot(name)
+    BuildUploadMethodMenu(name)
+    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, 0, boot2, extra)
+    global pkgjson
+    thisbrd = {}
+    thisbrd['name'] = "%s %s" % (vendor_name, product_name)
+    pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
 def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra = None):
     fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
@@ -316,6 +412,7 @@ BuildGlobalMenuList()
 # Raspberry Pi
 MakeBoard("rpipico", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoardRAM("rpipico", "Raspberry Pi", "Pico (Copy to RAM)", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
 
 # 0xCB
 MakeBoard("0xcb_helios", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, "boot2_w25q128jvxq_4_padded_checksum")
