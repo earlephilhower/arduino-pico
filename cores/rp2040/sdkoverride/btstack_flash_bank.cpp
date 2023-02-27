@@ -10,6 +10,7 @@
 #include <hardware/flash.h>
 #include <hardware/sync.h>
 #include <string.h>
+#include <Arduino.h>
 
 const uint8_t __bluetooth_tlv[8192] __attribute__((aligned(4096))) = { 0 };
 extern const uint8_t __flash_binary_start;
@@ -48,9 +49,11 @@ static uint32_t pico_flash_bank_get_alignment(void * context) {
 static void pico_flash_bank_erase(void * context, int bank) {
     (void)(context);
     DEBUG_PRINT("erase: bank %d\n", bank);
-    uint32_t status = save_and_disable_interrupts();
+    noInterrupts();
+    rp2040.idleOtherCore();
     flash_range_erase(PICO_FLASH_BANK_STORAGE_OFFSET + (PICO_FLASH_BANK_SIZE * bank), PICO_FLASH_BANK_SIZE);
-    restore_interrupts(status);
+    rp2040.resumeOtherCore();
+    interrupts();
 }
 
 static void pico_flash_bank_read(void *context, int bank, uint32_t offset, uint8_t *buffer, uint32_t size) {
@@ -144,9 +147,11 @@ static void pico_flash_bank_write(void * context, int bank, uint32_t offset, con
         offset = 0;
 
         // Now program the entire page
-        uint32_t status = save_and_disable_interrupts();
+        noInterrupts();
+        rp2040.idleOtherCore();
         flash_range_program(bank_start_pos + (page * FLASH_PAGE_SIZE), page_data, FLASH_PAGE_SIZE);
-        restore_interrupts(status);
+        rp2040.resumeOtherCore();
+        interrupts();
     }
 }
 
@@ -158,7 +163,8 @@ static const hal_flash_bank_t pico_flash_bank_instance_obj = {
     /* void (*write)(..);     */ 		 &pico_flash_bank_write,
 };
 
-const hal_flash_bank_t *pico_flash_bank_instance(void) {
+extern "C" {
+    const hal_flash_bank_t *pico_flash_bank_instance(void) {
 
 #ifndef NDEBUG
     // Check we're not overlapping the binary in flash
@@ -167,5 +173,6 @@ const hal_flash_bank_t *pico_flash_bank_instance(void) {
 #endif
 
     return &pico_flash_bank_instance_obj;
+}
 }
 #endif
