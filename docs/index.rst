@@ -43,6 +43,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
 
+   Bluetooth (Alpha/Beta) <bluetooth>
+
    Single File USB Drive <singlefile>
 
    FreeRTOS SMP (multicore) <freertos>
