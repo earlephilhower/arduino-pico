@@ -12,11 +12,15 @@ PicoBluetoothHID	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-begin	KEYWORD2
-write	KEYWORD2
-press	KEYWORD2
-release	KEYWORD2
-releaseAll	KEYWORD2
+setOpenedCB	KEYWORD2
+setClosedCB	KEYWORD2
+seCanSendNowCB	KEYWORD2
+startHID	KEYWORD2
+connected	KEYWORD2
+send	KEYWORD2
+lockBluetooth	KEYWORD2
+unlockBluetooth	KEYWORD2
+getCID	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

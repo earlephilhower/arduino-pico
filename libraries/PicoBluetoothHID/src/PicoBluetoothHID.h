@@ -37,19 +37,19 @@
 #undef HID_REPORT_TYPE_OUTPUT
 #undef HID_REPORT_TYPE_INPUT
 
-class PicoBluetoothHID;
-extern PicoBluetoothHID _PicoBluetoothHID;
+class PicoBluetoothHID_;
+extern PicoBluetoothHID_ PicoBluetoothHID;
 
-class PicoBluetoothHID {
+class PicoBluetoothHID_ {
 public:
-    PicoBluetoothHID() {
+    PicoBluetoothHID_() {
     }
 
-    ~PicoBluetoothHID() {
+    ~PicoBluetoothHID_() {
     }
 
     // Optional callback, not used presently
-    // Usage: _PicoBluetoothHID.setCanSendNowCB(std::bind(&kbd::onCanSendNow, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+    // Usage: PicoBluetoothHID.setCanSendNowCB(std::bind(&kbd::onCanSendNow, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
     typedef std::function<void(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size)> BTCallback;
 
     void setOpenedCB(BTCallback cb) {
@@ -135,7 +135,7 @@ public:
     }
 
     static void PacketHandlerWrapper(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t packet_size) {
-        _PicoBluetoothHID.packetHandler(packet_type, channel, packet, packet_size);
+        PicoBluetoothHID.packetHandler(packet_type, channel, packet, packet_size);
     }
 
     void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
@@ -215,7 +215,7 @@ public:
         _sendReport = rpt;
         _sendReportLen = len;
         lockBluetooth();
-        hid_device_request_can_send_now_event(_PicoBluetoothHID.getCID());
+        hid_device_request_can_send_now_event(getCID());
         unlockBluetooth();
         while (connected() && _needToSend) {
             /* noop busy wait */

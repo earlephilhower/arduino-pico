@@ -47,11 +47,11 @@ MouseBT_::MouseBT_(void) : _buttons(0) {
 #define REPORT_ID 0x01
 const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
 void MouseBT_::begin(void) {
-    _PicoBluetoothHID.startHID("PicoW Mouse 00:00:00:00:00:00", "PicoW HID Mouse", 0x2580, 33, desc_mouse, sizeof(desc_mouse));
+    PicoBluetoothHID.startHID("PicoW Mouse 00:00:00:00:00:00", "PicoW HID Mouse", 0x2580, 33, desc_mouse, sizeof(desc_mouse));
 }
 
 void MouseBT_::end(void) {
-    _PicoBluetoothHID.end();
+    PicoBluetoothHID.end();
 }
 
 void MouseBT_::click(uint8_t b) {
@@ -70,7 +70,7 @@ void MouseBT_::move(int x, int y, signed char wheel) {
     data.y = limit_xy(y);
     data.wheel = wheel;
     data.pan = 0;
-    _PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
 }
 
 void MouseBT_::buttons(uint8_t b) {

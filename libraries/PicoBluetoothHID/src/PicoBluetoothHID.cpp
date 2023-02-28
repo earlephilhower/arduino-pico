@@ -20,4 +20,4 @@
 
 #include "PicoBluetoothHID.h"
 
-PicoBluetoothHID _PicoBluetoothHID;
+PicoBluetoothHID_ PicoBluetoothHID;
