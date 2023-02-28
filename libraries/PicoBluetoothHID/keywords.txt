@@ -14,7 +14,7 @@ PicoBluetoothHID	KEYWORD1
 
 setOpenedCB	KEYWORD2
 setClosedCB	KEYWORD2
-seCanSendNowCB	KEYWORD2
+setCanSendNowCB	KEYWORD2
 startHID	KEYWORD2
 connected	KEYWORD2
 send	KEYWORD2
