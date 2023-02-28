@@ -42,6 +42,7 @@ void KeyboardBT_::begin(const uint8_t *layout) {
 }
 
 void KeyboardBT_::end(void) {
+    _PicoBluetoothHID.end();
 }
 
 void KeyboardBT_::sendReport(KeyReport* keys) {

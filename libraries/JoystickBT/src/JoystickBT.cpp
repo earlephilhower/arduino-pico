@@ -83,6 +83,7 @@ void JoystickBT_::begin(void) {
 }
 
 void JoystickBT_::end(void) {
+    _PicoBluetoothHID.end();
 }
 
 void JoystickBT_::button(uint8_t button, bool val) {

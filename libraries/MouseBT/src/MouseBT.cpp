@@ -51,6 +51,7 @@ void MouseBT_::begin(void) {
 }
 
 void MouseBT_::end(void) {
+    _PicoBluetoothHID.end();
 }
 
 void MouseBT_::click(uint8_t b) {

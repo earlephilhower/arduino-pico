@@ -83,10 +83,9 @@ void SerialBT_::end() {
     }
     _running = false;
 
-    // Paranoia - ensure nobody else is using anything here at the same time
+    hci_power_control(HCI_POWER_OFF);
     lockBluetooth();
     delete[] _queue;
-    // Reset the mutexes once all is off/cleaned up
     unlockBluetooth();
 }
 
