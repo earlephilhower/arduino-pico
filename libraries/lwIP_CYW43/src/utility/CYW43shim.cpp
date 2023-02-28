@@ -37,15 +37,18 @@ extern "C" {
 #define WIFI_JOIN_STATE_KEYED   (0x0800)
 #define WIFI_JOIN_STATE_ALL     (0x0e01)
 
-
 netif *CYW43::_netif = nullptr;
-extern "C" volatile bool __inLWIP;
+
+struct netif *__getCYW43Netif() {
+    return CYW43::_netif;
+}
 
 CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
     (void) cs;
     (void) spi;
     (void) intrpin;
     _netif = nullptr;
+    bzero(_bssid, sizeof(_bssid));
 }
 
 bool CYW43::begin(const uint8_t* address, netif* netif) {
@@ -65,12 +68,24 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
 
         // Not currently possible to hook up igmp_mac_filter and mld_mac_filter
         // TODO: implement igmp_mac_filter and mld_mac_filter
-        cyw43_set_allmulti(_self, true);
+#if LWIP_IPV6
+        // Implement cyw43_set_allmulti(_self, true) using exposed ioctl call
+        uint8_t allmulti_true[] = { 'a', 'l', 'l', 'm', 'u', 'l', 't', 'i', 0, 1, 0, 0, 0 };
+        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_SET_VAR, sizeof allmulti_true, allmulti_true, CYW43_ITF_STA);
+#endif
 
-        if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
-            return false;
+        if (_bssid[0] | _bssid[1] | _bssid[2] | _bssid[3] | _bssid[4] | _bssid[5]) {
+            if (cyw43_arch_wifi_connect_bssid_timeout_ms(_ssid, _bssid, _password, authmode, _timeout)) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
-            return true;
+            if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
+                return false;
+            } else {
+                return true;
+            }
         }
     } else {
         _itf = 1;
@@ -85,7 +100,6 @@ void CYW43::end() {
     cyw43_deinit(&cyw43_state);
 }
 
-
 uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {
     if (0 == cyw43_send_ethernet(_self, _itf, datalen, data, false)) {
         return datalen;
@@ -99,77 +113,3 @@ uint16_t CYW43::readFrame(uint8_t* buffer, uint16_t bufsize) {
     (void) bufsize;
     return 0;
 }
-
-//#define MAXWAIT 16
-//static struct pbuf *_pbufWaiting[MAXWAIT];
-//static bool _pbufHold(struct pbuf *p) {
-//    for (int i = 0; i < MAXWAIT; i++) {
-//        if (!_pbufWaiting[i]) {
-//            _pbufWaiting[i] = p;
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
-
-// CB from the cyw43 driver
-extern "C" void cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
-    //cyw43_t *self = (cyw43_t *)cb_data
-    (void) cb_data;
-    (void) itf;
-    struct netif *netif = CYW43::_netif; // &self->netif[itf];
-#if CYW43_NETUTILS
-    if (self->trace_flags) {
-        cyw43_ethernet_trace(self, netif, len, buf, NETUTILS_TRACE_NEWLINE);
-    }
-#endif
-    if (netif->flags & NETIF_FLAG_LINK_UP) {
-        struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
-        if (p != nullptr) {
-            pbuf_take(p, buf, len);
-            if (__inLWIP || (netif->input(p, netif) != ERR_OK)) {
-                pbuf_free(p);
-            }
-            CYW43_STAT_INC(PACKET_IN_COUNT);
-        }
-    }
-}
-
-extern "C" void cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
-    if (CYW43::_netif) {
-        netif_set_link_up(CYW43::_netif);
-    }
-}
-
-extern "C" void cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
-    if (CYW43::_netif) {
-        netif_set_link_down(CYW43::_netif);
-    }
-    self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
-}
-
-extern "C" int cyw43_tcpip_link_status(cyw43_t *self, int itf) {
-    //if ((CYW43::_netif->flags & (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP))
-    //  Fake this since it's only used in the SDK
-    if ((CYW43::_netif->flags & (NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_LINK_UP)) {
-        return CYW43_LINK_UP;
-    } else {
-        return cyw43_wifi_link_status(self, itf);
-    }
-}
-
-// CBs from the SDK, not needed here as we do TCP later in the game
-extern "C" void cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
-}
-extern "C" void cyw43_cb_tcpip_deinit(cyw43_t *self, int itf) {
-    (void) self;
-    (void) itf;
-}
-

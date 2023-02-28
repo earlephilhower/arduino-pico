@@ -59,48 +59,65 @@ bool WiFiMulti::addAP(const char *ssid, const char *pass) {
 }
 
 uint8_t WiFiMulti::run(uint32_t to) {
+    struct _scanAP {
+        char *ssid;
+        char *psk;
+        uint8_t bssid[6];
+        int rssi;
+    };
+    std::list<struct _scanAP> _scanList;
 
     // If we're already connected, don't re-scan/etc.
     if (WiFi.status() == WL_CONNECTED) {
         return WL_CONNECTED;
     }
 
+    DEBUGV("[WIFIMULTI] Rescanning to build new list of APs\n");
     int cnt = WiFi.scanNetworks();
     if (!cnt) {
         return WL_DISCONNECTED;
     }
 
-    // Find the highest RSSI network in our list.  Probably more efficient searches, but the list
-    // of APs will have < 5 in > 99% of the cases so it's a don't care.
-    int maxRSSID = -999;
-    std::list<struct _AP>::iterator hit;
-    bool found = false;
+    // Add all matching ones to the scanList
     for (int i = 0; i < cnt; i++) {
-        if (WiFi.RSSI(i) > maxRSSID) {
-            for (auto j = _list.begin(); j != _list.end(); j++) {
-                DEBUGV("[WIFIMULTI] Checking for '%s' at %ld\n", WiFi.SSID(i), WiFi.RSSI(i));
-                if (!strcmp(j->ssid, WiFi.SSID(i))) {
-                    hit = j;
-                    maxRSSID = WiFi.RSSI(i);
-                    found = true;
-                }
+        for (auto j = _list.begin(); j != _list.end(); j++) {
+            if (!strcmp(j->ssid, WiFi.SSID(i))) {
+                _scanAP itm;
+                itm.ssid = j->ssid;
+                itm.psk = j->pass;
+                WiFi.BSSID(i, itm.bssid);
+                itm.rssi = WiFi.RSSI(i);
+                _scanList.push_front(itm);
             }
         }
     }
-    if (!found) {
-        return WL_DISCONNECTED;
+    // Sort by RSSI using C++ lambda magic
+    _scanList.sort([](const struct _scanAP & a, const struct _scanAP & b) {
+        return a.rssi > b.rssi;
+    });
+    for (auto j = _scanList.begin(); j != _scanList.end(); j++) {
+        DEBUGV("[WIFIMULTI] scanList: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d\n", j->ssid,
+               j->bssid[0], j->bssid[1], j->bssid[2], j->bssid[3], j->bssid[4], j->bssid[5], j->rssi);
     }
 
-    // Connect!
-    DEBUGV("[WIFIMULTI] Connecting to '%s' and '%s'\n", hit->ssid, hit->pass);
-    uint32_t start = millis();
-    if (hit->pass) {
-        WiFi.begin(hit->ssid, hit->pass);
-    } else {
-        WiFi.begin(hit->ssid);
+    // Attempt to connect to each (will be in order of decreasing RSSI)
+    for (auto j = _scanList.begin(); j != _scanList.end(); j++) {
+        DEBUGV("[WIFIMULTI] Connecting to: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d\n", j->ssid,
+               j->bssid[0], j->bssid[1], j->bssid[2], j->bssid[3], j->bssid[4], j->bssid[5], j->rssi);
+        uint32_t start = millis();
+        if (j->psk) {
+            WiFi.begin(j->ssid, j->psk, j->bssid);
+        } else {
+            WiFi.beginBSSID(j->ssid, j->bssid);
+        }
+        while (!WiFi.connected() && (millis() - start < to)) {
+            delay(5);
+        }
+        if (WiFi.status() == WL_CONNECTED) {
+            return WL_CONNECTED;
+        }
     }
-    while (!WiFi.connected() && (millis() - start < to)) {
-        delay(5);
-    }
+
+    // Failed at this point...
     return WiFi.status();
 }

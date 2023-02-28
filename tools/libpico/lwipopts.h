@@ -13,6 +13,9 @@ extern void interrupts();
 #define SYS_ARCH_PROTECT(lev) noInterrupts
 #define SYS_ARCH_UNPROTECT(lev) interrupts
 
+extern unsigned long get_rand_32(void);
+#define LWIP_RAND() get_rand_32()
+
 // Common settings used in most of the pico_w examples
 // (see https://www.nongnu.org/lwip/2_1_x/group__lwip__opts.html for details)
 
@@ -25,7 +28,7 @@ extern void interrupts();
 #define MEMP_NUM_TCP_SEG            32
 #define MEMP_NUM_ARP_QUEUE          10
 #define PBUF_POOL_SIZE              24
-#define LWIP_ARP                    1
+#define LWIP_ARP                    2
 #define LWIP_ETHERNET               1
 #define LWIP_ICMP                   1
 #define LWIP_RAW                    1

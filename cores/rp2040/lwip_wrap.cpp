@@ -18,45 +18,25 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "pico/mutex.h"
-#include "lwip/pbuf.h"
-#include "lwip/udp.h"
-#include "lwip/tcp.h"
-#include "lwip/dns.h"
-#include "lwip/raw.h"
-#include "lwip/timeouts.h"
-
-// Global indicator that we're inside an LWIP block
-extern "C" {
-    volatile bool __inLWIP = false;
-}
-
-auto_init_recursive_mutex(__mtxLWIP);
+#include <pico/mutex.h>
+#include <lwip/pbuf.h>
+#include <lwip/udp.h>
+#include <lwip/tcp.h>
+#include <lwip/dns.h>
+#include <lwip/raw.h>
+#include <lwip/timeouts.h>
+#include <pico/cyw43_arch.h>
 
 class LWIPMutex {
 public:
     LWIPMutex() {
-        noInterrupts();
-        recursive_mutex_enter_blocking(&__mtxLWIP);
-        __inLWIP = true;
-        _ref++;
-        interrupts();
+        cyw43_arch_lwip_begin();
     }
 
     ~LWIPMutex() {
-        noInterrupts();
-        if (0 == --_ref) {
-            __inLWIP = false;
-        }
-        recursive_mutex_exit(&__mtxLWIP);
-        interrupts();
+        cyw43_arch_lwip_end();
     }
-
-private:
-    static int _ref;
 };
-int LWIPMutex::_ref = 0;
-
 
 extern "C" {
 
@@ -275,10 +255,15 @@ extern "C" {
         return __real_udp_sendto_if(pcb, p, dst_ip, dst_port, netif);
     }
 
+    // sys_check_timeouts is special case because the async process will call it.  If we're already in a timeout check, just do a noop
+    auto_init_mutex(__sys_check_timeouts_mtx);
     extern void __real_sys_check_timeouts(void);
     void __wrap_sys_check_timeouts(void) {
-        LWIPMutex m;
-        __real_sys_check_timeouts();
+        uint32_t owner;
+        if (mutex_try_enter(&__sys_check_timeouts_mtx, &owner)) {
+            __real_sys_check_timeouts();
+            mutex_exit(&__sys_check_timeouts_mtx);
+        }
     }
 
     extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);

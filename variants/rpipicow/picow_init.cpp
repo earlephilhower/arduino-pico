@@ -19,6 +19,7 @@
 */
 
 #include <pico/cyw43_arch.h>
+#include <pico/lwip_nosys.h>
 #include "hardware/resets.h"
 #include "hardware/gpio.h"
 #include "hardware/adc.h"

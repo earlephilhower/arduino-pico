@@ -40,8 +40,11 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_vreg/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_watchdog/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_xosc/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_async_context/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_bootrom/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_btstack/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_cyw43_arch/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_cyw43_driver/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_double/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_float/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_int64_ops/include
@@ -50,8 +53,11 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_printf/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_runtime/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_rand/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_stdio/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_stdio_uart/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_unique_id/include
 -iwithprefixbefore/pico-sdk/lib/cyw43-driver/src
 -iwithprefixbefore/pico-sdk/lib/lwip/src/include
+-iwithprefixbefore/pico-sdk/lib/btstack/src
+-iwithprefixbefore/pico-sdk/lib/btstack/platform/embedded
