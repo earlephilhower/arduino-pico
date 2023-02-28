@@ -6,7 +6,6 @@ So, since this core builds off the SDK the best that can be suggested it
 that we have **ALPHA** Bluetooth support.  As such, bug reports are welcome,
 but Pull Requests fixing problems you find are seriously appreciated.
 
-
 Enabling Bluetooth
 ------------------
 To enable Bluetooth (BT), use the ``Tools->IP/Bluetooth Stack`` menu.  It
@@ -18,6 +17,9 @@ Included Bluetooth Libraries
 ----------------------------
 You may use the ``KeyboardBT``, ``MouseBT``, or ``JoystickBT`` to emulate a
 Bluetooth Classic HID device using the same API as their USB versions.
+
+The ``SerialBT`` library implements a very simple SPP (Serial Port Profile)
+Serial-compatible port.
 
 Writing Custom Bluetooth Applications
 -------------------------------------

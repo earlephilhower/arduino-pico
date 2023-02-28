@@ -163,7 +163,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 
 # Features
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
-* Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, and Joystick
+* Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
 * Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
 * WiFi (Pico W)
 * HTTP client and server (WebServer)

@@ -167,12 +167,12 @@ extern "C" {
     const hal_flash_bank_t *pico_flash_bank_instance(void) {
 
 #ifndef NDEBUG
-    // Check we're not overlapping the binary in flash
-    //extern char __flash_binary_end;
-    //    assert((uintptr_t)&__flash_binary_end - XIP_BASE <= PICO_FLASH_BANK_STORAGE_OFFSET);
+        // Check we're not overlapping the binary in flash
+        //extern char __flash_binary_end;
+        //    assert((uintptr_t)&__flash_binary_end - XIP_BASE <= PICO_FLASH_BANK_STORAGE_OFFSET);
 #endif
 
-    return &pico_flash_bank_instance_obj;
-}
+        return &pico_flash_bank_instance_obj;
+    }
 }
 #endif
