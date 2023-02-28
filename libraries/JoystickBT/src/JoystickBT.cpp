@@ -79,11 +79,11 @@ int JoystickBT_::map8or10bit(int const value) {
 #define REPORT_ID 0x01
 static const uint8_t desc_joystick[] = {TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(REPORT_ID))};
 void JoystickBT_::begin(void) {
-    _PicoBluetoothHID.startHID("PicoW Joystick 00:00:00:00:00:00", "PicoW HID Joystick", 0x2508, 33, desc_joystick, sizeof(desc_joystick));
+    PicoBluetoothHID.startHID("PicoW Joystick 00:00:00:00:00:00", "PicoW HID Joystick", 0x2508, 33, desc_joystick, sizeof(desc_joystick));
 }
 
 void JoystickBT_::end(void) {
-    _PicoBluetoothHID.end();
+    PicoBluetoothHID.end();
 }
 
 void JoystickBT_::button(uint8_t button, bool val) {
@@ -178,7 +178,7 @@ void JoystickBT_::hat(int angle) {
 
 //immediately send an HID report
 void JoystickBT_::send_now(void) {
-    _PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
 }
 
 JoystickBT_ JoystickBT;

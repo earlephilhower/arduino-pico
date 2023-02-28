@@ -38,11 +38,11 @@ KeyboardBT_::KeyboardBT_(void) {
 static const uint8_t desc_keyboard[] = {TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID))};
 void KeyboardBT_::begin(const uint8_t *layout) {
     _asciimap = layout;
-    _PicoBluetoothHID.startHID("PicoW Keyboard 00:00:00:00:00:00", "PicoW HID Keyboard", 0x2540, 33, desc_keyboard, sizeof(desc_keyboard));
+    PicoBluetoothHID.startHID("PicoW Keyboard 00:00:00:00:00:00", "PicoW HID Keyboard", 0x2540, 33, desc_keyboard, sizeof(desc_keyboard));
 }
 
 void KeyboardBT_::end(void) {
-    _PicoBluetoothHID.end();
+    PicoBluetoothHID.end();
 }
 
 void KeyboardBT_::sendReport(KeyReport* keys) {
@@ -50,7 +50,7 @@ void KeyboardBT_::sendReport(KeyReport* keys) {
     data.modifier = keys->modifiers;
     data.reserved = 0;
     memcpy(data.keycode, keys->keys, sizeof(data.keycode));
-    _PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
 }
 
 // press() adds the specified key (printing, non-printing, or modifier)
