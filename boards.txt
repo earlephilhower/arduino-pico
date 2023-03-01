@@ -177,10 +177,10 @@ rpipico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
 rpipico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 rpipico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 rpipico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-rpipico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+rpipico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 rpipico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 rpipico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-rpipico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+rpipico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 rpipico.menu.uploadmethod.default=Default (UF2)
 rpipico.menu.uploadmethod.default.build.ram_length=256k
 rpipico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -479,10 +479,10 @@ rpipicow.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
 rpipicow.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 rpipicow.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 rpipicow.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-rpipicow.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+rpipicow.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 rpipicow.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 rpipicow.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-rpipicow.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+rpipicow.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 rpipicow.menu.uploadmethod.default=Default (UF2)
 rpipicow.menu.uploadmethod.default.build.ram_length=256k
 rpipicow.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -761,10 +761,10 @@ rpipicow.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 0xcb_helios.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 0xcb_helios.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 0xcb_helios.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-0xcb_helios.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+0xcb_helios.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 0xcb_helios.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 0xcb_helios.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-0xcb_helios.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+0xcb_helios.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 0xcb_helios.menu.uploadmethod.default=Default (UF2)
 0xcb_helios.menu.uploadmethod.default.build.ram_length=256k
 0xcb_helios.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -995,10 +995,10 @@ adafruit_feather.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-nobl
 adafruit_feather.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_feather.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_feather.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_feather.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_feather.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_feather.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_feather.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_feather.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_feather.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_feather.menu.uploadmethod.default=Default (UF2)
 adafruit_feather.menu.uploadmethod.default.build.ram_length=256k
 adafruit_feather.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1229,10 +1229,10 @@ adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-no
 adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_feather_scorpio.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_feather_scorpio.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_feather_scorpio.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_feather_scorpio.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_feather_scorpio.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_feather_scorpio.menu.uploadmethod.default=Default (UF2)
 adafruit_feather_scorpio.menu.uploadmethod.default.build.ram_length=256k
 adafruit_feather_scorpio.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1463,10 +1463,10 @@ adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-no
 adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_itsybitsy.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_itsybitsy.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_itsybitsy.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_itsybitsy.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_itsybitsy.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_itsybitsy.menu.uploadmethod.default=Default (UF2)
 adafruit_itsybitsy.menu.uploadmethod.default.build.ram_length=256k
 adafruit_itsybitsy.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1697,10 +1697,10 @@ adafruit_qtpy.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
 adafruit_qtpy.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_qtpy.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_qtpy.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_qtpy.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_qtpy.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_qtpy.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_qtpy.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_qtpy.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_qtpy.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_qtpy.menu.uploadmethod.default=Default (UF2)
 adafruit_qtpy.menu.uploadmethod.default.build.ram_length=256k
 adafruit_qtpy.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -1931,10 +1931,10 @@ adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc
 adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_stemmafriend.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_stemmafriend.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_stemmafriend.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_stemmafriend.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_stemmafriend.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_stemmafriend.menu.uploadmethod.default=Default (UF2)
 adafruit_stemmafriend.menu.uploadmethod.default.build.ram_length=256k
 adafruit_stemmafriend.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2165,10 +2165,10 @@ adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-no
 adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_trinkeyrp2040qt.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_trinkeyrp2040qt.menu.uploadmethod.default=Default (UF2)
 adafruit_trinkeyrp2040qt.menu.uploadmethod.default.build.ram_length=256k
 adafruit_trinkeyrp2040qt.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2399,10 +2399,10 @@ adafruit_macropad2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc
 adafruit_macropad2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_macropad2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_macropad2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_macropad2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_macropad2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_macropad2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_macropad2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_macropad2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_macropad2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_macropad2040.menu.uploadmethod.default=Default (UF2)
 adafruit_macropad2040.menu.uploadmethod.default.build.ram_length=256k
 adafruit_macropad2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2633,10 +2633,10 @@ adafruit_kb2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble
 adafruit_kb2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 adafruit_kb2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 adafruit_kb2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-adafruit_kb2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_kb2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_kb2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 adafruit_kb2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-adafruit_kb2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+adafruit_kb2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 adafruit_kb2040.menu.uploadmethod.default=Default (UF2)
 adafruit_kb2040.menu.uploadmethod.default.build.ram_length=256k
 adafruit_kb2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -2907,10 +2907,10 @@ arduino_nano_connect.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-
 arduino_nano_connect.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 arduino_nano_connect.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 arduino_nano_connect.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-arduino_nano_connect.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+arduino_nano_connect.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 arduino_nano_connect.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 arduino_nano_connect.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-arduino_nano_connect.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+arduino_nano_connect.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 arduino_nano_connect.menu.uploadmethod.default=Default (UF2)
 arduino_nano_connect.menu.uploadmethod.default.build.ram_length=256k
 arduino_nano_connect.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3142,10 +3142,10 @@ bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-
 bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 bridgetek_idm2040-7a.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 bridgetek_idm2040-7a.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-bridgetek_idm2040-7a.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+bridgetek_idm2040-7a.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 bridgetek_idm2040-7a.menu.uploadmethod.default=Default (UF2)
 bridgetek_idm2040-7a.menu.uploadmethod.default.build.ram_length=256k
 bridgetek_idm2040-7a.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3340,10 +3340,10 @@ cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-no
 cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 cytron_maker_nano_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 cytron_maker_nano_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-cytron_maker_nano_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+cytron_maker_nano_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 cytron_maker_nano_rp2040.menu.uploadmethod.default=Default (UF2)
 cytron_maker_nano_rp2040.menu.uploadmethod.default.build.ram_length=256k
 cytron_maker_nano_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3538,10 +3538,10 @@ cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobt
 cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 cytron_maker_pi_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 cytron_maker_pi_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-cytron_maker_pi_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+cytron_maker_pi_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 cytron_maker_pi_rp2040.menu.uploadmethod.default=Default (UF2)
 cytron_maker_pi_rp2040.menu.uploadmethod.default.build.ram_length=256k
 cytron_maker_pi_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3736,10 +3736,10 @@ datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-n
 datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 datanoisetv_picoadk.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 datanoisetv_picoadk.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-datanoisetv_picoadk.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+datanoisetv_picoadk.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+datanoisetv_picoadk.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 datanoisetv_picoadk.menu.uploadmethod.default=Default (UF2)
 datanoisetv_picoadk.menu.uploadmethod.default.build.ram_length=256k
 datanoisetv_picoadk.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -3946,10 +3946,10 @@ flyboard2040_core.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-nob
 flyboard2040_core.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 flyboard2040_core.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 flyboard2040_core.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-flyboard2040_core.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+flyboard2040_core.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 flyboard2040_core.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 flyboard2040_core.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-flyboard2040_core.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+flyboard2040_core.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 flyboard2040_core.menu.uploadmethod.default=Default (UF2)
 flyboard2040_core.menu.uploadmethod.default.build.ram_length=256k
 flyboard2040_core.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4144,10 +4144,10 @@ dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc
 dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 dfrobot_beetle_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 dfrobot_beetle_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-dfrobot_beetle_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+dfrobot_beetle_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 dfrobot_beetle_rp2040.menu.uploadmethod.default=Default (UF2)
 dfrobot_beetle_rp2040.menu.uploadmethod.default.build.ram_length=256k
 dfrobot_beetle_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4342,10 +4342,10 @@ electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv
 electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 electroniccats_huntercat_nfc.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 electroniccats_huntercat_nfc.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-electroniccats_huntercat_nfc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+electroniccats_huntercat_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 electroniccats_huntercat_nfc.menu.uploadmethod.default=Default (UF2)
 electroniccats_huntercat_nfc.menu.uploadmethod.default.build.ram_length=256k
 electroniccats_huntercat_nfc.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4540,10 +4540,10 @@ extelec_rc2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.
 extelec_rc2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 extelec_rc2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 extelec_rc2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-extelec_rc2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+extelec_rc2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 extelec_rc2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 extelec_rc2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-extelec_rc2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+extelec_rc2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 extelec_rc2040.menu.uploadmethod.default=Default (UF2)
 extelec_rc2040.menu.uploadmethod.default.build.ram_length=256k
 extelec_rc2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -4774,10 +4774,10 @@ challenger_2040_lte.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-n
 challenger_2040_lte.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_2040_lte.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_2040_lte.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_2040_lte.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_lte.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_lte.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_2040_lte.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_2040_lte.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_lte.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_lte.menu.uploadmethod.default=Default (UF2)
 challenger_2040_lte.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_lte.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5008,10 +5008,10 @@ challenger_2040_lora.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-
 challenger_2040_lora.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_2040_lora.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_2040_lora.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_2040_lora.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_lora.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_lora.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_2040_lora.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_2040_lora.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_lora.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_lora.menu.uploadmethod.default=Default (UF2)
 challenger_2040_lora.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_lora.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5242,10 +5242,10 @@ challenger_2040_subghz.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobt
 challenger_2040_subghz.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_2040_subghz.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_2040_subghz.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_2040_subghz.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_subghz.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_subghz.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_2040_subghz.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_2040_subghz.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_subghz.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_subghz.menu.uploadmethod.default=Default (UF2)
 challenger_2040_subghz.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_subghz.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5477,10 +5477,10 @@ challenger_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-
 challenger_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_2040_wifi.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_wifi.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_wifi.menu.uploadmethod.default=Default (UF2)
 challenger_2040_wifi.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_wifi.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5712,10 +5712,10 @@ challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-no
 challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_2040_wifi_ble.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_2040_wifi_ble.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_2040_wifi_ble.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_wifi_ble.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_wifi_ble.menu.uploadmethod.default=Default (UF2)
 challenger_2040_wifi_ble.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_wifi_ble.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -5947,10 +5947,10 @@ challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nob
 challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_nb_2040_wifi.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_nb_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_nb_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_nb_2040_wifi.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_nb_2040_wifi.menu.uploadmethod.default=Default (UF2)
 challenger_nb_2040_wifi.menu.uploadmethod.default.build.ram_length=256k
 challenger_nb_2040_wifi.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6181,10 +6181,10 @@ challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc
 challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_2040_sdrtc.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_2040_sdrtc.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_2040_sdrtc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_sdrtc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_sdrtc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_sdrtc.menu.uploadmethod.default=Default (UF2)
 challenger_2040_sdrtc.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_sdrtc.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6415,10 +6415,10 @@ challenger_2040_nfc.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-n
 challenger_2040_nfc.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 challenger_2040_nfc.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 challenger_2040_nfc.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-challenger_2040_nfc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_nfc.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_nfc.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 challenger_2040_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-challenger_2040_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+challenger_2040_nfc.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_nfc.menu.uploadmethod.default=Default (UF2)
 challenger_2040_nfc.menu.uploadmethod.default.build.ram_length=256k
 challenger_2040_nfc.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6649,10 +6649,10 @@ ilabs_rpico32.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
 ilabs_rpico32.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 ilabs_rpico32.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 ilabs_rpico32.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-ilabs_rpico32.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+ilabs_rpico32.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 ilabs_rpico32.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 ilabs_rpico32.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-ilabs_rpico32.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+ilabs_rpico32.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 ilabs_rpico32.menu.uploadmethod.default=Default (UF2)
 ilabs_rpico32.menu.uploadmethod.default.build.ram_length=256k
 ilabs_rpico32.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -6883,10 +6883,10 @@ melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobt
 melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 melopero_cookie_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 melopero_cookie_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-melopero_cookie_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+melopero_cookie_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+melopero_cookie_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 melopero_cookie_rp2040.menu.uploadmethod.default=Default (UF2)
 melopero_cookie_rp2040.menu.uploadmethod.default.build.ram_length=256k
 melopero_cookie_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7165,10 +7165,10 @@ melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc
 melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 melopero_shake_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 melopero_shake_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-melopero_shake_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+melopero_shake_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+melopero_shake_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 melopero_shake_rp2040.menu.uploadmethod.default=Default (UF2)
 melopero_shake_rp2040.menu.uploadmethod.default.build.ram_length=256k
 melopero_shake_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7375,10 +7375,10 @@ nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-no
 nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 nullbits_bit_c_pro.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 nullbits_bit_c_pro.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-nullbits_bit_c_pro.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+nullbits_bit_c_pro.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+nullbits_bit_c_pro.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 nullbits_bit_c_pro.menu.uploadmethod.default=Default (UF2)
 nullbits_bit_c_pro.menu.uploadmethod.default.build.ram_length=256k
 nullbits_bit_c_pro.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7609,10 +7609,10 @@ pimoroni_pga2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-nobl
 pimoroni_pga2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 pimoroni_pga2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 pimoroni_pga2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-pimoroni_pga2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+pimoroni_pga2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 pimoroni_pga2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 pimoroni_pga2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-pimoroni_pga2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+pimoroni_pga2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 pimoroni_pga2040.menu.uploadmethod.default=Default (UF2)
 pimoroni_pga2040.menu.uploadmethod.default.build.ram_length=256k
 pimoroni_pga2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -7843,10 +7843,10 @@ solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-no
 solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 solderparty_rp2040_stamp.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 solderparty_rp2040_stamp.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-solderparty_rp2040_stamp.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+solderparty_rp2040_stamp.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 solderparty_rp2040_stamp.menu.uploadmethod.default=Default (UF2)
 solderparty_rp2040_stamp.menu.uploadmethod.default.build.ram_length=256k
 solderparty_rp2040_stamp.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8125,10 +8125,10 @@ sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nob
 sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 sparkfun_promicrorp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 sparkfun_promicrorp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-sparkfun_promicrorp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+sparkfun_promicrorp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 sparkfun_promicrorp2040.menu.uploadmethod.default=Default (UF2)
 sparkfun_promicrorp2040.menu.uploadmethod.default.build.ram_length=256k
 sparkfun_promicrorp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8407,10 +8407,10 @@ sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-no
 sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 sparkfun_thingplusrp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 sparkfun_thingplusrp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-sparkfun_thingplusrp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+sparkfun_thingplusrp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 sparkfun_thingplusrp2040.menu.uploadmethod.default=Default (UF2)
 sparkfun_thingplusrp2040.menu.uploadmethod.default.build.ram_length=256k
 sparkfun_thingplusrp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8605,10 +8605,10 @@ upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-n
 upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 upesy_rp2040_devkit.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 upesy_rp2040_devkit.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-upesy_rp2040_devkit.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+upesy_rp2040_devkit.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+upesy_rp2040_devkit.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 upesy_rp2040_devkit.menu.uploadmethod.default=Default (UF2)
 upesy_rp2040_devkit.menu.uploadmethod.default.build.ram_length=256k
 upesy_rp2040_devkit.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -8803,10 +8803,10 @@ seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-nob
 seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 seeed_xiao_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 seeed_xiao_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-seeed_xiao_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+seeed_xiao_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+seeed_xiao_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 seeed_xiao_rp2040.menu.uploadmethod.default=Default (UF2)
 seeed_xiao_rp2040.menu.uploadmethod.default.build.ram_length=256k
 seeed_xiao_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9085,10 +9085,10 @@ vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-nobl
 vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 vccgnd_yd_rp2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 vccgnd_yd_rp2040.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-vccgnd_yd_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+vccgnd_yd_rp2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 vccgnd_yd_rp2040.menu.uploadmethod.default=Default (UF2)
 vccgnd_yd_rp2040.menu.uploadmethod.default.build.ram_length=256k
 vccgnd_yd_rp2040.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9319,10 +9319,10 @@ viyalab_mizu.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
 viyalab_mizu.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 viyalab_mizu.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 viyalab_mizu.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-viyalab_mizu.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+viyalab_mizu.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 viyalab_mizu.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 viyalab_mizu.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-viyalab_mizu.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+viyalab_mizu.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 viyalab_mizu.menu.uploadmethod.default=Default (UF2)
 viyalab_mizu.menu.uploadmethod.default.build.ram_length=256k
 viyalab_mizu.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9517,10 +9517,10 @@ waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc
 waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 waveshare_rp2040_zero.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 waveshare_rp2040_zero.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-waveshare_rp2040_zero.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_zero.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_zero.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_zero.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_zero.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_zero.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9727,10 +9727,10 @@ waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-
 waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 waveshare_rp2040_one.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 waveshare_rp2040_one.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-waveshare_rp2040_one.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_one.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_one.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_one.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_one.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_one.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -9937,10 +9937,10 @@ waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-n
 waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_plus_4mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_plus_4mb.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_plus_4mb.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_plus_4mb.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10219,10 +10219,10 @@ waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-
 waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_plus_16mb.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_plus_16mb.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_plus_16mb.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_plus_16mb.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10417,10 +10417,10 @@ waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-n
 waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_lcd_0_96.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10615,10 +10615,10 @@ waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-n
 waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+waveshare_rp2040_lcd_1_28.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.default=Default (UF2)
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.default.build.ram_length=256k
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -10813,10 +10813,10 @@ wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc
 wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 wiznet_5100s_evb_pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 wiznet_5100s_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-wiznet_5100s_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_5100s_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 wiznet_5100s_evb_pico.menu.uploadmethod.default=Default (UF2)
 wiznet_5100s_evb_pico.menu.uploadmethod.default.build.ram_length=256k
 wiznet_5100s_evb_pico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -11011,10 +11011,10 @@ wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-no
 wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_wizfi360_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 wiznet_wizfi360_evb_pico.menu.uploadmethod.default=Default (UF2)
 wiznet_wizfi360_evb_pico.menu.uploadmethod.default.build.ram_length=256k
 wiznet_wizfi360_evb_pico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -11209,10 +11209,10 @@ wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-
 wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 wiznet_5500_evb_pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 wiznet_5500_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-wiznet_5500_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+wiznet_5500_evb_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 wiznet_5500_evb_pico.menu.uploadmethod.default=Default (UF2)
 wiznet_5500_evb_pico.menu.uploadmethod.default.build.ram_length=256k
 wiznet_5500_evb_pico.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
@@ -11419,10 +11419,10 @@ generic.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
 generic.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
 generic.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
 generic.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
-generic.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+generic.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 generic.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
 generic.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
-generic.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1
+generic.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum=Generic SPI /2
 generic.menu.boot2.boot2_generic_03h_2_padded_checksum.build.boot2=boot2_generic_03h_2_padded_checksum
 generic.menu.boot2.boot2_generic_03h_4_padded_checksum=Generic SPI /4

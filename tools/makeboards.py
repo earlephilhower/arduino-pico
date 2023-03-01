@@ -101,28 +101,12 @@ def BuildIPBTStack(name):
     print("%s.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6" % (name))
     print('%s.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a' % (name))
     print('%s.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1' % (name))
-# Only about 10K of code and 8K of RAM cost for including both, always, vs. adding 4 more options, so
-# just simplify things by not allowing all combinations
-#    print("%s.menu.ipbtstack.ipv4btc=IPv4 + Bluetooth Classic" % (name))
-#    print('%s.menu.ipbtstack.ipv4btc.build.libpicow=libpicow-noipv6-btc-noble.a' % (name))
-#    print('%s.menu.ipbtstack.ipv4btc.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1' % (name))
-#    print("%s.menu.ipbtstack.ipv4ipv6btc=IPv4 + IPv6 + Bluetooth Classic" % (name))
-#    print('%s.menu.ipbtstack.ipv4ipv6btc.build.libpicow=libpicow-ipv6-btc-noble.a' % (name))
-#    print('%s.menu.ipbtstack.ipv4ipv6btc.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1' % (name))
-#    print("%s.menu.ipbtstack.ipv4ble=IPv4 + Bluetooth LE" % (name))
-#    print('%s.menu.ipbtstack.ipv4ble.build.libpicow=libpicow-noipv6-nobtc-ble.a' % (name))
-#    print('%s.menu.ipbtstack.ipv4ble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_LE=1' % (name))
-#    print("%s.menu.ipbtstack.ipv4ipv6ble=IPv4 + IPv6 + Bluetooth LE" % (name))
-#    print('%s.menu.ipbtstack.ipv4ipv6ble.build.libpicow=libpicow-ipv6-nobtc-ble.a' % (name))
-#    print('%s.menu.ipbtstack.ipv4ipv6ble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_LE=1' % (name))
-#    print("%s.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth Classic + LE" % (name))
     print("%s.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth" % (name))
     print('%s.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a' % (name))
-    print('%s.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1' % (name))
-#    print("%s.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth Classic + LE" % (name))
+    print('%s.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1' % (name))
     print("%s.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth" % (name))
     print('%s.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a' % (name))
-    print('%s.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_LE=1' % (name))
+    print('%s.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1' % (name))
 
 def BuildUploadMethodMenu(name):
     for a, b, c, d, e, f in [ ["default", "Default (UF2)", 256, "picoprobe.tcl", "uf2conv", "uf2conv-network"],
