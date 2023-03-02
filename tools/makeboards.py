@@ -75,6 +75,13 @@ def BuildBoot(name):
         print("%s.menu.boot2.%s=%s" % (name, l[1], l[0]))
         print("%s.menu.boot2.%s.build.boot2=%s" % (name, l[1], l[1]))
 
+# Abbreviated Boot Stage 2 menu for some W25Q-equipped Adafruit boards.
+# In extreme overclock situations, these may require QSPI /4 to work.
+def BuildBootW25Q(name):
+    for l in [ ("W25Q080 QSPI /2", "boot2_w25q080_2_padded_checksum"), ("W25Q080 QSPI /4", "boot2_w25q080_4_padded_checksum")]:
+        print("%s.menu.boot2.%s=%s" % (name, l[1], l[0]))
+        print("%s.menu.boot2.%s.build.boot2=%s" % (name, l[1], l[1]))
+
 def BuildUSBStack(name):
     print("%s.menu.usbstack.picosdk=Pico SDK" % (name))
     print('%s.menu.usbstack.picosdk.build.usbstack_flags=' % (name))
@@ -223,6 +230,8 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
     BuildIPBTStack(name)
     if name == "generic":
         BuildBoot(name)
+    elif name.startswith("adafruit") and "w25q080" in boot2:
+        BuildBootW25Q(name)
     BuildUploadMethodMenu(name)
     MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra)
     global pkgjson
@@ -329,6 +338,7 @@ MakeBoard("0xcb_helios", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS
 # Adafruit
 MakeBoard("adafruit_feather", "Adafruit", "Feather RP2040", "0x239a", "0x80f1", 250, "ADAFRUIT_FEATHER_RP2040", 8, "boot2_w25x10cl_4_padded_checksum")
 MakeBoard("adafruit_feather_scorpio", "Adafruit", "Feather RP2040 SCORPIO", "0x239a", "0x8121", 250, "ADAFRUIT_FEATHER_RP2040_SCORPIO", 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_dvi", "Adafruit", "Feather RP2040 DVI", "0x239a", "0x8127", 250, "ADAFRUIT_FEATHER_RP2040_DVI", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_itsybitsy", "Adafruit", "ItsyBitsy RP2040", "0x239a", "0x80fd", 250, "ADAFRUIT_ITSYBITSY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_qtpy", "Adafruit", "QT Py RP2040", "0x239a", "0x80f7", 250, "ADAFRUIT_QTPY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_stemmafriend", "Adafruit", "STEMMA Friend RP2040", "0x239a", "0x80e3", 250, "ADAFRUIT_STEMMAFRIEND_RP2040", 8, "boot2_w25q080_2_padded_checksum")
