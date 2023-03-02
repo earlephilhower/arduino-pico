@@ -181,7 +181,6 @@ public:
                 }
                 break;
             case HID_SUBEVENT_CAN_SEND_NOW:
-                Serial.printf("onCanSendNow: type=%02x, channel=%04x, packet=%p, size=%d\n", type, channel, packet, size);
                 uint8_t report[2 + _sendReportLen];
                 report[0] = 0xa1;
                 report[1] = _sendReportID;
