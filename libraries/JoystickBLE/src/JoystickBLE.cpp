@@ -79,7 +79,7 @@ int JoystickBLE_::map8or10bit(int const value) {
 #define REPORT_ID 0x01
 static const uint8_t desc_joystick[] = {TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(REPORT_ID))};
 void JoystickBLE_::begin(void) {
-    PicoBluetoothBLEHID.startHID("PicoW BLE Joystick", "PicoW BLE Joystick", 0x03c3, desc_joystick, sizeof(desc_joystick));
+    PicoBluetoothBLEHID.startHID("PicoW BLE Joystick", "PicoW BLE Joystick", 0x03c4, desc_joystick, sizeof(desc_joystick));
 }
 
 void JoystickBLE_::end(void) {
