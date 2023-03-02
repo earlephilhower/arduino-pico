@@ -46,6 +46,7 @@ public:
     void press(uint8_t b = MOUSE_LEFT);   // press LEFT by default
     void release(uint8_t b = MOUSE_LEFT); // release LEFT by default
     bool isPressed(uint8_t b = MOUSE_LEFT); // check LEFT by default
+    void setBattery(int lvl);
 };
 extern MouseBLE_ MouseBLE;
 

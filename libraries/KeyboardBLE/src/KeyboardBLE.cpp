@@ -45,6 +45,10 @@ void KeyboardBLE_::end(void) {
     PicoBluetoothBLEHID.end();
 }
 
+void KeyboardBLE_::setBattery(int lvl) {
+    PicoBluetoothBLEHID.setBattery(lvl);
+}
+
 void KeyboardBLE_::sendReport(KeyReport* keys) {
     hid_keyboard_report_t data;
     data.modifier = keys->modifiers;

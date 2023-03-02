@@ -20,9 +20,8 @@ connected	KEYWORD2
 send	KEYWORD2
 lockBluetooth	KEYWORD2
 unlockBluetooth	KEYWORD2
-getCID	KEYWORD2
+setBattery	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
-

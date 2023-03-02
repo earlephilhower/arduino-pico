@@ -219,6 +219,14 @@ public:
         return connected();
     }
 
+    bool setBattery(int level) {
+        if (!_running || (level < 0) || (level > 100)) {
+            return false;
+        }
+        battery_service_server_set_battery_value(level);
+        return true;
+    }
+
     static void lockBluetooth() {
         async_context_acquire_lock_blocking(cyw43_arch_async_context());
     }

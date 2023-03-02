@@ -27,6 +27,7 @@ sliderRight	KEYWORD2
 hat			KEYWORD2
 useManualSend KEYWORD2
 send_now	KEYWORD2
+setBattery	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

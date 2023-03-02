@@ -15,6 +15,7 @@ void loop() {
   if (BOOTSEL) {
     Serial.println("Typing password for you...shhhh....");
     KeyboardBLE.print("ThisPasswordIsWeakLikeABaby");
+    KeyboardBLE.setBattery(random(0, 101)); // Set between 0...100%
     while (BOOTSEL);
   }
 }
