@@ -1,5 +1,5 @@
 /*
-    PicoBluetoothHID.h - Simple wrapper for BT-HID objects like
+    PicoBluetoothBLEHID.h - Simple wrapper for BT-HID objects like
     keyboards, mice, gamepads.
     Copyright (c) 2023 Earle F. Philhower, III.  All rights reserved.
 
