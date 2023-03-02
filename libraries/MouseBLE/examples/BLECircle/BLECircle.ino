@@ -26,6 +26,7 @@ void loop() {
       oy = ay;
       delay(10);
     }
+    MouseBLE.setBattery(random(0, 101)); // Set between 0...100%
     while (BOOTSEL) {
       delay(1);
     }

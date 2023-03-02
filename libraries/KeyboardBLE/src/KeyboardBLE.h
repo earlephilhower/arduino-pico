@@ -135,6 +135,7 @@ public:
     size_t press(uint8_t k);
     size_t release(uint8_t k);
     void releaseAll(void);
+    void setBattery(int lvl);
 };
 extern KeyboardBLE_ KeyboardBLE;
 

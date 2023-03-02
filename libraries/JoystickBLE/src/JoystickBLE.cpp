@@ -86,6 +86,10 @@ void JoystickBLE_::end(void) {
     PicoBluetoothBLEHID.end();
 }
 
+void JoystickBLE_::setBattery(int lvl) {
+    PicoBluetoothBLEHID.setBattery(lvl);
+}
+
 void JoystickBLE_::button(uint8_t button, bool val) {
     //I've no idea why, but without a second dword, it is not possible.
     //maybe something with the alignment when using bit set/clear?!?

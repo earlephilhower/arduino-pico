@@ -17,8 +17,8 @@ write	KEYWORD2
 press	KEYWORD2
 release	KEYWORD2
 releaseAll	KEYWORD2
+setBattery	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
-

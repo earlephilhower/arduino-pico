@@ -64,5 +64,7 @@ public:
     // and are mapped internally to int8_t
     //if use8bit(true) is called, -127 to 127 values are used.
     void use8bit(bool mode);
+
+    void setBattery(int lvl);
 };
 extern JoystickBLE_ JoystickBLE;

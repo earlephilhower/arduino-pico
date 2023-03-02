@@ -54,6 +54,10 @@ void MouseBLE_::end(void) {
     PicoBluetoothBLEHID.end();
 }
 
+void MouseBLE_::setBattery(int lvl) {
+    PicoBluetoothBLEHID.setBattery(lvl);
+}
+
 void MouseBLE_::click(uint8_t b) {
     _buttons = b;
     move(0, 0, 0);
