@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-KeyboardBT	KEYWORD1
+KeyboardBLE	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

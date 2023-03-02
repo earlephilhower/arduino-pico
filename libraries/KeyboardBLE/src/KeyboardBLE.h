@@ -1,5 +1,5 @@
 /*
-    KeyboardBT.h
+    KeyboardBLE.h
 
     Modified by Earle F. Philhower, III <earlephilhower@yahoo.com>
     Main Arduino Library Copyright (c) 2015, Arduino LLC
@@ -20,8 +20,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef KEYBOARDBT_h
-#define KEYBOARDBT_h
+#ifndef KEYBOARDBLE_h
+#define KEYBOARDBLE_h
 
 #include <Arduino.h>
 
@@ -121,13 +121,13 @@ typedef struct {
     uint8_t keys[6];
 } KeyReport;
 
-class KeyboardBT_ : public Print {
+class KeyboardBLE_ : public Print {
 private:
     KeyReport _keyReport;
     const uint8_t *_asciimap;
     void sendReport(KeyReport* keys);
 public:
-    KeyboardBT_(void);
+    KeyboardBLE_(void);
     void begin(const uint8_t *layout = KeyboardLayout_en_US);
     void end(void);
     size_t write(uint8_t k);
@@ -136,6 +136,6 @@ public:
     size_t release(uint8_t k);
     void releaseAll(void);
 };
-extern KeyboardBT_ KeyboardBT;
+extern KeyboardBLE_ KeyboardBLE;
 
 #endif

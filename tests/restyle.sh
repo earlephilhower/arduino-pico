@@ -10,7 +10,8 @@ for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleF
            ./libraries/Updater ./libraries/HTTPClient ./libraries/HTTPUpdate \
            ./libraries/WebServer ./libraries/HTTPUpdateServer ./libraries/DNSServer \
            ./libraries/PicoBluetoothHID ./libraries/JoystickBT ./libraries/KeyboardBT \
-           ./libraries/MouseBT ./libraries/SerialBT ; do
+           ./libraries/MouseBT ./libraries/SerialBT ./libraries/PicoBluetoothBLEHID \
+           ./libraries/JoystickBLE ./libraries/KeyboardBLE ./libraries/MouseBLE ; do
     find $dir -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" \) -a  \! -path '*api*' -exec astyle --suffix=none --options=./tests/astyle_core.conf \{\} \;
     find $dir -type f -name "*.ino" -exec astyle --suffix=none --options=./tests/astyle_examples.conf \{\} \;
 done
