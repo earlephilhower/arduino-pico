@@ -29,8 +29,7 @@
 //  Keyboard
 
 KeyboardBT_::KeyboardBT_(void) {
-    bzero(&_keyReport, sizeof(_keyReport));
-    _asciimap = KeyboardLayout_en_US;
+    // Base class clears the members we care about
 }
 
 #define REPORT_ID 0x01

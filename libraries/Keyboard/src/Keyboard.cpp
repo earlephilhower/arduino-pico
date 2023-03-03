@@ -34,8 +34,7 @@ void __USBInstallKeyboard() { /* noop */ }
 //  Keyboard
 
 Keyboard_::Keyboard_(void) {
-    bzero(&_keyReport, sizeof(_keyReport));
-    _asciimap = KeyboardLayout_en_US;
+    // Base class clears the members we care about
 }
 
 void Keyboard_::sendReport(KeyReport* keys) {
