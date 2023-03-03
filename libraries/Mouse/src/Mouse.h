@@ -1,5 +1,5 @@
 /*
-    MouseBLE.cpp
+    Mouse.h
 
     Copyright (c) 2015, Arduino LLC
     Original code (pre-library): Copyright (c) 2011, Peter Barrett
@@ -19,35 +19,16 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "MouseBLE.h"
-#include <PicoBluetoothBLEHID.h>
+#ifndef MOUSE_h
+#define MOUSE_h
 
-MouseBLE_::MouseBLE_(void) {
-    /* noop */
-}
+#include <HID_Mouse.h>
 
-#define REPORT_ID 0x01
-const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
-void MouseBLE_::begin(void) {
-    PicoBluetoothBLEHID.startHID("PicoW BLE Mouse", "PicoW BLE Mouse", 0x03c2, desc_mouse, sizeof(desc_mouse));
-}
+class Mouse_ : public HID_Mouse {
+public:
+    Mouse_(void);
+    virtual void move(int x, int y, signed char wheel = 0) override;
+};
+extern Mouse_ Mouse;
 
-void MouseBLE_::end(void) {
-    PicoBluetoothBLEHID.end();
-}
-
-void MouseBLE_::setBattery(int lvl) {
-    PicoBluetoothBLEHID.setBattery(lvl);
-}
-
-void MouseBLE_::move(int x, int y, signed char wheel) {
-    hid_mouse_report_t data;
-    data.buttons = _buttons;
-    data.x = limit_xy(x);
-    data.y = limit_xy(y);
-    data.wheel = wheel;
-    data.pan = 0;
-    PicoBluetoothBLEHID.send(&data, sizeof(data));
-}
-
-MouseBLE_ MouseBLE;
+#endif

@@ -1,5 +1,5 @@
 /*
-    KeyboardBT.cpp
+    Keyboard.cpp
 
     Modified by Earle F. Philhower, III <earlephilhower@yahoo.com>
     Main Arduino Library Copyright (c) 2015, Arduino LLC
@@ -20,37 +20,31 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "KeyboardBT.h"
-#include "KeyboardLayout.h"
-#include <PicoBluetoothHID.h>
+#include "Keyboard.h"
+#include <RP2040USB.h>
+
+#include "tusb.h"
+#include "class/hid/hid_device.h"
+
+// Weak function override to add our descriptor to the TinyUSB list
+void __USBInstallKeyboard() { /* noop */ }
 
 //================================================================================
 //================================================================================
 //  Keyboard
 
-KeyboardBT_::KeyboardBT_(void) {
+Keyboard_::Keyboard_(void) {
     bzero(&_keyReport, sizeof(_keyReport));
     _asciimap = KeyboardLayout_en_US;
 }
 
-#define REPORT_ID 0x01
-
-static const uint8_t desc_keyboard[] = {TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID))};
-void KeyboardBT_::begin(const uint8_t *layout) {
-    _asciimap = layout;
-    PicoBluetoothHID.startHID("PicoW Keyboard 00:00:00:00:00:00", "PicoW HID Keyboard", 0x2540, 33, desc_keyboard, sizeof(desc_keyboard));
+void Keyboard_::sendReport(KeyReport* keys) {
+    CoreMutex m(&__usb_mutex);
+    tud_task();
+    if (tud_hid_ready()) {
+        tud_hid_keyboard_report(__USBGetKeyboardReportID(), keys->modifiers, keys->keys);
+    }
+    tud_task();
 }
 
-void KeyboardBT_::end(void) {
-    PicoBluetoothHID.end();
-}
-
-void KeyboardBT_::sendReport(KeyReport* keys) {
-    hid_keyboard_report_t data;
-    data.modifier = keys->modifiers;
-    data.reserved = 0;
-    memcpy(data.keycode, keys->keys, sizeof(data.keycode));
-    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
-}
-
-KeyboardBT_ KeyboardBT;
+Keyboard_ Keyboard;

@@ -1,8 +1,7 @@
 /*
-    JoystickBT.h
+    Joystick.h
 
     Copyright (c) 2022, Benjamin Aigner <beni@asterics-foundation.org>
-    Modified for BT 2023 by Earle F. Philhower, III <earlephilhower@yahoo.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -19,17 +18,18 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#pragma once
+#ifndef _JOYSTICK_h
+#define _JOYSTICK_h
 
 #include <HID_Joystick.h>
 #include "class/hid/hid.h"
 
 //======================================================================
-class JoystickBT_ : public HID_Joystick {
+class Joystick_ : public HID_Joystick {
 public:
-    JoystickBT_(void);
-    void begin(void);
-    void end(void);
+    Joystick_(void);
     virtual void send_now(void) override;
 };
-extern JoystickBT_ JoystickBT;
+extern Joystick_ Joystick;
+
+#endif /* _JOYSTICK_h */

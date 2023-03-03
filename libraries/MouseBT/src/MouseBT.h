@@ -22,30 +22,14 @@
 #ifndef MOUSEBT_h
 #define MOUSEBT_h
 
-#include <Arduino.h>
+#include <HID_Mouse.h>
 
-//================================================================================
-//================================================================================
-//  Mouse
-
-#define MOUSE_LEFT 1
-#define MOUSE_RIGHT 2
-#define MOUSE_MIDDLE 4
-#define MOUSE_ALL (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE)
-
-class MouseBT_ {
-private:
-    uint8_t _buttons;
-    void buttons(uint8_t b);
+class MouseBT_ : public HID_Mouse {
 public:
     MouseBT_(void);
     void begin(void);
     void end(void);
-    void click(uint8_t b = MOUSE_LEFT);
-    void move(int x, int y, signed char wheel = 0);
-    void press(uint8_t b = MOUSE_LEFT);   // press LEFT by default
-    void release(uint8_t b = MOUSE_LEFT); // release LEFT by default
-    bool isPressed(uint8_t b = MOUSE_LEFT); // check LEFT by default
+    virtual void move(int x, int y, signed char wheel = 0) override;
 };
 extern MouseBT_ MouseBT;
 
