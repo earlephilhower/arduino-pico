@@ -1,7 +1,8 @@
 /*
-    MouseBT.cpp
+    Keyboard.h
 
-    Copyright (c) 2015, Arduino LLC
+    Modified by Earle F. Philhower, III <earlephilhower@yahoo.com>
+    Main Arduino Library Copyright (c) 2015, Arduino LLC
     Original code (pre-library): Copyright (c) 2011, Peter Barrett
 
     This library is free software; you can redistribute it and/or
@@ -19,31 +20,17 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "MouseBT.h"
-#include <PicoBluetoothHID.h>
+#ifndef KEYBOARD_h
+#define KEYBOARD_h
 
-MouseBT_::MouseBT_(void) {
-    /* noop */
-}
+#include <HID_Keyboard.h>
 
-#define REPORT_ID 0x01
-const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
-void MouseBT_::begin(void) {
-    PicoBluetoothHID.startHID("PicoW Mouse 00:00:00:00:00:00", "PicoW HID Mouse", 0x2580, 33, desc_mouse, sizeof(desc_mouse));
-}
+class Keyboard_ : public HID_Keyboard {
+protected:
+    virtual void sendReport(KeyReport* keys) override;
+public:
+    Keyboard_(void);
+};
+extern Keyboard_ Keyboard;
 
-void MouseBT_::end(void) {
-    PicoBluetoothHID.end();
-}
-
-void MouseBT_::move(int x, int y, signed char wheel) {
-    hid_mouse_report_t data;
-    data.buttons = _buttons;
-    data.x = limit_xy(x);
-    data.y = limit_xy(y);
-    data.wheel = wheel;
-    data.pan = 0;
-    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
-}
-
-MouseBT_ MouseBT;
+#endif

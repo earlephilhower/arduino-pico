@@ -1,5 +1,5 @@
 /*
-    KeyboardBLE.h
+    Keyboard.cpp
 
     Modified by Earle F. Philhower, III <earlephilhower@yahoo.com>
     Main Arduino Library Copyright (c) 2015, Arduino LLC
@@ -20,20 +20,30 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef KEYBOARDBLE_h
-#define KEYBOARDBLE_h
+#include "Keyboard.h"
+#include <RP2040USB.h>
 
-#include <HID_Keyboard.h>
+#include "tusb.h"
+#include "class/hid/hid_device.h"
 
-class KeyboardBLE_ : public HID_Keyboard {
-private:
-    virtual void sendReport(KeyReport* keys) override;
-public:
-    KeyboardBLE_(void);
-    void begin(const uint8_t *layout = KeyboardLayout_en_US);
-    void end(void);
-    void setBattery(int lvl);
-};
-extern KeyboardBLE_ KeyboardBLE;
+// Weak function override to add our descriptor to the TinyUSB list
+void __USBInstallKeyboard() { /* noop */ }
 
-#endif
+//================================================================================
+//================================================================================
+//  Keyboard
+
+Keyboard_::Keyboard_(void) {
+    // Base class clears the members we care about
+}
+
+void Keyboard_::sendReport(KeyReport* keys) {
+    CoreMutex m(&__usb_mutex);
+    tud_task();
+    if (tud_hid_ready()) {
+        tud_hid_keyboard_report(__USBGetKeyboardReportID(), keys->modifiers, keys->keys);
+    }
+    tud_task();
+}
+
+Keyboard_ Keyboard;

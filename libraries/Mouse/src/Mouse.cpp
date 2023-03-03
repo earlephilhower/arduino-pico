@@ -1,5 +1,5 @@
 /*
-    MouseBLE.cpp
+    Mouse.cpp
 
     Copyright (c) 2015, Arduino LLC
     Original code (pre-library): Copyright (c) 2011, Peter Barrett
@@ -19,35 +19,35 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "MouseBLE.h"
-#include <PicoBluetoothBLEHID.h>
+#include "Mouse.h"
+#include <RP2040USB.h>
 
-MouseBLE_::MouseBLE_(void) {
+#include "tusb.h"
+#include "class/hid/hid_device.h"
+
+// Weak function override to add our descriptor to the TinyUSB list
+void __USBInstallMouse() { /* noop */ }
+
+//================================================================================
+//================================================================================
+//	Mouse
+
+/*  This function is for limiting the input value for x and y
+    axis to -127 <= x/y <= 127 since this is the allowed value
+    range for a USB HID device.
+*/
+
+Mouse_::Mouse_(void) {
     /* noop */
 }
 
-#define REPORT_ID 0x01
-const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
-void MouseBLE_::begin(void) {
-    PicoBluetoothBLEHID.startHID("PicoW BLE Mouse", "PicoW BLE Mouse", 0x03c2, desc_mouse, sizeof(desc_mouse));
+void Mouse_::move(int x, int y, signed char wheel) {
+    CoreMutex m(&__usb_mutex);
+    tud_task();
+    if (tud_hid_ready()) {
+        tud_hid_mouse_report(__USBGetMouseReportID(), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
+    }
+    tud_task();
 }
 
-void MouseBLE_::end(void) {
-    PicoBluetoothBLEHID.end();
-}
-
-void MouseBLE_::setBattery(int lvl) {
-    PicoBluetoothBLEHID.setBattery(lvl);
-}
-
-void MouseBLE_::move(int x, int y, signed char wheel) {
-    hid_mouse_report_t data;
-    data.buttons = _buttons;
-    data.x = limit_xy(x);
-    data.y = limit_xy(y);
-    data.wheel = wheel;
-    data.pan = 0;
-    PicoBluetoothBLEHID.send(&data, sizeof(data));
-}
-
-MouseBLE_ MouseBLE;
+Mouse_ Mouse;

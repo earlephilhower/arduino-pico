@@ -2,8 +2,6 @@
     Joystick.cpp
 
     Copyright (c) 2022, Benjamin Aigner <beni@asterics-foundation.org>
-    Modified for BT 2023 by Earle F. Philhower, III <earlephilhower@yahoo.com>
-
     Implementation loosely based on:
     Mouse library from https://github.com/earlephilhower/arduino-pico
     Joystick functions from Teensyduino https://github.com/PaulStoffregen
@@ -23,31 +21,29 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "JoystickBT.h"
-#include <Arduino.h>
-#include <PicoBluetoothHID.h>
+#include "Joystick.h"
+#include "Arduino.h"
+#include <RP2040USB.h>
 
-//================================================================================
-//================================================================================
-//	Joystick/Gamepad
+#include "tusb.h"
+#include "class/hid/hid_device.h"
 
-JoystickBT_::JoystickBT_(void) {
-    // HID_Joystick sets up all the member vars
+// Weak function override to add our descriptor to the TinyUSB list
+void __USBInstallJoystick() { /* noop */ }
+
+Joystick_::Joystick_(void) {
+    // Everything set up in HID_Joystick constructor
 }
 
-#define REPORT_ID 0x01
-static const uint8_t desc_joystick[] = {TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(REPORT_ID))};
-void JoystickBT_::begin(void) {
-    PicoBluetoothHID.startHID("PicoW Joystick 00:00:00:00:00:00", "PicoW HID Joystick", 0x2508, 33, desc_joystick, sizeof(desc_joystick));
-}
-
-void JoystickBT_::end(void) {
-    PicoBluetoothHID.end();
-}
 
 //immediately send an HID report
-void JoystickBT_::send_now(void) {
-    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+void Joystick_::send_now(void) {
+    CoreMutex m(&__usb_mutex);
+    tud_task();
+    if (tud_hid_ready()) {
+        tud_hid_n_report(0, __USBGetJoystickReportID(), &data, sizeof(data));
+    }
+    tud_task();
 }
 
-JoystickBT_ JoystickBT;
+Joystick_ Joystick;
