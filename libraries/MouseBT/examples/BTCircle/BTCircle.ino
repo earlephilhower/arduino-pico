@@ -6,7 +6,7 @@
 
 void setup() {
   Serial.begin(115200);
-  MouseBT.begin();
+  MouseBT.begin("BarrelMouse");
   delay(5000);
   Serial.printf("Press BOOTSEL to move the mouse in a circle\n");
 }

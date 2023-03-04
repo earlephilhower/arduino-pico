@@ -31,22 +31,29 @@
 //================================================================================
 //	Joystick/Gamepad
 
-JoystickBT_::JoystickBT_(void) {
+JoystickBT_::JoystickBT_() {
     // HID_Joystick sets up all the member vars
 }
 
 #define REPORT_ID 0x01
 static const uint8_t desc_joystick[] = {TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(REPORT_ID))};
-void JoystickBT_::begin(void) {
-    PicoBluetoothHID.startHID("PicoW Joystick 00:00:00:00:00:00", "PicoW HID Joystick", 0x2508, 33, desc_joystick, sizeof(desc_joystick));
+
+void JoystickBT_::begin(const char *localName, const char *hidName) {
+    if (!localName) {
+        localName = "PicoW BT Joystick";
+    }
+    if (!hidName) {
+        hidName = localName;
+    }
+    PicoBluetoothHID.startHID(localName, hidName, 0x2508, 33, desc_joystick, sizeof(desc_joystick));
 }
 
-void JoystickBT_::end(void) {
+void JoystickBT_::end() {
     PicoBluetoothHID.end();
 }
 
 //immediately send an HID report
-void JoystickBT_::send_now(void) {
+void JoystickBT_::send_now() {
     PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
 }
 
