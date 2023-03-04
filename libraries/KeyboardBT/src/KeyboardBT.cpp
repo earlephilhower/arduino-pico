@@ -35,9 +35,16 @@ KeyboardBT_::KeyboardBT_(void) {
 #define REPORT_ID 0x01
 
 static const uint8_t desc_keyboard[] = {TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID))};
-void KeyboardBT_::begin(const uint8_t *layout) {
+
+void KeyboardBT_::begin(const char *localName, const char *hidName, const uint8_t *layout) {
+    if (!localName) {
+        localName = "PicoW BT Keyboard";
+    }
+    if (!hidName) {
+        hidName = localName;
+    }
     _asciimap = layout;
-    PicoBluetoothHID.startHID("PicoW Keyboard 00:00:00:00:00:00", "PicoW HID Keyboard", 0x2540, 33, desc_keyboard, sizeof(desc_keyboard));
+    PicoBluetoothHID.startHID(localName, hidName, 0x2540, 33, desc_keyboard, sizeof(desc_keyboard));
 }
 
 void KeyboardBT_::end(void) {

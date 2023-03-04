@@ -5,7 +5,7 @@
 
 void setup() {
   Serial.begin(115200);
-  MouseBLE.begin();
+  MouseBLE.begin("CircleBLE Mouse");
   delay(5000);
   Serial.printf("Press BOOTSEL to move the mouse in a circle\n");
 }

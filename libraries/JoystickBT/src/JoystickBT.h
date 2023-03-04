@@ -27,9 +27,9 @@
 //======================================================================
 class JoystickBT_ : public HID_Joystick {
 public:
-    JoystickBT_(void);
-    void begin(void);
-    void end(void);
-    virtual void send_now(void) override;
+    JoystickBT_();
+    void begin(const char *localName = nullptr, const char *hidName = nullptr);
+    void end();
+    virtual void send_now() override;
 };
 extern JoystickBT_ JoystickBT;
