@@ -10,7 +10,7 @@
 void setup() {
   Serial.begin(115200);
   Serial.println("Use BOOTSEL to start the Joystick demo.");
-  JoystickBT.begin();
+  JoystickBT.begin("PicoJoy Demo");
 }
 
 void loop() {

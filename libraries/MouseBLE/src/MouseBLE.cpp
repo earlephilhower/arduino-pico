@@ -28,8 +28,14 @@ MouseBLE_::MouseBLE_(void) {
 
 #define REPORT_ID 0x01
 const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
-void MouseBLE_::begin(void) {
-    PicoBluetoothBLEHID.startHID("PicoW BLE Mouse", "PicoW BLE Mouse", 0x03c2, desc_mouse, sizeof(desc_mouse));
+void MouseBLE_::begin(const char *localName, const char *hidName) {
+    if (!localName) {
+        localName = "PicoW BLE Mouse";
+    }
+    if (!hidName) {
+        hidName = localName;
+    }
+    PicoBluetoothBLEHID.startHID(localName, hidName, 0x03c2, desc_mouse, sizeof(desc_mouse));
 }
 
 void MouseBLE_::end(void) {

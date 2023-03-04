@@ -27,7 +27,7 @@
 class MouseBT_ : public HID_Mouse {
 public:
     MouseBT_(void);
-    void begin(void);
+    void begin(const char *localName = nullptr, const char *hidName = nullptr);
     void end(void);
     virtual void move(int x, int y, signed char wheel = 0) override;
 };
