@@ -44,6 +44,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * nullbits Bit-C PRO
+* Neko Systems BL2040 Mini
 * Pimoroni PGA2040
 * Seeed XIAO RP2040
 * Solder Party RP2040 Stamp
