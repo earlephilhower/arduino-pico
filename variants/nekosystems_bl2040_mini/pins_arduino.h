@@ -20,7 +20,7 @@
 
 // Current Sensing Pins
 #define PIN_IOUT_A     (26u)    // Analog Input
-#define PIN_IOUT_A     (27u)    // Analog Input
+#define PIN_IOUT_B     (27u)    // Analog Input
 
 // Power Supply Feedback Pins
 #define PIN_VBUS_DET   (7u)     // Digital Input
