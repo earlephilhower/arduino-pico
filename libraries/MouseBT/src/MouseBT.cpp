@@ -22,45 +22,25 @@
 #include "MouseBT.h"
 #include <PicoBluetoothHID.h>
 
-//================================================================================
-//================================================================================
-//	Mouse
-
-/*  This function is for limiting the input value for x and y
-    axis to -127 <= x/y <= 127 since this is the allowed value
-    range for a USB HID device.
-*/
-static signed char limit_xy(int const xy) {
-    if (xy < -127) {
-        return -127;
-    } else if (xy >  127) {
-        return 127;
-    } else {
-        return xy;
-    }
-}
-
-MouseBT_::MouseBT_(void) : _buttons(0) {
+MouseBT_::MouseBT_(void) {
     /* noop */
 }
 
 #define REPORT_ID 0x01
 const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
-void MouseBT_::begin(void) {
-    _PicoBluetoothHID.startHID("PicoW Mouse 00:00:00:00:00:00", "PicoW HID Mouse", 0x2580, 33, desc_mouse, sizeof(desc_mouse));
+
+void MouseBT_::begin(const char *localName, const char *hidName) {
+    if (!localName) {
+        localName = "PicoW Mouse 00:00:00:00:00:00";
+    }
+    if (!hidName) {
+        hidName = localName;
+    }
+    PicoBluetoothHID.startHID(localName, hidName, 0x2580, 33, desc_mouse, sizeof(desc_mouse));
 }
 
 void MouseBT_::end(void) {
-    _PicoBluetoothHID.end();
-}
-
-void MouseBT_::click(uint8_t b) {
-    _buttons = b;
-    move(0, 0, 0);
-    delay(10);
-    _buttons = 0;
-    move(0, 0, 0);
-    delay(10);
+    PicoBluetoothHID.end();
 }
 
 void MouseBT_::move(int x, int y, signed char wheel) {
@@ -70,30 +50,7 @@ void MouseBT_::move(int x, int y, signed char wheel) {
     data.y = limit_xy(y);
     data.wheel = wheel;
     data.pan = 0;
-    _PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
-}
-
-void MouseBT_::buttons(uint8_t b) {
-    if (b != _buttons) {
-        _buttons = b;
-        move(0, 0, 0);
-    }
-}
-
-void MouseBT_::press(uint8_t b) {
-    buttons(_buttons | b);
-}
-
-void MouseBT_::release(uint8_t b) {
-    buttons(_buttons & ~b);
-}
-
-bool MouseBT_::isPressed(uint8_t b) {
-    if ((b & _buttons) > 0) {
-        return true;
-    } else {
-        return false;
-    }
+    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
 }
 
 MouseBT_ MouseBT;

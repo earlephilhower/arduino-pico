@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PicoBluetoothHID	KEYWORD1
+PicoBluetoothBLEHID	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setOpenedCB	KEYWORD2
+setClosedCB	KEYWORD2
+setCanSendNowCB	KEYWORD2
+startHID	KEYWORD2
+connected	KEYWORD2
+send	KEYWORD2
+lockBluetooth	KEYWORD2
+unlockBluetooth	KEYWORD2
+getCID	KEYWORD2
+setBattery	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

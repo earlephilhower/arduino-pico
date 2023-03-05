@@ -18,6 +18,9 @@ Included Bluetooth Libraries
 You may use the ``KeyboardBT``, ``MouseBT``, or ``JoystickBT`` to emulate a
 Bluetooth Classic HID device using the same API as their USB versions.
 
+You may use the ``KeyboardBLE``, ``MouseBLE``, or ``JoystickBLE`` to emulate a
+Bluetooth Low Energy (BLE) HID device using the same API as their USB versions.
+
 The ``SerialBT`` library implements a very simple SPP (Serial Port Profile)
 Serial-compatible port.
 
@@ -31,6 +34,10 @@ handler will do it for you.
 
 There is no need to call ``cyw43_arch_init`` in your code, either, as that
 is part of the PicoW variant booting process.
+
+For many BTStack examples, you simply need call the included
+``btstack_main()`` and make sure that ``hci_power_control(HCI_POWER_ON);`` is
+called afterwards to start processing (in the background).
 
 You will also need to acquire the BT ``async_context`` system lock before
 calling any BTStack APIs.  See the ``libraries/PicoBluetoothHID`` helper

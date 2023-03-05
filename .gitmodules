@@ -3,7 +3,7 @@
 	url = https://github.com/earlephilhower/ArduinoCore-API.git
 [submodule "pico-sdk"]
 	path = pico-sdk
-	url = https://github.com/earlephilhower/pico-sdk.git
+	url = https://github.com/raspberrypi/pico-sdk.git
 [submodule "system/pyserial"]
 	path = tools/pyserial
 	url = https://github.com/pyserial/pyserial.git
@@ -14,14 +14,14 @@
 	path = libraries/ESP8266SdFat
 	url = https://github.com/earlephilhower/ESP8266SdFat.git
 [submodule "libraries/Keyboard"]
-	path = libraries/Keyboard
-	url = https://github.com/earlephilhower/Keyboard
+	path = libraries/HID_Keyboard
+	url = https://github.com/earlephilhower/Keyboard.git
 [submodule "libraries/Mouse"]
-	path = libraries/Mouse
-	url = https://github.com/earlephilhower/Mouse
+	path = libraries/HID_Mouse
+	url = https://github.com/earlephilhower/Mouse.git
 [submodule "libraries/Joystick"]
-	path = libraries/Joystick
-	url = https://github.com/benjaminaigner/Joystick
+	path = libraries/HID_Joystick
+	url = https://github.com/earlephilhower/Joystick.git
 [submodule "libraries/Adafruit_TinyUSB_Arduino"]
 	path = libraries/Adafruit_TinyUSB_Arduino
 	url = https://github.com/adafruit/Adafruit_TinyUSB_Arduino.git

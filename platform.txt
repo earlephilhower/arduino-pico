@@ -20,7 +20,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=Raspberry Pi RP2040 Boards
-version=2.7.3
+version=3.0.0
 
 runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
@@ -94,7 +94,7 @@ build.flags.libstdcpp=-lstdc++
 build.flags.exceptions=-fno-exceptions
 build.flags.stackprotect=
 build.libpico=libpico.a
-build.libpicow=libpicow-noipv6-nobtc-nobtle.a
+build.libpicow=libpicow-noipv6-nobtc-noble.a
 build.boot2=boot2_generic_03h_4_padded_checksum
 build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
 build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE

@@ -1,0 +1,34 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+JoystickBLE	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin		KEYWORD2
+end			KEYWORD2
+use8bit		KEYWORD2
+X			KEYWORD2
+Y			KEYWORD2
+button		KEYWORD2
+position	KEYWORD2
+Z			KEYWORD2
+Zrotate		KEYWORD2
+sliderLeft	KEYWORD2
+slider		KEYWORD2
+sliderRight	KEYWORD2
+hat			KEYWORD2
+useManualSend KEYWORD2
+send_now	KEYWORD2
+setBattery	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
