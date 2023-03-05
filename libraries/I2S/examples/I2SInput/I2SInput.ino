@@ -11,8 +11,8 @@
    left RPI | (1) GND (2) DIN (3) BCLK (4) LRCLK (5) 3.3V | AIY right
        logo +---------------------------------------------+ logo
 
-   For an Adfruit I2S MEMS microphone
-   (https://www.adafruit.com/product/3421), connect the pins as follows
+   For an Adfruit I2S MEMS microphone (https://www.adafruit.com/product/3421),
+   connect the pins as follows:
 
       DOUT -> GPIO0
       BCLK <- GPIO1
