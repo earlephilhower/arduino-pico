@@ -81,7 +81,18 @@ env.Replace(
 
 # pico support library depends on ipv6 enable/disable
 libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))
-if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
+if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
+    if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-ipv6-btc-ble.a"))
+    else:
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-noipv6-btc-ble.a"))
+    env.Append(
+        CPPDEFINES=[
+            ("ENABLE_CLASSIC", 1),
+            ("ENABLE_BLE", 1)
+        ]
+    )
+elif "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
     libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-ipv6-nobtc-noble.a"))
 else:
     libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-noipv6-nobtc-noble.a"))
