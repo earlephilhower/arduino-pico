@@ -217,3 +217,5 @@ jobs:
       run: pio ci --board=rpipicow -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/WiFi/examples/ScanNetworks/ScanNetworks.ino
     - name: Build Signed OTA Example
       run: pio ci --board=rpipicow -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/ArduinoOTA/examples/SignedOTA/SignedOTA.ino
+    - name: Build Bluetooth Example
+      run: CPPDEFINES=PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH pio ci --board=rpipicow -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/MouseBLE/examples/BLECircle/BLECircle.ino
