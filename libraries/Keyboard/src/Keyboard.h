@@ -28,6 +28,7 @@
 class Keyboard_ : public HID_Keyboard {
 protected:
     virtual void sendReport(KeyReport* keys) override;
+
 public:
     Keyboard_(void);
 };

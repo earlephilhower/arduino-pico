@@ -46,4 +46,14 @@ void Keyboard_::sendReport(KeyReport* keys) {
     tud_task();
 }
 
+extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
+    (void) report_id;
+    (void) instance;
+
+    if ((report_type == HID_REPORT_TYPE_OUTPUT) && (bufsize > 0) && (Keyboard._ledCB)) {
+        uint8_t const kbd_leds = buffer[0];
+        Keyboard._ledCB(kbd_leds & KEYBOARD_LED_NUMLOCK, kbd_leds & KEYBOARD_LED_CAPSLOCK, kbd_leds & KEYBOARD_LED_SCROLLLOCK, kbd_leds & KEYBOARD_LED_COMPOSE, kbd_leds & KEYBOARD_LED_KANA, Keyboard._ledCBdata);
+    }
+}
+
 Keyboard_ Keyboard;
