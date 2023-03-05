@@ -36,7 +36,7 @@ void setup() {
   i2s.setBCLK(1); // Note: LRCLK = BCLK + 1
   i2s.setBitsPerSample(16);
   i2s.setFrequency(22050);
-  // NOTE: The following values are known to work with the Adfruit microphone:
+  // NOTE: The following values are known to work with the Adafruit microphone:
   // i2s.setBitsPerSample(32);
   // i2s.setFrequency(16000);
   i2s.begin();
