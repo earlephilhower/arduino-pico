@@ -5,6 +5,10 @@
 #define SIMPLEFOC_PWM_HIGHSIDE_ACTIVE_HIGH true
 #define SIMPLEFOC_PWM_LOWSIDE_ACTIVE_HIGH false
 
+// Important Constants
+#define CURR_SENSE_RES  (0.001f)
+#define CURR_SENSE_GAIN (66.0f)
+
 // Power Stage Control Pins
 #define PIN_PWMH_A     (0u)
 #define PIN_PWML_A     (1u)
@@ -31,9 +35,35 @@
 // LEDs
 #define PIN_LED        (6u)
 
-// Fixed peripheral pin mappings removed, since there aren't
-// enough free pins for all peripherals without overlaps.
-// Users will need to assign pins as needed per use-case.
+// Unfortunately all of the below definitions are
+// necessary for the core to compile, but many
+// are superseded by the functions above and should
+// not be used without changing the default pins.
+
+// Serial
+#define PIN_SERIAL1_TX (0u)
+#define PIN_SERIAL1_RX (1u)
+
+#define PIN_SERIAL2_TX (8u)
+#define PIN_SERIAL2_RX (9u)
+
+// SPI
+#define PIN_SPI0_MISO  (16u)
+#define PIN_SPI0_MOSI  (19u)
+#define PIN_SPI0_SCK   (18u)
+#define PIN_SPI0_SS    (17u)
+
+#define PIN_SPI1_MISO  (12u)
+#define PIN_SPI1_MOSI  (15u)
+#define PIN_SPI1_SCK   (14u)
+#define PIN_SPI1_SS    (13u)
+
+// Wire
+#define PIN_WIRE0_SDA  (4u)
+#define PIN_WIRE0_SCL  (5u)
+
+#define PIN_WIRE1_SDA  (26u)
+#define PIN_WIRE1_SCL  (27u)
 
 #define SERIAL_HOWMANY (3u)
 #define SPI_HOWMANY    (2u)
