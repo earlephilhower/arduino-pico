@@ -328,7 +328,9 @@ public:
                 return false;
             }
 
-
+            if (!_pcb) {
+                return false;
+            }
             // force lwIP to send what can be sent
             tcp_output(_pcb);
 
@@ -522,6 +524,9 @@ protected:
             const auto remaining = _datalen - _written;
             size_t next_chunk_size;
             {
+                if (!_pcb) {
+                    return false;
+                }
                 next_chunk_size = std::min((size_t)tcp_sndbuf(_pcb), remaining);
                 // Potentially reduce transmit size if we are tight on memory, but only if it doesn't return a 0 chunk size
                 if (next_chunk_size > (size_t)(1 << scale)) {
@@ -550,6 +555,9 @@ protected:
                 flags |= TCP_WRITE_FLAG_COPY;
             }
 
+            if (!_pcb) {
+                return false;
+            }
             err_t err = tcp_write(_pcb, buf, next_chunk_size, flags);
 
             DEBUGV(":wrc %d %d %d\r\n", next_chunk_size, remaining, (int)err);
@@ -571,7 +579,7 @@ protected:
             }
         }
 
-        if (has_written) {
+        if (has_written && _pcb) {
             // lwIP's tcp_output doc: "Find out what we can send and send it"
             // *with respect to Nagle*
             // more info: https://lists.gnu.org/archive/html/lwip-users/2017-11/msg00134.html
