@@ -68,10 +68,15 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
 
         // Not currently possible to hook up igmp_mac_filter and mld_mac_filter
         // TODO: implement igmp_mac_filter and mld_mac_filter
-#if LWIP_IPV6
-        // Implement cyw43_set_allmulti(_self, true) using exposed ioctl call
+        // Implement cyw43_set_allmulti(_self, true) using exposed ioctl call (may not be functional in SDK 1.5?)
         uint8_t allmulti_true[] = { 'a', 'l', 'l', 'm', 'u', 'l', 't', 'i', 0, 1, 0, 0, 0 };
         cyw43_ioctl(&cyw43_state, CYW43_IOCTL_SET_VAR, sizeof allmulti_true, allmulti_true, CYW43_ITF_STA);
+        // Add MDNS multicast MAC addresses manually, thanks Wikipedia!
+        uint8_t mdnsV4[] = {0x01, 0x00, 0x5E, 0x00, 0x00, 0xFB};
+        cyw43_wifi_update_multicast_filter(&cyw43_state, mdnsV4, true);
+#if LWIP_IPV6
+        uint8_t mdnsV6[] = {0x33, 0x33, 0x00, 0x00, 0x00, 0xFB};
+        cyw43_wifi_update_multicast_filter(&cyw43_state, mdnsV6, true);
 #endif
 
         if (_bssid[0] | _bssid[1] | _bssid[2] | _bssid[3] | _bssid[4] | _bssid[5]) {
