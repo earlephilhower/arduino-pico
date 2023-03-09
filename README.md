@@ -43,6 +43,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Invector Labs RPICO32
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
+* Neko Systems BL2040 Mini
 * nullbits Bit-C PRO
 * Pimoroni PGA2040
 * Seeed XIAO RP2040
