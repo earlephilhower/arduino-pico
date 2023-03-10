@@ -20,15 +20,15 @@
 #include <Arduino.h>
 
 /**
- * Setup control pins for the NFC chip.
- */
+    Setup control pins for the NFC chip.
+*/
 void initVariant() {
-  // Initialize the interrupt pin to be an input.
-  // Setting it to an interrupt and connecting a call back is up to the app.
-  pinMode(PIN_PN7150_IRQ_B, INPUT);
+    // Initialize the interrupt pin to be an input.
+    // Setting it to an interrupt and connecting a call back is up to the app.
+    pinMode(PIN_PN7150_IRQ_B, INPUT);
 
-  // Initialize the reset pin to an output and hold the device in reset.
-  // It is up to the application to release it.
-  pinMode(PIN_PN7150_RST_B, OUTPUT);
-  digitalWrite(PIN_PN7150_RST_B, LOW);
+    // Initialize the reset pin to an output and hold the device in reset.
+    // It is up to the application to release it.
+    pinMode(PIN_PN7150_RST_B, OUTPUT);
+    digitalWrite(PIN_PN7150_RST_B, LOW);
 }

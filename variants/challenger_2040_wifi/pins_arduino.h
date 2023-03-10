@@ -53,19 +53,19 @@
 #define LED_BUILTIN         PIN_LED
 #define NEOPIXEL            (11u)
 
-static const uint8_t D0 =   (16u);
-static const uint8_t D1 =   (17u);
-static const uint8_t D2 =   (24u);
-static const uint8_t D3 =   (23u);
-static const uint8_t D4 =   (22u);
-static const uint8_t D5 =   (2u);
-static const uint8_t D6 =   (3u);
-static const uint8_t D7 =   (0u);
-static const uint8_t D8 =   (1u);
-static const uint8_t D9 =   (6u);
-static const uint8_t D10 =  (7u);
-static const uint8_t D11 =  (8u);
-static const uint8_t D12 =  (9u);
+static const uint8_t D0 = (16u);
+static const uint8_t D1 = (17u);
+static const uint8_t D2 = (24u);
+static const uint8_t D3 = (23u);
+static const uint8_t D4 = (22u);
+static const uint8_t D5 = (2u);
+static const uint8_t D6 = (3u);
+static const uint8_t D7 = (0u);
+static const uint8_t D8 = (1u);
+static const uint8_t D9 = (6u);
+static const uint8_t D10 = (7u);
+static const uint8_t D11 = (8u);
+static const uint8_t D12 = (9u);
 static const uint8_t D13 = (10u);
 static const uint8_t D14 = (11u);
 static const uint8_t D15 = (12u);

@@ -47,20 +47,20 @@
 
 #define LED_BUILTIN         PIN_LED
 
-static const uint8_t D0 =   (16u);
-static const uint8_t D1 =   (17u);
-static const uint8_t D2 =   (20u);
-static const uint8_t D3 =   (23u);
-static const uint8_t D4 =   (22u);
-static const uint8_t D5 =   (2u);
-static const uint8_t D6 =   (3u);
-static const uint8_t D7 =   (0u);
-static const uint8_t D8 =   (1u);
-static const uint8_t D9 =   (4u);
-static const uint8_t D10 =  (5u);
-static const uint8_t D11 =  (6u);
-static const uint8_t D12 =  (7u);
-static const uint8_t D13 =  (8u);
+static const uint8_t D0 = (16u);
+static const uint8_t D1 = (17u);
+static const uint8_t D2 = (20u);
+static const uint8_t D3 = (23u);
+static const uint8_t D4 = (22u);
+static const uint8_t D5 = (2u);
+static const uint8_t D6 = (3u);
+static const uint8_t D7 = (0u);
+static const uint8_t D8 = (1u);
+static const uint8_t D9 = (4u);
+static const uint8_t D10 = (5u);
+static const uint8_t D11 = (6u);
+static const uint8_t D12 = (7u);
+static const uint8_t D13 = (8u);
 static const uint8_t D14 = (13u);
 static const uint8_t D15 = (14u);
 static const uint8_t D16 = (15u);

@@ -24,7 +24,7 @@
 #define DEFAULT_ESP_BAUDRATE        DEFAULT_ESP8285_BAUDRATE
 
 class Challenger2040WiFiClass {
-  public:
+public:
     Challenger2040WiFiClass(HardwareSerial* = &ESP_SERIAL_PORT);
     void doHWReset();
     void runReset();
@@ -36,7 +36,7 @@ class Challenger2040WiFiClass {
     void release();
     void setSerial(HardwareSerial*);
     HardwareSerial* getSerial();
-  private:
+private:
     HardwareSerial* _serial;
 };
 
