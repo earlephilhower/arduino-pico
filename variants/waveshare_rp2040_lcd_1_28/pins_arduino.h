@@ -30,7 +30,7 @@
 #define PIN_LCD_RST     (12u)       
 #define PIN_LCD_BL      (25u)       
 // BAT_ADC                          
-#define PIN_BAT_ADC      (25u)      
+#define PIN_BAT_ADC      (29u)
 // IMU                              
 #define PIN_IMU_SDA      (6u)        
 #define PIN_IMU_SCL      (7u)       
