@@ -22,7 +22,7 @@
 #define DEFAULT_SARA_BAUDRATE      115200
 
 class Challenger2040LTEClass {
-  public:
+public:
     Challenger2040LTEClass();
     bool doPowerOn();
     bool isAlive(uint32_t timeout = 50);
@@ -31,7 +31,7 @@ class Challenger2040LTEClass {
     bool enablePS(bool enable = true);
     String getResponse(int timeout = 5);
 
-  private:
+private:
     bool serialPortConfigured;
 };
 

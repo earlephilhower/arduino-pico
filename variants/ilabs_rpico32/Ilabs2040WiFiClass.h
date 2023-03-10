@@ -22,7 +22,7 @@
 #define DEFAULT_ESP8285_BAUDRATE      115200
 
 class Ilabs2040WiFiClass {
-  public:
+public:
     Ilabs2040WiFiClass();
     void doHWReset();
     void runReset();

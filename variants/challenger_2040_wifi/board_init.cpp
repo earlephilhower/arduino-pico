@@ -21,9 +21,9 @@
 #include <ChallengerWiFi.h>
 
 /**
- * Just make sure we try to reset the ESP device before the user starts
- * using the device.
- */
+    Just make sure we try to reset the ESP device before the user starts
+    using the device.
+*/
 void initVariant() {
-  Challenger2040WiFi.reset();
+    Challenger2040WiFi.reset();
 }

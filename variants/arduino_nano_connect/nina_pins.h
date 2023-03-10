@@ -4,33 +4,33 @@
 #define _NINA_PINS_
 
 /******************************************************************************
- * INCLUDE
+    INCLUDE
  ******************************************************************************/
 
 #include "Arduino.h"
 
 /******************************************************************************
- * TYPEDEF
+    TYPEDEF
  ******************************************************************************/
 
 int getAnalogReadResolution();
 
 class NinaPin {
 public:
-	NinaPin(int _pin) : pin(_pin) {};
-	int get() {
-		return pin;
-	};
-	int analogReadResolution() {
-		return getAnalogReadResolution();
-	};
-	bool operator== (NinaPin const & other) const {
-		return pin == other.pin;
-	}
-	//operator int() = delete;
-	__attribute__ ((error("Change me to a #define"))) operator int();
+    NinaPin(int _pin) : pin(_pin) {};
+    int get() {
+        return pin;
+    };
+    int analogReadResolution() {
+        return getAnalogReadResolution();
+    };
+    bool operator== (NinaPin const & other) const {
+        return pin == other.pin;
+    }
+    //operator int() = delete;
+    __attribute__((error("Change me to a #define"))) operator int();
 private:
-	int pin;
+    int pin;
 };
 
 extern NinaPin  LEDR;
@@ -44,13 +44,13 @@ extern NinaPin  A7;
 #define NINA_PINS_AS_CLASS
 
 /******************************************************************************
- * FUNCTION DECLARATION
+    FUNCTION DECLARATION
  ******************************************************************************/
 
-void      pinMode     (NinaPin pin, PinMode mode);
-PinStatus digitalRead (NinaPin pin);
+void      pinMode(NinaPin pin, PinMode mode);
+PinStatus digitalRead(NinaPin pin);
 void      digitalWrite(NinaPin pin, PinStatus value);
-int       analogRead  (NinaPin pin);
-void      analogWrite (NinaPin pin, int value);
+int       analogRead(NinaPin pin);
+void      analogWrite(NinaPin pin, int value);
 
 #endif /* _NINA_PINS_ */

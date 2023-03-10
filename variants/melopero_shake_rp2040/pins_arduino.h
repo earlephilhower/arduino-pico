@@ -26,10 +26,10 @@
 #define PIN_SPI1_SS    (13u)
 
 // Wire
-#define PIN_WIRE0_SDA  (8u) 
+#define PIN_WIRE0_SDA  (8u)
 #define PIN_WIRE0_SCL  (9u)
 
-#define PIN_WIRE1_SDA  (2u) 
+#define PIN_WIRE1_SDA  (2u)
 #define PIN_WIRE1_SCL  (3u)
 
 #define SERIAL_HOWMANY (3u)
