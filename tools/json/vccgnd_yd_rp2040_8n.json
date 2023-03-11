@@ -9,7 +9,7 @@
     },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_YD_RP2040 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
+    "extra_flags": "-D ARDUINO_YD_RP2040_8N -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
     "f_cpu": "133000000L",
     "hwids": [
       [
@@ -22,7 +22,7 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "vccgnd_yd_rp2040"
+    "variant": "vccgnd_yd_rp2040_8n"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",
@@ -32,10 +32,10 @@
   "frameworks": [
     "arduino"
   ],
-  "name": "YD RP2040-16N(16MB)",
+  "name": "YD-RP2040-8N(8MB)",
   "upload": {
     "maximum_ram_size": 270336,
-    "maximum_size": 16777216,
+    "maximum_size": 8388608,
     "require_upload_port": true,
     "native_usb": true,
     "use_1200bps_touch": true,

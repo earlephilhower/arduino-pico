@@ -409,7 +409,9 @@ MakeBoard("upesy_rp2040_devkit", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 2
 MakeBoard("seeed_xiao_rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 
 # VCC-GND YD-2040 - Use generic SPI/4 because boards seem to come with varied flash modules but same name
-MakeBoard('vccgnd_yd_rp2040', "VCC-GND", "YD RP2040", "0x2e8a", "0x800a", 500, "YD_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
+MakeBoard('vccgnd_yd_rp2040_4n', "VCC-GND", "YD-RP2040-4N(4MB)", "0x2e8a", "0x800a", 500, "YD_RP2040_4N", 4, "boot2_generic_03h_4_padded_checksum")
+MakeBoard('vccgnd_yd_rp2040_8n', "VCC-GND", "YD-RP2040-8N(8MB)", "0x2e8a", "0x800a", 500, "YD_RP2040_8N", 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard('vccgnd_yd_rp2040', "VCC-GND", "YD RP2040-16N(16MB)", "0x2e8a", "0x800a", 500, "YD_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 
 # Viyalab
 MakeBoard("viyalab_mizu", "Viyalab", "Mizu RP2040", "0x2e8a", "0x000a", 250, "VIYALAB_MIZU_RP2040", 8, "boot2_generic_03h_4_padded_checksum")

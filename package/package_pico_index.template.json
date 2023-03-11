@@ -138,7 +138,13 @@
                      "name": "Seeed XIAO RP2040"
                   },
                   {
-                     "name": "VCC-GND YD RP2040"
+                     "name": "VCC-GND YD-RP2040-4N(4MB)"
+                  },
+                  {
+                     "name": "VCC-GND YD-RP2040-8N(8MB)"
+                  },
+                  {
+                     "name": "VCC-GND YD RP2040-16N(16MB)"
                   },
                   {
                      "name": "Viyalab Mizu RP2040"

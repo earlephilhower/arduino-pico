@@ -51,7 +51,9 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * SparkFun ProMicro RP2040
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
-* VCC-GND YD-RP2040
+* VCC-GND YD-RP2040-4N(4MB)
+* VCC-GND YD-RP2040-8N(8MB)
+* VCC-GND YD-RP2040-16N(16MB)
 * Viyalab Mizu RP2040
 * Waveshare RP2040 Zero
 * Waveshare RP2040 One
