@@ -210,11 +210,11 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
     for i in range(1, flashsizemb):
         fssizelist.append(i * 1024 * 1024)
     BuildHeader(name, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, boot2, extra)
-    if name == "generic":
+    if (name == "generic") or (name == "vccgnd_yd_rp2040"):
         BuildFlashMenu(name, 2*1024*1024, [0, 1*1024*1024])
-        BuildFlashMenu(name, 4*1024*1024, [0, 2*1024*1024])
-        BuildFlashMenu(name, 8*1024*1024, [0, 4*1024*1024])
-        BuildFlashMenu(name, 16*1024*1024, [0, 8*1024*1024])
+        BuildFlashMenu(name, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, flashsizemb * 1024 * 1024, fssizelist)
     BuildFreq(name)
