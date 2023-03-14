@@ -56,6 +56,9 @@ extern unsigned long get_rand_32(void);
 #define DHCP_DOES_ARP_CHECK         0
 #define LWIP_DHCP_DOES_ACD_CHECK    0
 
+// See #1285
+#define MEMP_NUM_UDP_PCB            6
+
 #if LWIP_IPV6
 #define LWIP_IPV6_DHCP6             1
 #endif
