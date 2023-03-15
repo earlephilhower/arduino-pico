@@ -34,6 +34,7 @@ public:
     bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0);
     bool setFrequency(int newFreq);
     bool setLSBJFormat();
+    bool swapClocks();
 
     bool begin(long sampleRate) {
         setFrequency(sampleRate);
@@ -107,6 +108,7 @@ private:
     int32_t _silenceSample;
     bool _isLSBJ;
     bool _isOutput;
+    bool _swapClocks;
 
     bool _running;
 

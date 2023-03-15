@@ -64,6 +64,13 @@ Enables LSB-J format for I2S output.  In this mode the MSB comes out at the
 same time as the LRCLK changes, and not the normal 1-cycle delay.  Useful for
 DAC chips like the PT8211.
 
+bool swapClocks()
+~~~~~~~~~~~~~~~~~
+Certain boards are hardwired with the WCLK before the BCLK, instead of the normal
+way around.  This call swaps the WCLK and BCLK pins.  Note that you still call
+``setBCLK(x)`` with ``x`` being the lowest pin ID (i.e. in swapClocks mode the
+``setBCLK`` call actually sets LRCLK).
+
 bool begin()/begin(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Start the I2S device up with the given sample rate, or with the value set

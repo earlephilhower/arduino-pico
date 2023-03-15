@@ -43,6 +43,41 @@ static inline pio_sm_config pio_i2s_out_program_get_default_config(uint offset) 
 }
 #endif
 
+// ---------------- //
+// pio_i2s_out_swap //
+// ---------------- //
+
+#define pio_i2s_out_swap_wrap_target 0
+#define pio_i2s_out_swap_wrap 7
+
+static const uint16_t pio_i2s_out_swap_program_instructions[] = {
+    //     .wrap_target
+    0xb022, //  0: mov    x, y            side 2
+    0x6001, //  1: out    pins, 1         side 0
+    0x1041, //  2: jmp    x--, 1          side 2
+    0x6801, //  3: out    pins, 1         side 1
+    0xb822, //  4: mov    x, y            side 3
+    0x6801, //  5: out    pins, 1         side 1
+    0x1845, //  6: jmp    x--, 5          side 3
+    0x6001, //  7: out    pins, 1         side 0
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_i2s_out_swap_program = {
+    .instructions = pio_i2s_out_swap_program_instructions,
+    .length = 8,
+    .origin = -1,
+};
+
+static inline pio_sm_config pio_i2s_out_swap_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_i2s_out_swap_wrap_target, offset + pio_i2s_out_swap_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
 // ------------ //
 // pio_lsbj_out //
 // ------------ //
@@ -73,6 +108,41 @@ static const struct pio_program pio_lsbj_out_program = {
 static inline pio_sm_config pio_lsbj_out_program_get_default_config(uint offset) {
     pio_sm_config c = pio_get_default_sm_config();
     sm_config_set_wrap(&c, offset + pio_lsbj_out_wrap_target, offset + pio_lsbj_out_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
+// ----------------- //
+// pio_lsbj_out_swap //
+// ----------------- //
+
+#define pio_lsbj_out_swap_wrap_target 0
+#define pio_lsbj_out_swap_wrap 7
+
+static const uint16_t pio_lsbj_out_swap_program_instructions[] = {
+    //     .wrap_target
+    0xb022, //  0: mov    x, y            side 2
+    0x6801, //  1: out    pins, 1         side 1
+    0x1841, //  2: jmp    x--, 1          side 3
+    0x6801, //  3: out    pins, 1         side 1
+    0xb822, //  4: mov    x, y            side 3
+    0x6001, //  5: out    pins, 1         side 0
+    0x1045, //  6: jmp    x--, 5          side 2
+    0x6001, //  7: out    pins, 1         side 0
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_lsbj_out_swap_program = {
+    .instructions = pio_lsbj_out_swap_program_instructions,
+    .length = 8,
+    .origin = -1,
+};
+
+static inline pio_sm_config pio_lsbj_out_swap_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_lsbj_out_swap_wrap_target, offset + pio_lsbj_out_swap_wrap);
     sm_config_set_sideset(&c, 2, false, false);
     return c;
 }
@@ -111,12 +181,47 @@ static inline pio_sm_config pio_i2s_in_program_get_default_config(uint offset) {
     sm_config_set_sideset(&c, 2, false, false);
     return c;
 }
+#endif
 
-static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits) {
+// --------------- //
+// pio_i2s_in_swap //
+// --------------- //
+
+#define pio_i2s_in_swap_wrap_target 0
+#define pio_i2s_in_swap_wrap 7
+
+static const uint16_t pio_i2s_in_swap_program_instructions[] = {
+    //     .wrap_target
+    0xa022, //  0: mov    x, y            side 0
+    0x5001, //  1: in     pins, 1         side 2
+    0x0041, //  2: jmp    x--, 1          side 0
+    0x5801, //  3: in     pins, 1         side 3
+    0xa822, //  4: mov    x, y            side 1
+    0x5801, //  5: in     pins, 1         side 3
+    0x0845, //  6: jmp    x--, 5          side 1
+    0x5001, //  7: in     pins, 1         side 2
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_i2s_in_swap_program = {
+    .instructions = pio_i2s_in_swap_program_instructions,
+    .length = 8,
+    .origin = -1,
+};
+
+static inline pio_sm_config pio_i2s_in_swap_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_i2s_in_swap_wrap_target, offset + pio_i2s_in_swap_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+
+static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
-    pio_sm_config sm_config = pio_i2s_out_program_get_default_config(offset);
+    pio_sm_config sm_config = swap ? pio_i2s_out_swap_program_get_default_config(offset) : pio_i2s_out_program_get_default_config(offset);
     sm_config_set_out_pins(&sm_config, data_pin, 1);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
     sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
@@ -127,11 +232,11 @@ static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint 
     pio_sm_set_pins(pio, sm, 0); // clear pins
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
-static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits) {
+static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
-    pio_sm_config sm_config = pio_lsbj_out_program_get_default_config(offset);
+    pio_sm_config sm_config = swap ? pio_lsbj_out_swap_program_get_default_config(offset) : pio_lsbj_out_program_get_default_config(offset);
     sm_config_set_out_pins(&sm_config, data_pin, 1);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
     sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
@@ -142,11 +247,11 @@ static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint
     pio_sm_set_pins(pio, sm, 0); // clear pins
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
-static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits) {
+static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
-    pio_sm_config sm_config = pio_i2s_in_program_get_default_config(offset);
+    pio_sm_config sm_config = swap ? pio_i2s_in_swap_program_get_default_config(offset) : pio_i2s_in_program_get_default_config(offset);
     sm_config_set_in_pins(&sm_config, data_pin);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
     sm_config_set_in_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
@@ -159,3 +264,4 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
 }
 
 #endif
+

@@ -52,6 +52,7 @@ I2S::I2S(PinMode direction) {
     _bufferWords = 0;
     _silenceSample = 0;
     _isLSBJ = false;
+    _swapClocks = false;
 }
 
 I2S::~I2S() {
@@ -108,6 +109,14 @@ bool I2S::setLSBJFormat() {
     return true;
 }
 
+bool I2S::swapClocks() {
+    if (_running || !_isOutput) {
+        return false;
+    }
+    _swapClocks = true;
+    return true;
+}
+
 void I2S::onTransmit(void(*fn)(void)) {
     if (_isOutput) {
         _cb = fn;
@@ -130,16 +139,20 @@ bool I2S::begin() {
     _running = true;
     _hasPeeked = false;
     int off = 0;
-    _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
+    if (!_swapClocks) {
+        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
+    } else {
+        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program) : &pio_i2s_in_swap_program);
+    }
     _i2s->prepare(&_pio, &_sm, &off);
     if (_isOutput) {
         if (_isLSBJ) {
-            pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps);
+            pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
         } else {
-            pio_i2s_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps);
+            pio_i2s_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
         }
     } else {
-        pio_i2s_in_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps);
+        pio_i2s_in_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
     }
     setFrequency(_freq);
     if (_bps == 8) {
