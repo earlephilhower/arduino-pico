@@ -52,6 +52,7 @@ void loop(void) {
 */
 /* LISTING_START(LEPeripheralDeviceConnectedCallback): Device Connected Callback */
 void deviceConnectedCallback(BLEStatus status, BLEDevice *device) {
+  (void) device;
   switch (status) {
     case BLE_STATUS_OK:
       Serial.println("Device connected!");
@@ -70,6 +71,7 @@ void deviceConnectedCallback(BLEStatus status, BLEDevice *device) {
 */
 /* LISTING_START(LEPeripheralDeviceDisconnectedCallback): Device Disconnected Callback */
 void deviceDisconnectedCallback(BLEDevice * device) {
+  (void) device;
   Serial.println("Disconnected.");
 }
 /* LISTING_END(LEPeripheralDeviceDisconnectedCallback): Device Disconnected Callback */
@@ -78,7 +80,7 @@ void deviceDisconnectedCallback(BLEDevice * device) {
    @section Read Callback
 
    @text In BTstack, the Read Callback is first called to query the size of the
-   Charcteristic Value, before it is called to provide the data.
+   Characteristic Value, before it is called to provide the data.
    Both times, the size has to be returned. The data is only stored in the provided
    buffer, if the buffer argeument is not NULL.
    If more than one dynamic Characteristics is used, the value handle is used
@@ -86,6 +88,8 @@ void deviceDisconnectedCallback(BLEDevice * device) {
 */
 /* LISTING_START(LEPeripheralReadCallback): Read Callback */
 uint16_t gattReadCallback(uint16_t value_handle, uint8_t * buffer, uint16_t buffer_size) {
+  (void) value_handle;
+  (void) buffer_size;
   if (buffer) {
     Serial.print("gattReadCallback, value: ");
     Serial.println(characteristic_data, HEX);
@@ -105,6 +109,8 @@ uint16_t gattReadCallback(uint16_t value_handle, uint8_t * buffer, uint16_t buff
 */
 /* LISTING_START(LEPeripheralWriteCallback): Write Callback */
 int gattWriteCallback(uint16_t value_handle, uint8_t *buffer, uint16_t size) {
+  (void) value_handle;
+  (void) size;
   characteristic_data = buffer[0];
   Serial.print("gattWriteCallback , value ");
   Serial.println(characteristic_data, HEX);

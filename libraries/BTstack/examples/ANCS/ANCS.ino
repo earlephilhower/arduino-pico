@@ -67,12 +67,15 @@ void loop(void) {
    @text In the ANCS Callback, connect and disconnect events are received.
    For actual notifications, ancs_client_attribute_name_for_id allows to
    look up the name. To get the notification body, e.g., the actual message,
-   the GATT Client needs to be used direclty.
+   the GATT Client needs to be used directly.
 */
 
 
 /* LISTING_START(ANCSCallback): ANCS Callback */
 void ancs_callback(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+  (void) packet_type;
+  (void) channel;
+  (void) size;
   const char * attribute_name;
   if (hci_event_packet_get_type(packet) != HCI_EVENT_ANCS_META) {
     return;

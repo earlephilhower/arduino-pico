@@ -727,7 +727,7 @@ void BTstackManager::bleConnect(BD_ADDR_TYPE address_type, const char * address,
     (void) address_type;
     (void) address;
     (void) timeout_ms;
-    // TOOD: implement
+    // TODO: implement
     // log_error("BTstackManager::bleConnect(BD_ADDR_TYPE address_type, const char * address, int timeout_ms) not implemented");
 }
 void BTstackManager::bleConnect(BD_ADDR_TYPE address_type, const uint8_t address[6], int timeout_ms) {

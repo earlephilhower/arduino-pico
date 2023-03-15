@@ -20,7 +20,7 @@
    @section Characteristic Summary
    @text As multiple Characteristics need to be found, a custom
    struct is used to collect all information about it. This allows
-   to defined the list of neccessary characteristics in the
+   to define the list of necessary characteristics in the
    characteristics[] array
 */
 /* LISTING_START(LECentralSummary): Characteristic Summary */
@@ -44,10 +44,10 @@ typedef enum characteristicIDs {
 } characteristicIDs_t;
 
 characteristic_summary characteristics[] = {
-  { UUID("f897177b-aee8-4767-8ecc-cc694fd5fcee"), "RX"       },
-  { UUID("bf45e40a-de2a-4bc8-bba0-e5d6065f1b4b"), "TX"       },
-  { UUID("2fbc0f31-726a-4014-b9fe-c8be0652e982"), "Baudrate" },
-  { UUID("65c228da-bad1-4f41-b55f-3d177f4e2196"), "BD ADDR"  }
+  { UUID("f897177b-aee8-4767-8ecc-cc694fd5fcee"), "RX", false, BLECharacteristic() },
+  { UUID("bf45e40a-de2a-4bc8-bba0-e5d6065f1b4b"), "TX", false, BLECharacteristic() },
+  { UUID("2fbc0f31-726a-4014-b9fe-c8be0652e982"), "Baudrate", false, BLECharacteristic() },
+  { UUID("65c228da-bad1-4f41-b55f-3d177f4e2196"), "BD ADDR", false, BLECharacteristic() }
 };
 
 /* LISTING_END(LECentralSummary): Characteristic Summary */
@@ -61,7 +61,7 @@ bool sendCounter = false;
 int counter = 0;
 char counterString[20];
 
-static btstack_timer_source_t heartbeat;
+// static btstack_timer_source_t heartbeat;
 
 /*
    @section Setup
@@ -172,6 +172,7 @@ void deviceConnectedCallback(BLEStatus status, BLEDevice *device) {
 */
 /* LISTING_START(LECentralDeviceDisconnectedCallback): Device Disconnected Callback */
 void deviceDisconnectedCallback(BLEDevice * device) {
+  (void) device;
   Serial.println("Disconnected, starting over..");
   sendCounter = false;
   BTstack.bleStartScanning();
@@ -262,14 +263,15 @@ void gattCharacteristicDiscovered(BLEStatus status, BLEDevice *device, BLECharac
 /*
    @section Subscribed Callback
 
-   @text After the subcribe operation is complete, we get notified if it was
+   @text After the subscribe operation is complete, we get notified if it was
    successful. In this example, we read the Characteristic that contains the
-   BD ADDR of the other device. This isn't strictly neccessary as we already
+   BD ADDR of the other device. This isn't strictly necessary as we already
    know the device address from the Advertisement, but it's a common pattern
    with iOS as the device address is hidden from applications.
 */
 /* LISTING_START(LECentralSubscribedCallback): Subscribed Callback */
 void gattSubscribedCallback(BLEStatus status, BLEDevice * device) {
+  (void) status;
   device->readCharacteristic(&characteristics[charBdAddr].characteristic);
 }
 /* LISTING_END(LECentralSubscribedCallback): Subscribed Callback */
@@ -282,6 +284,8 @@ void gattSubscribedCallback(BLEStatus status, BLEDevice * device) {
 */
 /* LISTING_START(LECentralReadCallback): Read Callback */
 void gattReadCallback(BLEStatus status, BLEDevice *device, uint8_t *value, uint16_t length) {
+  (void) status;
+  (void) length;
   Serial.print("Read callback: ");
   Serial.println((const char *)value);
   device->writeCharacteristic(&characteristics[charTX].characteristic, (uint8_t*) "Hello!", 6);
@@ -297,6 +301,8 @@ void gattReadCallback(BLEStatus status, BLEDevice *device, uint8_t *value, uint1
 */
 /* LISTING_START(LECentralWrittenCallback): Written Callback */
 void gattWrittenCallback(BLEStatus status, BLEDevice *device) {
+  (void) status;
+  (void) device;
   sendCounter = true;
 }
 /* LISTING_END(LECentralWrittenCallback): Written Callback */
@@ -304,7 +310,7 @@ void gattWrittenCallback(BLEStatus status, BLEDevice *device) {
 /*
    @section Notification Callback
 
-   @text Notifictions for Characteristic Value Updates are delivered via the
+   @text Notifications for Characteristic Value Updates are delivered via the
    Notification Callback. When more than one Characteristic is subscribed,
    the value handle can be used to distinguish between them. The
    BLECharacteristic.isValueHandle(int handle) allows to test if a value handle
@@ -312,6 +318,9 @@ void gattWrittenCallback(BLEStatus status, BLEDevice *device) {
 */
 /* LISTING_START(LECentralNotificationCallback): Notification Callback */
 void gattCharacteristicNotification(BLEDevice *device, uint16_t value_handle, uint8_t *value, uint16_t length) {
+  (void) device;
+  (void) value_handle;
+  (void) length;
   Serial.print("Notification: ");
   Serial.println((const char *)value);
 }

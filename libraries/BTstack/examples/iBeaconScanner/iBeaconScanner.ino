@@ -25,7 +25,7 @@ void loop(void) {
 }
 
 /*
-   @section Advertisment Callback
+   @section Advertisement Callback
 
    @text Whenever an Advertisement is received, isIBeacon() checks if
    it contains an iBeacon. If yes, the Major ID, Minor ID, and UUID
