@@ -34,7 +34,7 @@ KeyboardBT_::KeyboardBT_(void) {
 
 #define REPORT_ID 0x01
 
-static const uint8_t desc_keyboard[] = {TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID))};
+static const uint8_t desc_keyboard[] = {TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID)), TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(REPORT_ID + 1))};
 
 static void _hidReportCB(uint16_t cid, hid_report_type_t report_type, uint16_t report_id, int report_size, uint8_t *report) {
     (void) cid;
@@ -69,6 +69,10 @@ void KeyboardBT_::sendReport(KeyReport* keys) {
     data.reserved = 0;
     memcpy(data.keycode, keys->keys, sizeof(data.keycode));
     PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+}
+
+void KeyboardBT_::sendConsumerReport(uint16_t key) {
+    PicoBluetoothHID.send(REPORT_ID + 1, &key, sizeof(key));
 }
 
 KeyboardBT_ KeyboardBT;

@@ -26,7 +26,19 @@ void setup() {
 void loop() {
   if (BOOTSEL) {
     Serial.println("Typing password for you...shhhh....");
+
+    Serial.println("First, mute the computer to be extra quiet");
+    Keyboard.consumerPress(KEY_MUTE);
+    delay(100);
+    Keyboard.consumerRelease();
+
     Keyboard.print("ThisPasswordIsWeakLikeABaby");
+
+    Serial.println("OK, unmute the computer since our secret is done");
+    Keyboard.consumerPress(KEY_MUTE);
+    delay(100);
+    Keyboard.consumerRelease();
+
     while (BOOTSEL);
   }
 }

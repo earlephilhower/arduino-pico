@@ -157,7 +157,7 @@ void __SetupDescHIDReport() {
     //allocate memory for the HID report descriptors. We don't use them, but need the size here.
     uint8_t desc_hid_report_mouse[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(1)) };
-    uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)) };
+    uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)), TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2)) };
     int size = 0;
 
     //accumulate the size of all used HID report descriptors
@@ -194,7 +194,7 @@ void __SetupDescHIDReport() {
         if (__USBInstallMouse) {
             //determine if we need an offset (USB keyboard is installed)
             if (__USBInstallKeyboard) {
-                uint8_t desc_local[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(2)) };
+                uint8_t desc_local[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(3)) };
                 memcpy(__hid_report + sizeof(desc_hid_report_keyboard), desc_local, sizeof(desc_local));
             } else {
                 memcpy(__hid_report, desc_hid_report_mouse, sizeof(desc_hid_report_mouse));
@@ -206,7 +206,7 @@ void __SetupDescHIDReport() {
             uint8_t reportid = 1;
             int offset = 0;
             if (__USBInstallKeyboard) {
-                reportid++;
+                reportid += 2;
                 offset += sizeof(desc_hid_report_keyboard);
             }
             if (__USBInstallMouse) {
