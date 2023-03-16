@@ -63,4 +63,9 @@ void KeyboardBLE_::sendReport(KeyReport* keys) {
     PicoBluetoothBLEHID.send(&data, sizeof(data));
 }
 
+void KeyboardBLE_::sendConsumerReport(uint16_t key) {
+    (void) key;
+    // TODO - Need some BLE-specific code to send 2nd report
+}
+
 KeyboardBLE_ KeyboardBLE;

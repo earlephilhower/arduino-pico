@@ -46,6 +46,16 @@ void Keyboard_::sendReport(KeyReport* keys) {
     tud_task();
 }
 
+void Keyboard_::sendConsumerReport(uint16_t key) {
+    CoreMutex m(&__usb_mutex);
+    tud_task();
+    if (tud_hid_ready()) {
+        tud_hid_report(__USBGetKeyboardReportID() + 1, &key, sizeof(key));
+    }
+    tud_task();
+}
+
+
 extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
     (void) report_id;
     (void) instance;

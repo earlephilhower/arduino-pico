@@ -28,6 +28,7 @@
 class KeyboardBT_ : public HID_Keyboard {
 protected:
     virtual void sendReport(KeyReport* keys) override;
+    virtual void sendConsumerReport(uint16_t key) override;
 public:
     KeyboardBT_(void);
     void begin(const char *localName = nullptr, const char *hidName = nullptr, const uint8_t *layout = KeyboardLayout_en_US);
