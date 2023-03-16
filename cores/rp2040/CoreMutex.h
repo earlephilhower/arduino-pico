@@ -43,5 +43,5 @@ public:
 private:
     mutex_t *_mutex;
     bool _acquired;
-    u_int8_t _option;
+    uint8_t _option;
 };
