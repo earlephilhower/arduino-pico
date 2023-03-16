@@ -1,0 +1,100 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Library (KEYWORD3)
+#######################################
+
+BTstack	KEYWORD3		RESERVED_WORD
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BLEStatus	KEYWORD2
+UUID	KEYWORD2
+BD_ADDR_TYPE	KEYWORD2
+BD_ADDR	KEYWORD2
+BLEAdvertisement	KEYWORD2
+BLECharacteristic	KEYWORD2
+BLEService	KEYWORD2
+BLEDevice	KEYWORD2
+BTstackManager	KEYWORD2
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+getUuidString	KEYWORD2
+getUuid128String	KEYWORD2
+getUuid	KEYWORD2
+matches	KEYWORD2
+getAddress	KEYWORD2
+getAddressString	KEYWORD2
+getAddressType	KEYWORD2
+getBdAddr	KEYWORD2
+getBdAddrType	KEYWORD2
+getRssi	KEYWORD2
+containsService	KEYWORD2
+nameHasPrefix	KEYWORD2
+getAdvData	KEYWORD2
+isIBeacon	KEYWORD2
+getIBeaconUUID	KEYWORD2
+getIBeaconMajorID	KEYWORD2
+getIBecaonMinorID	KEYWORD2
+getiBeaconMeasuredPower	KEYWORD2
+isValueHandle	KEYWORD2
+getCharacteristic	KEYWORD2
+getUUID	KEYWORD2
+getService	KEYWORD2
+getHandle	KEYWORD2
+discoverGATTServices	KEYWORD2
+discoverCharacteristicsForService	KEYWORD2
+readCharacteristic	KEYWORD2
+writeCharacteristic	KEYWORD2
+writeCharacteristicWithoutResponse	KEYWORD2
+subscribeForNotifications	KEYWORD2
+unsubscribeFromNotifications	KEYWORD2
+subscribeForIndications	KEYWORD2
+unsubscribeFromIndications	KEYWORD2
+setPublicBdAddr	KEYWORD2
+enablePacketLogger	KEYWORD2
+enableDebugLogger	KEYWORD2
+setAdvData	KEYWORD2
+iBeaconConfigure	KEYWORD2
+startAdvertising	KEYWORD2
+stopAdvertising	KEYWORD2
+bleStartScanning	KEYWORD2
+bleStopScanning	KEYWORD2
+bleConnect	KEYWORD2
+bleDisconnect	KEYWORD2
+setBLEAdvertisementCallback	KEYWORD2
+setBLEDeviceConnectedCallback	KEYWORD2
+setBLEDeviceDisconnectedCallback	KEYWORD2
+setGATTServiceDiscoveredCallback	KEYWORD2
+setGATTCharacteristicDiscoveredCallback	KEYWORD2
+setGATTCharacteristicReadCallback	KEYWORD2
+setGATTCharacteristicNotificationCallback	KEYWORD2
+setGATTCharacteristicIndicationCallback	KEYWORD2
+setGATTDoneCallback	KEYWORD2
+setGATTCharacteristicWrittenCallback	KEYWORD2
+setGATTCharacteristicSubscribedCallback	KEYWORD2
+setGATTCharacteristicUnsubscribedCallback	KEYWORD2
+setGATTCharacteristicRead	KEYWORD2
+setGATTCharacteristicWrite	KEYWORD2
+addGATTService	KEYWORD2
+addGATTCharacteristic	KEYWORD2
+addGATTCharacteristicDynamic	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+BLE_STATUS_OK	LITERAL1
+BLE_STATUS_DONE	LITERAL1
+BLE_STATUS_CONNECTION_TIMEOUT	LITERAL1
+BLE_STATUS_CONNECTION_ERROR	LITERAL1
+BLE_STATUS_OTHER_ERROR	LITERAL1
+PUBLIC_ADDRESS	LITERAL1
+PRIVAT_ADDRESS	LITERAL1

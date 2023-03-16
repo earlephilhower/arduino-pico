@@ -20,6 +20,7 @@ setBitsPerSample	KEYWORD2
 setFrequency	KEYWORD2
 setBuffers	KEYWORD2
 setLSBJFormat	KEYWORD2
+swapClocks	KEYWORD2
 
 read8	KEYWORD2
 read16	KEYWORD2

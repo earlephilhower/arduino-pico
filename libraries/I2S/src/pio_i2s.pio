@@ -41,6 +41,28 @@ right:
     out pins, 1      side 0b00 ; Last bit of right also has WCLK change
     ; Loop back to beginning...
 
+.program pio_i2s_out_swap
+.side_set 2   ; 0 = wclk, 1=bclk
+
+; The C code should place (number of bits/sample - 2) in Y and
+; also update the SHIFTCTRL to be 24 or 32 as appropriate
+
+;                           +----- BCLK
+;                           |+---- WCLK
+    mov x, y         side 0b10
+left:
+    out pins, 1      side 0b00
+    jmp x--, left    side 0b10
+    out pins, 1      side 0b01 ; Last bit of left has WCLK change per I2S spec
+
+    mov x, y         side 0b11
+right:
+    out pins, 1      side 0b01
+    jmp x--, right   side 0b11
+    out pins, 1      side 0b00 ; Last bit of right also has WCLK change
+    ; Loop back to beginning...
+
+
 
 .program pio_lsbj_out
 .side_set 2   ; 0 = bclk, 1=wclk
@@ -60,6 +82,28 @@ left:
 right:
     out pins, 1      side 0b00
     jmp x--, right   side 0b01
+    out pins, 1      side 0b00
+    ; Loop back to beginning...
+
+
+.program pio_lsbj_out_swap
+.side_set 2   ; 0 = wclk, 1=bclk
+
+; The C code should place (number of bits/sample - 2) in Y and
+; also update the SHIFTCTRL to be 24 or 32 as appropriate
+
+;                           +----- BCLK
+;                           |+---- WCLK
+    mov x, y         side 0b10
+left:
+    out pins, 1      side 0b01
+    jmp x--, left    side 0b11
+    out pins, 1      side 0b01
+
+    mov x, y         side 0b11
+right:
+    out pins, 1      side 0b00
+    jmp x--, right   side 0b10
     out pins, 1      side 0b00
     ; Loop back to beginning...
 
@@ -86,16 +130,39 @@ right:
     in pins, 1       side 0b01 ; Last bit of right also has WCLK change
     ; Loop back to beginning...
 
-    
+
+.program pio_i2s_in_swap ; Note this is the same as _out, just "in" and not "out"
+.side_set 2   ; 0 = wclk, 1=bclk
+
+; The C code should place (number of bits/sample - 2) in Y and
+; also update the SHIFTCTRL to be 24 or 32 as appropriate
+
+;                           +----- BCLK
+;                           |+---- WCLK
+    mov x, y         side 0b00
+left:
+    in pins, 1       side 0b10
+    jmp x--, left    side 0b00
+    in pins, 1       side 0b11 ; Last bit of left has WCLK change per I2S spec
+
+    mov x, y         side 0b01
+right:
+    in pins, 1       side 0b11
+    jmp x--, right   side 0b01
+    in pins, 1       side 0b10 ; Last bit of right also has WCLK change
+    ; Loop back to beginning...
+
+
+
 
 % c-sdk {
 
-static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits) {
+static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = pio_i2s_out_program_get_default_config(offset);
+    pio_sm_config sm_config = swap ? pio_i2s_out_swap_program_get_default_config(offset) : pio_i2s_out_program_get_default_config(offset);
 
     sm_config_set_out_pins(&sm_config, data_pin, 1);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
@@ -111,12 +178,12 @@ static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint 
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
 
-static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits) {
+static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = pio_lsbj_out_program_get_default_config(offset);
+    pio_sm_config sm_config = swap ? pio_lsbj_out_swap_program_get_default_config(offset) : pio_lsbj_out_program_get_default_config(offset);
 
     sm_config_set_out_pins(&sm_config, data_pin, 1);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
@@ -132,12 +199,12 @@ static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
 
-static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits) {
+static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = pio_i2s_in_program_get_default_config(offset);
+    pio_sm_config sm_config = swap ? pio_i2s_in_swap_program_get_default_config(offset) : pio_i2s_in_program_get_default_config(offset);
 
     sm_config_set_in_pins(&sm_config, data_pin);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
