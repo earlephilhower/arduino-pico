@@ -97,7 +97,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
     }
     while (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM)) {
         uint32_t decode = _rxPIO->rxf[_rxSM];
-        decode >>= 33 - _rxBits;
+        decode >>= 34 - _rxBits;
         uint32_t val = 0;
         for (int b = 0; b < _bits + 1; b++) {
             val |= (decode & (1 << (b * 2))) ? 1 << b : 0;
