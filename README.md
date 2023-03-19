@@ -64,13 +64,33 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager
-**Windows Users**: Please do not use the Windows Store version of the actual Arduino application
+## Windows-specific Notes
+Please do not use the Windows Store version of the actual Arduino application
 because it has issues detecting attached Pico boards.  Use the "Windows ZIP" or plain "Windows"
 executable (EXE)  download direct from https://arduino.cc. and allow it to install any device
 drivers it suggests.  Otherwise the Pico board may not be detected.  Also, if trying out the
 2.0 beta Arduino please install the release 1.8 version beforehand to ensure needed device drivers
 are present.  (See #20 for more details.)
 
+## Linux-specific Notes
+Installing Arduino using flatpak (often used by "App Stores" in various Linux
+distributions) will mean it has restricted access to the host. This might cause uploads to fail
+with error messages such as the following:
+
+```
+Scanning for RP2040 devices
+...
+No drive to deploy.
+```
+
+If you encounter this, you will need to either install Arduino in a different manner, or override
+the flatpak sandboxing feature using the following command, then restarting Arduino.
+
+```
+flatpak override --user --filesystem=host:ro cc.arduino.IDE2
+```
+
+## Installation
 Open up the Arduino IDE and go to File->Preferences.
 
 In the dialog that pops up, enter the following URL in the "Additional Boards Manager URLs" field:
