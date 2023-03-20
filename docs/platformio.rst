@@ -52,9 +52,10 @@ Step 2: Enabling long paths in the Windows OS
 
 2. Navigate to Local Computer Policy > Computer Configuration > Administrative Templates > System > Filesystem.
 
-3.  Double click Enable NTFS/Win32 long paths.
+3.  Double click Enable NTFS/Win32 long paths and close the dialog.
 
-<image to go here>
+   .. image:: images/longpath.png
+
 
 Step 3: Reboot the computer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
