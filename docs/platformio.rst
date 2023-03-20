@@ -23,6 +23,45 @@ Especially useful is the `Getting started with VSCode + PlatformIO <https://docs
 
 Hereafter it is assumed that you have a basic understanding of PlatformIO in regards to project creation, project file structure and building and uploading PlatformIO projects, through reading the above pages.
 
+Important steps for Windows users, before installing
+----------------------------------------------------
+
+By default, Windows has a limited path length that is not long enough to fully clone the ``Pico-SDK``'s ``tinyusb`` repository, resulting in error messages like the one below while attempting to fetch the repository.
+
+.. code::
+
+    error: unable to create file '.....' : Filename too long
+    
+To work around this requires performing two steps and rebooting Windows once.  These steps will enable longer file paths at the Windows OS and the ``git`` level.
+
+Step 1: Enabling long paths in git
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Open up a Windows ``cmd`` or ``terminal`` window and execute the following command
+
+.. code::
+
+    git config --system core.longpaths true 
+
+Step 2: Enabling long paths in the Windows OS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(taken from https://www.microfocus.com/documentation/filr/filr-4/filr-desktop/t47bx2ogpfz7.html)
+
+1. Click Window key and type gpedit.msc, then press the Enter key. This launches the Local Group Policy Editor.
+
+2. Navigate to Local Computer Policy > Computer Configuration > Administrative Templates > System > Filesystem.
+
+3.  Double click Enable NTFS/Win32 long paths.
+
+<image to go here>
+
+Step 3: Reboot the computer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once the two prior stages are complete, please do a full reboot or power cycle so that the new settings will take effect.
+
+
 Current state of development
 ----------------------------
 
