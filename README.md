@@ -108,6 +108,12 @@ Type "pico" in the search box and select "Add":
 ![image](https://user-images.githubusercontent.com/11875/111917223-12063680-8a3c-11eb-8884-4f32b8f0feb1.png)
 
 # Installing via GIT
+
+**Windows Users:**  Before installing via `git` on Windows, please read and follow the directions in
+[this link](https://arduino-pico.readthedocs.io/en/latest/platformio.html#important-steps-for-windows-users-before-installing).
+If Win32 long paths are not enabled, and `git` not configured to use them then there
+may be errors when attempting to clone the submodules.
+
 To install via GIT (for latest and greatest versions):
 ````
 mkdir -p ~/Arduino/hardware/pico
