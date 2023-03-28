@@ -36,6 +36,9 @@
                      "name": "Adafruit Feather RP2040 DVI"
                   },
                   {
+                     "name": "Adafruit Feather RP2040 RFM"
+                  },
+                  {
                      "name": "Adafruit ItsyBitsy RP2040"
                   },
                   {
