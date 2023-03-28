@@ -12,6 +12,16 @@
 // 'Boot0' button also on GPIO #7
 #define PIN_BUTTON     (7u)
 
+// DVI connector
+#define PIN_CKN (16u)
+#define PIN_CKP (17u)
+#define PIN_D0N (18u)
+#define PIN_D0P (19u)
+#define PIN_D1N (20u)
+#define PIN_D1P (21u)
+#define PIN_D2N (22u)
+#define PIN_D2P (23u)
+
 // Serial
 #define PIN_SERIAL1_TX (0u)
 #define PIN_SERIAL1_RX (1u)
