@@ -12,15 +12,15 @@
 // 'Boot0' button also on GPIO #7
 #define PIN_BUTTON     (7u)
 
-// SCORPIO end connector (level-shifted I/O)
-#define PIN_NEOPIXEL0 (16u)
-#define PIN_NEOPIXEL1 (17u)
-#define PIN_NEOPIXEL2 (18u)
-#define PIN_NEOPIXEL3 (19u)
-#define PIN_NEOPIXEL4 (20u)
-#define PIN_NEOPIXEL5 (21u)
-#define PIN_NEOPIXEL6 (22u)
-#define PIN_NEOPIXEL7 (23u)
+// RFM transceiver module
+#define PIN_RFM_CS   (16u)
+#define PIN_RFM_RST  (17u)
+#define PIN_RFM_DIO5 (18u)
+#define PIN_RFM_DIO3 (19u)
+#define PIN_RFM_DIO4 (20u)
+#define PIN_RFM_DIO0 (21u)
+#define PIN_RFM_DIO1 (22u)
+#define PIN_RFM_DIO2 (23u)
 
 // Serial
 #define PIN_SERIAL1_TX (0u)
