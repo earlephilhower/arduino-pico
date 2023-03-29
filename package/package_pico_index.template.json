@@ -39,6 +39,12 @@
                      "name": "Adafruit Feather RP2040 RFM"
                   },
                   {
+                     "name": "Adafruit Feather RP2040 ThinkINK"
+                  },
+                  {
+                     "name": "Adafruit Feather RP2040 USB Host"
+                  },
+                  {
                      "name": "Adafruit ItsyBitsy RP2040"
                   },
                   {
