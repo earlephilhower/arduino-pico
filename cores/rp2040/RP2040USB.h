@@ -23,9 +23,15 @@
 
 // Weak function definitions for each type of endpoint
 extern void __USBInstallSerial() __attribute__((weak));
+
 extern void __USBInstallKeyboard() __attribute__((weak));
+
 extern void __USBInstallJoystick() __attribute__((weak));
+
+// One or the other allowed, not both
 extern void __USBInstallMouse() __attribute__((weak));
+extern void __USBInstallAbsoluteMouse() __attribute__((weak));
+
 extern void __USBInstallMassStorage() __attribute__((weak));
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't

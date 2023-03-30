@@ -36,6 +36,7 @@
 #include "pico/usb_reset_interface.h"
 #include "hardware/watchdog.h"
 #include "pico/bootrom.h"
+#include "sdkoverride/tusb_absmouse.h"
 #include <device/usbd_pvt.h>
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't
@@ -100,7 +101,7 @@ const uint8_t *tud_descriptor_device_cb(void) {
         .iSerialNumber = USBD_STR_SERIAL,
         .bNumConfigurations = 1
     };
-    if (__USBInstallSerial && !__USBInstallKeyboard && !__USBInstallMouse && !__USBInstallJoystick && !__USBInstallMassStorage) {
+    if (__USBInstallSerial && !__USBInstallKeyboard && !__USBInstallMouse && !__USBInstallAbsoluteMouse && !__USBInstallJoystick && !__USBInstallMassStorage) {
         // Can use as-is, this is the default USB case
         return (const uint8_t *)&usbd_desc_device;
     }
@@ -108,7 +109,7 @@ const uint8_t *tud_descriptor_device_cb(void) {
     if (__USBInstallKeyboard) {
         usbd_desc_device.idProduct |= 0x8000;
     }
-    if (__USBInstallMouse) {
+    if (__USBInstallMouse || __USBInstallAbsoluteMouse) {
         usbd_desc_device.idProduct |= 0x4000;
     }
     if (__USBInstallJoystick) {
@@ -137,7 +138,7 @@ int __USBGetJoystickReportID() {
     if (__USBInstallKeyboard) {
         i++;
     }
-    if (__USBInstallMouse) {
+    if (__USBInstallMouse || __USBInstallAbsoluteMouse) {
         i++;
     }
     return i;
@@ -156,6 +157,7 @@ static uint8_t *GetDescHIDReport(int *len) {
 void __SetupDescHIDReport() {
     //allocate memory for the HID report descriptors. We don't use them, but need the size here.
     uint8_t desc_hid_report_mouse[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1)) };
+    uint8_t desc_hid_report_absmouse[] = { TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)), TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2)) };
     int size = 0;
@@ -166,6 +168,8 @@ void __SetupDescHIDReport() {
     }
     if (__USBInstallMouse) {
         size += sizeof(desc_hid_report_mouse);
+    } else if (__USBInstallAbsoluteMouse) {
+        size += sizeof(desc_hid_report_absmouse);
     }
     if (__USBInstallJoystick) {
         size += sizeof(desc_hid_report_joystick);
@@ -199,6 +203,14 @@ void __SetupDescHIDReport() {
             } else {
                 memcpy(__hid_report, desc_hid_report_mouse, sizeof(desc_hid_report_mouse));
             }
+        } else if (__USBInstallAbsoluteMouse) {
+            //determine if we need an offset (USB keyboard is installed)
+            if (__USBInstallKeyboard) {
+                uint8_t desc_local[] = { TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(3)) };
+                memcpy(__hid_report + sizeof(desc_hid_report_keyboard), desc_local, sizeof(desc_local));
+            } else {
+                memcpy(__hid_report, desc_hid_report_absmouse, sizeof(desc_hid_report_absmouse));
+            }
         }
 
         //3.) joystick descriptor. 2 additional checks are necessary for mouse and/or keyboard
@@ -212,6 +224,9 @@ void __SetupDescHIDReport() {
             if (__USBInstallMouse) {
                 reportid++;
                 offset += sizeof(desc_hid_report_mouse);
+            } else if (__USBInstallAbsoluteMouse) {
+                reportid++;
+                offset += sizeof(desc_hid_report_absmouse);
             }
             uint8_t desc_local[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(reportid)) };
             memcpy(__hid_report + offset, desc_local, sizeof(desc_local));
@@ -235,7 +250,7 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
 
 void __SetupUSBDescriptor() {
     if (!usbd_desc_cfg) {
-        bool hasHID = __USBInstallKeyboard || __USBInstallMouse || __USBInstallJoystick;
+        bool hasHID = __USBInstallKeyboard || __USBInstallMouse || __USBInstallAbsoluteMouse || __USBInstallJoystick;
 
         uint8_t interface_count = (__USBInstallSerial ? 2 : 0) + (hasHID ? 1 : 0) + (__USBInstallMassStorage ? 1 : 0);
 

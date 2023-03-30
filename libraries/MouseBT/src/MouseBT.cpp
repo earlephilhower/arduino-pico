@@ -20,14 +20,16 @@
 */
 
 #include "MouseBT.h"
+#include <sdkoverride/tusb_absmouse.h>
 #include <PicoBluetoothHID.h>
 
-MouseBT_::MouseBT_(void) {
-    /* noop */
+MouseBT_::MouseBT_(bool absolute) : HID_Mouse(absolute) {
+    _running = false;
 }
 
 #define REPORT_ID 0x01
 const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
+const uint8_t desc_absmouse[] = {TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(REPORT_ID))};
 
 void MouseBT_::begin(const char *localName, const char *hidName) {
     if (!localName) {
@@ -36,21 +38,41 @@ void MouseBT_::begin(const char *localName, const char *hidName) {
     if (!hidName) {
         hidName = localName;
     }
-    PicoBluetoothHID.startHID(localName, hidName, 0x2580, 33, desc_mouse, sizeof(desc_mouse));
+    PicoBluetoothHID.startHID(localName, hidName, 0x2580, 33, _absolute ? desc_absmouse : desc_mouse, _absolute ? sizeof(desc_absmouse) : sizeof(desc_mouse));
+    _running = true;
 }
 
 void MouseBT_::end(void) {
-    PicoBluetoothHID.end();
+    if (_running) {
+        PicoBluetoothHID.end();
+    }
+    _running = false;
+}
+
+void MouseBT_::setAbsolute(bool absolute) {
+    if (!_running) {
+        _absolute = absolute;
+    }
 }
 
 void MouseBT_::move(int x, int y, signed char wheel) {
-    hid_mouse_report_t data;
-    data.buttons = _buttons;
-    data.x = limit_xy(x);
-    data.y = limit_xy(y);
-    data.wheel = wheel;
-    data.pan = 0;
-    PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+    if (!_absolute) {
+        hid_mouse_report_t data;
+        data.buttons = _buttons;
+        data.x = limit_xy(x);
+        data.y = limit_xy(y);
+        data.wheel = wheel;
+        data.pan = 0;
+        PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+    } else {
+        hid_abs_mouse_report_t data;
+        data.buttons = _buttons;
+        data.x = limit_xy(x);
+        data.y = limit_xy(y);
+        data.wheel = wheel;
+        data.pan = 0;
+        PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+    }
 }
 
 MouseBT_ MouseBT;

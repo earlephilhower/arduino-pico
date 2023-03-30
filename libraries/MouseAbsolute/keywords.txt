@@ -6,7 +6,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-MouseBLE	KEYWORD1
+MouseAbsolute	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -18,8 +18,6 @@ move	KEYWORD2
 press	KEYWORD2
 release	KEYWORD2
 isPressed	KEYWORD2
-setBattery	KEYWORD2
-setAbsolute	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
