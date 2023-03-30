@@ -1,5 +1,5 @@
 /*
-    MouseBT.h
+    Mouse.h
 
     Copyright (c) 2015, Arduino LLC
     Original code (pre-library): Copyright (c) 2011, Peter Barrett
@@ -19,22 +19,16 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef MOUSEBT_h
-#define MOUSEBT_h
+#ifndef MOUSEABSOLUTE_h
+#define MOUSEABSOLUTE_h
 
 #include <HID_Mouse.h>
 
-class MouseBT_ : public HID_Mouse {
-private:
-    bool _running;
-
+class MouseAbsolute_ : public HID_Mouse {
 public:
-    MouseBT_(bool absolute = false);
-    void begin(const char *localName = nullptr, const char *hidName = nullptr);
-    void end(void);
+    MouseAbsolute_(void);
     virtual void move(int x, int y, signed char wheel = 0) override;
-    void setAbsolute(bool absolute = true);
 };
-extern MouseBT_ MouseBT;
+extern MouseAbsolute_ MouseAbsolute;
 
 #endif

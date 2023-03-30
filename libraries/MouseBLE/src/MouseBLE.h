@@ -25,12 +25,16 @@
 #include <HID_Mouse.h>
 
 class MouseBLE_ : public HID_Mouse {
+private:
+    bool _running;
+
 public:
-    MouseBLE_(void);
+    MouseBLE_(bool absolute = false);
     void begin(const char *localName = nullptr, const char *hidName = nullptr);
     void end(void);
     virtual void move(int x, int y, signed char wheel = 0) override;
     void setBattery(int lvl);
+    void setAbsolute(bool absolute = true);
 };
 extern MouseBLE_ MouseBLE;
 

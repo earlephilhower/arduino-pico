@@ -1,5 +1,5 @@
 /*
-    MouseBT.h
+    Mouse.cpp
 
     Copyright (c) 2015, Arduino LLC
     Original code (pre-library): Copyright (c) 2011, Peter Barrett
@@ -19,22 +19,27 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef MOUSEBT_h
-#define MOUSEBT_h
+#include "MouseAbsolute.h"
+#include <RP2040USB.h>
 
-#include <HID_Mouse.h>
+#include "tusb.h"
+#include "class/hid/hid_device.h"
+#include <sdkoverride/tusb_absmouse.h>
 
-class MouseBT_ : public HID_Mouse {
-private:
-    bool _running;
+// Weak function override to add our descriptor to the TinyUSB list
+void __USBInstallAbsoluteMouse() { /* noop */ }
 
-public:
-    MouseBT_(bool absolute = false);
-    void begin(const char *localName = nullptr, const char *hidName = nullptr);
-    void end(void);
-    virtual void move(int x, int y, signed char wheel = 0) override;
-    void setAbsolute(bool absolute = true);
-};
-extern MouseBT_ MouseBT;
+MouseAbsolute_::MouseAbsolute_(void) : HID_Mouse(true) {
+    /* noop */
+}
 
-#endif
+void MouseAbsolute_::move(int x, int y, signed char wheel) {
+    CoreMutex m(&__usb_mutex);
+    tud_task();
+    if (tud_hid_ready()) {
+        tud_hid_abs_mouse_report(__USBGetMouseReportID(), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
+    }
+    tud_task();
+}
+
+MouseAbsolute_ MouseAbsolute;
