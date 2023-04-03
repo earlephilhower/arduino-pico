@@ -40,6 +40,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Invector Labs Challenger RP2040 LoRa
 * Invector Labs Challenger RP2040 SubGHz
 * Invector Labs Challenger RP2040 SD/RTC
+* Invector Labs Challenger RP2040 UWB
 * Invector Labs RPICO32
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
