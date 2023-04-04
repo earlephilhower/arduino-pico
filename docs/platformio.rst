@@ -274,6 +274,17 @@ The lwIP stack can be configured to support only IPv4 (default) or additionally 
 
 to the ``platformio.ini``.
 
+Bluetooth Stack
+---------------
+
+The Bluetooth Classic (BTC) and Bluetooth Low Energy (BLE) stack can be activated as follows:
+
+.. code:: ini
+
+    ; BTC and BLE
+    build_flags = -DPIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH
+
+to the ``platformio.ini``.
 
 Selecting a different core version
 ----------------------------------
