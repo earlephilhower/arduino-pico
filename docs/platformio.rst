@@ -277,7 +277,7 @@ to the ``platformio.ini``.
 Bluetooth Stack
 ---------------
 
-The Bluetooth Classic (BTC) and Bluetooth Low Energy (BLE) stack can be activated as follows:
+The Bluetooth Classic (BTC) and Bluetooth Low Energy (BLE) stack can be activated by adding
 
 .. code:: ini
 
