@@ -1,5 +1,5 @@
 // LE Peripheral Example - not working yet
-#include <BTstack.h>
+#include <BTstackLib.h>
 #include <SPI.h>
 
 /*

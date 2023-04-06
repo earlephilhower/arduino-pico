@@ -1,5 +1,4 @@
-
-#include <BTstack.h>
+#include <BTstackLib.h>
 #include <SPI.h>
 
 /* EXAMPLE_START(iBeaconScanner): iBeacon Scanner
