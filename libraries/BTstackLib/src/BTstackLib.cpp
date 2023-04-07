@@ -13,7 +13,7 @@
 //#include <Reset.h>  // also provides NVIC_SystemReset
 #endif
 
-#include "BTstack.h"
+#include "BTstackLib.h"
 
 #include "btstack_memory.h"
 #include "hal_tick.h"
