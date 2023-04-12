@@ -1,6 +1,9 @@
 /**
     Arduino Wrapper for BTstack
 */
+
+#include <_needsbt.h>
+
 #ifndef __ARDUINO_BTSTACK_H
 #define __ARDUINO_BTSTACK_H
 
