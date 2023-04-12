@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <_needsbt.h>
 #include <Arduino.h>
 #include <functional>
 #include <pico/cyw43_arch.h>
