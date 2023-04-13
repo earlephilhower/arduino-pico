@@ -48,6 +48,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * nullbits Bit-C PRO
 * Pimoroni PGA2040
 * Seeed XIAO RP2040
+* Seeed Indicator RP2040
 * Solder Party RP2040 Stamp
 * SparkFun ProMicro RP2040
 * SparkFun Thing Plus RP2040
