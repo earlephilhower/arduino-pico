@@ -42,6 +42,7 @@
     "wait_for_upload_port": false,
     "protocol": "picotool",
     "protocols": [
+      "blackmagic",
       "cmsis-dap",
       "jlink",
       "raspberrypi-swd",
