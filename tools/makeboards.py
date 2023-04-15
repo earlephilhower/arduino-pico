@@ -292,6 +292,7 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
     "wait_for_upload_port": false,
     "protocol": "picotool",
     "protocols": [
+      "blackmagic",
       "cmsis-dap",
       "jlink",
       "raspberrypi-swd",
