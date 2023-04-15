@@ -348,7 +348,7 @@ These values can also be used in ``upload_protocol`` if you want PlatformIO to u
 Especially the PicoProbe method is convenient when you have two Raspberry Pi Pico boards. One of them can be flashed with the PicoProbe firmware (`documentation <https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html#debugging-using-another-raspberry-pi-pico>`__) and is then connected to the target Raspberry Pi Pico board (see `documentation <https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf>`__ chapter "Picoprobe Wiring"). Remember that on Windows, you have to use `Zadig <https://zadig.akeo.ie/>`_ to also load "WinUSB" drivers for the "Picoprobe (Interface 2)" device so that OpenOCD can speak to it.
 
 .. note::
-    Newer PicoProbe firmware versions have dropped the propretiary "PicoProbe" USB communication protocol and emulate a **CMSIS-DAP** instead. Meaning, you have to use ``debug_tool = cmsis-dap`` for these newer firmwares, such as those obtained from `raspberrypi/picoprobe <https://github.com/raspberrypi/picoprobe/releases>`__
+    Newer PicoProbe firmware versions have dropped the proprietary "PicoProbe" USB communication protocol and emulate a **CMSIS-DAP** instead. Meaning, you have to use ``debug_tool = cmsis-dap`` for these newer firmwares, such as those obtained from `raspberrypi/picoprobe <https://github.com/raspberrypi/picoprobe/releases>`__
 
 With that set up, debugging can be started via the left debugging sidebar and works nicely: Setup breakpoints, inspect the value of variables in the code, step through the code line by line. When a breakpoint is hit or execution is halted, you can even see the execution state both Cortex-M0+ cores of the RP2040.
 
