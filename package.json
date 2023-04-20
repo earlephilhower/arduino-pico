@@ -12,6 +12,6 @@
   "homepage": "https://arduino-pico.readthedocs.io/en/latest/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TheRacc2/arduino-pico"
+    "url": "https://github.com/earlephilhower/arduino-pico"
   }
 }
