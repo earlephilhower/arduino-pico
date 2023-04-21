@@ -3,18 +3,18 @@
     "arduino": {
       "earlephilhower": {
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
-        "usb_vid": "0x2E8A",
-        "usb_pid": "0x000A"
+        "usb_vid": "0x2886",
+        "usb_pid": "0x0050"
       }
     },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_SEEED_XIAO_RP2040 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250",
+    "extra_flags": "-D ARDUINO_SEEED_INDICATOR_RP2040 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250",
     "f_cpu": "133000000L",
     "hwids": [
       [
-        "0x2886",
-        "0x0050"
+        "0x2E8A",
+        "0x00C0"
       ],
       [
         "0x2886",
