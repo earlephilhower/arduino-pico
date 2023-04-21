@@ -126,6 +126,7 @@ env.Append(
         ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
         "ARM_MATH_CM0_FAMILY",
         "ARM_MATH_CM0_PLUS",
+        "TARGET_RP2040"
     ],
 
     CPPPATH=[
