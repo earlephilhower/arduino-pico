@@ -2,6 +2,8 @@
 # https://arduino.github.io/arduino-cli/library-specification/#keywords
 # Formatted by a single true tab (not spaces)
 
+FreeRTOS	KEYWORD1
+
 # Datatypes (KEYWORD1)
 StackType_t	KEYWORD1
 BaseType_t	KEYWORD1
