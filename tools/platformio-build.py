@@ -128,7 +128,7 @@ env.Append(
         "ARM_MATH_CM0_PLUS",
         "TARGET_RP2040",
         # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
-        # so it's the  original value for the full flash.
+        # so it's the original value for the full flash.
         ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
     ],
 
