@@ -45,6 +45,12 @@
                      "name": "Adafruit Feather RP2040 USB Host"
                   },
                   {
+                     "name": "Adafruit Feather RP2040 CAN"
+                  },
+                  {
+                     "name": "Adafruit Feather RP2040 Prop-Maker"
+                  },
+                  {
                      "name": "Adafruit ItsyBitsy RP2040"
                   },
                   {
