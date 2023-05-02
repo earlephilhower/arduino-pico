@@ -207,3 +207,7 @@
 -Wl,--wrap=cyw43_tcpip_link_status
 -Wl,--wrap=cyw43_cb_tcpip_init
 -Wl,--wrap=cyw43_cb_tcpip_deinit
+
+-Wl,--wrap=get_rand_64
+-Wl,--wrap=get_rand_32
+-Wl,--wrap=sleep_until
