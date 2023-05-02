@@ -33,7 +33,9 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
         if (_option & FromISR) {
             __freertos_mutex_take_from_isr(m);
         } else {
-            __freertos_mutex_take(m);
+            if (!__freertos_mutex_try_take(m)) {
+                return;
+            }
         }
     } else {
         uint32_t owner;
