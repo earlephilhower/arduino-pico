@@ -216,16 +216,20 @@ void vApplicationTickHook(void) {
     Private function to enable board led to use it in application hooks
 */
 void prvSetMainLedOn(void) {
+#ifdef LED_BUILTIN
     gpio_init(LED_BUILTIN);
     gpio_set_dir(LED_BUILTIN, true);
     gpio_put(LED_BUILTIN, true);
+#endif
 }
 
 /**
     Private function to blink board led to use it in application hooks
 */
 void prvBlinkMainLed(void) {
+#ifdef LED_BUILTIN
     gpio_put(LED_BUILTIN, !gpio_get(LED_BUILTIN));
+#endif
 }
 
 #endif
@@ -376,9 +380,10 @@ static void __usb(void *param) {
     __usbInitted = true;
 
     while (true) {
-        if (mutex_try_enter(&__usb_mutex, NULL)) {
+        auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
+        if (xSemaphoreTake(m, 0)) {
             tud_task();
-            mutex_exit(&__usb_mutex);
+            xSemaphoreGive(m);
         }
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }

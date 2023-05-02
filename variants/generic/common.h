@@ -6,7 +6,9 @@
 #define NUM_ANALOG_OUTPUTS  (0u)
 #define ADC_RESOLUTION      (12u)
 
+#ifdef PIN_LED
 #define LED_BUILTIN PIN_LED
+#endif
 
 static const uint8_t D0 = (0u);
 static const uint8_t D1 = (1u);
