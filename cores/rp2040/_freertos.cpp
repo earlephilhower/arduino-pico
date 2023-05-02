@@ -21,6 +21,7 @@
 #include "_freertos.h"
 #include "pico/mutex.h"
 #include <stdlib.h>
+#include "Arduino.h"
 
 typedef struct {
     mutex_t *src;
@@ -58,4 +59,46 @@ SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
         }
     }
     return nullptr; // Need to make space for more mutex maps!
+}
+
+
+// The HW Random code needs a precise sleep_until() in order to assure it
+// grabs the ROSC bit when it wants.  Unfortunately, under FreeRTOS the
+// sleep_until() becomes imprecise and the "did I get the bit when I wanted"
+// check in the pico_rand code always fails and you get an infinite loop.
+
+// This block wraps the 2 get_rand calls to set a flag to convert
+// sleep_until() (which can do a task swap and cause bad timing) into a
+// busy wait.
+
+extern "C" {
+    static bool __inRand = false;
+
+    extern uint64_t __real_get_rand_64();
+    uint64_t __wrap_get_rand_64() {
+        if (__isFreeRTOS) {
+            rp2040.idleOtherCore();
+            __inRand = true;
+            auto r = __real_get_rand_64();
+            __inRand = false;
+            rp2040.resumeOtherCore();
+            return r;
+        } else {
+            return __real_get_rand_64();
+        }
+    }
+
+    uint32_t __wrap_get_rand_32() {
+        return (uint32_t) __wrap_get_rand_64();
+    }
+
+    extern void __real_sleep_until(absolute_time_t t);
+    void __wrap_sleep_until(absolute_time_t t) {
+        if (__inRand) {
+            busy_wait_until(t);
+        } else {
+            __real_sleep_until(t);
+        }
+    }
+
 }
