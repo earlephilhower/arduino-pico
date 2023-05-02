@@ -380,9 +380,10 @@ static void __usb(void *param) {
     __usbInitted = true;
 
     while (true) {
-        if (mutex_try_enter(&__usb_mutex, NULL)) {
+        auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
+        if (xSemaphoreTake(m, 0)) {
             tud_task();
-            mutex_exit(&__usb_mutex);
+            xSemaphoreGive(m);
         }
         vTaskDelay(1 / portTICK_PERIOD_MS);
     }
