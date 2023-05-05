@@ -342,6 +342,7 @@ To specify the debugging adapter, use ``debug_tool`` (`documentation <https://do
 * ``jlink``
 * ``raspberrypi-swd``
 * ``blackmagic``
+* ``pico-debug``
 
 These values can also be used in ``upload_protocol`` if you want PlatformIO to upload the regular firmware through this method, which you likely want.
 
@@ -361,6 +362,25 @@ For further information on customizing debug options, like the initial breakpoin
 
     You can obtain precompiled binaries from `here <https://github.com/blackmagic-debug/blackmagic/issues/1364#issuecomment-1503372723>`__. A flashing guide is available `here <https://primalcortex.wordpress.com/2017/06/13/building-a-black-magic-debug-probe/>`__. You then have to configure the target serial port ("GDB port") in your project per `documentation <https://docs.platformio.org/en/latest/plus/debug-tools/blackmagic.html#debugging-tool-blackmagic>`__.
 
+.. note:: 
+    For the pico-debug (`download <https://github.com/majbthrd/pico-debug/releases>`__) debugging way, *which needs to no additional debug probe*, add this snippet to your ``platformio.ini`` and follow the given procedure:
+
+    .. code:: ini
+
+        upload_protocol = pico-debug
+        debug_tool = pico-debug
+        build_flags = -DPIO_FRAMEWORK_ARDUINO_NO_USB
+
+    1. Build your firmware normally
+    2. Plug in the Pico in BOOTSEL mode
+    3. Drag and drop your ``.pio/build/<env>/firmware.uf2`` onto the boot drive
+    4. Unplug and replug your Pico back into BOOTSEL mode for the second time
+    5. Drag and drop the downloaded ``pico-debug-gimmecache.uf2`` file onto the boot drive
+    6. A CMSIS-DAP device should now appear on your computer
+    7. Start debugging via the debug sidebar as normal
+
+    Note the restrictions: The second core cannot be used, the USB port cannot be used (no USB serial, only UART serial), 16KB less RAM is available.
+
 Filesystem Uploading
 --------------------
 
@@ -375,3 +395,7 @@ The files you want to upload should be placed in a folder called ``data`` inside
 The task "Build Filesystem Image" will take all files in the data directory and create a ``littlefs.bin`` file from it using the ``mklittlefs`` tool.
 
 The task "Upload Filesystem Image" will upload the filesystem image to the Pico via the specified ``upload_protocol``. 
+
+.. note:: 
+    Set the space available for the filesystem in the ``platformio.ini`` using e.g., ``board_build.filesystem_size = 0.5m``, or filesystem
+    creation will fail!

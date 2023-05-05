@@ -21,8 +21,17 @@ platform = env.PioPlatform()
 board = env.BoardConfig()
 upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
 #ram_size = board.get("upload.maximum_ram_size") # PlatformIO gives 264K here
-# override to correct 256K for RAM section in linkerscript
-ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y). 
+# but the RAM size we need is without the SCRATCH memory.
+if upload_protocol == "pico-debug":
+    ram_size = 240 * 1024 # pico-debug needs 16K of the upper memory for itself with pico-debug-gimmecache.uf2
+    # this only works when the user disables the USB stack.
+    if "PIO_FRAMEWORK_ARDUINO_NO_USB" not in env.Flatten(env.get("CPPDEFINES", [])):
+        sys.stderr.write("Must define PIO_FRAMEWORK_ARDUINO_NO_USB when using pico-debug!\n")
+        env.Exit(-1)
+else:
+    ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y).
+# Update available RAM size
+board.update("upload.maximum_ram_size", ram_size)
 
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
@@ -182,7 +191,6 @@ else:
 
 
 def configure_usb_flags(cpp_defines):
-    global ram_size
     if "USE_TINYUSB" in cpp_defines:
         env.Append(CPPPATH=[os.path.join(
             FRAMEWORK_DIR, "libraries", "Adafruit_TinyUSB_Arduino", "src", "arduino")])
@@ -221,10 +229,9 @@ def configure_usb_flags(cpp_defines):
     pidtouse = usb_pid
     if upload_protocol == "picoprobe": 
         pidtouse = '0x0004'
-    elif upload_protocol == "picodebug":
+    elif upload_protocol == "pico-debug":
         vidtouse = '0x1209'
         pidtouse = '0x2488'
-        ram_size = 240 * 1024
 
     env.Append(CPPDEFINES=[
         ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
@@ -245,7 +252,6 @@ def configure_usb_flags(cpp_defines):
     hw_ids[0][0] = vidtouse
     hw_ids[0][1] = pidtouse
     board.update("build.hwids", hw_ids)
-    board.update("upload.maximum_ram_size", ram_size)
 
 def configure_network_flags(cpp_defines):
     env.Append(CPPDEFINES=[

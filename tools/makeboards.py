@@ -298,7 +298,8 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
       "jlink",
       "raspberrypi-swd",
       "picotool",
-      "picoprobe"
+      "picoprobe",
+      "pico-debug"
     ]
   },
   "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
