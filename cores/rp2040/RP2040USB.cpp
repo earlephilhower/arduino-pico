@@ -130,13 +130,13 @@ int __USBGetKeyboardReportID() {
 }
 
 int __USBGetMouseReportID() {
-    return __USBInstallKeyboard ? 2 : 1;
+    return __USBInstallKeyboard ? 3 : 1;
 }
 
 int __USBGetJoystickReportID() {
     int i = 1;
     if (__USBInstallKeyboard) {
-        i++;
+        i += 2;
     }
     if (__USBInstallMouse || __USBInstallAbsoluteMouse) {
         i++;
