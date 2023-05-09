@@ -550,6 +550,59 @@ usbd_class_driver_t const *usbd_app_driver_get_cb(uint8_t *driver_count) {
     *driver_count = 1;
     return &_resetd_driver;
 }
+
+#elif defined NO_USB
+
+// will ensure backward compatibility with existing code when using pico-debug
+
+#warning "NO_USB selected. No output to Serial will occur!"
+
+#include <Arduino.h>
+
+void SerialUSB::begin(unsigned long baud) {
+}
+
+void SerialUSB::end() {
+
+}
+
+int SerialUSB::peek() {
+    return 0;
+}
+
+int SerialUSB::read() {
+    return -1;
+}
+
+int SerialUSB::available() {
+    return 0;
+}
+
+int SerialUSB::availableForWrite() {
+    return 0;
+}
+
+void SerialUSB::flush() {
+
+}
+
+size_t SerialUSB::write(uint8_t c) {
+    (void) c;
+    return 0;
+}
+
+size_t SerialUSB::write(const uint8_t *buf, size_t length) {
+    (void) buf;
+    (void) length;
+    return 0;
+}
+
+SerialUSB::operator bool() {
+    return false;
+}
+
+SerialUSB Serial;
+
 #endif
 
 
