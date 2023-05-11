@@ -84,7 +84,7 @@ code that only runs on this core, use the following define.
 
 .. code:: cpp
 
-        #if defined(ARDUINO_ARCH_RP2040)
+        #if defined(ARDUINO_ARCH_RP2040) && !defined(__MBED__)
         ~~~ your changes ~~~
         #endif
 
