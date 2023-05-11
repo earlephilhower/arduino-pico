@@ -396,9 +396,14 @@ BD_ADDR::BD_ADDR(void) {
 }
 
 BD_ADDR::BD_ADDR(const char * address_string, BD_ADDR_TYPE address_type) : address_type(address_type) {
-    (void) address_string;
-    // TODO: implement
-    // log_error("BD_ADDR::BD_ADDR(const char *, BD_ADDR_TYPE) not implemented yet!");
+    for (int i = 0; i < 6; i++) {
+        this->address[i] = strtoul(address_string, NULL, 16);
+        address_string = strchr(address_string, ':');
+        if (address_string == NULL || *address_string == '\0') {
+            break;
+        }
+        address_string++;
+    }
 }
 
 BD_ADDR::BD_ADDR(const uint8_t address[6], BD_ADDR_TYPE address_type) : address_type(address_type) {
