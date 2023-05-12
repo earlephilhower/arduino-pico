@@ -407,6 +407,10 @@ void __USBStart() {
 // Interfaces for the main core to use FreeRTOS mutexes
 extern "C" {
 
+    bool __freertos_check_if_in_isr() {
+        return portCHECK_IF_IN_ISR();
+    }
+
     SemaphoreHandle_t __freertos_mutex_create() {
         return xSemaphoreCreateMutex();
     }
