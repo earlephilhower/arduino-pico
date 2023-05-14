@@ -108,6 +108,41 @@ extern "C" void yield() {
     taskYIELD();
 }
 
+static TaskHandle_t __idleCoreTask[2];
+extern "C" {
+    extern volatile bool __otherCoreIdled;
+    extern int __holdUpPendSV;
+}
+
+static void __no_inline_not_in_flash_func(IdleOtherCore)(void *param) {
+    (void) param;
+    while (true) {
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        __holdUpPendSV = 1;
+        vTaskPreemptionDisable(nullptr);
+        __otherCoreIdled = true;
+        while (__otherCoreIdled) {
+            /* noop */
+        }
+        vTaskPreemptionEnable(nullptr);
+        __holdUpPendSV = 0;
+    }
+}
+
+extern "C" void __no_inline_not_in_flash_func(__freertos_idle_other_core)() {
+    vTaskPreemptionDisable(nullptr);
+    xTaskNotifyGive(__idleCoreTask[ 1 ^ sio_hw->cpuid ]);
+    while (!__otherCoreIdled) {
+        /* noop */
+    }
+}
+
+extern "C" void __no_inline_not_in_flash_func(__freertos_resume_other_core)() {
+    __otherCoreIdled = false;
+    vTaskPreemptionEnable(nullptr);
+}
+
+
 extern mutex_t __usb_mutex;
 static TaskHandle_t __usbTask;
 static void __usb(void *param);
@@ -123,6 +158,12 @@ void startFreeRTOS(void) {
         xTaskCreate(__core1, "CORE1", 1024, 0, configMAX_PRIORITIES / 2, &c1);
         vTaskCoreAffinitySet(c1, 1 << 1);
     }
+
+    // Create the idle-other-core tasks (for when flash is being written)
+    xTaskCreate(IdleOtherCore, "IdleCore0", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 0);
+    vTaskCoreAffinitySet(__idleCoreTask[0], 1 << 0);
+    xTaskCreate(IdleOtherCore, "IdleCore1", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 1);
+    vTaskCoreAffinitySet(__idleCoreTask[1], 1 << 1);
 
     // Initialise and run the freeRTOS scheduler. Execution should never return here.
     __freeRTOSinitted = true;
@@ -381,8 +422,12 @@ static void __usb(void *param) {
 
     while (true) {
         auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
-        if (xSemaphoreTake(m, 0)) {
+        if (!__holdUpPendSV && !__otherCoreIdled && xSemaphoreTake(m, 0)) {
+            vTaskPreemptionDisable(nullptr);
+            __holdUpPendSV = 1;
             tud_task();
+            __holdUpPendSV = 0;
+            vTaskPreemptionEnable(nullptr);
             xSemaphoreGive(m);
         }
         vTaskDelay(1 / portTICK_PERIOD_MS);
@@ -399,7 +444,7 @@ void __USBStart() {
     __SetupUSBDescriptor();
 
     // Make highest prio and locked to core 0
-    xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 1, &__usbTask);
+    xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 2, &__usbTask);
     vTaskCoreAffinitySet(__usbTask, 1 << 0);
 }
 
