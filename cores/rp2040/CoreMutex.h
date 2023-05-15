@@ -27,8 +27,7 @@
 #include "_freertos.h"
 
 enum {
-    DebugEnable = 1,
-    FromISR = 1 << 1,
+    DebugEnable = 1
 };
 
 class CoreMutex {
