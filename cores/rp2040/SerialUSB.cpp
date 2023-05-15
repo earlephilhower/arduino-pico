@@ -48,6 +48,17 @@ void __USBInstallSerial() { /* noop */ }
 extern void serialEvent() __attribute__((weak));
 
 
+static void freertos_safe_tud_task() {
+    if (__isFreeRTOS) {
+        vTaskPreemptionDisable(nullptr);
+        tud_task();
+        vTaskPreemptionEnable(nullptr);
+    } else {
+        tud_task();
+    }
+}
+
+
 extern mutex_t __usb_mutex;
 
 void SerialUSB::begin(unsigned long baud) {
@@ -71,7 +82,7 @@ int SerialUSB::peek() {
     }
 
     uint8_t c;
-    tud_task();
+    freertos_safe_tud_task();
     return tud_cdc_peek(&c) ? (int) c : -1;
 }
 
@@ -81,7 +92,7 @@ int SerialUSB::read() {
         return -1;
     }
 
-    tud_task();
+    freertos_safe_tud_task();
     if (tud_cdc_available()) {
         return tud_cdc_read_char();
     }
@@ -94,7 +105,7 @@ int SerialUSB::available() {
         return 0;
     }
 
-    tud_task();
+    freertos_safe_tud_task();
     return tud_cdc_available();
 }
 
@@ -104,7 +115,7 @@ int SerialUSB::availableForWrite() {
         return 0;
     }
 
-    tud_task();
+    freertos_safe_tud_task();
     return tud_cdc_write_available();
 }
 
@@ -115,7 +126,7 @@ void SerialUSB::flush() {
     }
 
     tud_cdc_write_flush();
-    tud_task();
+    freertos_safe_tud_task();
 }
 
 size_t SerialUSB::write(uint8_t c) {
@@ -139,13 +150,13 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
             }
             if (n) {
                 int n2 = tud_cdc_write(buf + i, n);
-                tud_task();
+                freertos_safe_tud_task();
                 tud_cdc_write_flush();
                 i += n2;
                 written += n2;
                 last_avail_time = time_us_64();
             } else {
-                tud_task();
+                freertos_safe_tud_task();
                 tud_cdc_write_flush();
                 if (!tud_cdc_connected() ||
                         (!tud_cdc_write_available() && time_us_64() > last_avail_time + 1'000'000 /* 1 second */)) {
@@ -157,7 +168,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
         // reset our timeout
         last_avail_time = 0;
     }
-    tud_task();
+    freertos_safe_tud_task();
     return written;
 }
 
@@ -167,7 +178,7 @@ SerialUSB::operator bool() {
         return false;
     }
 
-    tud_task();
+    freertos_safe_tud_task();
     return tud_cdc_connected();
 }
 
