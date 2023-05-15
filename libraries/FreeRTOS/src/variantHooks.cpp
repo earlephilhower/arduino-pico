@@ -114,7 +114,7 @@ extern "C" {
     int __holdUpPendSV = 0;
 }
 
-static void __no_inline_not_in_flash_func(IdleOtherCore)(void *param) {
+static void __no_inline_not_in_flash_func(IdleThisCore)(void *param) {
     (void) param;
     while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
@@ -160,9 +160,9 @@ void startFreeRTOS(void) {
     }
 
     // Create the idle-other-core tasks (for when flash is being written)
-    xTaskCreate(IdleOtherCore, "IdleCore0", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 0);
+    xTaskCreate(IdleThisCore, "IdleCore0", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 0);
     vTaskCoreAffinitySet(__idleCoreTask[0], 1 << 0);
-    xTaskCreate(IdleOtherCore, "IdleCore1", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 1);
+    xTaskCreate(IdleThisCore, "IdleCore1", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 1);
     vTaskCoreAffinitySet(__idleCoreTask[1], 1 << 1);
 
     // Initialise and run the freeRTOS scheduler. Execution should never return here.
