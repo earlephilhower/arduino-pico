@@ -50,9 +50,7 @@ extern void serialEvent() __attribute__((weak));
 
 static void freertos_safe_tud_task() {
     if (__isFreeRTOS) {
-        vTaskPreemptionDisable(nullptr);
-        tud_task();
-        vTaskPreemptionEnable(nullptr);
+        __freertos_tud_task();
     } else {
         tud_task();
     }
