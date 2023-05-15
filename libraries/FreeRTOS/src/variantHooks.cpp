@@ -111,7 +111,7 @@ extern "C" void yield() {
 static TaskHandle_t __idleCoreTask[2];
 extern "C" {
     extern volatile bool __otherCoreIdled;
-    extern int __holdUpPendSV;
+    int __holdUpPendSV = 0;
 }
 
 static void __no_inline_not_in_flash_func(IdleOtherCore)(void *param) {

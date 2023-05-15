@@ -27,7 +27,6 @@
 RP2040 rp2040;
 extern "C" {
     volatile bool __otherCoreIdled = false;
-    int __holdUpPendSV = 0;
 };
 
 mutex_t _pioMutex;
