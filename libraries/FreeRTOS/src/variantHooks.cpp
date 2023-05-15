@@ -45,7 +45,7 @@
 // Interfaces for the main core to use FreeRTOS mutexes
 extern "C" {
     extern volatile bool __otherCoreIdled;
-    int __holdUpPendSV = 0;
+    int __holdUpPendSV = 0; // TOTO - remove from FreeRTOS lib
 
     SemaphoreHandle_t __freertos_mutex_create() {
         return xSemaphoreCreateMutex();
@@ -85,14 +85,6 @@ extern "C" {
 
     void __freertos_recursive_mutex_give(SemaphoreHandle_t mtx) {
         xSemaphoreGiveRecursive(mtx);
-    }
-
-    void __freertos_tud_task() {
-        vTaskPreemptionDisable(nullptr);
-        __holdUpPendSV = 1;
-        tud_task();
-        __holdUpPendSV = 0;
-        vTaskPreemptionEnable(nullptr);
     }
 }
 
@@ -168,14 +160,14 @@ static void __no_inline_not_in_flash_func(IdleThisCore)(void *param) {
     (void) param;
     while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        __holdUpPendSV = 1;
         vTaskPreemptionDisable(nullptr);
+        portDISABLE_INTERRUPTS();
         __otherCoreIdled = true;
         while (__otherCoreIdled) {
             /* noop */
         }
+        portENABLE_INTERRUPTS();
         vTaskPreemptionEnable(nullptr);
-        __holdUpPendSV = 0;
     }
 }
 
@@ -185,10 +177,14 @@ extern "C" void __no_inline_not_in_flash_func(__freertos_idle_other_core)() {
     while (!__otherCoreIdled) {
         /* noop */
     }
+    portDISABLE_INTERRUPTS();
+    vTaskSuspendAll();
 }
 
 extern "C" void __no_inline_not_in_flash_func(__freertos_resume_other_core)() {
     __otherCoreIdled = false;
+    portENABLE_INTERRUPTS();
+    xTaskResumeAll();
     vTaskPreemptionEnable(nullptr);
 }
 
@@ -473,7 +469,7 @@ static void __usb(void *param) {
     while (true) {
         auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
         if (xSemaphoreTake(m, 0)) {
-            __freertos_tud_task();
+            tud_task();
             xSemaphoreGive(m);
         }
         vTaskDelay(1 / portTICK_PERIOD_MS);
@@ -489,7 +485,7 @@ void __USBStart() {
     __SetupDescHIDReport();
     __SetupUSBDescriptor();
 
-    // Make highest prio and locked to core 0
+    // Make high prio and locked to core 0
     xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 2, &__usbTask);
     vTaskCoreAffinitySet(__usbTask, 1 << 0);
 }
