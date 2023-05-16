@@ -36,6 +36,7 @@ pcTaskGetName KEYWORD2
 ulTaskNotifyTake	KEYWORD2
 vTaskNotifyGiveFromISR	KEYWORD2
 taskYIELD	KEYWORD2
+vTaskCoreAffinitySet	KEYWORD2
 vTaskSuspend	KEYWORD2
 vTaskResume	KEYWORD2
 xTaskResumeFromISR	KEYWORD2
@@ -43,6 +44,7 @@ xTaskGetTickCount	KEYWORD2
 xTaskGetTickCountFromISR	KEYWORD2
 uxTaskGetNumberOfTasks	KEYWORD2
 uxTaskGetStackHighWaterMark	KEYWORD2
+uxTaskGetSystemState	KEYWORD2
 
 # Instances (KEYWORD2)
 
