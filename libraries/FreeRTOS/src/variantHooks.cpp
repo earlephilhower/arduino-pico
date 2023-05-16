@@ -45,7 +45,6 @@
 // Interfaces for the main core to use FreeRTOS mutexes
 extern "C" {
     extern volatile bool __otherCoreIdled;
-    int __holdUpPendSV = 0; // TOTO - remove from FreeRTOS lib
 
     SemaphoreHandle_t __freertos_mutex_create() {
         return xSemaphoreCreateMutex();
