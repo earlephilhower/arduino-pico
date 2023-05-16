@@ -41,6 +41,9 @@ public:
     void begin(unsigned long baud, uint16_t config) override;
     void end() override;
 
+		void setInverted(bool i);
+		bool getInverted();
+
     virtual int peek() override;
     virtual int read() override;
     virtual int available() override;
@@ -63,6 +66,7 @@ protected:
     int _stop;
     bool _overflow;
     mutex_t _mutex;
+		bool _inverted = false;
 
     PIOProgram *_txPgm;
     PIO _txPIO;

@@ -29,7 +29,7 @@
 ; We shift out the start and stop bit as part of the FIFO
     set x, 9
 
-    pull               side 1 ; Force stop bit
+    pull               side 1 ; Force stop bit high
 
 ; Send the bits
 bitloop:
@@ -40,6 +40,26 @@ wait_bit:
     jmp x-- bitloop
 
     
+
+; inverted-logic version (inverts the stop bit)
+
+.program pio_tx_inv
+.side_set 1 opt
+
+
+; We shift out the start and stop bit as part of the FIFO
+    set x, 9
+
+    pull               side 0 ; Force stop bit low
+
+; Send the bits
+bitloop:
+    out pins, 1
+    mov y, isr                ; ISR is loaded by the setup routine with the period-1 count
+wait_bit:
+    jmp y-- wait_bit
+    jmp x-- bitloop
+
 
 % c-sdk {
 
@@ -68,7 +88,7 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 }
 
 %}
-
+    
 
 .program pio_rx
 

@@ -46,12 +46,17 @@ static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
     return p;
 }
 
-static PIOProgram *_getTxProgram(int bits) {
-    auto f = _txMap.find(bits);
-    if (f == _txMap.end()) {
-        pio_program_t * p = pio_make_uart_prog(bits, &pio_tx_program);
-        _txMap.insert({bits, new PIOProgram(p)});
-        f = _txMap.find(bits);
+static PIOProgram *_getTxProgram(int bits, bool inverted) {
+		int key = bits * (inverted ? -1 : 1);
+    auto f = _txMap.find(key);
+    if (f == _txMap.end()) { 
+				pio_program_t * p;
+				if (inverted)
+					p = pio_make_uart_prog(bits, &pio_tx_inv_program);
+				else
+					p = pio_make_uart_prog(bits, &pio_tx_program);
+        _txMap.insert({key, new PIOProgram(p)});
+        f = _txMap.find(key);
     }
     return f->second;
 }
@@ -189,7 +194,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
 
     if (_tx != NOPIN) {
         _txBits = _bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1/*start bit*/;
-        _txPgm = _getTxProgram(_txBits);
+        _txPgm = _getTxProgram(_txBits, _inverted);
         int off;
         if (!_txPgm->prepare(&_txPIO, &_txSM, &off)) {
             DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources\n");
@@ -346,6 +351,14 @@ void SerialPIO::flush() {
     delay((1000 * (_txBits + 1)) / _baud);
 }
 
+void SerialPIO::setInverted(bool i){
+		_inverted = i;
+}
+
+bool SerialPIO::getInverted(){
+		return _inverted;
+}
+
 size_t SerialPIO::write(uint8_t c) {
     CoreMutex m(&_mutex);
     if (!_running || !m || (_tx == NOPIN)) {
@@ -364,7 +377,10 @@ size_t SerialPIO::write(uint8_t c) {
     }
     val <<= 1;  // Start bit = low
 
-    pio_sm_put_blocking(_txPIO, _txSM, val);
+		if (_inverted)
+			pio_sm_put_blocking(_txPIO, _txSM, ~val);
+		else 
+			pio_sm_put_blocking(_txPIO, _txSM, val);
 
     return 1;
 }
