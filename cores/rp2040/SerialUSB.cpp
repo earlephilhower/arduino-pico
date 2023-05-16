@@ -177,8 +177,10 @@ static bool _rts = false;
 static int _bps = 115200;
 static bool _rebooting = false;
 static void CheckSerialReset() {
-    __holdUpPendSV = 1; // Ensure we don't get swapped out by FreeRTOS
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
+        if (__isFreeRTOS) {
+            vTaskPreemptionDisable(nullptr);
+        }
         _rebooting = true;
         // Disable NVIC IRQ, so that we don't get bothered anymore
         irq_set_enabled(USBCTRL_IRQ, false);
@@ -190,7 +192,6 @@ static void CheckSerialReset() {
         reset_usb_boot(0, 0);
         while (1); // WDT will fire here
     }
-    __holdUpPendSV = 0;
 }
 
 extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {

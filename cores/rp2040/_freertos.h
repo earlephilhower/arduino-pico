@@ -61,8 +61,7 @@ extern "C" {
     extern void vTaskPreemptionEnable(TaskHandle_t p) __attribute__((weak));
 #endif
 
+    extern void __freertos_idle_other_core() __attribute__((weak));
+    extern void __freertos_resume_other_core() __attribute__((weak));
 }
 extern SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive = false);
-
-// Halt the FreeRTOS PendSV task switching magic
-extern "C" int __holdUpPendSV;

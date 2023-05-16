@@ -91,15 +91,14 @@ public:
         if (!_multicore) {
             return;
         }
-        __holdUpPendSV = 1;
         if (__isFreeRTOS) {
-            vTaskPreemptionDisable(nullptr);
-            vTaskSuspendAll();
+            __freertos_idle_other_core();
+        } else {
+            mutex_enter_blocking(&_idleMutex);
+            __otherCoreIdled = false;
+            multicore_fifo_push_blocking(_GOTOSLEEP);
+            while (!__otherCoreIdled) { /* noop */ }
         }
-        mutex_enter_blocking(&_idleMutex);
-        __otherCoreIdled = false;
-        multicore_fifo_push_blocking(_GOTOSLEEP);
-        while (!__otherCoreIdled) { /* noop */ }
     }
 
     void resumeOtherCore() {
@@ -109,10 +108,8 @@ public:
         mutex_exit(&_idleMutex);
         __otherCoreIdled = false;
         if (__isFreeRTOS) {
-            xTaskResumeAll();
-            vTaskPreemptionEnable(nullptr);
+            __freertos_resume_other_core();
         }
-        __holdUpPendSV = 0;
 
         // Other core will exit busy-loop and return to operation
         // once __otherCoreIdled == false.
