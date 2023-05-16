@@ -10,7 +10,8 @@ Contributing to the Core (Pull Requests)
 ----------------------------------------
 
 We use the standard GitHub Pull Request model.  If you're unfamiliar with it,
-this `guide <https://www.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github-3/>` gives a simple overview of the process.
+this `guide <https://www.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github-3/>`__
+gives a simple overview of the process.
 
 All pull requests have to pass a set of Continuous Integration (CI) checks
 which help make sure the code compiles under different configurations and has
