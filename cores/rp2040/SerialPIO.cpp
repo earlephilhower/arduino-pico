@@ -355,10 +355,6 @@ void SerialPIO::setInverted(bool i){
 		_inverted = i;
 }
 
-bool SerialPIO::getInverted(){
-		return _inverted;
-}
-
 size_t SerialPIO::write(uint8_t c) {
     CoreMutex m(&_mutex);
     if (!_running || !m || (_tx == NOPIN)) {
