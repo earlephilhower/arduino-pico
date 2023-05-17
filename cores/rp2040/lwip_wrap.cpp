@@ -1,7 +1,7 @@
 /*
     LWIP wrappers to protect against timer-based re-entrancy
 
-    Copyright (c) 202s Earle F. Philhower, III <earlephilhower@yahoo.com>
+    Copyright (c) 2023 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public

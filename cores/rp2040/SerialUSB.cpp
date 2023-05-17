@@ -25,15 +25,15 @@
 #include <Arduino.h>
 #include "CoreMutex.h"
 
-#include "tusb.h"
-#include "pico/time.h"
-#include "pico/binary_info.h"
-#include "pico/bootrom.h"
-#include "hardware/irq.h"
-#include "pico/mutex.h"
-#include "hardware/watchdog.h"
-#include "pico/unique_id.h"
-#include "hardware/resets.h"
+#include <tusb.h>
+#include <pico/time.h>
+#include <pico/binary_info.h>
+#include <pico/bootrom.h>
+#include <hardware/irq.h>
+#include <pico/mutex.h>
+#include <hardware/watchdog.h>
+#include <pico/unique_id.h>
+#include <hardware/resets.h>
 
 #ifndef DISABLE_USB_SERIAL
 // Ensure we are installed in the USB chain
@@ -179,7 +179,7 @@ static bool _rebooting = false;
 static void CheckSerialReset() {
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
         if (__isFreeRTOS) {
-            vTaskPreemptionDisable(nullptr);
+            __freertos_idle_other_core();
         }
         _rebooting = true;
         // Disable NVIC IRQ, so that we don't get bothered anymore
