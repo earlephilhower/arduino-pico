@@ -19,7 +19,7 @@
 */
 
 #include "_freertos.h"
-#include "pico/mutex.h"
+#include <pico/mutex.h>
 #include <stdlib.h>
 #include "Arduino.h"
 

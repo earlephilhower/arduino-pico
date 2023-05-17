@@ -25,17 +25,16 @@
 #include "CoreMutex.h"
 #include "RP2040USB.h"
 
-#include "tusb.h"
-#include "class/hid/hid_device.h"
-#include "class/audio/audio.h"
-#include "class/midi/midi.h"
-#include "pico/time.h"
-#include "hardware/irq.h"
-#include "pico/mutex.h"
-#include "pico/unique_id.h"
-#include "pico/usb_reset_interface.h"
-#include "hardware/watchdog.h"
-#include "pico/bootrom.h"
+#include <tusb.h>
+#include <class/hid/hid_device.h>
+#include <class/audio/audio.h>
+#include <pico/time.h>
+#include <hardware/irq.h>
+#include <pico/mutex.h>
+#include <pico/unique_id.h>
+#include <pico/usb_reset_interface.h>
+#include <hardware/watchdog.h>
+#include <pico/bootrom.h>
 #include "sdkoverride/tusb_absmouse.h"
 #include <device/usbd_pvt.h>
 

@@ -4,11 +4,11 @@
     SPDX-License-Identifier: BSD-3-Clause
 */
 #include <Arduino.h>
-#include "pico/stdlib.h"
-#include "hardware/gpio.h"
-#include "hardware/sync.h"
-#include "hardware/structs/ioqspi.h"
-#include "hardware/structs/sio.h"
+#include <pico/stdlib.h>
+#include <hardware/gpio.h>
+#include <hardware/sync.h>
+#include <hardware/structs/ioqspi.h>
+#include <hardware/structs/sio.h>
 
 // This example blinks the Pico LED when the BOOTSEL button is pressed.
 //
