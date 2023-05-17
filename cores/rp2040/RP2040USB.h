@@ -19,7 +19,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "pico/mutex.h"
+#include <pico/mutex.h>
 
 // Weak function definitions for each type of endpoint
 extern void __USBInstallSerial() __attribute__((weak));

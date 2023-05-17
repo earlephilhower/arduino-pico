@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "pico/mutex.h"
+#include <pico/mutex.h>
 #include "_freertos.h"
 
 enum {
