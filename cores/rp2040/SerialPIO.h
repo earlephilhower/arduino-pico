@@ -41,7 +41,7 @@ public:
     void begin(unsigned long baud, uint16_t config) override;
     void end() override;
 
-    void setInverted(bool i);
+    void setInverted(bool invTx, bool invRx);
     bool getInverted();
 
     virtual int peek() override;
