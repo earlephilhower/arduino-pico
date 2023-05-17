@@ -66,7 +66,7 @@ protected:
     int _stop;
     bool _overflow;
     mutex_t _mutex;
-		bool _inverted = false;
+		bool _txInverted = false, _rxInverted = false;
 
     PIOProgram *_txPgm;
     PIO _txPIO;

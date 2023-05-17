@@ -194,7 +194,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
 
     if (_tx != NOPIN) {
         _txBits = _bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1/*start bit*/;
-        _txPgm = _getTxProgram(_txBits, _inverted);
+        _txPgm = _getTxProgram(_txBits, _txInverted);
         int off;
         if (!_txPgm->prepare(&_txPIO, &_txSM, &off)) {
             DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources\n");
@@ -351,8 +351,9 @@ void SerialPIO::flush() {
     delay((1000 * (_txBits + 1)) / _baud);
 }
 
-void SerialPIO::setInverted(bool i){
-		_inverted = i;
+void SerialPIO::setInverted(bool invTx, bool invRx){
+		_txInverted = invTx;
+		_rxInverted = invRx; // note: rx inversion ignored in this revision
 }
 
 size_t SerialPIO::write(uint8_t c) {
@@ -373,7 +374,7 @@ size_t SerialPIO::write(uint8_t c) {
     }
     val <<= 1;  // Start bit = low
 
-		if (_inverted)
+		if (_txInverted)
 			pio_sm_put_blocking(_txPIO, _txSM, ~val);
 		else 
 			pio_sm_put_blocking(_txPIO, _txSM, val);
