@@ -47,10 +47,10 @@ static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
 }
 
 static PIOProgram *_getTxProgram(int bits, bool inverted) {
-		int key = bits * (inverted ? -1 : 1);
+    int key = bits * (inverted ? -1 : 1);
     auto f = _txMap.find(key);
-    if (f == _txMap.end()) { 
-				pio_program_t * p = pio_make_uart_prog(bits, inverted ? &pio_tx_inv_program : &pio_tx_program);
+    if (f == _txMap.end()) {
+        pio_program_t * p = pio_make_uart_prog(bits, inverted ? &pio_tx_inv_program : &pio_tx_program);
         _txMap.insert({key, new PIOProgram(p)});
         f = _txMap.find(key);
     }
@@ -347,9 +347,9 @@ void SerialPIO::flush() {
     delay((1000 * (_txBits + 1)) / _baud);
 }
 
-void SerialPIO::setInverted(bool invTx, bool invRx){
-		_txInverted = invTx;
-		_rxInverted = invRx; // note: rx inversion ignored in this revision
+void SerialPIO::setInverted(bool invTx, bool invRx) {
+    _txInverted = invTx;
+    _rxInverted = invRx; // note: rx inversion ignored in this revision
 }
 
 size_t SerialPIO::write(uint8_t c) {
@@ -370,7 +370,7 @@ size_t SerialPIO::write(uint8_t c) {
     }
     val <<= 1;  // Start bit = low
 
-		pio_sm_put_blocking(_txPIO, _txSM, _txInverted ? ~val : val);
+    pio_sm_put_blocking(_txPIO, _txSM, _txInverted ? ~val : val);
 
     return 1;
 }
