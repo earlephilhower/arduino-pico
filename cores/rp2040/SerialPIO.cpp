@@ -50,11 +50,7 @@ static PIOProgram *_getTxProgram(int bits, bool inverted) {
 		int key = bits * (inverted ? -1 : 1);
     auto f = _txMap.find(key);
     if (f == _txMap.end()) { 
-				pio_program_t * p;
-				if (inverted)
-					p = pio_make_uart_prog(bits, &pio_tx_inv_program);
-				else
-					p = pio_make_uart_prog(bits, &pio_tx_program);
+				pio_program_t * p = pio_make_uart_prog(bits, inverted ? &pio_tx_inv_program : &pio_tx_program);
         _txMap.insert({key, new PIOProgram(p)});
         f = _txMap.find(key);
     }
@@ -374,10 +370,7 @@ size_t SerialPIO::write(uint8_t c) {
     }
     val <<= 1;  // Start bit = low
 
-		if (_txInverted)
-			pio_sm_put_blocking(_txPIO, _txSM, ~val);
-		else 
-			pio_sm_put_blocking(_txPIO, _txSM, val);
+		pio_sm_put_blocking(_txPIO, _txSM, _txInverted ? ~val : val);
 
     return 1;
 }
