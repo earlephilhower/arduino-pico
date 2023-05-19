@@ -47,7 +47,7 @@ static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
 }
 
 static PIOProgram *_getTxProgram(int bits, bool inverted) {
-    int key = bits * (inverted ? -1 : 1);
+    int key = inverted ? -bits : bits;
     auto f = _txMap.find(key);
     if (f == _txMap.end()) {
         pio_program_t * p = pio_make_uart_prog(bits, inverted ? &pio_tx_inv_program : &pio_tx_program);
@@ -57,12 +57,13 @@ static PIOProgram *_getTxProgram(int bits, bool inverted) {
     return f->second;
 }
 
-static PIOProgram *_getRxProgram(int bits) {
-    auto f = _rxMap.find(bits);
+static PIOProgram *_getRxProgram(int bits, bool inverted) {
+    int key = inverted ? -bits : bits;
+    auto f = _rxMap.find(key);
     if (f == _rxMap.end()) {
-        pio_program_t * p = pio_make_uart_prog(bits, &pio_rx_program);
-        _rxMap.insert({bits, new PIOProgram(p)});
-        f = _rxMap.find(bits);
+        pio_program_t * p = pio_make_uart_prog(bits, inverted ? pio_rx_inv_program : &pio_rx_program);
+        _rxMap.insert({key, new PIOProgram(p)});
+        f = _rxMap.find(key);
     }
     return f->second;
 }
@@ -97,7 +98,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
         return;
     }
     while (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM)) {
-        uint32_t decode = _rxPIO->rxf[_rxSM];
+        uint32_t decode = _rxPIO->rxf[_rxSM] ^ (_rxInverted ? 0xffffffff : 0);
         decode >>= 33 - _rxBits;
         uint32_t val = 0;
         for (int b = 0; b < _bits + 1; b++) {
@@ -217,7 +218,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _reader = 0;
 
         _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1) - 1;
-        _rxPgm = _getRxProgram(_rxBits);
+        _rxPgm = _getRxProgram(_rxBits, _rxInverted);
         int off;
         if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off)) {
             DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources\n");
@@ -349,7 +350,7 @@ void SerialPIO::flush() {
 
 void SerialPIO::setInverted(bool invTx, bool invRx) {
     _txInverted = invTx;
-    _rxInverted = invRx; // note: rx inversion ignored in this revision
+    _rxInverted = invRx;
 }
 
 size_t SerialPIO::write(uint8_t c) {
