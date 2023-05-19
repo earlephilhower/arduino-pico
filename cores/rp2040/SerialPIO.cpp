@@ -61,7 +61,7 @@ static PIOProgram *_getRxProgram(int bits, bool inverted) {
     int key = inverted ? -bits : bits;
     auto f = _rxMap.find(key);
     if (f == _rxMap.end()) {
-        pio_program_t * p = pio_make_uart_prog(bits, inverted ? pio_rx_inv_program : &pio_rx_program);
+        pio_program_t * p = pio_make_uart_prog(bits, inverted ? &pio_rx_inv_program : &pio_rx_program);
         _rxMap.insert({key, new PIOProgram(p)});
         f = _rxMap.find(key);
     }
