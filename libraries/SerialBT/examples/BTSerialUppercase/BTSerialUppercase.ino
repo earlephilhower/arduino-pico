@@ -13,7 +13,10 @@
 // 3. Open up COMX: in your favorite terminal application and type away
 
 // Under Mac to connect to the PicoW
-// 1. Sorry, you're on your own.  If you have a Mac and can update this demo with a Pull Request it would be appreciated!
+// 1. Open System Preferences and go in the bluetooth section. You should find a bluetooth device called
+//    PicoW Serial XX:XX:... Click Connect button.
+// 2. A /dev/tty.PicoWSerialXXXX becomes available.
+// 3. Connect to this device with your favorite terminal application.
 
 
 #include <SerialBT.h>
