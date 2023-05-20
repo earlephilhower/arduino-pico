@@ -16,7 +16,7 @@
 // 1. Open System Preferences and go in the bluetooth section. You should find a bluetooth device called
 //    PicoW Serial XX:XX:... Click Connect button.
 // 2. A /dev/tty.PicoWSerialXXXX becomes available.
-// 3. Connect to this device with you favorite terminal application.   
+// 3. Connect to this device with your favorite terminal application.
 
 
 #include <SerialBT.h>
