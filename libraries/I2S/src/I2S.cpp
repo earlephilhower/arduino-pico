@@ -383,7 +383,7 @@ size_t I2S::write(const uint8_t *buffer, size_t size) {
     size_t writtenSize = 0;
     uint32_t *p = (uint32_t *)buffer;
     while (size) {
-        if (!_arb->write(*p, false)){
+        if (!_arb->write(*p, false)) {
             // Blocked, stop write here
             return writtenSize;
         } else {
