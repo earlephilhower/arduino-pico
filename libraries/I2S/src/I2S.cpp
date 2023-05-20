@@ -376,13 +376,14 @@ bool I2S::read32(int32_t *l, int32_t *r) {
 
 size_t I2S::write(const uint8_t *buffer, size_t size) {
     // We can only write 32-bit chunks here
-    if (size & 0x3) {
+    if (size & 0x3 || !_running || !_isOutput) {
         return 0;
     }
+
     size_t writtenSize = 0;
-    int32_t *p = (int32_t *)buffer;
+    uint32_t *p = (uint32_t *)buffer;
     while (size) {
-        if (!write((int32_t)*p)) {
+        if (!_arb->write(*p, false)){
             // Blocked, stop write here
             return writtenSize;
         } else {
