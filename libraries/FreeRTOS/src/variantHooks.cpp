@@ -85,6 +85,10 @@ extern "C" {
     void __freertos_recursive_mutex_give(SemaphoreHandle_t mtx) {
         xSemaphoreGiveRecursive(mtx);
     }
+
+    bool __freertos_check_if_in_isr() {
+        return portCHECK_IF_IN_ISR();
+    }
 }
 
 
@@ -488,5 +492,3 @@ void __USBStart() {
     xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 2, &__usbTask);
     vTaskCoreAffinitySet(__usbTask, 1 << 0);
 }
-
-

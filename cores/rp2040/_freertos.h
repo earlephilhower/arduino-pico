@@ -37,6 +37,8 @@ extern "C" {
     typedef QueueHandle_t SemaphoreHandle_t;
 #endif
 
+    extern bool __freertos_check_if_in_isr() __attribute__((weak));
+
     extern SemaphoreHandle_t __freertos_mutex_create() __attribute__((weak));
     extern SemaphoreHandle_t _freertos_recursive_mutex_create() __attribute__((weak));
 
