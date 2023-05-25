@@ -11,7 +11,8 @@
 // Application state
 int counter[2] = {0, 0};
 BD_ADDR known_devices[2] = {BD_ADDR("DB:88:B6:70:9E:EB"),
-                            BD_ADDR("C9:60:BD:F2:B4:9D")};
+                            BD_ADDR("C9:60:BD:F2:B4:9D")
+                           };
 
 /*
    @section Setup
@@ -21,10 +22,10 @@ BD_ADDR known_devices[2] = {BD_ADDR("DB:88:B6:70:9E:EB"),
 */
 /* LISTING_START(LEDeviceScannerSetup): LE Device Scanner Setup */
 void setup(void) {
-    Serial.begin(9600);
-    BTstack.setBLEAdvertisementCallback(advertisementCallback);
-    BTstack.setup();
-    BTstack.bleStartScanning();
+  Serial.begin(9600);
+  BTstack.setBLEAdvertisementCallback(advertisementCallback);
+  BTstack.setup();
+  BTstack.bleStartScanning();
 }
 /* LISTING_END(LEDeviceScannerSetup): LE Device Scanner Setup */
 
@@ -35,7 +36,7 @@ void setup(void) {
 */
 /* LISTING_START(LEDeviceScannerLoop): Loop */
 void loop(void) {
-    BTstack.loop();
+  BTstack.loop();
 }
 /* LISTING_END(LEDeviceScannerLoop): Loop */
 
@@ -49,19 +50,19 @@ void loop(void) {
    looking for and the counter is incremented.
 */
 /* LISTING_START(LEDeviceScannerAdvertisementCallback): Advertisement Callback
- */
+*/
 void advertisementCallback(BLEAdvertisement *bleAdvertisement) {
-    if (!(bleAdvertisement->isIBeacon())) {
-        Serial.print("Device discovered: ");
-        Serial.println(bleAdvertisement->getBdAddr()->getAddressString());
-        for (size_t i = 0; i < sizeof(counter) / sizeof(int); i++) {
-            if (memcmp(bleAdvertisement->getBdAddr()->getAddress(),
-                        known_devices[i].getAddress(), sizeof(known_devices[i])) == 0) {
-                counter[i]++;
-                Serial.printf("Known device: %s, has been discovered %d times.\n",
-                                known_devices[i].getAddressString(), counter[i]);
-            }
-        }
+  if (!(bleAdvertisement->isIBeacon())) {
+    Serial.print("Device discovered: ");
+    Serial.println(bleAdvertisement->getBdAddr()->getAddressString());
+    for (size_t i = 0; i < sizeof(counter) / sizeof(int); i++) {
+      if (memcmp(bleAdvertisement->getBdAddr()->getAddress(),
+                 known_devices[i].getAddress(), sizeof(known_devices[i])) == 0) {
+        counter[i]++;
+        Serial.printf("Known device: %s, has been discovered %d times.\n",
+                      known_devices[i].getAddressString(), counter[i]);
+      }
     }
+  }
 }
 /* LISTING_END(LEDeviceScannerAdvertisementCallback): Advertisement Callback */
