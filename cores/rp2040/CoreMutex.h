@@ -23,12 +23,11 @@
 
 #pragma once
 
-#include "pico/mutex.h"
+#include <pico/mutex.h>
 #include "_freertos.h"
 
 enum {
-    DebugEnable = 1,
-    FromISR = 1 << 1,
+    DebugEnable = 1
 };
 
 class CoreMutex {

@@ -38,6 +38,22 @@ prevent the Arduino IDE from accessing. For Arduino IDE V2, override the filesys
 restriction using ``flatpak override --user --filesystem=host cc.arduino.IDE2`` . For 
 For Arduino IDE < V2, use ``flatpak override --user --filesystem=host cc.arduino.arduinoide``.
 
+Installing via Arduino CLI
+--------------------------
+To install using the Arduino command line tool (arduino-cli):
+
+.. code:: bash
+
+        arduino-cli config add board_manager.additional_urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+        arduino-cli core update-index
+        arduino-cli core install rp2040:rp2040
+
+To list the supported boards:
+
+.. code:: bash
+
+        arduino-cli board listall | grep rp2040
+
 Installing via GIT
 ------------------
 To install via GIT (for latest and greatest versions):

@@ -27,7 +27,6 @@
 RP2040 rp2040;
 extern "C" {
     volatile bool __otherCoreIdled = false;
-    int __holdUpPendSV = 0;
 };
 
 mutex_t _pioMutex;
@@ -163,6 +162,7 @@ extern "C" void __register_impure_ptr(struct _reent *p) {
     }
 }
 
+extern "C" struct _reent *__wrap___getreent() __attribute__((weak));
 extern "C" struct _reent *__wrap___getreent() {
     if (get_core_num() == 0) {
         return _impure_ptr;

@@ -25,15 +25,15 @@
 #include <Arduino.h>
 #include "CoreMutex.h"
 
-#include "tusb.h"
-#include "pico/time.h"
-#include "pico/binary_info.h"
-#include "pico/bootrom.h"
-#include "hardware/irq.h"
-#include "pico/mutex.h"
-#include "hardware/watchdog.h"
-#include "pico/unique_id.h"
-#include "hardware/resets.h"
+#include <tusb.h>
+#include <pico/time.h>
+#include <pico/binary_info.h>
+#include <pico/bootrom.h>
+#include <hardware/irq.h>
+#include <pico/mutex.h>
+#include <hardware/watchdog.h>
+#include <pico/unique_id.h>
+#include <hardware/resets.h>
 
 #ifndef DISABLE_USB_SERIAL
 // Ensure we are installed in the USB chain
@@ -177,8 +177,10 @@ static bool _rts = false;
 static int _bps = 115200;
 static bool _rebooting = false;
 static void CheckSerialReset() {
-    __holdUpPendSV = 1; // Ensure we don't get swapped out by FreeRTOS
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
+        if (__isFreeRTOS) {
+            __freertos_idle_other_core();
+        }
         _rebooting = true;
         // Disable NVIC IRQ, so that we don't get bothered anymore
         irq_set_enabled(USBCTRL_IRQ, false);
@@ -190,7 +192,6 @@ static void CheckSerialReset() {
         reset_usb_boot(0, 0);
         while (1); // WDT will fire here
     }
-    __holdUpPendSV = 0;
 }
 
 extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {

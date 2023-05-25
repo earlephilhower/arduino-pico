@@ -19,7 +19,7 @@
 */
 
 #pragma once
-#include "pico/mutex.h"
+#include <pico/mutex.h>
 
 // Cannot include refs to FreeRTOS's actual semaphore calls because they
 // are implemented as macros, so we have a wrapper in our variant hook
@@ -37,6 +37,8 @@ extern "C" {
     typedef QueueHandle_t SemaphoreHandle_t;
 #endif
 
+    extern bool __freertos_check_if_in_isr() __attribute__((weak));
+
     extern SemaphoreHandle_t __freertos_mutex_create() __attribute__((weak));
     extern SemaphoreHandle_t _freertos_recursive_mutex_create() __attribute__((weak));
 
@@ -50,17 +52,7 @@ extern "C" {
     extern int __freertos_recursive_mutex_try_take(SemaphoreHandle_t mtx) __attribute__((weak));
     extern void __freertos_recursive_mutex_give(SemaphoreHandle_t mtx) __attribute__((weak));
 
-#ifndef INC_FREERTOS_H
-    extern void vTaskSuspendAll() __attribute__((weak));
-    extern int32_t xTaskResumeAll() __attribute__((weak));
-
-    typedef struct tskTaskControlBlock * TaskHandle_t;
-    extern void vTaskPreemptionDisable(TaskHandle_t p) __attribute__((weak));
-    extern void vTaskPreemptionEnable(TaskHandle_t p) __attribute__((weak));
-#endif
-
+    extern void __freertos_idle_other_core() __attribute__((weak));
+    extern void __freertos_resume_other_core() __attribute__((weak));
 }
 extern SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive = false);
-
-// Halt the FreeRTOS PendSV task switching magic
-extern "C" int __holdUpPendSV;

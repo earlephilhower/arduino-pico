@@ -40,7 +40,57 @@
 #include <pico.h>
 #include <pico/time.h>
 
-#include "_freertos.h"
+#include <_freertos.h>
+
+// Interfaces for the main core to use FreeRTOS mutexes
+extern "C" {
+    extern volatile bool __otherCoreIdled;
+
+    SemaphoreHandle_t __freertos_mutex_create() {
+        return xSemaphoreCreateMutex();
+    }
+
+    SemaphoreHandle_t _freertos_recursive_mutex_create() {
+        return xSemaphoreCreateRecursiveMutex();
+    }
+
+    void __freertos_mutex_take(SemaphoreHandle_t mtx) {
+        xSemaphoreTake(mtx, portMAX_DELAY);
+    }
+
+    void __freertos_mutex_take_from_isr(SemaphoreHandle_t mtx) {
+        xSemaphoreTakeFromISR(mtx, NULL);
+    }
+
+    int __freertos_mutex_try_take(SemaphoreHandle_t mtx) {
+        return xSemaphoreTake(mtx, 0);
+    }
+
+    void __freertos_mutex_give(SemaphoreHandle_t mtx) {
+        xSemaphoreGive(mtx);
+    }
+
+    void __freertos_mutex_give_from_isr(SemaphoreHandle_t mtx) {
+        xSemaphoreGiveFromISR(mtx, NULL);
+    }
+
+    void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
+        xSemaphoreTakeRecursive(mtx, portMAX_DELAY);
+    }
+
+    int __freertos_recursive_mutex_try_take(SemaphoreHandle_t mtx) {
+        return xSemaphoreTakeRecursive(mtx, 0);
+    }
+
+    void __freertos_recursive_mutex_give(SemaphoreHandle_t mtx) {
+        xSemaphoreGiveRecursive(mtx);
+    }
+
+    bool __freertos_check_if_in_isr() {
+        return portCHECK_IF_IN_ISR();
+    }
+}
+
 
 /*-----------------------------------------------------------*/
 
@@ -108,6 +158,40 @@ extern "C" void yield() {
     taskYIELD();
 }
 
+static TaskHandle_t __idleCoreTask[2];
+static void __no_inline_not_in_flash_func(IdleThisCore)(void *param) {
+    (void) param;
+    while (true) {
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        vTaskPreemptionDisable(nullptr);
+        portDISABLE_INTERRUPTS();
+        __otherCoreIdled = true;
+        while (__otherCoreIdled) {
+            /* noop */
+        }
+        portENABLE_INTERRUPTS();
+        vTaskPreemptionEnable(nullptr);
+    }
+}
+
+extern "C" void __no_inline_not_in_flash_func(__freertos_idle_other_core)() {
+    vTaskPreemptionDisable(nullptr);
+    xTaskNotifyGive(__idleCoreTask[ 1 ^ sio_hw->cpuid ]);
+    while (!__otherCoreIdled) {
+        /* noop */
+    }
+    portDISABLE_INTERRUPTS();
+    vTaskSuspendAll();
+}
+
+extern "C" void __no_inline_not_in_flash_func(__freertos_resume_other_core)() {
+    __otherCoreIdled = false;
+    portENABLE_INTERRUPTS();
+    xTaskResumeAll();
+    vTaskPreemptionEnable(nullptr);
+}
+
+
 extern mutex_t __usb_mutex;
 static TaskHandle_t __usbTask;
 static void __usb(void *param);
@@ -123,6 +207,12 @@ void startFreeRTOS(void) {
         xTaskCreate(__core1, "CORE1", 1024, 0, configMAX_PRIORITIES / 2, &c1);
         vTaskCoreAffinitySet(c1, 1 << 1);
     }
+
+    // Create the idle-other-core tasks (for when flash is being written)
+    xTaskCreate(IdleThisCore, "IdleCore0", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 0);
+    vTaskCoreAffinitySet(__idleCoreTask[0], 1 << 0);
+    xTaskCreate(IdleThisCore, "IdleCore1", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 1);
+    vTaskCoreAffinitySet(__idleCoreTask[1], 1 << 1);
 
     // Initialise and run the freeRTOS scheduler. Execution should never return here.
     __freeRTOSinitted = true;
@@ -398,54 +488,7 @@ void __USBStart() {
     __SetupDescHIDReport();
     __SetupUSBDescriptor();
 
-    // Make highest prio and locked to core 0
-    xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 1, &__usbTask);
+    // Make high prio and locked to core 0
+    xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 2, &__usbTask);
     vTaskCoreAffinitySet(__usbTask, 1 << 0);
 }
-
-
-// Interfaces for the main core to use FreeRTOS mutexes
-extern "C" {
-
-    SemaphoreHandle_t __freertos_mutex_create() {
-        return xSemaphoreCreateMutex();
-    }
-
-    SemaphoreHandle_t _freertos_recursive_mutex_create() {
-        return xSemaphoreCreateRecursiveMutex();
-    }
-
-    void __freertos_mutex_take(SemaphoreHandle_t mtx) {
-        xSemaphoreTake(mtx, portMAX_DELAY);
-    }
-
-    void __freertos_mutex_take_from_isr(SemaphoreHandle_t mtx) {
-        xSemaphoreTakeFromISR(mtx, NULL);
-    }
-
-    int __freertos_mutex_try_take(SemaphoreHandle_t mtx) {
-        return xSemaphoreTake(mtx, 0);
-    }
-
-    void __freertos_mutex_give(SemaphoreHandle_t mtx) {
-        xSemaphoreGive(mtx);
-    }
-
-    void __freertos_mutex_give_from_isr(SemaphoreHandle_t mtx) {
-        xSemaphoreGiveFromISR(mtx, NULL);
-    }
-
-    void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
-        xSemaphoreTakeRecursive(mtx, portMAX_DELAY);
-    }
-
-    int __freertos_recursive_mutex_try_take(SemaphoreHandle_t mtx) {
-        return xSemaphoreTakeRecursive(mtx, 0);
-    }
-
-    void __freertos_recursive_mutex_give(SemaphoreHandle_t mtx) {
-        xSemaphoreGiveRecursive(mtx);
-    }
-
-}
-
