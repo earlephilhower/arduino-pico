@@ -396,13 +396,12 @@ BD_ADDR::BD_ADDR(void) {
 }
 
 BD_ADDR::BD_ADDR(const char * address_string, BD_ADDR_TYPE address_type) : address_type(address_type) {
-    for (int i = 0; i < 6; i++) {
-        this->address[i] = strtoul(address_string, NULL, 16);
-        address_string = strchr(address_string, ':');
-        if (address_string == NULL || *address_string == '\0') {
-            break;
+    int processed = sscanf(address_string, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", address, address + 1,
+                           address + 2, address + 3, address + 4, address + 5);
+    if (processed != 6) { // Set address to zeroes if we did not get six bytes back.
+        for (int i = 0; i < 6; i++) {
+            address[i] = 0;
         }
-        address_string++;
     }
 }
 
