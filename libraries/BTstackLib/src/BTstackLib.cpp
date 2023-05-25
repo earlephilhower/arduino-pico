@@ -396,9 +396,13 @@ BD_ADDR::BD_ADDR(void) {
 }
 
 BD_ADDR::BD_ADDR(const char * address_string, BD_ADDR_TYPE address_type) : address_type(address_type) {
-    (void) address_string;
-    // TODO: implement
-    // log_error("BD_ADDR::BD_ADDR(const char *, BD_ADDR_TYPE) not implemented yet!");
+    int processed = sscanf(address_string, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", address, address + 1,
+                           address + 2, address + 3, address + 4, address + 5);
+    if (processed != 6) { // Set address to zeroes if we did not get six bytes back.
+        for (int i = 0; i < 6; i++) {
+            address[i] = 0;
+        }
+    }
 }
 
 BD_ADDR::BD_ADDR(const uint8_t address[6], BD_ADDR_TYPE address_type) : address_type(address_type) {
