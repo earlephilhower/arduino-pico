@@ -135,6 +135,7 @@ extern "C" {
     public:
         BTstackManager(void);
         void setup(void);
+        void setup(const char * name);
         void loop(void);
 
         void setPublicBdAddr(bd_addr_t addr);
