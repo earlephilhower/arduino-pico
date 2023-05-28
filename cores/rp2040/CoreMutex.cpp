@@ -23,14 +23,16 @@
 
 #include "Arduino.h"
 #include "CoreMutex.h"
+#include "projdefs.h"
 
 CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _mutex = mutex;
     _acquired = false;
     _option = option;
+    _pxHigherPriorityTaskWoken = pdFALSE;
     if (__isFreeRTOS) {
         auto m = __get_freertos_mutex_for_ptr(mutex);
-        if (__freertos_check_if_in_isr() && !__freertos_mutex_take_from_isr(m)) {
+        if (__freertos_check_if_in_isr() && !__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
                 return;
             }
         else {
@@ -56,7 +58,7 @@ CoreMutex::~CoreMutex() {
         if (__isFreeRTOS) {
             auto m = __get_freertos_mutex_for_ptr(_mutex);
             if (__freertos_check_if_in_isr()) {
-                __freertos_mutex_give_from_isr(m, true);
+                __freertos_mutex_give_from_isr(m, &_pxHigherPriorityTaskWoken);
             } else {
                 __freertos_mutex_give(m);
             }

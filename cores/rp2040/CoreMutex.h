@@ -43,4 +43,5 @@ private:
     mutex_t *_mutex;
     bool _acquired;
     uint8_t _option;
+    BaseType_t _pxHigherPriorityTaskWoken;
 };
