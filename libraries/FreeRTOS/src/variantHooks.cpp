@@ -75,7 +75,7 @@ extern "C" {
             xSemaphoreGiveFromISR(mtx, NULL);
         }
         else {
-             xSemaphoreGiveFromISR(mtx, pxHigherPriorityTaskWoken);
+            xSemaphoreGiveFromISR(mtx, pxHigherPriorityTaskWoken);
             portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
         }
     }
