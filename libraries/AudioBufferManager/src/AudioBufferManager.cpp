@@ -114,7 +114,7 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
 
     // Get ping and pong DMA channels
     for (auto i = 0; i < 2; i++) {
-        _channelDMA[i] = dma_claim_unused_channel(true);
+        _channelDMA[i] = dma_claim_unused_channel(false);
         if (_channelDMA[i] == -1) {
             if (i == 1) {
                 dma_channel_unclaim(_channelDMA[0]);
