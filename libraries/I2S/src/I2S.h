@@ -54,6 +54,15 @@ public:
     virtual size_t write(const uint8_t *buffer, size_t size) override;
     virtual int availableForWrite() override;
 
+    // From the AR
+    bool getOverUnderflow() {
+        if (!_running) {
+            return false;
+        } else {
+            return _arb->getOverUnderflow();
+        }
+    }
+
     // Try and make I2S::write() do what makes sense, namely write
     // one sample (L or R) at the I2S configured bit width
     virtual size_t write(uint8_t s) override {

@@ -84,6 +84,11 @@ void flush()
 ~~~~~~~~~~~~
 Waits until all the I2S buffers have been output.
 
+void getOverUnderflow()
+~~~~~~~~~~~~~~~~~~~~~~~
+Returns a flag indicating if the I2S system ran our of data to send on output,
+or had to throw away data on input.
+
 size_t write(uint8_t/int8_t/int16_t/int32_t)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Writes a single sample of ``bitsPerSample`` to the buffer.  It is up to the
