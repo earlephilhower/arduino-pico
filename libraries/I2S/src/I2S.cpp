@@ -138,6 +138,7 @@ void I2S::onReceive(void(*fn)(void)) {
 bool I2S::begin() {
     _running = true;
     _hasPeeked = false;
+    _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
         _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
@@ -189,28 +190,14 @@ int I2S::available() {
         return 0;
     } else {
         auto avail = _arb->available();
-        switch (_bps) {
-        case 8:
-            avail *= 4; // 4 samples per 32-bits
+        avail *= 4; // 4 samples per 32-bits
+        if (_bps < 24) {
             if (_isOutput) {
+                // 16- and 8-bit can have holding bytes available
                 avail += (32 - _isHolding) / 8;
             } else {
                 avail += _isHolding / 8;
             }
-            break;
-        case 16:
-            avail *= 2; // 2 samples per 32-bits
-            if (_isOutput) {
-                avail += (32 - _isHolding) / 16;
-            } else {
-                avail += _isHolding / 16;
-            }
-            break;
-        case 24:
-        case 32:
-        default:
-            // All stored in 32-bit words and no holding required
-            break;
         }
         return avail;
     }
