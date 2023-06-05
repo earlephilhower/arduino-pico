@@ -35,7 +35,7 @@ extern "C" {
     struct QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
     typedef struct QueueDefinition   * QueueHandle_t;
     typedef QueueHandle_t SemaphoreHandle_t;
-    typedef int32_t BaseType_t; 
+    typedef int32_t BaseType_t;
 #endif
 
     extern bool __freertos_check_if_in_isr() __attribute__((weak));
