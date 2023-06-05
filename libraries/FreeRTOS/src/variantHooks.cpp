@@ -71,13 +71,9 @@ extern "C" {
     }
 
     void __freertos_mutex_give_from_isr(SemaphoreHandle_t mtx, BaseType_t* pxHigherPriorityTaskWoken) {
-        if (!pxHigherPriorityTaskWoken) {
-            xSemaphoreGiveFromISR(mtx, NULL);
-        }
-        else {
-            xSemaphoreGiveFromISR(mtx, pxHigherPriorityTaskWoken);
-            portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
-        }
+        BaseType_t hiprio = pxHigherPriorityTaskWoken ? *pxHigherPriorityTaskWoken : pdFALSE;
+        xSemaphoreGiveFromISR(mtx, &hiprio);
+        portYIELD_FROM_ISR(&hiPrio);
     }
 
     void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
