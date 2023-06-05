@@ -23,7 +23,6 @@
 
 #include "Arduino.h"
 #include "CoreMutex.h"
-#include "projdefs.h"
 
 CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _mutex = mutex;
