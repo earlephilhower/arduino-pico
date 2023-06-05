@@ -73,7 +73,7 @@ extern "C" {
     void __freertos_mutex_give_from_isr(SemaphoreHandle_t mtx, BaseType_t* pxHigherPriorityTaskWoken) {
         BaseType_t hiPrio = pxHigherPriorityTaskWoken ? *pxHigherPriorityTaskWoken : pdFALSE;
         xSemaphoreGiveFromISR(mtx, &hiPrio);
-        portYIELD_FROM_ISR(&hiPrio);
+        portYIELD_FROM_ISR(hiPrio);
     }
 
     void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
