@@ -28,7 +28,7 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _mutex = mutex;
     _acquired = false;
     _option = option;
-    _pxHigherPriorityTaskWoken = pdFALSE;
+    _pxHigherPriorityTaskWoken = 0; // pdFALSE
     if (__isFreeRTOS) {
         auto m = __get_freertos_mutex_for_ptr(mutex);
         if (__freertos_check_if_in_isr() && !__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
