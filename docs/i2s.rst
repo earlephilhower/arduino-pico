@@ -117,7 +117,7 @@ many bytes were actually written.
 
 int availableForWrite()
 ~~~~~~~~~~~~~~~~~~~~~~~
-Returns the number of L/R samples that can be written without
+Returns the amount of bytes that can be written without
 potentially blocking.
 
 int read()

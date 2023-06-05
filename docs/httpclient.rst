@@ -1,7 +1,7 @@
 HTTPClient Library
 ==================
 
-A simple HTTP requestor that can handle both HTTP and HTTP requests is
+A simple HTTP requestor that can handle both HTTP and HTTPS requests is
 included as the ``HTTPClient`` library.
 
 Check the examples for use under HTTP and HTTPS configurations.  In general,
