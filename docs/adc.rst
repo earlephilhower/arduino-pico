@@ -12,7 +12,7 @@ need to be periodically sampled to be read by applications, easily, such as:
 * Light dependent resistors (LDR), etc.
 
 
-Up to 4 analog samples can be recorded by the hardware (``A0`` ... ``A4``), and all
+Up to 4 analog samples can be recorded by the hardware (``A0`` ... ``A3``), and all
 recording is done at 16-bit levels (but be aware that the ADC in the Pico will only
 ever return values between 0...4095).
 
@@ -29,7 +29,7 @@ ADC Input API
 ADCInput(pin0 [, pin1, pin2, pin3])
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Creates an ADC input object which will record the pins specified in the code.
-Only pins ``A0`` ... ``A4`` can be used, and they must be specified in increasing
+Only pins ``A0`` ... ``A3`` can be used, and they must be specified in increasing
 order (i.e. ``ADCInput(A0, A1);`` is valid, but ``ADCInput(A1, A0)`` is not.
 
 bool setBuffers(size_t buffers, size_t bufferWords)
