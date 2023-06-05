@@ -33,9 +33,8 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     if (__isFreeRTOS) {
         auto m = __get_freertos_mutex_for_ptr(mutex);
         if (__freertos_check_if_in_isr() && !__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
-                return;
-            }
-        else {
+            return;
+        } else {
             __freertos_mutex_take(m);
         }
     } else {

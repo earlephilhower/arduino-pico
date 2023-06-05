@@ -35,6 +35,7 @@ extern "C" {
     struct QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
     typedef struct QueueDefinition   * QueueHandle_t;
     typedef QueueHandle_t SemaphoreHandle_t;
+    typedef int32_t BaseType_t; 
 #endif
 
     extern bool __freertos_check_if_in_isr() __attribute__((weak));
@@ -44,7 +45,6 @@ extern "C" {
 
     extern void __freertos_mutex_take(SemaphoreHandle_t mtx) __attribute__((weak));
 
-    typedef int32_t BaseType_t; // TODO needs to come from an included file
     extern int __freertos_mutex_take_from_isr(SemaphoreHandle_t mtx, BaseType_t* pxHigherPriorityTaskWoken) __attribute__((weak));
     extern int __freertos_mutex_try_take(SemaphoreHandle_t mtx) __attribute__((weak));
     extern void __freertos_mutex_give(SemaphoreHandle_t mtx) __attribute__((weak));

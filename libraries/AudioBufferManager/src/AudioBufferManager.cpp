@@ -114,7 +114,7 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
 
     // Get ping and pong DMA channels
     for (auto i = 0; i < 2; i++) {
-        _channelDMA[i] = dma_claim_unused_channel(true);
+        _channelDMA[i] = dma_claim_unused_channel(false);
         if (_channelDMA[i] == -1) {
             if (i == 1) {
                 dma_channel_unclaim(_channelDMA[0]);
@@ -257,7 +257,7 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
             _active[1] = _takeFromList(&_filled);
         }
         _overunderflow = _overunderflow | (_active[1] == _silence);
-        dma_channel_set_read_addr(channel, _active[0]->buff, false);
+        dma_channel_set_read_addr(channel, _active[1]->buff, false);
     } else {
         if (_empty) {
             _addToList(&_filled, _active[0]);
@@ -266,7 +266,7 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
         } else {
             _overunderflow = true;
         }
-        dma_channel_set_write_addr(channel, _active[0]->buff, false);
+        dma_channel_set_write_addr(channel, _active[1]->buff, false);
     }
     dma_channel_set_trans_count(channel, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
     dma_channel_acknowledge_irq0(channel);

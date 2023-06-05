@@ -48,7 +48,7 @@ I2S::I2S(PinMode direction) {
     _freq = 48000;
     _arb = nullptr;
     _cb = nullptr;
-    _buffers = 8;
+    _buffers = 6;
     _bufferWords = 0;
     _silenceSample = 0;
     _isLSBJ = false;
@@ -138,6 +138,7 @@ void I2S::onReceive(void(*fn)(void)) {
 bool I2S::begin() {
     _running = true;
     _hasPeeked = false;
+    _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
         _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
@@ -163,7 +164,7 @@ bool I2S::begin() {
         _silenceSample = (a << 16) | a;
     }
     if (!_bufferWords) {
-        _bufferWords = 16 * (_bps == 32 ? 2 : 1);
+        _bufferWords = 64 * (_bps == 32 ? 2 : 1);
     }
     _arb = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, _isOutput ? OUTPUT : INPUT);
     _arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm]);
@@ -187,10 +188,18 @@ void I2S::end() {
 int I2S::available() {
     if (!_running) {
         return 0;
-    } else if (_isOutput) {
-        return availableForWrite(); // Do what I mean, not what I say
     } else {
-        return _arb->available();
+        auto avail = _arb->available();
+        avail *= 4; // 4 samples per 32-bits
+        if (_bps < 24) {
+            if (_isOutput) {
+                // 16- and 8-bit can have holding bytes available
+                avail += (32 - _isHolding) / 8;
+            } else {
+                avail += _isHolding / 8;
+            }
+        }
+        return avail;
     }
 }
 
@@ -219,7 +228,7 @@ int I2S::read() {
     case 16:
         ret = _holdWord >> 16;
         _holdWord <<=  16;
-        _isHolding -= 32;
+        _isHolding -= 16;
         return ret;
     case 24:
     case 32:
@@ -399,5 +408,5 @@ int I2S::availableForWrite() {
     if (!_running || !_isOutput) {
         return 0;
     }
-    return _arb->available();
+    return available();
 }

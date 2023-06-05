@@ -188,7 +188,7 @@ static void CheckSerialReset() {
         reset_block(RESETS_RESET_USBCTRL_BITS);
         unreset_block(RESETS_RESET_USBCTRL_BITS);
         // Delay a bit, so the PC can figure out that we have disconnected.
-        sleep_ms(3);
+        busy_wait_ms(3);
         reset_usb_boot(0, 0);
         while (1); // WDT will fire here
     }
