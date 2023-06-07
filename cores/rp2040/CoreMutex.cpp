@@ -31,9 +31,14 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _pxHigherPriorityTaskWoken = 0; // pdFALSE
     if (__isFreeRTOS) {
         auto m = __get_freertos_mutex_for_ptr(mutex);
-        if (__freertos_check_if_in_isr() && !__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
-            return;
+
+        if (__freertos_check_if_in_isr()) {
+            if (!__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
+                return;
+            }
+            // At this point we have the mutex in ISR
         } else {
+            // Grab the mutex normally, possibly waking other tasks to get it
             __freertos_mutex_take(m);
         }
     } else {
