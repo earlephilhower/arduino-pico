@@ -58,8 +58,8 @@ extern "C" {
         xSemaphoreTake(mtx, portMAX_DELAY);
     }
 
-    int __freertos_mutex_take_from_isr(SemaphoreHandle_t mtx) {
-        return xSemaphoreTakeFromISR(mtx, NULL);
+    int __freertos_mutex_take_from_isr(SemaphoreHandle_t mtx, BaseType_t* pxHigherPriorityTaskWoken) {
+        return xSemaphoreTakeFromISR(mtx, pxHigherPriorityTaskWoken);
     }
 
     int __freertos_mutex_try_take(SemaphoreHandle_t mtx) {
@@ -70,8 +70,10 @@ extern "C" {
         xSemaphoreGive(mtx);
     }
 
-    void __freertos_mutex_give_from_isr(SemaphoreHandle_t mtx) {
-        xSemaphoreGiveFromISR(mtx, NULL);
+    void __freertos_mutex_give_from_isr(SemaphoreHandle_t mtx, BaseType_t* pxHigherPriorityTaskWoken) {
+        BaseType_t hiPrio = pxHigherPriorityTaskWoken ? *pxHigherPriorityTaskWoken : pdFALSE;
+        xSemaphoreGiveFromISR(mtx, &hiPrio);
+        portYIELD_FROM_ISR(hiPrio);
     }
 
     void __freertos_recursive_mutex_take(SemaphoreHandle_t mtx) {
