@@ -320,8 +320,11 @@ public:
         reboot();
     }
     	
-	inline void rebootToBootloader() { 
-        reset_usb_boot(1<<PICO_DEFAULT_LED_PIN,0);
+    inline void rebootToBootloader() { 
+        reset_usb_boot(1 << LED_DEFAULT, 0);
+        while (1) {
+            continue;
+        }
     }
     
     static void enableDoubleResetBootloader();
