@@ -29,9 +29,9 @@
 #include <pico/multicore.h>
 #include <pico/rand.h>
 #include <pico/util/queue.h>
-#include "pico.h"
-#include "pico/time.h"
-#include "pico/bootrom.h"
+#include <pico.h>
+#include <pico/time.h>
+#include <pico/bootrom.h>
 #include "CoreMutex.h"
 #include "ccount.pio.h"
 #include <malloc.h>
