@@ -29,6 +29,9 @@
 #include <pico/multicore.h>
 #include <pico/rand.h>
 #include <pico/util/queue.h>
+#include <pico.h>
+#include <pico/time.h>
+#include <pico/bootrom.h>
 #include "CoreMutex.h"
 #include "ccount.pio.h"
 #include <malloc.h>
@@ -315,6 +318,13 @@ public:
 
     inline void restart() {
         reboot();
+    }
+
+    inline void rebootToBootloader() {
+        reset_usb_boot(0, 0);
+        while (1) {
+            continue;
+        }
     }
 
     static void enableDoubleResetBootloader();
