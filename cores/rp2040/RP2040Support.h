@@ -319,14 +319,14 @@ public:
     inline void restart() {
         reboot();
     }
-    	
+
     inline void rebootToBootloader() { 
-        reset_usb_boot(1 << LED_DEFAULT, 0);
+        reset_usb_boot(1 << LED_BUILTIN, 0);
         while (1) {
             continue;
         }
     }
-    
+
     static void enableDoubleResetBootloader();
 
     void wdt_begin(uint32_t delay_ms) {
