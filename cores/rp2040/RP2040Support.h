@@ -29,6 +29,9 @@
 #include <pico/multicore.h>
 #include <pico/rand.h>
 #include <pico/util/queue.h>
+#include "pico.h"
+#include "pico/time.h"
+#include "pico/bootrom.h"
 #include "CoreMutex.h"
 #include "ccount.pio.h"
 #include <malloc.h>
@@ -316,7 +319,11 @@ public:
     inline void restart() {
         reboot();
     }
-
+    	
+	inline void rebootToBootloader() { 
+        reset_usb_boot(1<<PICO_DEFAULT_LED_PIN,0);
+    }
+    
     static void enableDoubleResetBootloader();
 
     void wdt_begin(uint32_t delay_ms) {
