@@ -78,8 +78,8 @@ AudioBufferManager::~AudioBufferManager() {
             dma_channel_abort(_channelDMA[i]);
             dma_channel_unclaim(_channelDMA[i]);
             dma_channel_acknowledge_irq0(_channelDMA[i]);
+            __channelCount--;
         }
-        __channelCount--;
         if (!__channelCount) {
             irq_set_enabled(DMA_IRQ_0, false);
             // TODO - how can we know if there are no other parts of the core using DMA0 IRQ??
