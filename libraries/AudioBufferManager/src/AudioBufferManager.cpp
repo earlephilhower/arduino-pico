@@ -20,8 +20,8 @@
 */
 
 #include <Arduino.h>
-#include "hardware/dma.h"
-#include "hardware/irq.h"
+#include <hardware/dma.h>
+#include <hardware/irq.h>
 #include "AudioBufferManager.h"
 
 static int                 __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
