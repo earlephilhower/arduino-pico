@@ -6,10 +6,9 @@
     SPDX-License-Identifier: BSD-3-Clause
 */
 
-#include "pico.h"
-#include "pico/time.h"
-#include "pico/bootrom.h"
-#include "pico/binary_info.h"
+#include <pico/time.h>
+#include <pico/bootrom.h>
+#include <pico/binary_info.h>
 
 // PICO_CONFIG: PICO_BOOTSEL_VIA_DOUBLE_RESET_TIMEOUT_MS, Window of opportunity for a second press of a reset button to enter BOOTSEL mode (milliseconds), type=int, default=200, group=pico_bootsel_via_double_reset
 #ifndef PICO_BOOTSEL_VIA_DOUBLE_RESET_TIMEOUT_MS
