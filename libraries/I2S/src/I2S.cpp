@@ -46,6 +46,7 @@ I2S::I2S(PinMode direction) {
     }
 #endif
     _freq = 48000;
+    _pio = nullptr;
     _arb = nullptr;
     _cb = nullptr;
     _buffers = 6;
@@ -145,7 +146,10 @@ bool I2S::begin() {
     } else {
         _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program) : &pio_i2s_in_swap_program);
     }
-    _i2s->prepare(&_pio, &_sm, &off);
+    /* reuse current PIO & SM settings on a second run because PIOProgram class has no destructor implemented */
+    if (_pio == nullptr) {
+      _i2s->prepare(&_pio, &_sm, &off);
+    }
     if (_isOutput) {
         if (_isLSBJ) {
             pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
