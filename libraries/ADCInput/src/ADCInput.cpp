@@ -79,6 +79,10 @@ void ADCInput::onReceive(void(*fn)(void)) {
 }
 
 bool ADCInput::begin() {
+    if (_running) {
+        return false;
+    }
+
     _running = true;
 
     _isHolding = 0;
@@ -105,7 +109,11 @@ bool ADCInput::begin() {
     setFrequency(_freq);
 
     _arb = new AudioBufferManager(_buffers, _bufferWords, 0, INPUT, DMA_SIZE_16);
-    _arb->begin(DREQ_ADC, (volatile void*)&adc_hw->fifo);
+    if (!_arb->begin(DREQ_ADC, (volatile void*)&adc_hw->fifo)) {
+        delete _arb;
+        _arb = nullptr;
+        return false;
+    }
     _arb->setCallback(_cb);
 
     adc_fifo_drain();
