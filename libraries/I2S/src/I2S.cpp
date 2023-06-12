@@ -148,7 +148,7 @@ bool I2S::begin() {
     }
     /* reuse current PIO & SM settings on a second run because PIOProgram class has no destructor implemented */
     if (_pio == nullptr) {
-      _i2s->prepare(&_pio, &_sm, &off);
+        _i2s->prepare(&_pio, &_sm, &off);
     }
     if (_isOutput) {
         if (_isLSBJ) {
