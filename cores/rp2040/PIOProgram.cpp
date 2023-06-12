@@ -22,8 +22,7 @@
 #include "PIOProgram.h"
 #include <map>
 
-std::map<const pio_program_t *, int> __pio0Map;
-std::map<const pio_program_t *, int> __pio1Map;
+static std::map<const pio_program_t *, int> __pioMap[2];
 auto_init_mutex(_pioMutex);
 
 
@@ -43,58 +42,38 @@ PIOProgram::~PIOProgram() {
 // Possibly load into a PIO and allocate a SM
 bool PIOProgram::prepare(PIO *pio, int *sm, int *offset) {
     CoreMutex m(&_pioMutex);
+    PIO pi[2] = { pio0, pio1 };
 
     // If it's already loaded into PIO IRAM, try and allocate in that specific PIO
-    auto p = __pio0Map.find(_pgm);
-    if (p != __pio0Map.end()) {
-        int idx = pio_claim_unused_sm(pio0, false);
-        if (idx >= 0) {
-            _pio = pio0;
-            _sm = idx;
-            *pio = pio0;
-            *sm = idx;
-            *offset = p->second;
-            return true;
-        }
-    }
-    p = __pio1Map.find(_pgm);
-    if (p != __pio1Map.end()) {
-        int idx = pio_claim_unused_sm(pio1, false);
-        if (idx >= 0) {
-            _pio = pio1;
-            _sm = idx;
-            *pio = pio1;
-            *sm = idx;
-            *offset = p->second;
-            return true;
+    for (int o = 0; o < 2; o++) {
+        auto p = __pioMap[o].find(_pgm);
+        if (p != __pioMap[o].end()) {
+            int idx = pio_claim_unused_sm(pi[o], false);
+            if (idx >= 0) {
+                _pio = pi[o];
+                _sm = idx;
+                *pio = pi[o];
+                *sm = idx;
+                *offset = p->second;
+                return true;
+            }
         }
     }
 
     // Not in any PIO IRAM, so try and add
-    if (pio_can_add_program(pio0, _pgm)) {
-        int idx = pio_claim_unused_sm(pio0, false);
-        if (idx >= 0) {
-            int off = pio_add_program(pio0, _pgm);
-            __pio0Map.insert({_pgm, off});
-            _pio = pio0;
-            _sm = idx;
-            *pio = pio0;
-            *sm = idx;
-            *offset = off;
-            return true;
-        }
-    }
-    if (pio_can_add_program(pio1, _pgm)) {
-        int idx = pio_claim_unused_sm(pio1, false);
-        if (idx >= 0) {
-            int off = pio_add_program(pio1, _pgm);
-            __pio1Map.insert({_pgm, off});
-            _pio = pio1;
-            _sm = idx;
-            *pio = pio1;
-            *sm = idx;
-            *offset = off;
-            return true;
+    for (int o = 0; o < 2; o++) {
+        if (pio_can_add_program(pi[o], _pgm)) {
+            int idx = pio_claim_unused_sm(pi[o], false);
+            if (idx >= 0) {
+                int off = pio_add_program(pi[o], _pgm);
+                __pioMap[o].insert({_pgm, off});
+                _pio = pi[o];
+                _sm = idx;
+                *pio = pi[o];
+                *sm = idx;
+                *offset = off;
+                return true;
+            }
         }
     }
 
