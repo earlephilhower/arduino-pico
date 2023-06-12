@@ -56,6 +56,7 @@ I2S::I2S(PinMode direction) {
 }
 
 I2S::~I2S() {
+    end();
 }
 
 bool I2S::setBCLK(pin_size_t pin) {
