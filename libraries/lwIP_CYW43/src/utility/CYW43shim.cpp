@@ -20,10 +20,10 @@
 
 #include "CYW43shim.h"
 extern "C" {
-#include "cyw43.h"
-#include "cyw43_stats.h"
+#include <cyw43.h>
+#include <cyw43_stats.h>
 }
-#include "pico/cyw43_arch.h"
+#include <pico/cyw43_arch.h>
 #include <Arduino.h>
 
 // From cyw43_ctrl.c

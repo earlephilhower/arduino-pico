@@ -5,11 +5,11 @@
 #include "OpenPDMFilter.h"
 
 extern "C" {
-#include "hardware/pio.h"
-#include "hardware/dma.h"
-#include "hardware/clocks.h"
+#include <hardware/pio.h>
+#include <hardware/dma.h>
+#include <hardware/clocks.h>
 }
-#include "hardware/sync.h"
+#include <hardware/sync.h>
 #include "pdm.pio.h"
 static PIOProgram _pdmPgm(&pdm_pio_program);
 
