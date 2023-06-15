@@ -138,22 +138,21 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
                     break;
                 } // switch _parseRequest()
             } else {
-              // !_currentClient.available(): waiting for more data
-              unsigned long timeSinceChange = millis() - _statusChange;
-              // Use faster connection drop timeout if any other client has data
-              // or the buffer of pending clients is full
-              if ((_server.hasClientData() || _server.hasMaxPendingClients())
-                && timeSinceChange > HTTP_MAX_DATA_AVAILABLE_WAIT) {
-                  //log_v("webserver: closing since there's another connection to read from\r\n");
-              }
-              else {
-                if (timeSinceChange > HTTP_MAX_DATA_WAIT) {
-                  //log_v("webserver: closing after read timeout\r\n");
+                // !_currentClient.available(): waiting for more data
+                unsigned long timeSinceChange = millis() - _statusChange;
+                // Use faster connection drop timeout if any other client has data
+                // or the buffer of pending clients is full
+                if ((_server.hasClientData() || _server.hasMaxPendingClients())
+                        && timeSinceChange > HTTP_MAX_DATA_AVAILABLE_WAIT) {
+                    //log_v("webserver: closing since there's another connection to read from\r\n");
+                } else {
+                    if (timeSinceChange > HTTP_MAX_DATA_WAIT) {
+                        //log_v("webserver: closing after read timeout\r\n");
+                    } else {
+                        keepCurrentClient = true;
+                    }
                 }
-                else
-                  keepCurrentClient = true;
-              }
-              callYield = true;
+                callYield = true;
             }
             break;
         case HC_WAIT_CLOSE:
