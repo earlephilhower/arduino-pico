@@ -169,7 +169,6 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
             delete _currentClient;
             _currentClient = nullptr;
         }
-        Serial.printf("%5d Status to None\r\n", millis());
         _currentStatus = HC_NONE;
         _currentUpload.reset();
     }
