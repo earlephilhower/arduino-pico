@@ -56,6 +56,7 @@ I2S::I2S(PinMode direction) {
 }
 
 I2S::~I2S() {
+    end();
 }
 
 bool I2S::setBCLK(pin_size_t pin) {
@@ -145,7 +146,12 @@ bool I2S::begin() {
     } else {
         _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program) : &pio_i2s_in_swap_program);
     }
-    _i2s->prepare(&_pio, &_sm, &off);
+    if (!_i2s->prepare(&_pio, &_sm, &off)) {
+        _running = false;
+        delete _i2s;
+        _i2s = nullptr;
+        return false;
+    }
     if (_isOutput) {
         if (_isLSBJ) {
             pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
@@ -167,7 +173,14 @@ bool I2S::begin() {
         _bufferWords = 64 * (_bps == 32 ? 2 : 1);
     }
     _arb = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, _isOutput ? OUTPUT : INPUT);
-    _arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm]);
+    if (!_arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm])) {
+        _running = false;
+        delete _arb;
+        _arb = nullptr;
+        delete _i2s;
+        _i2s = nullptr;
+        return false;
+    }
     _arb->setCallback(_cb);
     pio_sm_set_enabled(_pio, _sm, true);
 

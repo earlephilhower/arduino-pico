@@ -29,8 +29,6 @@ extern "C" {
     volatile bool __otherCoreIdled = false;
 };
 
-mutex_t _pioMutex;
-
 extern void setup();
 extern void loop();
 
@@ -90,8 +88,6 @@ extern "C" int main() {
         _impure_ptr1 = (struct _reent*)calloc(sizeof(struct _reent), 1);
         _REENT_INIT_PTR(_impure_ptr1);
     }
-
-    mutex_init(&_pioMutex);
 
     rp2040.begin();
 
