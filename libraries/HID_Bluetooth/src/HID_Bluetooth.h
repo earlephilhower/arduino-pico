@@ -35,6 +35,8 @@ uint16_t __BTGetCOD();
 uint16_t __BLEGetAppearance();
 int __BTGetKeyboardReportID();
 int __BTGetMouseReportID();
+int __BTGetJoystickReportID();
+
 int __BLEGetKeyboardReportID();
 int __BLEGetMouseReportID();
 int __BLEGetJoystickReportID();
