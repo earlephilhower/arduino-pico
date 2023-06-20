@@ -325,8 +325,8 @@ info64
 .. code:: cpp
 
     FSInfo64 fsinfo;
-    SDFS.info(fsinfo);
-    or LittleFS(fsinfo);
+    SDFS.info64(fsinfo);
+    or LittleFS.info64(fsinfo);
 
 Performs the same operation as ``info`` but allows for reporting greater than
 4GB for filesystem size/used/etc.  Should be used with the SD and SDFS
