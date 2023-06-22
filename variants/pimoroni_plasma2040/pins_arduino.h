@@ -75,6 +75,6 @@ static const uint8_t A3  = (31u);
 #define PIN_WIRE1_SDA  (31u)
 #define PIN_WIRE1_SCL  (31u)
 
-#define SERIAL_HOWMANY (1u)
-#define SPI_HOWMANY    (1u)
+#define SERIAL_HOWMANY (0u)
+#define SPI_HOWMANY    (0u)
 #define WIRE_HOWMANY   (1u)
