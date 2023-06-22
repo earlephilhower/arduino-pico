@@ -250,7 +250,7 @@ void I2S::end() {
 }
 
 int I2S::available() {
-    if (!_running) {
+    if (!_running) { 
         return 0;
     } else {
         auto avail = _arb->available();
