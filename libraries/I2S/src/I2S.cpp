@@ -19,8 +19,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <Arduino.h>
-#include "I3S.h"
-#include "pio_i3s.pio.h"
+#include "I2S.h"
+#include "pio_i2s.pio.h"
 
 
 I2S::I2S(PinMode direction) {
