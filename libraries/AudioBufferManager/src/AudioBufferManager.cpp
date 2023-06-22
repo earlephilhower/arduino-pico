@@ -20,8 +20,8 @@
 */
 
 #include <Arduino.h>
-#include "hardware/dma.h"
-#include "hardware/irq.h"
+#include <hardware/dma.h>
+#include <hardware/irq.h>
 #include "AudioBufferManager.h"
 
 static int                 __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
@@ -78,8 +78,8 @@ AudioBufferManager::~AudioBufferManager() {
             dma_channel_abort(_channelDMA[i]);
             dma_channel_unclaim(_channelDMA[i]);
             dma_channel_acknowledge_irq0(_channelDMA[i]);
+            __channelCount--;
         }
-        __channelCount--;
         if (!__channelCount) {
             irq_set_enabled(DMA_IRQ_0, false);
             // TODO - how can we know if there are no other parts of the core using DMA0 IRQ??

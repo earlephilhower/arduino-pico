@@ -100,6 +100,10 @@ void PWMAudio::onTransmit(void(*fn)(void)) {
 }
 
 bool PWMAudio::begin() {
+    if (_running) {
+        return false;
+    }
+
     if (_stereo && (_pin & 1)) {
         // Illegal, need to have consecutive pins on the same PWM slice
         Serial.printf("ERROR: PWMAudio stereo mode requires pin be even\n");
@@ -118,7 +122,13 @@ bool PWMAudio::begin() {
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
 
     _arb = new AudioBufferManager(_buffers, _bufferWords, 0x80008000, OUTPUT, DMA_SIZE_32);
-    _arb->begin(pwm_get_dreq(pwm_gpio_to_slice_num(_pin)), (volatile void*)ccAddr);
+    if (!_arb->begin(pwm_get_dreq(pwm_gpio_to_slice_num(_pin)), (volatile void*)ccAddr)) {
+        _running = false;
+        delete _arb;
+        _arb = nullptr;
+        return false;
+    }
+
     _arb->setCallback(_cb);
 
     return true;

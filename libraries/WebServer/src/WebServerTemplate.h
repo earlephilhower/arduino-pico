@@ -90,19 +90,93 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
             _currentClient = nullptr;
         }
 
-        ClientType client = _server.available();
-        if (!client) {
+        _currentClient = new ClientType(_server.available());
+        if (!_currentClient) {
             if (_nullDelay) {
                 delay(1);
             }
             return;
         }
-
-        _currentClient = new ClientType(client);
         _currentStatus = HC_WAIT_READ;
         _statusChange = millis();
     }
-    httpHandleClient();
+    bool keepCurrentClient = false;
+    bool callYield = false;
+
+    if (_currentClient->connected()) {
+        switch (_currentStatus) {
+        case HC_NONE:
+            // No-op to avoid C++ compiler warning
+            break;
+        case HC_WAIT_READ:
+            // Wait for data from client to become available
+            if (_currentClient->available()) {
+                switch (_parseRequest(_currentClient)) {
+                case CLIENT_REQUEST_CAN_CONTINUE:
+                    // Because HTTP_MAX_SEND_WAIT is expressed in milliseconds, it must be divided by 1000
+                    _currentClient->setTimeout(HTTP_MAX_SEND_WAIT / 1000);
+                    _contentLength = CONTENT_LENGTH_NOT_SET;
+                    _handleRequest();
+                /* fallthrough */
+                case CLIENT_REQUEST_IS_HANDLED:
+                    if (_currentClient->connected() || _currentClient->available()) {
+                        _currentStatus = HC_WAIT_CLOSE;
+                        _statusChange = millis();
+                        keepCurrentClient = true;
+                    } else {
+                        //log_v("webserver: peer has closed after served\n");
+                    }
+                    break;
+                case CLIENT_MUST_STOP:
+                    //log_v("Close client\n");
+                    _currentClient->stop();
+                    break;
+                case CLIENT_IS_GIVEN:
+                    // client must not be stopped but must not be handled here anymore
+                    // (example: tcp connection given to websocket)
+                    //log_v("Give client\n");
+                    break;
+                } // switch _parseRequest()
+            } else {
+                // !_currentClient.available(): waiting for more data
+                unsigned long timeSinceChange = millis() - _statusChange;
+                // Use faster connection drop timeout if any other client has data
+                // or the buffer of pending clients is full
+                if ((_server.hasClientData() || _server.hasMaxPendingClients())
+                        && timeSinceChange > HTTP_MAX_DATA_AVAILABLE_WAIT) {
+                    //log_v("webserver: closing since there's another connection to read from\r\n");
+                } else {
+                    if (timeSinceChange > HTTP_MAX_DATA_WAIT) {
+                        //log_v("webserver: closing after read timeout\r\n");
+                    } else {
+                        keepCurrentClient = true;
+                    }
+                }
+                callYield = true;
+            }
+            break;
+        case HC_WAIT_CLOSE:
+            // Wait for client to close the connection
+            if (millis() - _statusChange <= HTTP_MAX_CLOSE_WAIT) {
+                keepCurrentClient = true;
+                callYield = true;
+            }
+        }
+    }
+
+    if (!keepCurrentClient) {
+        if (_currentClient) {
+            delete _currentClient;
+            _currentClient = nullptr;
+        }
+        _currentStatus = HC_NONE;
+        _currentUpload.reset();
+    }
+
+    if (callYield) {
+        yield();
+    }
+
 }
 
 template <typename ServerType, int DefaultPort>

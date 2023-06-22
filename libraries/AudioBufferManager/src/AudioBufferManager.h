@@ -21,7 +21,7 @@
 
 #pragma once
 #include <Arduino.h>
-#include "hardware/dma.h"
+#include <hardware/dma.h>
 
 class AudioBufferManager {
 public:
