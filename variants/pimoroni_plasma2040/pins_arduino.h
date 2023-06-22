@@ -11,7 +11,8 @@
 #define LED_BUILTIN    PIN_LED
 
 // Digital pins
-/*static const uint8_t D0 = (26u);
+#if 0
+static const uint8_t D0 = (26u);
 static const uint8_t D1 = (27u);
 static const uint8_t D2 = (28u);
 static const uint8_t D3 = (29u);
@@ -21,7 +22,8 @@ static const uint8_t D6 = (0u);
 static const uint8_t D7 = (1u);
 static const uint8_t D8 = (2u);
 static const uint8_t D9 = (4u);
-static const uint8_t D10 = (3u);*/
+static const uint8_t D10 = (3u);
+#endif
 
 // Analog pins
 static const uint8_t A0  = (26u);
