@@ -2,21 +2,10 @@
     I2SIn and I2SOut for Raspberry Pi Pico
     Implements one or more I2S interfaces using DMA
 
+    PIO and setup modified to generate MCLK
+    RP 2023
+
     Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <Arduino.h>
 #include "I2S.h"
@@ -56,7 +45,6 @@ I2S::I2S(PinMode direction) {
 }
 
 I2S::~I2S() {
-    end();
 }
 
 bool I2S::setBCLK(pin_size_t pin) {
@@ -64,6 +52,15 @@ bool I2S::setBCLK(pin_size_t pin) {
         return false;
     }
     _pinBCLK = pin;
+    return true;
+}
+
+// RP
+bool I2S::setMCLK(pin_size_t pin) {
+    if (_running || (pin > 28)) {
+        return false;
+    }
+    _pinMCLK = pin;
     return true;
 }
 
@@ -93,13 +90,43 @@ bool I2S::setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample) 
     return true;
 }
 
-bool I2S::setFrequency(int newFreq) {
+bool I2S::setFrequency(long newFreq) {
     _freq = newFreq;
+   
     if (_running) {
-        float bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
-        pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+        int bitClk;
+        bitClk = _freq * _bps * 2 /* channels */ * 2 /* edges per clock */;                           
+        pio_sm_set_clkdiv_int_frac(_pio, _sm, clock_get_hz(clk_sys) / bitClk, 0);
+       // pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+        Serial.printf("isLSBJ = %c, BCLK %i, div %i\n", _isLSBJ ? 'T' : 'F', bitClk/2, clock_get_hz(clk_sys) / bitClk);
     }
     return true;
+}
+
+bool I2S::setSysClk(int samplerate) { // RP - optimise sys_clk for desired samplerate 
+    if(samplerate % 44100 == 0){
+        set_sys_clock_khz(I2SSYSCLK_44_1, false); // 147.6 unsuccessful - no I2S no USB
+        return true;
+    }
+    if(samplerate % 8000 == 0) {
+          set_sys_clock_khz(I2SSYSCLK_8, false); 
+          return true;
+    }
+    return false; 
+}
+
+bool I2S::setMCLKmult(int mult) { // RP
+    if (_running || !_isOutput) {
+        return false;
+    }
+    _MCLKenabled = true;
+    if ((mult % 64) == 0)
+    {
+        _multMCLK = mult;
+        return true;
+    }
+    // Serial.printf("enableMCLK() error: %i is illegal\n", mult);
+    return false;
 }
 
 bool I2S::setLSBJFormat() {
@@ -117,6 +144,8 @@ bool I2S::swapClocks() {
     _swapClocks = true;
     return true;
 }
+
+
 
 void I2S::onTransmit(void(*fn)(void)) {
     if (_isOutput) {
@@ -136,22 +165,28 @@ void I2S::onReceive(void(*fn)(void)) {
     }
 }
 
+void I2S::MCLKbegin() {  // RP
+    int off = 0;
+    _i2sMCLK = new PIOProgram(&pio_i2s_mclk_program);
+    _i2sMCLK->prepare(&_pioMCLK, &_smMCLK, &off); // not sure how to use the same PIO
+    pio_i2s_MCLK_program_init(_pioMCLK, _smMCLK, off, _pinMCLK);
+    int mClk = _multMCLK * _freq * 2.0 /* edges per clock */;
+    pio_sm_set_clkdiv_int_frac(_pioMCLK, _smMCLK, clock_get_hz(clk_sys) / mClk, 0);   
+    Serial.printf("MCLK %i, div %i, mul %i\n", mClk/2, clock_get_hz(clk_sys) / mClk, mClk/(2 * _freq));
+    pio_sm_set_enabled(_pioMCLK, _smMCLK, true);
+}
+
 bool I2S::begin() {
     _running = true;
     _hasPeeked = false;
     _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
-        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
+        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);        
     } else {
         _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program) : &pio_i2s_in_swap_program);
     }
-    if (!_i2s->prepare(&_pio, &_sm, &off)) {
-        _running = false;
-        delete _i2s;
-        _i2s = nullptr;
-        return false;
-    }
+    _i2s->prepare(&_pio, &_sm, &off);
     if (_isOutput) {
         if (_isLSBJ) {
             pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
@@ -162,6 +197,8 @@ bool I2S::begin() {
         pio_i2s_in_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
     }
     setFrequency(_freq);
+    if(_MCLKenabled)
+        MCLKbegin();
     if (_bps == 8) {
         uint8_t a = _silenceSample & 0xff;
         _silenceSample = (a << 24) | (a << 16) | (a << 8) | a;
@@ -173,14 +210,7 @@ bool I2S::begin() {
         _bufferWords = 64 * (_bps == 32 ? 2 : 1);
     }
     _arb = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, _isOutput ? OUTPUT : INPUT);
-    if (!_arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm])) {
-        _running = false;
-        delete _arb;
-        _arb = nullptr;
-        delete _i2s;
-        _i2s = nullptr;
-        return false;
-    }
+    _arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm]);
     _arb->setCallback(_cb);
     pio_sm_set_enabled(_pio, _sm, true);
 
@@ -204,8 +234,13 @@ int I2S::available() {
     } else {
         auto avail = _arb->available();
         avail *= 4; // 4 samples per 32-bits
-        if (_bps < 24 && !_isOutput) {
-            avail += _isHolding / 8;
+        if (_bps < 24) {
+            if (_isOutput) {
+                // 16- and 8-bit can have holding bytes available
+                avail += (32 - _isHolding) / 8;
+            } else {
+                avail += _isHolding / 8;
+            }
         }
         return avail;
     }
