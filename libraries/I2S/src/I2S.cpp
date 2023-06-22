@@ -19,8 +19,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <Arduino.h>
-#include "I2S.h"
-#include "pio_i2s.pio.h"
+#include "I3S.h"
+#include "pio_i3s.pio.h"
 
 
 I2S::I2S(PinMode direction) {
@@ -56,6 +56,7 @@ I2S::I2S(PinMode direction) {
 }
 
 I2S::~I2S() {
+    end();
 }
 
 bool I2S::setBCLK(pin_size_t pin) {
@@ -108,8 +109,6 @@ bool I2S::setFrequency(long newFreq) {
         int bitClk;
         bitClk = _freq * _bps * 2 /* channels */ * 2 /* edges per clock */;                           
         pio_sm_set_clkdiv_int_frac(_pio, _sm, clock_get_hz(clk_sys) / bitClk, 0);
-       // pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
-        Serial.printf("isLSBJ = %c, BCLK %i, div %i\n", _isLSBJ ? 'T' : 'F', bitClk/2, clock_get_hz(clk_sys) / bitClk);
     }
     return true;
 }
@@ -183,7 +182,6 @@ void I2S::MCLKbegin() {  // RP
     pio_i2s_MCLK_program_init(_pioMCLK, _smMCLK, off, _pinMCLK);
     int mClk = _multMCLK * _freq * 2.0 /* edges per clock */;
     pio_sm_set_clkdiv_int_frac(_pioMCLK, _smMCLK, clock_get_hz(clk_sys) / mClk, 0);   
-    Serial.printf("MCLK %i, div %i, mul %i\n", mClk/2, clock_get_hz(clk_sys) / mClk, mClk/(2 * _freq));
     pio_sm_set_enabled(_pioMCLK, _smMCLK, true);
 }
 
@@ -193,11 +191,16 @@ bool I2S::begin() {
     _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
-        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);        
+        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
     } else {
         _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program) : &pio_i2s_in_swap_program);
     }
-    _i2s->prepare(&_pio, &_sm, &off);
+    if (!_i2s->prepare(&_pio, &_sm, &off)) {
+        _running = false;
+        delete _i2s;
+        _i2s = nullptr;
+        return false;
+    }
     if (_isOutput) {
         if (_isLSBJ) {
             pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
@@ -221,7 +224,14 @@ bool I2S::begin() {
         _bufferWords = 64 * (_bps == 32 ? 2 : 1);
     }
     _arb = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, _isOutput ? OUTPUT : INPUT);
-    _arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm]);
+    if (!_arb->begin(pio_get_dreq(_pio, _sm, _isOutput), _isOutput ? &_pio->txf[_sm] : (volatile void*)&_pio->rxf[_sm])) {
+        _running = false;
+        delete _arb;
+        _arb = nullptr;
+        delete _i2s;
+        _i2s = nullptr;
+        return false;
+    }
     _arb->setCallback(_cb);
     pio_sm_set_enabled(_pio, _sm, true);
 
