@@ -2,9 +2,6 @@
     I2SIn and I2SOut for Raspberry Pi Pico
     Implements one or more I2S interfaces using DMA
 
-    PIO and setup modified to generate MCLK
-    RP 2023
-
     Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
     This library is free software; you can redistribute it and/or
@@ -24,11 +21,7 @@
 
 #pragma once
 #include <Arduino.h>
-#include <hardware/pio.h>
-#include <pico/stdlib.h>
 #include "AudioBufferManager.h"
-#define I2SSYSCLK_44_1  135600 // 44.1, 88.2 kHz sample rates 
-#define I2SSYSCLK_8     147600  // 8k, 16, 32, 48, 96, 192 kHz
 
 class I2S : public Stream {
 public:
@@ -37,14 +30,11 @@ public:
 
     bool setBCLK(pin_size_t pin);
     bool setDATA(pin_size_t pin);
-    bool setMCLK(pin_size_t pin); // RP - also enables MCLK output
     bool setBitsPerSample(int bps);
     bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0);
-    bool setFrequency(long sampleRate);
+    bool setFrequency(int newFreq);
     bool setLSBJFormat();
     bool swapClocks();
-    bool setMCLKmult(int mult); // RP - supports any multiple of 64
-    bool setSysClk(int samplerate); // RP optimise system clock
 
     bool begin(long sampleRate) {
         setFrequency(sampleRate);
@@ -53,7 +43,7 @@ public:
 
     bool begin();
     void end();
-    
+
     // from Stream
     virtual int available() override;
     virtual int read() override;
@@ -120,21 +110,17 @@ public:
 private:
     pin_size_t _pinBCLK;
     pin_size_t _pinDOUT;
-    pin_size_t _pinMCLK; //RP
     int _bps;
     int _freq;
-    int _multMCLK;  // RP
     size_t _buffers;
     size_t _bufferWords;
     int32_t _silenceSample;
     bool _isLSBJ;
     bool _isOutput;
     bool _swapClocks;
-    bool _MCLKenabled = false; // RP
 
     bool _running;
-    bool _I2SmodeStd;   // RP -
-    
+
     bool _hasPeeked;
     int32_t _peekSaved;
 
@@ -147,11 +133,8 @@ private:
 
     void (*_cb)();
 
-    void MCLKbegin();   // RP - just to separate the code
-
     AudioBufferManager *_arb;
-    PIOProgram *_i2s;  
-    PIOProgram *_i2sMCLK; //RP
-    PIO _pio, _pioMCLK; //RP
-    int _sm, _smMCLK;  // RP
+    PIOProgram *_i2s;
+    PIO _pio;
+    int _sm;
 };
