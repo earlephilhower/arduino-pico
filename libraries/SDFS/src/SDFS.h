@@ -101,8 +101,8 @@ public:
         info.blockSize = _fs.vol()->bytesPerCluster();
         info.pageSize = 0; // TODO ?
         info.maxPathLength = 255; // TODO ?
-        info.totalBytes = _fs.vol()->clusterCount() * info.blockSize;
-        info.usedBytes = info.totalBytes - (_fs.vol()->freeClusterCount() * _fs.vol()->bytesPerCluster());
+        info.totalBytes = (uint64_t)_fs.vol()->clusterCount() * (uint64_t)info.blockSize;
+        info.usedBytes = info.totalBytes - ((uint64_t)_fs.vol()->freeClusterCount() * (uint64_t)_fs.vol()->bytesPerCluster());
         return true;
     }
 
