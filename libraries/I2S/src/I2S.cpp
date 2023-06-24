@@ -69,6 +69,14 @@ bool I2S::setBCLK(pin_size_t pin) {
     return true;
 }
 
+
+bool I2S::setMCLK(pin_size_t pin) {
+    if (_running || (pin > 28)) {
+        return false;
+    }
+    _pinMCLK = pin;
+    return true;
+}
 bool I2S::setDATA(pin_size_t pin) {
     if (_running || (pin > 29)) {
         return false;
@@ -132,7 +140,6 @@ bool I2S::setMCLKmult(int mult) { // RP
         _multMCLK = mult;
         return true;
     }
-    // Serial.printf("enableMCLK() error: %i is illegal\n", mult);
     return false;
 }
 
