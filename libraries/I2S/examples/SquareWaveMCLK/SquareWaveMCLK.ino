@@ -46,7 +46,7 @@ void setup() {
   digitalWrite(LED_BUILTIN, 1);
 
   // set the system clock to a compatible value to the samplerate
-  i2s.setSysClk(sampleRate); // best to do this before starting anythinh clock-dependent
+  i2s.setSysClk(sampleRate); // best to do this before starting anything clock-dependent
 
   Serial.begin(115200);
   while(!Serial)
@@ -55,8 +55,8 @@ void setup() {
 
   i2s.setBCLK(pBCLK);
   i2s.setDATA(pDOUT);
-  i2s.setMCLK(pMCLK); // must be done before starting i2s
-  i2s.setMCLKmult(MCLK_MUL); // also before startting i2s
+  i2s.setMCLK(pMCLK); // must be run before setFrequency() and i2s.begin()
+  i2s.setMCLKmult(MCLK_MUL); // also before i2s.begin()
   i2s.setBitsPerSample(16);
 
   // start I2S at the sample rate with 16-bits per sample
