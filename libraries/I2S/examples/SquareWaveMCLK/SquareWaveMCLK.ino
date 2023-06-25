@@ -1,5 +1,7 @@
 /*
   This example demonstrates I2S output with the optional MCLK  signal.
+  Note: System clock sppeds used here may not be compatible with all other libraries
+  requiring specific sys_clks, particularly Pico PIO USB.
 
   Richard Palmer June 2023
 
