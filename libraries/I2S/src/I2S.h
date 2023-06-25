@@ -22,6 +22,8 @@
 #pragma once
 #include <Arduino.h>
 #include "AudioBufferManager.h"
+#define I2SSYSCLK_44_1  135600 // 44.1, 88.2 kHz sample rates 
+#define I2SSYSCLK_8     147600  // 8k, 16, 32, 48, 96, 192 kHz
 
 class I2S : public Stream {
 public:
