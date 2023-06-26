@@ -36,7 +36,7 @@ const int amplitude = 1 << (bitsPerSample - 2); // amplitude of square wave = 1/
 
 #define MCLK_MUL  256     // depends on audio hardware. Suits common hardware.
 
-const int halfWavelength = sampleRate / (2 *frequency); // half wavelength of square wave
+const int halfWavelength = sampleRate / (2 * frequency); // half wavelength of square wave
 
 int16_t sample = amplitude; // current sample value
 int count = 0;
@@ -49,8 +49,9 @@ void setup() {
   i2s.setSysClk(sampleRate); // best to do this before starting anything clock-dependent
 
   Serial.begin(115200);
-  while(!Serial)
+  while (!Serial) {
     delay(10);
+  }
   Serial.println("I2S with MCLK - square wave");
 
   i2s.setBCLK(pBCLK);
