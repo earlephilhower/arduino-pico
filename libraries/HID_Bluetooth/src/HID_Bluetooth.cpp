@@ -9,38 +9,42 @@ void __SetupHIDreportmap(void (*WeakMouse)(), void (*WeakKeyboard)(), void (*Wea
     uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)), TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2)) };
     int size = 0;
-    
+
     //enable to debug the individual report maps
-    #if 0
-    Serial.printf("Report mouse: %d bytes\n",sizeof(desc_hid_report_mouse));
-    for(uint16_t i = 0; i<sizeof(desc_hid_report_mouse); i++)
-    {
-      Serial.print(desc_hid_report_mouse[i],HEX);
-      Serial.print(" ");
-      if(i % 4 == 3) Serial.print("\n");
+#if 0
+    Serial.printf("Report mouse: %d bytes\n", sizeof(desc_hid_report_mouse));
+    for (uint16_t i = 0; i < sizeof(desc_hid_report_mouse); i++) {
+        Serial.print(desc_hid_report_mouse[i], HEX);
+        Serial.print(" ");
+        if (i % 4 == 3) {
+            Serial.print("\n");
+        }
     }
-    Serial.printf("Report absmouse: %d bytes\n",sizeof(desc_hid_report_absmouse));
-    for(uint16_t i = 0; i<sizeof(desc_hid_report_absmouse); i++)
-    {
-      Serial.print(desc_hid_report_absmouse[i],HEX);
-      Serial.print(" ");
-      if(i % 4 == 3) Serial.print("\n");
+    Serial.printf("Report absmouse: %d bytes\n", sizeof(desc_hid_report_absmouse));
+    for (uint16_t i = 0; i < sizeof(desc_hid_report_absmouse); i++) {
+        Serial.print(desc_hid_report_absmouse[i], HEX);
+        Serial.print(" ");
+        if (i % 4 == 3) {
+            Serial.print("\n");
+        }
     }
-    Serial.printf("Report kbd: %d bytes\n",sizeof(desc_hid_report_keyboard));
-    for(uint16_t i = 0; i<sizeof(desc_hid_report_keyboard); i++)
-    {
-      Serial.print(desc_hid_report_keyboard[i],HEX);
-      Serial.print(" ");
-      if(i % 4 == 3) Serial.print("\n");
+    Serial.printf("Report kbd: %d bytes\n", sizeof(desc_hid_report_keyboard));
+    for (uint16_t i = 0; i < sizeof(desc_hid_report_keyboard); i++) {
+        Serial.print(desc_hid_report_keyboard[i], HEX);
+        Serial.print(" ");
+        if (i % 4 == 3) {
+            Serial.print("\n");
+        }
     }
-    Serial.printf("Report joystick: %d bytes\n",sizeof(desc_hid_report_joystick));
-    for(uint16_t i = 0; i<sizeof(desc_hid_report_joystick); i++)
-    {
-      Serial.print(desc_hid_report_joystick[i],HEX);
-      Serial.print(" ");
-      if(i % 4 == 3) Serial.print("\n");
+    Serial.printf("Report joystick: %d bytes\n", sizeof(desc_hid_report_joystick));
+    for (uint16_t i = 0; i < sizeof(desc_hid_report_joystick); i++) {
+        Serial.print(desc_hid_report_joystick[i], HEX);
+        Serial.print(" ");
+        if (i % 4 == 3) {
+            Serial.print("\n");
+        }
     }
-    #endif
+#endif
 
     //accumulate the size of all used HID report descriptors
     if (WeakKeyboard) {
@@ -110,19 +114,20 @@ void __SetupHIDreportmap(void (*WeakMouse)(), void (*WeakKeyboard)(), void (*Wea
             uint8_t desc_local[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(reportid)) };
             memcpy(*reportmap + offset, desc_local, sizeof(desc_local));
         }
-        
+
         //enable for debugging the final report map
-        #if 0
-        Serial.printf("Final map: %d bytes\n",size);
-        for(uint16_t i = 0; i<size; i++)
-        {
-          Serial.print(*reportmap[i],HEX);
-          Serial.print(" ");
-          if(i % 4 == 3) Serial.print("\n");
+#if 0
+        Serial.printf("Final map: %d bytes\n", size);
+        for (uint16_t i = 0; i < size; i++) {
+            Serial.print(*reportmap[i], HEX);
+            Serial.print(" ");
+            if (i % 4 == 3) {
+                Serial.print("\n");
+            }
         }
-        #endif
+#endif
     } else {
-      Serial.println("No report map pointer provided!");
+        Serial.println("No report map pointer provided!");
     }
 }
 
@@ -190,6 +195,20 @@ int __BLEGetKeyboardReportID() {
 
 int __BLEGetMouseReportID() {
     return __BLEInstallKeyboard ? 3 : 1;
+}
+
+int __BLEGetFeatureReportID() {
+    int feature = 1;
+    if (__BLEInstallKeyboard) {
+        feature += 2;
+    }
+    if (__BLEInstallMouse) {
+        feature ++;
+    }
+    if (__BLEInstallJoystick) {
+        feature ++;
+    }
+    return feature;
 }
 
 int __BLEGetJoystickReportID() {

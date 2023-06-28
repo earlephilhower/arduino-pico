@@ -40,3 +40,4 @@ int __BTGetJoystickReportID();
 int __BLEGetKeyboardReportID();
 int __BLEGetMouseReportID();
 int __BLEGetJoystickReportID();
+int __BLEGetFeatureReportID();
