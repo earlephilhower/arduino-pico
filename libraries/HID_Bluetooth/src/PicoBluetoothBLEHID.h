@@ -45,7 +45,7 @@
 #include <btstack_event.h>
 #include <ble/gatt-service/battery_service_server.h>
 #include <ble/gatt-service/device_information_service_server.h>
-#include <ble/gatt-service/hids_device.h>
+#include "sdkoverride/hids_device.h"
 
 class PicoBluetoothBLEHID_;
 extern PicoBluetoothBLEHID_ PicoBluetoothBLEHID;
@@ -243,6 +243,9 @@ public:
     static void unlockBluetooth() {
         async_context_release_lock(cyw43_arch_async_context());
     }
+    
+        uint8_t *_attdb = nullptr;
+    int _attdbLen = 0;
 
 private:
     bool _running = false;

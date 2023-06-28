@@ -10,6 +10,8 @@
 void setup() {
   Serial.begin(115200);
   MouseBLE.begin("BLE Composite");
+  KeyboardBLE.begin("");
+  JoystickBLE.begin("");
   delay(5000);
   Serial.printf("Press BOOTSEL to move the mouse in a circle\n");
   Serial.printf("Afterwards \"Hi\" will be printed and the joystick axis are moved\n");
