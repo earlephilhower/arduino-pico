@@ -117,6 +117,7 @@ void __SetupHIDreportmap(void (*WeakMouse)(), void (*WeakKeyboard)(), void (*Wea
 
         //enable for debugging the final report map
 #if 0
+        Serial.begin(115200);
         Serial.printf("Final map: %d bytes\n", size);
         for (uint16_t i = 0; i < size; i++) {
             Serial.print(*reportmap[i], HEX);

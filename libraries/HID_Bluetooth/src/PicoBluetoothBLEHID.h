@@ -45,7 +45,8 @@
 #include <btstack_event.h>
 #include <ble/gatt-service/battery_service_server.h>
 #include <ble/gatt-service/device_information_service_server.h>
-#include "sdkoverride/hids_device.h"
+#include <ble/gatt-service/hids_device.h>
+
 
 class PicoBluetoothBLEHID_;
 extern PicoBluetoothBLEHID_ PicoBluetoothBLEHID;
@@ -148,6 +149,9 @@ public:
     }
 
     void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
+        uint8_t result;
+        uint8_t reportID;
+        
         if (type != HCI_EVENT_PACKET) {
             return;
         }
@@ -191,17 +195,20 @@ public:
                     //We cannot distinguish between kbd & mouse in boot mode.
                     //If both are activated, we cannot send
                     if (__BLEInstallKeyboard && !__BLEInstallMouse) {
-                        hids_device_send_boot_keyboard_input_report(_con_handle, (const uint8_t *)_sendReport, _sendReportLen);
+                        hids_device_send_boot_keyboard_input_report(_con_handle, &(((const uint8_t *)_sendReport)[1]), _sendReportLen);
                     }
                     if (__BLEInstallMouse && !__BLEInstallKeyboard) {
-                        hids_device_send_boot_mouse_input_report(_con_handle, (const uint8_t *)_sendReport, _sendReportLen);
+                        hids_device_send_boot_mouse_input_report(_con_handle, &(((const uint8_t *)_sendReport)[1]), _sendReportLen);
                     }
                     if (__BLEInstallMouse && __BLEInstallJoystick) {
                         printf("Error: BLE HID in boot mode, but mouse & keyboard are active\n");
                     }
                     break;
                 case 1:
-                    hids_device_send_input_report_for_id(_con_handle, _sendReportID, (const uint8_t *)_sendReport, _sendReportLen);
+                    reportID = ((const uint8_t *)_sendReport)[0];
+                    result = hids_device_send_input_report_for_id(_con_handle, (uint16_t)reportID, &(((const uint8_t *)_sendReport)[1]), _sendReportLen);
+                    if(result) Serial.printf("Error sending: %d\n",result);
+                    else Serial.printf("Sent report for ID: %d\n",reportID);
                     break;
                 default:
                     break;
@@ -415,9 +422,18 @@ private:
         _attdb[i + 17] = handle_nr++;
         _attdb[i + 29] = handle_nr++;
         _attdb[i + 42] = handle_nr++;
+        
+        #if 0
+        Serial.printf("Final ATTDB: %d bytes\n", _attdbLen);
+        for (uint16_t i = 0; i < _attdbLen; i++) {
+            Serial.print(_attdb[i], HEX);
+            Serial.print(" ");
+            if (i % 8 == 7) {
+                Serial.print("\n");
+            }
+        }
+        #endif
     }
-    uint8_t *_attdb = nullptr;
-    int _attdbLen = 0;
 
     static constexpr const uint8_t _attdb_head[] = {
         // ATT DB Version
@@ -552,8 +568,10 @@ private:
         // fixed report id = 4, type = Input (1) gamepad
         // 0x002d REPORT_REFERENCE-READ-4-1
         0x0a, 0x00, 0x02, 0x00, 0x2d, 0x00, 0x08, 0x29, 0x4, 0x1,
+        /** // 0x002e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
+        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x0a, 0x2f, 0x00, 0x4d, 0x2a, */
         // 0x002e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
-        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x0a, 0x2f, 0x00, 0x4d, 0x2a,
+        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x1a, 0x2b, 0x00, 0x4d, 0x2a,
     };
 
     static constexpr const uint8_t _attdb_char[] =  {
