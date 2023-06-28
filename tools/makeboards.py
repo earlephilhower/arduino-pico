@@ -117,7 +117,7 @@ def BuildIPBTStack(name):
     print('%s.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1' % (name))
 
 def BuildUploadMethodMenu(name):
-    for a, b, c, d, e, f in [ ["default", "Default (UF2)", 256, "picoprobe.tcl", "uf2conv", "uf2conv-network"],
+    for a, b, c, d, e, f in [ ["default", "Default (UF2)", 256, "picoprobe_cmsis_dap.tcl", "uf2conv", "uf2conv-network"],
                               ["picotool", "Picotool", 256, "picoprobe.tcl", "picotool", None],
                               ["picoprobe", "Picoprobe", 256, "picoprobe.tcl", "picoprobe", None],
                               ["picoprobe_cmsis_dap", "Picoprobe (CMSIS-DAP)", 256, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None],
