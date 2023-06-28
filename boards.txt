@@ -4793,7 +4793,7 @@ artronshop_rp2_nano.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-b
 artronshop_rp2_nano.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 artronshop_rp2_nano.menu.uploadmethod.default=Default (UF2)
 artronshop_rp2_nano.menu.uploadmethod.default.build.ram_length=256k
-artronshop_rp2_nano.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
+artronshop_rp2_nano.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
 artronshop_rp2_nano.menu.uploadmethod.default.upload.maximum_data_size=262144
 artronshop_rp2_nano.menu.uploadmethod.default.upload.tool=uf2conv
 artronshop_rp2_nano.menu.uploadmethod.default.upload.tool.default=uf2conv
