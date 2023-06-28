@@ -35,20 +35,20 @@ void loop() {
     }
     MouseBLE.setBattery(random(0, 101)); // Set between 0...100%
     delay(1000);
-    
+
     KeyboardBLE.print("Hi");
-    
+
     delay(1000);
-    
-    JoystickBLE.button(1,true);
+
+    JoystickBLE.button(1, true);
     JoystickBLE.X(0);
     JoystickBLE.send_now();
     delay(1000);
-    
-    JoystickBLE.button(1,false);
+
+    JoystickBLE.button(1, false);
     JoystickBLE.X(512);
     JoystickBLE.send_now();
-    
+
     while (BOOTSEL) {
       delay(1);
     }

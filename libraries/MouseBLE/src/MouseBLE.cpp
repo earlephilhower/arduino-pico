@@ -68,7 +68,7 @@ void MouseBLE_::setAbsolute(bool absolute) {
 }
 
 void MouseBLE_::move(int x, int y, signed char wheel) {
-    static uint8_t report[sizeof(hid_abs_mouse_report_t)+1];
+    static uint8_t report[sizeof(hid_abs_mouse_report_t) +1];
 
     if (!_absolute) {
         hid_mouse_report_t data;
@@ -77,7 +77,7 @@ void MouseBLE_::move(int x, int y, signed char wheel) {
         data.y = limit_xy(y);
         data.wheel = wheel;
         data.pan = 0;
-        
+
         report[0] = __BLEGetMouseReportID();
         memcpy(&report[1], (uint8_t*)&data, sizeof(data));
         PicoBluetoothBLEHID.send(report, sizeof(data) + 1);
@@ -88,7 +88,7 @@ void MouseBLE_::move(int x, int y, signed char wheel) {
         data.y = limit_xy(y);
         data.wheel = wheel;
         data.pan = 0;
-        
+
         report[0] = __BLEGetMouseReportID();
         memcpy(&report[1], (uint8_t*)&data, sizeof(data));
         PicoBluetoothBLEHID.send(report, sizeof(data) + 1);
