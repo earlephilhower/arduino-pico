@@ -416,10 +416,6 @@ template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
 
-    if (pbuf->len != pbuf->tot_len || pbuf->next) {
-        Serial.println("ERRTOT\r\n");
-    }
-
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
 
 #if PHY_HAS_CAPTURE
