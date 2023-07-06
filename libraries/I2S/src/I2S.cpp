@@ -118,11 +118,7 @@ bool I2S::setFrequency(int newFreq) {
     return true;
 }
 
-<<<<<<< Updated upstream
 bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
-=======
-bool I2S::setSysClk(int samplerate) { // RP - optimise sys_clk for desired samplerate
->>>>>>> Stashed changes
     if (samplerate % 11025 == 0) {
         set_sys_clock_khz(I2SSYSCLK_44_1, false); // 147.6 unsuccessful - no I2S no USB
         return true;
@@ -138,8 +134,8 @@ bool I2S::setMCLKmult(int mult) {
     if (_running || !_isOutput) {
         return false;
     }
-    _MCLKenabled = true;
     if ((mult % 64) == 0) {
+        _MCLKenabled = true;
         _multMCLK = mult;
         return true;
     }
