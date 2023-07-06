@@ -21,6 +21,7 @@
 #include <Arduino.h>
 #include "I2S.h"
 #include "pio_i2s.pio.h"
+#include <pico/stdlib.h>
 
 
 I2S::I2S(PinMode direction) {
