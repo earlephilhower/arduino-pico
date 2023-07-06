@@ -34,14 +34,14 @@ public:
 
     bool setBCLK(pin_size_t pin);
     bool setDATA(pin_size_t pin);
-    bool setMCLK(pin_size_t pin); // RP - also enables MCLK output
+    bool setMCLK(pin_size_t pin);
     bool setBitsPerSample(int bps);
     bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0);
     bool setFrequency(int newFreq);
     bool setLSBJFormat();
     bool swapClocks();
-    bool setMCLKmult(int mult); // RP - supports any multiple of 64
-    bool setSysClk(int samplerate); // RP optimise system clock
+    bool setMCLKmult(int mult);
+    bool setSysClk(int samplerate);
 
     bool begin(long sampleRate) {
         setFrequency(sampleRate);
@@ -117,17 +117,17 @@ public:
 private:
     pin_size_t _pinBCLK;
     pin_size_t _pinDOUT;
-    pin_size_t _pinMCLK; //RP
+    pin_size_t _pinMCLK;
     int _bps;
     int _freq;
-    int _multMCLK;  // RP
+    int _multMCLK;
     size_t _buffers;
     size_t _bufferWords;
     int32_t _silenceSample;
     bool _isLSBJ;
     bool _isOutput;
     bool _swapClocks;
-    bool _MCLKenabled = false; // RP
+    bool _MCLKenabled;
 
     bool _running;
 
@@ -142,11 +142,11 @@ private:
     int _isHolding = 0;
 
     void (*_cb)();
-    void MCLKbegin();   // RP - just to separate the code
+    void MCLKbegin();
 
     AudioBufferManager *_arb;
     PIOProgram *_i2s;
-    PIOProgram *_i2sMCLK; //RP
-    PIO _pio, _pioMCLK; //RP
-    int _sm, _smMCLK;  // RP
+    PIOProgram *_i2sMCLK;
+    PIO _pio, _pioMCLK;
+    int _sm, _smMCLK;
 };

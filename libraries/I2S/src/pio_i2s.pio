@@ -19,7 +19,7 @@
 ; License along with this library; if not, write to the Free Software
 ; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-.program pio_i2s_mclk		; RP
+.program pio_i2s_mclk
 ; PIO SM clock is MCLK x 2
 ; MCLK/BCLK sync is maintained by ensuring IN/OUT PIO SM clock dividers 
 ; are x128, 384, 256, 512 or 768 multiples of MCLK SM divider as required.
@@ -166,16 +166,12 @@ right:
 
 % c-sdk {
 
-// doesn't yet force the same PIO as the IN/OUT program
 static inline void pio_i2s_MCLK_program_init(PIO pio, uint sm, uint offset, uint MCLK_pin) {
-    pio_gpio_init(pio, MCLK_pin);
+		pio_gpio_init(pio, MCLK_pin);
 		pio_sm_set_consecutive_pindirs(pio, sm, MCLK_pin, 1, true);
-    pio_sm_config sm_config = pio_i2s_mclk_program_get_default_config(offset);   
-    sm_config_set_set_pins(&sm_config, MCLK_pin, 1);
-    pio_sm_init(pio, sm, offset, &sm_config);
-		
-   // pio_sm_set_pins(pio, sm, 0); // clear pins
-    //pio_sm_exec(pio, sm, pio_encode_sideset(0, 0));
+		pio_sm_config sm_config = pio_i2s_mclk_program_get_default_config(offset);   
+		sm_config_set_set_pins(&sm_config, MCLK_pin, 1);
+		pio_sm_init(pio, sm, offset, &sm_config);
 }
 
 static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {

@@ -48,7 +48,7 @@ Call before ``I2S::begin()``
 bool setMCLKmult(int mult)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the sample rate to MCLK multiplier value.  Only multiples of 64 are valid.
-Call before ``setMCLK() and I2S::begin()``
+Call before ``I2S::begin()``
 
 bool setBitsPerSample(int bits)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,7 +71,7 @@ sample rate on-the-fly.
 bool setSysClk(int samplerate) 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Changes the PICO system clock to optimise for the desired samplerate. 
-The clock changes to 147.6 MHz for samplerates that atr a multiple of 8kHz, and 135.6 MHz for multiples of 44.1kHz.
+The clock changes to 147.6 MHz for samplerates that atr a multiple of 8 kHz, and 135.6 MHz for multiples of 11.025 kHz.
 Note that using ``setSysClk()`` may affect the timing of other sysclk-dependent functions.
 Should be called before any I2S functions and any other sysclk dependent initialisations.
 

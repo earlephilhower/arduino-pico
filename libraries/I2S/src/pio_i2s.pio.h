@@ -245,15 +245,12 @@ static inline pio_sm_config pio_i2s_in_swap_program_get_default_config(uint offs
     return c;
 }
 
-// doesn't yet force the same PIO as the IN/OUT program
 static inline void pio_i2s_MCLK_program_init(PIO pio, uint sm, uint offset, uint MCLK_pin) {
     pio_gpio_init(pio, MCLK_pin);
     pio_sm_set_consecutive_pindirs(pio, sm, MCLK_pin, 1, true);
     pio_sm_config sm_config = pio_i2s_mclk_program_get_default_config(offset);
     sm_config_set_set_pins(&sm_config, MCLK_pin, 1);
     pio_sm_init(pio, sm, offset, &sm_config);
-    // pio_sm_set_pins(pio, sm, 0); // clear pins
-    //pio_sm_exec(pio, sm, pio_encode_sideset(0, 0));
 }
 static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);

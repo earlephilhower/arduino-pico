@@ -3,8 +3,6 @@
   Note: System clock sppeds used here may not be compatible with all other libraries
   requiring specific sys_clks, particularly Pico PIO USB.
 
-  Richard Palmer June 2023
-
   Original  17 November 2016
   by Sandeep Mistry
   modified for RP2040 by Earle F. Philhower, III <earlephilhower@yahoo.com>
@@ -16,6 +14,9 @@
 
     bool setDATA(pin_size_t pin);
     - Sets the DOUT pin, can be any valid GPIO pin
+
+
+    modified for MCLK by Richard Palmer June 2023
 */
 
 #include <I2S.h>

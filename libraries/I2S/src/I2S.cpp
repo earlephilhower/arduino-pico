@@ -19,7 +19,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <Arduino.h>
-#include <I2S.h>
+#include "I2S.h"
 #include "pio_i2s.pio.h"
 
 
@@ -31,6 +31,7 @@ I2S::I2S(PinMode direction) {
     _pinBCLK = 26;
     _pinDOUT = 28;
     _pinMCLK = 25;
+    _MCLKenabled = false;
 #ifdef PIN_I2S_BCLK
     _pinBCLK = PIN_I2S_BCLK;
 #endif
@@ -117,7 +118,7 @@ bool I2S::setFrequency(int newFreq) {
     return true;
 }
 
-bool I2S::setSysClk(int samplerate) { // RP - optimise sys_clk for desired samplerate
+bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
     if (samplerate % 11025 == 0) {
         set_sys_clock_khz(I2SSYSCLK_44_1, false); // 147.6 unsuccessful - no I2S no USB
         return true;
@@ -129,7 +130,7 @@ bool I2S::setSysClk(int samplerate) { // RP - optimise sys_clk for desired sampl
     return false;
 }
 
-bool I2S::setMCLKmult(int mult) { // RP
+bool I2S::setMCLKmult(int mult) {
     if (_running || !_isOutput) {
         return false;
     }
@@ -175,7 +176,7 @@ void I2S::onReceive(void(*fn)(void)) {
     }
 }
 
-void I2S::MCLKbegin() {  // RP
+void I2S::MCLKbegin() {
     int off = 0;
     _i2sMCLK = new PIOProgram(&pio_i2s_mclk_program);
     _i2sMCLK->prepare(&_pioMCLK, &_smMCLK, &off); // not sure how to use the same PIO
@@ -241,7 +242,6 @@ bool I2S::begin() {
 
 void I2S::end() {
     if (_MCLKenabled && _running) {
-        pio_sm_set_enabled(_pioMCLK, _smMCLK, false);
         _MCLKenabled = false;
     }
 
