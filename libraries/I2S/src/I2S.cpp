@@ -241,11 +241,12 @@ bool I2S::begin() {
 }
 
 void I2S::end() {
-    if (_MCLKenabled && _running) {
-        _MCLKenabled = false;
-    }
-
     if (_running) {
+        if (_MCLKenabled) {
+            pio_sm_set_enabled(_pioMCLK, _smMCLK, false);
+            delete _i2sMCLK;
+            _i2sMCLK = nullptr;
+        }
         pio_sm_set_enabled(_pio, _sm, false);
         _running = false;
         delete _arb;
