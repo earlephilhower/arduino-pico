@@ -21,6 +21,7 @@
 #include <Arduino.h>
 #include "I2S.h"
 #include "pio_i2s.pio.h"
+#include <pico/stdlib.h>
 
 
 I2S::I2S(PinMode direction) {
@@ -30,6 +31,8 @@ I2S::I2S(PinMode direction) {
     _isOutput = direction == OUTPUT;
     _pinBCLK = 26;
     _pinDOUT = 28;
+    _pinMCLK = 25;
+    _MCLKenabled = false;
 #ifdef PIN_I2S_BCLK
     _pinBCLK = PIN_I2S_BCLK;
 #endif
@@ -53,6 +56,7 @@ I2S::I2S(PinMode direction) {
     _silenceSample = 0;
     _isLSBJ = false;
     _swapClocks = false;
+    _multMCLK = 256;
 }
 
 I2S::~I2S() {
@@ -67,6 +71,14 @@ bool I2S::setBCLK(pin_size_t pin) {
     return true;
 }
 
+
+bool I2S::setMCLK(pin_size_t pin) {
+    if (_running || (pin > 28)) {
+        return false;
+    }
+    _pinMCLK = pin;
+    return true;
+}
 bool I2S::setDATA(pin_size_t pin) {
     if (_running || (pin > 29)) {
         return false;
@@ -96,10 +108,39 @@ bool I2S::setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample) 
 bool I2S::setFrequency(int newFreq) {
     _freq = newFreq;
     if (_running) {
-        float bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
-        pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+        if (_MCLKenabled) {
+            int bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
+            pio_sm_set_clkdiv_int_frac(_pio, _sm, clock_get_hz(clk_sys) / bitClk, 0);
+        } else {
+            float bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
+            pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+        }
     }
     return true;
+}
+
+bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
+    if (samplerate % 11025 == 0) {
+        set_sys_clock_khz(I2SSYSCLK_44_1, false); // 147.6 unsuccessful - no I2S no USB
+        return true;
+    }
+    if (samplerate % 8000 == 0) {
+        set_sys_clock_khz(I2SSYSCLK_8, false);
+        return true;
+    }
+    return false;
+}
+
+bool I2S::setMCLKmult(int mult) {
+    if (_running || !_isOutput) {
+        return false;
+    }
+    if ((mult % 64) == 0) {
+        _MCLKenabled = true;
+        _multMCLK = mult;
+        return true;
+    }
+    return false;
 }
 
 bool I2S::setLSBJFormat() {
@@ -136,6 +177,16 @@ void I2S::onReceive(void(*fn)(void)) {
     }
 }
 
+void I2S::MCLKbegin() {
+    int off = 0;
+    _i2sMCLK = new PIOProgram(&pio_i2s_mclk_program);
+    _i2sMCLK->prepare(&_pioMCLK, &_smMCLK, &off); // not sure how to use the same PIO
+    pio_i2s_MCLK_program_init(_pioMCLK, _smMCLK, off, _pinMCLK);
+    int mClk = _multMCLK * _freq * 2.0 /* edges per clock */;
+    pio_sm_set_clkdiv_int_frac(_pioMCLK, _smMCLK, clock_get_hz(clk_sys) / mClk, 0);
+    pio_sm_set_enabled(_pioMCLK, _smMCLK, true);
+}
+
 bool I2S::begin() {
     _running = true;
     _hasPeeked = false;
@@ -162,6 +213,9 @@ bool I2S::begin() {
         pio_i2s_in_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
     }
     setFrequency(_freq);
+    if (_MCLKenabled) {
+        MCLKbegin();
+    }
     if (_bps == 8) {
         uint8_t a = _silenceSample & 0xff;
         _silenceSample = (a << 24) | (a << 16) | (a << 8) | a;
@@ -189,6 +243,11 @@ bool I2S::begin() {
 
 void I2S::end() {
     if (_running) {
+        if (_MCLKenabled) {
+            pio_sm_set_enabled(_pioMCLK, _smMCLK, false);
+            delete _i2sMCLK;
+            _i2sMCLK = nullptr;
+        }
         pio_sm_set_enabled(_pio, _sm, false);
         _running = false;
         delete _arb;
@@ -204,8 +263,13 @@ int I2S::available() {
     } else {
         auto avail = _arb->available();
         avail *= 4; // 4 samples per 32-bits
-        if (_bps < 24 && !_isOutput) {
-            avail += _isHolding / 8;
+        if (_bps < 24) {
+            if (_isOutput) {
+                // 16- and 8-bit can have holding bytes available
+                avail += (32 - _isHolding) / 8;
+            } else {
+                avail += _isHolding / 8;
+            }
         }
         return avail;
     }
