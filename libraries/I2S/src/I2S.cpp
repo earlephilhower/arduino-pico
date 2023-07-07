@@ -263,13 +263,8 @@ int I2S::available() {
     } else {
         auto avail = _arb->available();
         avail *= 4; // 4 samples per 32-bits
-        if (_bps < 24) {
-            if (_isOutput) {
-                // 16- and 8-bit can have holding bytes available
-                avail += (32 - _isHolding) / 8;
-            } else {
-                avail += _isHolding / 8;
-            }
+        if (_bps < 24 && !_isOutput) {
+            avail += _isHolding / 8;
         }
         return avail;
     }
