@@ -104,7 +104,7 @@ public:
         device_information_service_server_init();
 
         // Setup HID Device service, depending on activated reports
-        uint8_t numreports = 0;
+        uint8_t numreports = 1;
         if (__BLEInstallKeyboard) {
             numreports += 2;
         }
@@ -319,17 +319,19 @@ private:
     hids_device_report_t *_reportStorage = nullptr;
 
     void _buildAttdb(const char *hidName) {
-        uint8_t handle_nr = 0x1F; //start of HID report handles
+        uint8_t handle_nr = 0x1E; //start of HID report handles
         free(_attdb);
+        //basic ATT DB parts
         _attdbLen = sizeof(_attdb_head) + 8 + strlen(hidName) + sizeof(_attdb_tail) + sizeof(_attdb_batt_hidhead) + sizeof(_attdb_char);
+        //additional boot characteristics
+        _attdbLen += sizeof(_attdb_kbd_boot) + sizeof(_attdb_mouse_boot);
+        
         //add individual ATT entries for KB/Mouse/Joystick
         if (__BLEInstallKeyboard) {
             _attdbLen += sizeof(_attdb_kbd_report);
-            _attdbLen += sizeof(_attdb_kbd_boot);
         }
         if (__BLEInstallMouse) {
             _attdbLen += sizeof(_attdb_mouse_joystick_report);
-            _attdbLen += sizeof(_attdb_mouse_boot);
         }
         if (__BLEInstallJoystick) {
             _attdbLen += sizeof(_attdb_mouse_joystick_report);
@@ -358,63 +360,127 @@ private:
         //1.) KBD report mode
         if (__BLEInstallKeyboard) {
             memcpy(_attdb + i, _attdb_kbd_report, sizeof(_attdb_kbd_report));
+            
+            #if 1
+            Serial.printf("ATTDB general + kbd:\n");
+            for (uint16_t j = i; j < i+sizeof(_attdb_kbd_report); j++) {
+                Serial.print(_attdb[j], HEX);
+                Serial.print(" ");
+                if (j % 8 == 7) {
+                    Serial.print("\n");
+                }
+            }
+            #endif
+            
             //set report ID not necessary, if KBD is included, it is always 1&2
             i += sizeof(_attdb_kbd_report);
             //if keyboard is used, start change start handle to patch
-            handle_nr = 0x27;
+            handle_nr = 0x26;
         }
+        
         //2.) mouse report mode
         if (__BLEInstallMouse) {
             memcpy(_attdb + i, _attdb_mouse_joystick_report, sizeof(_attdb_mouse_joystick_report));
+            #if 1
+            Serial.print("mouse handles: 0x"); Serial.print(handle_nr,HEX);
+            #endif
             //patch report ID & 4 handles
-            _attdb[i + 26] = __BLEGetMouseReportID();
+            _attdb[i + 39] = __BLEGetMouseReportID();
             _attdb[i + 4] = handle_nr++;
-            _attdb[i + 12] = handle_nr++;
-            _attdb[i + 22] = handle_nr++;
-            _attdb[i + 32] = handle_nr++;
+            _attdb[i + 17] = handle_nr++;
+            _attdb[i + 25] = handle_nr++;
+            _attdb[i + 35] = handle_nr++;
+            #if 1
+            Serial.print("-0x"); Serial.print(handle_nr,HEX);
+            Serial.printf("ATTDB general + mouse:\n");
+            for (uint16_t j = i; j < i+sizeof(_attdb_mouse_joystick_report); j++) {
+                Serial.print(_attdb[j], HEX);
+                Serial.print(" ");
+                if (j % 8 == 7) {
+                    Serial.print("\n");
+                }
+            }
+            #endif 
             i += sizeof(_attdb_mouse_joystick_report);
         }
+        
+
         //3.) joystick report mode
         if (__BLEInstallJoystick) {
             memcpy(_attdb + i, _attdb_mouse_joystick_report, sizeof(_attdb_mouse_joystick_report));
             //patch report ID & 4 handles
-            _attdb[i + 26] = __BLEGetJoystickReportID();
+            _attdb[i + 39] = __BLEGetJoystickReportID();
             _attdb[i + 4] = handle_nr++;
-            _attdb[i + 12] = handle_nr++;
-            _attdb[i + 22] = handle_nr++;
-            _attdb[i + 32] = handle_nr++;
+            _attdb[i + 17] = handle_nr++;
+            _attdb[i + 25] = handle_nr++;
+            _attdb[i + 35] = handle_nr++;
+              #if 1
+            Serial.printf("ATTDB general + mouse + joystick:\n");
+            for (uint16_t j = i; j < i+sizeof(_attdb_mouse_joystick_report); j++) {
+                Serial.print(_attdb[j], HEX);
+                Serial.print(" ");
+                if (j % 8 == 7) {
+                    Serial.print("\n");
+                }
+            }
+            #endif 
             i += sizeof(_attdb_mouse_joystick_report);
         }
         //4.) report characteristics
         memcpy(_attdb + i, _attdb_char, sizeof(_attdb_char));
         //patch 4 handles & feature report ID
-        _attdb[i + 16] = __BLEGetFeatureReportID();
+        _attdb[i + 29] = __BLEGetFeatureReportID();
         _attdb[i + 4] = handle_nr++;
-        _attdb[i + 12] = handle_nr++;
-        _attdb[i + 22] = handle_nr++;
+        _attdb[i + 17] = handle_nr++;
+        _attdb[i + 25] = handle_nr++;
         _attdb[i + 35] = handle_nr++;
+        _attdb[i + 48] = handle_nr++;
+        
+        Serial.printf("ATTDB report characteristics:\n");
+        for (uint16_t j = i; j < i+sizeof(_attdb_char); j++) {
+            Serial.print(_attdb[j], HEX);
+            Serial.print(" ");
+            if (j % 8 == 7) {
+                Serial.print("\n");
+            }
+        }
         i += sizeof(_attdb_char);
+        
+        
 
-        //5.) KBD boot mode
-        if (__BLEInstallKeyboard) {
-            memcpy(_attdb + i, _attdb_kbd_boot, sizeof(_attdb_kbd_boot));
-            //patch 5 handles, but no report id (boot mode)
-            _attdb[i + 4] = handle_nr++;
-            _attdb[i + 17] = handle_nr++;
-            _attdb[i + 25] = handle_nr++;
-            _attdb[i + 35] = handle_nr++;
-            _attdb[i + 48] = handle_nr++;
-            i += sizeof(_attdb_kbd_boot);
+        //5.) KBD boot mode (always included)
+        memcpy(_attdb + i, _attdb_kbd_boot, sizeof(_attdb_kbd_boot));
+        //patch 5 handles, but no report id (boot mode)
+        _attdb[i + 4] = handle_nr++;
+        _attdb[i + 17] = handle_nr++;
+        _attdb[i + 25] = handle_nr++;
+        _attdb[i + 35] = handle_nr++;
+        _attdb[i + 48] = handle_nr++;
+        Serial.printf("ATTDB kbd boot:\n");
+        for (uint16_t j = i; j < i+sizeof(_attdb_kbd_boot); j++) {
+            Serial.print(_attdb[j], HEX);
+            Serial.print(" ");
+            if (j % 8 == 7) {
+                Serial.print("\n");
+            }
         }
-        //6.) mouse boot mode
-        if (__BLEInstallMouse) {
-            memcpy(_attdb + i, _attdb_mouse_boot, sizeof(_attdb_mouse_boot));
-            //patch 3 handles, but no report id (boot mode)
-            _attdb[i + 4] = handle_nr++;
-            _attdb[i + 17] = handle_nr++;
-            _attdb[i + 25] = handle_nr++;
-            i += sizeof(_attdb_mouse_boot);
+        i += sizeof(_attdb_kbd_boot);
+        
+        //6.) mouse boot mode (always included)
+        memcpy(_attdb + i, _attdb_mouse_boot, sizeof(_attdb_mouse_boot));
+        //patch 3 handles, but no report id (boot mode)
+        _attdb[i + 4] = handle_nr++;
+        _attdb[i + 17] = handle_nr++;
+        _attdb[i + 25] = handle_nr++;
+        Serial.printf("ATTDB mouse boot:\n");
+        for (uint16_t j = i; j < i+sizeof(_attdb_mouse_boot); j++) {
+            Serial.print(_attdb[j], HEX);
+            Serial.print(" ");
+            if (j % 8 == 7) {
+                Serial.print("\n");
+            }
         }
+        i += sizeof(_attdb_mouse_boot);
         //7.) tail (report)
         memcpy(_attdb + i, _attdb_tail, sizeof(_attdb_tail));
         //patch 4 handles
@@ -423,7 +489,16 @@ private:
         _attdb[i + 29] = handle_nr++;
         _attdb[i + 42] = handle_nr++;
         
-        #if 0
+        Serial.printf("ATTDB tail:\n");
+        for (uint16_t j = i; j < i+sizeof(_attdb_tail); j++) {
+            Serial.print(_attdb[j], HEX);
+            Serial.print(" ");
+            if (j % 8 == 7) {
+                Serial.print("\n");
+            }
+        }
+        
+        #if 1
         Serial.printf("Final ATTDB: %d bytes\n", _attdbLen);
         for (uint16_t i = 0; i < _attdbLen; i++) {
             Serial.print(_attdb[i], HEX);
@@ -527,11 +602,11 @@ private:
         // 0x001d VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_PROTOCOL_MODE - DYNAMIC | READ | WRITE_WITHOUT_RESPONSE
         // READ_ANYBODY, WRITE_ANYBODY
         0x08, 0x00, 0x06, 0x01, 0x1d, 0x00, 0x4e, 0x2a,
-        // 0x001e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
-        0x0d, 0x00, 0x02, 0x00, 0x1e, 0x00, 0x03, 0x28, 0x1a, 0x1f, 0x00, 0x4d, 0x2a,
     };
 
     static constexpr const uint8_t _attdb_kbd_report[] =  {
+        // 0x001e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
+        0x0d, 0x00, 0x02, 0x00, 0x1e, 0x00, 0x03, 0x28, 0x1a, 0x1f, 0x00, 0x4d, 0x2a,
         // 0x001f VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
         // READ_ENCRYPTED, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x08, 0x00, 0x0b, 0xf5, 0x1f, 0x00, 0x4d, 0x2a,
@@ -541,10 +616,10 @@ private:
         // fixed report id = 1, type = Input (1); keycodes
         // 0x0021 REPORT_REFERENCE-READ-1-1
         0x0a, 0x00, 0x02, 0x00, 0x21, 0x00, 0x08, 0x29, 0x1, 0x1,
+        
+        
         // 0x0022 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
         0x0d, 0x00, 0x02, 0x00, 0x22, 0x00, 0x03, 0x28, 0x1a, 0x23, 0x00, 0x4d, 0x2a,
-
-
         // 0x0023 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
         // READ_ENCRYPTED, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x08, 0x00, 0x0b, 0xf5, 0x23, 0x00, 0x4d, 0x2a,
@@ -554,11 +629,11 @@ private:
         // fixed report id = 2, type = Input (1) consumer
         // 0x0025 REPORT_REFERENCE-READ-2-1
         0x0a, 0x00, 0x02, 0x00, 0x25, 0x00, 0x08, 0x29, 0x2, 0x1,
-        // 0x0026 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
-        0x0d, 0x00, 0x02, 0x00, 0x26, 0x00, 0x03, 0x28, 0x1a, 0x27, 0x00, 0x4d, 0x2a,
     };
 
     static constexpr const uint8_t _attdb_mouse_joystick_report[] =  {
+        // 0x0026 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
+        0x0d, 0x00, 0x02, 0x00, 0x26, 0x00, 0x03, 0x28, 0x1a, 0x27, 0x00, 0x4d, 0x2a,
         // 0x002b VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
         // READ_ENCRYPTED, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x08, 0x00, 0x0b, 0xf5, 0x2b, 0x00, 0x4d, 0x2a,
@@ -570,11 +645,11 @@ private:
         0x0a, 0x00, 0x02, 0x00, 0x2d, 0x00, 0x08, 0x29, 0x4, 0x1,
         /** // 0x002e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
         0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x0a, 0x2f, 0x00, 0x4d, 0x2a, */
-        // 0x002e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
-        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x1a, 0x2b, 0x00, 0x4d, 0x2a,
     };
 
     static constexpr const uint8_t _attdb_char[] =  {
+        // 0x002e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
+        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x1a, 0x2b, 0x00, 0x4d, 0x2a,
         // 0x002f VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
         // READ_ENCRYPTED, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x08, 0x00, 0x0b, 0xf5, 0x2f, 0x00, 0x4d, 0x2a,
