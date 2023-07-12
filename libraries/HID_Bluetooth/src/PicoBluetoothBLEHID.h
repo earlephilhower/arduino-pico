@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <sdkoverride/bluetooth.h>
 #include <_needsbt.h>
 #include <Arduino.h>
 #include <functional>
@@ -34,6 +35,8 @@
 #define HID_REPORT_TYPE_OUTPUT HID_REPORT_TYPE_OUTPUT_BT
 #define HID_REPORT_TYPE_FEATURE HID_REPORT_TYPE_FEATURE_BT
 #define hid_report_type_t hid_report_type_t_bt
+#include <sdkoverride/hids_device.h>
+#include <sdkoverride/att_db.h>
 #include <btstack.h>
 #undef hid_report_type_t
 #undef HID_REPORT_TYPE_FEATURE
@@ -45,7 +48,8 @@
 #include <btstack_event.h>
 #include <ble/gatt-service/battery_service_server.h>
 #include <ble/gatt-service/device_information_service_server.h>
-#include <ble/gatt-service/hids_device.h>
+//#include <ble/gatt-service/hids_device.h>
+
 
 
 class PicoBluetoothBLEHID_;
