@@ -1,4 +1,5 @@
-/* Earle F. Philhower, III <earlephilhower@yahoo.com> */
+/* Earle F. Philhower, III <earlephilhower@yahoo.com>
+   Benjamin Aigner <beni@asterics-foundation.org> <aignerb@technikum-wien.at> */
 /* Released to the public domain */
 
 #define ENABLE_LOG_INFO
@@ -18,47 +19,42 @@
 #include <JoystickBLE.h>
 #endif
 
-//used to access the ATT DB for debugging
-#include "PicoBluetoothBLEHID.h"
-
 void setup() {
   Serial.begin(115200);
-  #ifdef USE_MOUSE
+
+  //If activated nothing happens until the serial port is opened
+  //while(!Serial);
+
+
+#if (defined(USE_KBD) || defined(USE_JOYSTICK)) && defined(USE_MOUSE)
   MouseBLE.begin("BLE Composite");
-  #endif
-  #ifdef USE_KBD
+#elif defined(USE_MOUSE)
+  MouseBLE.begin("BLE Mouse");
+#endif
+
+#ifdef USE_KBD
   KeyboardBLE.begin("BLE KBD");
-  #endif
-  #ifdef USE_JOYSTICK
+#endif
+
+#ifdef USE_JOYSTICK
   JoystickBLE.begin("BLE JOY");
-  #endif
-  delay(1000);
+#endif
+
   Serial.printf("Press BOOTSEL to start action\n");
-  #ifdef USE_MOUSE
-    Serial.println("First the mouse moves");
-  #endif
-  #ifdef USE_KBD
-    Serial.println("Then \"Hi\" will be printed");
-  #endif
-  #ifdef USE_JOYSTICK
-    Serial.println("Then joystick buttons & axis are changed");
-  #endif  
-  
-  #if 0
-        Serial.printf("Final ATTDB: %d bytes\n", PicoBluetoothBLEHID._attdbLen);
-        for (uint16_t i = 0; i < PicoBluetoothBLEHID._attdbLen; i++) {
-            Serial.print(PicoBluetoothBLEHID._attdb[i], HEX);
-            Serial.print(" ");
-            if (i % 4 == 3) {
-                Serial.print("\n");
-            }
-        }
-  #endif
+#ifdef USE_MOUSE
+  Serial.println("First the mouse moves");
+#endif
+#ifdef USE_KBD
+  Serial.println("Then \"Hi\" will be printed");
+#endif
+#ifdef USE_JOYSTICK
+  Serial.println("Then joystick buttons & axis are changed");
+#endif
 }
 
 void loop() {
   if (BOOTSEL) {
-    #ifdef USE_MOUSE
+#ifdef USE_MOUSE
     Serial.println("ACTION!!!");
     float r = 100;
     float ox = 0.0;
@@ -75,13 +71,13 @@ void loop() {
     }
     MouseBLE.setBattery(random(0, 101)); // Set between 0...100%
     delay(1000);
-    #endif
-    
-    #ifdef USE_KBD
-    KeyboardBLE.print("Hi");
-    #endif
+#endif
 
-    #ifdef USE_JOYSTICK
+#ifdef USE_KBD
+    KeyboardBLE.print("Hi");
+#endif
+
+#ifdef USE_JOYSTICK
     JoystickBLE.button(1, true);
     JoystickBLE.X(0);
     JoystickBLE.send_now();
@@ -89,8 +85,9 @@ void loop() {
 
     JoystickBLE.button(1, false);
     JoystickBLE.X(512);
-    JoystickBLE.send_now(); 
-    #endif
+    JoystickBLE.send_now();
+#endif
+
     while (BOOTSEL) {
       delay(1);
     }
