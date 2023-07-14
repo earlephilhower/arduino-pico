@@ -43,6 +43,8 @@
 #ifndef ATT_DB_H
 #define ATT_DB_H
 
+#if defined ENABLE_CLASSIC
+
 #include <stdint.h>
 #include <sdkoverride/bluetooth.h>
 #include "btstack_linked_list.h"
@@ -434,6 +436,8 @@ extern "C" {
 
 #if defined __cplusplus
 }
+#endif
+
 #endif
 
 #endif // ATT_H

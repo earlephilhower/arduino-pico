@@ -43,6 +43,8 @@
 #ifndef HIDS_DEVICE_H
 #define HIDS_DEVICE_H
 
+#if defined ENABLE_CLASSIC
+
 #include <sdkoverride/att_db.h>
 #include <stdint.h>
 #include "btstack_defines.h"
@@ -134,6 +136,8 @@ extern "C" {
 
 #if defined __cplusplus
 }
+#endif
+
 #endif
 
 #endif

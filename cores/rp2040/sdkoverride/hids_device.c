@@ -35,6 +35,8 @@
 
 */
 
+#if defined ENABLE_CLASSIC
+
 #define BTSTACK_FILE__ "hids_device.c"
 
 /**
@@ -518,3 +520,5 @@ uint8_t hids_device_send_boot_keyboard_input_report(hci_con_handle_t con_handle,
     }
     return att_server_notify(con_handle, instance->hid_boot_keyboard_input_value_handle, report, report_len);
 }
+
+#endif

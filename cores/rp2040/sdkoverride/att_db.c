@@ -37,8 +37,10 @@
 
 #define BTSTACK_FILE__ "att_db.c"
 
-#include <string.h>
+#if defined ENABLE_CLASSIC
+
 #include <sdkoverride/bluetooth.h>
+#include <string.h>
 #include "ble/att_db.h"
 #include "ble/core.h"
 
@@ -1856,4 +1858,6 @@ uint16_t btp_att_get_attribute_value(att_connection_t * att_connection, uint16_t
     return pos;
 }
 // LCOV_EXCL_STOP
+#endif
+
 #endif
