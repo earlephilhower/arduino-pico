@@ -36,6 +36,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * ExtremeElectronics RC2040
 * Invector Labs Challenger RP2040 WiFi
 * Invector Labs Challenger RP2040 WiFi/BLE
+* Invector Labs Challenger RP2040 WiFi6/BLE
 * Invector Labs Challenger NB RP2040 WiFi
 * Invector Labs Challenger RP2040 LTE
 * Invector Labs Challenger RP2040 LoRa
