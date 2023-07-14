@@ -90,7 +90,7 @@ Signing requires the generation of an RSA-2048 key (other bit lengths are suppor
 Automatic Signing
 ^^^^^^^^^^^^^^^^^
 
-The simplest way of implementing signing is to use the automatic mode, which presently is only possible on Linux and Mac due to some of the tools not being available for Windows.  This mode uses the IDE to configure the source code to enable sigining verification with a given public key, and signs binaries as part of the standard build process using a given public key.
+The simplest way of implementing signing is to use the automatic mode, which presently is only possible on Linux and Mac due to some of the tools not being available for Windows.  This mode uses the IDE to configure the source code to enable signing verification with a given public key, and signs binaries as part of the standard build process using a given public key.
 
 To enable this mode, just include `private.key` and `public.key` in the sketch `.ino` directory.  The IDE will call a helper script (`tools/signing.py`) before the build begins to create a header to enable key validation using the given public key, and to actually do the signing after the build process, generating a `sketch.bin.signed` file.  When OTA is enabled (ArduinoOTA, Web, or HTTP), the binary will automatically only accept signed updates.
 
@@ -144,7 +144,7 @@ The eboot bootloader incorporates a GZIP decompressor, built for very low code r
 
 No changes to the application are required.  The `Updater` class and `eboot` bootloader (which performs actual application overwriting on update) automatically search for the `gzip` header in the uploaded binary, and if found, handle it.
 
-Compress an application `.bin` file or filesystem package using any `gzip` available, at any desired compression level (`gzip -9` is recommended because it provides the maximum compression and uncompresses as fast as any other compressino level).  For example:
+Compress an application `.bin` file or filesystem package using any `gzip` available, at any desired compression level (`gzip -9` is recommended because it provides the maximum compression and uncompresses as fast as any other compression level).  For example:
 
 .. code:: bash
 
@@ -185,11 +185,11 @@ Uploading modules wirelessly from Arduino IDE is intended for the following typi
 
 -  Only if modules are accessible on the same network as the computer with the Arduino IDE.
 
--  For all IDE uploads,m the Pico W and the computer must be connected to the same network.
+-  For all IDE uploads, the Pico W and the computer must be connected to the same network.
 
 To upload wirelessly from the IDE:
 
-1. Build a sketch starts ``WiFi`` and includes the appropriare calls to ``ArduinoOTA`` (see the examples for reference).  These include the ``ArduinoOTA.begin()`` call in ``setup()`` and periodically calling ``ArduinoOTA.handle();`` from the ``loop()``
+1. Build a sketch starts ``WiFi`` and includes the appropriate calls to ``ArduinoOTA`` (see the examples for reference).  These include the ``ArduinoOTA.begin()`` call in ``setup()`` and periodically calling ``ArduinoOTA.handle();`` from the ``loop()``
 
 2. Upload using standard USB connection the first time.
 
@@ -200,7 +200,7 @@ To upload wirelessly from the IDE:
 Password Protection
 -------------------
 
-Protecting your OTA uploads with password is really straightforward. All you need to do, is to include the following statement in your code:
+Protecting your OTA uploads with a password is really straightforward. All you need to do, is to include the following statement in your code:
 
 .. code:: cpp
 
@@ -208,11 +208,11 @@ Protecting your OTA uploads with password is really straightforward. All you nee
 
 Where ``123`` is a sample password that you should replace with your own.
 
-Before implementing it in your sketch, it is a good idea to check how it works using *BasicOTA.ino* sketch available under *File > Examples > ArduinoOTA*. Go ahead, open *BasicOTA.ino*, uncomment the above statement that is already there, and upload the sketch. To make troubleshooting easier, do not modify example sketch besides what is absolutely required. This is including original simple ``123`` OTA password. Then attempt to upload sketch again (using OTA). After compilation is complete, once upload is about to begin, you should see prompt for password.
+Before implementing it in your sketch, it is a good idea to check how it works using *BasicOTA.ino* sketch available under *File > Examples > ArduinoOTA*. Go ahead, open *BasicOTA.ino*, uncomment the above statement that is already there, and upload the sketch. To make troubleshooting easier, do not modify example sketch besides what is absolutely required. This includes the original simple ``123`` OTA password. Then attempt to upload a sketch again (using OTA). After compilation is complete, once upload is about to begin, you should see a prompt for password.
 
-Enter the password and upload should be initiated as usual with the only difference being ``Authenticating...OK`` message visible in upload log.
+Enter the password and upload should be initiated as usual with the only difference being ``Authenticating...OK`` message visible in the upload log.
 
-You will not be prompted for a reentering the same password next time. Arduino IDE will remember it for you. You will see prompt for password only after reopening IDE, or if you change it in your sketch, upload the sketch and then try to upload it again.
+You will not be prompted for a reentering the same password next time. Arduino IDE will remember it for you. You will see a prompt for password only after reopening IDE, or if you change it in your sketch, upload the sketch and then try to upload it again.
 
 Please note, it is possible to reveal password entered previously in Arduino IDE, if IDE has not been closed since last upload. This can be done by enabling *Show verbose output during: upload* in *File > Preferences* and attempting to upload the module.
 
@@ -289,7 +289,7 @@ Simple updater downloads the file every time the function is called.
 Advanced updater
 ^^^^^^^^^^^^^^^^
 
-Its possible to point the update function to a script on the server. If a version string argument is given, it will be sent to the server. The server side script can use this string to check whether an update should be performed.
+It's possible to point the update function to a script on the server. If a version string argument is given, it will be sent to the server. The server side script can use this string to check whether an update should be performed.
 
 The server-side script can respond as follows: - response code 200, and send the firmware image, - or response code 304 to notify Pico that no update is required.
 
