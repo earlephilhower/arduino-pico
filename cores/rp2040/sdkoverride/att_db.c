@@ -980,7 +980,7 @@ handle_read_multiple_request(att_connection_t *att_connection, uint8_t *request_
 //
 // NOTE: doesn't handle DYNAMIC values
 //
-// NOTE: we don't check for security as PRIMARY and SECONDAY SERVICE definition shouldn't be protected
+// NOTE: we don't check for security as PRIMARY and SECONDARY SERVICE definition shouldn't be protected
 // Core 4.0, vol 3, part g, 8.1
 // "The list of services and characteristics that a device supports is not considered private or
 //  confidential information, and therefore the Service and Characteristic Discovery procedures

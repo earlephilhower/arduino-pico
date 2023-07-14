@@ -158,7 +158,7 @@ typedef uint16_t (*att_read_callback_t)(hci_con_handle_t con_handle, uint16_t at
  * @param offset into the value - used for queued writes and long attributes
  * @param buffer 
  * @param buffer_size
- * @param signature used for signed write commmands
+ * @param signature used for signed write commands
  * @return 0 if write was ok, ATT_ERROR_PREPARE_QUEUE_FULL if no space in queue, ATT_ERROR_INVALID_OFFSET if offset is larger than max buffer
  */
 typedef int (*att_write_callback_t)(hci_con_handle_t con_handle, uint16_t attribute_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
@@ -201,7 +201,7 @@ void att_dump_attributes(void);
 /**
  * @brief process ATT request against database and put response into response buffer
  * @param att_connection used for mtu and security properties
- * @param request_buffer, request_len: ATT request from clinet
+ * @param request_buffer, request_len: ATT request from client
  * @param response_buffer for result
  * @return len of data in response buffer. 0 = no response, 
  *          ATT_READ_RESPONSE_PENDING if it was returned at least once for dynamic data (requires ENABLE_ATT_DELAYED_READ_RESPONSE)

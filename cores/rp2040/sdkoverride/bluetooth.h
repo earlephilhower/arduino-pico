@@ -461,7 +461,7 @@ typedef enum {
 
 
 /**
- * SSP Authentication Requirements, see IO Capability Request Reply Commmand 
+ * SSP Authentication Requirements, see IO Capability Request Reply Command 
  */
 
 // Numeric comparison with automatic accept allowed.
