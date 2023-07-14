@@ -282,11 +282,7 @@ HTTPUpdateResult HTTPUpdate::handleUpdate(HTTPClient& http, const String& curren
                         _cbEnd();
                     }
 
-#ifdef ATOMIC_FS_UPDATE
-                    if (_rebootOnUpdate) {
-#else
                     if (_rebootOnUpdate && !spiffs) {
-#endif
                         rp2040.restart();
                     }
 
