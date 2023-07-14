@@ -31,7 +31,7 @@ Challenger2040WiFiClass::Challenger2040WiFiClass(HardwareSerial* serial) {
 
     pinMode(D15, OUTPUT);
     digitalWrite(D15, HIGH);              // This is to correct for the
-    // patched PCB.
+                                          // patched PCB.
 }
 
 // Do a HW reset by applying a low pulse to the reset line for 1mSec
