@@ -140,9 +140,9 @@ Compile the sketch normally and, once a `.bin` file is available, sign it using 
 Compression
 -----------
 
-The eboot bootloader incorporates a GZIP decompressor, built for very low code requirements.  For applications, this optional decompression is completely transparent.  For uploading compressed filesystems, the application must be built with `ATOMIC_FS_UPDATE` defined because, otherwise, eboot will not be involved in writing the filesystem.
+The bootloader incorporates a GZIP decompressor, built for very low code requirements.  For applications, this optional decompression is completely transparent.
 
-No changes to the application are required.  The `Updater` class and `eboot` bootloader (which performs actual application overwriting on update) automatically search for the `gzip` header in the uploaded binary, and if found, handle it.
+No changes to the application are required.  The `Updater` class and bootloader (which performs actual application overwriting on update) automatically search for the `gzip` header in the uploaded binary, and if found, handle it.
 
 Compress an application `.bin` file or filesystem package using any `gzip` available, at any desired compression level (`gzip -9` is recommended because it provides the maximum compression and uncompresses as fast as any other compression level).  For example:
 
@@ -305,7 +305,7 @@ The server-side script can respond as follows: - response code 200, and send the
             Serial.println("[update] Update no Update.");
             break;
         case HTTP_UPDATE_OK:
-            Serial.println("[update] Update ok."); // may not be called since we reboot the RP2040
+            Serial.println("[update] Update ok.");
             break;
     }
 
