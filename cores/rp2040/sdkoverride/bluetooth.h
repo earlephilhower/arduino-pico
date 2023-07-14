@@ -1,45 +1,45 @@
 /*
- * Copyright (C) 2015 BlueKitchen GmbH
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the copyright holders nor the names of
- *    contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- * 4. Any redistribution, use, or modification is done solely for
- *    personal benefit and not for any commercial purpose or for
- *    monetary gain.
- *
- * THIS SOFTWARE IS PROVIDED BY BLUEKITCHEN GMBH AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL BLUEKITCHEN
- * GMBH OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
- * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
- * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
- * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- *
- * Please inquire about commercial licensing options at 
- * contact@bluekitchen-gmbh.com
- *
- */
+    Copyright (C) 2015 BlueKitchen GmbH
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    1. Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    2. Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    3. Neither the name of the copyright holders nor the names of
+      contributors may be used to endorse or promote products derived
+      from this software without specific prior written permission.
+    4. Any redistribution, use, or modification is done solely for
+      personal benefit and not for any commercial purpose or for
+      monetary gain.
+
+    THIS SOFTWARE IS PROVIDED BY BLUEKITCHEN GMBH AND CONTRIBUTORS
+    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL BLUEKITCHEN
+    GMBH OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+    BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+    OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+    AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+    THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+
+    Please inquire about commercial licensing options at
+    contact@bluekitchen-gmbh.com
+
+*/
 
 /*
- * bluetooth.h
- *
- * Numbers defined or derived from the official Bluetooth specification
- */
+    bluetooth.h
+
+    Numbers defined or derived from the official Bluetooth specification
+*/
 
 #ifndef BLUETOOTH_H
 #define BLUETOOTH_H
@@ -47,24 +47,24 @@
 #include <stdint.h>
 
 /**
- * @brief hci connection handle type
- */
+    @brief hci connection handle type
+*/
 typedef uint16_t hci_con_handle_t;
 
 /**
- * @brief Length of a bluetooth device address.
- */
+    @brief Length of a bluetooth device address.
+*/
 #define BD_ADDR_LEN 6
 
 /**
- * @brief Bluetooth address
- */
+    @brief Bluetooth address
+*/
 typedef uint8_t bd_addr_t[BD_ADDR_LEN];
 
 /**
- * Address types
- */
- typedef enum {
+    Address types
+*/
+typedef enum {
     // Public Device Address
     BD_ADDR_TYPE_LE_PUBLIC = 0,
     // Random Device Address
@@ -80,8 +80,8 @@ typedef uint8_t bd_addr_t[BD_ADDR_LEN];
 } bd_addr_type_t;
 
 /**
- * Link types for BR/EDR Connections
- */
+    Link types for BR/EDR Connections
+*/
 typedef enum {
     HCI_LINK_TYPE_SCO  = 0,
     HCI_LINK_TYPE_ACL  = 1,
@@ -90,74 +90,74 @@ typedef enum {
 
 
 /**
- * @brief link key
- */
+    @brief link key
+*/
 #define LINK_KEY_LEN 16
 #define LINK_KEY_STR_LEN (LINK_KEY_LEN*2)
-typedef uint8_t link_key_t[LINK_KEY_LEN]; 
+typedef uint8_t link_key_t[LINK_KEY_LEN];
 
 /**
- * @brief link key type
- */
+    @brief link key type
+*/
 typedef enum {
-  INVALID_LINK_KEY = 0xffff,
-  COMBINATION_KEY = 0,  // standard pairing
-  LOCAL_UNIT_KEY,     // ?
-  REMOTE_UNIT_KEY,    // ?
-  DEBUG_COMBINATION_KEY,  // SSP with debug
-  UNAUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P192, // SSP Simple Pairing
-  AUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P192,   // SSP Passkey, Number confirm, OOB
-  CHANGED_COMBINATION_KEY,               // Link key changed using Change Connection Lnk Key
-  UNAUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P256, // SSP Simpe Pairing
-  AUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P256,   // SSP Passkey, Number confirm, OOB
+    INVALID_LINK_KEY = 0xffff,
+    COMBINATION_KEY = 0,  // standard pairing
+    LOCAL_UNIT_KEY,     // ?
+    REMOTE_UNIT_KEY,    // ?
+    DEBUG_COMBINATION_KEY,  // SSP with debug
+    UNAUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P192, // SSP Simple Pairing
+    AUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P192,   // SSP Passkey, Number confirm, OOB
+    CHANGED_COMBINATION_KEY,               // Link key changed using Change Connection Lnk Key
+    UNAUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P256, // SSP Simpe Pairing
+    AUTHENTICATED_COMBINATION_KEY_GENERATED_FROM_P256,   // SSP Passkey, Number confirm, OOB
 } link_key_type_t;
 
 /**
- * LE Privacy 1.2
- */
+    LE Privacy 1.2
+*/
 typedef enum {
     LE_PRIVACY_MODE_NETWORK = 0,
     LE_PRIVACY_MODE_DEVICE = 1,
 } le_privacy_mode_t;
 
 /**
- * @brief Extended Inquiry Response
- */
+    @brief Extended Inquiry Response
+*/
 #define EXTENDED_INQUIRY_RESPONSE_DATA_LEN 240
 
 /**
- * @brief Inquiry modes
- */
+    @brief Inquiry modes
+*/
 typedef enum {
-  INQUIRY_MODE_STANDARD = 0,
-  INQUIRY_MODE_RSSI,
-  INQUIRY_MODE_RSSI_AND_EIR,
+    INQUIRY_MODE_STANDARD = 0,
+    INQUIRY_MODE_RSSI,
+    INQUIRY_MODE_RSSI_AND_EIR,
 } inquiry_mode_t;
 
 /**
- * @brief Page Scan Types
- */
+    @brief Page Scan Types
+*/
 typedef enum {
     PAGE_SCAN_MODE_STANDARD = 0,
     PAGE_SCAN_MODE_INTERLACED,
 } page_scan_type_t;
 
 /**
- * @brief Inquiry Scan Types
- */
+    @brief Inquiry Scan Types
+*/
 typedef enum {
     INQUIRY_SCAN_MODE_STANDARD = 0,
     INQUIRY_SCAN_MODE_INTERLACED,
 } inquiry_scan_type_t;
 
 /**
- * Link Supervision Timeout Default, 0x7d00 * 0.625ms = 20s
- */
+    Link Supervision Timeout Default, 0x7d00 * 0.625ms = 20s
+*/
 #define HCI_LINK_SUPERVISION_TIMEOUT_DEFAULT 0x7D00
 
 /**
- * Service Type used for QoS Setup and Flow Specification
- */
+    Service Type used for QoS Setup and Flow Specification
+*/
 typedef enum {
     HCI_SERVICE_TYPE_NO_TRAFFIC = 0,
     HCI_SERVICE_TYPE_BEST_EFFORT,
@@ -166,12 +166,12 @@ typedef enum {
 } hci_service_type_t;
 
 /**
- * HCI Transport 
- */
+    HCI Transport
+*/
 
 /**
- * packet types - used in BTstack and over the H4 UART interface
- */
+    packet types - used in BTstack and over the H4 UART interface
+*/
 #define HCI_COMMAND_DATA_PACKET 0x01
 #define HCI_ACL_DATA_PACKET     0x02
 #define HCI_SCO_DATA_PACKET     0x03
@@ -179,8 +179,8 @@ typedef enum {
 #define HCI_ISO_DATA_PACKET     0x05
 
 /**
- * Other assigned numbers, Assigned_Numbers_Host Controller Interface.pdf
- */
+    Other assigned numbers, Assigned_Numbers_Host Controller Interface.pdf
+*/
 
 typedef enum {
     HCI_AUDIO_CODING_FORMAT_U_LAW_LOG = 0x00,
@@ -190,21 +190,21 @@ typedef enum {
     HCI_AUDIO_CODING_FORMAT_LINEAR_PCM,
     HCI_AUDIO_CODING_FORMAT_MSBC,
     HCI_AUDIO_CODING_FORMAT_LC3,
-    HCI_AUDIO_CODING_FORMAT_G_729A, 
+    HCI_AUDIO_CODING_FORMAT_G_729A,
     HCI_AUDIO_CODING_FORMAT_RFU,
     HCI_AUDIO_CODING_FORMAT_VENDOR_SPECIFIC = 0xFF
 } hci_audio_coding_format_t;
 
-/** 
- * HCI Layer
- */
+/**
+    HCI Layer
+*/
 
 //
 // Error Codes rfom Bluetooth Core Specification
 //
 
 /* ENUM_START: BLUETOOTH_ERROR_CODE */
-#define ERROR_CODE_SUCCESS                                 0x00 
+#define ERROR_CODE_SUCCESS                                 0x00
 #define ERROR_CODE_UNKNOWN_HCI_COMMAND                     0x01
 #define ERROR_CODE_UNKNOWN_CONNECTION_IDENTIFIER           0x02
 #define ERROR_CODE_HARDWARE_FAILURE                        0x03
@@ -218,18 +218,18 @@ typedef enum {
 #define ERROR_CODE_ACL_CONNECTION_ALREADY_EXISTS           0x0B
 #define ERROR_CODE_COMMAND_DISALLOWED                      0x0C
 #define ERROR_CODE_CONNECTION_REJECTED_DUE_TO_LIMITED_RESOURCES 0x0D
-#define ERROR_CODE_CONNECTION_REJECTED_DUE_TO_SECURITY_REASONS  0x0E 
-#define ERROR_CODE_CONNECTION_REJECTED_DUE_TO_UNACCEPTABLE_BD_ADDR 0x0F 
+#define ERROR_CODE_CONNECTION_REJECTED_DUE_TO_SECURITY_REASONS  0x0E
+#define ERROR_CODE_CONNECTION_REJECTED_DUE_TO_UNACCEPTABLE_BD_ADDR 0x0F
 #define ERROR_CODE_CONNECTION_ACCEPT_TIMEOUT_EXCEEDED      0x10
-#define ERROR_CODE_UNSUPPORTED_FEATURE_OR_PARAMETER_VALUE  0x11 
-#define ERROR_CODE_INVALID_HCI_COMMAND_PARAMETERS          0x12 
+#define ERROR_CODE_UNSUPPORTED_FEATURE_OR_PARAMETER_VALUE  0x11
+#define ERROR_CODE_INVALID_HCI_COMMAND_PARAMETERS          0x12
 #define ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION       0x13
-#define ERROR_CODE_REMOTE_DEVICE_TERMINATED_CONNECTION_DUE_TO_LOW_RESOURCES 0x14 
+#define ERROR_CODE_REMOTE_DEVICE_TERMINATED_CONNECTION_DUE_TO_LOW_RESOURCES 0x14
 #define ERROR_CODE_REMOTE_DEVICE_TERMINATED_CONNECTION_DUE_TO_POWER_OFF     0x15
 #define ERROR_CODE_CONNECTION_TERMINATED_BY_LOCAL_HOST     0x16
 #define ERROR_CODE_REPEATED_ATTEMPTS                       0x17
 #define ERROR_CODE_PAIRING_NOT_ALLOWED                     0x18
-#define ERROR_CODE_UNKNOWN_LMP_PDU                         0x19                  
+#define ERROR_CODE_UNKNOWN_LMP_PDU                         0x19
 #define ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE_UNSUPPORTED_LMP_FEATURE 0x1A
 #define ERROR_CODE_SCO_OFFSET_REJECTED                     0x1B
 #define ERROR_CODE_SCO_INTERVAL_REJECTED                   0x1C
@@ -316,7 +316,7 @@ typedef enum {
 #define SDP_HANDLE_INVALID                                 0x83
 #define SDP_QUERY_BUSY                                     0x84
 
-#define ATT_HANDLE_VALUE_INDICATION_IN_PROGRESS            0x90 
+#define ATT_HANDLE_VALUE_INDICATION_IN_PROGRESS            0x90
 #define ATT_HANDLE_VALUE_INDICATION_TIMEOUT                0x91
 #define ATT_HANDLE_VALUE_INDICATION_DISCONNECT             0x92
 
@@ -326,7 +326,7 @@ typedef enum {
 #define GATT_CLIENT_DIFFERENT_CONTEXT_FOR_ADDRESS_ALREADY_EXISTS 0x96
 #define GATT_CLIENT_VALUE_TOO_LONG                         0x97
 #define GATT_CLIENT_CHARACTERISTIC_NOTIFICATION_NOT_SUPPORTED 0x98
-#define GATT_CLIENT_CHARACTERISTIC_INDICATION_NOT_SUPPORTED   0x99 
+#define GATT_CLIENT_CHARACTERISTIC_INDICATION_NOT_SUPPORTED   0x99
 
 #define BNEP_SERVICE_ALREADY_REGISTERED                    0xA0
 #define BNEP_CHANNEL_NOT_CONNECTED                         0xA1
@@ -445,14 +445,14 @@ typedef enum {
 #define ACL_CONNECTION_MODE_SNIFF  2
 
 /**
- * Default INQ Mode
- */
+    Default INQ Mode
+*/
 #define GAP_IAC_GENERAL_INQUIRY 0x9E8B33L // General/Unlimited Inquiry Access Code (GIAC)
 #define GAP_IAC_LIMITED_INQUIRY 0x9E8B00L // Limited Dedicated Inquiry Access Code (LIAC)
 
 /**
- * SSP IO Capabilities
- */
+    SSP IO Capabilities
+*/
 #define SSP_IO_CAPABILITY_DISPLAY_ONLY   0
 #define SSP_IO_CAPABILITY_DISPLAY_YES_NO 1
 #define SSP_IO_CAPABILITY_KEYBOARD_ONLY  2
@@ -461,8 +461,8 @@ typedef enum {
 
 
 /**
- * SSP Authentication Requirements, see IO Capability Request Reply Command 
- */
+    SSP Authentication Requirements, see IO Capability Request Reply Command
+*/
 
 // Numeric comparison with automatic accept allowed.
 #define SSP_IO_AUTHREQ_MITM_PROTECTION_NOT_REQUIRED_NO_BONDING 0x00
@@ -496,20 +496,20 @@ typedef enum {
 
 
 
-/** 
- * L2CAP Layer
- */
+/**
+    L2CAP Layer
+*/
 
 #define L2CAP_HEADER_SIZE 4
 
 // minimum signaling MTU
 #define L2CAP_MINIMAL_MTU 48
 #define L2CAP_DEFAULT_MTU 672
-    
+
 // Minimum/default MTU
 #define L2CAP_LE_DEFAULT_MTU  23
 
-// L2CAP Fixed Channel IDs    
+// L2CAP Fixed Channel IDs
 #define L2CAP_CID_SIGNALING                        0x0001
 #define L2CAP_CID_CONNECTIONLESS_CHANNEL           0x0002
 #define L2CAP_CID_ATTRIBUTE_PROTOCOL               0x0004
@@ -573,8 +573,8 @@ typedef enum {
 #define L2CAP_ECBM_RECONFIGURE_FAILED_UNACCEPTABLE_PARAMETERS          4
 
 /**
- * SDP Protocol
- */
+    SDP Protocol
+*/
 
 // Device Vendor ID Sources
 #define DEVICE_ID_VENDOR_ID_SOURCE_BLUETOOTH 0x0001
@@ -590,8 +590,8 @@ typedef enum {
 #define SDP_OBEXFileTypeAny 0xFF
 
 /**
- * RFCOMM Protocol
- */
+    RFCOMM Protocol
+*/
 
 // Line Status
 #define LINE_STATUS_NO_ERROR       0x00
@@ -627,7 +627,7 @@ typedef enum rpn_data_bits {
 
 typedef enum rpn_stop_bits {
     RPN_STOP_BITS_1_0 = 0,
-    RPN_STOP_BITS_1_5 
+    RPN_STOP_BITS_1_5
 } rpn_stop_bits_t;
 
 typedef enum rpn_parity {
@@ -635,7 +635,7 @@ typedef enum rpn_parity {
     RPN_PARITY_ODD   = 1,
     RPN_PARITY_EVEN  = 3,
     RPN_PARITY_MARK  = 5,
-    RPN_PARITY_SPACE = 7, 
+    RPN_PARITY_SPACE = 7,
 } rpn_parity_t;
 
 #define RPN_FLOW_CONTROL_XONXOFF_ON_INPUT  0x01
@@ -648,7 +648,7 @@ typedef enum rpn_parity {
 #define RPN_PARAM_MASK_0_BAUD             0x01
 #define RPN_PARAM_MASK_0_DATA_BITS        0x02
 #define RPN_PARAM_MASK_0_STOP_BITS        0x04
-#define RPN_PARAM_MASK_0_PARITY           0x08       
+#define RPN_PARAM_MASK_0_PARITY           0x08
 #define RPN_PARAM_MASK_0_PARITY_TYPE      0x10
 #define RPN_PARAM_MASK_0_XON_CHAR         0x20
 #define RPN_PARAM_MASK_0_XOFF_CHAR        0x40
@@ -658,15 +658,15 @@ typedef enum rpn_parity {
 #define RPN_PARAM_MASK_1_XONOFF_ON_INPUT  0x01
 #define RPN_PARAM_MASK_1_XONOFF_ON_OUTPUT 0x02
 #define RPN_PARAM_MASK_1_RTR_ON_INPUT     0x04
-#define RPN_PARAM_MASK_1_RTR_ON_OUTPUT    0x08       
+#define RPN_PARAM_MASK_1_RTR_ON_OUTPUT    0x08
 #define RPN_PARAM_MASK_1_RTC_ON_INPUT     0x10
 #define RPN_PARAM_MASK_1_RTC_ON_OUTPUT    0x20
 #define RPN_PARAM_MASK_1_RESERVED_0       0x40
 #define RPN_PARAM_MASK_1_RESERVED_1       0x80
 
 /**
- * BNEP Protocol
- */
+    BNEP Protocol
+*/
 
 #ifndef ETHER_ADDR_LEN
 #define ETHER_ADDR_LEN 6
@@ -675,13 +675,13 @@ typedef enum rpn_parity {
 #ifndef ETHERTYPE_VLAN
 #define ETHERTYPE_VLAN                                  0x8100 /* IEEE 802.1Q VLAN tag */
 #endif
-    
+
 #define BNEP_MTU_MIN                                    1691
 
 
 /**
- * PAN Profile
- */
+    PAN Profile
+*/
 
 typedef enum {
     BNEP_SECURITY_NONE = 0x0000,
@@ -710,8 +710,8 @@ typedef enum {
 } net_access_type_t;
 
 /**
- * ATT
- */
+    ATT
+*/
 
 // Minimum/default MTU
 #define ATT_DEFAULT_MTU               23
@@ -838,8 +838,8 @@ typedef enum {
 } gatt_microphone_control_mute_t;
 
 /**
- * SM - LE Security Manager 
- */
+    SM - LE Security Manager
+*/
 // Bluetooth Spec definitions
 typedef enum {
     SM_CODE_PAIRING_REQUEST = 0X01,
