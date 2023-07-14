@@ -7751,23 +7751,23 @@ challenger_2040_wifi_ble.menu.uploadmethod.picodebug.upload.tool.default=picodeb
 # -----------------------------------
 challenger_2040_wifi6_ble.name=iLabs Challenger 2040 WiFi6/BLE
 challenger_2040_wifi6_ble.vid.0=0x2e8a
-challenger_2040_wifi6_ble.pid.0=0x1040
+challenger_2040_wifi6_ble.pid.0=0x105f
 challenger_2040_wifi6_ble.vid.1=0x2e8a
-challenger_2040_wifi6_ble.pid.1=0x1140
+challenger_2040_wifi6_ble.pid.1=0x115f
 challenger_2040_wifi6_ble.vid.2=0x2e8a
-challenger_2040_wifi6_ble.pid.2=0x5040
+challenger_2040_wifi6_ble.pid.2=0x505f
 challenger_2040_wifi6_ble.vid.3=0x2e8a
-challenger_2040_wifi6_ble.pid.3=0x5140
+challenger_2040_wifi6_ble.pid.3=0x515f
 challenger_2040_wifi6_ble.vid.4=0x2e8a
-challenger_2040_wifi6_ble.pid.4=0x9040
+challenger_2040_wifi6_ble.pid.4=0x905f
 challenger_2040_wifi6_ble.vid.5=0x2e8a
-challenger_2040_wifi6_ble.pid.5=0x9140
+challenger_2040_wifi6_ble.pid.5=0x915f
 challenger_2040_wifi6_ble.vid.6=0x2e8a
-challenger_2040_wifi6_ble.pid.6=0xd040
+challenger_2040_wifi6_ble.pid.6=0xd05f
 challenger_2040_wifi6_ble.vid.7=0x2e8a
-challenger_2040_wifi6_ble.pid.7=0xd140
+challenger_2040_wifi6_ble.pid.7=0xd15f
 challenger_2040_wifi6_ble.build.usbvid=-DUSBD_VID=0x2e8a
-challenger_2040_wifi6_ble.build.usbpid=-DUSBD_PID=0x1040
+challenger_2040_wifi6_ble.build.usbpid=-DUSBD_PID=0x105F
 challenger_2040_wifi6_ble.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi6_ble.build.board=CHALLENGER_2040_WIFI6_BLE_RP2040
 challenger_2040_wifi6_ble.build.mcu=cortex-m0plus
@@ -7961,7 +7961,7 @@ challenger_2040_wifi6_ble.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-
 challenger_2040_wifi6_ble.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
 challenger_2040_wifi6_ble.menu.uploadmethod.default=Default (UF2)
 challenger_2040_wifi6_ble.menu.uploadmethod.default.build.ram_length=256k
-challenger_2040_wifi6_ble.menu.uploadmethod.default.build.debugscript=picoprobe.tcl
+challenger_2040_wifi6_ble.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
 challenger_2040_wifi6_ble.menu.uploadmethod.default.upload.maximum_data_size=262144
 challenger_2040_wifi6_ble.menu.uploadmethod.default.upload.tool=uf2conv
 challenger_2040_wifi6_ble.menu.uploadmethod.default.upload.tool.default=uf2conv
