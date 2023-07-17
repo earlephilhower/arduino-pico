@@ -123,6 +123,7 @@ bool UpdaterClass::begin(size_t size, int command) {
 
     //initialize
     _startAddress = updateStartAddress;
+    _currentAddress = _startAddress; // Only used in the FS upload case
     _size = size;
     _bufferSize = 4096;
     _buffer = new uint8_t[_bufferSize];
