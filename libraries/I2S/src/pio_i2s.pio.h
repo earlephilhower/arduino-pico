@@ -8,6 +8,34 @@
 #include "hardware/pio.h"
 #endif
 
+// ------------ //
+// pio_i2s_mclk //
+// ------------ //
+
+#define pio_i2s_mclk_wrap_target 0
+#define pio_i2s_mclk_wrap 1
+
+static const uint16_t pio_i2s_mclk_program_instructions[] = {
+    //     .wrap_target
+    0xe001, //  0: set    pins, 1
+    0xe000, //  1: set    pins, 0
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_i2s_mclk_program = {
+    .instructions = pio_i2s_mclk_program_instructions,
+    .length = 2,
+    .origin = -1,
+};
+
+static inline pio_sm_config pio_i2s_mclk_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_i2s_mclk_wrap_target, offset + pio_i2s_mclk_wrap);
+    return c;
+}
+#endif
+
 // ----------- //
 // pio_i2s_out //
 // ----------- //
@@ -217,6 +245,13 @@ static inline pio_sm_config pio_i2s_in_swap_program_get_default_config(uint offs
     return c;
 }
 
+static inline void pio_i2s_MCLK_program_init(PIO pio, uint sm, uint offset, uint MCLK_pin) {
+    pio_gpio_init(pio, MCLK_pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, MCLK_pin, 1, true);
+    pio_sm_config sm_config = pio_i2s_mclk_program_get_default_config(offset);
+    sm_config_set_set_pins(&sm_config, MCLK_pin, 1);
+    pio_sm_init(pio, sm, offset, &sm_config);
+}
 static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
     pio_gpio_init(pio, data_pin);
     pio_gpio_init(pio, clock_pin_base);
@@ -264,4 +299,3 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
 }
 
 #endif
-
