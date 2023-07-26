@@ -108,11 +108,27 @@ void TwoWire::begin() {
 }
 
 static void _handler0() {
+#if defined(__WIRE0_DEVICE)
+    if (__WIRE0_DEVICE == i2c0) {
+        Wire.onIRQ();
+    } else {
+        Wire1.onIRQ();
+    }
+#else
     Wire.onIRQ();
+#endif
 }
 
 static void _handler1() {
+#if defined(__WIRE1_DEVICE)
+    if (__WIRE1_DEVICE == i2c0) {
+        Wire.onIRQ();
+    } else {
+        Wire1.onIRQ();
+    }
+#else
     Wire1.onIRQ();
+#endif
 }
 
 // Slave mode
