@@ -646,7 +646,7 @@ protected:
             }
         }
 
-        if (_rx_buf) {
+        if (_rx_buf && (_rx_buf != pb)) {
             DEBUGV(":rch %d, %d\r\n", _rx_buf->tot_len, pb->tot_len);
             pbuf_cat(_rx_buf, pb);
         } else {
