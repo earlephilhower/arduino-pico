@@ -53,7 +53,7 @@ for l in file_lines:
 
 def is_pio_build():
 	from SCons.Script import COMMAND_LINE_TARGETS
-	return "idedata" not in COMMAND_LINE_TARGETS and "_idedata" not in COMMAND_LINE_TARGETS
+	return all([x not in COMMAND_LINE_TARGETS for x in ["idedata", "_idedata", "__idedata"]])
 
 # get all activated macros
 flatten_cppdefines = env.Flatten(env['CPPDEFINES'])
