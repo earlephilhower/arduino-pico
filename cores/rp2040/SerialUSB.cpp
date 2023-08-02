@@ -130,7 +130,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
 
     static uint64_t last_avail_time;
     int written = 0;
-    if (tud_cdc_connected()) {
+    if (tud_cdc_connected() || _ignoreFlowControl) {
         for (size_t i = 0; i < length;) {
             int n = length - i;
             int avail = tud_cdc_write_available();
@@ -171,6 +171,9 @@ SerialUSB::operator bool() {
     return tud_cdc_connected();
 }
 
+void SerialUSB::ignoreFlowControl(bool ignore){
+    _ignoreFlowControl = ignore;
+}
 
 static bool _dtr = false;
 static bool _rts = false;
