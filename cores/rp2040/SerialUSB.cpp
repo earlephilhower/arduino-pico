@@ -171,7 +171,7 @@ SerialUSB::operator bool() {
     return tud_cdc_connected();
 }
 
-void SerialUSB::ignoreFlowControl(bool ignore){
+void SerialUSB::ignoreFlowControl(bool ignore) {
     _ignoreFlowControl = ignore;
 }
 
