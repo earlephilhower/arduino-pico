@@ -3081,24 +3081,24 @@ adafruit_itsybitsy.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 # Adafruit Metro RP2040
 # -----------------------------------
 adafruit_metro.name=Adafruit Metro RP2040
-adafruit_metro.vid.0=0x239A
+adafruit_metro.vid.0=0x239a
 adafruit_metro.pid.0=0x813d
-adafruit_metro.vid.1=0x239A
+adafruit_metro.vid.1=0x239a
 adafruit_metro.pid.1=0x813d
-adafruit_metro.vid.2=0x239A
+adafruit_metro.vid.2=0x239a
 adafruit_metro.pid.2=0xc13d
-adafruit_metro.vid.3=0x239A
+adafruit_metro.vid.3=0x239a
 adafruit_metro.pid.3=0xc13d
-adafruit_metro.vid.4=0x239A
+adafruit_metro.vid.4=0x239a
 adafruit_metro.pid.4=0x813d
-adafruit_metro.vid.5=0x239A
+adafruit_metro.vid.5=0x239a
 adafruit_metro.pid.5=0x813d
-adafruit_metro.vid.6=0x239A
+adafruit_metro.vid.6=0x239a
 adafruit_metro.pid.6=0xc13d
-adafruit_metro.vid.7=0x239A
+adafruit_metro.vid.7=0x239a
 adafruit_metro.pid.7=0xc13d
-adafruit_metro.build.usbvid=-DUSBD_VID=0x239A
-adafruit_metro.build.usbpid=-DUSBD_PID=0x813D
+adafruit_metro.build.usbvid=-DUSBD_VID=0x239a
+adafruit_metro.build.usbpid=-DUSBD_PID=0x813d
 adafruit_metro.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_metro.build.board=ADAFRUIT_METRO_RP2040
 adafruit_metro.build.mcu=cortex-m0plus

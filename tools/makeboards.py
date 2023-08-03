@@ -348,7 +348,7 @@ MakeBoard("adafruit_feather_usb_host", "Adafruit", "Feather RP2040 USB Host", "0
 MakeBoard("adafruit_feather_can", "Adafruit", "Feather RP2040 CAN", "0x239a", "0x812f", 250, "ADAFRUIT_FEATHER_RP2040_CAN", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_feather_prop_maker", "Adafruit", "Feather RP2040 Prop-Maker", "0x239a", "0x8131", 250, "ADAFRUIT_FEATHER_RP2040_PROP_MAKER", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_itsybitsy", "Adafruit", "ItsyBitsy RP2040", "0x239a", "0x80fd", 250, "ADAFRUIT_ITSYBITSY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_metro", "Adafruit", "Metro RP2040", "0x239A", "0x813D", 250, "ADAFRUIT_METRO_RP2040", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_metro", "Adafruit", "Metro RP2040", "0x239a", "0x813d", 250, "ADAFRUIT_METRO_RP2040", 16, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_qtpy", "Adafruit", "QT Py RP2040", "0x239a", "0x80f7", 250, "ADAFRUIT_QTPY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_stemmafriend", "Adafruit", "STEMMA Friend RP2040", "0x239a", "0x80e3", 250, "ADAFRUIT_STEMMAFRIEND_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_trinkeyrp2040qt", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", 250, "ADAFRUIT_TRINKEYQT_RP2040", 8, "boot2_w25q080_2_padded_checksum")
