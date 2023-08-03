@@ -45,3 +45,13 @@ For applications where an IRQ driven serial port is not appropriate, use
 
 For detailed information about the Serial ports, see the
 Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/functions/communication/serial/>`_ .
+
+
+RP2040 Specific SerialUSB methods
+---------------------------------
+
+int Serial.ignoreFlowControl(bool ignore)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In some cases, the target application will not assert the DTR virtual line, thus preventing writing operations to succeed.
+
+For this reason, the SerialUSB::ignoreFlowControl() method disables the connection's state verification, enabling the program to write on the port, even though the data might be lost.
