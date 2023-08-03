@@ -611,9 +611,10 @@ protected:
             _rx_buf_offset += size;
         } else if (!_rx_buf->next) {
             DEBUGV(":c0 %d, %d\r\n", size, _rx_buf->tot_len);
-            pbuf_free(_rx_buf);
+            auto head = _rx_buf;
             _rx_buf = 0;
             _rx_buf_offset = 0;
+            pbuf_free(head);
         } else {
             DEBUGV(":c %d, %d, %d\r\n", size, _rx_buf->len, _rx_buf->tot_len);
             auto head = _rx_buf;
@@ -646,7 +647,7 @@ protected:
             }
         }
 
-        if (_rx_buf && (_rx_buf != pb)) {
+        if (_rx_buf) {
             DEBUGV(":rch %d, %d\r\n", _rx_buf->tot_len, pb->tot_len);
             pbuf_cat(_rx_buf, pb);
         } else {
