@@ -48,7 +48,7 @@ Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/function
 
 
 RP2040 Specific SerialUSB methods
---------------
+---------------------------------
 
 int Serial.ignoreFlowControl(bool ignore)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
