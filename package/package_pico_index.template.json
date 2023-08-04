@@ -54,6 +54,9 @@
                      "name": "Adafruit ItsyBitsy RP2040"
                   },
                   {
+                     "name": "Adafruit Metro RP2040"
+                  },
+                  {
                      "name": "Adafruit QT Py RP2040"
                   },
                   {
