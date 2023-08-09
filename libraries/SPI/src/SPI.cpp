@@ -177,7 +177,7 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
 }
 
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
-    DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s\n", _spis.getClockFreq(), (_spis.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
+    DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)\n", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
     if (_initted && settings == _spis) {
         DEBUGSPI("SPI: Reusing existing initted SPI\n");
     } else {
@@ -187,7 +187,8 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
             spi_deinit(_spi);
         }
         DEBUGSPI("SPI: initting SPI\n");
-        spi_init(_spi, _spis.getClockFreq());
+        uint actualBauds = spi_init(_spi, _spis.getClockFreq());
+        DEBUGSPI("SPI: actual baudrate=%u\n", actualBauds);
         _initted = true;
     }
 }
