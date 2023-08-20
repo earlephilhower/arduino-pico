@@ -363,6 +363,8 @@ size_t I2S::write(int32_t val, bool sync) {
     if (!_running || !_isOutput) {
         return 0;
     }
+    //Serial.print("pio_sm_is_tx_fifo_empty(_pio,_sm): ");
+    Serial.println(pio_sm_is_tx_fifo_empty(_pio,_sm));
     return _arb->write(val, sync);
 }
 
