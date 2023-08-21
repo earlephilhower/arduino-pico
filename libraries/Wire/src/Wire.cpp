@@ -56,6 +56,10 @@ bool TwoWire::setSDA(pin_size_t pin) {
         return true;
     }
 
+    if (_sda == pin) {
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set Wire%s.SDA while running", i2c_hw_index(_i2c) ? "1" : "");
     } else {
@@ -70,6 +74,10 @@ bool TwoWire::setSCL(pin_size_t pin) {
                                   };
     if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
         _scl = pin;
+        return true;
+    }
+
+    if (_scl == pin) {
         return true;
     }
 
