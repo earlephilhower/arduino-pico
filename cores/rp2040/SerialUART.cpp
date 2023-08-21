@@ -40,6 +40,10 @@ bool SerialUART::setRX(pin_size_t pin) {
         return true;
     }
 
+    if (_rx == pin) {
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set Serial%d.RX while running", uart_get_index(_uart) + 1);
     } else {
@@ -54,6 +58,10 @@ bool SerialUART::setTX(pin_size_t pin) {
                                   };
     if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
         _tx = pin;
+        return true;
+    }
+
+    if (_tx == pin) {
         return true;
     }
 
@@ -74,6 +82,10 @@ bool SerialUART::setRTS(pin_size_t pin) {
         return true;
     }
 
+    if (_rts == pin) {
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set Serial%d.RTS while running", uart_get_index(_uart) + 1);
     } else {
@@ -88,6 +100,10 @@ bool SerialUART::setCTS(pin_size_t pin) {
                                   };
     if ((!_running) && ((pin == UART_PIN_NOT_DEFINED) || ((1 << pin) & valid[uart_get_index(_uart)]))) {
         _cts = pin;
+        return true;
+    }
+
+    if (_cts == pin) {
         return true;
     }
 
