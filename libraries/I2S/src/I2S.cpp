@@ -237,6 +237,7 @@ bool I2S::begin() {
     }
     _arb->setCallback(_cb);
     pio_sm_set_enabled(_pio, _sm, true);
+
     return true;
 }
 
@@ -362,9 +363,6 @@ size_t I2S::write(int32_t val, bool sync) {
     if (!_running || !_isOutput) {
         return 0;
     }
-    //Serial.print("pio_sm_is_tx_fifo_empty(_pio,_sm): ");
-    //Serial.println(pio_sm_is_tx_fifo_empty(_pio,_sm));
-    //digitalWrite(LED_BUILTIN, pio_sm_is_tx_fifo_empty(_pio,_sm));
     return _arb->write(val, sync);
 }
 
