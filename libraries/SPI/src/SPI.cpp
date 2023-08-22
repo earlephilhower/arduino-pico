@@ -206,6 +206,10 @@ bool SPIClassRP2040::setRX(pin_size_t pin) {
         return true;
     }
 
+    if (_RX == pin) {
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set SPI%s.RX while running", spi_get_index(_spi) ? "1" : "");
     } else {
@@ -220,6 +224,10 @@ bool SPIClassRP2040::setCS(pin_size_t pin) {
                                   };
     if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
         _CS = pin;
+        return true;
+    }
+
+    if (_CS == pin) {
         return true;
     }
 
@@ -240,6 +248,10 @@ bool SPIClassRP2040::setSCK(pin_size_t pin) {
         return true;
     }
 
+    if (_SCK == pin) {
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set SPI%s.SCK while running", spi_get_index(_spi) ? "1" : "");
     } else {
@@ -254,6 +266,10 @@ bool SPIClassRP2040::setTX(pin_size_t pin) {
                                   };
     if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
         _TX = pin;
+        return true;
+    }
+
+    if (_TX == pin) {
         return true;
     }
 
