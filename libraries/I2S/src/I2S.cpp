@@ -237,8 +237,6 @@ bool I2S::begin() {
     }
     _arb->setCallback(_cb);
     pio_sm_set_enabled(_pio, _sm, true);
-    digitalWrite(LED_BUILTIN, pio_sm_is_tx_fifo_empty(_pio,_sm));
-    //delay(1000);
     return true;
 }
 
