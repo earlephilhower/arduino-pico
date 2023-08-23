@@ -1539,6 +1539,7 @@ bool MDNSResponder::stcMDNSServiceQuery::stcAnswer::removeIP4Address(
     return bResult;
 }
 
+#if 0
 /*
     MDNSResponder::stcMDNSServiceQuery::stcAnswer::findIP4Address (const)
 */
@@ -1547,6 +1548,7 @@ MDNSResponder::stcMDNSServiceQuery::stcAnswer::findIP4Address(
     const IPAddress& p_IPAddress) const {
     return (stcIP4Address*)(((const stcAnswer*)this)->findIP4Address(p_IPAddress));
 }
+#endif
 
 /*
     MDNSResponder::stcMDNSServiceQuery::stcAnswer::findIP4Address
