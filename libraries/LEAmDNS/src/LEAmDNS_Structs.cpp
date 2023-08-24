@@ -1540,15 +1540,6 @@ bool MDNSResponder::stcMDNSServiceQuery::stcAnswer::removeIP4Address(
 }
 
 /*
-    MDNSResponder::stcMDNSServiceQuery::stcAnswer::findIP4Address (const)
-*/
-const MDNSResponder::stcMDNSServiceQuery::stcAnswer::stcIP4Address*
-MDNSResponder::stcMDNSServiceQuery::stcAnswer::findIP4Address(
-    const IPAddress& p_IPAddress) const {
-    return (stcIP4Address*)(((const stcAnswer*)this)->findIP4Address(p_IPAddress));
-}
-
-/*
     MDNSResponder::stcMDNSServiceQuery::stcAnswer::findIP4Address
 */
 MDNSResponder::stcMDNSServiceQuery::stcAnswer::stcIP4Address*
