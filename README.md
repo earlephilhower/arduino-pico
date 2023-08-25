@@ -50,6 +50,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Neko Systems BL2040 Mini
 * nullbits Bit-C PRO
 * Pimoroni PGA2040
+* Pimoroni Plasma2040
+* Pimoroni Tiny2040
 * Seeed Indicator RP2040
 * Seeed XIAO RP2040
 * Silicognition RP2040-Shim
