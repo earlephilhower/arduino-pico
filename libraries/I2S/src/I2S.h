@@ -35,6 +35,8 @@ public:
     bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0);
     bool setFrequency(int newFreq);
     bool setLSBJFormat();
+    bool setTDMFormat();
+    bool setTDMChannels(int channels);
     bool swapClocks();
     bool setMCLKmult(int mult);
     bool setSysClk(int samplerate);
@@ -121,6 +123,8 @@ private:
     size_t _bufferWords;
     int32_t _silenceSample;
     bool _isLSBJ;
+    bool _isTDM;
+    int _tdmChannels;
     bool _isOutput;
     bool _swapClocks;
     bool _MCLKenabled;

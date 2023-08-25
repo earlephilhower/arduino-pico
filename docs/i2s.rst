@@ -81,6 +81,15 @@ Enables LSB-J format for I2S output.  In this mode the MSB comes out at the
 same time as the LRCLK changes, and not the normal 1-cycle delay.  Useful for
 DAC chips like the PT8211.
 
+bool setTDMFormat()
+~~~~~~~~~~~~~~~~~~~
+Enabled TDM formatted multi-channel output.  Be sure to set the number of channels to
+the expected value (8 normally) and the bits per sample to 32.
+
+bool setTDMChannels(int channels)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the number of TDM channels between frame syncs.  Generally should be set to 8.
+
 bool swapClocks()
 ~~~~~~~~~~~~~~~~~
 Certain boards are hardwired with the WCLK before the BCLK, instead of the normal
