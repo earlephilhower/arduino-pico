@@ -153,6 +153,9 @@
                      "name": "Pimoroni Plasma2040"
                   },
                   {
+                     "name": "Pimoroni Tiny2040"
+                  },
+                  {
                      "name": "Silicognition RP2040-Shim"
                   },
                   {
