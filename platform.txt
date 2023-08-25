@@ -105,7 +105,7 @@ build.libpicow=libpicow-noipv6-nobtc-noble.a
 build.boot2=boot2_generic_03h_4_padded_checksum
 build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
 build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
-build.debugscript=picoprobe.tcl
+build.debugscript=picoprobe_cmsis_dap.tcl
 build.picodebugflags=
 
 # Allow Pico boards do be auto-discovered by the IDE
@@ -203,13 +203,6 @@ tools.picotool.upload.protocol=picotool
 tools.picotool.upload.params.verbose=
 tools.picotool.upload.params.quiet=
 tools.picotool.upload.pattern="{cmd}/picotool" load "{build.path}/{build.project_name}.uf2" -f
-
-#tools.picoprobe.cmd={runtime.tools.pqt-openocd.path}
-tools.picoprobe.cmd={runtime.platform.path}/system/openocd
-tools.picoprobe.upload.protocol=picoprobe
-tools.picoprobe.upload.params.verbose=
-tools.picoprobe.upload.params.quiet=
-tools.picoprobe.upload.pattern="{cmd}/bin/openocd" -f "interface/picoprobe.cfg" -f "target/rp2040.cfg" -s "{cmd}/share/openocd/scripts" -c "program {{build.path}/{build.project_name}.elf} verify reset exit"
 
 #tools.picoprobe_cmsis_dap.cmd={runtime.tools.pqt-openocd.path}
 tools.picoprobe_cmsis_dap.cmd={runtime.platform.path}/system/openocd
