@@ -56,6 +56,10 @@ bool TwoWire::setSDA(pin_size_t pin) {
         return true;
     }
 
+    if (_sda == pin) {
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set Wire%s.SDA while running", i2c_hw_index(_i2c) ? "1" : "");
     } else {
@@ -70,6 +74,10 @@ bool TwoWire::setSCL(pin_size_t pin) {
                                   };
     if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
         _scl = pin;
+        return true;
+    }
+
+    if (_scl == pin) {
         return true;
     }
 
@@ -108,11 +116,27 @@ void TwoWire::begin() {
 }
 
 static void _handler0() {
+#if defined(__WIRE0_DEVICE)
+    if (__WIRE0_DEVICE == i2c0) {
+        Wire.onIRQ();
+    } else {
+        Wire1.onIRQ();
+    }
+#else
     Wire.onIRQ();
+#endif
 }
 
 static void _handler1() {
+#if defined(__WIRE1_DEVICE)
+    if (__WIRE1_DEVICE == i2c0) {
+        Wire.onIRQ();
+    } else {
+        Wire1.onIRQ();
+    }
+#else
     Wire1.onIRQ();
+#endif
 }
 
 // Slave mode

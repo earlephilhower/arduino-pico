@@ -268,7 +268,11 @@ bool MDNSResponder::_parseQuery(const MDNSResponder::stcMDNS_MsgHeader& p_MsgHea
                     remote = m_pUDPContext->getRemoteAddress();
                     local = WiFi.localIP();
                     netmask = WiFi.subnetMask();
+#if LWIP_IPV6
+                    if (ip4_addr_netcmp(&remote.u_addr.ip4, &local.u_addr.ip4, &netmask.u_addr.ip4))
+#else
                     if (ip4_addr_netcmp(&remote, &local, &netmask))
+#endif
                         //                        ip_info IPInfo_Local;
                         //                        ip_info IPInfo_Remote;
                         //                        if (((IPInfo_Remote.ip.addr = m_pUDPContext->getRemoteAddress()))

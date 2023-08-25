@@ -44,6 +44,8 @@ public:
     using Print::write;
     operator bool() override;
 
+    void ignoreFlowControl(bool ignore = true);
+
     // ESP8266 compat
     void setDebugOutput(bool unused) {
         (void) unused;
@@ -51,6 +53,7 @@ public:
 
 private:
     bool _running = false;
+    bool _ignoreFlowControl = false;
 };
 
 extern SerialUSB Serial;

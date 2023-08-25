@@ -73,11 +73,9 @@ AudioBufferManager::~AudioBufferManager() {
     if (_running) {
         _running = false;
         for (auto i = 0; i < 2; i++) {
-            dma_channel_set_irq0_enabled(_channelDMA[i], false);
+            dma_channel_cleanup(_channelDMA[i]);
             __channelMap[_channelDMA[i]] = nullptr;
-            dma_channel_abort(_channelDMA[i]);
             dma_channel_unclaim(_channelDMA[i]);
-            dma_channel_acknowledge_irq0(_channelDMA[i]);
             __channelCount--;
         }
         if (!__channelCount) {
