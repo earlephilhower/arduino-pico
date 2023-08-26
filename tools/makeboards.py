@@ -446,6 +446,9 @@ MakeBoard("wiznet_5100s_evb_pico", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x102
 MakeBoard("wiznet_wizfi360_evb_pico", "WIZnet", "WizFi360-EVB-Pico", "0x2e8a", "0x1028", 250, "WIZNET_WIZFI360_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("wiznet_5500_evb_pico", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
 
+# AG
+MakeBoard("rp2040-promini", "red-scorp", "RP2040-ProMini", "0x2341", ["0x005f", "0x805f", "0x015f", "0x025f"] , 250, "REDSCORP_RP2040_PROMINI", 16, "boot2_w25q080_2_padded_checksum")
+
 # Generic
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 

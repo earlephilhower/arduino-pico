@@ -207,6 +207,9 @@
                      "name": "WIZnet W5500-EVB-Pico"
                   },
                   {
+                     "name": "red-scorp RP2040-ProMini"
+                  },
+                  {
                      "name": "Generic RP2040"
                   }
                ],
