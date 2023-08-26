@@ -22,7 +22,7 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "rp2040-promini"
+    "variant": "redscorp-rp2040-promini"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",
@@ -52,5 +52,5 @@
     ]
   },
   "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
-  "vendor": "red-scorp"
+  "vendor": "redscorp"
 }
