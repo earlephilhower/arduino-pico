@@ -119,7 +119,6 @@ def BuildIPBTStack(name):
 def BuildUploadMethodMenu(name):
     for a, b, c, d, e, f in [ ["default", "Default (UF2)", 256, "picoprobe_cmsis_dap.tcl", "uf2conv", "uf2conv-network"],
                               ["picotool", "Picotool", 256, "picoprobe.tcl", "picotool", None],
-                              ["picoprobe", "Picoprobe", 256, "picoprobe.tcl", "picoprobe", None],
                               ["picoprobe_cmsis_dap", "Picoprobe (CMSIS-DAP)", 256, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None],
                               ["picodebug", "Pico-Debug", 240, "picodebug.tcl", "picodebug", None] ]:
         print("%s.menu.uploadmethod.%s=%s" % (name, a, b))
@@ -216,6 +215,9 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
         BuildFlashMenu(name, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
+    elif name == "pimoroni_tiny2040":
+        BuildFlashMenu(name, 2*1024*1024, fssizelist)
+        BuildFlashMenu(name, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, flashsizemb * 1024 * 1024, fssizelist)
     BuildFreq(name)
@@ -409,6 +411,7 @@ MakeBoard("nullbits_bit_c_pro", "nullbits", "Bit-C PRO", "0x2e8a", "0x6e61", 500
 # Pimoroni
 MakeBoard("pimoroni_pga2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, "boot2_w25q64jv_4_padded_checksum")
 MakeBoard("pimoroni_plasma2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("pimoroni_tiny2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, "boot2_w25q64jv_4_padded_checksum")
 
 # Silicognition
 MakeBoard("silicognition_rp2040_shim", "Silicognition", "RP2040-Shim", "0x1209", "0xf502", 500, "SILICOGNITION_RP2040_SHIM", 4, "boot2_generic_03h_4_padded_checksum")
