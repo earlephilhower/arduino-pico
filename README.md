@@ -67,6 +67,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
+* Redscorp RP2040-ProMini
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager
