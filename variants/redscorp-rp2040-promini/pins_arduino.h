@@ -1,4 +1,6 @@
-/* Based on Arduino Nano Connect configuration */
+/*  RP2040-ProMini board support
+    URL: https://github.com/red-scorp/RP2040-ProMini
+    Based on Arduino Nano Connect configuration */
 
 #pragma once
 
