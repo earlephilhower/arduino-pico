@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h> 
+#include <stdint.h>
 
 #define PINS_COUNT          (30u)
 #define NUM_DIGITAL_PINS    (30u)
