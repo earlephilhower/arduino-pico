@@ -26,6 +26,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Adafruit STEMMA Friend RP2040
 * Adafruit Trinkey RP2040 QT
 * Arduino Nano RP2040 Connect
+* Ardushop Marble Pico
 * ArtronShop RP2 Nano
 * BridgeTek IDM2040-7A
 * Cytron Maker Pi RP2040
