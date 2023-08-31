@@ -42,11 +42,11 @@ compiler.libraries.ldflags=
 # Compile variables
 # -----------------
 
-compiler.warning_flags=-Werror=return-type
-compiler.warning_flags.none=-Werror=return-type
-compiler.warning_flags.default=-Werror=return-type
-compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
-compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
+compiler.warning_flags=-Werror=return-type -Wno-psabi
+compiler.warning_flags.none=-Werror=return-type -Wno-psabi
+compiler.warning_flags.default=-Werror=return-type -Wno-psabi
+compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi
+compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi
 
 compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=1 {build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
 compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 {build.usbpid} {build.usbvid} {build.usbpwr} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040 -DPICO_FLASH_SIZE_BYTES={build.flash_total}
