@@ -45,3 +45,6 @@ int __USBGetJoystickReportID();
 
 // Called by main() to init the USB HW/SW.
 void __USBStart();
+
+// Helper class for HID report sending with wait and timeout
+bool __USBHIDReady();

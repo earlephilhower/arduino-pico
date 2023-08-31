@@ -44,7 +44,7 @@ Mouse_::Mouse_(void) {
 void Mouse_::move(int x, int y, signed char wheel) {
     CoreMutex m(&__usb_mutex);
     tud_task();
-    if (tud_hid_ready()) {
+    if (__USBHIDReady()) {
         tud_hid_mouse_report(__USBGetMouseReportID(), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
     }
     tud_task();
