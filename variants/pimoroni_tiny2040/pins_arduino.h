@@ -20,7 +20,8 @@
 #define PIN_SPI0_MISO  (4u)
 #define PIN_SPI0_MOSI  (7u)
 #define PIN_SPI0_SCK   (6u)
-// PIN_SPI0_SS not available
+// PIN_SPI0_SS not available on any header pin but needs to be defined for ../generic/common.h so use a dummy
+#define PIN_SPI0_SS    (17u)
 
 // SPI1 not available - not enough pins
 
