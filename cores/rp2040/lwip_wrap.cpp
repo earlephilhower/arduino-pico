@@ -30,11 +30,11 @@
 class LWIPMutex {
 public:
     LWIPMutex() {
-        cyw43_arch_lwip_begin();
+        //        cyw43_arch_lwip_begin();
     }
 
     ~LWIPMutex() {
-        cyw43_arch_lwip_end();
+        //      cyw43_arch_lwip_end();
     }
 };
 

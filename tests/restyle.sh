@@ -12,7 +12,8 @@ for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleF
            ./libraries/Joystick ./libraries/Keyboard ./libraries/Mouse \
            ./libraries/JoystickBT ./libraries/KeyboardBT ./variants ./libraries/BTstackLib \
            ./libraries/MouseBT ./libraries/SerialBT ./libraries/HID_Bluetooth \
-           ./libraries/JoystickBLE ./libraries/KeyboardBLE ./libraries/MouseBLE ; do
+           ./libraries/JoystickBLE ./libraries/KeyboardBLE ./libraries/MouseBLE \
+           ./libraries/lwIP_w5500; do
     find $dir -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" \) -a  \! -path '*api*' -exec astyle --suffix=none --options=./tests/astyle_core.conf \{\} \;
     find $dir -type f -name "*.ino" -exec astyle --suffix=none --options=./tests/astyle_examples.conf \{\} \;
 done

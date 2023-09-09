@@ -121,10 +121,10 @@ protected:
     static err_t netif_init_s(netif* netif);
     static err_t linkoutput_s(netif* netif, struct pbuf* p);
     static void  netif_status_callback_s(netif* netif);
-
+public:
     // called on a regular basis or on interrupt
     err_t handlePackets();
-
+protected:
     // members
 
     netif _netif;
