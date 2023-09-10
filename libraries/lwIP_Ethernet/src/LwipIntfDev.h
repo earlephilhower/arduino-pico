@@ -343,6 +343,8 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
         return false;
     }
 
+    addEthernetInterface(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
+
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
         _netif.flags |= NETIF_FLAG_UP;

@@ -27,8 +27,10 @@
 
 #include <lwIP_CYW43.h>
 //#include <W5100lwIP.h>
-//#include <W5500lwIP.h>
+#include <W5500lwIP.h>
 //#include <ENC28J60lwIP.h>
+#include <functional>
+
 
 // One of them is to be declared in the main sketch
 // and passed to ethInitDHCP() or ethInitStatic():
@@ -70,3 +72,14 @@ bool ethInitStatic(EthImpl& eth, IPAddress IP, IPAddress gateway, IPAddress netm
 
     return true;
 }
+
+
+extern "C" {
+    void ethernet_arch_lwip_begin() __attribute__((weak));
+    void ethernet_arch_lwip_end() __attribute__((weak));
+    bool ethernet_arch_lwip_try() __attribute__((weak));
+};
+
+
+void addEthernetInterface(std::function<void(void)> _packet);
+

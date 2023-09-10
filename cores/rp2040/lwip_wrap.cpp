@@ -29,6 +29,12 @@
 #include <pico/mutex.h>
 #include <sys/lock.h>
 
+extern "C" {
+    extern void ethernet_arch_lwip_begin() __attribute__((weak));
+    extern void ethernet_arch_lwip_end() __attribute__((weak));
+    extern bool ethernet_arch_lwip_try() __attribute__((weak));
+};
+
 #if !defined(ARDUINO_RASPBERRY_PI_PICO_W)
 auto_init_recursive_mutex(__lwipMutex); // Only for non-PicoW case
 #endif
@@ -39,7 +45,11 @@ public:
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         cyw43_arch_lwip_begin();
 #else
-        recursive_mutex_enter_blocking(&__lwipMutex);
+        if (ethernet_arch_lwip_begin) {
+            ethernet_arch_lwip_begin();
+        } else {
+            recursive_mutex_enter_blocking(&__lwipMutex);
+        }
 #endif
     }
 
@@ -47,7 +57,11 @@ public:
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         cyw43_arch_lwip_end();
 #else
-        recursive_mutex_enter_blocking(&__lwipMutex);
+        if (ethernet_arch_lwip_end) {
+            ethernet_arch_lwip_end();
+        } else {
+            recursive_mutex_exit(&__lwipMutex);
+        }
 #endif
     }
 };

@@ -1,18 +1,35 @@
 #include <LwipEthernet.h>
 #include <W5500lwIP.h>
 #include <WiFi.h>
-
+#include <list>
 #include <pico/async_context_threadsafe_background.h>
-#include <pico/lwip_nosys.h>
+//#include <pico/lwip_nosys.h>
+#if 0
+extern "C" {
+  auto_init_recursive_mutex(__ethernetMutex); // Only for non-PicoW case
 
+  void ethernet_arch_lwip_begin() {
+    recursive_mutex_enter_blocking(&__ethernetMutex);
+  }
+  void ethernet_arch_lwip_end() {
+    recursive_mutex_exit(&__ethernetMutex);
+  }
+  bool ethernet_arch_lwip_try() {
+    uint32_t unused;
+    return recursive_mutex_try_enter(&__ethernetMutex, &unused);
+  }
+};
+#endif
 //#include <pico/async_context.h>
+
+
 
 Wiznet5500lwIP eth(/*SS*/ 1);  // <== adapt to your hardware
 
 const char* host = "djxmmx.net";
 const uint16_t port = 17;
 
-
+#if 0
 static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
 
 async_context_t *lwip_ethernet_init_default_async_context(void) {
@@ -27,7 +44,6 @@ async_context_t *lwip_ethernet_init_default_async_context(void) {
 static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker);
 static void ethernet_timeout_reached(async_context_t *context, async_at_time_worker_t *worker);
 
-
 static async_when_pending_worker_t always_pending_update_timeout_worker = {
   .next = 0,
   .do_work = update_next_timeout,
@@ -41,13 +57,16 @@ static async_at_time_worker_t ethernet_timeout_worker = {
   .next_time = 0,
   .user_data = 0,
 };
-
 bool go = false;
 
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
   assert(worker == &ethernet_timeout_worker);
   if (go) {
-    eth.handlePackets(); sys_check_timeouts();
+    eth.handlePackets();
+    if (ethernet_arch_lwip_try()) {
+      sys_check_timeouts();
+      ethernet_arch_lwip_end();
+    }
   }
 }
 
@@ -69,20 +88,22 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
   async_context_add_at_time_worker_in_ms(context, &ethernet_timeout_worker, 50);
 }
 
-
-
+#endif
+extern void ethinit();
 void setup() {
+#if 0
   async_context_t *context  = lwip_ethernet_init_default_async_context();
 
   //lwip_nosys_init(context);
   always_pending_update_timeout_worker.work_pending = true;
   async_context_add_when_pending_worker(context, &always_pending_update_timeout_worker);
-
+#endif
 
   SPI.setSCK(2);
   SPI.setTX(3);
   SPI.setRX(0);
   SPI.setCS(1);
+  SPI.begin();
 
   delay(5000);
   Serial.begin(115200);
@@ -99,7 +120,9 @@ void setup() {
   //    checked first.
   // 3. Or, use `::setDefault()` to force routing through this interface.
   // eth.setDefault(); // default route set through this interface
-
+  ethinit();
+  //  std::function<void(void)> b = std::bind(&Wiznet5500lwIP::handlePackets, &eth);
+  //ddEthernetInterface(std::bind(&Wiznet5500lwIP::begin, &eth), std::bind(&Wiznet5500lwIP::handlePackets, &eth));
   if (!ethInitDHCP(eth)) {
     Serial.printf("no hardware found\n");
     while (1) {
@@ -107,13 +130,11 @@ void setup() {
     }
   }
 
-  while (!eth.connected()) {
-    eth.handlePackets();
-    sys_check_timeouts();
+  while (!eth.connected()) {//eth.handlePackets(); sys_check_timeouts();
     Serial.printf(".");
     delay(1000);
   }
-  go = true;
+  //go=true;
   Serial.printf("Ethernet: IP Address: %s\n",
                 eth.localIP().toString().c_str());
 }
