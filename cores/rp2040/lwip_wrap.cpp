@@ -26,15 +26,29 @@
 #include <lwip/raw.h>
 #include <lwip/timeouts.h>
 #include <pico/cyw43_arch.h>
+#include <pico/mutex.h>
+#include <sys/lock.h>
+
+#if !defined(ARDUINO_RASPBERRY_PI_PICO_W)
+auto_init_recursive_mutex(__lwipMutex); // Only for non-PicoW case
+#endif
 
 class LWIPMutex {
 public:
     LWIPMutex() {
-        //        cyw43_arch_lwip_begin();
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+        cyw43_arch_lwip_begin();
+#else
+        recursive_mutex_enter_blocking(&__lwipMutex);
+#endif
     }
 
     ~LWIPMutex() {
-        //      cyw43_arch_lwip_end();
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+        cyw43_arch_lwip_end();
+#else
+        recursive_mutex_enter_blocking(&__lwipMutex);
+#endif
     }
 };
 
