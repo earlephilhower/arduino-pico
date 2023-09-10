@@ -59,6 +59,15 @@ calls with ``eth.begin()`` and ``eth.connected()``:
         ....
     }
 
+Example Code
+------------
+
+The following examples allow switching between WiFi and Ethernet:
+
+* ``WebServer/AdvancedWebServer``
+
+* ``HTTPClient/BasicHTTPSClient``
+
 Caveats
 -------
 
