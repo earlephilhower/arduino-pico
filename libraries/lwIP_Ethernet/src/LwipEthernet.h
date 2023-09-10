@@ -30,7 +30,6 @@
 
 
 // One of them is to be declared in the main sketch
-// and passed to ethInitDHCP() or ethInitStatic():
 // Wiznet5500lwIP eth(CSPIN);
 // Wiznet5100lwIP eth(CSPIN);
 // ENC28J60lwIP eth(CSPIN);
@@ -39,5 +38,6 @@ void ethernet_arch_lwip_begin() __attribute__((weak));
 void ethernet_arch_lwip_end() __attribute__((weak));
 bool ethernet_arch_lwip_try() __attribute__((weak));
 
+// Internal Ethernet helper functions
 void __addEthernetInterface(std::function<void(void)> _packetHandler);
 void __startEthernetContext();

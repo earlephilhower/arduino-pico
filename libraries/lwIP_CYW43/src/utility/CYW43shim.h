@@ -94,6 +94,14 @@ public:
         _timeout = timeout;
     }
 
+    constexpr bool needsSPI() const {
+        return false;
+    }
+
+    constexpr bool needsLWIPInit() const {
+        return false;
+    }
+
     // LWIP netif for the IRQ packet processing
     static netif   *_netif;
 protected:

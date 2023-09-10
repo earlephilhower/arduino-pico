@@ -1,6 +1,4 @@
 #include <LwipEthernet.h>
-#include <SPI.h>
-#include <lwip/init.h>
 #include <pico/mutex.h>
 #include <pico/async_context_threadsafe_background.h>
 #include <functional>
@@ -9,8 +7,8 @@
 
 bool __lwipInitted = false;
 
-// Protection against LWIP re-entrancy
-auto_init_recursive_mutex(__ethernetMutex); // Only for non-PicoW case
+// Protection against LWIP re-entrancy for non-PicoW case
+auto_init_recursive_mutex(__ethernetMutex);
 
 void ethernet_arch_lwip_begin() {
     recursive_mutex_enter_blocking(&__ethernetMutex);
@@ -29,7 +27,7 @@ void __addEthernetInterface(std::function<void(void)> _packet) {
     _handlePacketList.push_back(_packet);
 }
 
-// Async context that pumps the ethernet controllers and
+// Async context that pumps the ethernet controllers
 static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
 
 async_context_t *lwip_ethernet_init_default_async_context(void) {
@@ -68,7 +66,6 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
     }
 }
 
-
 static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker) {
     assert(worker == &always_pending_update_timeout_worker);
     worker->work_pending = true;
@@ -81,24 +78,8 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
     async_context_add_at_time_worker_in_ms(context, &ethernet_timeout_worker, 50);
 }
 
-
 void __startEthernetContext() {
     async_context_t *context  = lwip_ethernet_init_default_async_context();
     always_pending_update_timeout_worker.work_pending = true;
     async_context_add_when_pending_worker(context, &always_pending_update_timeout_worker);
 }
-
-
-
-//#ifndef ETHERNET_SPI_CLOCK_DIV
-//#define ETHERNET_SPI_CLOCK_DIV SPI_CLOCK_DIV4  // 4MHz (SPI.h)
-//#endif
-
-//void SPI4EthInit() {
-//    SPI.begin();
-//    lwip_init();
-//    go = true;
-//    SPI.setClockDivider(ETHERNET_SPI_CLOCK_DIV);
-//    SPI.setBitOrder(MSBFIRST);
-//    SPI.setDataMode(SPI_MODE0);
-//}

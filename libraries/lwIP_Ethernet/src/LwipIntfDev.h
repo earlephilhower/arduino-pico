@@ -295,7 +295,7 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
 extern char wifi_station_hostname[];
 template<class RawDev>
 boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
-    if (!__lwipInitted) {
+    if (!__lwipInitted && RawDev::needsLWIPInit()) {
         lwip_init();
         __lwipInitted = true;
         __startEthernetContext();
