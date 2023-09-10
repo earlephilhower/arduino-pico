@@ -40,16 +40,18 @@
 #include <lwip/inet_chksum.h>
 #include <lwip/apps/sntp.h>
 
-//#include <user_interface.h>  // wifi_get_macaddr()
 
 #include "SPI.h"
-//#include "Schedule.h"
 #include "LwipIntf.h"
 #include "wl_definitions.h"
 
 #ifndef DEFAULT_MTU
 #define DEFAULT_MTU 1500
 #endif
+
+extern bool __lwipInitted;
+extern void __startEthernetContext();
+
 
 extern "C" void cyw43_hal_generate_laa_mac(__unused int idx, uint8_t buf[6]);
 
@@ -126,7 +128,6 @@ public:
     err_t handlePackets();
 protected:
     // members
-
     netif _netif;
 
     uint16_t _mtu;
@@ -294,6 +295,14 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
 extern char wifi_station_hostname[];
 template<class RawDev>
 boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
+    if (!__lwipInitted) {
+        lwip_init();
+        __lwipInitted = true;
+        __startEthernetContext();
+    }
+    if (RawDev::needsSPI()) {
+        SPI.begin();
+    }
     if (mtu) {
         _mtu = mtu;
     }
@@ -343,7 +352,7 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
         return false;
     }
 
-    addEthernetInterface(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
+    __addEthernetInterface(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP

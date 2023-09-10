@@ -3,32 +3,29 @@
 #include <lwip/init.h>
 #include <pico/mutex.h>
 #include <pico/async_context_threadsafe_background.h>
-
-
-// Protection against LWIP re-entrancy
-extern "C" {
-    auto_init_recursive_mutex(__ethernetMutex); // Only for non-PicoW case
-
-    void ethernet_arch_lwip_begin() {
-        recursive_mutex_enter_blocking(&__ethernetMutex);
-    }
-    void ethernet_arch_lwip_end() {
-        recursive_mutex_exit(&__ethernetMutex);
-    }
-    bool ethernet_arch_lwip_try() {
-        uint32_t unused;
-        return recursive_mutex_try_enter(&__ethernetMutex, &unused);
-    }
-};
-
-
 #include <functional>
 #include <list>
 
-// I apologize in advance for the template mess below....
-std::list<std::function<void(void)>> _handlePacketList;
 
-void addEthernetInterface(std::function<void(void)> _packet) {
+bool __lwipInitted = false;
+
+// Protection against LWIP re-entrancy
+auto_init_recursive_mutex(__ethernetMutex); // Only for non-PicoW case
+
+void ethernet_arch_lwip_begin() {
+    recursive_mutex_enter_blocking(&__ethernetMutex);
+}
+void ethernet_arch_lwip_end() {
+    recursive_mutex_exit(&__ethernetMutex);
+}
+bool ethernet_arch_lwip_try() {
+    uint32_t unused;
+    return recursive_mutex_try_enter(&__ethernetMutex, &unused);
+}
+
+// Theoretically support multiple interfaces
+std::list<std::function<void(void)>> _handlePacketList;
+void __addEthernetInterface(std::function<void(void)> _packet) {
     _handlePacketList.push_back(_packet);
 }
 
@@ -42,7 +39,6 @@ async_context_t *lwip_ethernet_init_default_async_context(void) {
     }
     return NULL;
 }
-
 
 static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker);
 static void ethernet_timeout_reached(async_context_t *context, async_at_time_worker_t *worker);
@@ -60,18 +56,15 @@ static async_at_time_worker_t ethernet_timeout_worker = {
     .next_time = 0,
     .user_data = 0,
 };
-bool go = false;
 
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
-    if (go) {
-        for (auto handlePacket : _handlePacketList) {
-            handlePacket();
-        }
-        if (ethernet_arch_lwip_try()) {
-            sys_check_timeouts();
-            ethernet_arch_lwip_end();
-        }
+    for (auto handlePacket : _handlePacketList) {
+        handlePacket();
+    }
+    if (ethernet_arch_lwip_try()) {
+        sys_check_timeouts();
+        ethernet_arch_lwip_end();
     }
 }
 
@@ -89,7 +82,7 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
 }
 
 
-void ethinit() {
+void __startEthernetContext() {
     async_context_t *context  = lwip_ethernet_init_default_async_context();
     always_pending_update_timeout_worker.work_pending = true;
     async_context_add_when_pending_worker(context, &always_pending_update_timeout_worker);
@@ -101,11 +94,11 @@ void ethinit() {
 //#define ETHERNET_SPI_CLOCK_DIV SPI_CLOCK_DIV4  // 4MHz (SPI.h)
 //#endif
 
-void SPI4EthInit() {
-    SPI.begin();
-    lwip_init();
-    go = true;
-    //    SPI.setClockDivider(ETHERNET_SPI_CLOCK_DIV);
-    //    SPI.setBitOrder(MSBFIRST);
-    //    SPI.setDataMode(SPI_MODE0);
-}
+//void SPI4EthInit() {
+//    SPI.begin();
+//    lwip_init();
+//    go = true;
+//    SPI.setClockDivider(ETHERNET_SPI_CLOCK_DIV);
+//    SPI.setBitOrder(MSBFIRST);
+//    SPI.setDataMode(SPI_MODE0);
+//}

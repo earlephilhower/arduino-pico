@@ -94,6 +94,10 @@ public:
         return true;
     }
 
+    constexpr bool needsSPI() const {
+        return true;
+    }
+
 protected:
     static constexpr bool interruptIsPossible() {
         return false;
