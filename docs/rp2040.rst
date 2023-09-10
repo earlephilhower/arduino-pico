@@ -82,7 +82,7 @@ Hardware Identification
 -----------------------
 
 bool rp2040.isPicoW()
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 Returns the core's best guess if this code is running on a Raspberry Pi Pico W.
 This would let you, possibly, use the same UF2 for Pico and PicoW by simply not
 doing any WiFi calls.
