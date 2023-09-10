@@ -22,13 +22,15 @@ bool ethernet_arch_lwip_try() {
 }
 
 // Theoretically support multiple interfaces
-std::list<std::function<void(void)>> _handlePacketList;
+static std::list<std::function<void(void)>> _handlePacketList;
 void __addEthernetInterface(std::function<void(void)> _packet) {
     _handlePacketList.push_back(_packet);
 }
 
 // Async context that pumps the ethernet controllers
 static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
+static async_when_pending_worker_t always_pending_update_timeout_worker;
+static async_at_time_worker_t ethernet_timeout_worker;
 
 async_context_t *lwip_ethernet_init_default_async_context(void) {
     async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
@@ -37,22 +39,6 @@ async_context_t *lwip_ethernet_init_default_async_context(void) {
     }
     return NULL;
 }
-
-static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker);
-static void ethernet_timeout_reached(async_context_t *context, async_at_time_worker_t *worker);
-
-static async_when_pending_worker_t always_pending_update_timeout_worker = {
-    .next = 0,
-    .do_work = update_next_timeout,
-    .work_pending = 0,
-    .user_data = 0,
-};
-
-static async_at_time_worker_t ethernet_timeout_worker = {
-    .next = 0,
-    .do_work = ethernet_timeout_reached,
-    .user_data = 0,
-};
 
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
@@ -74,5 +60,7 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
 void __startEthernetContext() {
     async_context_t *context  = lwip_ethernet_init_default_async_context();
     always_pending_update_timeout_worker.work_pending = true;
+    always_pending_update_timeout_worker.do_work = update_next_timeout;
+    ethernet_timeout_worker.do_work = ethernet_timeout_reached;
     async_context_add_when_pending_worker(context, &always_pending_update_timeout_worker);
 }
