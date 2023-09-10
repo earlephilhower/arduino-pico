@@ -1,8 +1,8 @@
 #pragma once
 
 #include <LwipIntfDev.h>
-#include <utility/w5500.h>
+#include <utility/w5100.h>
 #include <LwipEthernet.h>
 #include <WiFi.h>
 
-using Wiznet5500lwIP = LwipIntfDev<Wiznet5500>;
+using Wiznet5100lwIP = LwipIntfDev<Wiznet5100>;
