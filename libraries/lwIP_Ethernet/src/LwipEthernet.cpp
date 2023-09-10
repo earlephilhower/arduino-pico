@@ -51,7 +51,6 @@ static async_when_pending_worker_t always_pending_update_timeout_worker = {
 static async_at_time_worker_t ethernet_timeout_worker = {
     .next = 0,
     .do_work = ethernet_timeout_reached,
-    .next_time = 0,
     .user_data = 0,
 };
 
@@ -69,12 +68,6 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
 static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker) {
     assert(worker == &always_pending_update_timeout_worker);
     worker->work_pending = true;
-    uint32_t sleep_ms = sys_timeouts_sleeptime();
-    if (sleep_ms == SYS_TIMEOUTS_SLEEPTIME_INFINITE) {
-        ethernet_timeout_worker.next_time = at_the_end_of_time;
-    } else {
-        ethernet_timeout_worker.next_time = make_timeout_time_ms(sleep_ms);
-    }
     async_context_add_at_time_worker_in_ms(context, &ethernet_timeout_worker, 50);
 }
 

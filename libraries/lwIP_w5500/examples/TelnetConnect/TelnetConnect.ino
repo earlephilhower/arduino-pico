@@ -25,7 +25,7 @@ void setup() {
     }
   }
 
-  while (!eth.connected()) {//eth.handlePackets(); sys_check_timeouts();
+  while (!eth.connected()) {
     Serial.printf(".");
     delay(1000);
   }
