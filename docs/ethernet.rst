@@ -6,9 +6,22 @@ libraries (``WiFiClient``, ``WiFiClientSecure``, ``WiFiServer``,
 ``WiFiServerSecure``, ``WiFiUDP``, ``WebServer``, ``Updater``,
 ``HTTPClient``, etc.).
 
-Using these wired interfaces is very similar to using the PicoW WiFi
+Using these wired interfaces is very similar to using the Pico-W WiFi
 so most examples in the core only require minor modifications to use
 a wired interface.
+
+Supported Wired Ethernet Modules
+--------------------------------
+
+* Wiznet W5100
+
+* Wiznet W5500
+
+* ENC28J60
+
+
+Enabling Wired Ethernet
+-----------------------
 
 Simply replace the WiFi include at the top with:
 

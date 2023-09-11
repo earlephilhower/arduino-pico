@@ -42,8 +42,7 @@
 
 #include "enc28j60.h"
 
-void serial_printf(const char* fmt, ...)
-{
+void serial_printf(const char* fmt, ...) {
     char    buf[128];
     va_list args;
     va_start(args, fmt);
@@ -162,29 +161,24 @@ void serial_printf(const char* fmt, ...)
 // The ENC28J60 SPI Interface supports clock speeds up to 20 MHz
 static const SPISettings spiSettings(20000000, MSBFIRST, SPI_MODE0);
 
-ENC28J60::ENC28J60(int8_t cs, SPIClass& spi, int8_t intr) : _bank(ERXTX_BANK), _cs(cs), _spi(spi)
-{
+ENC28J60::ENC28J60(int8_t cs, SPIClass& spi, int8_t intr) : _bank(ERXTX_BANK), _cs(cs), _spi(spi) {
     (void)intr;
 }
 
-void ENC28J60::enc28j60_arch_spi_select(void)
-{
+void ENC28J60::enc28j60_arch_spi_select(void) {
     SPI.beginTransaction(spiSettings);
     digitalWrite(_cs, LOW);
 }
 
-void ENC28J60::enc28j60_arch_spi_deselect(void)
-{
+void ENC28J60::enc28j60_arch_spi_deselect(void) {
     digitalWrite(_cs, HIGH);
     SPI.endTransaction();
 }
 
 /*---------------------------------------------------------------------------*/
-uint8_t ENC28J60::is_mac_mii_reg(uint8_t reg)
-{
+uint8_t ENC28J60::is_mac_mii_reg(uint8_t reg) {
     /* MAC or MII register (otherwise, ETH register)? */
-    switch (_bank)
-    {
+    switch (_bank) {
     case MACONX_BANK:
         return reg < EIE;
     case MAADRX_BANK:
@@ -196,13 +190,11 @@ uint8_t ENC28J60::is_mac_mii_reg(uint8_t reg)
     }
 }
 /*---------------------------------------------------------------------------*/
-uint8_t ENC28J60::readreg(uint8_t reg)
-{
+uint8_t ENC28J60::readreg(uint8_t reg) {
     uint8_t r;
     enc28j60_arch_spi_select();
     SPI.transfer(0x00 | (reg & 0x1f));
-    if (is_mac_mii_reg(reg))
-    {
+    if (is_mac_mii_reg(reg)) {
         /* MAC and MII registers require that a dummy byte be read first. */
         SPI.transfer(0);
     }
@@ -211,22 +203,17 @@ uint8_t ENC28J60::readreg(uint8_t reg)
     return r;
 }
 /*---------------------------------------------------------------------------*/
-void ENC28J60::writereg(uint8_t reg, uint8_t data)
-{
+void ENC28J60::writereg(uint8_t reg, uint8_t data) {
     enc28j60_arch_spi_select();
     SPI.transfer(0x40 | (reg & 0x1f));
     SPI.transfer(data);
     enc28j60_arch_spi_deselect();
 }
 /*---------------------------------------------------------------------------*/
-void ENC28J60::setregbitfield(uint8_t reg, uint8_t mask)
-{
-    if (is_mac_mii_reg(reg))
-    {
+void ENC28J60::setregbitfield(uint8_t reg, uint8_t mask) {
+    if (is_mac_mii_reg(reg)) {
         writereg(reg, readreg(reg) | mask);
-    }
-    else
-    {
+    } else {
         enc28j60_arch_spi_select();
         SPI.transfer(0x80 | (reg & 0x1f));
         SPI.transfer(mask);
@@ -234,14 +221,10 @@ void ENC28J60::setregbitfield(uint8_t reg, uint8_t mask)
     }
 }
 /*---------------------------------------------------------------------------*/
-void ENC28J60::clearregbitfield(uint8_t reg, uint8_t mask)
-{
-    if (is_mac_mii_reg(reg))
-    {
+void ENC28J60::clearregbitfield(uint8_t reg, uint8_t mask) {
+    if (is_mac_mii_reg(reg)) {
         writereg(reg, readreg(reg) & ~mask);
-    }
-    else
-    {
+    } else {
         enc28j60_arch_spi_select();
         SPI.transfer(0xa0 | (reg & 0x1f));
         SPI.transfer(mask);
@@ -249,54 +232,46 @@ void ENC28J60::clearregbitfield(uint8_t reg, uint8_t mask)
     }
 }
 /*---------------------------------------------------------------------------*/
-void ENC28J60::setregbank(uint8_t new_bank)
-{
+void ENC28J60::setregbank(uint8_t new_bank) {
     writereg(ECON1, (readreg(ECON1) & 0xfc) | (new_bank & 0x03));
     _bank = new_bank;
 }
 /*---------------------------------------------------------------------------*/
-void ENC28J60::writedata(const uint8_t* data, int datalen)
-{
+void ENC28J60::writedata(const uint8_t* data, int datalen) {
     int i;
     enc28j60_arch_spi_select();
     /* The Write Buffer Memory (WBM) command is 0 1 1 1 1 0 1 0  */
     SPI.transfer(0x7a);
-    for (i = 0; i < datalen; i++)
-    {
+    for (i = 0; i < datalen; i++) {
         SPI.transfer(data[i]);
     }
     enc28j60_arch_spi_deselect();
 }
 /*---------------------------------------------------------------------------*/
-void ENC28J60::writedatabyte(uint8_t byte)
-{
+void ENC28J60::writedatabyte(uint8_t byte) {
     writedata(&byte, 1);
 }
 /*---------------------------------------------------------------------------*/
-int ENC28J60::readdata(uint8_t* buf, int len)
-{
+int ENC28J60::readdata(uint8_t* buf, int len) {
     int i;
     enc28j60_arch_spi_select();
     /* THe Read Buffer Memory (RBM) command is 0 0 1 1 1 0 1 0 */
     SPI.transfer(0x3a);
-    for (i = 0; i < len; i++)
-    {
+    for (i = 0; i < len; i++) {
         buf[i] = SPI.transfer(0);
     }
     enc28j60_arch_spi_deselect();
     return i;
 }
 /*---------------------------------------------------------------------------*/
-uint8_t ENC28J60::readdatabyte(void)
-{
+uint8_t ENC28J60::readdatabyte(void) {
     uint8_t r;
     readdata(&r, 1);
     return r;
 }
 
 /*---------------------------------------------------------------------------*/
-void ENC28J60::softreset(void)
-{
+void ENC28J60::softreset(void) {
     enc28j60_arch_spi_select();
     /* The System Command (soft reset) is 1 1 1 1 1 1 1 1 */
     SPI.transfer(0xff);
@@ -306,13 +281,11 @@ void ENC28J60::softreset(void)
 
 /*---------------------------------------------------------------------------*/
 //#if DEBUG
-uint8_t ENC28J60::readrev(void)
-{
+uint8_t ENC28J60::readrev(void) {
     uint8_t rev;
     setregbank(MAADRX_BANK);
     rev = readreg(EREVID);
-    switch (rev)
-    {
+    switch (rev) {
     case 2:
         return 1;
     case 6:
@@ -325,8 +298,7 @@ uint8_t ENC28J60::readrev(void)
 
 /*---------------------------------------------------------------------------*/
 
-bool ENC28J60::reset(void)
-{
+bool ENC28J60::reset(void) {
     PRINTF("enc28j60: resetting chip\n");
 
     pinMode(_cs, OUTPUT);
@@ -530,8 +502,7 @@ bool ENC28J60::reset(void)
     return true;
 }
 /*---------------------------------------------------------------------------*/
-bool ENC28J60::begin(const uint8_t* address, netif *net)
-{
+bool ENC28J60::begin(const uint8_t* address, netif *net) {
     _localMac = address;
     _netif = net;
 
@@ -545,8 +516,7 @@ bool ENC28J60::begin(const uint8_t* address, netif *net)
 
 /*---------------------------------------------------------------------------*/
 
-uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen)
-{
+uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen) {
     uint16_t dataend;
 
     /*
@@ -600,8 +570,7 @@ uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen)
         ;
 
 #if DEBUG
-    if ((readreg(ESTAT) & ESTAT_TXABRT) != 0)
-    {
+    if ((readreg(ESTAT) & ESTAT_TXABRT) != 0) {
         uint16_t erdpt;
         uint8_t  tsv[7];
         erdpt = (readreg(ERDPTH) << 8) | readreg(ERDPTL);
@@ -615,9 +584,7 @@ uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen)
                datalen, 0xff & data[0], 0xff & data[1], 0xff & data[2], 0xff & data[3],
                0xff & data[4], 0xff & data[5], tsv[6], tsv[5], tsv[4], tsv[3], tsv[2], tsv[1],
                tsv[0]);
-    }
-    else
-    {
+    } else {
         PRINTF("enc28j60: tx: %d: %02x:%02x:%02x:%02x:%02x:%02x\n", datalen, 0xff & data[0],
                0xff & data[1], 0xff & data[2], 0xff & data[3], 0xff & data[4], 0xff & data[5]);
     }
@@ -630,14 +597,12 @@ uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen)
 
 /*---------------------------------------------------------------------------*/
 
-uint16_t ENC28J60::readFrame(uint8_t* buffer, uint16_t bufsize)
-{
+uint16_t ENC28J60::readFrame(uint8_t* buffer, uint16_t bufsize) {
     readFrameSize();
     return readFrameData(buffer, bufsize);
 }
 
-uint16_t ENC28J60::readFrameSize()
-{
+uint16_t ENC28J60::readFrameSize() {
     uint8_t n;
 
     uint8_t nxtpkt[2];
@@ -647,8 +612,7 @@ uint16_t ENC28J60::readFrameSize()
     setregbank(EPKTCNT_BANK);
     n = readreg(EPKTCNT);
 
-    if (n == 0)
-    {
+    if (n == 0) {
         return 0;
     }
 
@@ -678,42 +642,32 @@ uint16_t ENC28J60::readFrameSize()
     return _len;
 }
 
-void ENC28J60::discardFrame(uint16_t framesize)
-{
+void ENC28J60::discardFrame(uint16_t framesize) {
     (void)framesize;
     (void)readFrameData(nullptr, 0);
 }
 
-uint16_t ENC28J60::readFrameData(uint8_t* buffer, uint16_t framesize)
-{
-    if (framesize < _len)
-    {
+uint16_t ENC28J60::readFrameData(uint8_t* buffer, uint16_t framesize) {
+    if (framesize < _len) {
         buffer = nullptr;
 
         /* flush rx fifo */
-        for (uint16_t i = 0; i < _len; i++)
-        {
+        for (uint16_t i = 0; i < _len; i++) {
             readdatabyte();
         }
-    }
-    else
-    {
+    } else {
         readdata(buffer, _len);
     }
 
     /* Read an additional byte at odd lengths, to avoid FIFO corruption */
-    if ((_len % 2) != 0)
-    {
+    if ((_len % 2) != 0) {
         readdatabyte();
     }
 
     /* Errata #14 */
-    if (_next == RX_BUF_START)
-    {
+    if (_next == RX_BUF_START) {
         _next = RX_BUF_END;
-    }
-    else
-    {
+    } else {
         _next = _next - 1;
     }
     writereg(ERXRDPTL, _next & 0xff);
@@ -721,8 +675,7 @@ uint16_t ENC28J60::readFrameData(uint8_t* buffer, uint16_t framesize)
 
     setregbitfield(ECON2, ECON2_PKTDEC);
 
-    if (!buffer)
-    {
+    if (!buffer) {
         PRINTF("enc28j60: rx err: flushed %d\n", _len);
         return 0;
     }
@@ -736,24 +689,21 @@ uint16_t ENC28J60::readFrameData(uint8_t* buffer, uint16_t framesize)
     return _len;
 }
 
-uint16_t ENC28J60::phyread(uint8_t reg)
-{
+uint16_t ENC28J60::phyread(uint8_t reg) {
     // ( https://github.com/JAndrassy/EthernetENC/tree/master/src/utility/enc28j60.h )
 
     setregbank(MACONX_BANK);
     writereg(MIREGADR, reg);
     writereg(MICMD, MICMD_MIIRD);
     // wait until the PHY read completes
-    while (readreg(MISTAT) & MISTAT_BUSY)
-    {
+    while (readreg(MISTAT) & MISTAT_BUSY) {
         delayMicroseconds(15);
     }
     writereg(MICMD, 0);
     return (readreg(MIRDL) | readreg(MIRDH) << 8);
 }
 
-bool ENC28J60::isLinked()
-{
+bool ENC28J60::isLinked() {
     // ( https://github.com/JAndrassy/EthernetENC/tree/master/src/utility/enc28j60.h )
 
     return !!(phyread(MACSTAT2) & 0x400);

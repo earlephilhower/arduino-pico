@@ -32,7 +32,6 @@
 #if !defined(ARDUINO_RASPBERRY_PI_PICO_W)
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
 extern void ethernet_arch_lwip_end() __attribute__((weak));
-extern bool ethernet_arch_lwip_try() __attribute__((weak));
 
 auto_init_recursive_mutex(__lwipMutex); // Only for non-PicoW case
 #endif

@@ -39,8 +39,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-class Wiznet5100
-{
+class Wiznet5100 {
 public:
     /**
         Constructor that uses the default hardware SPI pins
@@ -83,8 +82,7 @@ public:
         Check physical link
         @return true when physical link is up
     */
-    bool isLinked() const
-    {
+    bool isLinked() const {
         return true;  //XXX TODO
     }
 
@@ -92,8 +90,7 @@ public:
         Report whether ::isLinked() API is implemented
         @return true when ::isLinked() API is implemented
     */
-    constexpr bool isLinkDetectable() const
-    {
+    constexpr bool isLinkDetectable() const {
         return false;
     }
 
@@ -107,8 +104,7 @@ public:
 
     netif *_netif;
 protected:
-    static constexpr bool interruptIsPossible()
-    {
+    static constexpr bool interruptIsPossible() {
         return false;
     }
 
@@ -157,20 +153,18 @@ private:
     /**
         Default function to select chip.
         @note This function help not to access wrong address. If you do not describe this function
-       or register any functions, null function is called.
+        or register any functions, null function is called.
     */
-    inline void wizchip_cs_select()
-    {
+    inline void wizchip_cs_select() {
         digitalWrite(_cs, LOW);
     }
 
     /**
         Default function to deselect chip.
         @note This function help not to access wrong address. If you do not describe this function
-       or register any functions, null function is called.
+        or register any functions, null function is called.
     */
-    inline void wizchip_cs_deselect()
-    {
+    inline void wizchip_cs_deselect() {
         digitalWrite(_cs, HIGH);
     }
 
@@ -230,8 +224,8 @@ private:
 
         @details This function reads the Tx write pointer register and after that,
         it copies the <i>wizdata(pointer buffer)</i> of the length of <i>len(variable)</i> bytes to
-       internal TX memory and updates the Tx write pointer register. This function is being called
-       by send() and sendto() function also.
+        internal TX memory and updates the Tx write pointer register. This function is being called
+        by send() and sendto() function also.
 
         @param wizdata Pointer buffer to write data
         @param len Data length
@@ -256,7 +250,7 @@ private:
     /**
         It discard the received data in RX memory.
         @details It discards the data of the length of <i>len(variable)</i> bytes in internal RX
-       memory.
+        memory.
         @param len Data length
     */
     void wizchip_recv_ignore(uint16_t len);
@@ -274,8 +268,7 @@ private:
     uint16_t getSn_RX_RSR();
 
     /** Common registers */
-    enum
-    {
+    enum {
         MR   = 0x0000,  ///< Mode Register address (R/W)
         GAR  = 0x0001,  ///< Gateway IP Register address (R/W)
         SUBR = 0x0005,  ///< Subnet mask Register address (R/W)
@@ -290,8 +283,7 @@ private:
     };
 
     /** Socket registers */
-    enum
-    {
+    enum {
         Sn_MR     = 0x0400,  ///< Socket Mode register(R/W)
         Sn_CR     = 0x0401,  ///< Socket command register (R/W)
         Sn_IR     = 0x0402,  ///< Socket interrupt register (R)
@@ -313,8 +305,7 @@ private:
     };
 
     /** Mode register values */
-    enum
-    {
+    enum {
         MR_RST = 0x80,  ///< Reset
         MR_PB  = 0x10,  ///< Ping block
         MR_AI  = 0x02,  ///< Address Auto-Increment in Indirect Bus Interface
@@ -322,8 +313,7 @@ private:
     };
 
     /** Socket Mode Register values @ref Sn_MR */
-    enum
-    {
+    enum {
         Sn_MR_CLOSE  = 0x00,  ///< Unused socket
         Sn_MR_TCP    = 0x01,  ///< TCP
         Sn_MR_UDP    = 0x02,  ///< UDP
@@ -335,8 +325,7 @@ private:
     };
 
     /** Socket Command Register values */
-    enum
-    {
+    enum {
         Sn_CR_OPEN      = 0x01,  ///< Initialise or open socket
         Sn_CR_CLOSE     = 0x10,  ///< Close socket
         Sn_CR_SEND      = 0x20,  ///< Update TX buffer pointer and send data
@@ -346,8 +335,7 @@ private:
     };
 
     /** Socket Interrupt register values */
-    enum
-    {
+    enum {
         Sn_IR_CON     = 0x01,  ///< CON Interrupt
         Sn_IR_DISCON  = 0x02,  ///< DISCON Interrupt
         Sn_IR_RECV    = 0x04,  ///< RECV Interrupt
@@ -356,8 +344,7 @@ private:
     };
 
     /** Socket Status Register values */
-    enum
-    {
+    enum {
         SOCK_CLOSED      = 0x00,  ///< Closed
         SOCK_INIT        = 0x13,  ///< Initiate state
         SOCK_LISTEN      = 0x14,  ///< Listen state
@@ -379,8 +366,7 @@ private:
         @param (uint8_t)mr The value to be set.
         @sa getMR()
     */
-    inline void setMR(uint8_t mode)
-    {
+    inline void setMR(uint8_t mode) {
         wizchip_write(MR, mode);
     }
 
@@ -389,30 +375,27 @@ private:
         @return uint8_t. The value of Mode register.
         @sa setMR()
     */
-    inline uint8_t getMR()
-    {
+    inline uint8_t getMR() {
         return wizchip_read(MR);
     }
 
     /**
         Set local MAC address
         @param (uint8_t*)shar Pointer variable to set local MAC address. It should be allocated 6
-       bytes.
+        bytes.
         @sa getSHAR()
     */
-    inline void setSHAR(const uint8_t* macaddr)
-    {
+    inline void setSHAR(const uint8_t* macaddr) {
         wizchip_write_buf(SHAR, macaddr, 6);
     }
 
     /**
         Get local MAC address
         @param (uint8_t*)shar Pointer variable to get local MAC address. It should be allocated 6
-       bytes.
+        bytes.
         @sa setSHAR()
     */
-    inline void getSHAR(uint8_t* macaddr)
-    {
+    inline void getSHAR(uint8_t* macaddr) {
         wizchip_read_buf(SHAR, macaddr, 6);
     }
 
@@ -421,8 +404,7 @@ private:
         @param (uint16_t)txwr Value to set @ref Sn_TX_WR
         @sa GetSn_TX_WR()
     */
-    inline uint16_t getSn_TX_WR()
-    {
+    inline uint16_t getSn_TX_WR() {
         return wizchip_read_word(Sn_TX_WR);
     }
 
@@ -431,8 +413,7 @@ private:
         @param (uint16_t)txwr Value to set @ref Sn_TX_WR
         @sa GetSn_TX_WR()
     */
-    inline void setSn_TX_WR(uint16_t txwr)
-    {
+    inline void setSn_TX_WR(uint16_t txwr) {
         wizchip_write_word(Sn_TX_WR, txwr);
     }
 
@@ -441,8 +422,7 @@ private:
         @regurn uint16_t. Value of @ref Sn_RX_RD.
         @sa setSn_RX_RD()
     */
-    inline uint16_t getSn_RX_RD()
-    {
+    inline uint16_t getSn_RX_RD() {
         return wizchip_read_word(Sn_RX_RD);
     }
 
@@ -451,8 +431,7 @@ private:
         @param (uint16_t)rxrd Value to set @ref Sn_RX_RD
         @sa getSn_RX_RD()
     */
-    inline void setSn_RX_RD(uint16_t rxrd)
-    {
+    inline void setSn_RX_RD(uint16_t rxrd) {
         wizchip_write_word(Sn_RX_RD, rxrd);
     }
 
@@ -461,8 +440,7 @@ private:
         @param (uint8_t)mr Value to set @ref Sn_MR
         @sa getSn_MR()
     */
-    inline void setSn_MR(uint8_t mr)
-    {
+    inline void setSn_MR(uint8_t mr) {
         wizchip_write(Sn_MR, mr);
     }
 
@@ -471,8 +449,7 @@ private:
         @return uint8_t. Value of @ref Sn_MR.
         @sa setSn_MR()
     */
-    inline uint8_t getSn_MR()
-    {
+    inline uint8_t getSn_MR() {
         return wizchip_read(Sn_MR);
     }
 
@@ -488,8 +465,7 @@ private:
         @return uint8_t. Value of @ref Sn_CR.
         @sa setSn_CR()
     */
-    inline uint8_t getSn_CR()
-    {
+    inline uint8_t getSn_CR() {
         return wizchip_read(Sn_CR);
     }
 
@@ -497,8 +473,7 @@ private:
         Get @ref Sn_SR register
         @return uint8_t. Value of @ref Sn_SR.
     */
-    inline uint8_t getSn_SR()
-    {
+    inline uint8_t getSn_SR() {
         return wizchip_read(Sn_SR);
     }
 
@@ -507,8 +482,7 @@ private:
         @return uint8_t. Value of @ref Sn_IR.
         @sa setSn_IR()
     */
-    inline uint8_t getSn_IR()
-    {
+    inline uint8_t getSn_IR() {
         return wizchip_read(Sn_IR);
     }
 
@@ -517,8 +491,7 @@ private:
         @param (uint8_t)ir Value to set @ref Sn_IR
         @sa getSn_IR()
     */
-    inline void setSn_IR(uint8_t ir)
-    {
+    inline void setSn_IR(uint8_t ir) {
         wizchip_write(Sn_IR, ir);
     }
 };

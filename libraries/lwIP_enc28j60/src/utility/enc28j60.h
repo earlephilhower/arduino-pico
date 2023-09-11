@@ -44,8 +44,7 @@
 /**
     Send and receive Ethernet frames directly using a ENC28J60 controller.
 */
-class ENC28J60
-{
+class ENC28J60 {
 public:
     /**
         Constructor that uses the default hardware SPI pins
@@ -89,8 +88,7 @@ public:
         Report whether ::isLinked() API is implemented
         @return true when ::isLinked() API is implemented
     */
-    constexpr bool isLinkDetectable() const
-    {
+    constexpr bool isLinkDetectable() const {
         return true;
     }
 
@@ -104,8 +102,7 @@ public:
 
     netif *_netif;
 protected:
-    static constexpr bool interruptIsPossible()
-    {
+    static constexpr bool interruptIsPossible() {
         return false;
     }
 
