@@ -20,19 +20,9 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#pragma once
 
-#include <Arduino.h>
-#include <lwIP_CYW43.h>
-//#include <W5100lwIP.h>
-#include <W5500lwIP.h>
-//#include <ENC28J60lwIP.h>
 #include <functional>
-
-
-// One of them is to be declared in the main sketch
-// Wiznet5500lwIP eth(CSPIN);
-// Wiznet5100lwIP eth(CSPIN);
-// ENC28J60lwIP eth(CSPIN);
 
 void ethernet_arch_lwip_begin() __attribute__((weak));
 void ethernet_arch_lwip_end() __attribute__((weak));

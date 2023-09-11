@@ -1,4 +1,5 @@
 #include <LwipEthernet.h>
+#include <lwip/timeouts.h>
 #include <pico/mutex.h>
 #include <pico/async_context_threadsafe_background.h>
 #include <functional>
