@@ -156,7 +156,7 @@ template<class RawDev>
 void LwipIntfDev<RawDev>::_dns_found_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {
     (void) name;
     _dns_cb_t *cb = (_dns_cb_t *)callback_arg;
-    if (!cb->wifi->_dns_lookup_pending) {
+    if (!cb->wifi || !cb->wifi->_dns_lookup_pending) {
         return;
     }
     if (ipaddr) {
@@ -187,8 +187,7 @@ int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, i
         _dns_lookup_pending = true;
         uint32_t now = millis();
         while ((millis() - now < (uint32_t)timeout_ms) && _dns_lookup_pending) {
-            sys_check_timeouts();
-            delay(10);
+            delay(50);
         }
         _dns_lookup_pending = false;
         if (aResult.isSet()) {
@@ -353,7 +352,7 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
     }
 
     if (RawDev::needsLWIPInit()) {
-        __addEthernetInterface(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
+        __addEthernetInterface(std::bind(&LwipIntfDev<RawDev>::handlePackets, this), std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     }
 
     if (localIP().v4() == 0) {

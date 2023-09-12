@@ -22,11 +22,15 @@
 
 #pragma once
 
+#include <Arduino.h>
 #include <functional>
 
 void ethernet_arch_lwip_begin() __attribute__((weak));
 void ethernet_arch_lwip_end() __attribute__((weak));
 
 // Internal Ethernet helper functions
-void __addEthernetInterface(std::function<void(void)> _packetHandler);
+void __addEthernetInterface(std::function<void(void)> _packetHandler, std::function<int(const char *, IPAddress &, int)> _hostByName);
 void __startEthernetContext();
+
+// Used by WiFi to get DNS lookup
+int __ethernet_host_by_name(const char *aHostname, IPAddress &aResult, int timeout_ms) __attribute__((weak));

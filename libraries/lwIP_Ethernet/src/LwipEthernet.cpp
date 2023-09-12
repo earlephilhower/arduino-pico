@@ -34,6 +34,7 @@ static async_at_time_worker_t ethernet_timeout_worker;
 
 // Theoretically support multiple interfaces
 static std::list<std::function<void(void)>> _handlePacketList;
+static std::list<std::function<int(const char *, IPAddress &, int)>> _hostByNameList;
 
 void ethernet_arch_lwip_begin() {
     async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
@@ -43,10 +44,20 @@ void ethernet_arch_lwip_end() {
     async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
 }
 
-void __addEthernetInterface(std::function<void(void)> _packet) {
+void __addEthernetInterface(std::function<void(void)> _packetHandler, std::function<int(const char *, IPAddress &, int)> _hostByName) {
     ethernet_arch_lwip_begin();
-    _handlePacketList.push_back(_packet);
+    _handlePacketList.push_back(_packetHandler);
+    _hostByNameList.push_back(_hostByName);
     ethernet_arch_lwip_end();
+}
+
+int __ethernet_host_by_name(const char *aHostname, IPAddress &aResult, int timeout_ms) {
+    for (auto hbn : _hostByNameList) {
+        if (hbn(aHostname, aResult, timeout_ms)) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 static async_context_t *lwip_ethernet_init_default_async_context(void) {
