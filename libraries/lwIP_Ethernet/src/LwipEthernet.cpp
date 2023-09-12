@@ -26,6 +26,7 @@
 #include <list>
 
 bool __lwipInitted = false;
+bool __ethernetContextInitted = false;
 
 // Async context that pumps the ethernet controllers
 static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
@@ -44,14 +45,19 @@ void ethernet_arch_lwip_end() {
     async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
 }
 
-void __addEthernetInterface(std::function<void(void)> _packetHandler, std::function<int(const char *, IPAddress &, int)> _hostByName) {
+void __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
     ethernet_arch_lwip_begin();
     _handlePacketList.push_back(_packetHandler);
+    ethernet_arch_lwip_end();
+}
+
+void __addEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName) {
+    ethernet_arch_lwip_begin();
     _hostByNameList.push_back(_hostByName);
     ethernet_arch_lwip_end();
 }
 
-int __ethernet_host_by_name(const char *aHostname, IPAddress &aResult, int timeout_ms) {
+int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms) {
     for (auto hbn : _hostByNameList) {
         if (hbn(aHostname, aResult, timeout_ms)) {
             return 1;
@@ -84,9 +90,13 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
 }
 
 void __startEthernetContext() {
+    if (__ethernetContextInitted) {
+        return;
+    }
     async_context_t *context  = lwip_ethernet_init_default_async_context();
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;
     ethernet_timeout_worker.do_work = ethernet_timeout_reached;
     async_context_add_when_pending_worker(context, &always_pending_update_timeout_worker);
+    __ethernetContextInitted = true;
 }

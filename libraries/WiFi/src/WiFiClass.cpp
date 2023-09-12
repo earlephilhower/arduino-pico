@@ -583,15 +583,9 @@ uint8_t WiFiClass::reasonCode() {
     @return 1 if aIPAddrString was successfully converted to an IP address,
             else 0
 */
-
-// Hack to enable WiFi.hostByName to use the LWIP Ethernet when installed (for WiFiClient to connect by name)
-extern int __ethernet_host_by_name(const char *aHostname, IPAddress &aResult, int timeout_ms) __attribute__((weak));
+// Note that there is now a global FCN for name lookup to use all Ethernet ports, no need to call WiFi.hostByName, just ::hostByName
 int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult, int timeout_ms) {
-    if (__ethernet_host_by_name) {
-        // If the function exists, there is a wired ethernet in use, so use that for name resolution not _wifi
-        return __ethernet_host_by_name(aHostname, aResult, timeout_ms);
-    }
-    return _wifi.hostByName(aHostname, aResult, timeout_ms);
+    return ::hostByName(aHostname, aResult, timeout_ms);
 }
 
 // TODO

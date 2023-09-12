@@ -58,7 +58,7 @@ public:
 
     void begin(const char *server, int timeout = 3600) {
         IPAddress addr;
-        if (WiFi.hostByName(server, addr)) {
+        if (::hostByName(server, addr)) {
             begin(addr, timeout);
         }
         _running = true;

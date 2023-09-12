@@ -25,6 +25,7 @@
 
 #include <vector>
 #include "WiFiClient.h"
+#include <LwipEthernet.h>
 #include <bearssl/bearssl.h>
 #include "BearSSLHelpers.h"
 #include "CertStoreBearSSL.h"
@@ -247,7 +248,7 @@ public:
     }
     int connect(const char *host, uint16_t port, const char *rootCABuff, const char *cli_cert, const char *cli_key) {
         IPAddress ip;
-        if (WiFi.hostByName(host, ip, _timeout)) {
+        if (::hostByName(host, ip, _timeout)) {
             return connect(ip, port, rootCABuff, cli_cert, cli_key);
         } else {
             return 0;

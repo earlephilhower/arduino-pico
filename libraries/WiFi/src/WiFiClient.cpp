@@ -113,7 +113,7 @@ WiFiClient& WiFiClient::operator=(const WiFiClient& other) {
 
 int WiFiClient::connect(const char* host, uint16_t port) {
     IPAddress remote_addr;
-    if (WiFi.hostByName(host, remote_addr, _timeout)) {
+    if (::hostByName(host, remote_addr, _timeout)) {
         return connect(remote_addr, port);
     }
     return 0;

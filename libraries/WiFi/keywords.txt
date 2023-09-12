@@ -51,6 +51,7 @@ remoteIP	KEYWORD2
 remotePort	KEYWORD2
 mode	KEYWORD2
 addAP	KEYWORD2
+hostByName	KEYWORD2
 
 beginAP	KEYWORD2
 beginEnterprise	KEYWORD2

@@ -133,7 +133,7 @@ void WiFiUDP::stop() {
 
 int WiFiUDP::beginPacket(const char *host, uint16_t port) {
     IPAddress remote_addr;
-    if (WiFi.hostByName(host, remote_addr)) {
+    if (::hostByName(host, remote_addr)) {
         return beginPacket(remote_addr, port);
     }
     return 0;

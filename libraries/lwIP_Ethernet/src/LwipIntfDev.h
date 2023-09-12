@@ -297,8 +297,8 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
     if (!__lwipInitted && RawDev::needsLWIPInit()) {
         lwip_init();
         __lwipInitted = true;
-        __startEthernetContext();
     }
+    __startEthernetContext();
     if (RawDev::needsSPI()) {
         SPI.begin();
     }
@@ -352,8 +352,9 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
     }
 
     if (RawDev::needsLWIPInit()) {
-        __addEthernetInterface(std::bind(&LwipIntfDev<RawDev>::handlePackets, this), std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+        __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
     }
+    __addEthernetHostByName(std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
