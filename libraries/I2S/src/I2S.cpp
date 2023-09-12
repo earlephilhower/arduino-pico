@@ -55,6 +55,8 @@ I2S::I2S(PinMode direction) {
     _bufferWords = 0;
     _silenceSample = 0;
     _isLSBJ = false;
+    _isTDM = false;
+    _tdmChannels = 8;
     _swapClocks = false;
     _multMCLK = 256;
 }
@@ -109,10 +111,10 @@ bool I2S::setFrequency(int newFreq) {
     _freq = newFreq;
     if (_running) {
         if (_MCLKenabled) {
-            int bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
+            int bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * 2.0 /* edges per clock */;
             pio_sm_set_clkdiv_int_frac(_pio, _sm, clock_get_hz(clk_sys) / bitClk, 0);
         } else {
-            float bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
+            float bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * 2.0 /* edges per clock */;
             pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
         }
     }
@@ -148,6 +150,22 @@ bool I2S::setLSBJFormat() {
         return false;
     }
     _isLSBJ = true;
+    return true;
+}
+
+bool I2S::setTDMFormat() {
+    if (_running || !_isOutput) {
+        return false;
+    }
+    _isTDM = true;
+    return true;
+}
+
+bool I2S::setTDMChannels(int channels) {
+    if (_running || !_isOutput) {
+        return false;
+    }
+    _tdmChannels = channels;
     return true;
 }
 
@@ -193,9 +211,9 @@ bool I2S::begin() {
     _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
-        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
+        _i2s = new PIOProgram(_isOutput ? (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program)) : &pio_i2s_in_program);
     } else {
-        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program) : &pio_i2s_in_swap_program);
+        _i2s = new PIOProgram(_isOutput ? (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program)) : &pio_i2s_in_swap_program);
     }
     if (!_i2s->prepare(&_pio, &_sm, &off)) {
         _running = false;
@@ -204,7 +222,9 @@ bool I2S::begin() {
         return false;
     }
     if (_isOutput) {
-        if (_isLSBJ) {
+        if (_isTDM) {
+            pio_tdm_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks, _tdmChannels);
+        } else if (_isLSBJ) {
             pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
         } else {
             pio_i2s_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);

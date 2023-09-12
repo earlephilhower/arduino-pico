@@ -394,6 +394,18 @@ void __USBStart() {
 }
 
 
+bool __USBHIDReady() {
+    uint32_t start = millis();
+    const uint32_t timeout = 500;
+
+    while (((millis() - start) < timeout) && tud_ready() && !tud_hid_ready()) {
+        tud_task();
+        delay(1);
+    }
+    return tud_hid_ready();
+}
+
+
 // Invoked when received GET_REPORT control request
 // Application must fill buffer report's content and return its length.
 // Return zero will cause the stack to STALL request
