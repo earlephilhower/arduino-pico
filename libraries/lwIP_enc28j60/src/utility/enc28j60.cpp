@@ -42,15 +42,6 @@
 
 #include "enc28j60.h"
 
-void serial_printf(const char* fmt, ...) {
-    char    buf[128];
-    va_list args;
-    va_start(args, fmt);
-    vsnprintf(buf, 128, fmt, args);
-    va_end(args);
-    Serial.print(buf);
-}
-
 #define DEBUG 0
 #if DEBUG
 #define PRINTF(...) printf(__VA_ARGS__)
