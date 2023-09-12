@@ -44,7 +44,9 @@ void ethernet_arch_lwip_end() {
 }
 
 void __addEthernetInterface(std::function<void(void)> _packet) {
+    ethernet_arch_lwip_begin();
     _handlePacketList.push_back(_packet);
+    ethernet_arch_lwip_end();
 }
 
 static async_context_t *lwip_ethernet_init_default_async_context(void) {
