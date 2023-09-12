@@ -157,6 +157,7 @@ env.Append(
         "-u_scanf_float",
         # no cross-reference table, heavily spams the output
         # "-Wl,--cref",
+        "-Wl,--no-warn-rwx-segments",
         "-Wl,--check-sections",
         "-Wl,--gc-sections",
         "-Wl,--unresolved-symbols=report-all",
