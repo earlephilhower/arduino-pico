@@ -20,6 +20,7 @@
 
 #include <LwipEthernet.h>
 #include <lwip/timeouts.h>
+#include <lwip/dns.h>
 #include <pico/mutex.h>
 #include <pico/async_context_threadsafe_background.h>
 #include <functional>
@@ -34,7 +35,6 @@ static async_at_time_worker_t ethernet_timeout_worker;
 
 // Theoretically support multiple interfaces
 static std::map<int, std::function<void(void)>> _handlePacketList;
-static std::map<int, std::function<int(const char *, IPAddress &, int)>> _hostByNameList;
 
 void ethernet_arch_lwip_begin() {
     async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
@@ -58,26 +58,51 @@ void __removeEthernetPacketHandler(int id) {
     ethernet_arch_lwip_end();
 }
 
-int __addEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName) {
-    static int id = 0xbeef;
-    ethernet_arch_lwip_begin();
-    _hostByNameList.insert({id, _hostByName});
-    ethernet_arch_lwip_end();
-    return id++;
+static volatile bool _dns_lookup_pending = false;
+
+static void _dns_found_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {
+    (void) name;
+    if (!_dns_lookup_pending) {
+        return;
+    }
+    if (ipaddr) {
+        *(IPAddress *)callback_arg = IPAddress(ipaddr);
+    }
+    _dns_lookup_pending = false; // resume hostByName
 }
 
-void __removeEthernetHostByName(int id) {
-    ethernet_arch_lwip_begin();
-    _hostByNameList.erase(id);
-    ethernet_arch_lwip_end();
-}
+int hostByName(const char* aHostname, IPAddress& aResult, int timeout_ms) {
+    ip_addr_t addr;
+    aResult = static_cast<uint32_t>(0xffffffff);
 
-int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms) {
-    for (auto hbn : _hostByNameList) {
-        if (hbn.second(aHostname, aResult, timeout_ms)) {
-            return 1;
+    if (aResult.fromString(aHostname)) {
+        // Host name is a IP address use it!
+        return 1;
+    }
+
+#if LWIP_IPV4 && LWIP_IPV6
+    err_t err = dns_gethostbyname_addrtype(aHostname, &addr, &_dns_found_callback, &aResult, LWIP_DNS_ADDRTYPE_DEFAULT);
+#else
+    err_t err = dns_gethostbyname(aHostname, &addr, &_dns_found_callback, &aResult);
+#endif
+    if (err == ERR_OK) {
+        aResult = IPAddress(&addr);
+    } else if (err == ERR_INPROGRESS) {
+        _dns_lookup_pending = true;
+        uint32_t now = millis();
+        while ((millis() - now < (uint32_t)timeout_ms) && _dns_lookup_pending) {
+            delay(1);
+        }
+        _dns_lookup_pending = false;
+        if (aResult.isSet()) {
+            err = ERR_OK;
         }
     }
+
+    if (err == ERR_OK) {
+        return 1;
+    }
+
     return 0;
 }
 

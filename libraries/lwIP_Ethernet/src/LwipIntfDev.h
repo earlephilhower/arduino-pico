@@ -140,67 +140,14 @@ protected:
     volatile int _ping_ttl;
     static u8_t _pingCB(void *arg, struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *addr);
 
-    // DNS lookup callback
-    bool _dns_lookup_pending = false;
-    typedef struct {
-        IPAddress *ip;
-        LwipIntfDev<RawDev> *wifi;
-    } _dns_cb_t;
-    static void _dns_found_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg);
-
+    // Packet handler number
     int _phID = -1;
-    int _hbnID = -1;
 };
 
 
 template<class RawDev>
-void LwipIntfDev<RawDev>::_dns_found_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {
-    (void) name;
-    _dns_cb_t *cb = (_dns_cb_t *)callback_arg;
-    if (!cb->wifi || !cb->wifi->_dns_lookup_pending) {
-        return;
-    }
-    if (ipaddr) {
-        *(cb->ip) = IPAddress(ipaddr);
-    }
-    cb->wifi->_dns_lookup_pending = false; // resume hostByName
-}
-
-template<class RawDev>
 int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, int timeout_ms) {
-    ip_addr_t addr;
-    aResult = static_cast<uint32_t>(0xffffffff);
-
-    if (aResult.fromString(aHostname)) {
-        // Host name is a IP address use it!
-        return 1;
-    }
-
-    _dns_cb_t cb = { &aResult, this };
-#if LWIP_IPV4 && LWIP_IPV6
-    err_t err = dns_gethostbyname_addrtype(aHostname, &addr, &_dns_found_callback, &cb, LWIP_DNS_ADDRTYPE_DEFAULT);
-#else
-    err_t err = dns_gethostbyname(aHostname, &addr, &_dns_found_callback, &cb);
-#endif
-    if (err == ERR_OK) {
-        aResult = IPAddress(&addr);
-    } else if (err == ERR_INPROGRESS) {
-        _dns_lookup_pending = true;
-        uint32_t now = millis();
-        while ((millis() - now < (uint32_t)timeout_ms) && _dns_lookup_pending) {
-            delay(50);
-        }
-        _dns_lookup_pending = false;
-        if (aResult.isSet()) {
-            err = ERR_OK;
-        }
-    }
-
-    if (err == ERR_OK) {
-        return 1;
-    }
-
-    return 0;
+    return ::hostByName(aHostname, aResult, timeout_ms);
 }
 
 template<class RawDev>
@@ -351,7 +298,6 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     }
 
     _phID = __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
-    _hbnID = __addEthernetHostByName(std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
@@ -399,7 +345,6 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
     __removeEthernetPacketHandler(_phID);
-    __removeEthernetHostByName(_hbnID);
 
     RawDev::end();
 

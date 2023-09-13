@@ -33,8 +33,6 @@ void __startEthernetContext();
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler);
 void __removeEthernetPacketHandler(int id);
-int __addEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName);
-void __removeEthernetHostByName(int id);
 
 // Used by WiFiClient to get DNS lookup
 int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms = 5000);
