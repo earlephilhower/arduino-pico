@@ -22,6 +22,7 @@
 #include <lwip/timeouts.h>
 #include <lwip/dns.h>
 #include <pico/mutex.h>
+#include <pico/cyw43_arch.h>
 #include <pico/async_context_threadsafe_background.h>
 #include <functional>
 #include <map>
@@ -37,11 +38,19 @@ static async_at_time_worker_t ethernet_timeout_worker;
 static std::map<int, std::function<void(void)>> _handlePacketList;
 
 void ethernet_arch_lwip_begin() {
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+    cyw43_arch_lwip_begin();
+#else
     async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
+#endif
 }
 
 void ethernet_arch_lwip_end() {
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+    cyw43_arch_lwip_end();
+#else
     async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
+#endif
 }
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
