@@ -360,7 +360,6 @@ void WiFiClient::stopAllExcept(WiFiClient* except) {
     }
 }
 
-
 void WiFiClient::keepAlive(uint16_t idle_sec, uint16_t intv_sec, uint8_t count) {
     _client->keepAlive(idle_sec, intv_sec, count);
 }
@@ -380,28 +379,3 @@ uint16_t WiFiClient::getKeepAliveInterval() const {
 uint8_t WiFiClient::getKeepAliveCount() const {
     return _client->getKeepAliveCount();
 }
-
-//bool WiFiClient::hasPeekBufferAPI () const
-//{
-//    return true;
-//}
-
-// return a pointer to available data buffer (size = peekAvailable())
-// semantic forbids any kind of read() before calling peekConsume()
-//const char* WiFiClient::peekBuffer ()
-//{
-//    return _client? _client->peekBuffer(): nullptr;
-//}
-
-// return number of byte accessible by peekBuffer()
-//size_t WiFiClient::peekAvailable ()
-//{
-//    return _client? _client->peekAvailable(): 0;
-//}
-
-// consume bytes after use (see peekBuffer)
-//void WiFiClient::peekConsume (size_t consume)
-//{
-//    if (_client)
-//        _client->peekConsume(consume);
-//}
