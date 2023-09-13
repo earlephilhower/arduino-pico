@@ -112,6 +112,7 @@ env.Append(
     CCFLAGS=[
         "-Os", # Optimize for size by default
         "-Werror=return-type",
+        "-Wno-psabi",
         "-march=armv6-m",
         "-mcpu=cortex-m0plus",
         "-mthumb",
@@ -157,6 +158,7 @@ env.Append(
         "-u_scanf_float",
         # no cross-reference table, heavily spams the output
         # "-Wl,--cref",
+        "-Wl,--no-warn-rwx-segments",
         "-Wl,--check-sections",
         "-Wl,--gc-sections",
         "-Wl,--unresolved-symbols=report-all",
