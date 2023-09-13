@@ -65,6 +65,16 @@ public:
 
 extern "C" {
 
+    // Avoid calling lwip_init multiple times
+    extern void __real_lwip_init();
+    void __wrap_lwip_init() {
+        static bool initted = false;
+        if (!initted) {
+            __real_lwip_init();
+            initted = true;
+        }
+    }
+
     extern u8_t __real_pbuf_header(struct pbuf *p, s16_t header_size);
     u8_t __wrap_pbuf_header(struct pbuf *p, s16_t header_size) {
         LWIPMutex m;

@@ -66,6 +66,10 @@ public:
     */
     uint16_t readFrame(uint8_t* buffer, uint16_t bufsize);
 
+    // -------------  Dummy handler, actually run in the SDK async context  -------------
+    void handlePackets() {
+    }
+
     // ------------- Dummy handler for linkage, but never called at runtime -------------
     uint16_t readFrameSize() {
         return 0;
@@ -112,10 +116,6 @@ public:
     }
 
     constexpr bool needsSPI() const {
-        return false;
-    }
-
-    constexpr bool needsLWIPInit() const {
         return false;
     }
 

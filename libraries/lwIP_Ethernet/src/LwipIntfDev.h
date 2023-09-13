@@ -43,14 +43,12 @@
 
 #include "SPI.h"
 #include "LwipIntf.h"
+#include "LwipEthernet.h"
 #include "wl_definitions.h"
 
 #ifndef DEFAULT_MTU
 #define DEFAULT_MTU 1500
 #endif
-
-extern bool __lwipInitted;
-extern void __startEthernetContext();
 
 
 extern "C" void cyw43_hal_generate_laa_mac(__unused int idx, uint8_t buf[6]);
@@ -293,12 +291,10 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
 }
 extern char wifi_station_hostname[];
 template<class RawDev>
-boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
-    if (!__lwipInitted && RawDev::needsLWIPInit()) {
-        lwip_init();
-        __lwipInitted = true;
-    }
+bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
+    lwip_init();
     __startEthernetContext();
+
     if (RawDev::needsSPI()) {
         SPI.begin();
     }
@@ -351,9 +347,7 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
         return false;
     }
 
-    if (RawDev::needsLWIPInit()) {
-        __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
-    }
+    __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
     __addEthernetHostByName(std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
     if (localIP().v4() == 0) {
@@ -414,6 +408,11 @@ boolean LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
     RawDev::end();
+
+    // TODO - need to be able to delete these somehow...
+    //__removeEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
+    //__removeEthernetHostByName(std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
     netif_remove(&_netif);
     memset(&_netif, 0, sizeof(_netif));
     _started = false;

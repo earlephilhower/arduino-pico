@@ -29,9 +29,10 @@ void ethernet_arch_lwip_begin() __attribute__((weak));
 void ethernet_arch_lwip_end() __attribute__((weak));
 
 // Internal Ethernet helper functions
+void __startEthernetContext();
+
 void __addEthernetPacketHandler(std::function<void(void)> _packetHandler);
 void __addEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName);
-void __startEthernetContext();
 
 // Used by WiFiClient to get DNS lookup
 int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms = 5000);

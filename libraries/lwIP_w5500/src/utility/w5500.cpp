@@ -242,7 +242,7 @@ Wiznet5500::Wiznet5500(int8_t cs, SPIClass& spi, int8_t intr) : _spi(spi), _cs(c
     (void)intr;
 }
 
-boolean Wiznet5500::begin(const uint8_t* mac_address, netif *net) {
+bool Wiznet5500::begin(const uint8_t* mac_address, netif *net) {
     _netif = net;
     memcpy(_mac_address, mac_address, 6);
 

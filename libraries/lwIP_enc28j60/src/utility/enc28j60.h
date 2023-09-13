@@ -96,10 +96,6 @@ public:
         return true;
     }
 
-    constexpr bool needsLWIPInit() const {
-        return true;
-    }
-
     netif *_netif;
 protected:
     static constexpr bool interruptIsPossible() {

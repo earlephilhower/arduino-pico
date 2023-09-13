@@ -98,10 +98,6 @@ public:
         return true;
     }
 
-    constexpr bool needsLWIPInit() const {
-        return true;
-    }
-
 protected:
     static constexpr bool interruptIsPossible() {
         return false;

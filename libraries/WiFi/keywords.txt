@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For WiFiNINA
+# Syntax Coloring Map For WiFi
 #######################################
 
 #######################################
@@ -7,7 +7,6 @@
 #######################################
 
 WiFi	KEYWORD1
-WiFiPico	KEYWORD1
 WiFiUdp	KEYWORD1
 WiFiClient	KEYWORD1
 WiFiSSLClient	KEYWORD1

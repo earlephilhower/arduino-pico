@@ -25,7 +25,6 @@
 #include <functional>
 #include <list>
 
-bool __lwipInitted = false;
 bool __ethernetContextInitted = false;
 
 // Async context that pumps the ethernet controllers
@@ -51,11 +50,28 @@ void __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
     ethernet_arch_lwip_end();
 }
 
+// TODO - need to be able to delete from these lists or mark them invalid somehow
+#if 0
+void __removeEthernetPacketHandler(std::function<void(void)> _packetHandler) {
+    ethernet_arch_lwip_begin();
+    _handlePacketList.remove(_packetHandler);
+    ethernet_arch_lwip_end();
+}
+#endif
+
 void __addEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName) {
     ethernet_arch_lwip_begin();
     _hostByNameList.push_back(_hostByName);
     ethernet_arch_lwip_end();
 }
+
+#if 0
+void __removeEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName) {
+    ethernet_arch_lwip_begin();
+    _hostByNameList.remove(_hostByName);
+    ethernet_arch_lwip_end();
+}
+#endif
 
 int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms) {
     for (auto hbn : _hostByNameList) {
