@@ -112,6 +112,7 @@ env.Append(
     CCFLAGS=[
         "-Os", # Optimize for size by default
         "-Werror=return-type",
+        "-Wno-psabi",
         "-march=armv6-m",
         "-mcpu=cortex-m0plus",
         "-mthumb",
