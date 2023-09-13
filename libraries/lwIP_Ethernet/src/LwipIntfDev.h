@@ -147,6 +147,9 @@ protected:
         LwipIntfDev<RawDev> *wifi;
     } _dns_cb_t;
     static void _dns_found_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg);
+
+    int _phID = -1;
+    int _hbnID = -1;
 };
 
 
@@ -347,8 +350,8 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         return false;
     }
 
-    __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
-    __addEthernetHostByName(std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    _phID = __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
+    _hbnID = __addEthernetHostByName(std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
@@ -390,28 +393,15 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         }
     }
 
-#if 0
-    if (_intrPin < 0
-            && !schedule_recurrent_function_us(
-    [&]() {
-    this->handlePackets();
-        return true;
-    },
-    100)) {
-        netif_remove(&_netif);
-        return false;
-    }
-#endif
     return true;
 }
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
-    RawDev::end();
+    __removeEthernetPacketHandler(_phID);
+    __removeEthernetHostByName(_hbnID);
 
-    // TODO - need to be able to delete these somehow...
-    //__removeEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
-    //__removeEthernetHostByName(std::bind(&LwipIntfDev<RawDev>::hostByName, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    RawDev::end();
 
     netif_remove(&_netif);
     memset(&_netif, 0, sizeof(_netif));

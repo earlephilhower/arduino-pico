@@ -23,7 +23,7 @@
 #include <pico/mutex.h>
 #include <pico/async_context_threadsafe_background.h>
 #include <functional>
-#include <list>
+#include <map>
 
 bool __ethernetContextInitted = false;
 
@@ -33,8 +33,8 @@ static async_when_pending_worker_t always_pending_update_timeout_worker;
 static async_at_time_worker_t ethernet_timeout_worker;
 
 // Theoretically support multiple interfaces
-static std::list<std::function<void(void)>> _handlePacketList;
-static std::list<std::function<int(const char *, IPAddress &, int)>> _hostByNameList;
+static std::map<int, std::function<void(void)>> _handlePacketList;
+static std::map<int, std::function<int(const char *, IPAddress &, int)>> _hostByNameList;
 
 void ethernet_arch_lwip_begin() {
     async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
@@ -44,38 +44,37 @@ void ethernet_arch_lwip_end() {
     async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
 }
 
-void __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
+int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
+    static int id = 0xdead;
     ethernet_arch_lwip_begin();
-    _handlePacketList.push_back(_packetHandler);
+    _handlePacketList.insert({id, _packetHandler});
+    ethernet_arch_lwip_end();
+    return id++;
+}
+
+void __removeEthernetPacketHandler(int id) {
+    ethernet_arch_lwip_begin();
+    _handlePacketList.erase(id);
     ethernet_arch_lwip_end();
 }
 
-// TODO - need to be able to delete from these lists or mark them invalid somehow
-#if 0
-void __removeEthernetPacketHandler(std::function<void(void)> _packetHandler) {
+int __addEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName) {
+    static int id = 0xbeef;
     ethernet_arch_lwip_begin();
-    _handlePacketList.remove(_packetHandler);
+    _hostByNameList.insert({id, _hostByName});
     ethernet_arch_lwip_end();
-}
-#endif
-
-void __addEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName) {
-    ethernet_arch_lwip_begin();
-    _hostByNameList.push_back(_hostByName);
-    ethernet_arch_lwip_end();
+    return id++;
 }
 
-#if 0
-void __removeEthernetHostByName(std::function<int(const char *, IPAddress &, int)> _hostByName) {
+void __removeEthernetHostByName(int id) {
     ethernet_arch_lwip_begin();
-    _hostByNameList.remove(_hostByName);
+    _hostByNameList.erase(id);
     ethernet_arch_lwip_end();
 }
-#endif
 
 int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms) {
     for (auto hbn : _hostByNameList) {
-        if (hbn(aHostname, aResult, timeout_ms)) {
+        if (hbn.second(aHostname, aResult, timeout_ms)) {
             return 1;
         }
     }
@@ -94,7 +93,7 @@ static async_context_t *lwip_ethernet_init_default_async_context(void) {
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
     for (auto handlePacket : _handlePacketList) {
-        handlePacket();
+        handlePacket.second();
     }
     sys_check_timeouts();
 }
