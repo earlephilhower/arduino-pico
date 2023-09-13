@@ -66,8 +66,8 @@ public:
 
     void begin(const char *s1, const char *s2, int timeout = 3600) {
         IPAddress a1, a2;
-        if (WiFi.hostByName(s1, a1)) {
-            if (WiFi.hostByName(s2, a2)) {
+        if (::hostByName(s1, a1)) {
+            if (::hostByName(s2, a2)) {
                 begin(a1, a2, timeout);
             } else {
                 begin(a1, timeout);
