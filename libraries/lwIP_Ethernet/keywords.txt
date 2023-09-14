@@ -11,6 +11,8 @@
 #######################################
 
 lwipPollingPeriod	KEYWORD2
+setSPISpeed	KEYWORD2
+setSPISettings	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

@@ -58,6 +58,7 @@ class LwipIntfDev: public LwipIntf, public RawDev {
 public:
     LwipIntfDev(int8_t cs = SS, SPIClass& spi = SPI, int8_t intr = -1) :
         RawDev(cs, spi, intr), _mtu(DEFAULT_MTU), _intrPin(intr), _started(false), _default(false) {
+        _spiUnit = spi;
         memset(&_netif, 0, sizeof(_netif));
     }
 
@@ -109,6 +110,14 @@ public:
 
     int hostByName(const char* aHostname, IPAddress& aResult, int timeout);
 
+    inline void setSPISpeed(int mhz) {
+        setSPISettings(SPISettings(mhz, MSBFIRST, SPI_MODE0));
+    }
+
+    void setSPISettings(SPISettings s) {
+        _spiSettings = s;
+    }
+
     // ESP8266WiFi API compatibility
 
     wl_status_t status();
@@ -126,6 +135,8 @@ public:
     err_t handlePackets();
 protected:
     // members
+    SPIClass &_spiUnit = SPI;
+    SPISettings _spiSettings = SPISettings(4000000, MSBFIRST, SPI_MODE0);
     netif _netif;
 
     uint16_t _mtu;
@@ -246,7 +257,10 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     __startEthernetContext();
 
     if (RawDev::needsSPI()) {
-        SPI.begin();
+        _spiUnit.begin();
+        // Set SPI clocks/etc. per request, doesn't seem to be direct way other than a fake transaction
+        _spiUnit.beginTransaction(_spiSettings);
+        _spiUnit.endTransaction();
     }
     if (mtu) {
         _mtu = mtu;

@@ -86,6 +86,32 @@ Pico may not have enough time to service the Ethernet port before the timer fire
 leading to a lock up and hang.
 
 
+Adjusting SPI Speed
+-------------------
+
+By default a 4MHz clock will be used to clock data into and out of the Ethernet module.
+Depending on the module and your wiring, a higher SPI clock may increase performance (but
+too high of a clock will cause communications problems or hangs).
+
+This value may be adjusted using the ``eth.setSPISpeed(hz)`` call **before** starting the
+device.  (You may also use custom ``SPISettings`` instead via ``eth.setSPISettings(spis)```)
+
+For example, to set the W5500 to use a 30MHZ clock:
+
+.. code:: cpp
+
+    #include <W5500lwIP.h>
+    Wiznet5500lwIP eth(1);
+
+    void setup() {
+        eth.setSPISpeed(30000000);
+        lwipPollingPeriod(3);
+        ...
+        eth.begin();
+        ...
+    }
+
+
 Example Code
 ------------
 
