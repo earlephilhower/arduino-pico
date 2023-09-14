@@ -34,6 +34,8 @@ static async_context_threadsafe_background_t lwip_ethernet_async_context_threads
 static async_when_pending_worker_t always_pending_update_timeout_worker;
 static async_at_time_worker_t ethernet_timeout_worker;
 
+static async_context_t *_context = nullptr;
+
 // Theoretically support multiple interfaces
 static std::map<int, std::function<void(void)>> _handlePacketList;
 
@@ -153,20 +155,19 @@ void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
-    async_context_t *context;
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
     if (rp2040.isPicoW()) {
-        context = cyw43_arch_async_context();
+        _context = cyw43_arch_async_context();
     } else {
-        context = lwip_ethernet_init_default_async_context();
+        _context = lwip_ethernet_init_default_async_context();
     }
 #else
-    context = lwip_ethernet_init_default_async_context();
+    _context = lwip_ethernet_init_default_async_context();
 #endif
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;
     ethernet_timeout_worker.do_work = ethernet_timeout_reached;
-    async_context_add_when_pending_worker(context, &always_pending_update_timeout_worker);
+    async_context_add_when_pending_worker(_context, &always_pending_update_timeout_worker);
     __ethernetContextInitted = true;
 }
 

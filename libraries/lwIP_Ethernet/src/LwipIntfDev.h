@@ -376,7 +376,7 @@ wl_status_t LwipIntfDev<RawDev>::status() {
 template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
-
+    ethernet_arch_lwip_begin();
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
 
 #if PHY_HAS_CAPTURE
@@ -385,7 +385,7 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
                     /*success*/ len == pbuf->len);
     }
 #endif
-
+    ethernet_arch_lwip_end();
     return len == pbuf->len ? ERR_OK : ERR_MEM;
 }
 
