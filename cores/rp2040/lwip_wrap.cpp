@@ -18,6 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <Arduino.h>
 #include <pico/mutex.h>
 #include <lwip/pbuf.h>
 #include <lwip/udp.h>
@@ -40,7 +41,10 @@ class LWIPMutex {
 public:
     LWIPMutex() {
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
-        cyw43_arch_lwip_begin();
+        if (rp2040.isPicoW()) {
+            cyw43_arch_lwip_begin();
+            return;
+        }
 #else
         if (ethernet_arch_lwip_begin) {
             ethernet_arch_lwip_begin();
@@ -52,7 +56,10 @@ public:
 
     ~LWIPMutex() {
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
-        cyw43_arch_lwip_end();
+        if (rp2040.isPicoW()) {
+            cyw43_arch_lwip_end();
+            return;
+        }
 #else
         if (ethernet_arch_lwip_end) {
             ethernet_arch_lwip_end();

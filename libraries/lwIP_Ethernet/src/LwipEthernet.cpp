@@ -39,18 +39,22 @@ static std::map<int, std::function<void(void)>> _handlePacketList;
 
 void ethernet_arch_lwip_begin() {
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
-    cyw43_arch_lwip_begin();
-#else
-    async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
+    if (rp2040.isPicoW()) {
+        cyw43_arch_lwip_begin();
+        return;
+    }
 #endif
+    async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
 }
 
 void ethernet_arch_lwip_end() {
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
-    cyw43_arch_lwip_end();
-#else
-    async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
+    if (rp2040.isPicoW()) {
+        cyw43_arch_lwip_end();
+        return;
+    }
 #endif
+    async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
 }
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
@@ -129,7 +133,13 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
     }
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+    if (!rp2040.isPicoW()) {
+        sys_check_timeouts();
+    }
+#else
     sys_check_timeouts();
+#endif
 }
 
 static uint32_t _pollingPeriod = 20;
@@ -143,7 +153,16 @@ void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
-    async_context_t *context  = lwip_ethernet_init_default_async_context();
+    async_context_t *context;
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+    if (rp2040.isPicoW()) {
+        context = cyw43_arch_async_context();
+    } else {
+        context = lwip_ethernet_init_default_async_context();
+    }
+#else
+    context = lwip_ethernet_init_default_async_context();
+#endif
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;
     ethernet_timeout_worker.do_work = ethernet_timeout_reached;
