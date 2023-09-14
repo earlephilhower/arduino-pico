@@ -72,6 +72,20 @@ calls with ``eth.begin()`` and ``eth.connected()``:
         ....
     }
 
+Adjusting LWIP Polling
+----------------------
+
+LWIP operates in a polling mode for the wired Ethernet devices.  By default it will run
+every 20ms, meaning that on average it will take half that time (10ms) before a packet
+received in the Ethernet module is received and operated upon by the Pico.  This gives
+very low CPU utilization but in some cases this latency can affect performance.
+
+Adding a call to ``lwipPollingPeriod(XXX)`` (where ``XXXX`` is the polling period in
+milliseconds) can adjust this setting on the fly.  Note that if you set it too low, the
+Pico may not have enough time to service the Ethernet port before the timer fires again,
+leading to a lock up and hang.
+
+
 Example Code
 ------------
 

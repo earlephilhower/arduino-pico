@@ -36,3 +36,6 @@ void __removeEthernetPacketHandler(int id);
 
 // Used by WiFiClient to get DNS lookup
 int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms = 5000);
+
+// Set the LWIP polling time (default 50ms).  Lower polling times == lower latency but higher CPU usage
+void lwipPollingPeriod(int ms);
