@@ -152,6 +152,8 @@
 -Wl,--wrap=realloc
 -Wl,--wrap=free
 
+-Wl,--wrap=lwip_init
+
 -Wl,--wrap=pbuf_header
 -Wl,--wrap=pbuf_free
 -Wl,--wrap=pbuf_alloc

@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For WiFiNINA
+# Syntax Coloring Map For WiFi
 #######################################
 
 #######################################
@@ -7,7 +7,6 @@
 #######################################
 
 WiFi	KEYWORD1
-WiFiPico	KEYWORD1
 WiFiUdp	KEYWORD1
 WiFiClient	KEYWORD1
 WiFiSSLClient	KEYWORD1
@@ -51,6 +50,7 @@ remoteIP	KEYWORD2
 remotePort	KEYWORD2
 mode	KEYWORD2
 addAP	KEYWORD2
+hostByName	KEYWORD2
 
 beginAP	KEYWORD2
 beginEnterprise	KEYWORD2

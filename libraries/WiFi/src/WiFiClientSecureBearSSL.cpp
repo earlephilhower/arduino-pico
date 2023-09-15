@@ -240,7 +240,7 @@ int WiFiClientSecureCtx::connect(IPAddress ip, uint16_t port) {
 
 int WiFiClientSecureCtx::connect(const char* name, uint16_t port) {
     IPAddress remote_addr;
-    if (!WiFi.hostByName(name, remote_addr)) {
+    if (!::hostByName(name, remote_addr)) {
         DEBUG_BSSL("connect: Name lookup failure\n");
         return 0;
     }
@@ -1457,7 +1457,7 @@ int WiFiClientSecureCtx::getLastSSLError(char *dest, size_t len) {
 
 bool WiFiClientSecure::probeMaxFragmentLength(const char* name, uint16_t port, uint16_t len) {
     IPAddress remote_addr;
-    if (!WiFi.hostByName(name, remote_addr)) {
+    if (!::hostByName(name, remote_addr)) {
         DEBUG_BSSL("probeMaxFragmentLength: Can't resolve host\n");
         return false;
     }

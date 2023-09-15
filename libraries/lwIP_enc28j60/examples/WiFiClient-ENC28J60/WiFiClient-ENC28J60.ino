@@ -3,43 +3,43 @@
     It sends a "hello" message, and then prints received data.
 */
 
-#include <WiFi.h>
-
-#ifndef STASSID
-#define STASSID "your-ssid"
-#define STAPSK "your-password"
-#endif
-
-const char* ssid = STASSID;
-const char* password = STAPSK;
+#include <ENC28J60lwIP.h>
 
 const char* host = "djxmmx.net";
 const uint16_t port = 17;
 
-WiFiMulti multi;
+ENC28J60lwIP eth(1 /* chip select */);
 
 void setup() {
+  // Set up SPI pinout to match your HW
+  SPI.setRX(0);
+  SPI.setCS(1);
+  SPI.setSCK(2);
+  SPI.setTX(3);
+
   Serial.begin(115200);
-
-  // We start by connecting to a WiFi network
-
+  delay(5000);
   Serial.println();
   Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  Serial.println("Starting Ethernet port");
 
-  multi.addAP(ssid, password);
+  // Start the Ethernet port
+  if (!eth.begin()) {
+    Serial.println("No wired Ethernet hardware detected. Check pinouts, wiring.");
+    while (1) {
+      delay(1000);
+    }
+  }
 
-  if (multi.run() != WL_CONNECTED) {
-    Serial.println("Unable to connect to network, rebooting in 10 seconds...");
-    delay(10000);
-    rp2040.reboot();
+  while (!eth.connected()) {
+    Serial.print(".");
+    delay(500);
   }
 
   Serial.println("");
-  Serial.println("WiFi connected");
+  Serial.println("Ethernet connected");
   Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  Serial.println(eth.localIP());
 }
 
 void loop() {
