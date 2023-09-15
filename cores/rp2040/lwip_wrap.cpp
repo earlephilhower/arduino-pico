@@ -30,12 +30,10 @@
 #include <pico/mutex.h>
 #include <sys/lock.h>
 
-#if !defined(ARDUINO_RASPBERRY_PI_PICO_W)
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
 extern void ethernet_arch_lwip_end() __attribute__((weak));
 
-auto_init_recursive_mutex(__lwipMutex); // Only for non-PicoW case
-#endif
+auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 
 class LWIPMutex {
 public:
@@ -45,13 +43,12 @@ public:
             cyw43_arch_lwip_begin();
             return;
         }
-#else
+#endif
         if (ethernet_arch_lwip_begin) {
             ethernet_arch_lwip_begin();
         } else {
             recursive_mutex_enter_blocking(&__lwipMutex);
         }
-#endif
     }
 
     ~LWIPMutex() {
@@ -60,13 +57,12 @@ public:
             cyw43_arch_lwip_end();
             return;
         }
-#else
+#endif
         if (ethernet_arch_lwip_end) {
             ethernet_arch_lwip_end();
         } else {
             recursive_mutex_exit(&__lwipMutex);
         }
-#endif
     }
 };
 
