@@ -50,6 +50,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    FreeRTOS SMP (multicore) <freertos>
 
    WiFi (Pico-W Support) <wifi>
+   Ethernet (Wired) <ethernet>
    WiFiClient <wificlient>
    WiFiServer <wifiserver>
    WiFiUDP <wifiudp>

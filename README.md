@@ -202,6 +202,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
 * Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
 * WiFi (Pico W)
+* Ethernet (Wired W5500, W5100, ENC28J60)
 * HTTP client and server (WebServer)
 * SSL/TLS/HTTPS
 * Over-the-Air (OTA) upgrades

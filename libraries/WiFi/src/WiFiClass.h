@@ -23,6 +23,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <lwIP_CYW43.h>
 #include "WiFi.h"
 
 #include <inttypes.h>

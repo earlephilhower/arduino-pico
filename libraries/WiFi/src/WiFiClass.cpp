@@ -583,9 +583,9 @@ uint8_t WiFiClass::reasonCode() {
     @return 1 if aIPAddrString was successfully converted to an IP address,
             else 0
 */
-
+// Note that there is now a global FCN for name lookup to use all Ethernet ports, no need to call WiFi.hostByName, just ::hostByName
 int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult, int timeout_ms) {
-    return _wifi.hostByName(aHostname, aResult, timeout_ms);
+    return ::hostByName(aHostname, aResult, timeout_ms);
 }
 
 // TODO
