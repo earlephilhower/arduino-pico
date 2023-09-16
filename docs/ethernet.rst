@@ -13,7 +13,7 @@ a wired interface.
 Supported Wired Ethernet Modules
 --------------------------------
 
-* Wiznet W5100
+* Wiznet W5100(s)
 
 * Wiznet W5500
 
@@ -111,6 +111,26 @@ For example, to set the W5500 to use a 30MHZ clock:
         ...
     }
 
+Using the WIZnet W5100S-EVB-Pico
+--------------------------------
+
+You can use the onboard Ethernet chip with these drivers by utilizing the following options:
+
+.. code:: cpp
+
+    #include <W5100lwIP.h>
+    Wiznet5100lwIP eth(17);  // Note chip select is **17**
+
+    void setup() {
+        // Set SPI to the onboard Wiznet chip
+        SPI.setRX(16);
+        SPI.setCS(17);
+        SPI.setSCK(18);
+        SPI.setTX(19);
+        ...
+        eth.begin();
+        ...
+    }
 
 Example Code
 ------------
