@@ -179,6 +179,7 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
 }
 
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
+    noInterrupts(); // Avoid possible race conditions if IRQ comes in while main app is in middle of this
     DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)\n", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
     if (_initted && settings == _spis) {
         DEBUGSPI("SPI: Reusing existing initted SPI\n");
@@ -207,9 +208,11 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         (*en_reg) ^= val << (4 * (gpio % 8));
     }
     DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
+    interrupts();
 }
 
 void SPIClassRP2040::endTransaction(void) {
+    noInterrupts(); // Avoid race condition so the GPIO IRQs won't come back until all state is restored
     DEBUGSPI("SPI::endTransaction()\n");
     // Re-enablke IRQs
     for (auto entry : _usingIRQs) {
@@ -220,6 +223,7 @@ void SPIClassRP2040::endTransaction(void) {
     io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     (void) irq_ctrl_base;
     DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
+    interrupts();
 }
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
