@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include <api/HardwareSPI.h>
 #include <hardware/spi.h>
+#include <map>
 
 class SPIClassRP2040 : public arduino::HardwareSPI {
 public:
@@ -62,10 +63,10 @@ public:
 
     // Unimplemented
     virtual void usingInterrupt(int interruptNumber) override {
-        (void) interruptNumber;
+        _usingIRQs.insert({interruptNumber, 0});
     }
     virtual void notUsingInterrupt(int interruptNumber) override {
-        (void) interruptNumber;
+        _usingIRQs.erase(interruptNumber);
     }
     virtual void attachInterrupt() override { /* noop */ }
     virtual void detachInterrupt() override { /* noop */ }
@@ -83,6 +84,8 @@ private:
     bool _hwCS;
     bool _running; // SPI port active
     bool _initted; // Transaction begun
+
+    std::map<int, int> _usingIRQs;
 };
 
 extern SPIClassRP2040 SPI;

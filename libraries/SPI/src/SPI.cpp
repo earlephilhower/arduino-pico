@@ -21,6 +21,8 @@
 #include "SPI.h"
 #include <hardware/spi.h>
 #include <hardware/gpio.h>
+#include <hardware/structs/iobank0.h>
+#include <hardware/irq.h>
 
 #ifdef USE_TINYUSB
 // For Serial when selecting TinyUSB.  Can't include in the core because Arduino IDE
@@ -191,10 +193,28 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         _initted = true;
     }
+    // Disable any IRQs that are being used for SPI
+    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    for (auto entry : _usingIRQs) {
+        int gpio = entry.first;
+
+        // There is no gpio_get_irq, so manually twiddle the register
+        io_rw_32 *en_reg = &irq_ctrl_base->inte[gpio / 8];
+        uint32_t val = ((*en_reg) >> 4 * (gpio % 8)) & 0x03;
+        _usingIRQs.insert_or_assign(gpio, val);
+        gpio_set_irq_enabled(gpio, val, false);
+    }
+
 }
 
 void SPIClassRP2040::endTransaction(void) {
     DEBUGSPI("SPI::endTransaction()\n");
+    // Re-enablke IRQs
+    for (auto entry : _usingIRQs) {
+        int gpio = entry.first;
+        int mode = entry.second;
+        gpio_set_irq_enabled(gpio, mode, true);
+    }
 }
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
