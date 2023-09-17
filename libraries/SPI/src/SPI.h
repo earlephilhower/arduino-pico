@@ -61,7 +61,7 @@ public:
     void setDataMode(uint8_t uc_mode) __attribute__((deprecated));
     void setClockDivider(uint8_t uc_div) __attribute__((deprecated));
 
-    // Unimplemented
+    // List of GPIO IRQs to disable during a transaction
     virtual void usingInterrupt(int interruptNumber) override {
         _usingIRQs.insert({interruptNumber, 0});
     }
