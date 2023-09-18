@@ -6,25 +6,22 @@
 # Instances (KEYWORD2)
 #######################################
 
-SPI	KEYWORD1
-SPI1	KEYWORD1
+SPISlave	KEYWORD1
+SPISlave1	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 begin	KEYWORD2
 end	KEYWORD2
-beginTransaction	KEYWORD2
-endTransaction	KEYWORD2
 SPISettings	KEYWORD2
-transfer	KEYWORD2
-setBitOrder	KEYWORD2
-setDataMode	KEYWORD2
-setClockDivider	KEYWORD2
 setRX	KEYWORD2
 setTX	KEYWORD2
 setSCK	KEYWORD2
 setCS	KEYWORD2
+setData	KEYWORD2
+onDataRecv	KEYWORD2
+onDataSent	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
