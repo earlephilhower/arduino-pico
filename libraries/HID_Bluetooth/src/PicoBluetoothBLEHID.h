@@ -210,16 +210,18 @@ public:
                     break;
                 case 1:
                     reportID = ((const uint8_t *)_sendReport)[0];
-                    result = hids_device_send_input_report_for_id(_con_handle, (uint16_t)reportID, &(((const uint8_t *)_sendReport)[1]), _sendReportLen-1);
+                    result = hids_device_send_input_report_for_id(_con_handle, (uint16_t)reportID, &(((const uint8_t *)_sendReport)[1]), _sendReportLen - 1);
                     if (result) {
                         Serial.printf("Error sending %d - report ID: %d\n", result, reportID);
                     }
                     //else Serial.printf("Sent report for ID: %d\n",reportID);
-                    #if 0
-                      Serial.printf("Sending report for ID %d, len: %d:\n",reportID,_sendReportLen);
-                      for(uint8_t i = 0; i<_sendReportLen; i++) Serial.printf("0x%02X - ",((const uint8_t *)_sendReport)[i]);
-                      Serial.println("");
-                    #endif
+#if 0
+                    Serial.printf("Sending report for ID %d, len: %d:\n", reportID, _sendReportLen);
+                    for (uint8_t i = 0; i < _sendReportLen; i++) {
+                        Serial.printf("0x%02X - ", ((const uint8_t *)_sendReport)[i]);
+                    }
+                    Serial.println("");
+#endif
                     break;
                 default:
                     break;
