@@ -210,11 +210,16 @@ public:
                     break;
                 case 1:
                     reportID = ((const uint8_t *)_sendReport)[0];
-                    result = hids_device_send_input_report_for_id(_con_handle, (uint16_t)reportID, &(((const uint8_t *)_sendReport)[1]), _sendReportLen);
+                    result = hids_device_send_input_report_for_id(_con_handle, (uint16_t)reportID, &(((const uint8_t *)_sendReport)[1]), _sendReportLen-1);
                     if (result) {
                         Serial.printf("Error sending %d - report ID: %d\n", result, reportID);
                     }
                     //else Serial.printf("Sent report for ID: %d\n",reportID);
+                    #if 0
+                      Serial.printf("Sending report for ID %d, len: %d:\n",reportID,_sendReportLen);
+                      for(uint8_t i = 0; i<_sendReportLen; i++) Serial.printf("0x%02X - ",((const uint8_t *)_sendReport)[i]);
+                      Serial.println("");
+                    #endif
                     break;
                 default:
                     break;
@@ -529,7 +534,7 @@ private:
 
     static constexpr const uint8_t _attdb_char[] =  {
         // 0x002e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
-        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x1a, 0x2b, 0x00, 0x4d, 0x2a,
+        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x0a, 0x2f, 0x00, 0x4d, 0x2a,
         // 0x002f VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
         // READ_ENCRYPTED, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x08, 0x00, 0x0b, 0xf5, 0x2f, 0x00, 0x4d, 0x2a,
