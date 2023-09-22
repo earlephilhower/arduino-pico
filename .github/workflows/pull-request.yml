@@ -139,6 +139,11 @@ jobs:
         git submodule update --init
         cd ..
         bash ./tests/build.sh
+    - name: Check misc binaries start up
+      run: |
+        .\system\openocd\bin\openocd.exe --version
+        .\system\picotool\picotool.exe help
+        .\system\arm-none-eabi\bin\arm-none-eabi-gdb.exe --version
 
 
 # Single build under macOS to ensure the Mac toolchain is good.
@@ -169,6 +174,11 @@ jobs:
         git submodule update --init
         cd ..
         bash ./tests/build.sh
+    - name: Check misc binaries start up
+      run: |
+        ./system/arm-none-eabi/bin/arm-none-eabi-gdb --version
+        ./system/openocd/bin/openocd --version
+        ./system/picotool/picotool help
 
 # Build a few examples with PlatformIO to test if integration works
   build-platformio:
