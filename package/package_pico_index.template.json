@@ -458,10 +458,10 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/i686-w64-mingw32.arm-none-eabi-d3d2e6b.230911.zip",
-                     "archiveFileName": "i686-w64-mingw32.arm-none-eabi-d3d2e6b.230911.zip",
-                     "checksum": "SHA-256:55bb7b2f24af7e13c45aff4b490450c8aa188ece2601c23d7250aea989612363",
-                     "size": "95033661"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/i686-w64-mingw32.arm-none-eabi-d3d2e6b.230911-v2.zip",
+                     "archiveFileName": "i686-w64-mingw32.arm-none-eabi-d3d2e6b.230911-v2.zip",
+                     "checksum": "SHA-256:cbda04d0327c963504c1c71bfbfd2f6fb27ca964e2004704108939a7716cb7a4",
+                     "size": "99150816"
                   },
                   {
                      "host": "x86_64-apple-darwin",
@@ -479,10 +479,10 @@
                   },
                   {
                      "host": "x86_64-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-w64-mingw32.arm-none-eabi-d3d2e6b.230911.zip",
-                     "archiveFileName": "x86_64-w64-mingw32.arm-none-eabi-d3d2e6b.230911.zip",
-                     "checksum": "SHA-256:1e0753f80f7db59cfba18656981d48567aa99fa2126a0b7d2f915c8637219a4d",
-                     "size": "98109632"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-w64-mingw32.arm-none-eabi-d3d2e6b.230911-v2.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.arm-none-eabi-d3d2e6b.230911-v2.zip",
+                     "checksum": "SHA-256:97dda385e4c20a228bfe59b8d61ebb23f2f419e9ebd4d04fb57980a6a1e6edd2",
+                     "size": "102620481"
                   }
                ]
             },
