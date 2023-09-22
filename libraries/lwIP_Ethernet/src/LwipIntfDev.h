@@ -57,8 +57,7 @@ template<class RawDev>
 class LwipIntfDev: public LwipIntf, public RawDev {
 public:
     LwipIntfDev(int8_t cs = SS, SPIClass& spi = SPI, int8_t intr = -1) :
-        RawDev(cs, spi, intr), _mtu(DEFAULT_MTU), _intrPin(intr), _started(false), _default(false) {
-        _spiUnit = spi;
+        RawDev(cs, spi, intr), _spiUnit(spi), _mtu(DEFAULT_MTU), _intrPin(intr), _started(false), _default(false) {
         memset(&_netif, 0, sizeof(_netif));
     }
 
@@ -135,7 +134,7 @@ public:
     err_t handlePackets();
 protected:
     // members
-    SPIClass &_spiUnit = SPI;
+    SPIClass& _spiUnit;
     SPISettings _spiSettings = SPISettings(4000000, MSBFIRST, SPI_MODE0);
     netif _netif;
 
