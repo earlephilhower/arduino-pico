@@ -21,17 +21,22 @@
 
 #pragma once
 
+#include <sdkoverride/bluetooth.h>
 #include <_needsbt.h>
 #include <Arduino.h>
 #include <functional>
 #include <pico/cyw43_arch.h>
 #include <class/hid/hid_device.h>
 
+#include "HID_Bluetooth.h"
+
 // The BTStack has redefinitions of this USB enum (same values, just redefined), so hide it to allow easy compilation
 #define HID_REPORT_TYPE_INPUT HID_REPORT_TYPE_INPUT_BT
 #define HID_REPORT_TYPE_OUTPUT HID_REPORT_TYPE_OUTPUT_BT
 #define HID_REPORT_TYPE_FEATURE HID_REPORT_TYPE_FEATURE_BT
 #define hid_report_type_t hid_report_type_t_bt
+#include <sdkoverride/hids_device.h>
+#include <sdkoverride/att_db.h>
 #include <btstack.h>
 #undef hid_report_type_t
 #undef HID_REPORT_TYPE_FEATURE
@@ -43,7 +48,9 @@
 #include <btstack_event.h>
 #include <ble/gatt-service/battery_service_server.h>
 #include <ble/gatt-service/device_information_service_server.h>
-#include <ble/gatt-service/hids_device.h>
+//#include <ble/gatt-service/hids_device.h>
+
+
 
 class PicoBluetoothBLEHID_;
 extern PicoBluetoothBLEHID_ PicoBluetoothBLEHID;
@@ -100,8 +107,20 @@ public:
         // Setup device information service
         device_information_service_server_init();
 
-        // Setup HID Device service
-        hids_device_init(0, hidDescriptor, hidDescriptorSize);
+        // Setup HID Device service, depending on activated reports
+        uint8_t numreports = 1; //start with 1 (feature report)
+        if (__BLEInstallKeyboard) {
+            numreports += 2; //add keycodes + consumer keys
+        }
+        if (__BLEInstallMouse) {
+            numreports += 1;
+        }
+        if (__BLEInstallJoystick) {
+            numreports += 1;
+        }
+        //allocate memory for hid reports
+        _reportStorage = (hids_device_report_t *) malloc(sizeof(hids_device_report_t) * numreports);
+        hids_device_init_with_storage(0, hidDescriptor, hidDescriptorSize, numreports, _reportStorage);
 
         // Setup advertisements
         uint16_t adv_int_min = 0x0030;
@@ -134,6 +153,9 @@ public:
     }
 
     void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
+        uint8_t result;
+        uint8_t reportID;
+
         if (type != HCI_EVENT_PACKET) {
             return;
         }
@@ -174,10 +196,32 @@ public:
             case HIDS_SUBEVENT_CAN_SEND_NOW:
                 switch (_protocol_mode) {
                 case 0:
-                    hids_device_send_boot_keyboard_input_report(_con_handle, (const uint8_t *)_sendReport, _sendReportLen);
+                    //We cannot distinguish between kbd & mouse in boot mode.
+                    //If both are activated, we cannot send
+                    if (__BLEInstallKeyboard && !__BLEInstallMouse) {
+                        hids_device_send_boot_keyboard_input_report(_con_handle, &(((const uint8_t *)_sendReport)[1]), _sendReportLen);
+                    }
+                    if (__BLEInstallMouse && !__BLEInstallKeyboard) {
+                        hids_device_send_boot_mouse_input_report(_con_handle, &(((const uint8_t *)_sendReport)[1]), _sendReportLen);
+                    }
+                    if (__BLEInstallMouse && __BLEInstallJoystick) {
+                        printf("Error: BLE HID in boot mode, but mouse & keyboard are active\n");
+                    }
                     break;
                 case 1:
-                    hids_device_send_input_report(_con_handle, (const uint8_t *)_sendReport, _sendReportLen);
+                    reportID = ((const uint8_t *)_sendReport)[0];
+                    result = hids_device_send_input_report_for_id(_con_handle, (uint16_t)reportID, &(((const uint8_t *)_sendReport)[1]), _sendReportLen - 1);
+                    if (result) {
+                        Serial.printf("Error sending %d - report ID: %d\n", result, reportID);
+                    }
+                    //else Serial.printf("Sent report for ID: %d\n",reportID);
+#if 0
+                    Serial.printf("Sending report for ID %d, len: %d:\n", reportID, _sendReportLen);
+                    for (uint8_t i = 0; i < _sendReportLen; i++) {
+                        Serial.printf("0x%02X - ", ((const uint8_t *)_sendReport)[i]);
+                    }
+                    Serial.println("");
+#endif
                     break;
                 default:
                     break;
@@ -208,6 +252,8 @@ public:
     }
 
     bool send(void *rpt, int len) {
+        //wait for another report to be sent
+        while (_needToSend);
         _needToSend = true;
         _sendReport = rpt;
         _sendReportLen = len;
@@ -235,6 +281,9 @@ public:
     static void unlockBluetooth() {
         async_context_release_lock(cyw43_arch_async_context());
     }
+
+    uint8_t *_attdb = nullptr;
+    int _attdbLen = 0;
 
 private:
     bool _running = false;
@@ -280,10 +329,17 @@ private:
     }
     uint8_t *_advData = nullptr;
     uint8_t _advDataLen = 0;
+    hids_device_report_t *_reportStorage = nullptr;
 
     void _buildAttdb(const char *hidName) {
         free(_attdb);
-        _attdbLen = sizeof(_attdb_head) + 8 + strlen(hidName) + sizeof(_attdb_tail);
+        //add up all different parts of ATT DB
+        _attdbLen = sizeof(_attdb_head) + 8 + strlen(hidName) + sizeof(_attdb_tail) + sizeof(_attdb_batt_hidhead) + sizeof(_attdb_char);
+        //reports
+        _attdbLen += sizeof(_attdb_kbd_report) + sizeof(_attdb_mouse_report) + sizeof(_attdb_joystick_report);
+        //additional boot characteristics
+        _attdbLen += sizeof(_attdb_kbd_boot) + sizeof(_attdb_mouse_boot);
+
         _attdb = (uint8_t *) malloc(_attdbLen);
         memcpy(_attdb, _attdb_head, sizeof(_attdb_head));
         // 0x0003 VALUE CHARACTERISTIC-GAP_DEVICE_NAME - READ -'HID Mouse'
@@ -300,10 +356,35 @@ private:
         _attdb[i++] = 0x2a;
         memcpy(_attdb + i, hidName, strlen(hidName));
         i += strlen(hidName);
+
+        memcpy(_attdb + i, _attdb_batt_hidhead, sizeof(_attdb_batt_hidhead));
+        i += sizeof(_attdb_batt_hidhead);
+
+        //1.) KBD report mode
+        memcpy(_attdb + i, _attdb_kbd_report, sizeof(_attdb_kbd_report));
+        i += sizeof(_attdb_kbd_report);
+
+        //2.) mouse report mode
+        memcpy(_attdb + i, _attdb_mouse_report, sizeof(_attdb_mouse_report));
+        i += sizeof(_attdb_mouse_report);
+
+        //3.) joystick report mode
+        memcpy(_attdb + i, _attdb_joystick_report, sizeof(_attdb_joystick_report));
+        i += sizeof(_attdb_joystick_report);
+        //4.) report characteristics
+        memcpy(_attdb + i, _attdb_char, sizeof(_attdb_char));
+        i += sizeof(_attdb_char);
+
+        //5.) KBD boot mode (always included)
+        memcpy(_attdb + i, _attdb_kbd_boot, sizeof(_attdb_kbd_boot));
+        i += sizeof(_attdb_kbd_boot);
+
+        //6.) mouse boot mode (always included)
+        memcpy(_attdb + i, _attdb_mouse_boot, sizeof(_attdb_mouse_boot));
+        i += sizeof(_attdb_mouse_boot);
+        //7.) tail (report)
         memcpy(_attdb + i, _attdb_tail, sizeof(_attdb_tail));
     }
-    uint8_t *_attdb = nullptr;
-    int _attdbLen = 0;
 
     static constexpr const uint8_t _attdb_head[] = {
         // ATT DB Version
@@ -315,7 +396,7 @@ private:
         0x0d, 0x00, 0x02, 0x00, 0x02, 0x00, 0x03, 0x28, 0x02, 0x03, 0x00, 0x00, 0x2a,
     };
 
-    static constexpr const uint8_t _attdb_tail[] =  {
+    static constexpr const uint8_t _attdb_batt_hidhead[] = {
         // #import <battery_service.gatt> -- BEGIN
         // Specification Type org.bluetooth.service.battery_service
         // https://www.bluetooth.com/api/gatt/xmlfile?xmlFileName=org.bluetooth.service.battery_service.xml
@@ -332,6 +413,7 @@ private:
         0x0a, 0x00, 0x0e, 0x01, 0x07, 0x00, 0x02, 0x29, 0x00, 0x00,
         // #import <battery_service.gatt> -- END
         // add Device ID Service
+
 
         // #import <device_information_service.gatt> -- BEGIN
         // Specification Type org.bluetooth.service.device_information
@@ -386,7 +468,6 @@ private:
         0x08, 0x00, 0x02, 0x01, 0x1a, 0x00, 0x50, 0x2a,
         // #import <device_information_service.gatt> -- END
 
-        // #import <hids.gatt> -- BEGIN
         // Specification Type org.bluetooth.service.human_interface_device
         // https://www.bluetooth.com/api/gatt/xmlfile?xmlFileName=org.bluetooth.service.human_interface_device.xml
         // Human Interface Device 1812
@@ -397,6 +478,9 @@ private:
         // 0x001d VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_PROTOCOL_MODE - DYNAMIC | READ | WRITE_WITHOUT_RESPONSE
         // READ_ANYBODY, WRITE_ANYBODY
         0x08, 0x00, 0x06, 0x01, 0x1d, 0x00, 0x4e, 0x2a,
+    };
+
+    static constexpr const uint8_t _attdb_kbd_report[] =  {
         // 0x001e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
         0x0d, 0x00, 0x02, 0x00, 0x1e, 0x00, 0x03, 0x28, 0x1a, 0x1f, 0x00, 0x4d, 0x2a,
         // 0x001f VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
@@ -405,9 +489,10 @@ private:
         // 0x0020 CLIENT_CHARACTERISTIC_CONFIGURATION
         // READ_ANYBODY, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x0a, 0x00, 0x0f, 0xf1, 0x20, 0x00, 0x02, 0x29, 0x00, 0x00,
-        // fixed report id = 1, type = Input (1)
+        // fixed report id = 1, type = Input (1); keycodes
         // 0x0021 REPORT_REFERENCE-READ-1-1
         0x0a, 0x00, 0x02, 0x00, 0x21, 0x00, 0x08, 0x29, 0x1, 0x1,
+
         // 0x0022 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
         0x0d, 0x00, 0x02, 0x00, 0x22, 0x00, 0x03, 0x28, 0x1a, 0x23, 0x00, 0x4d, 0x2a,
         // 0x0023 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
@@ -416,9 +501,12 @@ private:
         // 0x0024 CLIENT_CHARACTERISTIC_CONFIGURATION
         // READ_ANYBODY, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x0a, 0x00, 0x0f, 0xf1, 0x24, 0x00, 0x02, 0x29, 0x00, 0x00,
-        // fixed report id = 2, type = Output (2)
-        // 0x0025 REPORT_REFERENCE-READ-2-2
-        0x0a, 0x00, 0x02, 0x00, 0x25, 0x00, 0x08, 0x29, 0x2, 0x2,
+        // fixed report id = 2, type = Input (1) consumer
+        // 0x0025 REPORT_REFERENCE-READ-2-1
+        0x0a, 0x00, 0x02, 0x00, 0x25, 0x00, 0x08, 0x29, 0x2, 0x1,
+    };
+
+    static constexpr const uint8_t _attdb_mouse_report[] =  {
         // 0x0026 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
         0x0d, 0x00, 0x02, 0x00, 0x26, 0x00, 0x03, 0x28, 0x1a, 0x27, 0x00, 0x4d, 0x2a,
         // 0x0027 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
@@ -427,59 +515,88 @@ private:
         // 0x0028 CLIENT_CHARACTERISTIC_CONFIGURATION
         // READ_ANYBODY, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
         0x0a, 0x00, 0x0f, 0xf1, 0x28, 0x00, 0x02, 0x29, 0x00, 0x00,
-        // fixed report id = 3, type = Feature (3)
-        // 0x0029 REPORT_REFERENCE-READ-3-3
-        0x0a, 0x00, 0x02, 0x00, 0x29, 0x00, 0x08, 0x29, 0x3, 0x3,
-        // 0x002a CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT_MAP - DYNAMIC | READ
-        0x0d, 0x00, 0x02, 0x00, 0x2a, 0x00, 0x03, 0x28, 0x02, 0x2b, 0x00, 0x4b, 0x2a,
-        // 0x002b VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT_MAP - DYNAMIC | READ
+        // fixed report id = 3, type = Input (1) mouse
+        // 0x0029 REPORT_REFERENCE-READ-3-1
+        0x0a, 0x00, 0x02, 0x00, 0x29, 0x00, 0x08, 0x29, 0x3, 0x1,
+    };
+    static constexpr const uint8_t _attdb_joystick_report[] =  {
+
+        // 0x002a CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
+        0x0d, 0x00, 0x02, 0x00, 0x2a, 0x00, 0x03, 0x28, 0x1a, 0x2b, 0x00, 0x4d, 0x2a,
+        // 0x002b VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | NOTIFY | ENCRYPTION_KEY_SIZE_16
+        // READ_ENCRYPTED, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
+        0x08, 0x00, 0x0b, 0xf5, 0x2b, 0x00, 0x4d, 0x2a,
+        // 0x002c CLIENT_CHARACTERISTIC_CONFIGURATION
+        // READ_ANYBODY, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
+        0x0a, 0x00, 0x0f, 0xf1, 0x2c, 0x00, 0x02, 0x29, 0x00, 0x00,
+        // fixed report id = 4, type = Input (1) gamepad
+        // 0x002d REPORT_REFERENCE-READ-4-1
+        0x0a, 0x00, 0x02, 0x00, 0x2d, 0x00, 0x08, 0x29, 0x4, 0x1,
+    };
+
+    static constexpr const uint8_t _attdb_char[] =  {
+        // 0x002e CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
+        0x0d, 0x00, 0x02, 0x00, 0x2e, 0x00, 0x03, 0x28, 0x0a, 0x2f, 0x00, 0x4d, 0x2a,
+        // 0x002f VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT - DYNAMIC | READ | WRITE | ENCRYPTION_KEY_SIZE_16
+        // READ_ENCRYPTED, WRITE_ENCRYPTED, ENCRYPTION_KEY_SIZE=16
+        0x08, 0x00, 0x0b, 0xf5, 0x2f, 0x00, 0x4d, 0x2a,
+        // fixed report id = 5, type = Feature (3)
+        // 0x0030 REPORT_REFERENCE-READ-5-3
+        0x0a, 0x00, 0x02, 0x00, 0x30, 0x00, 0x08, 0x29, 0x5, 0x3,
+        // 0x0031 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT_MAP - DYNAMIC | READ
+        0x0d, 0x00, 0x02, 0x00, 0x31, 0x00, 0x03, 0x28, 0x02, 0x32, 0x00, 0x4b, 0x2a,
+        // 0x0032 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_REPORT_MAP - DYNAMIC | READ
         // READ_ANYBODY
-        0x08, 0x00, 0x02, 0x01, 0x2b, 0x00, 0x4b, 0x2a,
-        // 0x002c CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
-        0x0d, 0x00, 0x02, 0x00, 0x2c, 0x00, 0x03, 0x28, 0x1a, 0x2d, 0x00, 0x22, 0x2a,
-        // 0x002d VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
+        0x08, 0x00, 0x02, 0x01, 0x32, 0x00, 0x4b, 0x2a,
+    };
+
+    static constexpr const uint8_t _attdb_kbd_boot[] =  {
+        // 0x0033 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
+        0x0d, 0x00, 0x02, 0x00, 0x33, 0x00, 0x03, 0x28, 0x1a, 0x34, 0x00, 0x22, 0x2a,
+        // 0x0034 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
         // READ_ANYBODY, WRITE_ANYBODY
-        0x08, 0x00, 0x0a, 0x01, 0x2d, 0x00, 0x22, 0x2a,
-        // 0x002e CLIENT_CHARACTERISTIC_CONFIGURATION
+        0x08, 0x00, 0x0a, 0x01, 0x34, 0x00, 0x22, 0x2a,
+        // 0x0035 CLIENT_CHARACTERISTIC_CONFIGURATION
         // READ_ANYBODY, WRITE_ANYBODY
-        0x0a, 0x00, 0x0e, 0x01, 0x2e, 0x00, 0x02, 0x29, 0x00, 0x00,
-        // 0x002f CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_OUTPUT_REPORT - DYNAMIC | READ | WRITE | WRITE_WITHOUT_RESPONSE
-        0x0d, 0x00, 0x02, 0x00, 0x2f, 0x00, 0x03, 0x28, 0x0e, 0x30, 0x00, 0x32, 0x2a,
-        // 0x0030 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_OUTPUT_REPORT - DYNAMIC | READ | WRITE | WRITE_WITHOUT_RESPONSE
+        0x0a, 0x00, 0x0e, 0x01, 0x35, 0x00, 0x02, 0x29, 0x00, 0x00,
+
+
+        // 0x0036 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_OUTPUT_REPORT - DYNAMIC | READ | WRITE | WRITE_WITHOUT_RESPONSE
+        0x0d, 0x00, 0x02, 0x00, 0x36, 0x00, 0x03, 0x28, 0x0e, 0x37, 0x00, 0x32, 0x2a,
+        // 0x0037 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_KEYBOARD_OUTPUT_REPORT - DYNAMIC | READ | WRITE | WRITE_WITHOUT_RESPONSE
         // READ_ANYBODY, WRITE_ANYBODY
-        0x08, 0x00, 0x0e, 0x01, 0x30, 0x00, 0x32, 0x2a,
-        // 0x0031 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_MOUSE_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
-        0x0d, 0x00, 0x02, 0x00, 0x31, 0x00, 0x03, 0x28, 0x1a, 0x32, 0x00, 0x33, 0x2a,
-        // 0x0032 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_MOUSE_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
+        0x08, 0x00, 0x0e, 0x01, 0x37, 0x00, 0x32, 0x2a,
+    };
+
+    static constexpr const uint8_t _attdb_mouse_boot[] =  {
+        // 0x0038 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_MOUSE_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
+        0x0d, 0x00, 0x02, 0x00, 0x38, 0x00, 0x03, 0x28, 0x1a, 0x39, 0x00, 0x33, 0x2a,
+        // 0x0039 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_BOOT_MOUSE_INPUT_REPORT - DYNAMIC | READ | WRITE | NOTIFY
         // READ_ANYBODY, WRITE_ANYBODY
-        0x08, 0x00, 0x0a, 0x01, 0x32, 0x00, 0x33, 0x2a,
-        // 0x0033 CLIENT_CHARACTERISTIC_CONFIGURATION
+        0x08, 0x00, 0x0a, 0x01, 0x39, 0x00, 0x33, 0x2a,
+        // 0x003a CLIENT_CHARACTERISTIC_CONFIGURATION
         // READ_ANYBODY, WRITE_ANYBODY
-        0x0a, 0x00, 0x0e, 0x01, 0x33, 0x00, 0x02, 0x29, 0x00, 0x00,
+        0x0a, 0x00, 0x0e, 0x01, 0x3a, 0x00, 0x02, 0x29, 0x00, 0x00,
+    };
+
+    static constexpr const uint8_t _attdb_tail[] =  {
         // bcdHID = 0x101 (v1.0.1), bCountryCode 0, remote wakeable = 0 | normally connectable 2
-        // 0x0034 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_INFORMATION - READ
-        0x0d, 0x00, 0x02, 0x00, 0x34, 0x00, 0x03, 0x28, 0x02, 0x35, 0x00, 0x4a, 0x2a,
-        // 0x0035 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_INFORMATION - READ -'01 01 00 02'
+        // 0x003b CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_INFORMATION - READ
+        0x0d, 0x00, 0x02, 0x00, 0x3b, 0x00, 0x03, 0x28, 0x02, 0x3c, 0x00, 0x4a, 0x2a,
+        // 0x003c VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_INFORMATION - READ -'01 01 00 02'
         // READ_ANYBODY
-        0x0c, 0x00, 0x02, 0x00, 0x35, 0x00, 0x4a, 0x2a, 0x01, 0x01, 0x00, 0x02,
-        // 0x0036 CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_CONTROL_POINT - DYNAMIC | WRITE_WITHOUT_RESPONSE
-        0x0d, 0x00, 0x02, 0x00, 0x36, 0x00, 0x03, 0x28, 0x04, 0x37, 0x00, 0x4c, 0x2a,
-        // 0x0037 VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_CONTROL_POINT - DYNAMIC | WRITE_WITHOUT_RESPONSE
+        0x0c, 0x00, 0x02, 0x00, 0x3c, 0x00, 0x4a, 0x2a, 0x01, 0x01, 0x00, 0x02,
+        // 0x003d CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_CONTROL_POINT - DYNAMIC | WRITE_WITHOUT_RESPONSE
+        0x0d, 0x00, 0x02, 0x00, 0x3d, 0x00, 0x03, 0x28, 0x04, 0x3e, 0x00, 0x4c, 0x2a,
+        // 0x003e VALUE CHARACTERISTIC-ORG_BLUETOOTH_CHARACTERISTIC_HID_CONTROL_POINT - DYNAMIC | WRITE_WITHOUT_RESPONSE
         // WRITE_ANYBODY
-        0x08, 0x00, 0x04, 0x01, 0x37, 0x00, 0x4c, 0x2a,
-        // #import <hids.gatt> -- END
-        // 0x0038 PRIMARY_SERVICE-GATT_SERVICE
-        0x0a, 0x00, 0x02, 0x00, 0x38, 0x00, 0x00, 0x28, 0x01, 0x18,
-        // 0x0039 CHARACTERISTIC-GATT_DATABASE_HASH - READ
-        0x0d, 0x00, 0x02, 0x00, 0x39, 0x00, 0x03, 0x28, 0x02, 0x3a, 0x00, 0x2a, 0x2b,
-        // 0x003a VALUE CHARACTERISTIC-GATT_DATABASE_HASH - READ -''
-        // READ_ANYBODY
-        0x18, 0x00, 0x02, 0x00, 0x3a, 0x00, 0x2a, 0x2b, 0xc2, 0x10, 0xf5, 0x75, 0xf3, 0x9f, 0x50, 0xb6, 0x83, 0xc7, 0xfa, 0xac, 0xa6, 0x1b, 0x7d, 0x32,
+        0x08, 0x00, 0x04, 0x01, 0x3e, 0x00, 0x4c, 0x2a,
         // END
-        0x00, 0x00
+        0x00, 0x00,
     };
 
     volatile bool _needToSend = false;
     void *_sendReport;
+    uint8_t _sendReportID;
     int _sendReportLen;
 };
