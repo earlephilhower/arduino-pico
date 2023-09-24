@@ -79,7 +79,11 @@
 #define CFG_TUD_CDC_RX_BUFSIZE  (256)
 #define CFG_TUD_CDC_TX_BUFSIZE  (256)
 
-#define CFG_TUD_MSC_EP_BUFSIZE  (64)
+// MSC Buffer size of Device Mass storage
+// Was 512 byte for most standard systems, but for internally allocated FatFS
+// We'd rather take the native flash erase size of 4096 bytes.
+#define CFG_TUD_MSC_EP_BUFSIZE (4096) //512
+
 
 // HID buffer size Should be sufficient to hold ID (if any) + Data
 #define CFG_TUD_HID_EP_BUFSIZE  (64)

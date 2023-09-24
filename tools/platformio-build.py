@@ -237,6 +237,7 @@ def configure_usb_flags(cpp_defines):
 
     env.Append(CPPDEFINES=[
         ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
+        ("CFG_TUSB_CONFIG_FILE", env.StringifyMacro("arduino_pico_tusb_config.h")),
         ("USB_VID", usb_vid),
         ("USB_PID", usb_pid),
         ("USB_MANUFACTURER", '\\"%s\\"' % usb_manufacturer),
