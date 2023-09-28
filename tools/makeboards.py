@@ -455,6 +455,10 @@ MakeBoard("redscorp-rp2040-promini", "redscorp", "RP2040-ProMini", "0x2341", ["0
 # Generic
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 
+# XLAB
+MakeBoard("xlab_coco_core2040_g1", "XLAB", "CoreControl Core Module G1", "0x2e8a", "0xf00a", 250, "XLAB_COCO_CORE", 16, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("xlab_coco_pwrsup2040_g1", "XLAB", "CoreControl Power Supervisor Module G1", "0x2e8a", "0xf00a", 250, "XLAB_COCO_POWERSUP", 16, "boot2_generic_03h_4_padded_checksum")
+
 sys.stdout.close()
 with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w') as f:
     f.write(json.dumps(pkgjson, indent=3))

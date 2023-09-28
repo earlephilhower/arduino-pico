@@ -70,6 +70,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
 * Redscorp RP2040-ProMini
+* XLAB-Protexa CoCo Core G1
+* XLAB-Protexa CoCo PowerSupervisor G1
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager
