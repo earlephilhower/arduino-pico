@@ -144,7 +144,7 @@ The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesyste
 
 To install, follow the directions in 
 
-* `IDE 1.x`: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
+* `IDE 1.x`: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md
 * `IDE 2.x`: https://github.com/earlephilhower/arduino-littlefs-upload/blob/main/README.md
 
 For detailed usage information, please check the repo documentation available at
