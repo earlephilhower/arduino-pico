@@ -106,7 +106,6 @@ public:
         if (!_mounted) {
             return false;
         }
-        info.maxOpenFiles = _maxOpenFds;
         info.blockSize = _blockSize;
         info.pageSize = _pageSize;
         info.maxOpenFiles = _maxOpenFds;
