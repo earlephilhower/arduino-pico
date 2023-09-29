@@ -26,9 +26,7 @@ Arduino IDE Installation Warning
 the actual Arduino application because it has issues detecting attached Pico
 boards.  Use the "Windows ZIP" or plain "Windows" executable (EXE) download
 direct from https://arduino.cc. and allow it to install any device drivers
-it suggests.  Otherwise the Pico board may not be detected.  Also, if trying
-out the 2.0 beta Arduino please install the release 1.8 version beforehand
-to ensure needed device drivers are present.
+it suggests.  Otherwise the Pico board may not be detected.
 
 **Note for Linux Users**: If you installed the Arduino IDE using Flatpak, which 
 is common in Pop!_OS, Fedora, and Mint, among others, you may need to configure 
@@ -141,11 +139,13 @@ Uploading Filesystem Images
 ---------------------------
 The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
 
-* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+* `IDE 1.x`: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+* `IDE 2.x`: https://github.com/earlephilhower/arduino-littlefs-upload/releases
 
 To install, follow the directions in 
 
-* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
+* `IDE 1.x`: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
+* `IDE 2.x`: https://github.com/earlephilhower/arduino-littlefs-upload/blob/main/README.md
 
 For detailed usage information, please check the repo documentation available at
 
