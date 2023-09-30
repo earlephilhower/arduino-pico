@@ -18,9 +18,9 @@ The following diagram shows the flash layout used in Arduino-Pico:
 
 ::
 
-    |---------------------|-------------|----|
-    ^                     ^             ^
-    Sketch                File system   EEPROM
+    |----|---------------------|-------------|----|
+    ^    ^                     ^             ^
+    OTA  Sketch                File system   EEPROM
 
 The file system size is configurable via the IDE menus, rom 64k up to 15MB
 (assuming you have an RP2040 boad with that much flash)
@@ -75,7 +75,7 @@ Uploading Files to the LittleFS File System
 menu item to **Tools** menu for uploading the contents of sketch data
 directory into a new LittleFS flash file system.
 
--  Download the tool: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+-  Download the tool for your IDE version ( IDE 1.x: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases , IDE 2.x: https://github.com/earlephilhower/arduino-littlefs-upload/releases )
 -  In your Arduino sketchbook directory, create ``tools`` directory if
    it doesn't exist yet.
 -  Unpack the tool into ``tools`` directory (the path will look like
