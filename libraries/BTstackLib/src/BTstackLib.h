@@ -2,6 +2,8 @@
     Arduino Wrapper for BTstack
 */
 
+#warning The BTStackLib is no longer supported by BlueKitchen, use at your own risk
+
 #include <_needsbt.h>
 
 #ifndef __ARDUINO_BTSTACK_H
