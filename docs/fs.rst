@@ -75,22 +75,28 @@ Uploading Files to the LittleFS File System
 menu item to **Tools** menu for uploading the contents of sketch data
 directory into a new LittleFS flash file system.
 
--  Download the tool for your IDE version ( IDE 1.x: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases , IDE 2.x: https://github.com/earlephilhower/arduino-littlefs-upload/releases )
--  In your Arduino sketchbook directory, create ``tools`` directory if
-   it doesn't exist yet.
--  Unpack the tool into ``tools`` directory (the path will look like
-   ``<home_dir>/Arduino/tools/PicoLittleFS/tool/picolittlefs.jar``)
+**IDE 1.x**
+
+-  Download the tool: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+-  In your Arduino sketchbook directory, create ``tools`` directory if it doesn't exist yet.
+-  Unpack the tool into ``tools`` directory (the path will look like ``<home_dir>/Arduino/tools/PicoLittleFS/tool/picolittlefs.jar``)
    If upgrading, overwrite the existing JAR file with the newer version.
 -  Restart Arduino IDE.
 -  Open a sketch (or create a new one and save it).
 -  Go to sketch directory (choose Sketch > Show Sketch Folder).
--  Create a directory named ``data`` and any files you want in the file
-   system there.
+-  Create a directory named ``data`` and any files you want in the file system there.
 -  Make sure you have selected a board, port, and closed Serial Monitor.
--  Double check theSerial Monitor is closed.  Uploads will fail if the Serial
-   Monitor has control of the serial port.
--  Select ``Tools > Pico LittleFS Data Upload``. This should start
-   uploading the files into the flash file system.
+-  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
+-  Select ``Tools > Pico LittleFS Data Upload``. This should start uploading the files into the flash file system.
+
+**IDE 2.x**
+
+-  Download the new tool: https://github.com/earlephilhower/arduino-littlefs-upload/releases
+-  Exit the IDE, if running
+-  Copy the VSIX file manually to (Linux/Mac) ``~/.arduinoIDE/plugins/`` (you may need to make this directory yourself beforehand) or to (Windows) ``C:\Users\<username>\.arduinoIDE\``
+-  Restart the IDE
+-  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
+-  Enter ``[Ctrl]`` + ``[Shift]`` + ``[P]`` to bring up the command palette, then select/type ``Upload LittleFS to Pico/ESP8266``
 
 SD Library Information
 ----------------------
