@@ -137,7 +137,7 @@ before mounting.  All filesystems have their own ``*Config`` (i.e.
 All filesystems allow explicitly enabling/disabling formatting when
 mounts fail.  If you do not call this ``setConfig`` method before
 perforing ``begin()``, you will get the filesystem's default
-behavior and configuration. By default, SPIFFS will autoformat the
+behavior and configuration. By default, LittleFS will autoformat the
 filesystem if it cannot mount it, while SDFS will not.
 
 begin
@@ -150,8 +150,7 @@ begin
 
 This method mounts file system. It must be called before any
 other FS APIs are used. Returns *true* if file system was mounted
-successfully, false otherwise.  With no options it will format SPIFFS
-if it is unable to mount it on the first try.
+successfully, false otherwise.
 
 Note that LittleFS will automatically format the filesystem
 if one is not detected.  This is configurable via ``setConfig``
@@ -264,8 +263,6 @@ openDir
     or LittleFS.openDir(path)
 
 Opens a directory given its absolute path. Returns a *Dir* object.
-Please note the previous discussion on the difference in behavior between
-LittleFS and SPIFFS for this call.
 
 remove
 ~~~~~~
