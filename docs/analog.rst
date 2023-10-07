@@ -40,7 +40,9 @@ Analog Output Restrictions
 --------------------------
 
 The PWM generator source clock restricts the legal combinations of
-frequency and ranges.  For example, at 1MHz only about 6 bits of range
+frequency and ranges.  
+At a CPU frequency of 133MHz, the 16 bit maximum range decreases by 1 bit for every doubling of the default PWM frequency of 1 kHz.  
+For example, at 1MHz only about 6 bits of range
 are possible.  When you define an ``analogWriteFreq`` and ``analogWriteRange``
 that can't be fulfilled by the hardware, the frequency will be preserved
 but the accuracy (range) will be reduced automatically.  Your code will
