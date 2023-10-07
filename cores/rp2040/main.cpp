@@ -44,6 +44,7 @@ void initVariant() __attribute__((weak));
 void initVariant() { }
 
 // Optional 2nd core setup and loop
+bool core1_separate_stack __attribute__((weak)) = false;
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 extern "C" void main1() {
@@ -132,7 +133,11 @@ extern "C" int main() {
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             delay(1); // Needed to make Picoprobe upload start 2nd core
-            multicore_launch_core1(main1);
+            if (core1_separate_stack) {
+                multicore_launch_core1_with_stack(main1, (uint32_t*)malloc(8192), 8192);
+            } else {
+                multicore_launch_core1(main1);
+            }
         }
         setup();
         while (true) {

@@ -13,7 +13,7 @@ Similar to the `BearSSL::WiFiClientSecure` method, sets the receive and transmit
 Setting Server Certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-TLS servers require a certificate identifying itself and containing its public key, and a private key they will use to encrypt information with.  The application author is responsible for generating this certificate and key, either using a self-signed generator or using a commercial certification authority.  **Do not re-use the certificates included in the examples provided.**
+TLS servers require a certificate identifying itself and containing its public key, and a private key they will use to encrypt information with.  The application author is responsible for generating this certificate and key, either using a self-signed generator or using a commercial certification authority.  **Do not reuse the certificates included in the examples provided.**
 
 This example command will generate a RSA 2048-bit key and certificate:
 
