@@ -24,7 +24,6 @@ function skip_ino()
 /p13_TouchSensorLamp/
 /StringComparisonOperators/
 /PDMSerialPlotter/
-/BTstackLib/
 EOL
     echo $ino | grep -q -F "$skiplist"
     echo $(( 1 - $? ))
