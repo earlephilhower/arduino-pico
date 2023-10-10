@@ -110,7 +110,6 @@ byte SPIClassRP2040::transfer(uint8_t data) {
         return 0;
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverseByte(data);
-    spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
     DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
     spi_write_read_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
@@ -127,6 +126,7 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
     spi_set_format(_spi, 16, cpol(), cpha(), SPI_MSB_FIRST);
     DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
     spi_write16_read16_blocking(_spi, &data, &ret, 1);
+    spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverse16Bit(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
@@ -153,8 +153,6 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
 
     // MSB version is easy!
     if (_spis.getBitOrder() == MSBFIRST) {
-        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
-
         if (rxbuf == nullptr) { // transmit only!
             spi_write_blocking(_spi, txbuff, count);
             return;
@@ -191,6 +189,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         }
         DEBUGSPI("SPI: initting SPI\n");
         spi_init(_spi, _spis.getClockFreq());
+        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
         DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         _initted = true;
     }
