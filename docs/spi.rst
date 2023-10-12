@@ -40,6 +40,6 @@ in order to consunme the received data and provide data to transmit.
 
 
 Examples
-========
+~~~~~~~~
 
 See the SPItoMyself example for a complete Master and Slave application.
