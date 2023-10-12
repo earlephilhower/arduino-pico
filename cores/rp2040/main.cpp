@@ -38,6 +38,7 @@ extern void startFreeRTOS() __attribute__((weak));
 bool __isFreeRTOS;
 volatile bool __freeRTOSinitted;
 
+extern void __EnableBluetoothDebug(Print &);
 
 // Weak empty variant initialization. May be redefined by variant files.
 void initVariant() __attribute__((weak));
@@ -118,6 +119,9 @@ extern "C" int main() {
 #if defined DEBUG_RP2040_PORT
     if (!__isFreeRTOS) {
         DEBUG_RP2040_PORT.begin(115200);
+#if (defined(ENABLE_BLUETOOTH) || defined(ENABLE_BLE)) && defined(DEBUG_RP2040_BLUETOOTH)
+        __EnableBluetoothDebug(DEBUG_RP2040_PORT);
+#endif
     }
 #endif
 
