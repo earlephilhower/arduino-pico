@@ -124,7 +124,8 @@ bool EEPROMClass::commit() {
     flash_range_program((intptr_t)_sector - (intptr_t)XIP_BASE, _data, _size);
     rp2040.resumeOtherCore();
     interrupts();
-
+    _dirty = false;
+    
     return true;
 }
 
