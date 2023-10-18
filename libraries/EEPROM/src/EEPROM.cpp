@@ -125,7 +125,7 @@ bool EEPROMClass::commit() {
     rp2040.resumeOtherCore();
     interrupts();
     _dirty = false;
-    
+
     return true;
 }
 
