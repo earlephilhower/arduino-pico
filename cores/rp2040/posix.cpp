@@ -33,7 +33,9 @@
 
 extern "C" int errno;
 
-extern "C" ssize_t _write(int fd, const void *buf, size_t count) {
+extern "C"
+__attribute((weak))
+ssize_t _write(int fd, const void *buf, size_t count) {
 #if defined DEBUG_RP2040_PORT
     (void) fd;
     return DEBUG_RP2040_PORT.write((const char *)buf, count);
@@ -45,7 +47,9 @@ extern "C" ssize_t _write(int fd, const void *buf, size_t count) {
 #endif
 }
 
-extern "C" int _chown(const char *path, uid_t owner, gid_t group) {
+extern "C"
+__attribute((weak))
+int _chown(const char *path, uid_t owner, gid_t group) {
     (void) path;
     (void) owner;
     (void) group;
@@ -53,7 +57,9 @@ extern "C" int _chown(const char *path, uid_t owner, gid_t group) {
     return -1;
 }
 
-extern "C" int _close(int fd) {
+extern "C"
+__attribute((weak))
+int _close(int fd) {
     (void) fd;
     errno = ENOSYS;
     return -1;
@@ -72,7 +78,9 @@ extern "C" int _fork(void) {
     return -1;
 }
 
-extern "C" int _fstat(int fd, struct stat *st) {
+extern "C"
+__attribute((weak))
+int _fstat(int fd, struct stat *st) {
     (void) fd;
     (void) st;
     errno = ENOSYS;
@@ -115,7 +123,9 @@ extern "C" void __setSystemTime(unsigned long long sec, unsigned long usec) {
     __timedelta_us = newnow_us - now_us;
 }
 
-extern "C" int _isatty(int file) {
+extern "C"
+__attribute((weak))
+int _isatty(int file) {
     (void) file;
     errno = ENOSYS;
     return 0;
@@ -128,14 +138,18 @@ extern "C" int _kill(int pid, int sig) {
     return -1;
 }
 
-extern "C" int _link(char *existing, char *newlink) {
+extern "C"
+__attribute((weak))
+int _link(char *existing, char *newlink) {
     (void) existing;
     (void) newlink;
     errno = ENOSYS;
     return -1;
 }
 
-extern "C" int _lseek(int   file, int   ptr, int   dir) {
+extern "C"
+__attribute((weak))
+int _lseek(int   file, int   ptr, int   dir) {
     (void) file;
     (void) ptr;
     (void) dir;
@@ -143,7 +157,9 @@ extern "C" int _lseek(int   file, int   ptr, int   dir) {
     return -1;
 }
 
-extern "C" int _open(char *file, int   flags, int   mode) {
+extern "C"
+__attribute((weak))
+int _open(char *file, int   flags, int   mode) {
     (void) file;
     (void) flags;
     (void) mode;
@@ -151,7 +167,9 @@ extern "C" int _open(char *file, int   flags, int   mode) {
     return -1;
 }
 
-extern "C" int _read(int   file, char *ptr, int   len) {
+extern "C"
+__attribute((weak))
+int _read(int   file, char *ptr, int   len) {
     (void) file;
     (void) ptr;
     (void) len;
@@ -159,7 +177,9 @@ extern "C" int _read(int   file, char *ptr, int   len) {
     return -1;
 }
 
-extern "C" int _readlink(const char *path, char *buf, size_t bufsize) {
+extern "C"
+__attribute((weak))
+int _readlink(const char *path, char *buf, size_t bufsize) {
     (void) path;
     (void) buf;
     (void) bufsize;
@@ -167,14 +187,18 @@ extern "C" int _readlink(const char *path, char *buf, size_t bufsize) {
     return -1;
 }
 
-extern "C" int _stat(const char  *file, struct stat *st) {
+extern "C"
+__attribute((weak))
+int _stat(const char  *file, struct stat *st) {
     (void) file;
     (void) st;
     errno = ENOSYS;
     return -1;
 }
 
-extern "C" int _symlink(const char *path1, const char *path2) {
+extern "C"
+__attribute((weak))
+int _symlink(const char *path1, const char *path2) {
     (void) path1;
     (void) path2;
     errno = ENOSYS;
@@ -187,7 +211,9 @@ extern "C" clock_t _times(struct tms *buf) {
     return -1;
 }
 
-extern "C" int _unlink(char *name) {
+extern "C"
+__attribute((weak))
+int _unlink(char *name) {
     (void) name;
     errno = ENOSYS;
     return -1;
