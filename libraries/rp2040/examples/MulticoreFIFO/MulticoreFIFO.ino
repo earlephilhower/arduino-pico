@@ -14,7 +14,7 @@ void setup() {
   delay(5000);
 }
 
-const char *c0_char= "C0 commands C1"; // Can be declared locally but globally is more reliable.
+const char *c0_char= "C0 commands C1"; 
 void loop() {
   delay(1000);
   Serial.printf("C0 Char pointer: %s %p\n",c0_char,&c0_char);
