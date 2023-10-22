@@ -22,8 +22,8 @@ The following diagram shows the flash layout used in Arduino-Pico:
     ^    ^                     ^             ^
     OTA  Sketch                File system   EEPROM
 
-The file system size is configurable via the IDE menus, rom 64k up to 15MB
-(assuming you have an RP2040 boad with that much flash)
+The file system size is configurable via the IDE menus, from 64k up to 15MB
+(assuming you have an RP2040 board with that much flash)
 
 **Note:** to use any of file system functions in the sketch, add the
 following include to the sketch:
@@ -38,14 +38,14 @@ following include to the sketch:
 Compatible Filesystem APIs
 --------------------------
 
-LittleFS is an onboard filesystem that sets asidesome program flash for
+LittleFS is an onboard filesystem that sets aside some program flash for
 use as a filesystem without requiring any external hardware.
 
 SDFS is a filesystem for SD cards, based on [SdFat 2.0](https://github.com/earlephilhower/ESP8266SdFat).
 It supports FAT16 and FAT32 formatted cards, and requires an external
 SD card reader.
 
-SD is the Arduino supported, somewhat old and limited SD card filesystem.
+SD is the Arduino-supported, somewhat old and limited SD card filesystem.
 It is recommended to use SDFS for new applications instead of SD.
 
 All three of these filesystems can open and manipulate ``File`` and ``Dir``
@@ -153,7 +153,7 @@ other FS APIs are used. Returns *true* if file system was mounted
 successfully, false otherwise.
 
 Note that LittleFS will automatically format the filesystem
-if one is not detected.  This is configurable via ``setConfig``
+if one is not detected.  This is configurable via ``setConfig``.
 
 end
 ~~~
@@ -186,8 +186,8 @@ open
 
 Opens a file. ``path`` should be an absolute path starting with a slash
 (e.g. ``/dir/filename.txt``). ``mode`` is a string specifying access
-mode. It can be one of "r", "w", "a", "r+", "w+", "a+". Meaning of these
-modes is the same as for ``fopen`` C function.
+mode. It can be one of "r", "w", "a", "r+", "w+", "a+". The meaning of these
+modes is the same as for the ``fopen`` C function.
 
 ::
 
