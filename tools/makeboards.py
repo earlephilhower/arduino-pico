@@ -413,6 +413,9 @@ MakeBoard("pimoroni_pga2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "P
 MakeBoard("pimoroni_plasma2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, "boot2_w25q64jv_4_padded_checksum")
 
+# Sea-Picro
+MakeBoard("sea_picro", "Sea-Picro", "RP2040", "0x2e8a", "0xf00a", 500, "SEA_PICRO", 8, "boot2_w25q64jv_4_padded_checksum")
+
 # Silicognition
 MakeBoard("silicognition_rp2040_shim", "Silicognition", "RP2040-Shim", "0x1209", "0xf502", 500, "SILICOGNITION_RP2040_SHIM", 4, "boot2_generic_03h_4_padded_checksum")
 
