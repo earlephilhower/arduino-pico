@@ -26,7 +26,7 @@
 #define PIN_SPI1_SCK (31u)
 #define PIN_SPI1_SS (31u)
 
-// Wire is on the STEMMA QT port
+// Wire
 #define PIN_WIRE0_SDA (2u)
 #define PIN_WIRE0_SCL (3u)
 
