@@ -4,24 +4,56 @@
 // Will output something like, where C0 is running on core 0 and
 // C1 is on core 1, in parallel.
 
-// C0 Char pointer: C0 commands C1 0x20041fc8
-// C1 Char Pointer: C0 commands C1 0x20041fc8
-// C1 Got the following: C0 commands C1
+// [C1] Char* [C0 commands C1] Pointer [0x10014a62]
+// [C1] Char* [C0 commands C1] Pointer [0x10014a62]
+// [C0] Serial input: Hello
+// [C1] Char* [Hello] Pointer [0x20003a4d]
+// [C0] Serial input: Raspberry Pi Pico
+// [C1] Char* [Raspberry Pi Pico] Pointer [0x20003a4d]
+// [C0] Serial input: RP2040
+// [C1] Char* [RP2040] Pointer [0x20003a4d]
 
 // The normal, core0 setup
+const char* c0_char = "C0 commands C1"; // Non modificable
+
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   delay(5000);
+  Serial.printf("[C1] Char* [%s] Pointer [%p]\n", c0_char, reinterpret_cast<uint32_t>(c0_char));
+  rp2040.fifo.push(reinterpret_cast<uint32_t>(c0_char));
 }
 
-const char *c0_char= "C0 commands C1"; 
+const byte bufferSize = 64;  // Maximum buffer size
+char inputBuffer[bufferSize];  // Buffer for storing data
+
 void loop() {
-  delay(1000);
-  Serial.printf("C0 Char pointer: %s %p\n",c0_char,&c0_char);
-  rp2040.fifo.push(((uint32_t)&c0_char));
+  //delay(1000);
+  static uint8_t bufferIndex = 0; // Current index in the buffer
+
+  while (Serial.available() > 0) {
+    char incomingByte = Serial.read();
+
+    if (incomingByte == '\n') {
+      // A newline character is received, process the data
+      inputBuffer[bufferIndex] = '\0';  // Add the null character at the end
+      Serial.printf("[C0] Serial input: %s \n",inputBuffer);
+      //Serial.println(inputBuffer);
+      rp2040.fifo.push(reinterpret_cast<uint32_t>(inputBuffer));
+      bufferIndex = 0;  // Reset the index for the next message
+    } else {
+      // Add the character to the buffer
+      if (bufferIndex < bufferSize - 1) {
+        inputBuffer[bufferIndex] = incomingByte;
+        bufferIndex++;
+      } else {
+        // The buffer is full, you can take appropriate action if necessary
+        // For example, ignore the data or print an error message
+      }
+    }
+  }
+
 }
 
-char* c1_charP;
 // Running on core1
 void setup1() {
   delay(1000);
@@ -29,9 +61,7 @@ void setup1() {
 
 void loop1() {
   delay(500);
-  char **c1_char; // Pointer to a pointer of char
-  c1_char = (char **)rp2040.fifo.pop(); // Blocking  
-  Serial.printf("C1 Char Pointer: %s %p\n",*c1_char,c1_char);
-  char *c11_char = *c1_char; // How to pass to local variable
-  Serial.printf("C1 Got the following: %s\n",c11_char);
+  char *c1_char; // Pointer to char
+  c1_char = reinterpret_cast<char*>(rp2040.fifo.pop()); // Blocking  
+  Serial.printf("[C1] Char* [%s] Pointer [%p]\n", c1_char, c1_char);
 }
