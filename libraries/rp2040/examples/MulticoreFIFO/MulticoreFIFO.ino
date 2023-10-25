@@ -10,18 +10,19 @@
 
 // The normal, core0 setup
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   delay(5000);
 }
 
-const char *c0_char= "C0 commands C1"; 
+char c0_char[] = "C0 commands C1"; // Declare as char* to allow modification
 void loop() {
   delay(1000);
-  Serial.printf("C0 Char pointer: %s %p\n",c0_char,&c0_char);
-  rp2040.fifo.push(((uint32_t)&c0_char));
+  Serial.printf("C0 Char pointer: %s %p\n", c0_char, reinterpret_cast<uint32_t>(c0_char));
+  rp2040.fifo.push(reinterpret_cast<uint32_t>(c0_char));
 }
 
 char* c1_charP;
+
 // Running on core1
 void setup1() {
   delay(1000);
@@ -29,9 +30,7 @@ void setup1() {
 
 void loop1() {
   delay(500);
-  char **c1_char; // Pointer to a pointer of char
-  c1_char = (char **)rp2040.fifo.pop(); // Blocking  
-  Serial.printf("C1 Char Pointer: %s %p\n",*c1_char,c1_char);
-  char *c11_char = *c1_char; // How to pass to local variable
-  Serial.printf("C1 Got the following: %s\n",c11_char);
+  char *c1_char; // Pointer to char
+  c1_char = reinterpret_cast<char*>(rp2040.fifo.pop()); // Blocking  
+  Serial.printf("C1 Char Pointer: %s %p\n", c1_char, c1_char);
 }
