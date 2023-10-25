@@ -51,6 +51,6 @@
       "pico-debug"
     ]
   },
-  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+  "url": "https://github.com/joshajohnson/sea-picro",
   "vendor": "Sea-Picro"
 }
