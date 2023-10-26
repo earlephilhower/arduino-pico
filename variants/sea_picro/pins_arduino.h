@@ -18,24 +18,25 @@
 #define PIN_SPI0_MISO (20u)
 #define PIN_SPI0_MOSI (23u)
 #define PIN_SPI0_SCK (22u)
-#define PIN_SPI0_SS (31u) // not pinned out
+#define PIN_SPI0_SS (21u)
 
-// Not pinned out
-#define PIN_SPI1_MISO (31u)
-#define PIN_SPI1_MOSI (31u)
-#define PIN_SPI1_SCK (31u)
-#define PIN_SPI1_SS (31u)
+#define PIN_SPI1_MISO (12u)
+#define PIN_SPI1_MOSI (13u)
+#define PIN_SPI1_SCK (14u)
+#define PIN_SPI1_SS (15u)
 
 // Wire
-#define PIN_WIRE0_SDA (2u)
-#define PIN_WIRE0_SCL (3u)
+#define PIN_WIRE0_SDA (4u)
+#define PIN_WIRE0_SCL (5u)
 
 // Not pinned out
-#define PIN_WIRE1_SDA (31u)
-#define PIN_WIRE1_SCL (31u)
+#define PIN_WIRE1_SDA (2u)
+#define PIN_WIRE1_SCL (3u)
 
 #define SERIAL_HOWMANY (1u)
-#define SPI_HOWMANY (1u)
-#define WIRE_HOWMANY (1u)
+#define SPI_HOWMANY (2u)
+#define WIRE_HOWMANY (2u)
+
+#define PIN_NEOPIXEL (25u)
 
 #include "../generic/common.h"
