@@ -32,7 +32,7 @@
   "frameworks": [
     "arduino"
   ],
-  "name": "RP2040",
+  "name": "Sea-Picro",
   "upload": {
     "maximum_ram_size": 270336,
     "maximum_size": 8388608,
@@ -52,5 +52,5 @@
     ]
   },
   "url": "https://github.com/joshajohnson/sea-picro",
-  "vendor": "Sea-Picro"
+  "vendor": "Generic"
 }
