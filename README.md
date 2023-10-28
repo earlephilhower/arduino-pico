@@ -52,6 +52,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Pimoroni PGA2040
 * Pimoroni Plasma2040
 * Pimoroni Tiny2040
+* Sea-Picro
 * Seeed Indicator RP2040
 * Seeed XIAO RP2040
 * Silicognition RP2040-Shim

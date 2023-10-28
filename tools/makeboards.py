@@ -205,7 +205,7 @@ def BuildGlobalMenuList():
     print("menu.ipbtstack=IP/Bluetooth Stack")
     print("menu.uploadmethod=Upload Method")
 
-def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra = None):
+def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra = None, board_url = None):
     fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
     for i in range(1, flashsizemb):
         fssizelist.append(i * 1024 * 1024)
@@ -236,13 +236,13 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
     elif name.startswith("adafruit") and "w25q080" in boot2:
         BuildBootW25Q(name)
     BuildUploadMethodMenu(name)
-    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra)
+    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url)
     global pkgjson
     thisbrd = {}
     thisbrd['name'] = "%s %s" % (vendor_name, product_name)
     pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
-def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra):
+def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url):
     if type(pid) == list:
         pid = pid[0]
     if extra != None:
@@ -304,7 +304,7 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
       "pico-debug"
     ]
   },
-  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+  "url": "BOARDURL",
   "vendor": "VENDORNAME"
 }\n"""\
 .replace('VARIANTNAME', name)\
@@ -312,6 +312,7 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
 .replace('BOOT2', boot2)\
 .replace('VID', vid.upper().replace("X", "x"))\
 .replace('PID', pid.upper().replace("X", "x"))\
+.replace('BOARDURL', board_url or 'https://www.raspberrypi.org/products/raspberry-pi-pico/')\
 .replace('VENDORNAME', vendor_name)\
 .replace('PRODUCTNAME', product_name)\
 .replace('FLASHSIZE', str(1024*1024*flashsizemb))\
@@ -412,6 +413,9 @@ MakeBoard("nullbits_bit_c_pro", "nullbits", "Bit-C PRO", "0x2e8a", "0x6e61", 500
 MakeBoard("pimoroni_pga2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, "boot2_w25q64jv_4_padded_checksum")
 MakeBoard("pimoroni_plasma2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, "boot2_w25q64jv_4_padded_checksum")
+
+# Sea-Picro
+MakeBoard("sea_picro", "Generic", "Sea-Picro", "0x2e8a", "0xf00a", 500, "SEA_PICRO", 8, "boot2_w25q64jv_4_padded_checksum", None, "https://github.com/joshajohnson/sea-picro")
 
 # Silicognition
 MakeBoard("silicognition_rp2040_shim", "Silicognition", "RP2040-Shim", "0x1209", "0xf502", 500, "SILICOGNITION_RP2040_SHIM", 4, "boot2_generic_03h_4_padded_checksum")

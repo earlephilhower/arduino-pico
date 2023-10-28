@@ -156,6 +156,9 @@
                      "name": "Pimoroni Tiny2040"
                   },
                   {
+                     "name": "Generic Sea-Picro"
+                  },
+                  {
                      "name": "Silicognition RP2040-Shim"
                   },
                   {
