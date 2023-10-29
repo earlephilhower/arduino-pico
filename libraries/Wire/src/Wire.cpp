@@ -378,7 +378,7 @@ uint8_t TwoWire::endTransmission(bool stopBit) {
     } else {
         auto len = _buffLen;
         auto ret = i2c_write_blocking_until(_i2c, _addr, _buff, _buffLen, !stopBit, make_timeout_time_ms(_timeout));
-        if (_buffLen == PICO_ERROR_TIMEOUT) {
+        if (ret == PICO_ERROR_TIMEOUT) {
             _handleTimeout(_reset_with_timeout);
             return 5;
         }
