@@ -279,6 +279,11 @@ def get_drives():
                         match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
                         if match:
                             drives = [match.group(1)]
+                    else:
+                        stderror =  proc_out.stderr.decode("UTF-8")
+                        match = re.search(r'already mounted at\s+[`\']([^\.\r\n\'`]+)', stderror)
+                        if match:
+                            drives = [match.group(1)]
                 except Exception as ex:
                     print("Exception executing udisksctl. Exception: {}".format(ex))
                     # If it fails, no problem since it was a heroic attempt
