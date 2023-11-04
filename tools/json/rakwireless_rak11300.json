@@ -2,7 +2,7 @@
   "build": {
     "arduino": {
       "earlephilhower": {
-        "boot2_source": "boot2_w25q080_2_padded_checksum.S",
+        "boot2_source": "boot2_w25q16jvxq_4_padded_checksum.S",
         "usb_vid": "0x2E8A",
         "usb_pid": "0x00C0"
       }
@@ -51,6 +51,6 @@
       "pico-debug"
     ]
   },
-  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+  "url": "https://store.rakwireless.com/products/wisduo-lpwan-module-rak11300",
   "vendor": "RAKwireless"
 }

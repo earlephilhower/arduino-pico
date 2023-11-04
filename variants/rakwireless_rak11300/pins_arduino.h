@@ -5,10 +5,6 @@
 //    RAK datasheet: https://docs.rakwireless.com/Product-Categories/WisDuo/RAK11300-Module/Datasheet/#overview
 //    Internal wiring of SX1262 module: https://forum.rakwireless.com/t/rak11300-pinout-rp2040-to-sx1262/8414/
 
-
-// LEDs
-#define PIN_LED        (23u)
-
 // Serial
 #define PIN_SERIAL1_TX (0u)
 #define PIN_SERIAL1_RX (1u)
@@ -22,10 +18,19 @@
 #define PIN_SPI0_SCK   (18u)
 #define PIN_SPI0_SS    (17u)
 
+// Hardwired to SX1262 Radio
 #define PIN_SPI1_MISO  (12u)
 #define PIN_SPI1_MOSI  (11u)
 #define PIN_SPI1_SCK   (10u)
 #define PIN_SPI1_SS    (13u)
+// Reset / NReset PIN
+#define PIN_SX1262_NRESET   (14u)
+// Busy / GPIO PIN
+#define PIN_SX1262_BUSY     (15u)
+// DIO1 / IRQ PIN
+#define PIN_SX1262_DIO1     (29u)
+// Antenna Switch power control
+#define PIN_SX1262_ANT_PWR  (25u)
 
 // Wire
 #define PIN_WIRE0_SDA  (2u)
@@ -38,4 +43,4 @@
 #define SPI_HOWMANY    (2u)
 #define WIRE_HOWMANY   (2u)
 
-#include "../rakwireless_rak11300/common.h"
+#include "../generic/common.h"
