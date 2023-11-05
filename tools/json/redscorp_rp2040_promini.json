@@ -22,7 +22,7 @@
       ]
     ],
     "mcu": "rp2040",
-    "variant": "redscorp-rp2040-promini"
+    "variant": "redscorp_rp2040_promini"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",
