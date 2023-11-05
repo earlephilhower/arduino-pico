@@ -414,6 +414,9 @@ MakeBoard("pimoroni_pga2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "P
 MakeBoard("pimoroni_plasma2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, "boot2_w25q64jv_4_padded_checksum")
 
+# RAKwireless
+MakeBoard("rakwireless_rak11300", "RAKwireless", "RAK11300", "0x2e8a", "0x00c0", 500, "RAKWIRELESS_RAK11300", 2, "boot2_w25q16jvxq_4_padded_checksum", None, "https://store.rakwireless.com/products/wisduo-lpwan-module-rak11300")
+
 # Sea-Picro
 MakeBoard("sea_picro", "Generic", "Sea-Picro", "0x2e8a", "0xf00a", 500, "SEA_PICRO", 8, "boot2_w25q64jv_4_padded_checksum", None, "https://github.com/joshajohnson/sea-picro")
 
