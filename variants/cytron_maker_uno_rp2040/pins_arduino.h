@@ -1,7 +1,8 @@
 #pragma once
 
 // LEDs
-#define PIN_LED             (xxu)
+#define PIN_LED             (3u)
+
 
 // Neopixel
 #define PIN_NEOPIXEL        (25u)
