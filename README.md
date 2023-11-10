@@ -52,6 +52,9 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Pimoroni PGA2040
 * Pimoroni Plasma2040
 * Pimoroni Tiny2040
+* RAKwireless RAK11300
+* Redscorp RP2040-Eins
+* Redscorp RP2040-ProMini
 * Sea-Picro
 * Seeed Indicator RP2040
 * Seeed XIAO RP2040
@@ -70,7 +73,6 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
-* Redscorp RP2040-ProMini
 * Generic (configurable flash, I/O pins)
 
 # Installing via Arduino Boards Manager
