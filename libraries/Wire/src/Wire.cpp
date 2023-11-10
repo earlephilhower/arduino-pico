@@ -344,7 +344,7 @@ void TwoWire::_handleTimeout(bool reset) {
     if (reset) {
         if (_slave) {
             uint8_t prev_addr = _addr;
-            int prev_clkHz = _clkHz
+            int prev_clkHz = _clkHz;
             end();
             setClock(prev_clkHz);
             begin(prev_addr);
