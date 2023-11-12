@@ -38,6 +38,7 @@
 #include <stdint.h>
 #include <Arduino.h>
 #include <SPI.h>
+#include <LwipEthernet.h>
 
 class Wiznet5500 {
 public:
@@ -83,7 +84,10 @@ public:
         @return true when physical link is up
     */
     bool isLinked() {
-        return wizphy_getphylink() == PHY_LINK_ON;
+        ethernet_arch_lwip_begin();
+        auto ret = wizphy_getphylink() == PHY_LINK_ON;
+        ethernet_arch_lwip_end();
+        return ret;
     }
 
     /**
