@@ -310,7 +310,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         return false;
     }
 
-    _phID = __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
+    _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
