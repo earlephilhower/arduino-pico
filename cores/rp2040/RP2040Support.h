@@ -157,6 +157,10 @@ extern RP2040 rp2040;
 extern "C" void main1();
 extern "C" char __StackLimit;
 extern "C" char __bss_end__;
+extern "C" void setup1() __attribute__((weak));
+extern "C" void loop1() __attribute__((weak));
+extern "C" bool core1_separate_stack;
+extern "C" uint32_t* core1_separate_stack_address;
 
 class RP2040 {
 public:
@@ -236,6 +240,25 @@ public:
 
     inline int getTotalHeap() {
         return &__StackLimit  - &__bss_end__;
+    }
+
+    inline uint32_t getStackPointer() {
+        uint32_t *sp;
+        asm volatile("mov %0, sp" : "=r"(sp));
+        return (uint32_t)sp;
+    }
+
+    inline int getFreeStack() {
+        const unsigned int sp = getStackPointer();
+        uint32_t ref = 0x20040000;
+        if (setup1 || loop1) {
+            if (core1_separate_stack) {
+                ref = cpuid() ? (unsigned int)core1_separate_stack_address : 0x20040000;
+            } else {
+                ref = cpuid() ? 0x20040000 : 0x20041000;
+            }
+        }
+        return sp - ref;
     }
 
     void idleOtherCore() {

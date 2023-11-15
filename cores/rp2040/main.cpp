@@ -27,6 +27,7 @@
 RP2040 rp2040;
 extern "C" {
     volatile bool __otherCoreIdled = false;
+    uint32_t* core1_separate_stack_address = nullptr;
 };
 
 extern void setup();
@@ -138,7 +139,8 @@ extern "C" int main() {
         if (setup1 || loop1) {
             delay(1); // Needed to make Picoprobe upload start 2nd core
             if (core1_separate_stack) {
-                multicore_launch_core1_with_stack(main1, (uint32_t*)malloc(8192), 8192);
+                core1_separate_stack_address = (uint32_t*)malloc(0x2000);
+                multicore_launch_core1_with_stack(main1, core1_separate_stack_address, 0x2000);
             } else {
                 multicore_launch_core1(main1);
             }
