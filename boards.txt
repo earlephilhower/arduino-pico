@@ -5699,23 +5699,23 @@ cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 # -----------------------------------
 cytron_maker_uno_rp2040.name=Cytron Maker UNO RP2040
 cytron_maker_uno_rp2040.vid.0=0x2e8a
-cytron_maker_uno_rp2040.pid.0=0x1000
+cytron_maker_uno_rp2040.pid.0=0x1071
 cytron_maker_uno_rp2040.vid.1=0x2e8a
-cytron_maker_uno_rp2040.pid.1=0x1100
+cytron_maker_uno_rp2040.pid.1=0x1171
 cytron_maker_uno_rp2040.vid.2=0x2e8a
-cytron_maker_uno_rp2040.pid.2=0x5000
+cytron_maker_uno_rp2040.pid.2=0x5071
 cytron_maker_uno_rp2040.vid.3=0x2e8a
-cytron_maker_uno_rp2040.pid.3=0x5100
+cytron_maker_uno_rp2040.pid.3=0x5171
 cytron_maker_uno_rp2040.vid.4=0x2e8a
-cytron_maker_uno_rp2040.pid.4=0x9000
+cytron_maker_uno_rp2040.pid.4=0x9071
 cytron_maker_uno_rp2040.vid.5=0x2e8a
-cytron_maker_uno_rp2040.pid.5=0x9100
+cytron_maker_uno_rp2040.pid.5=0x9171
 cytron_maker_uno_rp2040.vid.6=0x2e8a
-cytron_maker_uno_rp2040.pid.6=0xd000
+cytron_maker_uno_rp2040.pid.6=0xd071
 cytron_maker_uno_rp2040.vid.7=0x2e8a
-cytron_maker_uno_rp2040.pid.7=0xd100
+cytron_maker_uno_rp2040.pid.7=0xd171
 cytron_maker_uno_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
-cytron_maker_uno_rp2040.build.usbpid=-DUSBD_PID=0x1000
+cytron_maker_uno_rp2040.build.usbpid=-DUSBD_PID=0x1071
 cytron_maker_uno_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_uno_rp2040.build.board=CYTRON_MAKER_UNO_RP2040
 cytron_maker_uno_rp2040.build.mcu=cortex-m0plus
