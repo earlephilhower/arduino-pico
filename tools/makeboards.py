@@ -374,6 +374,9 @@ MakeBoard("cytron_maker_pi_rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x10
 # DatanoiseTV
 MakeBoard("datanoisetv_picoadk", "DatanoiseTV", "PicoADK", "0x2e8a", "0x000a", 250, "DATANOISETV_PICOADK", 2, "boot2_w25q080_2_padded_checksum")
 
+# Degz Robotics
+MakeBoard("degz_suibo", "Degz Robotics", "Suibo RP2040", "0x2e8a", "0xf00a", 250, "DEGZ_SUIBO_RP2040", 16, "boot2_generic_03h_4_padded_checksum", board_url="https://www.degzrobotics.com/suibo")
+
 # DeRuiLab
 MakeBoard("flyboard2040_core", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a", 500, "FLYBOARD2040_CORE", 4, "boot2_w25q080_2_padded_checksum")
 
