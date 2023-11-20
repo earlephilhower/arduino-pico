@@ -31,6 +31,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
 * DatanoiseTV PicoADK+
+* Degz Suibo RP2040
 * DeRuiLab FlyBoard2040 Core
 * DFRobot Beetle RP2040
 * ElectronicCats Hunter Cat NFC
