@@ -252,8 +252,10 @@ public:
     }
 
     bool send(void *rpt, int len) {
-        //wait for another report to be sent
-        while (_needToSend);
+        // Wait for another report to be sent
+        while (connected() && _needToSend) {
+            /* noop busy wait */
+        }
         _needToSend = true;
         _sendReport = rpt;
         _sendReportLen = len;
