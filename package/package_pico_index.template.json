@@ -90,10 +90,10 @@
                      "name": "DatanoiseTV PicoADK"
                   },
                   {
-                     "name": "Degz Robotics Suibo RP2040"
+                     "name": "DeRuiLab FlyBoard2040Core"
                   },
                   {
-                     "name": "DeRuiLab FlyBoard2040Core"
+                     "name": "L'atelier d'Arnoz DudesCab"
                   },
                   {
                      "name": "DFRobot Beetle RP2040"
@@ -159,18 +159,6 @@
                      "name": "Pimoroni Tiny2040"
                   },
                   {
-                     "name": "RAKwireless RAK11300"
-                  },
-                  {
-                     "name": "redscorp RP2040-Eins"
-                  },
-                  {
-                     "name": "redscorp RP2040-ProMini"
-                  },
-                  {
-                     "name": "Generic Sea-Picro"
-                  },
-                  {
                      "name": "Silicognition RP2040-Shim"
                   },
                   {
@@ -223,6 +211,9 @@
                   },
                   {
                      "name": "WIZnet W5500-EVB-Pico"
+                  },
+                  {
+                     "name": "redscorp RP2040-ProMini"
                   },
                   {
                      "name": "Generic RP2040"
