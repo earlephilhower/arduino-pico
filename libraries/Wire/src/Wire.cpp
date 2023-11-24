@@ -470,5 +470,10 @@ void TwoWire::clearTimeoutFlag() {
 #define __WIRE1_DEVICE i2c1
 #endif
 
+#ifdef PIN_WIRE0_SDA
 TwoWire Wire(__WIRE0_DEVICE, PIN_WIRE0_SDA, PIN_WIRE0_SCL);
+#endif
+
+#ifdef PIN_WIRE1_SDA
 TwoWire Wire1(__WIRE1_DEVICE, PIN_WIRE1_SDA, PIN_WIRE1_SCL);
+#endif
