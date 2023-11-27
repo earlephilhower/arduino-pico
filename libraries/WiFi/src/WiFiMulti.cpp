@@ -58,6 +58,15 @@ bool WiFiMulti::addAP(const char *ssid, const char *pass) {
     return true;
 }
 
+void WiFiMulti::clearAPList() {
+    while (!_list.empty()) {
+        struct _AP ap = _list.front();
+        _list.pop_front();
+        free(ap.ssid);
+        free(ap.pass);
+    }
+}
+
 uint8_t WiFiMulti::run(uint32_t to) {
     struct _scanAP {
         char *ssid;
