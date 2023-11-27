@@ -32,7 +32,7 @@ public:
 
     bool addAP(const char *ssid, const char *pass = nullptr);
 	
-	void clearAPList();
+    void clearAPList();
 
     uint8_t run(uint32_t to = 10000);
 
