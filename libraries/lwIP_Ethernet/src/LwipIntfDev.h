@@ -73,6 +73,10 @@ public:
         return &_netif;
     }
 
+    uint8_t* macAddress(uint8_t* mac) {
+        memcpy(mac, &_netif.hwaddr, 6);
+        return mac;
+    }
     IPAddress localIP() const {
         return IPAddress(ip4_addr_get_u32(ip_2_ip4(&_netif.ip_addr)));
     }
@@ -81,6 +85,17 @@ public:
     }
     IPAddress gatewayIP() const {
         return IPAddress(ip4_addr_get_u32(ip_2_ip4(&_netif.gw)));
+    }
+    IPAddress dnsIP(int n = 0) const {
+        return IPAddress(dns_getserver(n));
+    }
+    void setDNS(IPAddress dns1, IPAddress dns2 = INADDR_ANY) {
+        if (dns1.isSet()) {
+            dns_setserver(0, dns1);
+        }
+        if (dns2.isSet()) {
+            dns_setserver(1, dns2);
+        }
     }
 
     // 1. Currently when no default is set, esp8266-Arduino uses the first
