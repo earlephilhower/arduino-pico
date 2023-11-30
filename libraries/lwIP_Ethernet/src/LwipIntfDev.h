@@ -122,7 +122,7 @@ public:
     // ICMP echo, returns TTL
     int ping(IPAddress host, uint8_t ttl, uint32_t timeout = 5000);
 
-    int hostByName(const char* aHostname, IPAddress& aResult, int timeout);
+    int hostByName(const char* aHostname, IPAddress& aResult, int timeout = 15000);
 
     inline void setSPISpeed(int mhz) {
         setSPISettings(SPISettings(mhz, MSBFIRST, SPI_MODE0));
