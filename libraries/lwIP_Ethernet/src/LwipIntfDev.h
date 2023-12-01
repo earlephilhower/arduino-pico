@@ -375,6 +375,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 #endif
 #if LWIP_IPV6_DHCP6_STATELESS
     err_t __res = dhcp6_enable_stateless(&_netif);
+    (void) __res; // Not used except for debug
     DEBUGV("LwipIntfDev: Enabled DHCP6 stateless: %d\n", __res);
 #endif
 
