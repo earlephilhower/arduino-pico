@@ -61,8 +61,13 @@ public:
         memset(&_netif, 0, sizeof(_netif));
     }
 
+    //The argument order for ESP is not the same as for Arduino. However, there is compatibility code under the hood
+    //to detect Arduino arg order, and handle it correctly.
     bool config(const IPAddress& local_ip, const IPAddress& arg1, const IPAddress& arg2,
                 const IPAddress& arg3 = IPADDR_NONE, const IPAddress& dns2 = IPADDR_NONE);
+
+    // two and one parameter version. 2nd parameter is DNS like in Arduino. IPv4 only
+    boolean config(IPAddress local_ip, IPAddress dns = IPADDR_NONE);
 
     // default mac-address is inferred from esp8266's STA interface
     bool begin(const uint8_t* macAddress = nullptr, const uint16_t mtu = DEFAULT_MTU);
@@ -264,6 +269,24 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
     }
     return true;
 }
+
+template<class RawDev>
+boolean LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
+
+    if (!local_ip.isSet()) {
+        return config(INADDR_ANY, INADDR_ANY, INADDR_ANY);
+    }
+    if (!local_ip.isV4()) {
+        return false;
+    }
+    IPAddress gw(local_ip);
+    gw[3] = 1;
+    if (!dns.isSet()) {
+        dns = gw;
+    }
+    return config(local_ip, gw, IPAddress(255, 255, 255, 0), dns);
+}
+
 extern char wifi_station_hostname[];
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
