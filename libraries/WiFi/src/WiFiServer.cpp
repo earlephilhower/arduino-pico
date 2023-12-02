@@ -163,8 +163,16 @@ void WiFiServer::close() {
     _listen_pcb = nullptr;
 }
 
+void WiFiServer::end() {
+    close();
+}
+
 void WiFiServer::stop() {
     close();
+}
+
+WiFiServer::operator bool() {
+    return (status() != CLOSED);
 }
 
 template<typename T>
