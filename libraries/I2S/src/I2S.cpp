@@ -134,7 +134,7 @@ bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
 }
 
 bool I2S::setMCLKmult(int mult) {
-    if (_running || !_isOutput) {
+    if (_running) {
         return false;
     }
     if ((mult % 64) == 0) {

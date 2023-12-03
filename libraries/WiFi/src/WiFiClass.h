@@ -262,6 +262,13 @@ public:
     IPAddress gatewayIP();
 
     /*
+        Get the DNS ip address.
+
+        return: IPAddress DNS Server IP
+    */
+    IPAddress dnsIP(uint8_t dns_no = 0);
+
+    /*
         Return the current SSID associated with the network
 
         return: ssid string

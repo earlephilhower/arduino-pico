@@ -87,7 +87,13 @@
                      "name": "Cytron Maker Pi RP2040"
                   },
                   {
+                     "name": "Cytron Maker UNO RP2040"
+                  },
+                  {
                      "name": "DatanoiseTV PicoADK"
+                  },
+                  {
+                     "name": "Degz Robotics Suibo RP2040"
                   },
                   {
                      "name": "DeRuiLab FlyBoard2040Core"
@@ -156,6 +162,18 @@
                      "name": "Pimoroni Tiny2040"
                   },
                   {
+                     "name": "RAKwireless RAK11300"
+                  },
+                  {
+                     "name": "redscorp RP2040-Eins"
+                  },
+                  {
+                     "name": "redscorp RP2040-ProMini"
+                  },
+                  {
+                     "name": "Generic Sea-Picro"
+                  },
+                  {
                      "name": "Silicognition RP2040-Shim"
                   },
                   {
@@ -208,9 +226,6 @@
                   },
                   {
                      "name": "WIZnet W5500-EVB-Pico"
-                  },
-                  {
-                     "name": "redscorp RP2040-ProMini"
                   },
                   {
                      "name": "Generic RP2040"
@@ -286,17 +301,17 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/i686-w64-mingw32.picotool-f6fe6b7.230911.zip",
-                     "archiveFileName": "i686-w64-mingw32.picotool-f6fe6b7.230911.zip",
-                     "checksum": "SHA-256:8059eb1b0c41fad5ec6da06a731f19e7d25ce21684679d9975311ecb66e0aca6",
-                     "size": "292401"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/i686-w64-mingw32.picotool1-f6fe6b7.230911.zip",
+                     "archiveFileName": "i686-w64-mingw32.picotool1-f6fe6b7.230911.zip",
+                     "checksum": "SHA-256:5c8fc5a9a9a6f4cc49a84bcf4cde6f4188d64008d11754bda4da48affca39f13",
+                     "size": "291812"
                   },
                   {
                      "host": "x86_64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-apple-darwin15.picotool-f6fe6b7.230911.tar.gz",
-                     "archiveFileName": "x86_64-apple-darwin15.picotool-f6fe6b7.230911.tar.gz",
-                     "checksum": "SHA-256:01813cb827a33de73ac46450f9525855b483269b6248a5c9d123d4771b78e5d7",
-                     "size": "845993"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-apple-darwin15.picotool1-f6fe6b7.230911.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin15.picotool1-f6fe6b7.230911.tar.gz",
+                     "checksum": "SHA-256:80415ab9b4b63a327b31a1b84df31883dae4080a286851a546a46badf1b7de41",
+                     "size": "1130270"
                   },
                   {
                      "host": "x86_64-pc-linux-gnu",
@@ -307,10 +322,10 @@
                   },
                   {
                      "host": "x86_64-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-w64-mingw32.picotool-f6fe6b7.230911.zip",
-                     "archiveFileName": "x86_64-w64-mingw32.picotool-f6fe6b7.230911.zip",
-                     "checksum": "SHA-256:08e516df547aaf42d808584e3f7f95b2c91966721f8dc377a772f67eb7b2baa4",
-                     "size": "277242"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-w64-mingw32.picotool1-f6fe6b7.230911.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.picotool1-f6fe6b7.230911.zip",
+                     "checksum": "SHA-256:1a0cbf35adcc1fa696af8a97ea37d9f413fb4de152713b8f97f1d0ca393a5593",
+                     "size": "277139"
                   }
                ]
             },

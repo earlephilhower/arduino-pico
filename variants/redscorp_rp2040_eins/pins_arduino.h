@@ -1,5 +1,5 @@
-/*  RP2040-ProMini board support
-    URL: https://github.com/red-scorp/RP2040-ProMini
+/*  RP2040-Eins board support
+    URL: https://github.com/red-scorp/RP2040-Eins
     Based on Arduino Nano Connect configuration */
 
 #pragma once
@@ -28,13 +28,13 @@ static const uint8_t D18 = (12u);
 static const uint8_t D19 = (13u);
 static const uint8_t D20 = (22u);
 static const uint8_t D21 = (23u);
-static const uint8_t D22 = (2u);
-static const uint8_t D23 = (24u);
-static const uint8_t D24 = (3u);
+static const uint8_t D22 = (9u);
+static const uint8_t D23 = (10u);
+static const uint8_t D24 = (11u);
 static const uint8_t D25 = (8u);
-static const uint8_t D26 = (9u);
-static const uint8_t D27 = (10u);
-static const uint8_t D28 = (11u);
+static const uint8_t D26 = (2u);
+static const uint8_t D27 = (24u);
+static const uint8_t D28 = (3u);
 static const uint8_t D29 = (14u);
 
 static const uint8_t A0 = (26u);
@@ -44,6 +44,10 @@ static const uint8_t A3 = (29u);
 
 // LEDs
 #define PIN_LED        (D13)
+#define PIN_LED_R      (D22)
+#define PIN_LED_G      (D23)
+#define PIN_LED_B      (D24)
+#define LED_BUILTIN    PIN_LED
 
 // Serial
 #define PIN_SERIAL1_TX (D1)
@@ -82,7 +86,6 @@ static const uint8_t A3 = (29u);
 #define NUM_ANALOG_OUTPUTS  (0u)
 #define ADC_RESOLUTION      (12u)
 
-#define LED_BUILTIN PIN_LED
 #define DigitalPinToPinName(p) (p)
 
 static const uint8_t SS = PIN_SPI0_SS;

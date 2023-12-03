@@ -16,6 +16,22 @@ not necessarily simultaneously!).
 See the ``Multicore.ino`` example in the ``rp2040`` example directory for a
 quick introduction.
 
+Stack Sizes
+-----------
+
+When the Pico is running in single core mode, core 0 has the full 8KB of stack
+space available to it.  When using multicore ``setup1``/``loop1`` the 8KB is split
+into two 4K stacks, one per core.  It is possible for core 0's stack to overwrite
+core 1's stack in this case, if you go beyond the 4K limitation.
+
+To allocate a separate 8K stack for core 1, resulting in 8K stacks being available
+for both cores, simply define the following variable in your sketch and set it
+to ``true``:
+
+.. code:: cpp
+
+    bool core1_separate_stack = true;
+
 Pausing Cores
 -------------
 

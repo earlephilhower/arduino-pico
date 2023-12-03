@@ -110,7 +110,6 @@ byte SPIClassRP2040::transfer(uint8_t data) {
         return 0;
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverseByte(data);
-    spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
     DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
     spi_write_read_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
@@ -124,9 +123,12 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
         return 0;
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverse16Bit(data);
-    spi_set_format(_spi, 16, cpol(), cpha(), SPI_MSB_FIRST);
     DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
-    spi_write16_read16_blocking(_spi, &data, &ret, 1);
+    uint8_t d[2];
+    d[0] = (data >> 8) & 0xff;
+    d[1] = data & 0xff;
+    spi_write_read_blocking(_spi, d, d, 2);
+    ret = ((d[0] << 8) | (d[1] & 0xff)) & 0xffff;
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverse16Bit(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
@@ -153,8 +155,6 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
 
     // MSB version is easy!
     if (_spis.getBitOrder() == MSBFIRST) {
-        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
-
         if (rxbuf == nullptr) { // transmit only!
             spi_write_blocking(_spi, txbuff, count);
             return;
@@ -191,6 +191,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         }
         DEBUGSPI("SPI: initting SPI\n");
         spi_init(_spi, _spis.getClockFreq());
+        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
         DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         _initted = true;
     }
@@ -362,5 +363,10 @@ void SPIClassRP2040::setClockDivider(uint8_t uc_div) {
 #define __SPI1_DEVICE spi1
 #endif
 
+#ifdef PIN_SPI0_MISO
 SPIClassRP2040 SPI(__SPI0_DEVICE, PIN_SPI0_MISO, PIN_SPI0_SS, PIN_SPI0_SCK, PIN_SPI0_MOSI);
+#endif
+
+#ifdef PIN_SPI1_MISO
 SPIClassRP2040 SPI1(__SPI1_DEVICE, PIN_SPI1_MISO, PIN_SPI1_SS, PIN_SPI1_SCK, PIN_SPI1_MOSI);
+#endif

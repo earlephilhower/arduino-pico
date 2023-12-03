@@ -39,6 +39,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <LwipEthernet.h>
 
 #include "enc28j60.h"
 
@@ -696,6 +697,8 @@ uint16_t ENC28J60::phyread(uint8_t reg) {
 
 bool ENC28J60::isLinked() {
     // ( https://github.com/JAndrassy/EthernetENC/tree/master/src/utility/enc28j60.h )
-
-    return !!(phyread(MACSTAT2) & 0x400);
+    ethernet_arch_lwip_begin();
+    auto ret = !!(phyread(MACSTAT2) & 0x400);
+    ethernet_arch_lwip_end();
+    return ret;
 }

@@ -55,3 +55,13 @@ void Serial.ignoreFlowControl(bool ignore)
 In some cases, the target application will not assert the DTR virtual line, thus preventing writing operations to succeed.
 
 For this reason, the SerialUSB::ignoreFlowControl() method disables the connection's state verification, enabling the program to write on the port, even though the data might be lost.
+
+bool Serial.dtr()
+~~~~~~~~~~~~~~~~~
+
+Returns the current state of the DTR virtual line. A USB CDC host (such as the Arduino serial monitor) typically raises the DTR pin when opening the device, and may lower it when closing the device.
+
+bool Serial.rts()
+~~~~~~~~~~~~~~~~~
+
+Returns the current state of the RTS virtual line.

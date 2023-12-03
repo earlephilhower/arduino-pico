@@ -38,6 +38,7 @@
 #include <stdint.h>
 #include <Arduino.h>
 #include <SPI.h>
+#include <LwipEthernet.h>
 
 class Wiznet5500 {
 public:
@@ -83,7 +84,10 @@ public:
         @return true when physical link is up
     */
     bool isLinked() {
-        return wizphy_getphylink() == PHY_LINK_ON;
+        ethernet_arch_lwip_begin();
+        auto ret = wizphy_getphylink() == PHY_LINK_ON;
+        ethernet_arch_lwip_end();
+        return ret;
     }
 
     /**
@@ -267,7 +271,7 @@ private:
     /**
         set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in
         W5200
-        @param pmode Settig value of power down mode.
+        @param pmode Setting value of power down mode.
     */
     int8_t wizphy_setphypmode(uint8_t pmode);
 
@@ -432,7 +436,7 @@ private:
     /* PHYCFGR register value */
     enum {
         PHYCFGR_RST         = ~(1 << 7),  //< For PHY reset, must operate AND mask.
-        PHYCFGR_OPMD        = (1 << 6),   // Configre PHY with OPMDC value
+        PHYCFGR_OPMD        = (1 << 6),   // Configure PHY with OPMDC value
         PHYCFGR_OPMDC_ALLA  = (7 << 3),
         PHYCFGR_OPMDC_PDOWN = (6 << 3),
         PHYCFGR_OPMDC_NA    = (5 << 3),

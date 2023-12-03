@@ -197,6 +197,14 @@ static void CheckSerialReset() {
     }
 }
 
+bool SerialUSB::dtr() {
+    return _dtr;
+}
+
+bool SerialUSB::rts() {
+    return _rts;
+}
+
 extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
     (void) itf;
     _dtr = dtr ? true : false;

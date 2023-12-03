@@ -262,6 +262,9 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
 
     _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(_timeout));
     if ((_buffLen == PICO_ERROR_GENERIC) || (_buffLen == PICO_ERROR_TIMEOUT)) {
+        if (_buffLen == PICO_ERROR_TIMEOUT) {
+            _handleTimeout(_reset_with_timeout);
+        }
         _buffLen = 0;
     }
     _buffOff = 0;
@@ -335,12 +338,32 @@ stop:
     return ack;
 }
 
+void TwoWire::_handleTimeout(bool reset) {
+    _timeoutFlag = true;
+
+    if (reset) {
+        if (_slave) {
+            uint8_t prev_addr = _addr;
+            int prev_clkHz = _clkHz;
+            end();
+            setClock(prev_clkHz);
+            begin(prev_addr);
+        } else {
+            int prev_clkHz = _clkHz;
+            end();
+            setClock(prev_clkHz);
+            begin();
+        }
+    }
+}
+
 // Errors:
 //  0 : Success
 //  1 : Data too long
 //  2 : NACK on transmit of address
 //  3 : NACK on transmit of data
 //  4 : Other error
+//  5 : Timeout
 uint8_t TwoWire::endTransmission(bool stopBit) {
     if (!_running || !_txBegun) {
         return 4;
@@ -352,6 +375,10 @@ uint8_t TwoWire::endTransmission(bool stopBit) {
     } else {
         auto len = _buffLen;
         auto ret = i2c_write_blocking_until(_i2c, _addr, _buff, _buffLen, !stopBit, make_timeout_time_ms(_timeout));
+        if (ret == PICO_ERROR_TIMEOUT) {
+            _handleTimeout(_reset_with_timeout);
+            return 5;
+        }
         _buffLen = 0;
         return (ret == len) ? 0 : 4;
     }
@@ -422,6 +449,20 @@ void TwoWire::onRequest(void(*function)(void)) {
     _onRequestCallback = function;
 }
 
+void TwoWire::setTimeout(uint32_t timeout, bool reset_with_timeout) {
+    _timeoutFlag = false;
+    Stream::setTimeout(timeout);
+    _reset_with_timeout = reset_with_timeout;
+}
+
+bool TwoWire::getTimeoutFlag() {
+    return _timeoutFlag;
+}
+
+void TwoWire::clearTimeoutFlag() {
+    _timeoutFlag = false;
+}
+
 #ifndef __WIRE0_DEVICE
 #define __WIRE0_DEVICE i2c0
 #endif
@@ -429,5 +470,10 @@ void TwoWire::onRequest(void(*function)(void)) {
 #define __WIRE1_DEVICE i2c1
 #endif
 
+#ifdef PIN_WIRE0_SDA
 TwoWire Wire(__WIRE0_DEVICE, PIN_WIRE0_SDA, PIN_WIRE0_SCL);
+#endif
+
+#ifdef PIN_WIRE1_SDA
 TwoWire Wire1(__WIRE1_DEVICE, PIN_WIRE1_SDA, PIN_WIRE1_SCL);
+#endif
