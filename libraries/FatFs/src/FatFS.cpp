@@ -274,7 +274,7 @@ bool FatFsImpl::format() {
     const MKFS_PARM formatopt = {
         FM_ANY, /* FS type */
         1, /* n_fat*/
-        0, /* algin */
+        0, /* align */
         0, /* n_root*/
         0  /* au_size */
     };
