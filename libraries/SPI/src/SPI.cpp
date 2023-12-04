@@ -205,7 +205,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         io_rw_32 *en_reg = &irq_ctrl_base->inte[gpio / 8];
         uint32_t val = ((*en_reg) >> (4 * (gpio % 8))) & 0xf;
         _usingIRQs.insert_or_assign(gpio, val);
-        DEBUGSPI("SPI: GPIO %d = %d\n", gpio, val);
+        DEBUGSPI("SPI: GPIO %d = %lu\n", gpio, val);
         (*en_reg) ^= val << (4 * (gpio % 8));
     }
     DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
