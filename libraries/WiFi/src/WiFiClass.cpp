@@ -193,7 +193,7 @@ bool WiFiClass::connected() {
     param local_ip: 	Static ip configuration
 */
 void WiFiClass::config(IPAddress local_ip) {
-    ip4_addr_set_u32(ip_2_ip4(&_wifi.getNetIf()->ip_addr), local_ip.v4());
+    _wifi.config(local_ip);
 }
 
 /*  Change Ip configuration settings disabling the dhcp client
@@ -202,8 +202,7 @@ void WiFiClass::config(IPAddress local_ip) {
     param dns_server:     IP configuration for DNS server 1
 */
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server) {
-    ip4_addr_set_u32(ip_2_ip4(&_wifi.getNetIf()->ip_addr), local_ip.v4());
-    dns_setserver(0, dns_server);
+    _wifi.config(local_ip, dns_server);
 }
 
 /*  Change Ip configuration settings disabling the dhcp client
@@ -213,9 +212,7 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server) {
     param gateway : 	Static gateway configuration
 */
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway) {
-    ip4_addr_set_u32(ip_2_ip4(&_wifi.getNetIf()->ip_addr), local_ip.v4());
-    dns_setserver(0, dns_server);
-    ip4_addr_set_u32(ip_2_ip4(&_wifi.getNetIf()->gw), gateway.v4());
+    _wifi.config(local_ip, dns_server, gateway);
 }
 
 /*  Change Ip configuration settings disabling the dhcp client
@@ -324,6 +321,15 @@ IPAddress WiFiClass::subnetMask() {
 */
 IPAddress WiFiClass::gatewayIP() {
     return _wifi.gatewayIP();
+}
+
+/*
+    Get the DNS ip address.
+
+    return: IPAddress DNS Server IP
+*/
+IPAddress WiFiClass::dnsIP(uint8_t dns_no) {
+    return _wifi.dnsIP(dns_no);
 }
 
 /*

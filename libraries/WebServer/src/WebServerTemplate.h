@@ -90,7 +90,7 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
             _currentClient = nullptr;
         }
 
-        _currentClient = new ClientType(_server.available());
+        _currentClient = new ClientType(_server.accept());
         if (!_currentClient) {
             if (_nullDelay) {
                 delay(1);

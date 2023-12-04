@@ -34,7 +34,7 @@ void loop() {
   delay(1000);
   Serial.printf("--loop %d\n", ++i);
   delay(10);
-  WiFiClient client = server.available();
+  WiFiClient client = server.accept();
   if (!client) {
     return;
   }

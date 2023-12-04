@@ -30,7 +30,7 @@ Analog Outputs
 --------------
 The RP2040 does not have any onboard DACs, so analog outputs are
 simulated using the standard method of using pulse width modulation
-(PWM) using the RP20400's hardware PWM units.
+(PWM) using the RP2040's hardware PWM units.
 
 While up to 16 PWM channels can be generated, they are not independent
 and there are significant restrictions as to allowed pins in parallel.

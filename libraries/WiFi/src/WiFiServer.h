@@ -75,10 +75,10 @@ protected:
 
 public:
     WiFiServer(const IPAddress& addr, uint16_t port);
-    WiFiServer(uint16_t port);
+    WiFiServer(uint16_t port = 23);
     virtual ~WiFiServer() {}
     WiFiClient accept(); // https://www.arduino.cc/en/Reference/EthernetServerAccept
-    WiFiClient available(uint8_t* status = nullptr);
+    WiFiClient available(uint8_t* status = nullptr) __attribute__((deprecated("Use accept().")));
 
     bool hasClient();
     // hasClientData():
@@ -95,8 +95,10 @@ public:
     bool getNoDelay();
     uint8_t status();
     uint16_t port() const;
+    void end();
     void close();
     void stop();
+    explicit operator bool();
 
     using ClientType = WiFiClient;
 
