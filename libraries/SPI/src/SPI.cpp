@@ -111,6 +111,7 @@ byte SPIClassRP2040::transfer(uint8_t data) {
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverseByte(data);
     DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
+    hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
     spi_write_read_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
@@ -124,11 +125,8 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverse16Bit(data);
     DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
-    uint8_t d[2];
-    d[0] = (data >> 8) & 0xff;
-    d[1] = data & 0xff;
-    spi_write_read_blocking(_spi, d, d, 2);
-    ret = ((d[0] << 8) | (d[1] & 0xff)) & 0xffff;
+    hw_write_masked(&spi_get_hw(_spi)->cr0, (16 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 16-bits
+    spi_write16_read16_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverse16Bit(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
@@ -148,6 +146,8 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
     if (!_initted) {
         return;
     }
+
+    hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
 
     DEBUGSPI("SPI::transfer(%p, %p, %d)\n", txbuf, rxbuf, count);
     const uint8_t *txbuff = reinterpret_cast<const uint8_t *>(txbuf);

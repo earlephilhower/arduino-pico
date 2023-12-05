@@ -18,6 +18,7 @@ beginTransaction	KEYWORD2
 endTransaction	KEYWORD2
 SPISettings	KEYWORD2
 transfer	KEYWORD2
+transfer16	KEYWORD2
 setBitOrder	KEYWORD2
 setDataMode	KEYWORD2
 setClockDivider	KEYWORD2
