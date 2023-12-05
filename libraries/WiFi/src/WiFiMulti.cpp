@@ -123,8 +123,8 @@ uint8_t WiFiMulti::run(uint32_t to) {
             // Replaced delay(5); with the following to prevent
             // failure when using RTOS
             unsigned long tWifiDelayForRtos_start = millis();
-            while (millis()-tWifiDelayForRtos_start <= 5) {
-                if(millis()<tWifiDelayForRtos_start) {
+            while (millis() - tWifiDelayForRtos_start <= 5) {
+                if (millis() < tWifiDelayForRtos_start) {
                     // millis wrapped around to zero. Rare to hit this
                     // issue, but it will do this every 49 days.
                     tWifiDelayForRtos_start = millis();
