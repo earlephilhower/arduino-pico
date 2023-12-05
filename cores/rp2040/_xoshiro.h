@@ -613,8 +613,8 @@ private:
 }
 
 ////////////////////////////////////////////////////////////////
-
 namespace XoshiroCpp {
+#if 0
 template <class Uint32, std::enable_if_t<std::is_same_v<Uint32, std::uint32_t>>*>
 inline constexpr float FloatFromBits(const Uint32 i) noexcept {
     return (i >> 8) * 0x1.0p - 24f;
@@ -624,6 +624,7 @@ template <class Uint64, std::enable_if_t<std::is_same_v<Uint64, std::uint64_t>>*
 inline constexpr double DoubleFromBits(const Uint64 i) noexcept {
     return (i >> 11) * 0x1.0p - 53;
 }
+#endif
 
 namespace detail {
 [[nodiscard]]
@@ -636,7 +637,6 @@ static constexpr std::uint32_t RotL(const std::uint32_t x, const int s) noexcept
     return (x << s) | (x >> (32 - s));
 }
 }
-
 ////////////////////////////////////////////////////////////////
 //
 //	SplitMix64
