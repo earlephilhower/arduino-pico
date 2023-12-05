@@ -165,8 +165,8 @@ static void __no_inline_not_in_flash_func(IdleThisCore)(void *param) {
     (void) param;
     while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        vTaskPreemptionDisable(nullptr);
         portDISABLE_INTERRUPTS();
+        vTaskPreemptionDisable(nullptr);
         __otherCoreIdled = true;
         while (__otherCoreIdled) {
             /* noop */
