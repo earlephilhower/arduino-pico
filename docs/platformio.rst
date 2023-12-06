@@ -191,7 +191,7 @@ Debug Level
 Done again by directly adding the needed `build
 flags <https://github.com/earlephilhower/arduino-pico/blob/05356da2c5552413a442f742e209c6fa92823666/boards.txt#L104-L114>`__.
 When wanting to define multiple build flags, they must be accumulated in
-either a sing line or a newline-separated expression.
+either a single line or a newline-separated expression.
 
 .. code:: ini
 
@@ -397,5 +397,4 @@ The task "Build Filesystem Image" will take all files in the data directory and 
 The task "Upload Filesystem Image" will upload the filesystem image to the Pico via the specified ``upload_protocol``. 
 
 .. note:: 
-    Set the space available for the filesystem in the ``platformio.ini`` using e.g., ``board_build.filesystem_size = 0.5m``, or filesystem
-    creation will fail!
+    Set the space available for the filesystem in the ``platformio.ini`` using e.g., ``board_build.filesystem_size = 0.5m``, or filesystem creation will fail!
