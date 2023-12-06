@@ -191,7 +191,7 @@ Debug Level
 Done again by directly adding the needed `build
 flags <https://github.com/earlephilhower/arduino-pico/blob/05356da2c5552413a442f742e209c6fa92823666/boards.txt#L104-L114>`__.
 When wanting to define multiple build flags, they must be accumulated in
-either a sing line or a newline-separated expression.
+either a single line or a newline-separated expression.
 
 .. code:: ini
 
