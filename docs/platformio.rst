@@ -363,7 +363,7 @@ For further information on customizing debug options, like the initial breakpoin
     You can obtain precompiled binaries from `here <https://github.com/blackmagic-debug/blackmagic/issues/1364#issuecomment-1503372723>`__. A flashing guide is available `here <https://primalcortex.wordpress.com/2017/06/13/building-a-black-magic-debug-probe/>`__. You then have to configure the target serial port ("GDB port") in your project per `documentation <https://docs.platformio.org/en/latest/plus/debug-tools/blackmagic.html#debugging-tool-blackmagic>`__.
 
 .. note:: 
-    For the pico-debug (`download <https://github.com/majbthrd/pico-debug/releases>`__) debugging way, *which needs to no additional debug probe*, add this snippet to your ``platformio.ini`` and follow the given procedure:
+    For the pico-debug (`download <https://github.com/majbthrd/pico-debug/releases>`__) debugging way, *which needs no additional debug probe*, add this snippet to your ``platformio.ini`` and follow the given procedure:
 
     .. code:: ini
 
