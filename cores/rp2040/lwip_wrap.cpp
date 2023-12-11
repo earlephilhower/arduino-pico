@@ -75,15 +75,12 @@ extern "C" {
         return (unsigned long)(*_lwip_rng)();
     }
 
-
     // Avoid calling lwip_init multiple times
     extern void __real_lwip_init();
     void __wrap_lwip_init() {
-        static bool initted = false;
-        if (!initted) {
+        if (!_lwip_rng) {
             _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(get_rand_64());
             __real_lwip_init();
-            initted = true;
         }
     }
 
