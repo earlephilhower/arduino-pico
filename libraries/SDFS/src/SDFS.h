@@ -183,7 +183,7 @@ public:
         return _fs.vol()->clusterCount();
     }
     size_t totalBlocks() {
-        return (totalClusters() / blocksPerCluster());
+        return (totalClusters() * blocksPerCluster());
     }
     size_t clusterSize() {
         return _fs.vol()->bytesPerCluster();
