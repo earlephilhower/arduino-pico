@@ -29,6 +29,7 @@
 #include <pico/cyw43_arch.h>
 #include <pico/mutex.h>
 #include <sys/lock.h>
+#include "_xoshiro.h"
 
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
 extern void ethernet_arch_lwip_end() __attribute__((weak));
@@ -68,13 +69,18 @@ public:
 
 extern "C" {
 
+    static XoshiroCpp::Xoshiro256PlusPlus *_lwip_rng = nullptr;
+    // Random number generator for LWIP
+    unsigned long __lwip_rand() {
+        return (unsigned long)(*_lwip_rng)();
+    }
+
     // Avoid calling lwip_init multiple times
     extern void __real_lwip_init();
     void __wrap_lwip_init() {
-        static bool initted = false;
-        if (!initted) {
+        if (!_lwip_rng) {
+            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(get_rand_64());
             __real_lwip_init();
-            initted = true;
         }
     }
 

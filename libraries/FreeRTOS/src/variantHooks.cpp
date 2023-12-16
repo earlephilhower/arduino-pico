@@ -165,14 +165,14 @@ static void __no_inline_not_in_flash_func(IdleThisCore)(void *param) {
     (void) param;
     while (true) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        vTaskPreemptionDisable(nullptr);
         portDISABLE_INTERRUPTS();
+        vTaskPreemptionDisable(nullptr);
         __otherCoreIdled = true;
         while (__otherCoreIdled) {
             /* noop */
         }
-        portENABLE_INTERRUPTS();
         vTaskPreemptionEnable(nullptr);
+        portENABLE_INTERRUPTS();
     }
 }
 
@@ -188,9 +188,9 @@ extern "C" void __no_inline_not_in_flash_func(__freertos_idle_other_core)() {
 
 extern "C" void __no_inline_not_in_flash_func(__freertos_resume_other_core)() {
     __otherCoreIdled = false;
-    portENABLE_INTERRUPTS();
     xTaskResumeAll();
     vTaskPreemptionEnable(nullptr);
+    portENABLE_INTERRUPTS();
 }
 
 

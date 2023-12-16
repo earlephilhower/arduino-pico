@@ -61,8 +61,13 @@ public:
         memset(&_netif, 0, sizeof(_netif));
     }
 
+    //The argument order for ESP is not the same as for Arduino. However, there is compatibility code under the hood
+    //to detect Arduino arg order, and handle it correctly.
     bool config(const IPAddress& local_ip, const IPAddress& arg1, const IPAddress& arg2,
                 const IPAddress& arg3 = IPADDR_NONE, const IPAddress& dns2 = IPADDR_NONE);
+
+    // two and one parameter version. 2nd parameter is DNS like in Arduino. IPv4 only
+    boolean config(IPAddress local_ip, IPAddress dns = IPADDR_NONE);
 
     // default mac-address is inferred from esp8266's STA interface
     bool begin(const uint8_t* macAddress = nullptr, const uint16_t mtu = DEFAULT_MTU);
@@ -73,6 +78,10 @@ public:
         return &_netif;
     }
 
+    uint8_t* macAddress(uint8_t* mac) {
+        memcpy(mac, &_netif.hwaddr, 6);
+        return mac;
+    }
     IPAddress localIP() const {
         return IPAddress(ip4_addr_get_u32(ip_2_ip4(&_netif.ip_addr)));
     }
@@ -81,6 +90,17 @@ public:
     }
     IPAddress gatewayIP() const {
         return IPAddress(ip4_addr_get_u32(ip_2_ip4(&_netif.gw)));
+    }
+    IPAddress dnsIP(int n = 0) const {
+        return IPAddress(dns_getserver(n));
+    }
+    void setDNS(IPAddress dns1, IPAddress dns2 = INADDR_ANY) {
+        if (dns1.isSet()) {
+            dns_setserver(0, dns1);
+        }
+        if (dns2.isSet()) {
+            dns_setserver(1, dns2);
+        }
     }
 
     // 1. Currently when no default is set, esp8266-Arduino uses the first
@@ -107,7 +127,7 @@ public:
     // ICMP echo, returns TTL
     int ping(IPAddress host, uint8_t ttl, uint32_t timeout = 5000);
 
-    int hostByName(const char* aHostname, IPAddress& aResult, int timeout);
+    int hostByName(const char* aHostname, IPAddress& aResult, int timeout = 15000);
 
     inline void setSPISpeed(int mhz) {
         setSPISettings(SPISettings(mhz, MSBFIRST, SPI_MODE0));
@@ -249,6 +269,24 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
     }
     return true;
 }
+
+template<class RawDev>
+boolean LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
+
+    if (!local_ip.isSet()) {
+        return config(INADDR_ANY, INADDR_ANY, INADDR_ANY);
+    }
+    if (!local_ip.isV4()) {
+        return false;
+    }
+    IPAddress gw(local_ip);
+    gw[3] = 1;
+    if (!dns.isSet()) {
+        dns = gw;
+    }
+    return config(local_ip, gw, IPAddress(255, 255, 255, 0), dns);
+}
+
 extern char wifi_station_hostname[];
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
@@ -337,6 +375,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 #endif
 #if LWIP_IPV6_DHCP6_STATELESS
     err_t __res = dhcp6_enable_stateless(&_netif);
+    (void) __res; // Not used except for debug
     DEBUGV("LwipIntfDev: Enabled DHCP6 stateless: %d\n", __res);
 #endif
 
@@ -362,7 +401,7 @@ void LwipIntfDev<RawDev>::end() {
     RawDev::end();
 
     netif_remove(&_netif);
-    memset(&_netif, 0, sizeof(_netif));
+
     _started = false;
 }
 
