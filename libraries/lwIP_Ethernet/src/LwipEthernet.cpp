@@ -32,7 +32,6 @@ bool __ethernetContextInitted = false;
 // Async context that pumps the ethernet controllers
 static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
 static async_at_time_worker_t ethernet_timeout_worker;
-
 static async_context_t *_context = nullptr;
 
 // Theoretically support multiple interfaces
@@ -45,7 +44,7 @@ void ethernet_arch_lwip_begin() {
         return;
     }
 #endif
-    async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
+    async_context_acquire_lock_blocking(_context);
 }
 
 void ethernet_arch_lwip_end() {
@@ -55,7 +54,7 @@ void ethernet_arch_lwip_end() {
         return;
     }
 #endif
-    async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
+    async_context_release_lock(_context);
 }
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
