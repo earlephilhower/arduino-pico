@@ -24,7 +24,7 @@ void handleRoot() {
 }
 
 /** Redirect to captive portal if we got a request for another domain. Return true in that case so the page handler do not try to handle the request again. */
-boolean captivePortal() {
+bool captivePortal() {
   if (!isIp(server.hostHeader()) && server.hostHeader() != (String(myHostname) + ".local")) {
     Serial.println("Request redirected to captive portal");
     server.sendHeader("Location", String("http://") + toStringIp(server.client().localIP()), true);

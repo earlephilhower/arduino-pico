@@ -339,7 +339,7 @@ int HTTPServer::_uploadReadByte(WiFiClient* client) {
         // keep trying until you either read a valid byte or timeout
         unsigned long startMillis = millis();
         unsigned long timeoutIntervalMillis = client->getTimeout();
-        boolean timedOut = false;
+        bool timedOut = false;
         for (;;) {
             if (!client->connected()) {
                 return -1;
