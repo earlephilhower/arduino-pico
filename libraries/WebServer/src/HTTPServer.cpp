@@ -262,15 +262,15 @@ void HTTPServer::setContentLength(const size_t contentLength) {
     _contentLength = contentLength;
 }
 
-void HTTPServer::enableDelay(boolean value) {
+void HTTPServer::enableDelay(bool value) {
     _nullDelay = value;
 }
 
-void HTTPServer::enableCORS(boolean value) {
+void HTTPServer::enableCORS(bool value) {
     _corsEnabled = value;
 }
 
-void HTTPServer::enableCrossOrigin(boolean value) {
+void HTTPServer::enableCrossOrigin(bool value) {
     enableCORS(value);
 }
 
