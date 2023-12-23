@@ -321,9 +321,15 @@ libs = []
 
 variant = board.get("build.arduino.earlephilhower.variant", board.get("build.variant", ""))
 
+# The following 3 lines are borrowed from espressif/arduino-esp32, also licensed under apache2
+variants_dir = join(FRAMEWORK_DIR, "variants")
+
+if "build.variants_dir" in board_config:
+    variants_dir = join("$PROJECT_DIR", board_config.get("build.variants_dir"))
+
 if variant != "":
     env.Append(CPPPATH=[
-        os.path.join(FRAMEWORK_DIR, "variants", variant)
+        os.path.join(variants_dir, variant)
     ])
 
     env.Append(CPPDEFINES=[
@@ -335,7 +341,7 @@ if variant != "":
     # otherwise weak function overriding won't work in the linking stage.
     env.BuildSources(
         os.path.join("$BUILD_DIR", "FrameworkArduinoVariant"),
-        os.path.join(FRAMEWORK_DIR, "variants", variant))
+        os.path.join(variants_dir, variant))
 
 libs.append(
     env.BuildLibrary(
