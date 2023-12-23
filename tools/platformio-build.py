@@ -321,11 +321,11 @@ libs = []
 
 variant = board.get("build.arduino.earlephilhower.variant", board.get("build.variant", ""))
 
-# The following 3 lines are borrowed from espressif/arduino-esp32, also licensed under apache2
-variants_dir = join(FRAMEWORK_DIR, "variants")
+# The following 3 lines are adapted from espressif/arduino-esp32, also licensed under apache2
+variants_dir = os.path.join(FRAMEWORK_DIR, "variants")
 
-if "build.variants_dir" in board_config:
-    variants_dir = join("$PROJECT_DIR", board_config.get("build.variants_dir"))
+if "build.variants_dir" in board:
+    variants_dir = os.path.join("$PROJECT_DIR", board.get("build.variants_dir"))
 
 if variant != "":
     env.Append(CPPPATH=[
