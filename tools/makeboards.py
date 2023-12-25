@@ -88,6 +88,8 @@ def BuildUSBStack(name):
     print('%s.menu.usbstack.picosdk.build.usbstack_flags=' % (name))
     print("%s.menu.usbstack.tinyusb=Adafruit TinyUSB" % (name))
     print('%s.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"' % (name))
+    print("%s.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host" % (name))
+    print('%s.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"' % (name))
     print("%s.menu.usbstack.nousb=No USB" % (name))
     print('%s.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"' % (name))
 
