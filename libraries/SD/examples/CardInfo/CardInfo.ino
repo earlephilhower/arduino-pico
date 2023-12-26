@@ -1,11 +1,12 @@
 /*
-  Listfiles
+  SD card test
 
-  This example shows how print out the files in a
-  directory on a SD card
+  This example shows how use the utility libraries on which the'
+  SD library is based in order to get info about your SD card.
+  Very useful for testing a card when you're not sure whether its working or not.
 
   The circuit:
-   SD card attached to SPI bus as follows on RP2040:
+    SD card attached to SPI bus as follows on RP2040:
    ************ SPI0 ************
    ** MISO (AKA RX) - pin 0, 4, or 16
    ** MOSI (AKA TX) - pin 3, 7, or 19
@@ -17,19 +18,13 @@
    ** CS            - pin  9 or 13
    ** SCK           - pin 10 or 14
 
-  created   Nov 2010
-  by David A. Mellis
+  created  28 Mar 2011
+  by Limor Fried
   modified 9 Apr 2012
   by Tom Igoe
-  modified 2 Feb 2014
-  by Scott Fitzgerald
-  modified 12 Feb 2023
-  by Earle F. Philhower, III
   modified 26 Dec 2023
-  by Richard Teel
-
-  This example code is in the public domain.
-
+  by Richard Teel from code provided by Renzo Mischianti
+    SOURCE: https://mischianti.org/raspberry-pi-pico-and-rp2040-boards-how-to-use-sd-card-5/
 */
 
 // This are GP pins for SPI0 on the Raspberry Pi Pico board, and connect
@@ -42,6 +37,7 @@ const int _MOSI = 7;  // AKA SPI TX
 const int _CS = 5;
 const int _SCK = 6;
 
+// include the SD library:
 #include <SPI.h>
 #include <SD.h>
 
@@ -76,19 +72,80 @@ void setup() {
   }
 
   if (!SD.begin(_CS)) {
-    Serial.println("initialization failed!");
+    Serial.println("initialization failed. Things to check:");
+    Serial.println("* is a card inserted?");
+    Serial.println("* is your wiring correct?");
+    Serial.println("* did you change the chipSelect pin to match your shield or module?");
     return;
+  } else {
+    Serial.println("Wiring is correct and a card is present.");
   }
-  Serial.println("initialization done.");
+  // 0 - SD V1, 1 - SD V2, or 3 - SDHC/SDXC
+  // print the type of card
+  Serial.println();
+  Serial.print("Card type:         ");
+  switch (SD.type()) {
+    case 0:
+      Serial.println("SD1");
+      break;
+    case 1:
+      Serial.println("SD2");
+      break;
+    case 3:
+      Serial.println("SDHC/SDXC");
+      break;
+    default:
+      Serial.println("Unknown");
+  }
+
+  Serial.print("Cluster size:          ");
+  Serial.println(SD.clusterSize());
+  Serial.print("Blocks x Cluster:  ");
+  Serial.println(SD.blocksPerCluster());
+  Serial.print("Blocks size:  ");
+  Serial.println(SD.blockSize());
+
+  Serial.print("Total Blocks:      ");
+  Serial.println(SD.totalBlocks());
+  Serial.println();
+
+  Serial.print("Total Cluster:      ");
+  Serial.println(SD.totalClusters());
+  Serial.println();
+
+  // print the type and size of the first FAT-type volume
+  uint32_t volumesize;
+  Serial.print("Volume type is:    FAT");
+  Serial.println(SD.fatType(), DEC);
+
+  volumesize = SD.totalClusters();
+  volumesize *= SD.clusterSize();
+  volumesize /= 1000;
+  Serial.print("Volume size (Kb):  ");
+  Serial.println(volumesize);
+  Serial.print("Volume size (Mb):  ");
+  volumesize /= 1024;
+  Serial.println(volumesize);
+  Serial.print("Volume size (Gb):  ");
+  Serial.println((float)volumesize / 1024.0);
+
+  Serial.print("Card size:  ");
+  Serial.println((float)SD.size() / 1000);
+
+  FSInfo fs_info;
+  SDFS.info(fs_info);
+
+  Serial.print("Total bytes: ");
+  Serial.println(fs_info.totalBytes);
+
+  Serial.print("Used bytes: ");
+  Serial.println(fs_info.usedBytes);
 
   root = SD.open("/");
-
   printDirectory(root, 0);
-
-  Serial.println("done!");
 }
 
-void loop() {
+void loop(void) {
   // nothing happens after setup finishes.
 }
 
