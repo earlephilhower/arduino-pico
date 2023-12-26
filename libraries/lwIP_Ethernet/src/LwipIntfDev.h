@@ -67,7 +67,7 @@ public:
                 const IPAddress& arg3 = IPADDR_NONE, const IPAddress& dns2 = IPADDR_NONE);
 
     // two and one parameter version. 2nd parameter is DNS like in Arduino. IPv4 only
-    boolean config(IPAddress local_ip, IPAddress dns = IPADDR_NONE);
+    bool config(IPAddress local_ip, IPAddress dns = IPADDR_NONE);
 
     // default mac-address is inferred from esp8266's STA interface
     bool begin(const uint8_t* macAddress = nullptr, const uint16_t mtu = DEFAULT_MTU);
@@ -271,7 +271,7 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
 }
 
 template<class RawDev>
-boolean LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
+bool LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
 
     if (!local_ip.isSet()) {
         return config(INADDR_ANY, INADDR_ANY, INADDR_ANY);

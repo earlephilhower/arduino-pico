@@ -70,26 +70,17 @@ public:
 extern "C" {
 
     static XoshiroCpp::Xoshiro256PlusPlus *_lwip_rng = nullptr;
-    // Random number generator for LWIP.  Bare metal, use the HW.  FreeRTOS, use xoshiro generator to avoid needing to freeze the other core
+    // Random number generator for LWIP
     unsigned long __lwip_rand() {
-        if (__isFreeRTOS) {
-            return (unsigned long)(*_lwip_rng)();
-        } else {
-            return get_rand_32();
-        }
+        return (unsigned long)(*_lwip_rng)();
     }
-
 
     // Avoid calling lwip_init multiple times
     extern void __real_lwip_init();
     void __wrap_lwip_init() {
-        static bool initted = false;
-        if (!initted) {
-            if (__isFreeRTOS) {
-                _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(rp2040.getCycleCount());
-            }
+        if (!_lwip_rng) {
+            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(get_rand_64());
             __real_lwip_init();
-            initted = true;
         }
     }
 
