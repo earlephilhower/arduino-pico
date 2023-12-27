@@ -75,7 +75,7 @@ void setup() {
     return;
   }
 
-  if (!SD.begin(_CS)) {
+  if (!sdInitialized) {
     Serial.println("initialization failed!");
     return;
   }

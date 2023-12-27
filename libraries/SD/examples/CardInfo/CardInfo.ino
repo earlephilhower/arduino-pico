@@ -71,7 +71,7 @@ void setup() {
     return;
   }
 
-  if (!SD.begin(_CS)) {
+  if (!sdInitialized) {
     Serial.println("initialization failed. Things to check:");
     Serial.println("* is a card inserted?");
     Serial.println("* is your wiring correct?");
