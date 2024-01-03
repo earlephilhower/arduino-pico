@@ -159,12 +159,6 @@ So for the first sketch you will need to rebuild (with the ``Upload Method->Pico
 
 After the initial upload, as long as the running binary was built using the ``Picotool`` upload method, then the normal upload process should work.
 
-Under MacOS, it may be necessary to install the USB support libraries from a command terminal before the ``Picotool`` upload method can be used:
-
-.. code::
-
-        brew install libusb
-
 For Ubuntu and other Linux operating systems you may need to add the following lines to a new `udev` config file(``99-picotool.rules``) to allow normal users to access the special USB device the Pico exports:
 
 .. code::
