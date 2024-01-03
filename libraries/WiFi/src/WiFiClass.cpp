@@ -142,10 +142,6 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
     _wifi.setTimeout(_timeout);
     _wifi.setAP();
     _apMode = true;
-    if (!_wifi.begin()) {
-        return WL_IDLE_STATUS;
-    }
-    noLowPowerMode();
     IPAddress gw = _wifi.gatewayIP();
     if (!gw.isSet()) {
         gw = IPAddress(192, 168, 42, 1);
@@ -155,6 +151,10 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
         mask = IPAddress(255, 255, 255, 0);
     }
     config(gw);
+    if (!_wifi.begin()) {
+        return WL_IDLE_STATUS;
+    }
+    noLowPowerMode();
     _dhcpServer = (dhcp_server_t *)malloc(sizeof(dhcp_server_t));
     if (!_dhcpServer) {
         // OOM
