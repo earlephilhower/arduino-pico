@@ -22,8 +22,8 @@
 // Wire
 #define PIN_WIRE0_SDA  (0u)
 #define PIN_WIRE0_SCL  (1u)
-#define PIN_WIRE0_SDA  (0u)
-#define PIN_WIRE0_SCL  (1u)
+#define PIN_WIRE1_SDA  (0u)
+#define PIN_WIRE1_SCL  (1u)
 
 #define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (1u)
