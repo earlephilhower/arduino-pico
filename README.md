@@ -30,6 +30,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * BridgeTek IDM2040-7A
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
+* Cytron Maker Uno RP2040
 * DatanoiseTV PicoADK+
 * Degz Suibo RP2040
 * DeRuiLab FlyBoard2040 Core
