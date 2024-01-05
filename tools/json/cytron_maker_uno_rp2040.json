@@ -32,7 +32,7 @@
   "frameworks": [
     "arduino"
   ],
-  "name": "Maker UNO RP2040",
+  "name": "Maker Uno RP2040",
   "upload": {
     "maximum_ram_size": 270336,
     "maximum_size": 2097152,

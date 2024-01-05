@@ -5741,9 +5741,9 @@ cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
 cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
-# Cytron Maker UNO RP2040
+# Cytron Maker Uno RP2040
 # -----------------------------------
-cytron_maker_uno_rp2040.name=Cytron Maker UNO RP2040
+cytron_maker_uno_rp2040.name=Cytron Maker Uno RP2040
 cytron_maker_uno_rp2040.vid.0=0x2e8a
 cytron_maker_uno_rp2040.pid.0=0x1071
 cytron_maker_uno_rp2040.vid.1=0x2e8a
@@ -5777,7 +5777,7 @@ cytron_maker_uno_rp2040.build.core=rp2040
 cytron_maker_uno_rp2040.build.ldscript=memmap_default.ld
 cytron_maker_uno_rp2040.build.boot2=boot2_w25q080_2_padded_checksum
 cytron_maker_uno_rp2040.build.usb_manufacturer="Cytron"
-cytron_maker_uno_rp2040.build.usb_product="Maker UNO RP2040"
+cytron_maker_uno_rp2040.build.usb_product="Maker Uno RP2040"
 cytron_maker_uno_rp2040.menu.flash.2097152_0=2MB (no FS)
 cytron_maker_uno_rp2040.menu.flash.2097152_0.upload.maximum_size=2093056
 cytron_maker_uno_rp2040.menu.flash.2097152_0.build.flash_total=2097152
