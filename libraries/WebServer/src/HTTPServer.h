@@ -146,9 +146,9 @@ public:
         send(code, content_type, (const char *)content, contentLength);
     }
 
-    void enableDelay(boolean value);
-    void enableCORS(boolean value = true);
-    void enableCrossOrigin(boolean value = true);
+    void enableDelay(bool value);
+    void enableCORS(bool value = true);
+    void enableCrossOrigin(bool value = true);
 
     void setContentLength(const size_t contentLength);
     void sendHeader(const String& name, const String& value, bool first = false);
@@ -235,7 +235,7 @@ protected:
         String value;
     };
 
-    boolean     _corsEnabled;
+    bool        _corsEnabled;
 
     WiFiClient  *_currentClient;
     HTTPMethod  _currentMethod;
@@ -243,7 +243,7 @@ protected:
     uint8_t     _currentVersion;
     HTTPClientStatus _currentStatus;
     unsigned long _statusChange;
-    boolean     _nullDelay;
+    bool        _nullDelay;
 
     RequestHandler*  _currentHandler;
     RequestHandler*  _firstHandler;

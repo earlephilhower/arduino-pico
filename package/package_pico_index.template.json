@@ -87,7 +87,7 @@
                      "name": "Cytron Maker Pi RP2040"
                   },
                   {
-                     "name": "Cytron Maker UNO RP2040"
+                     "name": "Cytron Maker Uno RP2040"
                   },
                   {
                      "name": "DatanoiseTV PicoADK"
@@ -299,10 +299,10 @@
                   },
                   {
                      "host": "x86_64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-apple-darwin15.picotool1-f6fe6b7.230911.tar.gz",
-                     "archiveFileName": "x86_64-apple-darwin15.picotool1-f6fe6b7.230911.tar.gz",
-                     "checksum": "SHA-256:80415ab9b4b63a327b31a1b84df31883dae4080a286851a546a46badf1b7de41",
-                     "size": "1130270"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-apple-darwin15.picotool2-f6fe6b7.230911.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin15.picotool2-f6fe6b7.230911.tar.gz",
+                     "checksum": "SHA-256:b17a8a53737084f046ae27dc082f3732b39f273d8cd61a55ffaa8a9737999e5d",
+                     "size": "166362"
                   },
                   {
                      "host": "x86_64-pc-linux-gnu",
@@ -354,10 +354,10 @@
                   },
                   {
                      "host": "x86_64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-apple-darwin15.openocd-4d87f6dca.230911.tar.gz",
-                     "archiveFileName": "x86_64-apple-darwin15.openocd-4d87f6dca.230911.tar.gz",
-                     "checksum": "SHA-256:cb44314cb64316e91cf45c5623319751706bd94ad734a322af243b77f8eb2328",
-                     "size": "2801625"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.1.0-a/x86_64-apple-darwin15.openocd2-4d87f6dca.230911.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin15.openocd2-4d87f6dca.230911.tar.gz",
+                     "checksum": "SHA-256:18414d66c774538364e566169917d0f162f8c25fb553e5f32d81a1939fba7f1a",
+                     "size": "3060420"
                   },
                   {
                      "host": "x86_64-pc-linux-gnu",
