@@ -386,6 +386,10 @@ MakeBoard("flyboard2040_core", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a
 # DFRobot
 MakeBoard("dfrobot_beetle_rp2040", "DFRobot", "Beetle RP2040", "0x3343", "0x4253", 250, "DFROBOT_BEETLE_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 
+# DudesCab
+MakeBoard("DudesCab", "L'atelier d'Arnoz", "DudesCab", "0x2e8a", "0x106F", 250, "RASPBERRY_PI_PICO", 4, "boot2_w25q080_2_padded_checksum")
+
+
 # ElectronicCat
 MakeBoard("electroniccats_huntercat_nfc", "ElectronicCats", "HunterCat NFC RP2040", "0x2E8A", "0x1037", 500, "ELECTRONICCATS_HUNTERCAT_NFC", 2, "boot2_w25q080_2_padded_checksum")
 
