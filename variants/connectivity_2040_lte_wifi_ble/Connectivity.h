@@ -1,6 +1,6 @@
 /*
     UBlox SARA/ESP helper class for the Connectivity RP2040 LTE/WIFI/BLE board
-    
+
     Copyright (c) 2024 P. Oldberg <pontus@ilabs.se>
 
     This library is free software; you can redistribute it and/or

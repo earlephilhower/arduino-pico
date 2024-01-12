@@ -24,9 +24,9 @@
 iLabsConnectivityClass::iLabsConnectivityClass(HardwareSerial* espSerial, HardwareSerial* modemSerial) {
     _espSerial = espSerial;
     _modemSerial = modemSerial;
-/*
- * SARA pins
-*/
+    /*
+     * SARA pins
+    */
     pinMode(PIN_SARA_ON, OUTPUT);
     digitalWrite(PIN_SARA_ON, LOW);           // Output register must always be low
     pinMode(PIN_SARA_ON, INPUT_PULLUP);
@@ -35,15 +35,15 @@ iLabsConnectivityClass::iLabsConnectivityClass(HardwareSerial* espSerial, Hardwa
 
     pinMode(PIN_SARA_PWR, OUTPUT);
     digitalWrite(PIN_SARA_PWR, LOW);          // No power to SARA yet
-    
+
     pinMode(PIN_SARA_DTR, OUTPUT);
     digitalWrite(PIN_SARA_PWR, HIGH);         // Make sure DTR is low on the R412M
-    
+
     modemSerialPortConfigured = false;
 
-/*
- * ESP Pins
- */
+    /*
+     * ESP Pins
+     */
     pinMode(PIN_ESP_RST, OUTPUT);
     digitalWrite(PIN_ESP_RST, LOW);           // Hold ESP in reset
     pinMode(PIN_ESP_MODE, OUTPUT);
@@ -60,7 +60,7 @@ bool iLabsConnectivityClass::doModemPowerOn() {
     delay(150);                               // For 150mS
     pinMode(PIN_SARA_ON, INPUT_PULLUP);       // before releasing it again.
     delay(1000);                              // Now wait for 1 second
-    
+
     SARA_SERIAL_PORT.setRTS(PIN_SERIAL2_RTS); // Enable hardware handshaking
     SARA_SERIAL_PORT.setCTS(PIN_SERIAL2_CTS);
     SARA_SERIAL_PORT.begin(DEFAULT_SARA_BAUDRATE);
@@ -128,7 +128,7 @@ bool iLabsConnectivityClass::setModemMNOProfile(int profile) {
     SARA_SERIAL_PORT.println("AT+CFUN=15");
     if (!getModemResponse().endsWith("OK"))
         return false;
-    
+
     return isModemAlive(15000);
 }
 
