@@ -24,9 +24,7 @@
 iLabsConnectivityClass::iLabsConnectivityClass(HardwareSerial* espSerial, HardwareSerial* modemSerial) {
     _espSerial = espSerial;
     _modemSerial = modemSerial;
-    /*
-     * SARA pins
-    */
+    /* SARA pins */
     pinMode(PIN_SARA_ON, OUTPUT);
     digitalWrite(PIN_SARA_ON, LOW);           // Output register must always be low
     pinMode(PIN_SARA_ON, INPUT_PULLUP);
@@ -41,9 +39,7 @@ iLabsConnectivityClass::iLabsConnectivityClass(HardwareSerial* espSerial, Hardwa
 
     modemSerialPortConfigured = false;
 
-    /*
-     * ESP Pins
-     */
+    /* ESP Pins  */
     pinMode(PIN_ESP_RST, OUTPUT);
     digitalWrite(PIN_ESP_RST, LOW);           // Hold ESP in reset
     pinMode(PIN_ESP_MODE, OUTPUT);
@@ -111,23 +107,27 @@ int iLabsConnectivityClass::getModemMNOProfile() {
 // This call is synchronous and will wait for the modem to start after
 // the soft restart which takes about 10 seconds.
 bool iLabsConnectivityClass::setModemMNOProfile(int profile) {
-    if (!modemSerialPortConfigured)
+    if (!modemSerialPortConfigured) {
         return false;
+    }
 
     // Disconnect from the network
     SARA_SERIAL_PORT.println("AT+COPS=2");
-    if (!getModemResponse().endsWith("OK"))
+    if (!getModemResponse().endsWith("OK")) {
         return false;
+    }
 
     String cmd = "AT+UMNOPROF=" + String(profile) + ",1";
     SARA_SERIAL_PORT.println(cmd);
-    if (!getModemResponse().endsWith("OK"))
+    if (!getModemResponse().endsWith("OK")) {
         return false;
+    }
 
     // Restart the modem to apply the new MNO profile
     SARA_SERIAL_PORT.println("AT+CFUN=15");
-    if (!getModemResponse().endsWith("OK"))
+    if (!getModemResponse().endsWith("OK")) {
         return false;
+    }
 
     return isModemAlive(15000);
 }
