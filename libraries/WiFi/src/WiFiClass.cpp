@@ -21,8 +21,6 @@
 */
 
 #include <inttypes.h>
-#include <pico/cyw43_arch.h>
-#include <cyw43.h>
 #include "lwip/raw.h"
 #include "lwip/icmp.h"
 #include "lwip/inet_chksum.h"
@@ -31,7 +29,12 @@
 
 // This is the real WiFi network object, we just tickle it to do our magic
 #include <LwipEthernet.h>
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#include <pico/cyw43_arch.h>
 static CYW43lwIP _wifi(1);
+#else
+static NoDriverLwIP _wifi;
+#endif
 
 WiFiClass::WiFiClass() {
 }
@@ -75,7 +78,6 @@ int WiFiClass::beginBSSID(const char* ssid, const uint8_t *bssid) {
     return begin(ssid, nullptr, bssid);
 }
 
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
 /*  Start WiFi connection with passphrase
     the most secure supported mode will be automatically selected
 
@@ -166,8 +168,8 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 
     return WL_CONNECTED;
 }
-#endif
 
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
 uint8_t WiFiClass::softAPgetStationNum() {
     if (!_apMode || !_wifiHWInitted) {
         return 0;
@@ -182,10 +184,10 @@ uint8_t WiFiClass::softAPgetStationNum() {
     free(macs);
     return m;
 }
-
+#endif
 
 bool WiFiClass::connected() {
-    return (_apMode && _wifiHWInitted) || (_wifi.connected() && localIP().isSet() && (cyw43_wifi_link_status(&cyw43_state, _apMode ? 1 : 0) == CYW43_LINK_JOIN));
+    return (_apMode && _wifiHWInitted) || (_wifi.connected() && localIP().isSet());
 }
 
 /*  Change Ip configuration settings disabling the dhcp client
@@ -270,7 +272,6 @@ int WiFiClass::disconnect(bool wifi_off __unused) {
     }
     if (_wifiHWInitted) {
         _wifiHWInitted = false;
-        cyw43_wifi_leave(&cyw43_state, _apMode ? 1 : 0);
         _wifi.end();
     }
     return WL_DISCONNECTED;
@@ -288,12 +289,13 @@ void WiFiClass::end(void) {
     return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
 */
 uint8_t* WiFiClass::macAddress(uint8_t* mac) {
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
     if (!_wifiHWInitted) {
         _apMode = false;
         cyw43_wifi_set_up(&cyw43_state, _apMode ? 1 : 0, true, CYW43_COUNTRY_WORLDWIDE);
     }
-    cyw43_wifi_get_mac(&cyw43_state, _apMode ? 1 : 0, mac);
-    return mac;
+#endif
+    return _wifi.macAddress(_apMode, mac);
 }
 
 /*
@@ -348,30 +350,11 @@ const String &WiFiClass::SSID() {
     return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
 */
 uint8_t* WiFiClass::BSSID(uint8_t* bssid) {
-#ifndef CYW43_IOCTL_GET_BSSID
-#define CYW43_IOCTL_GET_BSSID ( (uint32_t)23 * 2 )
-#endif
-
-    if (_wifi.connected()) {
-        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_BSSID, WL_MAC_ADDR_LENGTH, bssid, CYW43_ITF_STA);
-    } else {
-        memset(bssid, 0, WL_MAC_ADDR_LENGTH);
-    }
-    return bssid;
+    return _wifi.BSSID(bssid);
 }
 
 int WiFiClass::channel() {
-#ifndef CYW43_IOCTL_GET_CHANNEL
-#define CYW43_IOCTL_GET_CHANNEL 0x3a
-#endif
-
-    int32_t channel;
-    if (_wifi.connected()) {
-        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_CHANNEL, sizeof channel, (uint8_t *)&channel, CYW43_ITF_STA);
-    } else {
-        channel = -1;
-    }
-    return channel;
+    return _wifi.channel();
 }
 
 
@@ -382,17 +365,7 @@ int WiFiClass::channel() {
     return: signed value
 */
 int32_t WiFiClass::RSSI() {
-#ifndef CYW43_IOCTL_GET_RSSI
-#define CYW43_IOCTL_GET_RSSI 0xFE
-#endif
-
-    int32_t rssi;
-    if (_wifi.connected()) {
-        cyw43_ioctl(&cyw43_state, CYW43_IOCTL_GET_RSSI, sizeof rssi, (uint8_t *)&rssi, CYW43_ITF_STA);
-    } else {
-        rssi = -255;
-    }
-    return rssi;
+    return _wifi.RSSI();
 }
 
 /*
@@ -401,31 +374,10 @@ int32_t WiFiClass::RSSI() {
     return: one value of wl_enc_type enum
 */
 uint8_t WiFiClass::encryptionType() {
-    // TODO - Driver does not return this?!
     if (_password == nullptr) {
         return ENC_TYPE_NONE;
     }
-    return ENC_TYPE_AUTO;
-}
-
-//TODO - this can be in the class
-static uint64_t _to64(uint8_t b[8]) {
-    uint64_t x = 0;
-    for (int i = 0; i < 6; i++) {
-        x <<= 8LL;
-        x |= b[i] & 255;
-    }
-    return x;
-}
-
-int WiFiClass::_scanCB(void *env, const cyw43_ev_scan_result_t *result) {
-    WiFiClass *w = (WiFiClass *)env;
-    if (result) {
-        cyw43_ev_scan_result_t s;
-        memcpy(&s, result, sizeof(s));
-        w->_scan.insert_or_assign(_to64(s.bssid), s);
-    }
-    return 0;
+    return _wifi.encryptionType();
 }
 
 /*
@@ -434,39 +386,22 @@ int WiFiClass::_scanCB(void *env, const cyw43_ev_scan_result_t *result) {
     return: Number of discovered networks
 */
 int8_t WiFiClass::scanNetworks(bool async) {
-    cyw43_wifi_scan_options_t scan_options;
-    memset(&scan_options, 0, sizeof(scan_options));
-    _scan.clear();
     if (!_wifiHWInitted) {
         _apMode = false;
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
         cyw43_arch_enable_sta_mode();
+#endif
         _wifiHWInitted = true;
     }
-    int err = cyw43_wifi_scan(&cyw43_state, &scan_options, this, _scanCB);
-    if (err) {
-        return 0;
-    }
-    if (!async) {
-        uint32_t now = millis();
-        while (cyw43_wifi_scan_active(&cyw43_state) && (millis() - now < 10000)) {
-            delay(10);
-        }
-        return _scan.size();
-    } else {
-        return -1;
-    }
+    return _wifi.scanNetworks(async);
 }
 
 int8_t WiFiClass::scanComplete() {
-    if (cyw43_wifi_scan_active(&cyw43_state)) {
-        return -1;
-    } else {
-        return _scan.size();
-    }
+    return _wifi.scanComplete();
 }
 
 void WiFiClass::scanDelete() {
-    _scan.clear();
+    _wifi.scanDelete();
 }
 
 /*
@@ -477,14 +412,7 @@ void WiFiClass::scanDelete() {
     return: ssid string of the specified item on the networks scanned list
 */
 const char*WiFiClass::SSID(uint8_t networkItem) {
-    if (networkItem >= _scan.size()) {
-        return nullptr;
-    }
-    auto it = _scan.begin();
-    for (int i = 0; i < networkItem; i++) {
-        ++it;
-    }
-    return (const char *)it->second.ssid;
+    return _wifi.SSID(networkItem);
 }
 
 /*
@@ -495,44 +423,15 @@ const char*WiFiClass::SSID(uint8_t networkItem) {
     return: encryption type (enum wl_enc_type) of the specified item on the networks scanned list
 */
 uint8_t WiFiClass::encryptionType(uint8_t networkItem) {
-    if (networkItem >= _scan.size()) {
-        return ENC_TYPE_UNKNOWN;
-    }
-    auto it = _scan.begin();
-    for (int i = 0; i < networkItem; i++) {
-        ++it;
-    }
-    // TODO - the driver returns a small integer but does not actually provide a way of mapping that to the proper enc type.  My best guesses here...
-    switch (it->second.auth_mode) {
-    case 0: return ENC_TYPE_NONE;
-    case 3: return ENC_TYPE_TKIP;
-    case 5: return ENC_TYPE_CCMP;
-    case 7: return ENC_TYPE_AUTO;
-    }
-    return ENC_TYPE_UNKNOWN;
+    return _wifi.encryptionType(networkItem);
 }
 
 uint8_t* WiFiClass::BSSID(uint8_t networkItem, uint8_t* bssid) {
-    if (networkItem >= _scan.size()) {
-        return nullptr;
-    }
-    auto it = _scan.begin();
-    for (int i = 0; i < networkItem; i++) {
-        ++it;
-    }
-    memcpy(bssid, it->second.bssid, 6);
-    return bssid;
+    return _wifi.BSSID(networkItem, bssid);
 }
 
 uint8_t WiFiClass::channel(uint8_t networkItem) {
-    if (networkItem >= _scan.size()) {
-        return 255;
-    }
-    auto it = _scan.begin();
-    for (int i = 0; i < networkItem; i++) {
-        ++it;
-    }
-    return it->second.channel;
+    return _wifi.channel(networkItem);
 }
 
 /*
@@ -543,14 +442,7 @@ uint8_t WiFiClass::channel(uint8_t networkItem) {
     return: signed value of RSSI of the specified item on the networks scanned list
 */
 int32_t WiFiClass::RSSI(uint8_t networkItem) {
-    if (networkItem >= _scan.size()) {
-        return -9999;
-    }
-    auto it = _scan.begin();
-    for (int i = 0; i < networkItem; i++) {
-        ++it;
-    }
-    return it->second.rssi;
+    return _wifi.RSSI(networkItem);
 }
 
 /*
@@ -562,14 +454,7 @@ uint8_t WiFiClass::status() {
     if (_apMode && _wifiHWInitted) {
         return WL_CONNECTED;
     }
-    switch (cyw43_wifi_link_status(&cyw43_state, _apMode ? 1 : 0)) {
-    case CYW43_LINK_DOWN: return WL_IDLE_STATUS;
-    case CYW43_LINK_JOIN: return localIP().isSet() ? WL_CONNECTED : WL_DISCONNECTED;
-    case CYW43_LINK_FAIL: return WL_CONNECT_FAILED;
-    case CYW43_LINK_NONET: return WL_CONNECT_FAILED;
-    case CYW43_LINK_BADAUTH: return WL_CONNECT_FAILED;
-    }
-    return WL_NO_MODULE;
+    return _wifi.status();
 }
 
 /*
@@ -599,6 +484,7 @@ unsigned long WiFiClass::getTime() {
     return millis();
 }
 
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
 void WiFiClass::aggressiveLowPowerMode() {
     cyw43_wifi_pm(&cyw43_state, CYW43_AGGRESSIVE_PM);
 }
@@ -606,10 +492,11 @@ void WiFiClass::aggressiveLowPowerMode() {
 void WiFiClass::defaultLowPowerMode() {
     cyw43_wifi_pm(&cyw43_state, CYW43_DEFAULT_PM);
 }
+#endif
 
 // The difference between the default CYW43_DEFAULT_PM (0xA11142) and not low power (0xA11140) is that it changed from "Powersave mode on specified interface with High throughput" to "No Powersave mode". All other parameters stayed the same.
 void WiFiClass::noLowPowerMode() {
-    cyw43_wifi_pm(&cyw43_state, 0xA11140);
+    _wifi.noLowPowerMode();
 }
 
 int WiFiClass::ping(const char* hostname, uint8_t ttl) {
