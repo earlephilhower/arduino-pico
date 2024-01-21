@@ -192,7 +192,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
               spi_deinit(_spi);
           }
           DEBUGSPI("SPI: initting SPI\n");
-          spi_init(_spi, _spis.getClockFreq());
+          spi_init(_spi, settings.getClockFreq());
           DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         }
         _spis = settings;
