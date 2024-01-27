@@ -286,10 +286,10 @@
                "systems": [
                   {
                      "host": "aarch64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.picotool-f6fe6b7.240125.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.picotool-f6fe6b7.240125.tar.gz",
-                     "checksum": "SHA-256:74eea38b2b283fc463ebd274d7fbd635bb26f864778b5ced5d8710d63d61b187",
-                     "size": "167076"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.picotool-f6fe6b7.240127.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.picotool-f6fe6b7.240127.tar.gz",
+                     "checksum": "SHA-256:40a07809925f642be73d221898dea76fb1e79556c2c5adff9e59c998b1416019",
+                     "size": "167073"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -348,10 +348,10 @@
                "systems": [
                   {
                      "host": "aarch64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.openocd-4d87f6dca.240125.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.openocd-4d87f6dca.240125.tar.gz",
-                     "checksum": "SHA-256:c7ccd41d7adead285e7278b9cb7d26319fb595d04a69ca398ec5cf69b6e0a5e9",
-                     "size": "3083341"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.openocd-4d87f6dca.240127.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.openocd-4d87f6dca.240127.tar.gz",
+                     "checksum": "SHA-256:548c6f6c84bde688b54b5014f99e15490d2afc50c4f3e777015583f12efab5de",
+                     "size": "3083386"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -472,10 +472,10 @@
                "systems": [
                   {
                      "host": "aarch64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.arm-none-eabi-d04e724.240125.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.arm-none-eabi-d04e724.240125.tar.gz",
-                     "checksum": "SHA-256:fcee1cfe1d0c6ed039e2851db39bbb79533e413af0330096f6fbe2fe725f2099",
-                     "size": "88202671"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.arm-none-eabi-d04e724.240127.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.arm-none-eabi-d04e724.240127.tar.gz",
+                     "checksum": "SHA-256:f70431e62a1d64b43d8730911be6b6f18ece3b91a216ce6c40d5318ad263756f",
+                     "size": "86285430"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -534,10 +534,10 @@
                "systems": [
                   {
                      "host": "aarch64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.elf2uf2-6a7db34.240125.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.elf2uf2-6a7db34.240125.tar.gz",
-                     "checksum": "SHA-256:94989b17ed75a8defd32d6ffae9a5e2f0bbaa958b3aa4259d95cb2b1c1183a12",
-                     "size": "21680"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.elf2uf2-6a7db34.240127.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.elf2uf2-6a7db34.240127.tar.gz",
+                     "checksum": "SHA-256:3fb12aa0d39bb03520a46ff5e3d0dbd0eb0df31843056f5dcd8b6fffa1d7ff86",
+                     "size": "30084"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -596,10 +596,10 @@
                "systems": [
                   {
                      "host": "aarch64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.pioasm-6a7db34.240125.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.pioasm-6a7db34.240125.tar.gz",
-                     "checksum": "SHA-256:bcbba6b585ef1f7fe37471a137ff2c833d69681c85448f144936bc8d967ae26c",
-                     "size": "178287"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.pioasm-6a7db34.240127.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.pioasm-6a7db34.240127.tar.gz",
+                     "checksum": "SHA-256:b325fdf8c2e7712e821049c68fc29dfac80bc492fb03c0fb3597de272ff42deb",
+                     "size": "246217"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -658,10 +658,10 @@
                "systems": [
                   {
                      "host": "aarch64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.mklittlefs-6e2fa17.240125.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.mklittlefs-6e2fa17.240125.tar.gz",
-                     "checksum": "SHA-256:0c8392431e34e2a6e2e81006ea6d7065d0c9eed4736ad0dc5f10cca2e6473f92",
-                     "size": "62393"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.mklittlefs-6e2fa17.240127.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.mklittlefs-6e2fa17.240127.tar.gz",
+                     "checksum": "SHA-256:ad46da0560569a97edd11490829479e70aa3c53b4525c5a8f6ae154f2d41c0bb",
+                     "size": "70714"
                   },
                   {
                      "host": "aarch64-linux-gnu",
