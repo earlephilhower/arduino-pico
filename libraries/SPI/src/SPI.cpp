@@ -184,15 +184,18 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
     if (_initted && settings == _spis) {
         DEBUGSPI("SPI: Reusing existing initted SPI\n");
     } else {
-        _spis = settings;
-        if (_initted) {
-            DEBUGSPI("SPI: deinitting currently active SPI\n");
-            spi_deinit(_spi);
+        /* Only de-init if the clock changes frequency */
+        if (settings.getClockFreq() != _spis.getClockFreq()) {
+            if (_initted) {
+                DEBUGSPI("SPI: deinitting currently active SPI\n");
+                spi_deinit(_spi);
+            }
+            DEBUGSPI("SPI: initting SPI\n");
+            spi_init(_spi, settings.getClockFreq());
+            DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         }
-        DEBUGSPI("SPI: initting SPI\n");
-        spi_init(_spi, _spis.getClockFreq());
+        _spis = settings;
         spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
-        DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         _initted = true;
     }
     // Disable any IRQs that are being used for SPI
