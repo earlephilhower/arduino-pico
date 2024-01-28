@@ -37,8 +37,7 @@ public:
         (void) timeout;
     }
 
-    void end(bool apMode) {
-        (void) apMode;
+    void end() {
     }
 
     bool connected() {
