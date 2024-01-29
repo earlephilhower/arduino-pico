@@ -37,7 +37,7 @@ SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pi
     _spi = spi;
     _running = false;
     _initted = false;
-    _spis = SPISettings();
+    _spis = SPISettings(0, LSBFIRST, SPI_MODE0); // Ensure spi_init called by setting current freq to 0
     _RX = rx;
     _TX = tx;
     _SCK = sck;
@@ -341,6 +341,7 @@ void SPIClassRP2040::end() {
     }
     gpio_set_function(_SCK, GPIO_FUNC_SIO);
     gpio_set_function(_TX, GPIO_FUNC_SIO);
+    _spis = SPISettings(0, LSBFIRST, SPI_MODE0);
 }
 
 void SPIClassRP2040::setBitOrder(BitOrder order) {
