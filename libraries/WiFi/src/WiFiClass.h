@@ -25,6 +25,8 @@
 #include <Arduino.h>
 #ifdef ARDUINO_RASPBERRY_PI_PICO_W
 #include <lwIP_CYW43.h>
+#elif defined(ESPHOSTSPI)
+#include <lwIP_ESPHost.h>
 #else
 #include "utility/lwIP_nodriver.h"
 #endif
