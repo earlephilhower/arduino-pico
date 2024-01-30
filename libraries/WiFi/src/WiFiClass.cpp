@@ -32,6 +32,8 @@
 #ifdef ARDUINO_RASPBERRY_PI_PICO_W
 #include <pico/cyw43_arch.h>
 static CYW43lwIP _wifi(1);
+#elif defined(ESPHOSTSPI)
+static ESPHostLwIP _wifi;
 #else
 static NoDriverLwIP _wifi;
 #endif
@@ -100,11 +102,11 @@ int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bs
     } else {
         bzero(_bssid, sizeof(_bssid));
     }
+    _wifi.setSTA();
     _wifi.setSSID(_ssid.c_str());
     _wifi.setBSSID(_bssid);
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
-    _wifi.setSTA();
     _apMode = false;
     _wifiHWInitted = true;
     uint32_t start = millis(); // The timeout starts from network init, not network link up
@@ -139,10 +141,10 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 
     _ssid = ssid;
     _password = passphrase;
+    _wifi.setAP();
     _wifi.setSSID(_ssid.c_str());
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
-    _wifi.setAP();
     _apMode = true;
     IPAddress gw = _wifi.gatewayIP();
     if (!gw.isSet()) {
