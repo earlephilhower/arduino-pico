@@ -144,7 +144,10 @@ jobs:
 # Single build under macOS to ensure the Mac toolchain is good.
   build-mac:
     name: Mac
-    runs-on: macOS-12
+    strategy:
+      matrix:
+        os: [macOS-12, macOS-14]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
       with:
@@ -165,6 +168,8 @@ jobs:
         mod: 500
         rem: 1
       run: |
+        uname -a
+        sysctl -a | grep machdep.cpu
         cd pico-sdk
         git submodule update --init
         cd ..
