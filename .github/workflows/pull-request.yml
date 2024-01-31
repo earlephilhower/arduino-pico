@@ -169,7 +169,6 @@ jobs:
         rem: 1
       run: |
         uname -a
-        sysctl -a | grep machdep.cpu
         cd pico-sdk
         git submodule update --init
         cd ..
