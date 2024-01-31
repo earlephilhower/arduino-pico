@@ -459,10 +459,10 @@
                   },
                   {
                      "host": "arm64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.0.1-base/python3-macosx-portable.tar.gz",
-                     "archiveFileName": "python3-macosx-portable.tar.gz",
-                     "checksum": "SHA-256:01a5bf1fa264c6f04cfaadf4c6e9f6caaacb6833ef40104dfbe953fcdb9bca1c",
-                     "size": "25494144"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/python3.18-portable-darwin_arm64.tar.gz",
+                     "archiveFileName": "python3.18-portable-darwin_arm64.tar.gz",
+                     "checksum": "SHA-256:ac6ee694191ac4db770e147429a7606b50063110db9ccbaf46e0e5ff8f7dcd20",
+                     "size": "90294119"
                   },
                   {
                      "host": "x86_64-pc-linux-gnu",
