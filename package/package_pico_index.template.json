@@ -286,10 +286,10 @@
                "systems": [
                   {
                      "host": "arm64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.picotool-f6fe6b7.240127.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.picotool-f6fe6b7.240127.tar.gz",
-                     "checksum": "SHA-256:40a07809925f642be73d221898dea76fb1e79556c2c5adff9e59c998b1416019",
-                     "size": "167073"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/picotool.macosarm.tar.gz",
+                     "archiveFileName": "picotool.macosarm.tar.gz",
+                     "checksum": "SHA-256:6b9d28dee6f3c67ab705ff1bc9bd96de3fcb7f1d73753a0e802999b408d39011",
+                     "size": "174728"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -348,10 +348,10 @@
                "systems": [
                   {
                      "host": "arm64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.openocd-4d87f6dca.240127.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.openocd-4d87f6dca.240127.tar.gz",
-                     "checksum": "SHA-256:548c6f6c84bde688b54b5014f99e15490d2afc50c4f3e777015583f12efab5de",
-                     "size": "3083386"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/openocd.macosarm.tar.gz",
+                     "archiveFileName": "openocd.macosarm.tar.gz",
+                     "checksum": "SHA-256:585128f38286c0026f0c3d3d14aab098282ef0958882226907fefb1824ddd350",
+                     "size": "1877283"
                   },
                   {
                      "host": "aarch64-linux-gnu",
