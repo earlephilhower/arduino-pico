@@ -137,6 +137,13 @@ public:
         _spiSettings = s;
     }
 
+    uint32_t packetsReceived() {
+        return _packetsReceived;
+    }
+    uint32_t packetsSent() {
+        return _packetsSent;
+    }
+
     // ESP8266WiFi API compatibility
 
     wl_status_t status();
@@ -172,6 +179,9 @@ protected:
 
     // Packet handler number
     int _phID = -1;
+
+    uint32_t _packetsReceived = 0;
+    uint32_t _packetsSent = 0;
 };
 
 
@@ -416,7 +426,7 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
     ethernet_arch_lwip_begin();
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
-
+    lid->_packetsSent++;
 #if PHY_HAS_CAPTURE
     if (phy_capture) {
         phy_capture(lid->_netif.num, (const char*)pbuf->payload, pbuf->len, /*out*/ 1,
@@ -529,6 +539,8 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
             pbuf_free(pbuf);
             return ERR_BUF;
         }
+
+        _packetsReceived++;
 
         err_t err = _netif.input(pbuf, &_netif);
 
