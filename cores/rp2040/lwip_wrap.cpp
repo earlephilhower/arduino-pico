@@ -33,12 +33,17 @@
 
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
 extern void ethernet_arch_lwip_end() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_mask() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_unmask() __attribute__((weak));
 
 auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 
 class LWIPMutex {
 public:
     LWIPMutex() {
+        if (ethernet_arch_lwip_gpio_mask)  {
+            ethernet_arch_lwip_gpio_mask();
+        }
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_begin();
@@ -56,13 +61,18 @@ public:
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_end();
-            return;
+        } else {
+#endif
+            if (ethernet_arch_lwip_end) {
+                ethernet_arch_lwip_end();
+            } else {
+                recursive_mutex_exit(&__lwipMutex);
+            }
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         }
 #endif
-        if (ethernet_arch_lwip_end) {
-            ethernet_arch_lwip_end();
-        } else {
-            recursive_mutex_exit(&__lwipMutex);
+        if (ethernet_arch_lwip_gpio_unmask) {
+            ethernet_arch_lwip_gpio_unmask();
         }
     }
 };

@@ -101,7 +101,7 @@ public:
     netif *_netif;
 protected:
     static constexpr bool interruptIsPossible() {
-        return false;
+        return true;
     }
 
     /**
@@ -144,6 +144,7 @@ private:
 
     SPIClass& _spi;
     int8_t    _cs;
+    int8_t    _intr;
     uint8_t   _mac_address[6];
 
     /**
@@ -308,6 +309,17 @@ private:
         MR_IND = 0x01,  ///< Indirect Bus Interface mode
     };
 
+    /** Interrupt Mask register values */
+    enum {
+        IM_IR0 = 0x01,  ///< Occurrence of Socket 0 Socket Interrupt Enable
+        IM_IR1 = 0x02,  ///< Occurrence of Socket 1 Socket Interrupt Enable
+        IM_IR2 = 0x04,  ///< Occurrence of Socket 2 Socket Interrupt Enable
+        IM_IR3 = 0x08,  ///< Occurrence of Socket 3 Socket Interrupt Enable
+        IM_IR5 = 0x20,  ///< PPPoE Close Enable
+        IM_IR6 = 0x40,  ///< Destination unreachable Enable
+        IM_IR7 = 0x80,  ///< IP Conflict Enable
+    };
+
     /** Socket Mode Register values @ref Sn_MR */
     enum {
         Sn_MR_CLOSE  = 0x00,  ///< Unused socket
@@ -373,6 +385,24 @@ private:
     */
     inline uint8_t getMR() {
         return wizchip_read(MR);
+    }
+
+    /**
+        Set Interrupt Mask Register
+        @param (uint8_t)mr The value to be set.
+        @sa geIMR()
+    */
+    inline void setIMR(uint8_t mode) {
+        wizchip_write(IMR, mode);
+    }
+
+    /**
+        Get Mode Register
+        @return uint8_t. The value of Mode register.
+        @sa setIMR()
+    */
+    inline uint8_t getIMR() {
+        return wizchip_read(IMR);
     }
 
     /**

@@ -72,6 +72,45 @@ void __removeEthernetPacketHandler(int id) {
     ethernet_arch_lwip_end();
 }
 
+
+static uint32_t gpioMask[4] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
+static uint32_t gpioUnmask[4] = {0, 0, 0, 0};
+
+void ethernet_arch_lwip_gpio_mask() {
+    noInterrupts();
+    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    for (int i = 0; i < 4; i++) {
+        irq_ctrl_base->inte[i] = irq_ctrl_base->inte[i] & gpioMask[i];
+    }
+    interrupts();
+}
+
+void ethernet_arch_lwip_gpio_unmask() {
+    noInterrupts();
+    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    for (int i = 0; i < 4; i++) {
+        irq_ctrl_base->inte[i] = irq_ctrl_base->inte[i] | gpioUnmask[i];
+    }
+    interrupts();
+}
+
+// To be called after IRQ is set, so we can just rad from the IOREG instead of duplicating the calculation
+void __addEthernetGPIO(int pin) {
+    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    int idx = pin / 8;
+    int off = (pin % 8) * 4;
+    gpioMask[idx] &= ~(0xf << off);
+    gpioUnmask[idx] |= irq_ctrl_base->inte[idx] & (0xf << off);
+}
+
+void __removeEthernetGPIO(int pin) {
+    int idx = pin / 8;
+    int off = (pin % 8) * 4;
+    gpioMask[idx] |= 0xf << off;
+    gpioUnmask[idx] &= 0xffffffff ^ (0xf << off);
+}
+
+
 static volatile bool _dns_lookup_pending = false;
 
 static void _dns_found_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg) {

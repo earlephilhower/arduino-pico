@@ -34,6 +34,7 @@
 
 #include <SPI.h>
 #include "w5100.h"
+#include <LwipEthernet.h>
 
 uint8_t Wiznet5100::wizchip_read(uint16_t address) {
     uint8_t ret;
@@ -178,8 +179,7 @@ void Wiznet5100::wizchip_sw_reset() {
     setSHAR(_mac_address);
 }
 
-Wiznet5100::Wiznet5100(int8_t cs, SPIClass& spi, int8_t intr) : _spi(spi), _cs(cs) {
-    (void)intr;
+Wiznet5100::Wiznet5100(int8_t cs, SPIClass& spi, int8_t intr) : _spi(spi), _cs(cs), _intr(intr) {
 }
 
 bool Wiznet5100::begin(const uint8_t* mac_address, netif *net) {
@@ -188,13 +188,6 @@ bool Wiznet5100::begin(const uint8_t* mac_address, netif *net) {
 
     pinMode(_cs, OUTPUT);
     wizchip_cs_deselect();
-
-#if 0
-    _spi.begin();
-    _spi.setClockDivider(SPI_CLOCK_DIV4); // 4 MHz?
-    _spi.setBitOrder(MSBFIRST);
-    _spi.setDataMode(SPI_MODE0);
-#endif
 
     wizchip_sw_reset();
 
@@ -211,6 +204,12 @@ bool Wiznet5100::begin(const uint8_t* mac_address, netif *net) {
     if (getSn_SR() != SOCK_MACRAW) {
         // Failed to put socket 0 into MACRaw mode
         return false;
+    }
+
+    if (_intr >= 0) {
+        setSn_IR(0xff); // Clear everything
+        setIMR(IM_IR0);
+        pinMode(_intr, INPUT);
     }
 
     // Success
@@ -245,6 +244,8 @@ uint16_t Wiznet5100::readFrame(uint8_t* buffer, uint16_t bufsize) {
 }
 
 uint16_t Wiznet5100::readFrameSize() {
+    setSn_IR(Sn_IR_RECV);
+
     uint16_t len = getSn_RX_RSR();
 
     if (len == 0) {
@@ -273,25 +274,18 @@ uint16_t Wiznet5100::readFrameData(uint8_t* buffer, uint16_t framesize) {
     wizchip_recv_data(buffer, framesize);
     setSn_CR(Sn_CR_RECV);
 
-#if 1
     // let lwIP deal with mac address filtering
     return framesize;
-#else
-    // W5100 doesn't have any built-in MAC address filtering
-    if ((buffer[0] & 0x01) || memcmp(&buffer[0], _mac_address, 6) == 0) {
-        // Addressed to an Ethernet multicast address or our unicast address
-        return framesize;
-    } else {
-        return 0;
-    }
-#endif
 }
 
 uint16_t Wiznet5100::sendFrame(const uint8_t* buf, uint16_t len) {
+    ethernet_arch_lwip_gpio_mask(); // So we don't fire an IRQ and interrupt the send w/a receive!
+
     // Wait for space in the transmit buffer
     while (1) {
         uint16_t freesize = getSn_TX_FSR();
         if (getSn_SR() == SOCK_CLOSED) {
+            ethernet_arch_lwip_gpio_unmask();
             return -1;
         }
         if (len <= freesize) {
@@ -311,9 +305,11 @@ uint16_t Wiznet5100::sendFrame(const uint8_t* buf, uint16_t len) {
         } else if (tmp & Sn_IR_TIMEOUT) {
             setSn_IR(Sn_IR_TIMEOUT);
             // There was a timeout
+            ethernet_arch_lwip_gpio_unmask();
             return -1;
         }
     }
 
+    ethernet_arch_lwip_gpio_unmask();
     return len;
 }
