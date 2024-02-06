@@ -72,14 +72,15 @@ void __removeEthernetPacketHandler(int id) {
     ethernet_arch_lwip_end();
 }
 
-
+static uint32_t gpioMaskStack[4][4];
 static uint32_t gpioMask[4] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
-static uint32_t gpioUnmask[4] = {0, 0, 0, 0};
 
 void ethernet_arch_lwip_gpio_mask() {
     noInterrupts();
+    memmove(gpioMaskStack[1], gpioMaskStack[0], 4 * sizeof(uint32_t) * 3); // Push down the stack
     io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     for (int i = 0; i < 4; i++) {
+        gpioMaskStack[0][i] = irq_ctrl_base->inte[i];
         irq_ctrl_base->inte[i] = irq_ctrl_base->inte[i] & gpioMask[i];
     }
     interrupts();
@@ -89,8 +90,9 @@ void ethernet_arch_lwip_gpio_unmask() {
     noInterrupts();
     io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     for (int i = 0; i < 4; i++) {
-        irq_ctrl_base->inte[i] = irq_ctrl_base->inte[i] | gpioUnmask[i];
+        irq_ctrl_base->inte[i] = gpioMaskStack[0][i];
     }
+    memmove(gpioMaskStack[0], gpioMaskStack[1],  4 * sizeof(uint32_t) * 3); // Pop up the stack
     interrupts();
 }
 
@@ -100,14 +102,12 @@ void __addEthernetGPIO(int pin) {
     int idx = pin / 8;
     int off = (pin % 8) * 4;
     gpioMask[idx] &= ~(0xf << off);
-    gpioUnmask[idx] |= irq_ctrl_base->inte[idx] & (0xf << off);
 }
 
 void __removeEthernetGPIO(int pin) {
     int idx = pin / 8;
     int off = (pin % 8) * 4;
     gpioMask[idx] |= 0xf << off;
-    gpioUnmask[idx] &= 0xffffffff ^ (0xf << off);
 }
 
 
@@ -173,6 +173,7 @@ static uint32_t _pollingPeriod = 20;
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
     __ethernet_timeout_reached_calls++;
+    ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
     }
@@ -183,6 +184,7 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
 #else
     sys_check_timeouts();
 #endif
+    ethernet_arch_lwip_gpio_unmask();
 }
 
 static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker) {

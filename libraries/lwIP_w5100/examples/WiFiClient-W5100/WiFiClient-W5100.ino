@@ -9,6 +9,8 @@ const char* host = "djxmmx.net";
 const uint16_t port = 17;
 
 Wiznet5100lwIP eth(1 /* chip select */);
+// To use Interrupt-driven mode, pass in an SPI object and an IRQ pin like so:
+// Wiznet5100lwIP eth(17, SPI, 21);
 
 void setup() {
   // Set up SPI pinout to match your HW
