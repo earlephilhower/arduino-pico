@@ -104,7 +104,7 @@ public:
 
 protected:
     static constexpr bool interruptIsPossible() {
-        return false;
+        return true;
     }
 
     /**
@@ -152,6 +152,7 @@ private:
 
     SPIClass& _spi;
     int8_t    _cs;
+    int8_t    _intr;
     uint8_t   _mac_address[6];
 
     /**
@@ -319,7 +320,7 @@ private:
         IR       = 0x0015,  ///< Interrupt Register (R/W)
         _IMR_    = 0x0016,  ///< Interrupt mask register (R/W)
         SIR      = 0x0017,  ///< Socket Interrupt Register (R/W)
-        SIMR     = 0x0018,  ///< Socket Interrupt Mask Register (R/W)
+        _SIMR_   = 0x0018,  ///< Socket Interrupt Mask Register (R/W)
         _RTR_    = 0x0019,  ///< Timeout register address (1 is 100us) (R/W)
         _RCR_    = 0x001B,  ///< Retry count register (R/W)
         UIPR     = 0x0028,  ///< Unreachable IP register address in UDP mode (R)
@@ -521,6 +522,24 @@ private:
     }
 
     /**
+        Set @ref SIR register
+        @param (uint8_t)ir Value to set @ref SIR register.
+        @sa getSIR()
+    */
+    inline void setSIR(uint8_t ir) {
+        wizchip_write(BlockSelectCReg, SIR, ir);
+    }
+
+    /**
+        Get @ref SIR register
+        @return uint8_t. Value of @ref SIR register.
+        @sa setSIR()
+    */
+    inline uint8_t getSIR() {
+        return wizchip_read(BlockSelectCReg, SIR);
+    }
+
+    /**
         Set @ref _IMR_ register
         @param (uint8_t)imr Value to set @ref _IMR_ register.
         @sa getIMR()
@@ -536,6 +555,24 @@ private:
     */
     inline uint8_t getIMR() {
         return wizchip_read(BlockSelectCReg, _IMR_);
+    }
+
+    /**
+        Set @ref _SIMR_ register
+        @param (uint8_t)imr Value to set @ref _SIMR_ register.
+        @sa getIMR()
+    */
+    inline void setSIMR(uint8_t imr) {
+        wizchip_write(BlockSelectCReg, _SIMR_, imr);
+    }
+
+    /**
+        Get @ref _SIMR_ register
+        @return uint8_t. Value of @ref _SIMR_ register.
+        @sa setSIMR()
+    */
+    inline uint8_t getSIMR() {
+        return wizchip_read(BlockSelectCReg, _SIMR_);
     }
 
     /**

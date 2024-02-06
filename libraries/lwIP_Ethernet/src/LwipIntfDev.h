@@ -144,6 +144,7 @@ public:
         return _packetsSent;
     }
 
+
     // ESP8266WiFi API compatibility
 
     wl_status_t status();
@@ -156,6 +157,7 @@ protected:
     static err_t netif_init_s(netif* netif);
     static err_t linkoutput_s(netif* netif, struct pbuf* p);
     static void  netif_status_callback_s(netif* netif);
+    static void _irq(void *param);
 public:
     // called on a regular basis or on interrupt
     err_t handlePackets();
@@ -358,7 +360,9 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         return false;
     }
 
-    _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
+    if (_intrPin < 0) {
+        _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
+    }
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
@@ -393,7 +397,11 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
     if (_intrPin >= 0) {
         if (RawDev::interruptIsPossible()) {
-            // attachInterrupt(_intrPin, [&]() { this->handlePackets(); }, FALLING);
+            noInterrupts(); // Ensure this is atomically set up
+            pinMode(_intrPin, INPUT);
+            attachInterruptParam(_intrPin, _irq, LOW, (void*)this);
+            __addEthernetGPIO(_intrPin);
+            interrupts();
         } else {
             ::printf((PGM_P)F(
                          "lwIP_Intf: Interrupt not implemented yet, enabling transparent polling\r\n"));
@@ -406,7 +414,12 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
-    __removeEthernetPacketHandler(_phID);
+    if (_intrPin < 0) {
+        __removeEthernetPacketHandler(_phID);
+    } else {
+        detachInterrupt(_intrPin);
+        __removeEthernetGPIO(_intrPin);
+    }
 
     RawDev::end();
 
@@ -415,6 +428,14 @@ void LwipIntfDev<RawDev>::end() {
     _started = false;
 }
 
+template<class RawDev>
+void LwipIntfDev<RawDev>::_irq(void *param) {
+    LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
+    ethernet_arch_lwip_begin();
+    d->handlePackets();
+    sys_check_timeouts();
+    ethernet_arch_lwip_end();
+}
 
 template<class RawDev>
 wl_status_t LwipIntfDev<RawDev>::status() {
