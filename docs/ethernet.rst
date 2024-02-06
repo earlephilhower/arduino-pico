@@ -127,12 +127,12 @@ For example, to set the W5500 to use a 30MHZ clock:
 Using the WIZnet W5100S-EVB-Pico
 --------------------------------
 
-You can use the onboard Ethernet chip with these drivers by utilizing the following options:
+You can use the onboard Ethernet chip with these drivers, in interrupt mode, by utilizing the following options:
 
 .. code:: cpp
 
     #include <W5100lwIP.h>
-    Wiznet5100lwIP eth(17);  // Note chip select is **17**
+    Wiznet5100lwIP eth(17, SPI, 21);  // Note chip select is **17**
 
     void setup() {
         // Set SPI to the onboard Wiznet chip
