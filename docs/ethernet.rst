@@ -89,9 +89,9 @@ leading to a lock up and hang.
 Using Interrupt-Driven Handling
 -------------------------------
 
-The WizNet devices support generating an interrupt when a packet is received, removing the
-need for polling and decreasing latency.  Simply specify the SPI object to use and the
-interrupt pin whwn instantiating the Ethernet object:
+The WizNet and ENC28J60 devices support generating an interrupt when a packet is received,
+removing the need for polling and decreasing latency.  Simply specify the SPI object to use and the
+interrupt pin when instantiating the Ethernet object:
 
 .. code:: cpp
 

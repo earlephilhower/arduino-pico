@@ -99,7 +99,7 @@ public:
     netif *_netif;
 protected:
     static constexpr bool interruptIsPossible() {
-        return false;
+        return true;
     }
 
     /**
@@ -154,6 +154,7 @@ private:
 
     uint8_t   _bank;
     int8_t    _cs;
+    int8_t    _intr;
     SPIClass& _spi;
 
     const uint8_t* _localMac;
