@@ -432,6 +432,7 @@ void LwipIntfDev<RawDev>::_irq(void *param) {
     LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
     ethernet_arch_lwip_begin();
     d->handlePackets();
+    sys_check_timeouts();
     ethernet_arch_lwip_end();
 }
 
