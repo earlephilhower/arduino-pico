@@ -98,7 +98,6 @@ void ethernet_arch_lwip_gpio_unmask() {
 
 // To be called after IRQ is set, so we can just rad from the IOREG instead of duplicating the calculation
 void __addEthernetGPIO(int pin) {
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     int idx = pin / 8;
     int off = (pin % 8) * 4;
     gpioMask[idx] &= ~(0xf << off);
