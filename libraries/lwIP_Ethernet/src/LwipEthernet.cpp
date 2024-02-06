@@ -72,12 +72,13 @@ void __removeEthernetPacketHandler(int id) {
     ethernet_arch_lwip_end();
 }
 
-static uint32_t gpioMaskStack[4][4];
+#define GPIOSTACKSIZE 8
+static uint32_t gpioMaskStack[GPIOSTACKSIZE][4];
 static uint32_t gpioMask[4] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
 
 void ethernet_arch_lwip_gpio_mask() {
     noInterrupts();
-    memmove(gpioMaskStack[1], gpioMaskStack[0], 4 * sizeof(uint32_t) * 3); // Push down the stack
+    memmove(gpioMaskStack[1], gpioMaskStack[0], 4 * sizeof(uint32_t) * (GPIOSTACKSIZE - 1)); // Push down the stack
     io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     for (int i = 0; i < 4; i++) {
         gpioMaskStack[0][i] = irq_ctrl_base->inte[i];
@@ -92,7 +93,7 @@ void ethernet_arch_lwip_gpio_unmask() {
     for (int i = 0; i < 4; i++) {
         irq_ctrl_base->inte[i] = gpioMaskStack[0][i];
     }
-    memmove(gpioMaskStack[0], gpioMaskStack[1],  4 * sizeof(uint32_t) * 3); // Pop up the stack
+    memmove(gpioMaskStack[0], gpioMaskStack[1],  4 * sizeof(uint32_t) * (GPIOSTACKSIZE - 1)); // Pop up the stack
     interrupts();
 }
 

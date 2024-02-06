@@ -86,6 +86,19 @@ Pico may not have enough time to service the Ethernet port before the timer fire
 leading to a lock up and hang.
 
 
+Using Interrupt-Driven Handling
+-------------------------------
+
+The WizNet devices support generating an interrupt when a packet is received, removing the
+need for polling and decreasing latency.  Simply specify the SPI object to use and the
+interrupt pin whwn instantiating the Ethernet object:
+
+.. code:: cpp
+
+    #include <W5100lwIP.h>
+    Wiznet5100lwIP eth(SS /* Chip Select*/, SPI /* SPI interface */, 17 /* Interrupt GPIO */ );
+
+
 Adjusting SPI Speed
 -------------------
 
