@@ -209,7 +209,6 @@ bool Wiznet5100::begin(const uint8_t* mac_address, netif *net) {
     if (_intr >= 0) {
         setSn_IR(0xff); // Clear everything
         setIMR(IM_IR0);
-        pinMode(_intr, INPUT);
     }
 
     // Success

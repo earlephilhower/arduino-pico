@@ -398,6 +398,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     if (_intrPin >= 0) {
         if (RawDev::interruptIsPossible()) {
             noInterrupts(); // Ensure this is atomically set up
+            pinMode(_intrPin, INPUT);
             attachInterruptParam(_intrPin, _irq, LOW, (void*)this);
             __addEthernetGPIO(_intrPin);
             interrupts();
