@@ -168,6 +168,7 @@ void PWMAudio::end() {
         _arb = nullptr;
 
         dma_timer_unclaim(_pacer);
+        _pacer = -1;
     }
 }
 
