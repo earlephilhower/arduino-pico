@@ -29,12 +29,21 @@ public:
     virtual ~PWMAudio();
 
     bool setBuffers(size_t buffers, size_t bufferWords);
-    bool setFrequency(int newFreq);
+    /*Sets the frequency of the PWM in hz*/
+    bool setPWMFrequency(int newFreq);
+    /*Sets the sample rate frequency in hz*/
+    bool setFrequency(int frequency);
     bool setPin(pin_size_t pin);
     bool setStereo(bool stereo = true);
 
     bool begin(long sampleRate) {
-        setFrequency(sampleRate);
+        _sampleRate=sampleRate;
+        return begin();
+    }
+
+    bool begin(long sampleRate, long PWMfrequency) {
+        setPWMFrequency(PWMfrequency);
+        _sampleRate=sampleRate;
         return begin();
     }
 
@@ -70,6 +79,9 @@ private:
     bool _stereo;
 
     int _freq;
+    int _sampleRate;
+
+    int _pacer;
 
     size_t _buffers;
     size_t _bufferWords;
@@ -84,4 +96,7 @@ private:
     void (*_cb)();
 
     AudioBufferManager *_arb;
+
+    /*An accurate but brute force method to find 16bit numerator and denominator.*/
+    void find_pacer_fraction(int target, uint16_t *numerator, uint16_t *denominator);
 };
