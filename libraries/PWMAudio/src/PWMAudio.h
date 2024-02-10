@@ -37,13 +37,13 @@ public:
     bool setStereo(bool stereo = true);
 
     bool begin(long sampleRate) {
-        _sampleRate=sampleRate;
+        _sampleRate = sampleRate;
         return begin();
     }
 
     bool begin(long sampleRate, long PWMfrequency) {
         setPWMFrequency(PWMfrequency);
-        _sampleRate=sampleRate;
+        _sampleRate = sampleRate;
         return begin();
     }
 

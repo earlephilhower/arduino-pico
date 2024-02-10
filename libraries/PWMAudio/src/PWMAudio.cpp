@@ -32,8 +32,8 @@ PWMAudio::PWMAudio(pin_size_t pin, bool stereo) {
     _buffers = 8;
     _bufferWords = 0;
     _stereo = stereo;
-    _sampleRate=48000;
-    _pacer=-1;
+    _sampleRate = 48000;
+    _pacer = -1;
 }
 
 PWMAudio::~PWMAudio() {
@@ -94,13 +94,14 @@ bool PWMAudio::setPWMFrequency(int newFreq) {
     return true;
 }
 
-bool PWMAudio::setFrequency(int frequency)
-{
-    if(_pacer<0) return false;
+bool PWMAudio::setFrequency(int frequency) {
+    if (_pacer < 0) {
+        return false;
+    }
     uint16_t _pacer_D, _pacer_N;
     /*Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values*/
-    find_pacer_fraction(frequency, &_pacer_D, &_pacer_N); 
-    dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D); 
+    find_pacer_fraction(frequency, &_pacer_D, &_pacer_N);
+    dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D);
     return true;
 }
 
@@ -134,12 +135,14 @@ bool PWMAudio::begin() {
     /*Calculate and set the DMA pacer timer. This timer will pull data on a fixed sample rate. So the actual PWM frequency can be higher or lower.*/
     _pacer = dma_claim_unused_timer(false);
     /*When no unused timer is found, return*/
-    if(_pacer<0) return false;
+    if (_pacer < 0) {
+        return false;
+    }
     uint16_t _pacer_D = 0;
     uint16_t _pacer_N = 0;
     /*Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values*/
-    find_pacer_fraction(_sampleRate, &_pacer_D, &_pacer_N); 
-    dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D); 
+    find_pacer_fraction(_sampleRate, &_pacer_D, &_pacer_N);
+    dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D);
     int _pacer_dreq = dma_get_timer_dreq(_pacer);
 
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
@@ -254,8 +257,7 @@ void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *de
     static uint16_t bestNum;
     static uint16_t bestDenom;
     /*Check if we can load the previous values*/
-    if(target==last_target)
-    {
+    if (target == last_target) {
         *numerator = bestNum;
         *denominator = bestDenom;
         return;
@@ -263,11 +265,11 @@ void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *de
 
     float targetRatio = (float)F_CPU / target;
     float lowestError = HUGE_VALF;
-    
+
     for (uint16_t denom = 1; denom < max; denom++) {
         uint16_t num = (int)((targetRatio * denom) + 0.5f); /*Calculate numerator, rounding to nearest integer*/
-        
-        /*Check if numerator is within bounds*/ 
+
+        /*Check if numerator is within bounds*/
         if (num > 0 && num < max) {
             float actualRatio = (float)num / denom;
             float error = fabsf(actualRatio - targetRatio);
@@ -276,12 +278,14 @@ void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *de
                 bestNum = num;
                 bestDenom = denom;
                 lowestError = error;
-                if(error==0) break;
+                if (error == 0) {
+                    break;
+                }
             }
         }
     }
 
-    last_target=target;
+    last_target = target;
     *numerator = bestNum;
     *denominator = bestDenom;
 }
