@@ -249,16 +249,25 @@ size_t PWMAudio::write(const uint8_t *buffer, size_t size) {
 void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *denominator) {
     const uint16_t max = 0xFFFF;
 
+    /*Cache last results so we dont have to recalculate*/
+    static int last_target;
+    static uint16_t bestNum;
+    static uint16_t bestDenom;
+    /*Check if we can load the previous values*/
+    if(target==last_target)
+    {
+        *numerator = bestNum;
+        *denominator = bestDenom;
+        return;
+    }
+
     float targetRatio = (float)F_CPU / target;
     float lowestError = HUGE_VALF;
-    uint16_t bestNum = 1;
-    uint16_t bestDenom = 1;
     
     for (uint16_t denom = 1; denom < max; denom++) {
-        Serial.println(denom);
-        uint16_t num = (int)((targetRatio * denom) + 0.5f); // Calculate numerator, rounding to nearest integer
+        uint16_t num = (int)((targetRatio * denom) + 0.5f); /*Calculate numerator, rounding to nearest integer*/
         
-        // Check if numerator is within bounds
+        /*Check if numerator is within bounds*/ 
         if (num > 0 && num < max) {
             float actualRatio = (float)num / denom;
             float error = fabsf(actualRatio - targetRatio);
@@ -272,6 +281,7 @@ void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *de
         }
     }
 
+    last_target=target;
     *numerator = bestNum;
     *denominator = bestDenom;
 }
