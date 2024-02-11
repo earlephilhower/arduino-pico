@@ -202,11 +202,14 @@ Under Windows a local admin user should be able to access the Picoprobe port aut
 
 To set up user-level access to Picoprobes on Ubuntu (and other OSes which use `udev`):
 ````
-echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", GROUP="users", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
 sudo udevadm control --reload
+sudo udevadm trigger -w -s usb
 ````
 
-The first line creates a file with the USB vendor and ID of the Picoprobe and tells UDEV to give users full access to it.  The second causes `udev` to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.
+The first line creates a device file in `/dev` matching the USB vendor and product ID of the Picoprobe, and it enables global read+write permissions. The second line causes `udev` to load this new rule. The third line requests the kernel generate "device change" events that will cause our new `udev` rule to run. 
+
+If for some reason the device file does not appear, manually unplug and re-plug the USB connection and check again. The output from `dmesg` can reveal useful diagnostics if the device file remains absent.
 
 Once Picoprobe permissions are set up properly, then select the board "Raspberry Pi Pico (Picoprobe)" in the Tools menu and upload as normal.
 
@@ -215,13 +218,16 @@ Once Picoprobe permissions are set up properly, then select the board "Raspberry
 
 Under Windows and macOS, any user should be able to access pico-debug automatically, but under Linux `udev` must be told about the device and to allow normal users access.
 
-To set up user-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes which use `udev`):
+To set up group-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes which use `udev`):
 ````
 echo 'ATTRS{product}=="*CMSIS-DAP*", MODE="664", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-CMSIS-DAP.rules
 sudo udevadm control --reload
+sudo udevadm trigger -w -s usb
 ````
 
-The first line creates a file that recognizes all CMSIS-DAP adapters and tells UDEV to give users full access to it.  The second causes `udev` to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.
+The first line creates a device file in `/dev` that matches all CMSIS-DAP adapters, and it enables read+write permissions for members of the `plugdev` group. The second line causes `udev` to load this new rule. The third line requests the kernel generate "device change" events that will cause our new `udev` rule to run. 
+
+If for some reason the device file does not appear, manually unplug and re-plug the USB connection and check again. The output from `dmesg` can reveal useful diagnostics if the device file remains absent.
 
 Once CMSIS-DAP permissions are set up properly, then select the board "Raspberry Pi Pico (pico-debug)" in the Tools menu.
 
