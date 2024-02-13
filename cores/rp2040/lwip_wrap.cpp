@@ -89,7 +89,7 @@ extern "C" {
     extern void __real_lwip_init();
     void __wrap_lwip_init() {
         if (!_lwip_rng) {
-            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(get_rand_64());
+            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros() * rp2040.getCycleCount());
             __real_lwip_init();
         }
     }
