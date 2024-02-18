@@ -25,6 +25,8 @@
 
 #include "ff.h"
 
+namespace fatfs {
+
 #if FF_USE_LFN != 0	/* This module will be blanked if in non-LFN configuration */
 
 #define MERGE2(a, b) a ## b
@@ -15589,5 +15591,5 @@ DWORD ff_wtoupper (	/* Returns up-converted code point */
 	return uni;
 }
 
-
+};
 #endif /* #if FF_USE_LFN != 0 */

@@ -153,6 +153,8 @@ bool FatFSImpl::format() {
 
 }; // namespace fatfs
 #include "diskio.h"
+
+namespace fatfs {
 static uint8_t disk[128 * 1024]; 
 
 DSTATUS disk_status(BYTE p) {
@@ -228,4 +230,6 @@ DWORD get_fattime() {
        (DWORD)stm->tm_hour << 11 |
        (DWORD)stm->tm_min << 5 |
        (DWORD)stm->tm_sec >> 1;
+}
+
 }

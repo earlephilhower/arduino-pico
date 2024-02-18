@@ -20,9 +20,13 @@
 
 
 #include <string.h>
+#include <stdarg.h>
+#include <math.h>
 #include "ff.h"			/* Declarations of FatFs API */
 #include "diskio.h"		/* Declarations of device I/O functions */
 
+
+namespace fatfs {
 
 /*--------------------------------------------------------------------------
 
@@ -6550,7 +6554,6 @@ TCHAR* f_gets (
 
 
 #if !FF_FS_READONLY
-#include <stdarg.h>
 #define SZ_PUTC_BUF	64
 #define SZ_NUM_BUF	32
 
@@ -6767,7 +6770,6 @@ int f_puts (
 /* Put a Formatted String to the File (with sub-functions)               */
 /*-----------------------------------------------------------------------*/
 #if FF_PRINT_FLOAT && FF_INTDEF == 2
-#include <math.h>
 
 static int ilog10 (double n)	/* Calculate log10(n) in integer output */
 {
@@ -7082,3 +7084,4 @@ FRESULT f_setcp (
 }
 #endif	/* FF_CODE_PAGE == 0 */
 
+};
