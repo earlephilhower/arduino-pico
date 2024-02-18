@@ -129,10 +129,10 @@ DirImplPtr FatFSImpl::openDir(const char* path) {
         }
     }
     // TODO -can this ever happen?
-//    if (!dirFile) {
-//        DEBUGV("FatFSImpl::openDir: path=`%s`\n", path);
-//        return DirImplPtr();
-//    }
+    //    if (!dirFile) {
+    //        DEBUGV("FatFSImpl::openDir: path=`%s`\n", path);
+    //        return DirImplPtr();
+    //    }
     auto sharedDir = std::make_shared<DIR>(dirFile);
     auto ret = std::make_shared<FatFSDirImpl>(filter, this, sharedDir, pathStr);
     free(pathStr);
@@ -155,7 +155,7 @@ bool FatFSImpl::format() {
 #include "diskio.h"
 
 namespace fatfs {
-static uint8_t disk[128 * 1024]; 
+static uint8_t disk[128 * 1024];
 
 DSTATUS disk_status(BYTE p) {
     (void) p;
@@ -181,38 +181,34 @@ DRESULT disk_write(BYTE pdrv, const BYTE* buff, LBA_t sector, UINT count) {
 
 DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void* buff) {
     (void) pdrv;
-    switch(cmd) {
-        case CTRL_SYNC:
-            // TODO - flush FTL
-            return RES_OK;
-        case GET_SECTOR_COUNT:
-        {
-            LBA_t *p = (LBA_t *)buff;
-            *p = sizeof(disk) / 512;
-            return RES_OK;
+    switch (cmd) {
+    case CTRL_SYNC:
+        // TODO - flush FTL
+        return RES_OK;
+    case GET_SECTOR_COUNT: {
+        LBA_t *p = (LBA_t *)buff;
+        *p = sizeof(disk) / 512;
+        return RES_OK;
+    }
+    case GET_SECTOR_SIZE: {
+        WORD *w = (WORD *)buff;
+        *w = 512;
+        return RES_OK;
+    }
+    case GET_BLOCK_SIZE: {
+        DWORD *dw = (DWORD *)buff;
+        *dw = 512; // TODO - FTL probably doesn't need to export this, raw flash should
+        return RES_OK;
+    }
+    case CTRL_TRIM: {
+        LBA_t *lba = (LBA_t *)buff;
+        for (unsigned int i = lba[0]; i < lba[1]; i++) {
+            bzero(disk + i * 512, 512);
         }
-        case GET_SECTOR_SIZE:
-        {
-            WORD *w = (WORD *)buff;
-            *w = 512;
-            return RES_OK;
-        }
-        case GET_BLOCK_SIZE:
-        {
-            DWORD *dw = (DWORD *)buff;
-            *dw = 512; // TODO - FTL probably doesn't need to export this, raw flash should
-            return RES_OK;
-        }
-        case CTRL_TRIM:
-        {
-            LBA_t *lba = (LBA_t *)buff;
-            for (unsigned int i = lba[0]; i < lba[1]; i++) {
-                bzero(disk + i *512, 512);
-            }
-            return RES_OK;
-        }
-        default:
-            return RES_PARERR;
+        return RES_OK;
+    }
+    default:
+        return RES_PARERR;
     }
 }
 
@@ -225,11 +221,11 @@ DWORD get_fattime() {
     }
     struct tm *stm = localtime(&now);
     return (DWORD)(stm->tm_year - 80) << 25 |
-       (DWORD)(stm->tm_mon + 1) << 21 |
-       (DWORD)stm->tm_mday << 16 |
-       (DWORD)stm->tm_hour << 11 |
-       (DWORD)stm->tm_min << 5 |
-       (DWORD)stm->tm_sec >> 1;
+           (DWORD)(stm->tm_mon + 1) << 21 |
+           (DWORD)stm->tm_mday << 16 |
+           (DWORD)stm->tm_hour << 11 |
+           (DWORD)stm->tm_min << 5 |
+           (DWORD)stm->tm_sec >> 1;
 }
 
 }

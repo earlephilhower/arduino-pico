@@ -20,36 +20,35 @@
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
 
-DSTATUS disk_status (
-	BYTE pdrv		/* Physical drive nmuber to identify the drive */
-)
-{
-	DSTATUS stat;
-	int result;
+DSTATUS disk_status(
+    BYTE pdrv		/* Physical drive nmuber to identify the drive */
+) {
+    DSTATUS stat;
+    int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
-		result = RAM_disk_status();
+    switch (pdrv) {
+    case DEV_RAM :
+        result = RAM_disk_status();
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return stat;
+        return stat;
 
-	case DEV_MMC :
-		result = MMC_disk_status();
+    case DEV_MMC :
+        result = MMC_disk_status();
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return stat;
+        return stat;
 
-	case DEV_USB :
-		result = USB_disk_status();
+    case DEV_USB :
+        result = USB_disk_status();
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return stat;
-	}
-	return STA_NOINIT;
+        return stat;
+    }
+    return STA_NOINIT;
 }
 
 
@@ -58,36 +57,35 @@ DSTATUS disk_status (
 /* Inidialize a Drive                                                    */
 /*-----------------------------------------------------------------------*/
 
-DSTATUS disk_initialize (
-	BYTE pdrv				/* Physical drive nmuber to identify the drive */
-)
-{
-	DSTATUS stat;
-	int result;
+DSTATUS disk_initialize(
+    BYTE pdrv				/* Physical drive nmuber to identify the drive */
+) {
+    DSTATUS stat;
+    int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
-		result = RAM_disk_initialize();
+    switch (pdrv) {
+    case DEV_RAM :
+        result = RAM_disk_initialize();
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return stat;
+        return stat;
 
-	case DEV_MMC :
-		result = MMC_disk_initialize();
+    case DEV_MMC :
+        result = MMC_disk_initialize();
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return stat;
+        return stat;
 
-	case DEV_USB :
-		result = USB_disk_initialize();
+    case DEV_USB :
+        result = USB_disk_initialize();
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return stat;
-	}
-	return STA_NOINIT;
+        return stat;
+    }
+    return STA_NOINIT;
 }
 
 
@@ -96,46 +94,45 @@ DSTATUS disk_initialize (
 /* Read Sector(s)                                                        */
 /*-----------------------------------------------------------------------*/
 
-DRESULT disk_read (
-	BYTE pdrv,		/* Physical drive nmuber to identify the drive */
-	BYTE *buff,		/* Data buffer to store read data */
-	LBA_t sector,	/* Start sector in LBA */
-	UINT count		/* Number of sectors to read */
-)
-{
-	DRESULT res;
-	int result;
+DRESULT disk_read(
+    BYTE pdrv,		/* Physical drive nmuber to identify the drive */
+    BYTE *buff,		/* Data buffer to store read data */
+    LBA_t sector,	/* Start sector in LBA */
+    UINT count		/* Number of sectors to read */
+) {
+    DRESULT res;
+    int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
-		// translate the arguments here
+    switch (pdrv) {
+    case DEV_RAM :
+        // translate the arguments here
 
-		result = RAM_disk_read(buff, sector, count);
+        result = RAM_disk_read(buff, sector, count);
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return res;
+        return res;
 
-	case DEV_MMC :
-		// translate the arguments here
+    case DEV_MMC :
+        // translate the arguments here
 
-		result = MMC_disk_read(buff, sector, count);
+        result = MMC_disk_read(buff, sector, count);
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return res;
+        return res;
 
-	case DEV_USB :
-		// translate the arguments here
+    case DEV_USB :
+        // translate the arguments here
 
-		result = USB_disk_read(buff, sector, count);
+        result = USB_disk_read(buff, sector, count);
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return res;
-	}
+        return res;
+    }
 
-	return RES_PARERR;
+    return RES_PARERR;
 }
 
 
@@ -146,46 +143,45 @@ DRESULT disk_read (
 
 #if FF_FS_READONLY == 0
 
-DRESULT disk_write (
-	BYTE pdrv,			/* Physical drive nmuber to identify the drive */
-	const BYTE *buff,	/* Data to be written */
-	LBA_t sector,		/* Start sector in LBA */
-	UINT count			/* Number of sectors to write */
-)
-{
-	DRESULT res;
-	int result;
+DRESULT disk_write(
+    BYTE pdrv,			/* Physical drive nmuber to identify the drive */
+    const BYTE *buff,	/* Data to be written */
+    LBA_t sector,		/* Start sector in LBA */
+    UINT count			/* Number of sectors to write */
+) {
+    DRESULT res;
+    int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
-		// translate the arguments here
+    switch (pdrv) {
+    case DEV_RAM :
+        // translate the arguments here
 
-		result = RAM_disk_write(buff, sector, count);
+        result = RAM_disk_write(buff, sector, count);
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return res;
+        return res;
 
-	case DEV_MMC :
-		// translate the arguments here
+    case DEV_MMC :
+        // translate the arguments here
 
-		result = MMC_disk_write(buff, sector, count);
+        result = MMC_disk_write(buff, sector, count);
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return res;
+        return res;
 
-	case DEV_USB :
-		// translate the arguments here
+    case DEV_USB :
+        // translate the arguments here
 
-		result = USB_disk_write(buff, sector, count);
+        result = USB_disk_write(buff, sector, count);
 
-		// translate the reslut code here
+        // translate the reslut code here
 
-		return res;
-	}
+        return res;
+    }
 
-	return RES_PARERR;
+    return RES_PARERR;
 }
 
 #endif
@@ -195,35 +191,34 @@ DRESULT disk_write (
 /* Miscellaneous Functions                                               */
 /*-----------------------------------------------------------------------*/
 
-DRESULT disk_ioctl (
-	BYTE pdrv,		/* Physical drive nmuber (0..) */
-	BYTE cmd,		/* Control code */
-	void *buff		/* Buffer to send/receive control data */
-)
-{
-	DRESULT res;
-	int result;
+DRESULT disk_ioctl(
+    BYTE pdrv,		/* Physical drive nmuber (0..) */
+    BYTE cmd,		/* Control code */
+    void *buff		/* Buffer to send/receive control data */
+) {
+    DRESULT res;
+    int result;
 
-	switch (pdrv) {
-	case DEV_RAM :
+    switch (pdrv) {
+    case DEV_RAM :
 
-		// Process of the command for the RAM drive
+        // Process of the command for the RAM drive
 
-		return res;
+        return res;
 
-	case DEV_MMC :
+    case DEV_MMC :
 
-		// Process of the command for the MMC/SD card
+        // Process of the command for the MMC/SD card
 
-		return res;
+        return res;
 
-	case DEV_USB :
+    case DEV_USB :
 
-		// Process of the command the USB drive
+        // Process of the command the USB drive
 
-		return res;
-	}
+        return res;
+    }
 
-	return RES_PARERR;
+    return RES_PARERR;
 }
 
