@@ -51,7 +51,7 @@ void ESPHostLwIP::setSSID(const char *ssid) {
 }
 
 void ESPHostLwIP::setBSSID(const uint8_t *bssid) {
-    if (bssid == nullptr) {
+    if (bssid == nullptr || !(bssid[0] | bssid[1] | bssid[2] | bssid[3] | bssid[4] | bssid[5])) {
         ap.bssid[0] = 0;
     } else {
         snprintf((char *)ap.bssid, sizeof(ap.bssid), "%02x:%02x:%02x:%02x:%02x:%02x", bssid[0], bssid[1], bssid[2], bssid[3], bssid[4], bssid[5]);

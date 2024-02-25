@@ -206,7 +206,7 @@ void SPISlaveClass::setData(const uint8_t *data, size_t len) {
 
 
 void SPISlaveClass::begin(SPISettings spis) {
-    DEBUGSPI("SPISlave::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d\n", hwCS, _RX, _CS, _SCK, _TX);
+    DEBUGSPI("SPISlave::begin(), rx=%d, cs=%d, sck=%d, tx=%d\n", _RX, _CS, _SCK, _TX);
     gpio_set_function(_RX, GPIO_FUNC_SPI);
     gpio_set_function(_CS, GPIO_FUNC_SPI);
     gpio_set_function(_SCK, GPIO_FUNC_SPI);
