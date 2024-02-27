@@ -32,6 +32,7 @@
 #include "FS.h"
 #include "FSImpl.h"
 #include "./ff.h"
+#include "./diskio.h"
 #include <FS.h>
 
 using namespace fs;
@@ -145,6 +146,7 @@ public:
         if (_mounted) {
             f_unmount("");
         }
+        sync();
         _mounted = false;
     }
 
@@ -167,6 +169,10 @@ public:
     virtual void setTimeCallback(time_t (*cb)(void)) override {
         extern time_t (*__fatfs_timeCallback)(void);
         __fatfs_timeCallback = cb;
+    }
+
+    void sync() {
+        disk_ioctl(0, CTRL_SYNC, nullptr);
     }
 
 protected:
@@ -206,8 +212,8 @@ protected:
 
 class FatFSFileImpl : public FileImpl {
 public:
-    FatFSFileImpl(FatFSImpl *fs, std::shared_ptr<FIL> fd, const char *name)
-        : _fs(fs), _fd(fd), _opened(true) {
+    FatFSFileImpl(FatFSImpl *fs, std::shared_ptr<FIL> fd, const char *name, bool writable)
+        : _fs(fs), _fd(fd), _opened(true), _writable(writable) {
         _name = std::shared_ptr<char>(new char[strlen(name) + 1], std::default_delete<char[]>());
         strcpy(_name.get(), name);
     }
@@ -244,6 +250,9 @@ public:
     void flush() override {
         if (_opened) {
             f_sync(_fd.get());
+            if (_writable) {
+                _fs->sync();
+            }
         }
     }
 
@@ -288,6 +297,7 @@ public:
     void close() override {
         if (_opened) {
             f_close(_fd.get());
+            // f_close does a disk_sync
             _opened = false;
         }
     }
@@ -347,10 +357,11 @@ public:
     }
 
 protected:
-    FatFSImpl*               _fs;
-    std::shared_ptr<FIL>     _fd;
-    std::shared_ptr<char>    _name;
-    bool                     _opened;
+    FatFSImpl*            _fs;
+    std::shared_ptr<FIL>  _fd;
+    std::shared_ptr<char> _name;
+    bool                  _opened;
+    bool                  _writable;
 };
 
 class FatFSDirImpl : public DirImpl {
@@ -424,7 +435,7 @@ public:
         const int n = _pattern.length();
         do {
             FILINFO fno;
-            if (FR_OK == f_readdir(_dir.get(), &fno)) {
+            if (FR_OK == f_readdir(_dir.get(), &fno) && fno.fname[0]) {
                 _valid = true;
                 _size = fno.fsize;
                 _isFile = fno.fattrib & AM_DIR ? false : true;

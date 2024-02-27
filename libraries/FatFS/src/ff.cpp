@@ -34,24 +34,24 @@ namespace fatfs {
 
     ---------------------------------------------------------------------------*/
 
-#if FF_DEFINED != 80286	
+#if FF_DEFINED != 80286
 /* Revision ID */
 #error Wrong include file (ff.h).
 #endif
 
 
 /* Limits and boundaries */
-#define MAX_DIR		0x200000		
+#define MAX_DIR		0x200000
 /* Max size of FAT directory */
-#define MAX_DIR_EX	0x10000000		
+#define MAX_DIR_EX	0x10000000
 /* Max size of exFAT directory */
-#define MAX_FAT12	0xFF5			
+#define MAX_FAT12	0xFF5
 /* Max FAT12 clusters (differs from specs, but right for real DOS/Windows behavior) */
-#define MAX_FAT16	0xFFF5			
+#define MAX_FAT16	0xFFF5
 /* Max FAT16 clusters (differs from specs, but right for real DOS/Windows behavior) */
-#define MAX_FAT32	0x0FFFFFF5		
+#define MAX_FAT32	0x0FFFFFF5
 /* Max FAT32 clusters (not specified, practical limit) */
-#define MAX_EXFAT	0x7FFFFFFD		
+#define MAX_EXFAT	0x7FFFFFFD
 /* Max exFAT clusters (differs from specs, implementation limit) */
 
 

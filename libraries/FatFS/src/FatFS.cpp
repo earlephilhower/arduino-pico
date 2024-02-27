@@ -8,8 +8,6 @@
     This code was influenced by NodeMCU and Sming libraries, and first version of
     Arduino wrapper written by Hristo Gochkov.
 
-    This file is part of the esp8266 core for Arduino environment.
-
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
     License as published by the Free Software Foundation; either
@@ -26,12 +24,20 @@
 */
 #include "FatFS.h"
 #include <FS.h>
+#define FTL_DEBUG 1
+#include "../lib/SPIFTL/FlashInterfaceRP2040.h"
+#include "../lib/SPIFTL/SPIFTL.h"
 
 using namespace fs;
 
 
 #if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_FATFS)
+extern uint8_t _FS_start;
+extern uint8_t _FS_end;
+
 FS FatFS = FS(FSImplPtr(new fatfs::FatFSImpl()));
+static FlashInterfaceRP2040 *_fi = new FlashInterfaceRP2040(&_FS_start, &_FS_end);
+static SPIFTL *_ftl = new SPIFTL(_fi);
 #endif
 
 namespace fatfs {
@@ -66,7 +72,7 @@ FileImplPtr FatFSImpl::open(const char* path, OpenMode openMode, AccessMode acce
     FIL fd;
     if (FR_OK == f_open(&fd, path, flags)) {
         auto sharedFd = std::make_shared<FIL>(fd);
-        return std::make_shared<FatFSFileImpl>(this, sharedFd, path);
+        return std::make_shared<FatFSFileImpl>(this, sharedFd, path, FA_WRITE & flags ? true : false);
     }
     DEBUGV("FatFSImpl::openFile: fd=%p path=`%s` openMode=%d accessMode=%d", &fd, path, openMode, accessMode);
     return FileImplPtr();
@@ -144,38 +150,48 @@ bool FatFSImpl::format() {
         return false;
     }
     BYTE *work = new BYTE[FF_MAX_SS * 8]; /* Work area (larger is better for processing time) */
-    MKFS_PARM opt = { FM_FAT, 1, 1, 512, 32 };
+    MKFS_PARM opt = { FM_FAT | FM_SFD, 1, 1, 512, 32 };
     auto ret = f_mkfs("", &opt, work, FF_MAX_SS * 8);
     delete[] work;
 
     return ret == FR_OK;
 }
 
-}; // namespace fatfs
-#include "diskio.h"
-
-namespace fatfs {
-static uint8_t disk[128 * 1024];
-
 DSTATUS disk_status(BYTE p) {
     (void) p;
     return 0;
 }
 
+static bool started = false;
+
+void disk_format() {
+    if (!started) {
+        _ftl->format();
+    }
+}
+
 DSTATUS disk_initialize(BYTE p) {
     (void) p;
+    if (!started) {
+        _ftl->start();
+        started = true;
+    }
     return 0;
 }
 
 DRESULT disk_read(BYTE p, BYTE *buff, LBA_t sect, UINT count) {
     (void) p;
-    memcpy(buff, disk + sect * 512, count * 512);
+    for (unsigned int i = 0; i < count; i++) {
+        _ftl->read(sect + i, buff + i * 512);
+    }
     return RES_OK;
 }
 
 DRESULT disk_write(BYTE pdrv, const BYTE* buff, LBA_t sector, UINT count) {
     (void) pdrv;
-    memcpy(disk + sector * 512, buff, count * 512);
+    for (unsigned int i = 0; i < count; i++) {
+        _ftl->write(sector + i, buff + i * 512);
+    }
     return RES_OK;
 }
 
@@ -183,11 +199,11 @@ DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void* buff) {
     (void) pdrv;
     switch (cmd) {
     case CTRL_SYNC:
-        // TODO - flush FTL
+        _ftl->persist();
         return RES_OK;
     case GET_SECTOR_COUNT: {
         LBA_t *p = (LBA_t *)buff;
-        *p = sizeof(disk) / 512;
+        *p = _ftl->lbaCount();
         return RES_OK;
     }
     case GET_SECTOR_SIZE: {
@@ -197,13 +213,13 @@ DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void* buff) {
     }
     case GET_BLOCK_SIZE: {
         DWORD *dw = (DWORD *)buff;
-        *dw = 512; // TODO - FTL probably doesn't need to export this, raw flash should
+        *dw = 512;
         return RES_OK;
     }
     case CTRL_TRIM: {
         LBA_t *lba = (LBA_t *)buff;
         for (unsigned int i = lba[0]; i < lba[1]; i++) {
-            bzero(disk + i * 512, 512);
+            _ftl->trim(i);
         }
         return RES_OK;
     }
@@ -220,6 +236,10 @@ DWORD get_fattime() {
         now = time(nullptr);
     }
     struct tm *stm = localtime(&now);
+    if (stm->tm_year < 80) {
+        // FAT can't report years before 1980
+        stm->tm_year = 80;
+    }
     return (DWORD)(stm->tm_year - 80) << 25 |
            (DWORD)(stm->tm_mon + 1) << 21 |
            (DWORD)stm->tm_mday << 16 |
