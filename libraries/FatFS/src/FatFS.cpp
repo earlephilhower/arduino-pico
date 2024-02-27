@@ -24,7 +24,7 @@
 */
 #include "FatFS.h"
 #include <FS.h>
-#define FTL_DEBUG 1
+//#define FTL_DEBUG 1
 #include "../lib/SPIFTL/FlashInterfaceRP2040.h"
 #include "../lib/SPIFTL/SPIFTL.h"
 
