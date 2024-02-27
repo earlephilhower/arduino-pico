@@ -60,7 +60,7 @@ filesystem API.
 FatFS File System Caveats and Warnings
 --------------------------------------
 
-The FAT filesystem is ubiquitious, but it is also around 50 years old and ill
+The FAT filesystem is ubiquitous, but it is also around 50 years old and ill
 suited to SPI flash memory due to having "hot spots" like the FAT copies that
 are rewritten many times over.  SPI flash allows a high, but limited, number
 of writes before losing the ability to write safely.  Applications like
