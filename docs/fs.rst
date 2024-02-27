@@ -33,6 +33,7 @@ following include to the sketch:
     #include "LittleFS.h" // LittleFS is declared
     // #include <SDFS.h>
     // #include <SD.h>
+    // #include <FatFS.h>
 
 
 Compatible Filesystem APIs
@@ -48,9 +49,36 @@ SD card reader.
 SD is the Arduino-supported, somewhat old and limited SD card filesystem.
 It is recommended to use SDFS for new applications instead of SD.
 
-All three of these filesystems can open and manipulate ``File`` and ``Dir``
+FatFS implements a wear-leveled, FTL-backed FAT filesystem in the onboard
+flash which can be easily accessed over USB as a standard memory stick
+via FatFSUSB.
+
+All of these filesystems can open and manipulate ``File`` and ``Dir``
 objects with the same code because the implement a common end-user
 filesystem API.
+
+FatFS File System Caveats and Warnings
+--------------------------------------
+
+The FAT filesystem is ubiquitious, but it is also around 50 years old and ill
+suited to SPI flash memory due to having "hot spots" like the FAT copies that
+are rewritten many times over.  SPI flash allows a high, but limited, number
+of writes before losing the ability to write safely.  Applications like
+data loggers where many writes occur could end up wearing out the SPI flash
+sector that holds the FAT **years** before coming close to the write limits of
+the data sectors.
+
+To circumvent this issue, the FatFS implementation here uses a flash translation
+layer (FTL) developed for SPI flash on embedded systems.  This allows for the
+same LBA to be written over and over by the FAT filesystem, but use different
+flash locations.  For more information see
+[SPIFTL](https://github.com/earlephilhower/SPIFTL).
+
+What this means, practically, is that about 5KB of RAM per megabyte of flash
+is required for housekeeping.  Writes can also become very slow if most of the
+flash LBA range is used (i.e. if the FAT drive is 99% full) due to the need
+for garbage collection processes to move data around and preserve the flash
+lifetime.
 
 LittleFS File System Limitations
 --------------------------------
@@ -115,8 +143,8 @@ second SPI port, ``SPI1``.  Just use the following call in place of
     SD.begin(cspin, SPI1);
 
 
-File system object (LittleFS/SD/SDFS)
--------------------------------------
+File system object (LittleFS/SD/SDFS/FatFS)
+-------------------------------------------
 
 setConfig
 ~~~~~~~~~
