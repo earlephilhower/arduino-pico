@@ -27,6 +27,8 @@
 class ESPHostLwIP : public LwipIntfDev<ESPHost> {
 public:
 
+    ESPHostLwIP();
+
     void setSTA();
     void setAP();
 

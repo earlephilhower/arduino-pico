@@ -44,7 +44,7 @@ public:
     }
 
     bool interruptIsPossible() {
-        return false;
+        return true;
     }
 
     PinStatus interruptMode() {
