@@ -83,7 +83,6 @@ void FatFSImpl::end() {
 // Required to be global because SDFAT doesn't allow a this pointer in it's own time call
 time_t (*__fatfs_timeCallback)(void) = nullptr;
 
-    FIL fd;
 FileImplPtr FatFSImpl::open(const char* path, OpenMode openMode, AccessMode accessMode) {
     if (!_mounted) {
         DEBUGV("FatFSImpl::open() called on unmounted FS\n");
@@ -108,10 +107,11 @@ FileImplPtr FatFSImpl::open(const char* path, OpenMode openMode, AccessMode acce
         }
         free(pathStr);
     }
-    if (FR_OK == f_open(&fd, path, flags)) {
-        auto sharedFd = std::make_shared<FIL>(fd);
+    auto sharedFd = std::make_shared<FIL>();
+    if (FR_OK == f_open(sharedFd.get(), path, flags)) {
         return std::make_shared<FatFSFileImpl>(this, sharedFd, path, FA_WRITE & flags ? true : false);
     }
+    sharedFd = nullptr;
     DEBUGV("FatFSImpl::openFile: fd=%p path=`%s` openMode=%d accessMode=%d", &fd, path, openMode, accessMode);
     return FileImplPtr();
 }
