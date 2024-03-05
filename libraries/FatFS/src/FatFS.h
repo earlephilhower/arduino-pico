@@ -45,14 +45,26 @@ class FatFSConfig : public FSConfig {
 public:
     static constexpr uint32_t FSId = 0x46617446;
 
-    FatFSConfig(bool autoFormat = true, bool useFTL = true) : FSConfig(FSId, autoFormat), _useFTL(useFTL) { }
+    FatFSConfig(bool autoFormat = true, bool useFTL = true, int dirEntries = 128, int fatCopies = 1) : FSConfig(FSId, autoFormat), _useFTL(useFTL), _dirEntries(dirEntries), _fatCopies(fatCopies) { }
 
     FatFSConfig setUseFTL(bool val = true) {
         _useFTL = val;
         return *this;
     }
 
+    FatFSConfig setDirEntries(int entries) {
+        _dirEntries = entries;
+        return *this;
+    }
+
+    FatFSConfig setFATCopies(int copies) {
+        _fatCopies = copies;
+        return *this;
+    }
+
     bool _useFTL;
+    uint16_t _dirEntries;
+    uint8_t _fatCopies;
 };
 
 class FatFSImpl : public FSImpl {

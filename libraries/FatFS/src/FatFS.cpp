@@ -112,7 +112,7 @@ FileImplPtr FatFSImpl::open(const char* path, OpenMode openMode, AccessMode acce
         return std::make_shared<FatFSFileImpl>(this, sharedFd, path, FA_WRITE & flags ? true : false);
     }
     sharedFd = nullptr;
-    DEBUGV("FatFSImpl::openFile: fd=%p path=`%s` openMode=%d accessMode=%d", &fd, path, openMode, accessMode);
+    DEBUGV("FatFSImpl::openFile: path=`%s` openMode=%d accessMode=%d FAILED", path, openMode, accessMode);
     return FileImplPtr();
 }
 
@@ -188,7 +188,7 @@ bool FatFSImpl::format() {
         return false;
     }
     BYTE *work = new BYTE[4096]; /* Work area (larger is better for processing time) */
-    MKFS_PARM opt = { FM_FAT | FM_SFD, 1, 1, _sectorSize, 128};
+    MKFS_PARM opt = { FM_FAT | FM_SFD, _cfg._fatCopies, 1, _sectorSize, _cfg._dirEntries};
     auto ret = f_mkfs("", &opt, work, 4096);
     delete[] work;
 
