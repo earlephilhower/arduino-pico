@@ -37,14 +37,53 @@ extern uint8_t _FS_end;
 
 FS FatFS = FS(FSImplPtr(new fatfs::FatFSImpl()));
 static FlashInterfaceRP2040 *_fi = new FlashInterfaceRP2040(&_FS_start, &_FS_end);
-static SPIFTL *_ftl = new SPIFTL(_fi);
+static SPIFTL *_ftl = nullptr;
+uint16_t _sectorSize = 512;
 #endif
 
 namespace fatfs {
 
+
+bool FatFSImpl::begin() {
+    if (_mounted) {
+        return true;
+    }
+
+    if (_cfg._useFTL) {
+        if (!_ftl) {
+            _ftl = new SPIFTL(_fi);
+        }
+        _sectorSize = 512;
+    } else {
+        _sectorSize = 4096;
+        if (_ftl) {
+            delete _ftl;
+            _ftl = nullptr;
+        }
+    }
+
+    _mounted = (FR_OK == f_mount(&_fatfs, "", 1));
+    if (!_mounted && _cfg._autoFormat) {
+        format();
+        _mounted = (FR_OK == f_mount(&_fatfs, "", 1));
+    }
+    //FsDateTime::setCallback(dateTimeCB); TODO = callback
+    return _mounted;
+}
+
+void FatFSImpl::end() {
+    if (_mounted) {
+        f_unmount("");
+    }
+    sync();
+    _mounted = false;
+}
+
+
 // Required to be global because SDFAT doesn't allow a this pointer in it's own time call
 time_t (*__fatfs_timeCallback)(void) = nullptr;
 
+    FIL fd;
 FileImplPtr FatFSImpl::open(const char* path, OpenMode openMode, AccessMode accessMode) {
     if (!_mounted) {
         DEBUGV("FatFSImpl::open() called on unmounted FS\n");
@@ -69,7 +108,6 @@ FileImplPtr FatFSImpl::open(const char* path, OpenMode openMode, AccessMode acce
         }
         free(pathStr);
     }
-    FIL fd;
     if (FR_OK == f_open(&fd, path, flags)) {
         auto sharedFd = std::make_shared<FIL>(fd);
         return std::make_shared<FatFSFileImpl>(this, sharedFd, path, FA_WRITE & flags ? true : false);
@@ -149,9 +187,9 @@ bool FatFSImpl::format() {
     if (_mounted) {
         return false;
     }
-    BYTE *work = new BYTE[FF_MAX_SS * 8]; /* Work area (larger is better for processing time) */
-    MKFS_PARM opt = { FM_FAT | FM_SFD, 1, 1, 512, 32 };
-    auto ret = f_mkfs("", &opt, work, FF_MAX_SS * 8);
+    BYTE *work = new BYTE[4096]; /* Work area (larger is better for processing time) */
+    MKFS_PARM opt = { FM_FAT | FM_SFD, 1, 1, _sectorSize, 128};
+    auto ret = f_mkfs("", &opt, work, 4096);
     delete[] work;
 
     return ret == FR_OK;
@@ -165,7 +203,7 @@ DSTATUS disk_status(BYTE p) {
 static bool started = false;
 
 void disk_format() {
-    if (!started) {
+    if (!started && _ftl) {
         _ftl->format();
     }
 }
@@ -173,7 +211,9 @@ void disk_format() {
 DSTATUS disk_initialize(BYTE p) {
     (void) p;
     if (!started) {
-        _ftl->start();
+        if (_ftl) {
+            _ftl->start();
+        }
         started = true;
     }
     return 0;
@@ -182,7 +222,11 @@ DSTATUS disk_initialize(BYTE p) {
 DRESULT disk_read(BYTE p, BYTE *buff, LBA_t sect, UINT count) {
     (void) p;
     for (unsigned int i = 0; i < count; i++) {
-        _ftl->read(sect + i, buff + i * 512);
+        if (_ftl) {
+            _ftl->read(sect + i, buff + i * _sectorSize);
+        } else {
+            _fi->read(sect + i, 0, buff, _sectorSize);
+        }
     }
     return RES_OK;
 }
@@ -190,7 +234,12 @@ DRESULT disk_read(BYTE p, BYTE *buff, LBA_t sect, UINT count) {
 DRESULT disk_write(BYTE pdrv, const BYTE* buff, LBA_t sector, UINT count) {
     (void) pdrv;
     for (unsigned int i = 0; i < count; i++) {
-        _ftl->write(sector + i, buff + i * 512);
+        if (_ftl) {
+            _ftl->write(sector + i, buff + i * _sectorSize);
+        } else {
+            _fi->eraseBlock(sector + i);
+            _fi->program(sector + i, 0, buff + i * _sectorSize, _sectorSize);
+        }
     }
     return RES_OK;
 }
@@ -199,27 +248,37 @@ DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void* buff) {
     (void) pdrv;
     switch (cmd) {
     case CTRL_SYNC:
-        _ftl->persist();
+        if (_ftl) {
+            _ftl->persist();
+        }
         return RES_OK;
     case GET_SECTOR_COUNT: {
         LBA_t *p = (LBA_t *)buff;
-        *p = _ftl->lbaCount();
+        if (_ftl) {
+            *p = _ftl->lbaCount();
+        } else {
+            *p = _fi->size() / 4096;
+        }
         return RES_OK;
     }
     case GET_SECTOR_SIZE: {
         WORD *w = (WORD *)buff;
-        *w = 512;
+        *w = _sectorSize;
         return RES_OK;
     }
     case GET_BLOCK_SIZE: {
         DWORD *dw = (DWORD *)buff;
-        *dw = 512;
+        *dw = _sectorSize;
         return RES_OK;
     }
     case CTRL_TRIM: {
         LBA_t *lba = (LBA_t *)buff;
         for (unsigned int i = lba[0]; i < lba[1]; i++) {
-            _ftl->trim(i);
+            if (_ftl) {
+                _ftl->trim(i);
+            } else {
+                _fi->eraseBlock(i);
+            }
         }
         return RES_OK;
     }

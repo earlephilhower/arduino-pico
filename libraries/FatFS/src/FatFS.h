@@ -45,7 +45,14 @@ class FatFSConfig : public FSConfig {
 public:
     static constexpr uint32_t FSId = 0x46617446;
 
-    FatFSConfig(bool autoFormat = true) : FSConfig(FSId, autoFormat) { }
+    FatFSConfig(bool autoFormat = true, bool useFTL = true) : FSConfig(FSId, autoFormat), _useFTL(useFTL) { }
+
+    FatFSConfig setUseFTL(bool val = true) {
+        _useFTL = val;
+        return *this;
+    }
+
+    bool _useFTL;
 };
 
 class FatFSImpl : public FSImpl {
@@ -129,27 +136,8 @@ public:
         return true;
     }
 
-    bool begin() override {
-        if (_mounted) {
-            return true;
-        }
-        _mounted = (FR_OK == f_mount(&_fatfs, "", 1));
-        if (!_mounted && _cfg._autoFormat) {
-            format();
-            _mounted = (FR_OK == f_mount(&_fatfs, "", 1));
-        }
-        //FsDateTime::setCallback(dateTimeCB); TODO = callback
-        return _mounted;
-    }
-
-    void end() override {
-        if (_mounted) {
-            f_unmount("");
-        }
-        sync();
-        _mounted = false;
-    }
-
+    bool begin() override;
+    void end() override;
     bool format() override;
 
     // Helper function, takes FAT and makes standard time_t

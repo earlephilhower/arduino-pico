@@ -56,11 +56,18 @@ bool FatFSUSBClass::begin() {
     }
     _started = true;
     fatfs::disk_initialize(0);
+    fatfs::WORD ss;
+    fatfs::disk_ioctl(0, GET_SECTOR_SIZE, &ss);
+    _sectSize = ss;
+    _sectBuff = new uint8_t[_sectSize];
     return true;
 }
 
 void FatFSUSBClass::end() {
-    _started = false;
+    if (_started) {
+        _started = false;
+        delete[] _sectBuff;
+    }
 }
 
 // Invoked to determine max LUN
@@ -105,7 +112,9 @@ extern "C" void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t
     fatfs::LBA_t p;
     fatfs::disk_ioctl(0, GET_SECTOR_COUNT, &p);
     *block_count = p;
-    *block_size  = 512;
+    fatfs::WORD ss;
+    fatfs::disk_ioctl(0, GET_SECTOR_SIZE, &ss);
+    *block_size  = ss;
 }
 
 
@@ -124,7 +133,7 @@ int32_t FatFSUSBClass::read10(uint32_t lba, uint32_t offset, void* buffer, uint3
         return -1;
     }
 
-    assert(offset + bufsize <= 512);
+    assert(offset + bufsize <= _sectSize);
 
     fatfs::disk_read(0, _sectBuff, lba, 1);
     memcpy(buffer, _sectBuff + offset, bufsize);
@@ -152,11 +161,11 @@ int32_t FatFSUSBClass::write10(uint32_t lba, uint32_t offset, uint8_t* buffer, u
         return -1;
     }
 
-    assert(offset + bufsize <= 512);
+    assert(offset + bufsize <= _sectSize);
 
-    if ((offset == 0) && (bufsize == 512)) {
+    if ((offset == 0) && (bufsize == _sectSize)) {
         fatfs::disk_write(0, buffer, lba, 1);
-        return 512;
+        return _sectSize;
     }
 
     // TODO - this could be optimized to avoid rewrites

@@ -42,7 +42,8 @@ public:
 
 private:
     bool _started = false;
-    uint8_t _sectBuff[512];
+    uint8_t *_sectBuff = nullptr;
+    uint16_t _sectSize = 0;
 
     void (*_cbPlug)(uint32_t) = nullptr;
     uint32_t _cbPlugData = 0;
