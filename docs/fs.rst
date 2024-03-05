@@ -72,13 +72,21 @@ To circumvent this issue, the FatFS implementation here uses a flash translation
 layer (FTL) developed for SPI flash on embedded systems.  This allows for the
 same LBA to be written over and over by the FAT filesystem, but use different
 flash locations.  For more information see
-[SPIFTL](https://github.com/earlephilhower/SPIFTL).
+[SPIFTL](https://github.com/earlephilhower/SPIFTL).  In this mode the Pico
+flash appears as a normal, 512-byte sector drive to the FAT.
 
 What this means, practically, is that about 5KB of RAM per megabyte of flash
 is required for housekeeping.  Writes can also become very slow if most of the
 flash LBA range is used (i.e. if the FAT drive is 99% full) due to the need
 for garbage collection processes to move data around and preserve the flash
 lifetime.
+
+Alternatively, if an FTL is not desired or memory is tight, FatFS can use the
+raw flash directly.  In this mode sectors are 4K in size and flash is mapped
+1:1 to sectors, so things like the FAT table updates will all use the same
+physical flash bits.  For low-utilization operations this may be fine, but if
+significant writes are done (from the Pico or the PC host) this may wear out
+portions of flash very quickly , rendering it unusable.
 
 LittleFS File System Limitations
 --------------------------------
@@ -159,14 +167,22 @@ setConfig
     c2.setCSPin(12);
     SDFS.setConfig(c2);
 
+    FatFSConfig c3;
+    c3.setUseFTL(false); // Directly access flash memory
+    c3.setDirEntries(256); // We need 256 root directory entries on a format()
+    c3.setFATCopies(1); // Only 1 FAT to save 4K of space and extra writes
+    FatFS.setConfig(c3);
+    FatFS.format(); // Format using these settings, erasing everything
+
 This method allows you to configure the parameters of a filesystem
 before mounting.  All filesystems have their own ``*Config`` (i.e.
 ``SDFSConfig`` or ``LittleFSConfig`` with their custom set of options.
 All filesystems allow explicitly enabling/disabling formatting when
 mounts fail.  If you do not call this ``setConfig`` method before
 perforing ``begin()``, you will get the filesystem's default
-behavior and configuration. By default, LittleFS will autoformat the
-filesystem if it cannot mount it, while SDFS will not.
+behavior and configuration. By default, LittleFS and FatFS will autoformat the
+filesystem if it cannot mount it, while SDFS will not.  FatFS will also use
+the built-in FTL to support 512 byte sectors and higher write lifetime.
 
 begin
 ~~~~~
