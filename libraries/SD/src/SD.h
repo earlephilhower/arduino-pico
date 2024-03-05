@@ -32,6 +32,7 @@
 class SDClass {
 public:
     bool begin(uint8_t csPin, HardwareSPI &spi) {
+        _spi = &spi;
         SDFS.setConfig(SDFSConfig(csPin, SPI_HALF_SPEED, spi));
         return SDFS.begin();
     }
@@ -43,7 +44,7 @@ public:
     void end(bool endSPI = true) {
         SDFS.end();
         if (endSPI) {
-            SPI.end();
+            _spi->end();
         }
     }
 
@@ -204,6 +205,7 @@ private:
         return time(nullptr);
     }
 
+    HardwareSPI *_spi;
 };
 
 
