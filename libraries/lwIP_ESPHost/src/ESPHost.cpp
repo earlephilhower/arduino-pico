@@ -19,7 +19,8 @@
 */
 
 #include "ESPHost.h"
-#include "CEspControl.h"
+#include <CEspControl.h>
+#include <LwipEthernet.h>
 
 ESPHost::ESPHost(int8_t cs, arduino::SPIClass &spi, int8_t intrpin) {
     (void) cs;
@@ -42,8 +43,10 @@ void ESPHost::end() {
 }
 
 uint16_t ESPHost::sendFrame(const uint8_t *data, uint16_t datalen) {
+    ethernet_arch_lwip_gpio_mask();
     int res = CEspControl::getInstance().sendBuffer(apMode ? ESP_AP_IF : ESP_STA_IF, 0, (uint8_t*) data, datalen);
     CEspControl::getInstance().communicateWithEsp();
+    ethernet_arch_lwip_gpio_unmask();
     return (res == ESP_CONTROL_OK) ? datalen : 0;
 }
 
