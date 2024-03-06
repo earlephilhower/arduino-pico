@@ -47,6 +47,10 @@ public:
         return false;
     }
 
+    PinStatus interruptMode() {
+        return HIGH;
+    }
+
     constexpr bool needsSPI() const {
         return false;
     }

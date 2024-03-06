@@ -91,6 +91,10 @@ public:
         return true;
     }
 
+    PinStatus interruptMode() {
+        return LOW;
+    }
+
     void setSSID(const char *p) {
         _ssid = p;
     }
