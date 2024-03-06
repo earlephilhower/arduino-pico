@@ -104,6 +104,10 @@ protected:
         return true;
     }
 
+    static constexpr PinStatus interruptMode() {
+        return LOW;
+    }
+
     /**
         Read an Ethernet frame size
         @return the length of data do receive

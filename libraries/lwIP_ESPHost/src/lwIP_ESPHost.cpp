@@ -23,8 +23,17 @@
 
 #define MAX_SOFTAP_CONNECTION_DEF 5
 
+#if defined(SPIWIFI_ACK) // Arduino Nano RP2040 Connect
+#define ESPHOST_DATA_READY SPIWIFI_ACK
+#endif
+
 bool ESPHostLwIP::wifiHwInitialized = false;
 ESPHostLwIP* ESPHostLwIP::instance = nullptr;
+
+ESPHostLwIP::ESPHostLwIP() :
+    LwipIntfDev<ESPHost>(SS, SPI, ESPHOST_DATA_READY) {
+
+}
 
 void ESPHostLwIP::setSTA() {
     apMode = false;
@@ -122,7 +131,7 @@ bool ESPHostLwIP::begin() {
     if (!initHW()) {
         return false;
     }
-    ethernet_arch_lwip_begin();
+    ethernet_arch_lwip_gpio_mask();
     if (!apMode) {
         CEspControl::getInstance().setWifiMode(WIFI_MODE_STA);
         if (CEspControl::getInstance().connectAccessPoint(ap) != ESP_CONTROL_OK) {
@@ -148,10 +157,10 @@ bool ESPHostLwIP::begin() {
         }
         CEspControl::getInstance().getSoftAccessPointConfig(softAP);
     }
-    ethernet_arch_lwip_end();
+    ethernet_arch_lwip_gpio_unmask();
     uint8_t mac[6];
     if (!LwipIntfDev<ESPHost>::begin(macAddress(apMode, mac))) {
-        ethernet_arch_lwip_begin();
+        ethernet_arch_lwip_gpio_mask();
         if (apMode) {
             CEspControl::getInstance().stopSoftAccessPoint();
             wifiStatus = WL_AP_FAILED;
@@ -159,7 +168,7 @@ bool ESPHostLwIP::begin() {
             CEspControl::getInstance().disconnectAccessPoint();
             wifiStatus = WL_CONNECT_FAILED;
         }
-        ethernet_arch_lwip_end();
+        ethernet_arch_lwip_gpio_unmask();
         return false;
     }
     if (apMode) {
@@ -206,11 +215,11 @@ uint8_t* ESPHostLwIP::macAddress(bool apMode, uint8_t *mac) {
     }
     WifiMac_t MAC;
     MAC.mode = apMode ? WIFI_MODE_AP : WIFI_MODE_STA;
-    ethernet_arch_lwip_begin();
+    ethernet_arch_lwip_gpio_mask();
     if (CEspControl::getInstance().getWifiMacAddress(MAC) == ESP_CONTROL_OK) {
         CNetUtilities::macStr2macArray(mac, MAC.mac);
     }
-    ethernet_arch_lwip_end();
+    ethernet_arch_lwip_gpio_unmask();
     return mac;
 }
 
@@ -227,9 +236,9 @@ int32_t ESPHostLwIP::RSSI() {
     if (!joined) {
         return 0;
     }
-    ethernet_arch_lwip_begin();
+    ethernet_arch_lwip_gpio_mask();
     CEspControl::getInstance().getAccessPointConfig(ap);
-    ethernet_arch_lwip_end();
+    ethernet_arch_lwip_gpio_unmask();
     return ap.rssi;
 }
 
@@ -264,9 +273,9 @@ int8_t ESPHostLwIP::scanNetworks(bool async) {
     if (!initHW()) {
         return -1;
     }
-    ethernet_arch_lwip_begin();
+    ethernet_arch_lwip_gpio_mask();
     int res = CEspControl::getInstance().getAccessPointScanList(accessPoints);
-    ethernet_arch_lwip_end();
+    ethernet_arch_lwip_gpio_unmask();
     wifiStatus = WL_SCAN_COMPLETED;
     if (res != ESP_CONTROL_OK) {
         return -1;
@@ -321,9 +330,9 @@ void ESPHostLwIP::lowPowerMode() {
     if (!initHW()) {
         return;
     }
-    ethernet_arch_lwip_begin();
+    ethernet_arch_lwip_gpio_mask();
     CEspControl::getInstance().setPowerSaveMode(1);
-    ethernet_arch_lwip_end();
+    ethernet_arch_lwip_gpio_unmask();
 }
 
 void ESPHostLwIP::noLowPowerMode() {
