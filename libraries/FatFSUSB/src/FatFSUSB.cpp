@@ -60,6 +60,7 @@ bool FatFSUSBClass::begin() {
     fatfs::disk_ioctl(0, GET_SECTOR_SIZE, &ss);
     _sectSize = ss;
     _sectBuff = new uint8_t[_sectSize];
+    _sectNum = -1;
     return true;
 }
 
@@ -135,6 +136,11 @@ int32_t FatFSUSBClass::read10(uint32_t lba, uint32_t offset, void* buffer, uint3
 
     assert(offset + bufsize <= _sectSize);
 
+    if (_sectNum >= 0) {
+        // Flush the temp data out, we need to use the space
+        fatfs::disk_write(0, _sectBuff, _sectNum, 1);
+        _sectNum = -1;
+    }
     fatfs::disk_read(0, _sectBuff, lba, 1);
     memcpy(buffer, _sectBuff + offset, bufsize);
     return bufsize;
@@ -168,10 +174,23 @@ int32_t FatFSUSBClass::write10(uint32_t lba, uint32_t offset, uint8_t* buffer, u
         return _sectSize;
     }
 
-    // TODO - this could be optimized to avoid rewrites
-    fatfs::disk_read(0, _sectBuff, lba, 1);
-    memcpy(_sectBuff + offset, buffer, bufsize);
-    fatfs::disk_write(0, _sectBuff, lba, 1);
+    if ((int)_sectNum == (int)lba) {
+        memcpy(_sectBuff + offset, buffer, bufsize);
+    } else {
+        if (_sectNum >= 0) {
+            // Need to flush old sector out
+            fatfs::disk_write(0, _sectBuff, _sectNum, 1);
+        }
+        fatfs::disk_read(0, _sectBuff, lba, 1);
+        memcpy(_sectBuff + offset, buffer, bufsize);
+        _sectNum = lba;
+    }
+
+    if (offset + bufsize >= _sectSize) {
+        // We've filled up a sector, write it out!
+        fatfs::disk_write(0, _sectBuff, lba, 1);
+        _sectNum = -1;
+    }
     return bufsize;
 }
 
@@ -240,6 +259,11 @@ void FatFSUSBClass::plug() {
 
 void FatFSUSBClass::unplug() {
     if (_started) {
+        if (_sectNum >= 0) {
+            // Flush the temp data out
+            fatfs::disk_write(0, _sectBuff, _sectNum, 1);
+            _sectNum = -1;
+        }
         fatfs::disk_ioctl(0, CTRL_SYNC, nullptr);
         if (_cbUnplug) {
             _cbUnplug(_cbUnplugData);

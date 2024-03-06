@@ -60,6 +60,7 @@ void setup() {
 void loop() {
   if (updated && !driveConnected) {
     inPrinting = true;
+    Serial.println("\n\nDisconnected, new file listing:");
     printDirectory("/", 0);
     updated = false;
     inPrinting = false;

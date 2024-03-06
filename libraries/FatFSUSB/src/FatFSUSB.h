@@ -42,6 +42,8 @@ public:
 
 private:
     bool _started = false;
+
+    int32_t _sectNum = -1;
     uint8_t *_sectBuff = nullptr;
     uint16_t _sectSize = 0;
 
