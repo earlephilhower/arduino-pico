@@ -1,14 +1,12 @@
 /*
     FatFS.h - File system wrapper for FatFS
-    Copyright (c) 202024 Earle F. Philhower, III.  All rights reserved.
+    Copyright (c) 2024 Earle F. Philhower, III.  All rights reserved.
 
     Based on spiffs_api.h, which is:
     | Copyright (c) 2015 Ivan Grokhotkov. All rights reserved.
 
     This code was influenced by NodeMCU and Sming libraries, and first version of
     Arduino wrapper written by Hristo Gochkov.
-
-    This file is part of the esp8266 core for Arduino environment.
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -116,12 +114,6 @@ public:
         info.pageSize      = i.pageSize;
         info.maxOpenFiles  = i.maxOpenFiles;
         info.maxPathLength = i.maxPathLength;
-#ifdef DEBUG_ESP_PORT
-        if (i.totalBytes > std::numeric_limits<uint32_t>::max()) {
-            // This catches both total and used cases, since used must always be < total.
-            DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use info64().\n"), (long long)i.totalBytes);
-        }
-#endif
         info.totalBytes    = (size_t)i.totalBytes;
         info.usedBytes     = (size_t)i.usedBytes;
         return true;
