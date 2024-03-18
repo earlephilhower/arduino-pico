@@ -27,6 +27,7 @@
 RP2040 rp2040;
 extern "C" {
     volatile bool __otherCoreIdled = false;
+    uint32_t* core1_separate_stack_address = nullptr;
 };
 
 extern void setup();
@@ -38,12 +39,14 @@ extern void startFreeRTOS() __attribute__((weak));
 bool __isFreeRTOS;
 volatile bool __freeRTOSinitted;
 
+extern void __EnableBluetoothDebug(Print &);
 
 // Weak empty variant initialization. May be redefined by variant files.
 void initVariant() __attribute__((weak));
 void initVariant() { }
 
 // Optional 2nd core setup and loop
+bool core1_separate_stack __attribute__((weak)) = false;
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 extern "C" void main1() {
@@ -117,6 +120,9 @@ extern "C" int main() {
 #if defined DEBUG_RP2040_PORT
     if (!__isFreeRTOS) {
         DEBUG_RP2040_PORT.begin(115200);
+#if (defined(ENABLE_BLUETOOTH) || defined(ENABLE_BLE)) && defined(DEBUG_RP2040_BLUETOOTH)
+        __EnableBluetoothDebug(DEBUG_RP2040_PORT);
+#endif
     }
 #endif
 
@@ -132,7 +138,12 @@ extern "C" int main() {
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             delay(1); // Needed to make Picoprobe upload start 2nd core
-            multicore_launch_core1(main1);
+            if (core1_separate_stack) {
+                core1_separate_stack_address = (uint32_t*)malloc(0x2000);
+                multicore_launch_core1_with_stack(main1, core1_separate_stack_address, 0x2000);
+            } else {
+                multicore_launch_core1(main1);
+            }
         }
         setup();
         while (true) {

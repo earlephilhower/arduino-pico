@@ -37,7 +37,7 @@ SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pi
     _spi = spi;
     _running = false;
     _initted = false;
-    _spis = SPISettings();
+    _spis = SPISettings(0, LSBFIRST, SPI_MODE0); // Ensure spi_init called by setting current freq to 0
     _RX = rx;
     _TX = tx;
     _SCK = sck;
@@ -110,8 +110,8 @@ byte SPIClassRP2040::transfer(uint8_t data) {
         return 0;
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverseByte(data);
-    spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
     DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
+    hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
     spi_write_read_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
@@ -124,8 +124,8 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
         return 0;
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : reverse16Bit(data);
-    spi_set_format(_spi, 16, cpol(), cpha(), SPI_MSB_FIRST);
     DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
+    hw_write_masked(&spi_get_hw(_spi)->cr0, (16 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 16-bits
     spi_write16_read16_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverse16Bit(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
@@ -147,14 +147,14 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
         return;
     }
 
+    hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
+
     DEBUGSPI("SPI::transfer(%p, %p, %d)\n", txbuf, rxbuf, count);
     const uint8_t *txbuff = reinterpret_cast<const uint8_t *>(txbuf);
     uint8_t *rxbuff = reinterpret_cast<uint8_t *>(rxbuf);
 
     // MSB version is easy!
     if (_spis.getBitOrder() == MSBFIRST) {
-        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
-
         if (rxbuf == nullptr) { // transmit only!
             spi_write_blocking(_spi, txbuff, count);
             return;
@@ -184,14 +184,18 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
     if (_initted && settings == _spis) {
         DEBUGSPI("SPI: Reusing existing initted SPI\n");
     } else {
-        _spis = settings;
-        if (_initted) {
-            DEBUGSPI("SPI: deinitting currently active SPI\n");
-            spi_deinit(_spi);
+        /* Only de-init if the clock changes frequency */
+        if (settings.getClockFreq() != _spis.getClockFreq()) {
+            if (_initted) {
+                DEBUGSPI("SPI: deinitting currently active SPI\n");
+                spi_deinit(_spi);
+            }
+            DEBUGSPI("SPI: initting SPI\n");
+            spi_init(_spi, settings.getClockFreq());
+            DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         }
-        DEBUGSPI("SPI: initting SPI\n");
-        spi_init(_spi, _spis.getClockFreq());
-        DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
+        _spis = settings;
+        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
         _initted = true;
     }
     // Disable any IRQs that are being used for SPI
@@ -204,7 +208,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         io_rw_32 *en_reg = &irq_ctrl_base->inte[gpio / 8];
         uint32_t val = ((*en_reg) >> (4 * (gpio % 8))) & 0xf;
         _usingIRQs.insert_or_assign(gpio, val);
-        DEBUGSPI("SPI: GPIO %d = %d\n", gpio, val);
+        DEBUGSPI("SPI: GPIO %d = %lu\n", gpio, val);
         (*en_reg) ^= val << (4 * (gpio % 8));
     }
     DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
@@ -337,6 +341,7 @@ void SPIClassRP2040::end() {
     }
     gpio_set_function(_SCK, GPIO_FUNC_SIO);
     gpio_set_function(_TX, GPIO_FUNC_SIO);
+    _spis = SPISettings(0, LSBFIRST, SPI_MODE0);
 }
 
 void SPIClassRP2040::setBitOrder(BitOrder order) {
@@ -362,5 +367,10 @@ void SPIClassRP2040::setClockDivider(uint8_t uc_div) {
 #define __SPI1_DEVICE spi1
 #endif
 
+#ifdef PIN_SPI0_MISO
 SPIClassRP2040 SPI(__SPI0_DEVICE, PIN_SPI0_MISO, PIN_SPI0_SS, PIN_SPI0_SCK, PIN_SPI0_MOSI);
+#endif
+
+#ifdef PIN_SPI1_MISO
 SPIClassRP2040 SPI1(__SPI1_DEVICE, PIN_SPI1_MISO, PIN_SPI1_SS, PIN_SPI1_SCK, PIN_SPI1_MOSI);
+#endif

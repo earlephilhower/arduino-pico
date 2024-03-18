@@ -20,7 +20,7 @@ diagram for your board, or it won't work.
 Other than that, the API is compatible with the Arduino standard.
 Both master and slave operation are supported.
 
-Master transmissions are buffered (up to 128 bytes) and only performed
+Master transmissions are buffered (up to 256 bytes) and only performed
 on ``endTransmission``, as is standard with modern Arduino Wire implementations.
 
 For more detailed information, check the `Arduino Wire documentation <https://www.arduino.cc/en/reference/wire>`_ .

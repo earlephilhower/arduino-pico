@@ -29,15 +29,21 @@
 #include <pico/cyw43_arch.h>
 #include <pico/mutex.h>
 #include <sys/lock.h>
+#include "_xoshiro.h"
 
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
 extern void ethernet_arch_lwip_end() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_mask() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_unmask() __attribute__((weak));
 
 auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 
 class LWIPMutex {
 public:
     LWIPMutex() {
+        if (ethernet_arch_lwip_gpio_mask)  {
+            ethernet_arch_lwip_gpio_mask();
+        }
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_begin();
@@ -55,26 +61,36 @@ public:
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_end();
-            return;
+        } else {
+#endif
+            if (ethernet_arch_lwip_end) {
+                ethernet_arch_lwip_end();
+            } else {
+                recursive_mutex_exit(&__lwipMutex);
+            }
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         }
 #endif
-        if (ethernet_arch_lwip_end) {
-            ethernet_arch_lwip_end();
-        } else {
-            recursive_mutex_exit(&__lwipMutex);
+        if (ethernet_arch_lwip_gpio_unmask) {
+            ethernet_arch_lwip_gpio_unmask();
         }
     }
 };
 
 extern "C" {
 
+    static XoshiroCpp::Xoshiro256PlusPlus *_lwip_rng = nullptr;
+    // Random number generator for LWIP
+    unsigned long __lwip_rand() {
+        return (unsigned long)(*_lwip_rng)();
+    }
+
     // Avoid calling lwip_init multiple times
     extern void __real_lwip_init();
     void __wrap_lwip_init() {
-        static bool initted = false;
-        if (!initted) {
+        if (!_lwip_rng) {
+            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros() * rp2040.getCycleCount());
             __real_lwip_init();
-            initted = true;
         }
     }
 

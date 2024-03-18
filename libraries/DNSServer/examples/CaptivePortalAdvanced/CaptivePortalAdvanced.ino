@@ -46,7 +46,7 @@ IPAddress netMsk(255, 255, 255, 0);
 
 
 /** Should I connect to WLAN asap? */
-boolean connect;
+bool connect;
 
 /** Last time I tried to connect to WLAN */
 unsigned long lastConnectTry = 0;

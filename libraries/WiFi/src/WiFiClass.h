@@ -23,13 +23,18 @@
 #pragma once
 
 #include <Arduino.h>
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
 #include <lwIP_CYW43.h>
+#elif defined(ESPHOSTSPI)
+#include <lwIP_ESPHost.h>
+#else
+#include "utility/lwIP_nodriver.h"
+#endif
 #include "WiFi.h"
 
 #include <inttypes.h>
 #include <map>
 
-#include <cyw43.h>
 #include "dhcpserver/dhcpserver.h"
 
 #define WIFI_FIRMWARE_LATEST_VERSION PICO_SDK_VERSION_STRING
@@ -136,7 +141,9 @@ public:
         return true;
     }
 
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
     uint8_t softAPgetStationNum();
+#endif
 
     IPAddress softAPIP() {
         return localIP();
@@ -147,7 +154,7 @@ public:
     }
 
     String softAPmacAddress(void) {
-        uint8_t mac[8];
+        uint8_t mac[6];
         macAddress(mac);
         char buff[32];
         sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
@@ -233,7 +240,7 @@ public:
     */
     uint8_t* macAddress(uint8_t* mac);
     String macAddress(void) {
-        uint8_t mac[8];
+        uint8_t mac[6];
         macAddress(mac);
         char buff[32];
         sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
@@ -260,6 +267,13 @@ public:
         return: gateway ip address value
     */
     IPAddress gatewayIP();
+
+    /*
+        Get the DNS ip address.
+
+        return: IPAddress DNS Server IP
+    */
+    IPAddress dnsIP(uint8_t dns_no = 0);
 
     /*
         Return the current SSID associated with the network
@@ -374,8 +388,10 @@ public:
 
     unsigned long getTime();
 
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
     void aggressiveLowPowerMode();
     void defaultLowPowerMode();
+#endif
     void noLowPowerMode();
 
     int ping(const char* hostname, uint8_t ttl = 128);
@@ -403,10 +419,6 @@ private:
     String _password;
     bool _wifiHWInitted = false;
     bool _apMode = false;
-
-    // WiFi Scan callback
-    std::map<uint64_t, cyw43_ev_scan_result_t> _scan;
-    static int _scanCB(void *env, const cyw43_ev_scan_result_t *result);
 
     // DHCP for AP mode
     dhcp_server_t *_dhcpServer = nullptr;

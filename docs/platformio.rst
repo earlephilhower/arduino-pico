@@ -191,7 +191,7 @@ Debug Level
 Done again by directly adding the needed `build
 flags <https://github.com/earlephilhower/arduino-pico/blob/05356da2c5552413a442f742e209c6fa92823666/boards.txt#L104-L114>`__.
 When wanting to define multiple build flags, they must be accumulated in
-either a sing line or a newline-separated expression.
+either a single line or a newline-separated expression.
 
 .. code:: ini
 
@@ -363,7 +363,7 @@ For further information on customizing debug options, like the initial breakpoin
     You can obtain precompiled binaries from `here <https://github.com/blackmagic-debug/blackmagic/issues/1364#issuecomment-1503372723>`__. A flashing guide is available `here <https://primalcortex.wordpress.com/2017/06/13/building-a-black-magic-debug-probe/>`__. You then have to configure the target serial port ("GDB port") in your project per `documentation <https://docs.platformio.org/en/latest/plus/debug-tools/blackmagic.html#debugging-tool-blackmagic>`__.
 
 .. note:: 
-    For the pico-debug (`download <https://github.com/majbthrd/pico-debug/releases>`__) debugging way, *which needs to no additional debug probe*, add this snippet to your ``platformio.ini`` and follow the given procedure:
+    For the pico-debug (`download <https://github.com/majbthrd/pico-debug/releases>`__) debugging way, *which needs no additional debug probe*, add this snippet to your ``platformio.ini`` and follow the given procedure:
 
     .. code:: ini
 
@@ -397,5 +397,4 @@ The task "Build Filesystem Image" will take all files in the data directory and 
 The task "Upload Filesystem Image" will upload the filesystem image to the Pico via the specified ``upload_protocol``. 
 
 .. note:: 
-    Set the space available for the filesystem in the ``platformio.ini`` using e.g., ``board_build.filesystem_size = 0.5m``, or filesystem
-    creation will fail!
+    Set the space available for the filesystem in the ``platformio.ini`` using e.g., ``board_build.filesystem_size = 0.5m``, or filesystem creation will fail!

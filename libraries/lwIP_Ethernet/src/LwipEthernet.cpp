@@ -33,7 +33,6 @@ bool __ethernetContextInitted = false;
 static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
 static async_when_pending_worker_t always_pending_update_timeout_worker;
 static async_at_time_worker_t ethernet_timeout_worker;
-
 static async_context_t *_context = nullptr;
 
 // Theoretically support multiple interfaces
@@ -46,7 +45,7 @@ void ethernet_arch_lwip_begin() {
         return;
     }
 #endif
-    async_context_acquire_lock_blocking(&lwip_ethernet_async_context_threadsafe_background.core);
+    async_context_acquire_lock_blocking(_context);
 }
 
 void ethernet_arch_lwip_end() {
@@ -56,7 +55,7 @@ void ethernet_arch_lwip_end() {
         return;
     }
 #endif
-    async_context_release_lock(&lwip_ethernet_async_context_threadsafe_background.core);
+    async_context_release_lock(_context);
 }
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
@@ -72,6 +71,45 @@ void __removeEthernetPacketHandler(int id) {
     _handlePacketList.erase(id);
     ethernet_arch_lwip_end();
 }
+
+#define GPIOSTACKSIZE 8
+static uint32_t gpioMaskStack[GPIOSTACKSIZE][4];
+static uint32_t gpioMask[4] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
+
+void ethernet_arch_lwip_gpio_mask() {
+    noInterrupts();
+    memmove(gpioMaskStack[1], gpioMaskStack[0], 4 * sizeof(uint32_t) * (GPIOSTACKSIZE - 1)); // Push down the stack
+    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    for (int i = 0; i < 4; i++) {
+        gpioMaskStack[0][i] = irq_ctrl_base->inte[i];
+        irq_ctrl_base->inte[i] = irq_ctrl_base->inte[i] & gpioMask[i];
+    }
+    interrupts();
+}
+
+void ethernet_arch_lwip_gpio_unmask() {
+    noInterrupts();
+    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    for (int i = 0; i < 4; i++) {
+        irq_ctrl_base->inte[i] = gpioMaskStack[0][i];
+    }
+    memmove(gpioMaskStack[0], gpioMaskStack[1],  4 * sizeof(uint32_t) * (GPIOSTACKSIZE - 1)); // Pop up the stack
+    interrupts();
+}
+
+// To be called after IRQ is set, so we can just rad from the IOREG instead of duplicating the calculation
+void __addEthernetGPIO(int pin) {
+    int idx = pin / 8;
+    int off = (pin % 8) * 4;
+    gpioMask[idx] &= ~(0xf << off);
+}
+
+void __removeEthernetGPIO(int pin) {
+    int idx = pin / 8;
+    int off = (pin % 8) * 4;
+    gpioMask[idx] |= 0xf << off;
+}
+
 
 static volatile bool _dns_lookup_pending = false;
 
@@ -129,9 +167,13 @@ static async_context_t *lwip_ethernet_init_default_async_context(void) {
     return NULL;
 }
 
+uint32_t __ethernet_timeout_reached_calls = 0;
+static uint32_t _pollingPeriod = 20;
 // This will only be called under the protection of the async context mutex, so no re-entrancy checks needed
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
+    __ethernet_timeout_reached_calls++;
+    ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
     }
@@ -142,9 +184,9 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
 #else
     sys_check_timeouts();
 #endif
+    ethernet_arch_lwip_gpio_unmask();
 }
 
-static uint32_t _pollingPeriod = 20;
 static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker) {
     assert(worker == &always_pending_update_timeout_worker);
     worker->work_pending = true;
@@ -164,9 +206,9 @@ void __startEthernetContext() {
 #else
     _context = lwip_ethernet_init_default_async_context();
 #endif
+    ethernet_timeout_worker.do_work = ethernet_timeout_reached;
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;
-    ethernet_timeout_worker.do_work = ethernet_timeout_reached;
     async_context_add_when_pending_worker(_context, &always_pending_update_timeout_worker);
     __ethernetContextInitted = true;
 }

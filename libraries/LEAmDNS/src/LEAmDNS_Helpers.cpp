@@ -161,7 +161,7 @@ bool MDNSResponder::_allocUDPContext(void) {
 
     if (m_pUDPContext->listen(IP4_ADDR_ANY, DNS_MQUERY_PORT)) {
         m_pUDPContext->setMulticastTTL(MDNS_MULTICAST_TTL);
-        m_pUDPContext->onRx(std::bind(&MDNSResponder::_callProcess, this));
+        m_pUDPContext->onRx([this] { this->_callProcess(); });
     } else {
         return false;
     }

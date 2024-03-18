@@ -18,12 +18,12 @@ The following diagram shows the flash layout used in Arduino-Pico:
 
 ::
 
-    |---------------------|-------------|----|
-    ^                     ^             ^
-    Sketch                File system   EEPROM
+    |----|---------------------|-------------|----|
+    ^    ^                     ^             ^
+    OTA  Sketch                File system   EEPROM
 
-The file system size is configurable via the IDE menus, rom 64k up to 15MB
-(assuming you have an RP2040 boad with that much flash)
+The file system size is configurable via the IDE menus, from 64k up to 15MB
+(assuming you have an RP2040 board with that much flash)
 
 **Note:** to use any of file system functions in the sketch, add the
 following include to the sketch:
@@ -38,14 +38,14 @@ following include to the sketch:
 Compatible Filesystem APIs
 --------------------------
 
-LittleFS is an onboard filesystem that sets asidesome program flash for
+LittleFS is an onboard filesystem that sets aside some program flash for
 use as a filesystem without requiring any external hardware.
 
 SDFS is a filesystem for SD cards, based on [SdFat 2.0](https://github.com/earlephilhower/ESP8266SdFat).
 It supports FAT16 and FAT32 formatted cards, and requires an external
 SD card reader.
 
-SD is the Arduino supported, somewhat old and limited SD card filesystem.
+SD is the Arduino-supported, somewhat old and limited SD card filesystem.
 It is recommended to use SDFS for new applications instead of SD.
 
 All three of these filesystems can open and manipulate ``File`` and ``Dir``
@@ -75,22 +75,28 @@ Uploading Files to the LittleFS File System
 menu item to **Tools** menu for uploading the contents of sketch data
 directory into a new LittleFS flash file system.
 
+**IDE 1.x**
+
 -  Download the tool: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
--  In your Arduino sketchbook directory, create ``tools`` directory if
-   it doesn't exist yet.
--  Unpack the tool into ``tools`` directory (the path will look like
-   ``<home_dir>/Arduino/tools/PicoLittleFS/tool/picolittlefs.jar``)
+-  In your Arduino sketchbook directory, create ``tools`` directory if it doesn't exist yet.
+-  Unpack the tool into ``tools`` directory (the path will look like ``<home_dir>/Arduino/tools/PicoLittleFS/tool/picolittlefs.jar``)
    If upgrading, overwrite the existing JAR file with the newer version.
 -  Restart Arduino IDE.
 -  Open a sketch (or create a new one and save it).
 -  Go to sketch directory (choose Sketch > Show Sketch Folder).
--  Create a directory named ``data`` and any files you want in the file
-   system there.
+-  Create a directory named ``data`` and any files you want in the file system there.
 -  Make sure you have selected a board, port, and closed Serial Monitor.
--  Double check theSerial Monitor is closed.  Uploads will fail if the Serial
-   Monitor has control of the serial port.
--  Select ``Tools > Pico LittleFS Data Upload``. This should start
-   uploading the files into the flash file system.
+-  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
+-  Select ``Tools > Pico LittleFS Data Upload``. This should start uploading the files into the flash file system.
+
+**IDE 2.x**
+
+-  Download the new tool: https://github.com/earlephilhower/arduino-littlefs-upload/releases
+-  Exit the IDE, if running
+-  Copy the VSIX file manually to (Linux/Mac) ``~/.arduinoIDE/plugins/`` (you may need to make this directory yourself beforehand) or to (Windows) ``C:\Users\<username>\.arduinoIDE\``
+-  Restart the IDE
+-  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
+-  Enter ``[Ctrl]`` + ``[Shift]`` + ``[P]`` to bring up the command palette, then select/type ``Upload LittleFS to Pico/ESP8266``
 
 SD Library Information
 ----------------------
@@ -131,7 +137,7 @@ before mounting.  All filesystems have their own ``*Config`` (i.e.
 All filesystems allow explicitly enabling/disabling formatting when
 mounts fail.  If you do not call this ``setConfig`` method before
 perforing ``begin()``, you will get the filesystem's default
-behavior and configuration. By default, SPIFFS will autoformat the
+behavior and configuration. By default, LittleFS will autoformat the
 filesystem if it cannot mount it, while SDFS will not.
 
 begin
@@ -144,11 +150,10 @@ begin
 
 This method mounts file system. It must be called before any
 other FS APIs are used. Returns *true* if file system was mounted
-successfully, false otherwise.  With no options it will format SPIFFS
-if it is unable to mount it on the first try.
+successfully, false otherwise.
 
 Note that LittleFS will automatically format the filesystem
-if one is not detected.  This is configurable via ``setConfig``
+if one is not detected.  This is configurable via ``setConfig``.
 
 end
 ~~~
@@ -181,8 +186,8 @@ open
 
 Opens a file. ``path`` should be an absolute path starting with a slash
 (e.g. ``/dir/filename.txt``). ``mode`` is a string specifying access
-mode. It can be one of "r", "w", "a", "r+", "w+", "a+". Meaning of these
-modes is the same as for ``fopen`` C function.
+mode. It can be one of "r", "w", "a", "r+", "w+", "a+". The meaning of these
+modes is the same as for the ``fopen`` C function.
 
 ::
 
@@ -258,8 +263,6 @@ openDir
     or LittleFS.openDir(path)
 
 Opens a directory given its absolute path. Returns a *Dir* object.
-Please note the previous discussion on the difference in behavior between
-LittleFS and SPIFFS for this call.
 
 remove
 ~~~~~~

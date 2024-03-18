@@ -82,6 +82,10 @@ public:
     }
     using Print::write;
 
+    void setTimeout(uint32_t timeout = 25, bool reset_with_timeout = false);     // sets the maximum number of milliseconds to wait
+    bool getTimeoutFlag(void);
+    void clearTimeoutFlag(void);
+
     // IRQ callback
     void onIRQ();
 
@@ -95,6 +99,10 @@ private:
     bool _slave;
     uint8_t _addr;
     bool _txBegun;
+
+    bool _timeoutFlag;
+    bool _reset_with_timeout;
+    void _handleTimeout(bool reset);
 
     uint8_t _buff[WIRE_BUFFER_SIZE];
     int _buffLen;

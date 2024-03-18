@@ -39,6 +39,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <LwipEthernet.h>
 
 #include "enc28j60.h"
 
@@ -67,6 +68,9 @@
 
 #define ECON2_AUTOINC 0x80
 #define ECON2_PKTDEC 0x40
+
+#define EIE_PKTIE 0x40
+#define EIE_INTIE 0x80
 
 #define EIR_TXIF 0x08
 
@@ -152,8 +156,7 @@
 // The ENC28J60 SPI Interface supports clock speeds up to 20 MHz
 static const SPISettings spiSettings(20000000, MSBFIRST, SPI_MODE0);
 
-ENC28J60::ENC28J60(int8_t cs, SPIClass& spi, int8_t intr) : _bank(ERXTX_BANK), _cs(cs), _spi(spi) {
-    (void)intr;
+ENC28J60::ENC28J60(int8_t cs, SPIClass& spi, int8_t intr) : _bank(ERXTX_BANK), _cs(cs), _intr(intr), _spi(spi) {
 }
 
 void ENC28J60::enc28j60_arch_spi_select(void) {
@@ -487,6 +490,12 @@ bool ENC28J60::reset(void) {
     /* Turn on autoincrement for buffer access */
     setregbitfield(ECON2, ECON2_AUTOINC);
 
+    /* Enable interrupt on packet receive if desired */
+    if (_intr >= 0) {
+        setregbitfield(EIE, EIE_PKTIE);
+        setregbitfield(EIE, EIE_INTIE);
+    }
+
     /* Turn on reception */
     writereg(ECON1, ECON1_RXEN);
 
@@ -507,8 +516,16 @@ bool ENC28J60::begin(const uint8_t* address, netif *net) {
 
 /*---------------------------------------------------------------------------*/
 
+void ENC28J60::end() {
+
+}
+
+/*---------------------------------------------------------------------------*/
+
 uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen) {
     uint16_t dataend;
+
+    ethernet_arch_lwip_gpio_mask(); // So we don't fire an IRQ and interrupt the send w/a receive!
 
     /*
         1. Appropriately program the ETXST pointer to point to an unused
@@ -580,6 +597,8 @@ uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen) {
                0xff & data[1], 0xff & data[2], 0xff & data[3], 0xff & data[4], 0xff & data[5]);
     }
 #endif
+
+    ethernet_arch_lwip_gpio_unmask();
 
     // sent_packets++;
     // PRINTF("enc28j60: sent_packets %d\n", sent_packets);
@@ -696,6 +715,8 @@ uint16_t ENC28J60::phyread(uint8_t reg) {
 
 bool ENC28J60::isLinked() {
     // ( https://github.com/JAndrassy/EthernetENC/tree/master/src/utility/enc28j60.h )
-
-    return !!(phyread(MACSTAT2) & 0x400);
+    ethernet_arch_lwip_begin();
+    auto ret = !!(phyread(MACSTAT2) & 0x400);
+    ethernet_arch_lwip_end();
+    return ret;
 }

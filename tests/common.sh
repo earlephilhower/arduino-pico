@@ -178,11 +178,6 @@ function install_ide()
         unzip -q ${core_path}/tools/dist/arduino-windows.zip
         mv arduino-${idever} arduino-distrib
     elif [ "$MACOSX" = "1" ]; then
-        # MACOS only has next-to-obsolete Python2 installed.  Install Python 3 from python.org
-        wget -q https://www.python.org/ftp/python/3.7.4/python-3.7.4-macosx10.9.pkg
-        sudo installer -pkg python-3.7.4-macosx10.9.pkg -target /
-        # Install the Python3 certificates, because SSL connections fail w/o them and of course they aren't installed by default.
-        ( cd "/Applications/Python 3.7/" && sudo "./Install Certificates.command" )
         # Hack to place arduino-builder in the same spot as sane OSes
         test -r ${core_path}/tools/dist/arduino-macos.zip || wget -q -O ${core_path}/tools/dist/arduino-macos.zip "${ideurl}-macosx.zip"
         unzip -q ${core_path}/tools/dist/arduino-macos.zip

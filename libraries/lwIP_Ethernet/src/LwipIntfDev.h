@@ -61,8 +61,13 @@ public:
         memset(&_netif, 0, sizeof(_netif));
     }
 
+    //The argument order for ESP is not the same as for Arduino. However, there is compatibility code under the hood
+    //to detect Arduino arg order, and handle it correctly.
     bool config(const IPAddress& local_ip, const IPAddress& arg1, const IPAddress& arg2,
                 const IPAddress& arg3 = IPADDR_NONE, const IPAddress& dns2 = IPADDR_NONE);
+
+    // two and one parameter version. 2nd parameter is DNS like in Arduino. IPv4 only
+    bool config(IPAddress local_ip, IPAddress dns = IPADDR_NONE);
 
     // default mac-address is inferred from esp8266's STA interface
     bool begin(const uint8_t* macAddress = nullptr, const uint16_t mtu = DEFAULT_MTU);
@@ -73,6 +78,10 @@ public:
         return &_netif;
     }
 
+    uint8_t* macAddress(uint8_t* mac) {
+        memcpy(mac, &_netif.hwaddr, 6);
+        return mac;
+    }
     IPAddress localIP() const {
         return IPAddress(ip4_addr_get_u32(ip_2_ip4(&_netif.ip_addr)));
     }
@@ -81,6 +90,17 @@ public:
     }
     IPAddress gatewayIP() const {
         return IPAddress(ip4_addr_get_u32(ip_2_ip4(&_netif.gw)));
+    }
+    IPAddress dnsIP(int n = 0) const {
+        return IPAddress(dns_getserver(n));
+    }
+    void setDNS(IPAddress dns1, IPAddress dns2 = INADDR_ANY) {
+        if (dns1.isSet()) {
+            dns_setserver(0, dns1);
+        }
+        if (dns2.isSet()) {
+            dns_setserver(1, dns2);
+        }
     }
 
     // 1. Currently when no default is set, esp8266-Arduino uses the first
@@ -107,7 +127,7 @@ public:
     // ICMP echo, returns TTL
     int ping(IPAddress host, uint8_t ttl, uint32_t timeout = 5000);
 
-    int hostByName(const char* aHostname, IPAddress& aResult, int timeout);
+    int hostByName(const char* aHostname, IPAddress& aResult, int timeout = 15000);
 
     inline void setSPISpeed(int mhz) {
         setSPISettings(SPISettings(mhz, MSBFIRST, SPI_MODE0));
@@ -116,6 +136,14 @@ public:
     void setSPISettings(SPISettings s) {
         _spiSettings = s;
     }
+
+    uint32_t packetsReceived() {
+        return _packetsReceived;
+    }
+    uint32_t packetsSent() {
+        return _packetsSent;
+    }
+
 
     // ESP8266WiFi API compatibility
 
@@ -129,6 +157,7 @@ protected:
     static err_t netif_init_s(netif* netif);
     static err_t linkoutput_s(netif* netif, struct pbuf* p);
     static void  netif_status_callback_s(netif* netif);
+    static void _irq(void *param);
 public:
     // called on a regular basis or on interrupt
     err_t handlePackets();
@@ -152,6 +181,9 @@ protected:
 
     // Packet handler number
     int _phID = -1;
+
+    uint32_t _packetsReceived = 0;
+    uint32_t _packetsSent = 0;
 };
 
 
@@ -249,6 +281,24 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
     }
     return true;
 }
+
+template<class RawDev>
+bool LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
+
+    if (!local_ip.isSet()) {
+        return config(INADDR_ANY, INADDR_ANY, INADDR_ANY);
+    }
+    if (!local_ip.isV4()) {
+        return false;
+    }
+    IPAddress gw(local_ip);
+    gw[3] = 1;
+    if (!dns.isSet()) {
+        dns = gw;
+    }
+    return config(local_ip, gw, IPAddress(255, 255, 255, 0), dns);
+}
+
 extern char wifi_station_hostname[];
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
@@ -310,7 +360,9 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         return false;
     }
 
-    _phID = __addEthernetPacketHandler(std::bind(&LwipIntfDev<RawDev>::handlePackets, this));
+    if (_intrPin < 0) {
+        _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
+    }
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
@@ -337,6 +389,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 #endif
 #if LWIP_IPV6_DHCP6_STATELESS
     err_t __res = dhcp6_enable_stateless(&_netif);
+    (void) __res; // Not used except for debug
     DEBUGV("LwipIntfDev: Enabled DHCP6 stateless: %d\n", __res);
 #endif
 
@@ -344,7 +397,11 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
     if (_intrPin >= 0) {
         if (RawDev::interruptIsPossible()) {
-            // attachInterrupt(_intrPin, [&]() { this->handlePackets(); }, FALLING);
+            noInterrupts(); // Ensure this is atomically set up
+            pinMode(_intrPin, INPUT);
+            attachInterruptParam(_intrPin, _irq, RawDev::interruptMode(), (void*)this);
+            __addEthernetGPIO(_intrPin);
+            interrupts();
         } else {
             ::printf((PGM_P)F(
                          "lwIP_Intf: Interrupt not implemented yet, enabling transparent polling\r\n"));
@@ -357,15 +414,28 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
-    __removeEthernetPacketHandler(_phID);
+    if (_intrPin < 0) {
+        __removeEthernetPacketHandler(_phID);
+    } else {
+        detachInterrupt(_intrPin);
+        __removeEthernetGPIO(_intrPin);
+    }
 
     RawDev::end();
 
     netif_remove(&_netif);
-    memset(&_netif, 0, sizeof(_netif));
+
     _started = false;
 }
 
+template<class RawDev>
+void LwipIntfDev<RawDev>::_irq(void *param) {
+    LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
+    ethernet_arch_lwip_begin();
+    d->handlePackets();
+    sys_check_timeouts();
+    ethernet_arch_lwip_end();
+}
 
 template<class RawDev>
 wl_status_t LwipIntfDev<RawDev>::status() {
@@ -377,7 +447,7 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
     ethernet_arch_lwip_begin();
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
-
+    lid->_packetsSent++;
 #if PHY_HAS_CAPTURE
     if (phy_capture) {
         phy_capture(lid->_netif.num, (const char*)pbuf->payload, pbuf->len, /*out*/ 1,
@@ -490,6 +560,8 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
             pbuf_free(pbuf);
             return ERR_BUF;
         }
+
+        _packetsReceived++;
 
         err_t err = _netif.input(pbuf, &_netif);
 

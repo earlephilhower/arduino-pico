@@ -86,6 +86,19 @@ Pico may not have enough time to service the Ethernet port before the timer fire
 leading to a lock up and hang.
 
 
+Using Interrupt-Driven Handling
+-------------------------------
+
+The WizNet and ENC28J60 devices support generating an interrupt when a packet is received,
+removing the need for polling and decreasing latency.  Simply specify the SPI object to use and the
+interrupt pin when instantiating the Ethernet object:
+
+.. code:: cpp
+
+    #include <W5100lwIP.h>
+    Wiznet5100lwIP eth(SS /* Chip Select*/, SPI /* SPI interface */, 17 /* Interrupt GPIO */ );
+
+
 Adjusting SPI Speed
 -------------------
 
@@ -114,12 +127,12 @@ For example, to set the W5500 to use a 30MHZ clock:
 Using the WIZnet W5100S-EVB-Pico
 --------------------------------
 
-You can use the onboard Ethernet chip with these drivers by utilizing the following options:
+You can use the onboard Ethernet chip with these drivers, in interrupt mode, by utilizing the following options:
 
 .. code:: cpp
 
     #include <W5100lwIP.h>
-    Wiznet5100lwIP eth(17);  // Note chip select is **17**
+    Wiznet5100lwIP eth(17, SPI, 21);  // Note chip select is **17**
 
     void setup() {
         // Set SPI to the onboard Wiznet chip

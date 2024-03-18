@@ -5,11 +5,17 @@
   directory on a SD card
 
   The circuit:
-   SD card attached to SPI bus as follows:
-   ** MISO - pin 4
-   ** MOSI - pin 7
-   ** CS   - pin 5
-   ** SCK  - pin 6
+   SD card attached to SPI bus as follows on RP2040:
+   ************ SPI0 ************
+   ** MISO (AKA RX) - pin 0, 4, or 16
+   ** MOSI (AKA TX) - pin 3, 7, or 19
+   ** CS            - pin 1, 5, or 17
+   ** SCK           - pin 2, 6, or 18
+   ************ SPI1 ************
+   ** MISO (AKA RX) - pin  8 or 12
+   ** MOSI (AKA TX) - pin 11 or 15
+   ** CS            - pin  9 or 13
+   ** SCK           - pin 10 or 14
 
   created   Nov 2010
   by David A. Mellis
@@ -17,6 +23,10 @@
   by Tom Igoe
   modified 2 Feb 2014
   by Scott Fitzgerald
+  modified 12 Feb 2023
+  by Earle F. Philhower, III
+  modified 26 Dec 2023
+  by Richard Teel
 
   This example code is in the public domain.
 
@@ -27,8 +37,8 @@
 // Only certain pins can be used by the SPI hardware, so if you change
 // these be sure they are legal or the program will crash.
 // See: https://datasheets.raspberrypi.com/picow/PicoW-A4-Pinout.pdf
-const int _MISO = 4;
-const int _MOSI = 7;
+const int _MISO = 4;  // AKA SPI RX
+const int _MOSI = 7;  // AKA SPI TX
 const int _CS = 5;
 const int _SCK = 6;
 
@@ -41,14 +51,31 @@ void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(115200);
 
-  Serial.print("Initializing SD card...");
+  while (!Serial) {
+    delay(1);  // wait for serial port to connect. Needed for native USB port only
+  }
 
+  Serial.println("\nInitializing SD card...");
+
+  bool sdInitialized = false;
   // Ensure the SPI pinout the SD card is connected to is configured properly
-  SPI.setRX(_MISO);
-  SPI.setTX(_MOSI);
-  SPI.setSCK(_SCK);
+  // Select the correct SPI based on _MISO pin for the RP2040
+  if (_MISO == 0 || _MISO == 4 || _MISO == 16) {
+    SPI.setRX(_MISO);
+    SPI.setTX(_MOSI);
+    SPI.setSCK(_SCK);
+    sdInitialized = SD.begin(_CS);
+  } else if (_MISO == 8 || _MISO == 12) {
+    SPI1.setRX(_MISO);
+    SPI1.setTX(_MOSI);
+    SPI1.setSCK(_SCK);
+    sdInitialized = SD.begin(_CS, SPI1);
+  } else {
+    Serial.println(F("ERROR: Unknown SPI Configuration"));
+    return;
+  }
 
-  if (!SD.begin(_CS)) {
+  if (!sdInitialized) {
     Serial.println("initialization failed!");
     return;
   }
@@ -68,8 +95,8 @@ void loop() {
 void printDirectory(File dir, int numTabs) {
   while (true) {
 
-    File entry =  dir.openNextFile();
-    if (! entry) {
+    File entry = dir.openNextFile();
+    if (!entry) {
       // no more files
       break;
     }
@@ -86,7 +113,7 @@ void printDirectory(File dir, int numTabs) {
       Serial.print(entry.size(), DEC);
       time_t cr = entry.getCreationTime();
       time_t lw = entry.getLastWrite();
-      struct tm * tmstruct = localtime(&cr);
+      struct tm* tmstruct = localtime(&cr);
       Serial.printf("\tCREATION: %d-%02d-%02d %02d:%02d:%02d", (tmstruct->tm_year) + 1900, (tmstruct->tm_mon) + 1, tmstruct->tm_mday, tmstruct->tm_hour, tmstruct->tm_min, tmstruct->tm_sec);
       tmstruct = localtime(&lw);
       Serial.printf("\tLAST WRITE: %d-%02d-%02d %02d:%02d:%02d\n", (tmstruct->tm_year) + 1900, (tmstruct->tm_mon) + 1, tmstruct->tm_mday, tmstruct->tm_hour, tmstruct->tm_min, tmstruct->tm_sec);

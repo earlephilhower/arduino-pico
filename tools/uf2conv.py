@@ -261,7 +261,7 @@ def get_drives():
                 print("Unable to build drive list");
                 sys.exit(1)
         for line in to_str(r).split('\n'):
-            words = re.split('\s+', line)
+            words = re.split(r'\s+', line)
             if len(words) >= 3 and words[1] == "2" and words[2] == "FAT":
                 drives.append(words[0])
     else:
@@ -277,6 +277,11 @@ def get_drives():
                     if proc_out.returncode == 0:
                         stdoutput = proc_out.stdout.decode("UTF-8")
                         match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
+                        if match:
+                            drives = [match.group(1)]
+                    else:
+                        stderror =  proc_out.stderr.decode("UTF-8")
+                        match = re.search(r'already mounted at\s+[`\']([^\.\r\n\'`]+)', stderror)
                         if match:
                             drives = [match.group(1)]
                 except Exception as ex:

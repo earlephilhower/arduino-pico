@@ -30,7 +30,9 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * BridgeTek IDM2040-7A
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
+* Cytron Maker Uno RP2040
 * DatanoiseTV PicoADK+
+* Degz Suibo RP2040
 * DeRuiLab FlyBoard2040 Core
 * DFRobot Beetle RP2040
 * ElectronicCats Hunter Cat NFC
@@ -52,6 +54,10 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Pimoroni PGA2040
 * Pimoroni Plasma2040
 * Pimoroni Tiny2040
+* RAKwireless RAK11300
+* Redscorp RP2040-Eins
+* Redscorp RP2040-ProMini
+* Sea-Picro
 * Seeed Indicator RP2040
 * Seeed XIAO RP2040
 * Silicognition RP2040-Shim
@@ -69,8 +75,35 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
-* Redscorp RP2040-ProMini
 * Generic (configurable flash, I/O pins)
+
+# Features
+* Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
+* Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
+* Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
+* WiFi (Pico W)
+* Ethernet (Wired W5500, W5100, ENC28J60)
+* HTTP client and server (WebServer)
+* SSL/TLS/HTTPS
+* Over-the-Air (OTA) upgrades
+* Filesystems (LittleFS and SD/SDFS)
+* Multicore support (setup1() and loop1())
+* FreeRTOS SMP support
+* Overclocking and underclocking from the menus
+* digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
+* Analog stereo audio in using DMA and the built-in ADC
+* Analog stereo audio out using PWM hardware
+* USB drive mode for data loggers (SingleFileDrive)
+* Peripherals:  SPI master/slave, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input/output, Servo
+* printf (i.e. debug) output over USB serial
+
+The RP2040 PIO state machines (SMs) are used to generate jitter-free:
+* Servos
+* Tones
+* I2S Input
+* I2S Output
+* Software UARTs (Serial ports)
+
 
 # Installing via Arduino Boards Manager
 ## Windows-specific Notes
@@ -169,11 +202,14 @@ Under Windows a local admin user should be able to access the Picoprobe port aut
 
 To set up user-level access to Picoprobes on Ubuntu (and other OSes which use `udev`):
 ````
-echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", GROUP="users", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
 sudo udevadm control --reload
+sudo udevadm trigger -w -s usb
 ````
 
-The first line creates a file with the USB vendor and ID of the Picoprobe and tells UDEV to give users full access to it.  The second causes `udev` to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.
+The first line creates a device file in `/dev` matching the USB vendor and product ID of the Picoprobe, and it enables global read+write permissions. The second line causes `udev` to load this new rule. The third line requests the kernel generate "device change" events that will cause our new `udev` rule to run. 
+
+If for some reason the device file does not appear, manually unplug and re-plug the USB connection and check again. The output from `dmesg` can reveal useful diagnostics if the device file remains absent.
 
 Once Picoprobe permissions are set up properly, then select the board "Raspberry Pi Pico (Picoprobe)" in the Tools menu and upload as normal.
 
@@ -182,13 +218,16 @@ Once Picoprobe permissions are set up properly, then select the board "Raspberry
 
 Under Windows and macOS, any user should be able to access pico-debug automatically, but under Linux `udev` must be told about the device and to allow normal users access.
 
-To set up user-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes which use `udev`):
+To set up group-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes which use `udev`):
 ````
 echo 'ATTRS{product}=="*CMSIS-DAP*", MODE="664", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-CMSIS-DAP.rules
 sudo udevadm control --reload
+sudo udevadm trigger -w -s usb
 ````
 
-The first line creates a file that recognizes all CMSIS-DAP adapters and tells UDEV to give users full access to it.  The second causes `udev` to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.
+The first line creates a device file in `/dev` that matches all CMSIS-DAP adapters, and it enables read+write permissions for members of the `plugdev` group. The second line causes `udev` to load this new rule. The third line requests the kernel generate "device change" events that will cause our new `udev` rule to run. 
+
+If for some reason the device file does not appear, manually unplug and re-plug the USB connection and check again. The output from `dmesg` can reveal useful diagnostics if the device file remains absent.
 
 Once CMSIS-DAP permissions are set up properly, then select the board "Raspberry Pi Pico (pico-debug)" in the Tools menu.
 
@@ -196,48 +235,6 @@ When first connecting the USB port to your PC, you must copy [pico-debug-gimmeca
 
 # Debugging with Picoprobe/pico-debug, OpenOCD, and GDB
 The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.  For [pico-debug](https://github.com/majbthrd/pico-debug/), replace the raspberrypi-swd and picoprobe example OpenOCD arguments of "-f interface/raspberrypi-swd.cfg -f target/rp2040.cfg" or "-f interface/picoprobe.cfg -f target/rp2040.cfg" respectively in the Pico Getting Started manual with "-f board/pico-debug.cfg".
-
-# Features
-* Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
-* Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
-* Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
-* WiFi (Pico W)
-* Ethernet (Wired W5500, W5100, ENC28J60)
-* HTTP client and server (WebServer)
-* SSL/TLS/HTTPS
-* Over-the-Air (OTA) upgrades
-* Filesystems (LittleFS and SD/SDFS)
-* Multicore support (setup1() and loop1())
-* FreeRTOS SMP support
-* Overclocking and underclocking from the menus
-* digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
-* Analog stereo audio in using DMA and the built-in ADC
-* Analog stereo audio out using PWM hardware
-* USB drive mode for data loggers (SingleFileDrive)
-* Peripherals:  SPI master/slave, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input/output, Servo
-* printf (i.e. debug) output over USB serial
-
-The RP2040 PIO state machines (SMs) are used to generate jitter-free:
-* Servos
-* Tones
-* I2S Input
-* I2S Output
-* Software UARTs (Serial ports)
-
-# Tutorials from Across the Web
-Here are some links to coverage and additional tutorials for using `arduino-pico`
-* The File:: class is taken from the ESP8266.  See https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
-* Arduino Support for the Pi Pico available! And how fast is the Pico? - https://youtu.be/-XHh17cuH5E
-* Pre-release Adafruit QT Py RP2040 - https://www.youtube.com/watch?v=sfC1msqXX0I
-* Adafruit Feather RP2040 running LCD + TMP117 - https://www.youtube.com/watch?v=fKDeqZiIwHg
-* Demonstration of Servos and I2C in Korean - https://cafe.naver.com/arduinoshield/1201
-* Home Assistant Pico W integration starter project using Arduino - https://github.com/daniloc/PicoW_HomeAssistant_Starter
-* Tutorials for the Raspberry Pi Pico / uPesy RP2040 DevKit board 
-    - English version: https://www.upesy.com/blogs/tutorials/best-tutorials-for-rpi-pi-pico-with-arduino-code
-    - French version: https://www.upesy.fr/blogs/tutorials/best-tutorials-for-rpi-pi-pico-with-arduino-code
-
-# Contributing
-If you want to contribute or have bugfixes, drop me a note at <earlephilhower@yahoo.com> or open an issue/PR here.
 
 # Licensing and Credits
 * The [Arduino IDE and ArduinoCore-API](https://arduino.cc) are developed and maintained by the Arduino team. The IDE is licensed under GPL.
@@ -248,14 +245,14 @@ If you want to contribute or have bugfixes, drop me a note at <earlephilhower@ya
 * [UF2CONV.PY](https://github.com/microsoft/uf2) is by Microsoft Corporation and licensed under the MIT license.
 * Networking and filesystem code taken from the [ESP8266 Arduino Core](https://github.com/esp8266/Arduino) and licensed under the LGPL.
 * DHCP server for AP host mode from the [Micropython Project](https://micropython.org), distributed under the MIT License.
-* [FreeRTOS](https://freertos.org) is Copyright Amazon.com, Inc. or its affiliates, and distributed under the MIT license.
+* [FreeRTOS](https://freertos.org) is copyright Amazon.com, Inc. or its affiliates, and distributed under the MIT license.
 * [lwIP](https://savannah.nongnu.org/projects/lwip/) is (c) the Swedish Institute of Computer Science and licenced under the BSD license.
 * [BearSSL](https://bearssl.org) library written by Thomas Pornin, is distributed under the [MIT License](https://bearssl.org/#legal-details).
 * [UZLib](https://github.com/pfalcon/uzlib) is copyright (c) 2003 Joergen Ibsen and distributed under the zlib license.
 * [LEAmDNS](https://github.com/LaborEtArs/ESP8266mDNS) is copyright multiple authors and distributed under the MIT license.
 * [http-parser](https://github.com/nodejs/http-parser) is copyright Joyent, Inc. and other Node contributors.
-* WebServer code modified from the [ESP32 WebServer](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer) and is copyright (c) 2015 Ivan Grokhotkov and others
-
+* WebServer code modified from the [ESP32 WebServer](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer) and is copyright (c) 2015 Ivan Grokhotkov and others.
+* [Xoshiro-cpp](https://github.com/Reputeless/Xoshiro-cpp) is copyright (c) 2020 Ryo Suzuki and distributed under the MIT license.
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com
