@@ -79,7 +79,8 @@
 #define CFG_TUD_CDC_RX_BUFSIZE  (256)
 #define CFG_TUD_CDC_TX_BUFSIZE  (256)
 
-#define CFG_TUD_MSC_EP_BUFSIZE  (64)
+// increase from 64 to allow working with devices with 512 byte sectors in a sane manner
+#define CFG_TUD_MSC_EP_BUFSIZE  (4096)
 
 // HID buffer size Should be sufficient to hold ID (if any) + Data
 #define CFG_TUD_HID_EP_BUFSIZE  (64)
