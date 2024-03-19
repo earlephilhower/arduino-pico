@@ -80,8 +80,8 @@ int WiFiClass::begin(const char* ssid) {
 
     param ssid: Pointer to the SSID string.
 */
-int WiFiClass::begin_noblock(const char* ssid) {
-    return begin_noblock(ssid, nullptr);
+int WiFiClass::beginNoBlock(const char* ssid) {
+    return beginNoBlock(ssid, nullptr);
 }
 
 
@@ -131,7 +131,7 @@ int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bs
     return status();
 }
 
-int WiFiClass::begin_noblock(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+int WiFiClass::beginNoBlock(const char* ssid, const char *passphrase, const uint8_t *bssid) {
     // Simple ESP8266 compatibility hack
     if (_modeESP == WIFI_AP) {
         return beginAP(ssid, passphrase);
@@ -153,7 +153,6 @@ int WiFiClass::begin_noblock(const char* ssid, const char *passphrase, const uin
     _wifi.setTimeout(_timeout);
     _apMode = false;
     _wifiHWInitted = true;
-    uint32_t start = millis(); // The timeout starts from network init, not network link up
     if (!_wifi.begin()) {
         return WL_IDLE_STATUS;
     }

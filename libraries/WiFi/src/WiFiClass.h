@@ -74,7 +74,7 @@ public:
 
         param ssid: Pointer to the SSID string.
     */    
-    int begin_noblock(const char* ssid);
+    int beginNoBlock(const char* ssid);
 
     int beginBSSID(const char* ssid, const uint8_t *bssid);
 
@@ -106,7 +106,7 @@ public:
               must be between ASCII 32-126 (decimal).
         param bssid: If non-null, the BSSID associated w/the SSID to connect to
     */
-    int begin_noblock(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+    int beginNoBlock(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     bool connected();
     bool isConnected() {
