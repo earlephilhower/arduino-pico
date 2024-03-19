@@ -73,7 +73,7 @@ public:
     /*  Start WiFi connection for OPEN networks, without blocking
 
         param ssid: Pointer to the SSID string.
-    */    
+    */
     int beginNoBlock(const char* ssid);
 
     int beginBSSID(const char* ssid, const uint8_t *bssid);
