@@ -76,6 +76,15 @@ int WiFiClass::begin(const char* ssid) {
     return begin(ssid, nullptr);
 }
 
+/*  Start WiFi connection for OPEN networks
+
+    param ssid: Pointer to the SSID string.
+*/
+int WiFiClass::begin_noblock(const char* ssid) {
+    return begin_noblock(ssid, nullptr);
+}
+
+
 int WiFiClass::beginBSSID(const char* ssid, const uint8_t *bssid) {
     return begin(ssid, nullptr, bssid);
 }
@@ -119,6 +128,39 @@ int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bs
     while (!_calledESP && ((millis() - start < (uint32_t)2 * _timeout)) && !connected()) {
         delay(10);
     }
+    return status();
+}
+
+int WiFiClass::begin_noblock(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+    // Simple ESP8266 compatibility hack
+    if (_modeESP == WIFI_AP) {
+        return beginAP(ssid, passphrase);
+    }
+
+    end();
+
+    _ssid = ssid;
+    _password = passphrase;
+    if (bssid) {
+        memcpy(_bssid, bssid, sizeof(_bssid));
+    } else {
+        bzero(_bssid, sizeof(_bssid));
+    }
+    _wifi.setSTA();
+    _wifi.setSSID(_ssid.c_str());
+    _wifi.setBSSID(_bssid);
+    _wifi.setPassword(passphrase);
+    _wifi.setTimeout(_timeout);
+    _apMode = false;
+    _wifiHWInitted = true;
+    uint32_t start = millis(); // The timeout starts from network init, not network link up
+    if (!_wifi.begin()) {
+        return WL_IDLE_STATUS;
+    }
+    noLowPowerMode();
+    // Enable CYW43 event debugging (make sure Debug Port is set)
+    //cyw43_state.trace_flags = 0xffff;
+
     return status();
 }
 

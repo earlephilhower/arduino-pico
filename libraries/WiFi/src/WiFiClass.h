@@ -70,6 +70,12 @@ public:
         param ssid: Pointer to the SSID string.
     */
     int begin(const char* ssid);
+    /*  Start WiFi connection for OPEN networks, without blocking
+
+        param ssid: Pointer to the SSID string.
+    */    
+    int begin_noblock(const char* ssid);
+
     int beginBSSID(const char* ssid, const uint8_t *bssid);
 
     /*  Start WiFi connection with WEP encryption.
@@ -92,6 +98,15 @@ public:
         param bssid: If non-null, the BSSID associated w/the SSID to connect to
     */
     int begin(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+    /*  Start WiFi connection with passphrase, without blocking
+        the most secure supported mode will be automatically selected
+
+        param ssid: Pointer to the SSID string.
+        param passphrase: Passphrase. Valid characters in a passphrase
+              must be between ASCII 32-126 (decimal).
+        param bssid: If non-null, the BSSID associated w/the SSID to connect to
+    */
+    int begin_noblock(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     bool connected();
     bool isConnected() {
