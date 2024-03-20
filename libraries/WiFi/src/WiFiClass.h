@@ -98,7 +98,7 @@ public:
         param bssid: If non-null, the BSSID associated w/the SSID to connect to
     */
     int begin(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
-    /*  Start WiFi connection with passphrase, without blocking
+    /*  Start WiFi connection with passphrase, without blocking. Check for .connected() for a connection
         the most secure supported mode will be automatically selected
 
         param ssid: Pointer to the SSID string.
@@ -428,6 +428,9 @@ public:
     }
 
 private:
+    // Internal wifi begin. Returns 0 on success
+    int _beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+
     int _timeout = 15000;
     String _ssid;
     uint8_t _bssid[6];
