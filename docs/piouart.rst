@@ -15,6 +15,7 @@ To instantiate only a serial transmit or receive unit, pass in
 ``SerialPIO::NOPIN`` as the ``txpin`` or ``rxpin``.
 
 For example, to make a transmit-only port on GP16
+
 .. code:: cpp
 
         SerialPIO transmitter( 16, SerialPIO::NOPIN );
