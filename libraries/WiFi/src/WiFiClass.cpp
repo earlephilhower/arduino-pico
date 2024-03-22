@@ -67,15 +67,15 @@ void WiFiClass::mode(WiFiMode_t m) {
     }
 }
 
-int WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid) {
     // Simple ESP8266 compatibility hack
     if (_modeESP == WIFI_AP) {
-        // When beginAP was a success, it returns WL_CONNECTED. Therefore we return 0 as no error when that happens.
+        // When beginAP was a success, it returns WL_CONNECTED. Therefore we return false as no error when that happens.
         int status = beginAP(ssid, passphrase);
         if (status != WL_CONNECTED) {
-            return 1;
+            return true;
         } else {
-            return 0;
+            return false;
         }
     }
 
@@ -96,13 +96,15 @@ int WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const ui
     _apMode = false;
     _wifiHWInitted = true;
 
-    // Internal wifi.begin returns false when failed, therefore we return 1 as error when that happens.
+    // Internal wifi.begin returns false when failed, therefore we return true as error when that happens.
     if (_wifi.begin() == false) {
-        return 1;
+        return true;
     }
     noLowPowerMode();
+    // Enable CYW43 event debugging (make sure Debug Port is set)
+    //cyw43_state.trace_flags = 0xffff;
 
-    return 0;
+    return false;
 }
 
 

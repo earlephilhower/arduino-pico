@@ -429,7 +429,7 @@ public:
 
 private:
     // Internal wifi begin. Returns 0 on success
-    int _beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+    bool _beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     int _timeout = 15000;
     String _ssid;
