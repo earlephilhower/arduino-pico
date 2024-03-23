@@ -428,7 +428,7 @@ public:
     }
 
 private:
-    // Internal wifi begin. Returns 0 on success
+    // Internal wifi begin. Returns true on success
     bool _beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     int _timeout = 15000;

@@ -70,9 +70,8 @@ void WiFiClass::mode(WiFiMode_t m) {
 bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid) {
     // Simple ESP8266 compatibility hack
     if (_modeESP == WIFI_AP) {
-        // When beginAP was a success, it returns WL_CONNECTED. Therefore we return false as no error when that happens.
-        int status = beginAP(ssid, passphrase);
-        if (status != WL_CONNECTED) {
+        // When beginAP was a success, it returns WL_CONNECTED and we return true as success.
+        if (beginAP(ssid, passphrase) == WL_CONNECTED) {
             return true;
         } else {
             return false;
@@ -96,15 +95,15 @@ bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const u
     _apMode = false;
     _wifiHWInitted = true;
 
-    // Internal wifi.begin returns false when failed, therefore we return true as error when that happens.
-    if (_wifi.begin() == false) {
-        return true;
+    // Internal wifi.begin returns false when failed, therefore we return false as error
+    if (!_wifi.begin()) {
+        return false;
     }
     noLowPowerMode();
     // Enable CYW43 event debugging (make sure Debug Port is set)
     //cyw43_state.trace_flags = 0xffff;
 
-    return false;
+    return true;
 }
 
 
@@ -140,7 +139,7 @@ int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bs
     uint32_t start = millis(); // The timeout starts from network init, not network link up
 
     // Returns WL_IDLE_STATUS on error for compatibility.
-    if (_beginInternal(ssid, passphrase, bssid)) {
+    if (!_beginInternal(ssid, passphrase, bssid)) {
         return WL_IDLE_STATUS;
     }
 
@@ -152,7 +151,7 @@ int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bs
 
 int WiFiClass::beginNoBlock(const char* ssid, const char *passphrase, const uint8_t *bssid) {
     // Returns WL_IDLE_STATUS on error for compatibility.
-    if (_beginInternal(ssid, passphrase, bssid)) {
+    if (!_beginInternal(ssid, passphrase, bssid)) {
         return WL_IDLE_STATUS;
     }
     return status();
