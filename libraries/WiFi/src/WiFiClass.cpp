@@ -67,30 +67,15 @@ void WiFiClass::mode(WiFiMode_t m) {
     }
 }
 
-
-/*  Start WiFi connection for OPEN networks
-
-    param ssid: Pointer to the SSID string.
-*/
-int WiFiClass::begin(const char* ssid) {
-    return begin(ssid, nullptr);
-}
-
-int WiFiClass::beginBSSID(const char* ssid, const uint8_t *bssid) {
-    return begin(ssid, nullptr, bssid);
-}
-
-/*  Start WiFi connection with passphrase
-    the most secure supported mode will be automatically selected
-
-    param ssid: Pointer to the SSID string.
-    param passphrase: Passphrase. Valid characters in a passphrase
-          must be between ASCII 32-126 (decimal).
-*/
-int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid) {
     // Simple ESP8266 compatibility hack
     if (_modeESP == WIFI_AP) {
-        return beginAP(ssid, passphrase);
+        // When beginAP was a success, it returns WL_CONNECTED and we return true as success.
+        if (beginAP(ssid, passphrase) == WL_CONNECTED) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     end();
@@ -109,15 +94,65 @@ int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bs
     _wifi.setTimeout(_timeout);
     _apMode = false;
     _wifiHWInitted = true;
-    uint32_t start = millis(); // The timeout starts from network init, not network link up
+
+    // Internal wifi.begin returns false when failed, therefore we return false as error
     if (!_wifi.begin()) {
-        return WL_IDLE_STATUS;
+        return false;
     }
     noLowPowerMode();
     // Enable CYW43 event debugging (make sure Debug Port is set)
     //cyw43_state.trace_flags = 0xffff;
+
+    return true;
+}
+
+
+/*  Start WiFi connection for OPEN networks
+
+    param ssid: Pointer to the SSID string.
+*/
+int WiFiClass::begin(const char* ssid) {
+    return begin(ssid, nullptr);
+}
+
+/*  Start WiFi connection for OPEN networks, but non blocking.
+
+    param ssid: Pointer to the SSID string.
+*/
+int WiFiClass::beginNoBlock(const char* ssid) {
+    return beginNoBlock(ssid, nullptr);
+}
+
+
+int WiFiClass::beginBSSID(const char* ssid, const uint8_t *bssid) {
+    return begin(ssid, nullptr, bssid);
+}
+
+/*  Start WiFi connection with passphrase
+    the most secure supported mode will be automatically selected
+
+    param ssid: Pointer to the SSID string.
+    param passphrase: Passphrase. Valid characters in a passphrase
+          must be between ASCII 32-126 (decimal).
+*/
+int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+    uint32_t start = millis(); // The timeout starts from network init, not network link up
+
+    // Returns WL_IDLE_STATUS on error for compatibility.
+    if (!_beginInternal(ssid, passphrase, bssid)) {
+        return WL_IDLE_STATUS;
+    }
+
     while (!_calledESP && ((millis() - start < (uint32_t)2 * _timeout)) && !connected()) {
         delay(10);
+    }
+    return status();
+}
+
+int WiFiClass::beginNoBlock(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+    // Returns WL_IDLE_STATUS on error for compatibility.
+    if (!_beginInternal(ssid, passphrase, bssid)) {
+        return WL_IDLE_STATUS;
     }
     return status();
 }
