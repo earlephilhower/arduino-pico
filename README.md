@@ -253,6 +253,8 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * [http-parser](https://github.com/nodejs/http-parser) is copyright Joyent, Inc. and other Node contributors.
 * WebServer code modified from the [ESP32 WebServer](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer) and is copyright (c) 2015 Ivan Grokhotkov and others.
 * [Xoshiro-cpp](https://github.com/Reputeless/Xoshiro-cpp) is copyright (c) 2020 Ryo Suzuki and distributed under the MIT license.
+* [FatFS low-level filesystem](http://elm-chan.org/fsw/ff/) code is Copyright (C) 2024, ChaN, all rights reserved.
+
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com

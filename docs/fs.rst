@@ -33,6 +33,7 @@ following include to the sketch:
     #include "LittleFS.h" // LittleFS is declared
     // #include <SDFS.h>
     // #include <SD.h>
+    // #include <FatFS.h>
 
 
 Compatible Filesystem APIs
@@ -48,9 +49,44 @@ SD card reader.
 SD is the Arduino-supported, somewhat old and limited SD card filesystem.
 It is recommended to use SDFS for new applications instead of SD.
 
-All three of these filesystems can open and manipulate ``File`` and ``Dir``
+FatFS implements a wear-leveled, FTL-backed FAT filesystem in the onboard
+flash which can be easily accessed over USB as a standard memory stick
+via FatFSUSB.
+
+All of these filesystems can open and manipulate ``File`` and ``Dir``
 objects with the same code because the implement a common end-user
 filesystem API.
+
+FatFS File System Caveats and Warnings
+--------------------------------------
+
+The FAT filesystem is ubiquitous, but it is also around 50 years old and ill
+suited to SPI flash memory due to having "hot spots" like the FAT copies that
+are rewritten many times over.  SPI flash allows a high, but limited, number
+of writes before losing the ability to write safely.  Applications like
+data loggers where many writes occur could end up wearing out the SPI flash
+sector that holds the FAT **years** before coming close to the write limits of
+the data sectors.
+
+To circumvent this issue, the FatFS implementation here uses a flash translation
+layer (FTL) developed for SPI flash on embedded systems.  This allows for the
+same LBA to be written over and over by the FAT filesystem, but use different
+flash locations.  For more information see
+[SPIFTL](https://github.com/earlephilhower/SPIFTL).  In this mode the Pico
+flash appears as a normal, 512-byte sector drive to the FAT.
+
+What this means, practically, is that about 5KB of RAM per megabyte of flash
+is required for housekeeping.  Writes can also become very slow if most of the
+flash LBA range is used (i.e. if the FAT drive is 99% full) due to the need
+for garbage collection processes to move data around and preserve the flash
+lifetime.
+
+Alternatively, if an FTL is not desired or memory is tight, FatFS can use the
+raw flash directly.  In this mode sectors are 4K in size and flash is mapped
+1:1 to sectors, so things like the FAT table updates will all use the same
+physical flash bits.  For low-utilization operations this may be fine, but if
+significant writes are done (from the Pico or the PC host) this may wear out
+portions of flash very quickly , rendering it unusable.
 
 LittleFS File System Limitations
 --------------------------------
@@ -115,8 +151,8 @@ second SPI port, ``SPI1``.  Just use the following call in place of
     SD.begin(cspin, SPI1);
 
 
-File system object (LittleFS/SD/SDFS)
--------------------------------------
+File system object (LittleFS/SD/SDFS/FatFS)
+-------------------------------------------
 
 setConfig
 ~~~~~~~~~
@@ -131,14 +167,22 @@ setConfig
     c2.setCSPin(12);
     SDFS.setConfig(c2);
 
+    FatFSConfig c3;
+    c3.setUseFTL(false); // Directly access flash memory
+    c3.setDirEntries(256); // We need 256 root directory entries on a format()
+    c3.setFATCopies(1); // Only 1 FAT to save 4K of space and extra writes
+    FatFS.setConfig(c3);
+    FatFS.format(); // Format using these settings, erasing everything
+
 This method allows you to configure the parameters of a filesystem
 before mounting.  All filesystems have their own ``*Config`` (i.e.
 ``SDFSConfig`` or ``LittleFSConfig`` with their custom set of options.
 All filesystems allow explicitly enabling/disabling formatting when
 mounts fail.  If you do not call this ``setConfig`` method before
 perforing ``begin()``, you will get the filesystem's default
-behavior and configuration. By default, LittleFS will autoformat the
-filesystem if it cannot mount it, while SDFS will not.
+behavior and configuration. By default, LittleFS and FatFS will autoformat the
+filesystem if it cannot mount it, while SDFS will not.  FatFS will also use
+the built-in FTL to support 512 byte sectors and higher write lifetime.
 
 begin
 ~~~~~

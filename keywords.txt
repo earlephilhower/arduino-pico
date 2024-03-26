@@ -8,9 +8,16 @@ Arduino	KEYWORD3		RESERVED_WORD
 # Datatypes (KEYWORD1)
 #######################################
 
+Dir	KEYWORD1
+File	KEYWORD1
+
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+
+openDir	KEYWORD2
+setConfig	KEYWORD2
+fileCreationTime	KEYWORD2
 
 setup1	KEYWORD2
 loop1	KEYWORD2

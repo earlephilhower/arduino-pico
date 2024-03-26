@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+FatFS	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+format	KEYWORD2
+FatFSConfig	KEYWORD2
+setUseFTL	KEYWORD2
+setDirEntries	KEYWORD2
+setFATCopies	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

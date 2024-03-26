@@ -24,7 +24,7 @@ jobs:
     - name: Run codespell
       uses: codespell-project/actions-codespell@master
       with:
-        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./libraries/FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino,./.git
+        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./libraries/FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino,./.git,./libraries/FatFS/lib/fatfs,./libraries/FatFS/src/diskio.h,./libraries/FatFS/src/ff.cpp,./libraries/FatFS/src/ffconf.h,./libraries/FatFS/src/ffsystem.cpp,./libraries/FatFS/src/ff.h
         ignore_words_list: ser,dout
 
 # Consistent style
