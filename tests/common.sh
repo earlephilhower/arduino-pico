@@ -25,6 +25,7 @@ function skip_ino()
 /StringComparisonOperators/
 /PDMSerialPlotter/
 /debug/
+/BackwardCompatibility/
 EOL
     echo $ino | grep -q -F "$skiplist"
     echo $(( 1 - $? ))
