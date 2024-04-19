@@ -8,6 +8,9 @@ Arduino	KEYWORD3		RESERVED_WORD
 # Datatypes (KEYWORD1)
 #######################################
 
+timeval	KEYWORD1
+time_t	KEYWORD1
+
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
@@ -60,6 +63,22 @@ digitalWriteFast	KEYWORD2
 digitalReadFast	KEYWORD2
 
 enableDoubleResetBootloader	KEYWORD2
+
+Dir	KEYWORD2
+openDir	KEYWORD2
+next	KEYWORD2
+getLastWrite	KEYWORD2
+getCreationTime	KEYWORD2
+fileTime	KEYWORD2
+fileCreationTime	KEYWORD2
+check	KEYWORD2
+setTimeCallback	KEYWORD2
+settimeofday	KEYWORD2
+
+sprintf_P	KEYWORD2
+strcpy_P	KEYWORD2
+snprintf_P	KEYWORD2
+strncpy_P	KEYWORD2
 
 OUTPUT_2MA	LITERAL1
 OUTPUT_4MA	LITERAL1
