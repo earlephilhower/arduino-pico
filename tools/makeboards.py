@@ -442,6 +442,7 @@ MakeBoard("silicognition_rp2040_shim", "Silicognition", "RP2040-Shim", "0x1209",
 MakeBoard("solderparty_rp2040_stamp", "Solder Party", "RP2040 Stamp", "0x1209", "0xa182", 500, "SOLDERPARTY_RP2040_STAMP", 8, "boot2_generic_03h_4_padded_checksum")
 
 # SparkFun
+MakeBoard("sparkfun_micromodrp2040", "SparkFun", "MicroMod RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_MICROMOD_RP2040", 16, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_promicrorp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("sparkfun_thingplusrp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, "boot2_w25q080_2_padded_checksum")
 
