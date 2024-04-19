@@ -159,6 +159,12 @@
                      "name": "nullbits Bit-C PRO"
                   },
                   {
+                     "name": "Olimex RP2040-Pico30 2MB"
+                  },
+                  {
+                     "name": "Olimex RP2040-Pico30 16MB"
+                  },
+                  {
                      "name": "Pimoroni PGA2040"
                   },
                   {
