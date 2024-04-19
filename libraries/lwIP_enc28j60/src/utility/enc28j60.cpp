@@ -516,6 +516,12 @@ bool ENC28J60::begin(const uint8_t* address, netif *net) {
 
 /*---------------------------------------------------------------------------*/
 
+void ENC28J60::end() {
+
+}
+
+/*---------------------------------------------------------------------------*/
+
 uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen) {
     uint16_t dataend;
 

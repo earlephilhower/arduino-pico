@@ -53,7 +53,7 @@ public:
     using Print::write;
     operator bool() override;
 
-    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
+    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IRQ callback can access it
     void _handleIRQ();
 
 protected:
