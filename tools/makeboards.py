@@ -467,6 +467,7 @@ MakeBoard("viyalab_mizu", "Viyalab", "Mizu RP2040", "0x2e8a", "0x000a", 250, "VI
 MakeBoard("waveshare_rp2040_zero", "Waveshare", "RP2040 Zero", "0x2e8a", "0x0003", 500, "WAVESHARE_RP2040_ZERO", 2, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_one", "Waveshare", "RP2040 One", "0x2e8a", "0x103a", 500, "WAVESHARE_RP2040_ONE", 4, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_matrix", "Waveshare", "RP2040 Matrix", "0x2e8a", "0x103a", 500, "WAVESHARE_RP2040_MATRIX", 2, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2040_pizero", "Waveshare", "RP2040 PiZero", "0x2e8a", "0x0003", 500, "WAVESHARE_RP2040_PIZERO", 16, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_plus_4mb", "Waveshare", "RP2040 Plus 4MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 4, "boot2_w25q080_2_padded_checksum")
 MakeBoard("waveshare_rp2040_plus_16mb", "Waveshare", "RP2040 Plus 16MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 16, "boot2_w25q080_2_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_0_96", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, "boot2_w25q16jvxq_4_padded_checksum")

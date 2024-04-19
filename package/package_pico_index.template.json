@@ -225,6 +225,9 @@
                      "name": "Waveshare RP2040 Matrix"
                   },
                   {
+                     "name": "Waveshare RP2040 PiZero"
+                  },
+                  {
                      "name": "Waveshare RP2040 Plus 4MB"
                   },
                   {
