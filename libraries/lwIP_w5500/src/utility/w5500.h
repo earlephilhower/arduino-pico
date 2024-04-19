@@ -84,9 +84,11 @@ public:
         @return true when physical link is up
     */
     bool isLinked() {
+        ethernet_arch_lwip_gpio_mask();
         ethernet_arch_lwip_begin();
         auto ret = wizphy_getphylink() == PHY_LINK_ON;
         ethernet_arch_lwip_end();
+        ethernet_arch_lwip_gpio_unmask();
         return ret;
     }
 
