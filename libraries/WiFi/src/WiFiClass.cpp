@@ -71,11 +71,7 @@ bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const u
     // Simple ESP8266 compatibility hack
     if (_modeESP == WIFI_AP) {
         // When beginAP was a success, it returns WL_CONNECTED and we return true as success.
-        if (beginAP(ssid, passphrase) == WL_CONNECTED) {
-            return true;
-        } else {
-            return false;
-        }
+        return beginAP(ssid, passphrase) == WL_CONNECTED;
     }
 
     end();
