@@ -1,10 +1,8 @@
-#ifndef _LWIPOPTS_EXAMPLE_COMMONH_H
-#define _LWIPOPTS_EXAMPLE_COMMONH_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-
 
 // Critical section protection
 extern void noInterrupts();
@@ -108,6 +106,3 @@ extern void __setSystemTime(unsigned long long sec, unsigned long us);
 #ifdef __cplusplus
 }
 #endif // __cplusplus
-
-
-#endif /* __LWIPOPTS_H__ */
