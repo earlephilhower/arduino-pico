@@ -36,10 +36,9 @@ extern "C" {
 }
 
 
-PDMClass::PDMClass(int dinPin, int clkPin, int pwrPin) :
+PDMClass::PDMClass(int dinPin, int clkPin) :
     _dinPin(dinPin),
     _clkPin(clkPin),
-    _pwrPin(pwrPin),
     _onReceive(NULL),
     _gain(-1),
     _channels(-1),
@@ -55,10 +54,20 @@ PDMClass::PDMClass(int dinPin, int clkPin, int pwrPin) :
 PDMClass::~PDMClass() {
 }
 
+void PDMClass::setPins(int dinPin, int clkPin) {
+    _dinPin = dinPin;
+    _clkPin = clkPin;
+}
+
 int PDMClass::begin(int channels, int sampleRate) {
 
     if (_init == 1) {
         //ERROR: please call end first
+        return 0;
+    }
+
+    if (_dinPin == -1 || _clkPin == -1) {
+        //ERROR: please call setPins first
         return 0;
     }
 
@@ -228,8 +237,14 @@ void PDMClass::IrqHandler(bool halftranfer) {
         _onReceive();
     }
 }
-#ifdef PIN_PDM_DIN
-PDMClass PDM(PIN_PDM_DIN, PIN_PDM_CLK, -1);
+#ifndef PIN_PDM_DIN
+#define PIN_PDM_DIN -1
 #endif // PIN_PDM_DIN
+//
+#ifndef PIN_PDM_CLK
+#define PIN_PDM_CLK -1
+#endif // PIN_PDM_CLK
+
+PDMClass PDM(PIN_PDM_DIN, PIN_PDM_CLK);
 
 

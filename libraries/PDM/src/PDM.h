@@ -25,9 +25,10 @@
 
 class PDMClass {
 public:
-    PDMClass(int dinPin, int clkPin, int pwrPin);
+    PDMClass(int dinPin, int clkPin);
     virtual ~PDMClass();
 
+    void setPins(int dinPin, int clkPin);
     int begin(int channels, int sampleRate);
     void end();
 
@@ -49,7 +50,6 @@ public:
 private:
     int _dinPin;
     int _clkPin;
-    int _pwrPin;
 
     int _channels;
     int _samplerate;
@@ -70,6 +70,4 @@ private:
     void (*_onReceive)(void);
 };
 
-#ifdef PIN_PDM_DIN
 extern PDMClass PDM;
-#endif
