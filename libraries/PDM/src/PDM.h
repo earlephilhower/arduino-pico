@@ -28,7 +28,8 @@ public:
     PDMClass(int dinPin, int clkPin);
     virtual ~PDMClass();
 
-    void setPins(int dinPin, int clkPin);
+    void setDIN(int dinPin);
+    void setCLK(int clkPin);
     int begin(int channels, int sampleRate);
     void end();
 

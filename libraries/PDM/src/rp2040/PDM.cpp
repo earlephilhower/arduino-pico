@@ -54,9 +54,12 @@ PDMClass::PDMClass(int dinPin, int clkPin) :
 PDMClass::~PDMClass() {
 }
 
-void PDMClass::setPins(int dinPin, int clkPin) {
-    _dinPin = dinPin;
+void PDMClass::setCLK(int clkPin) {
     _clkPin = clkPin;
+}
+
+void PDMClass::setDIN(int dinPin) {
+    _dinPin = dinPin;
 }
 
 int PDMClass::begin(int channels, int sampleRate) {
@@ -67,7 +70,7 @@ int PDMClass::begin(int channels, int sampleRate) {
     }
 
     if (_dinPin == -1 || _clkPin == -1) {
-        //ERROR: please call setPins first
+        //ERROR: please call setDIN/setCLK first
         return 0;
     }
 
