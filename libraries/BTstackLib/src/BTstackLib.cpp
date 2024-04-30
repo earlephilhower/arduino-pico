@@ -808,9 +808,6 @@ void BTstackManager::setup(const char * name) {
     hci_add_event_handler(&hci_event_callback_registration);
     l2cap_init();
 
-    // setup central device db
-    le_device_db_init();
-
     sm_init();
 
     att_server_init(att_db_util_get_address(), att_read_callback, att_write_callback);
