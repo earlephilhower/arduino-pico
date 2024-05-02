@@ -27,6 +27,8 @@
 #include <lwIP_CYW43.h>
 #elif defined(ESPHOSTSPI)
 #include <lwIP_ESPHost.h>
+#elif defined(WINC1501_SPI)
+#include <lwIP_WINC1500.h>
 #else
 #include "utility/lwIP_nodriver.h"
 #endif
