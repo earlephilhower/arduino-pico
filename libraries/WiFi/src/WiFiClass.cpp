@@ -34,6 +34,8 @@
 static CYW43lwIP _wifi(1);
 #elif defined(ESPHOSTSPI)
 static ESPHostLwIP _wifi;
+#elif defined(WINC1501_SPI)
+static WINC1500LwIP _wifi;
 #else
 static NoDriverLwIP _wifi;
 #endif
