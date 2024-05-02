@@ -242,7 +242,7 @@ static void m2m_wifi_cb(uint8 u8OpCode, uint16 u16DataSize, uint32 u32Addr)
 		{
 			uint8 u8SetRxDone;
 			tstrM2mIpRsvdPkt strM2mRsvd;
-			if(hif_receive(u32Addr, &strM2mRsvd ,sizeof(tstrM2mIpRsvdPkt), 0) == M2M_SUCCESS)
+			if(hif_receive(u32Addr, (uint8 *)&strM2mRsvd ,sizeof(tstrM2mIpRsvdPkt), 0) == M2M_SUCCESS)
 			{
 				tstrM2mIpCtrlBuf  strM2mIpCtrlBuf;
 				uint16 u16Offset = strM2mRsvd.u16PktOffset;
