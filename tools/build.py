@@ -65,7 +65,7 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
                'dbgport={dbgport},' \
                'dbglvl={dbglvl},' \
                'usbstack={usbstack}'.format(**vars(args))
-    if ("/WiFi" in sketch) or ("/ArduinoOTA" in sketch) or ("/HTTPClient" in sketch) or ('/HTTPUpdate' in sketch) or ('/WebServer' in sketch) or ('/DNSServer' in sketch) or ('/BT' in sketch) or ('/BLE' in sketch):
+    if ("libraries/WiFi" in sketch) or ("/ArduinoOTA" in sketch) or ("/HTTPClient" in sketch) or ('/HTTPUpdate' in sketch) or ('/WebServer' in sketch) or ('/DNSServer' in sketch) or ('/BT' in sketch) or ('/BLE' in sketch):
         fqbn = fqbn.replace("rpipico", "rpipicow")
     if ('/BT' in sketch) or ('/BLE' in sketch):
         fqbn = fqbn + ",ipbtstack=ipv4btcble"

@@ -123,6 +123,12 @@ function build_sketches()
             export MSYS2_ARG_CONV_EXC="*"
             export MSYS_NO_PATHCONV=1
         fi
+        rm -f boards.local.txt
+        if [[ -f "$sketchdir/.ci.defines" ]]; then
+            (echo -n "rpipico.build.extra_flags="; cat "$sketchdir/.ci.defines") > boards.local.txt
+            echo -n "--- Additional test defines:  "
+            cat boards.local.txt
+        fi
         echo "$build_cmd $sketch"
         time ($build_cmd $sketch >build.log)
         local result=$?
@@ -150,7 +156,6 @@ function install_libraries()
     mkdir -p $HOME/Arduino/libraries
     pushd $HOME/Arduino/libraries
 
-    # install ArduinoJson library
     { test -r ArduinoJson-v6.11.0.zip || curl -sS --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -qo ArduinoJson-v6.11.0.zip
     { test -r Adafruit_SPIFlash-3.4.1.zip || curl -sS --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -qo Adafruit_SPIFlash-3.4.1.zip
     { test -r Adafruit_Seesaw-1.4.4.zip || curl -sS --output Adafruit_Seesaw-1.4.4.zip -L https://github.com/adafruit/Adafruit_Seesaw/archive/refs/tags/1.4.4.zip; } && unzip -qo Adafruit_Seesaw-1.4.4.zip
@@ -158,6 +163,7 @@ function install_libraries()
     { test -r Adafruit_CircuitPlayground-1.11.3.zip || curl -sS --output Adafruit_CircuitPlayground-1.11.3.zip -L https://github.com/adafruit/Adafruit_CircuitPlayground/archive/refs/tags/1.11.3.zip; } && unzip -qo Adafruit_CircuitPlayground-1.11.3.zip
     { test -r Adafruit_NeoPixel-1.8.1.zip || curl -sS --output Adafruit_NeoPixel-1.8.1.zip -L https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.8.1.zip; } && unzip -qo Adafruit_NeoPixel-1.8.1.zip
     { test -r Arduino_MIDI_Library-5.0.2.zip || curl -sS --output Arduino_MIDI_Library-5.0.2.zip -L https://github.com/FortySevenEffects/arduino_midi_library/archive/refs/tags/5.0.2.zip; } && unzip -qo Arduino_MIDI_Library-5.0.2.zip
+    git clone https://github.com/JAndrassy/ESPHost.git
     popd
 }
 
