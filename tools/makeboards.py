@@ -144,25 +144,42 @@ def BuildHeader(name, vendor_name, product_name, vid, pid, pwr, boarddefine, var
     print("# %s" % (prettyname))
     print("# -----------------------------------")
     print("%s.name=%s" % (name, prettyname))
-    usb = 0
-    if type(pid) == list:
-        for tp in pid:
-            print("%s.vid.%d=%s" % (name, usb, vid))
-            print("%s.pid.%d=0x%04x" % (name, usb, int(tp, 16)))
-            usb = usb + 1
+
+    # USB Vendor ID / Product ID (VID/PID) pairs for board detection
+    if isinstance(pid, list):
+        # Explicitly specified list of PIDs (with the same VID)
+        usb_pids = pid
     else:
-        for kb in [ "0", "0x8000" ]:
-            for ms in [ "0", "0x4000" ]:
-                for jy in [ "0", "0x0100" ]:
-                    thispid = int(pid, 16) | int(kb, 16) | int(ms, 16) | int(jy, 16)
-                    print("%s.vid.%d=%s" % (name, usb, vid))
-                    print("%s.pid.%d=0x%04x" % (name, usb, thispid))
-                    usb = usb + 1
+        # When the RP2040 is used as a composite device, the PID is modified
+        # (see cores/rp2040/RP2040USB.cpp) because Windows wants a different
+        # VID:PID for different device configurations [citation needed?].
+        # See https://github.com/earlephilhower/arduino-pico/issues/796
+        #
+        # TODO FIX: Some PIDs already have these bits set, and there's no
+        # guarantee mangling PIDs this way won't collide with other devices.
+        usb_pids = []
+        for k_bit in [0, 0x8000]:
+            for m_bit in [0, 0x4000]:
+                for j_bit in [0, 0x0100]:
+                    this_pid = "0x%04x" % (int(pid, 16) | k_bit | m_bit | j_bit)
+                    if this_pid not in usb_pids:
+                        usb_pids.append(this_pid)
+
+    main_pid = usb_pids[0]
+
+    # Old style VID/PID list for compatibility with older Arduino tools
+    for i, pid in enumerate(usb_pids):
+        print("%s.vid.%d=%s" % (name, i, vid))
+        print("%s.pid.%d=%s" % (name, i, pid))
+
+    # Since our platform.txt enables pluggable discovery, we are also required
+    # to list VID/PID in this format
+    for i, pid in enumerate(usb_pids):
+        print("%s.upload_port.%d.vid=%s" % (name, i, vid))
+        print("%s.upload_port.%d.pid=%s" % (name, i, pid))
+
     print("%s.build.usbvid=-DUSBD_VID=%s" % (name, vid))
-    if type(pid) == list:
-        print("%s.build.usbpid=-DUSBD_PID=%s" % (name, pid[0]))
-    else:
-        print("%s.build.usbpid=-DUSBD_PID=%s" % (name, pid))
+    print("%s.build.usbpid=-DUSBD_PID=%s" % (name, main_pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
     print("%s.build.mcu=cortex-m0plus" % (name))
@@ -245,7 +262,8 @@ def MakeBoard(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flash
     pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
 def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url):
-    if type(pid) == list:
+    # TODO FIX: Use the same expanded PID list as in BuildHeader above?
+    if isinstance(pid, list):
         pid = pid[0]
     if extra != None:
         m_extra = ' '
