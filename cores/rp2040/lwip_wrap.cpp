@@ -358,4 +358,16 @@ extern "C" {
         __real_raw_remove(pcb);
     }
 
+    extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
+    struct netif *__wrap_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input) {
+        LWIPMutex m;
+        return __real_netif_add(netif, ipaddr, netmask, gw, state, init, input);
+    }
+
+    extern void __real_netif_remove(struct netif *netif);
+    void __wrap_netif_remove(struct netif *netif) {
+        LWIPMutex m;
+        __real_netif_remove(netif);
+    }
+
 }; // extern "C"
