@@ -310,6 +310,11 @@ bool LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
 extern char wifi_station_hostname[];
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
+    if (_started) {
+        // ERROR - Need to ::end before calling ::begin again
+        return false;
+    }
+
     lwip_init();
     __startEthernetContext();
 
