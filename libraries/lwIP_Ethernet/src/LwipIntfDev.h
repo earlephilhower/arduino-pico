@@ -205,8 +205,8 @@ u8_t LwipIntfDev<RawDev>::_pingCB(void *arg, struct raw_pcb *pcb, struct pbuf *p
     (void) addr;
     LwipIntfDev<RawDev> *w = (LwipIntfDev<RawDev> *)arg;
     struct icmp_echo_hdr *iecho;
-    if (pbuf_header(p, -20) == 0) {
-        iecho = (struct icmp_echo_hdr *)p->payload;
+    if (p->len > 20) {
+        iecho = (struct icmp_echo_hdr *)((uint8_t*)p->payload + 20);
         if ((iecho->id == w->_ping_id) && (iecho->seqno == htons(w->_ping_seq_num))) {
             w->_ping_ttl = pcb->ttl;
             pbuf_free(p);
