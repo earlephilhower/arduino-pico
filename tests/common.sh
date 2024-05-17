@@ -222,7 +222,10 @@ function install_ide()
 
 function install_examples()
 {
-    git clone https://github.com/arduino/arduino-examples.git $1
+    git clone https://github.com/earlephilhower/arduino-examples.git $1
+    pushd $1
+    git checkout warnfix
+    popd
 }
 
 function install_arduino()
