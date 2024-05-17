@@ -220,12 +220,18 @@ function install_ide()
     fi
 }
 
+function install_examples()
+{
+    git clone https://github.com/arduino/arduino-examples.git $1
+}
+
 function install_arduino()
 {
     local debug=$1
     # Install Arduino IDE and required libraries
     cd $TRAVIS_BUILD_DIR
     install_ide $HOME/arduino_ide $TRAVIS_BUILD_DIR $debug
+    install_examples $HOME/arduino_examples
     cd $TRAVIS_BUILD_DIR
     install_libraries
 }
@@ -237,7 +243,7 @@ function build_sketches_with_arduino()
     local build_extra=$3
 
     # Compile sketches
-    build_sketches $HOME/arduino_ide $HOME/arduino_ide/examples "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
+    build_sketches $HOME/arduino_ide $HOME/arduino_examples "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
     build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
 
     # Generate size report
