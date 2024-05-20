@@ -45,9 +45,15 @@ public:
 
     // Assign pins, call before begin()
     bool setRX(pin_size_t pin);
+    inline bool setMISO(pin_size_t pin) {
+        return setRX(pin);
+    }
     bool setCS(pin_size_t pin);
     bool setSCK(pin_size_t pin);
     bool setTX(pin_size_t pin);
+    bool setMOSI(pin_size_t pin) {
+        return setTX(pin);
+    }
 
     // Call once to init/deinit SPI class, select pins, etc.
     virtual void begin() override {
