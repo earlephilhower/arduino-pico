@@ -24,3 +24,41 @@ Master transmissions are buffered (up to 256 bytes) and only performed
 on ``endTransmission``, as is standard with modern Arduino Wire implementations.
 
 For more detailed information, check the `Arduino Wire documentation <https://www.arduino.cc/en/reference/wire>`_ .
+
+Asynchronous Operation
+----------------------
+
+Applications can use asynchronous I2C calls to allow for processing while long-running I2C operations are
+being performed.  For example, a game could send a full screen update out over I2C and immediately start
+processing the next frame without waiting for the first one to be sent over I2C.  DMA is used to handle
+the transfer to/from the I2C hardware freeing the CPU from bit-banging or busy waiting.
+
+Note that asynchronous operations can not be intersped with normal, synchronous ones.  Fully complete an
+asynchronous operation before attempting to do a normal ``Wire.beginTransaction()`` or ``Wire.requestFrom``.
+Also, all buffers need to be valid throughout the entire operation.  Read data cannot be accessed until
+the transaction is completed and can't be "peeked" at while the operation is ongoing.
+
+
+bool writeAsync(uint8_t address, const void \*buffer, size_t bytes, bool sendStop)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Begins an I2C asynchronous write transaction.  Writes to ``address`` of ``bytes`` from ``buffer`` and
+at the end will send an I2C stop if ``sendStop`` is ``true``.
+Check ``finishedAsync()`` to determine when the operation completes and conclude the transaction.
+This operation needs to allocate a buffer from heap equal to 2x ``bytes`` in size.
+
+bool readAsync(uint8_t address, void \*buffer, size_t bytes, bool sendStop)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Begins an I2C asynchronous read transaction.  Reads from ``address`` for ``bytes`` into ``buffer`` and
+at the end will send an I2C stop if ``sendStop`` is ``true``.
+Check ``finishedAsync()`` to determine when the operation completes and conclude the transaction.
+This operation needs to allocate a buffer from heap equal to 4x ``bytes`` in size.
+
+bool finishedAsync()
+~~~~~~~~~~~~~~~~~~~~
+Call to check if the asynchronous operations is completed and the buffer passed in can be either read or
+reused.  Frees the allocated memory and completes the asynchronous transaction.
+
+void abortAsync()
+~~~~~~~~~~~~~~~~~
+Cancels the outstanding asynchronous transaction and frees any allocated memory.
+
