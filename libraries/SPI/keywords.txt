@@ -26,6 +26,9 @@ setRX	KEYWORD2
 setTX	KEYWORD2
 setSCK	KEYWORD2
 setCS	KEYWORD2
+transferAsync	KEYWORD2
+finishedAsync	KEYWORD2
+abortAsync	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
