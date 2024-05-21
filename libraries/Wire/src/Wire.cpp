@@ -448,6 +448,7 @@ bool TwoWire::writeAsync(uint8_t address, const void *buffer, size_t bytes, bool
     if (!_running || _txBegun || _rxBegun) {
         return false;
     }
+
     // We need to expand the data to include side-channel start/stop bits for the I2C FIFO
     _dmaBuffer = (uint16_t*)malloc(bytes * 2);
     if (!_dmaBuffer) {
@@ -460,9 +461,6 @@ bool TwoWire::writeAsync(uint8_t address, const void *buffer, size_t bytes, bool
         _dmaBuffer[i] = bool_to_bit(first && _i2c->restart_on_next) << I2C_IC_DATA_CMD_RESTART_LSB | bool_to_bit(last && sendStop) << I2C_IC_DATA_CMD_STOP_LSB | srcBuff[i];
     }
 
-    if (!_running || !_dmaBuffer) {
-        return false;
-    }
     _channelDMA = dma_claim_unused_channel(false);
     if (_channelDMA == -1) {
         free(_dmaBuffer);
