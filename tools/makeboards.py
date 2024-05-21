@@ -435,6 +435,9 @@ MakeBoard("melopero_shake_rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005
 # Neko Systems
 MakeBoard("nekosystems_bl2040_mini", "Neko Systems", "BL2040 Mini", "0x2e8a", "0x000a", 500, "NEKOSYSTEMS_BL2040_MINI", 4, "boot2_generic_03h_2_padded_checksum")
 
+# Newsan
+MakeBoard("newsan_archi", "Newsan", "Archi", "0x2E8A", "0x1043", 250, "NEWSAN_ARCHI", 4, "boot2_generic_03h_4_padded_checksum", None, "https://archikids.com.ar/")
+
 # nullbits
 MakeBoard("nullbits_bit_c_pro", "nullbits", "Bit-C PRO", "0x2e8a", "0x6e61", 500, "NULLBITS_BIT_C_PRO", 4, "boot2_w25x10cl_4_padded_checksum")
 
