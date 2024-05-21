@@ -517,10 +517,10 @@ bool TwoWire::readAsync(uint8_t address, void *buffer, size_t bytes, bool sendSt
     for (size_t i = 0; i < bytes; i++) {
         bool first = i == 0;
         bool last = i == bytes - 1;
-        _dmaSendBuffer[i] = 
-                bool_to_bit(first && _i2c->restart_on_next) << I2C_IC_DATA_CMD_RESTART_LSB |
-                bool_to_bit(last && sendStop) << I2C_IC_DATA_CMD_STOP_LSB |
-                I2C_IC_DATA_CMD_CMD_BITS; // -> 1 for read
+        _dmaSendBuffer[i] =
+            bool_to_bit(first && _i2c->restart_on_next) << I2C_IC_DATA_CMD_RESTART_LSB |
+            bool_to_bit(last && sendStop) << I2C_IC_DATA_CMD_STOP_LSB |
+            I2C_IC_DATA_CMD_CMD_BITS; // -> 1 for read
     }
 
     _dmaBytes = bytes;
