@@ -8,10 +8,10 @@ SPI pinouts can be set **before SPI.begin()** using the following calls:
 
 .. code:: cpp
 
-    bool setRX(pin_size_t pin);
+    bool setRX(pin_size_t pin); // or setMISO()
     bool setCS(pin_size_t pin);
     bool setSCK(pin_size_t pin);
-    bool setTX(pin_size_t pin);
+    bool setTX(pin_size_t pin); // or setMOSI()
 
 Note that the ``CS`` pin can be hardware or software controlled by the sketch.
 When software controlled, the ``setCS()`` call is ignored.
