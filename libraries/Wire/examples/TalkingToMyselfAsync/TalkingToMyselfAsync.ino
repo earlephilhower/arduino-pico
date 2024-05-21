@@ -49,7 +49,7 @@ void loop() {
   delay(1000);
   Serial.printf("buff: '%s'\n", buff);
 
-  Serial.printf("Recieving...\n");
+  Serial.printf("Receiving...\n");
 
   // Read from the slave and print out
   bzero(b, sizeof(b));
