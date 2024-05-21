@@ -19,6 +19,7 @@
 */
 
 #include "SPI.h"
+#include <hardware/dma.h>
 #include <hardware/spi.h>
 #include <hardware/gpio.h>
 #include <hardware/structs/iobank0.h>
@@ -218,7 +219,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
 void SPIClassRP2040::endTransaction(void) {
     noInterrupts(); // Avoid race condition so the GPIO IRQs won't come back until all state is restored
     DEBUGSPI("SPI::endTransaction()\n");
-    // Re-enablke IRQs
+    // Re-enable IRQs
     for (auto entry : _usingIRQs) {
         int gpio = entry.first;
         int mode = entry.second;
@@ -229,6 +230,103 @@ void SPIClassRP2040::endTransaction(void) {
     DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
     interrupts();
 }
+
+bool SPIClassRP2040::transferAsync(const void *send, void *recv, size_t bytes) {
+    DEBUGSPI("SPI::transferAsync(%p, %p, %d)\n", send, recv, bytes);
+    const uint8_t *txbuff = reinterpret_cast<const uint8_t *>(send);
+    uint8_t *rxbuff = reinterpret_cast<uint8_t *>(recv);
+    _dummy = 0xffffffff;
+
+    if (!_initted || (!send && !recv)) {
+        return false;
+    }
+
+    _channelDMA = dma_claim_unused_channel(false);
+    if (_channelDMA == -1) {
+        return false;
+    }
+    _channelSendDMA = dma_claim_unused_channel(false);
+    if (_channelSendDMA == -1) {
+        dma_channel_unclaim(_channelDMA);
+        return false;
+    }
+
+    if (send && (_spis.getBitOrder() != MSBFIRST)) {
+        _dmaBuffer = (uint8_t *)malloc(bytes);
+        if (!_dmaBuffer) {
+            dma_channel_unclaim(_channelDMA);
+            dma_channel_unclaim(_channelSendDMA);
+            return false;
+        }
+        for (size_t i = 0; i < bytes; i++) {
+            _dmaBuffer[i] = reverseByte(txbuff[i]);
+        }
+    }
+    _dmaBytes = bytes;
+    _rxFinalBuffer = rxbuff;
+
+    hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
+
+    dma_channel_config c = dma_channel_get_default_config(_channelSendDMA);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_8); // 8b transfers into SPI FIFO
+    channel_config_set_read_increment(&c, send ? true : false); // Reading incrementing addresses
+    channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
+    channel_config_set_dreq(&c, spi_get_dreq(_spi, true)); // Wait for the TX FIFO specified
+    channel_config_set_chain_to(&c, _channelSendDMA); // No chaining
+    channel_config_set_irq_quiet(&c, true); // No need for IRQ
+    dma_channel_configure(_channelSendDMA, &c, &spi_get_hw(_spi)->dr, !send ? (uint8_t *)&_dummy : (_spis.getBitOrder() != MSBFIRST ? _dmaBuffer : txbuff), bytes, false);
+
+    c = dma_channel_get_default_config(_channelDMA);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_8); // 8b transfers into SPI FIFO
+    channel_config_set_read_increment(&c, false); // Reading same FIFO address
+    channel_config_set_write_increment(&c, recv ? true : false); // Writing to the buffer
+    channel_config_set_dreq(&c, spi_get_dreq(_spi, false)); // Wait for the RX FIFO specified
+    channel_config_set_chain_to(&c, _channelDMA); // No chaining
+    channel_config_set_irq_quiet(&c, true); // No need for IRQ
+    dma_channel_configure(_channelDMA, &c, !recv ? (uint8_t *)&_dummy : rxbuff, &spi_get_hw(_spi)->dr, bytes, false);
+
+    spi_get_hw(_spi)->dmacr = 1 | (1 << 1); // TDMAE | RDMAE
+
+    dma_channel_start(_channelDMA);
+    dma_channel_start(_channelSendDMA);
+    return true;
+}
+
+bool SPIClassRP2040::finishedAsync() {
+    if (!_initted) {
+        return true;
+    }
+    if (dma_channel_is_busy(_channelDMA) || (spi_get_hw(_spi)->sr & SPI_SSPSR_BSY_BITS)) {
+        return false;
+    }
+    dma_channel_cleanup(_channelDMA);
+    dma_channel_unclaim(_channelDMA);
+    dma_channel_cleanup(_channelSendDMA);
+    dma_channel_unclaim(_channelSendDMA);
+    spi_get_hw(_spi)->dmacr = 0;
+    if (_spis.getBitOrder() != MSBFIRST) {
+        for (int i = 0; i < _dmaBytes; i++) {
+            _rxFinalBuffer[i] = reverseByte(_rxFinalBuffer[i]);
+        }
+        free(_dmaBuffer);
+        _dmaBuffer = nullptr;
+    }
+    return true;
+}
+
+void SPIClassRP2040::abortAsync() {
+    if (!_initted) {
+        return;
+    }
+    dma_channel_cleanup(_channelDMA);
+    dma_channel_unclaim(_channelDMA);
+    dma_channel_cleanup(_channelSendDMA);
+    dma_channel_unclaim(_channelSendDMA);
+    spi_get_hw(_spi)->dmacr = 0;
+    free(_dmaBuffer);
+    _dmaBuffer = nullptr;
+}
+
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
     constexpr uint32_t valid[2] = { __bitset({0, 4, 16, 20}) /* SPI0 */,
