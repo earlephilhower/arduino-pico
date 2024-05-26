@@ -208,7 +208,7 @@ size_t A2DPSource_::write(const uint8_t *buffer, size_t size) {
     return count;
 }
 
-int A2DPSource_::availableForWrite(){
+int A2DPSource_::availableForWrite() {
     int avail = 0;
     __lockBluetooth();
     if (_pcmWriter == _pcmReader) {
