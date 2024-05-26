@@ -73,6 +73,7 @@ void setup() {
   A2DPSource.begin();
   Serial.printf("Starting, press BOOTSEL to pair to first found speaker\n");
   Serial.printf("Use the forward button on speaker to change tones\n");
+  Serial.printf("Use the reverse button on speaker to alternate between tones and Au Claire De La Lune\n");
   Serial.printf("Use the play button on speaker to pause/unpause the tone\n");
 }
 

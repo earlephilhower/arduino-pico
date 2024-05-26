@@ -8,10 +8,10 @@ SPI pinouts can be set **before SPI.begin()** using the following calls:
 
 .. code:: cpp
 
-    bool setRX(pin_size_t pin);
+    bool setRX(pin_size_t pin); // or setMISO()
     bool setCS(pin_size_t pin);
     bool setSCK(pin_size_t pin);
-    bool setTX(pin_size_t pin);
+    bool setTX(pin_size_t pin); // or setMOSI()
 
 Note that the ``CS`` pin can be hardware or software controlled by the sketch.
 When software controlled, the ``setCS()`` call is ignored.
@@ -39,7 +39,39 @@ in order to consunme the received data and provide data to transmit.
 * The callbacks operate at IRQ time and may be called very frequently at high SPI frequencies.  So, make then small, fast, and with no memory allocations or locking.
 
 
-Examples
-~~~~~~~~
+Asynchronous Operation
+======================
 
-See the SPItoMyself example for a complete Master and Slave application.
+Applications can use asynchronous SPI calls to allow for processing while long-running SPI transfers are
+being performed.  For example, a game could send a full screen update out over SPI and immediately start
+processing the next frame without waiting for the first one to be sent.  DMA is used to handle
+the transfer to/from the hardware freeing the CPU from bit-banging or busy waiting.
+
+Note that asynchronous operations can not be intersped with normal, synchronous ones.  ``transferAsync``
+should still occur after a ``beginTransaction()`` and when ``finishedAsync()`` returns ``true`` then
+``endTransaction()`` should also be called.
+
+All buffers need to be valid throughout the entire operation.  Read data cannot be accessed until
+the transaction is completed and can't be "peeked" at while the operation is ongoing.
+
+bool transferAsync(const void \*send, void \*recv, size_t bytes)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Begins an SPI asynchronous transaction.  Either ``send`` or ``recv`` can be ``nullptr`` if data only needs
+to be transferred in one direction.
+Check ``finishedAsync()`` to determine when the operation completes and conclude the transaction.
+This operation needs to allocate a buffer from heap equal to ``bytes`` in size if ``LSBMODE`` is used.
+
+bool finishedAsync()
+~~~~~~~~~~~~~~~~~~~~
+Call to check if the asynchronous operations is completed and the buffer passed in can be either read or
+reused.  Frees the allocated memory and completes the asynchronous transaction.
+
+void abortAsync()
+~~~~~~~~~~~~~~~~~
+Cancels the outstanding asynchronous transaction and frees any allocated memory.
+
+
+Examples
+========
+
+See the SPItoMyself and SPItoMyselfAsync examples for a complete Master and Slave application.

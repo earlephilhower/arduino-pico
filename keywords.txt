@@ -3,6 +3,7 @@
 #######################################
 
 Arduino	KEYWORD3		RESERVED_WORD
+defined	KEYWORD3		RESERVED_WORD
 
 #######################################
 # Datatypes (KEYWORD1)
@@ -89,3 +90,5 @@ OUTPUT_2MA	LITERAL1
 OUTPUT_4MA	LITERAL1
 OUTPUT_8MA	LITERAL1
 OUTPUT_12MA	LITERAL1
+
+ARDUINO_ARCH_RP2040	LITERAL1

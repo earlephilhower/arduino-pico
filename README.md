@@ -50,6 +50,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * Neko Systems BL2040 Mini
+* Olimex RP2040-Pico30
+* Newsan Archi
 * nullbits Bit-C PRO
 * Pimoroni PGA2040
 * Pimoroni Plasma2040
@@ -62,6 +64,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Seeed XIAO RP2040
 * Silicognition RP2040-Shim
 * Solder Party RP2040 Stamp
+* SparkFun MicroMod RP2040
 * SparkFun ProMicro RP2040
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
@@ -72,6 +75,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Waveshare RP2040 Plus
 * Waveshare RP2040 LCD 0.96
 * Waveshare RP2040 LCD 1.28
+* Waveshare RP2040 Matrix
+* Waveshare RP2040 PiZero
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
@@ -81,7 +86,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
 * Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
 * Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
-* WiFi (Pico W)
+* WiFi (Pico W, ESP32-based ESPHost, Atmel WINC1500)
 * Ethernet (Wired W5500, W5100, ENC28J60)
 * HTTP client and server (WebServer)
 * SSL/TLS/HTTPS

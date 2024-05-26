@@ -205,8 +205,8 @@ u8_t LwipIntfDev<RawDev>::_pingCB(void *arg, struct raw_pcb *pcb, struct pbuf *p
     (void) addr;
     LwipIntfDev<RawDev> *w = (LwipIntfDev<RawDev> *)arg;
     struct icmp_echo_hdr *iecho;
-    if (pbuf_header(p, -20) == 0) {
-        iecho = (struct icmp_echo_hdr *)p->payload;
+    if (p->len > 20) {
+        iecho = (struct icmp_echo_hdr *)((uint8_t*)p->payload + 20);
         if ((iecho->id == w->_ping_id) && (iecho->seqno == htons(w->_ping_seq_num))) {
             w->_ping_ttl = pcb->ttl;
             pbuf_free(p);
@@ -310,6 +310,11 @@ bool LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
 extern char wifi_station_hostname[];
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
+    if (_started) {
+        // ERROR - Need to ::end before calling ::begin again
+        return false;
+    }
+
     lwip_init();
     __startEthernetContext();
 
