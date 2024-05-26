@@ -19,9 +19,8 @@
 */
 
 #include <Arduino.h>
+#include <btstack.h>
 #include "BluetoothHCI.h"
-
-
 #include <functional>
 #include <list>
 #include <memory>
