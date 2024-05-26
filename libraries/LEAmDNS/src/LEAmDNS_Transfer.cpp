@@ -1336,7 +1336,7 @@ bool MDNSResponder::_writeMDNSHostDomain(const char* p_pcHostname, bool p_bPrepe
 
     A very simple form of name compression is applied here: see '_writeMDNSHostDomain'
     The cache differentiates of course between service domains which includes
-    the instance name (p_bIncludeName is set) and thoose who don't.
+    the instance name (p_bIncludeName is set) and those who don't.
 
 */
 bool

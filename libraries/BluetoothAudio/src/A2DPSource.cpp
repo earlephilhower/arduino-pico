@@ -69,7 +69,7 @@ bool A2DPSource_::begin() {
         return false;
     }
 
-    // Store stream enpoint's SEP ID, as it is used by A2DP API to indentify the stream endpoint
+    // Store stream endpoint's SEP ID, as it is used by A2DP API to identify the stream endpoint
     media_tracker.local_seid = avdtp_local_seid(local_stream_endpoint);
     avdtp_source_register_delay_reporting_category(media_tracker.local_seid);
 
