@@ -67,7 +67,7 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
                'usbstack={usbstack}'.format(**vars(args))
     if ("libraries/WiFi" in sketch) or ("/ArduinoOTA" in sketch) or ("/HTTPClient" in sketch) or ('/HTTPUpdate' in sketch) or ('/WebServer' in sketch) or ('/DNSServer' in sketch) or ('/BT' in sketch) or ('/BLE' in sketch) or ('/Bluetooth' in sketch):
         fqbn = fqbn.replace("rpipico", "rpipicow")
-    if ('/BT' in sketch) or ('/BLE' in sketch):
+    if ('/BT' in sketch) or ('/BLE' in sketch) or ('/Bluetooth' in sketch):
         fqbn = fqbn + ",ipbtstack=ipv4btcble"
     cmd += [fqbn]
     cmd += ['-built-in-libraries', ide_path + '/libraries']
