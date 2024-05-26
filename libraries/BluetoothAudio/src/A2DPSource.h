@@ -84,10 +84,10 @@ public:
         if (!_running) {
             return false;
         }
-        noInterrupts(); // TODO - BT only
+        __lockBluetooth();
         auto ret = _underflow;
         _underflow = false;
-        interrupts();
+        __unlockBluetooth();
         return ret;
     }
 
