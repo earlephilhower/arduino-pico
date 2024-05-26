@@ -60,26 +60,13 @@ public:
         (void) unused;
     }
 
-    static void PacketHandlerWrapper(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t packet_size) {
-        SerialBT.packetHandler(packet_type, channel, packet, packet_size);
-    }
-
-    void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size);
-
-    static void lockBluetooth() {
-        async_context_acquire_lock_blocking(cyw43_arch_async_context());
-    }
-
-    static void unlockBluetooth() {
-        async_context_release_lock(cyw43_arch_async_context());
-    }
-
 private:
     bool _running = false;
     mutex_t _mutex;
     bool _overflow = false;
     volatile bool _connected = false;
 
+    void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size);
 
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;

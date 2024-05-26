@@ -65,3 +65,11 @@ extern "C" void initVariant() {
         cyw43_arch_init_with_country(WIFICC);
     }
 }
+
+extern "C" void __lockBluetooth() {
+    async_context_acquire_lock_blocking(cyw43_arch_async_context());
+}
+
+extern "C" void __unlockBluetooth() {
+    async_context_release_lock(cyw43_arch_async_context());
+}
