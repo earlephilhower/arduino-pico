@@ -597,7 +597,7 @@ close
 Close the file. No other operations should be performed on *File* object
 after ``close`` function was called.
 
-openNextFile  (compatibiity method, not recommended for new code)
+openNextFile  (compatibility method, not recommended for new code)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: cpp
@@ -609,7 +609,7 @@ openNextFile  (compatibiity method, not recommended for new code)
 Opens the next file in the directory pointed to by the File.  Only valid
 when ``File.isDirectory() == true``.
 
-rewindDirectory  (compatibiity method, not recommended for new code)
+rewindDirectory  (compatibility method, not recommended for new code)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: cpp

@@ -38,9 +38,9 @@ extern unsigned long __lwip_rand(void);
 #define LWIP_NETIF_LINK_CALLBACK    1
 #define LWIP_NETIF_HOSTNAME         1
 #define LWIP_NETCONN                0
-#define MEM_STATS                   0
-#define SYS_STATS                   0
-#define MEMP_STATS                  0
+#define MEM_STATS                   1
+#define SYS_STATS                   1
+#define MEMP_STATS                  1
 #define LINK_STATS                  0
 // #define ETH_PAD_SIZE                2
 #define LWIP_CHKSUM_ALGORITHM       0
@@ -72,6 +72,8 @@ extern void __setSystemTime(unsigned long long sec, unsigned long us);
 #define LWIP_DEBUG                  1
 #define LWIP_STATS                  1
 #define LWIP_STATS_DISPLAY          1
+#define MEMP_STATS                  1
+#define MEM_STATS                   1
 #endif
 
 #define ETHARP_DEBUG                LWIP_DBG_OFF

@@ -139,6 +139,8 @@ set(picow_bt_link_libraries
     pico_btstack_cyw43
     pico_btstack_ble
     pico_btstack_classic
+    pico_btstack_sbc_encoder
+    pico_btstack_sbc_decoder
 )
 
 target_link_libraries(picow-noipv6-btc-ble

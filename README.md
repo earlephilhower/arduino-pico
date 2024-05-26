@@ -98,7 +98,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
 * Analog stereo audio in using DMA and the built-in ADC
 * Analog stereo audio out using PWM hardware
-* USB drive mode for data loggers (SingleFileDrive)
+* Bluetooth A2DP audio source (output) on the PicoW
+* USB drive mode for data loggers (SingleFileDrive, FatFSUSB)
 * Peripherals:  SPI master/slave, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input/output, Servo
 * printf (i.e. debug) output over USB serial
 

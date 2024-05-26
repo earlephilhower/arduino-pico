@@ -104,11 +104,14 @@ void CYW43::end() {
     _netif = nullptr;
     cyw43_deinit(&cyw43_state);
 }
-
+int fails = 0;
+int calls = 0;
 uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {
+    calls++;
     if (0 == cyw43_send_ethernet(_self, _itf, datalen, data, false)) {
         return datalen;
     }
+    fails++;
     return 0;
 }
 
