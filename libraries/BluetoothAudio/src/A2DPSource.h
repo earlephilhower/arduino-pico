@@ -22,6 +22,7 @@
 
 #include <Arduino.h>
 #include "BluetoothHCI.h"
+#include "BluetoothMediaConfigurationSBC.h"
 #include <functional>
 #include <list>
 #include <memory>
@@ -192,25 +193,12 @@ private:
         uint8_t volume;
     } a2dp_media_sending_context_t;
 
-    typedef struct {
-        int reconfigure;
-
-        int num_channels;
-        int sampling_frequency;
-        int block_length;
-        int subbands;
-        int min_bitpool_value;
-        int max_bitpool_value;
-        btstack_sbc_channel_mode_t      channel_mode;
-        btstack_sbc_allocation_method_t allocation_method;
-    } media_codec_configuration_sbc_t;
-
     uint8_t sdp_a2dp_source_service_buffer[150];
     uint8_t sdp_avrcp_target_service_buffer[200];
     uint8_t sdp_avrcp_controller_service_buffer[200];
     uint8_t device_id_sdp_service_buffer[100];
 
-    media_codec_configuration_sbc_t sbc_configuration;
+    BluetoothMediaCodecConfigurationSBC sbc_configuration;
     btstack_sbc_encoder_state_t sbc_encoder_state;
 
     a2dp_media_sending_context_t media_tracker;
@@ -222,8 +210,6 @@ private:
         uint32_t song_position_ms; // 0xFFFFFFFF if not supported
     } avrcp_play_status_info_t;
     avrcp_play_status_info_t play_info;
-
-    void dump_sbc_configuration(media_codec_configuration_sbc_t * configuration);
 
     void a2dp_timer_start(a2dp_media_sending_context_t * context);
     void a2dp_timer_stop(a2dp_media_sending_context_t * context);

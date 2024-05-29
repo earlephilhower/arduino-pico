@@ -262,18 +262,6 @@ int A2DPSource::availableForWrite() {
     return avail;
 }
 
-void A2DPSource::dump_sbc_configuration(media_codec_configuration_sbc_t * configuration) {
-    (void) configuration;
-    DEBUGV("Received media codec configuration:\n");
-    DEBUGV("    - num_channels: %d\n", configuration->num_channels);
-    DEBUGV("    - sampling_frequency: %d\n", configuration->sampling_frequency);
-    DEBUGV("    - channel_mode: %d\n", configuration->channel_mode);
-    DEBUGV("    - block_length: %d\n", configuration->block_length);
-    DEBUGV("    - subbands: %d\n", configuration->subbands);
-    DEBUGV("    - allocation_method: %d\n", configuration->allocation_method);
-    DEBUGV("    - bitpool_value [%d, %d] \n", configuration->min_bitpool_value, configuration->max_bitpool_value);
-}
-
 void A2DPSource::a2dp_timer_start(a2dp_media_sending_context_t * context) {
     context->max_media_payload_size = btstack_min(a2dp_max_media_payload_size(context->a2dp_cid, context->local_seid), SBC_STORAGE_SIZE);
     context->sbc_storage_count = 0;
@@ -460,7 +448,7 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
             btstack_assert(false);
             break;
         }
-        dump_sbc_configuration(&sbc_configuration);
+        sbc_configuration.dump();
 
         btstack_sbc_encoder_init(&sbc_encoder_state, SBC_MODE_STANDARD,
                                  sbc_configuration.block_length, sbc_configuration.subbands,
