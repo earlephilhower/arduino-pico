@@ -621,10 +621,6 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
     }
 }
 
-void A2DPSink::avrcp_volume_changed(uint8_t volume) {
-    _consumer->setVolume(volume);
-}
-
 void A2DPSink::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(channel);
     UNUSED(size);
@@ -646,12 +642,16 @@ void A2DPSink::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel
         volume = avrcp_subevent_notification_volume_changed_get_absolute_volume(packet);
         volume_percentage = volume * 100 / 127;
         DEBUGV("AVRCP Target    : Volume set to %d%% (%d)\n", volume_percentage, volume);
-        avrcp_volume_changed(volume);
+        _consumer->setVolume(volume);
         break;
 
     case AVRCP_SUBEVENT_OPERATION:
         operation_id = (avrcp_operation_id_t)avrcp_subevent_operation_get_operation_id(packet);
         button_state = avrcp_subevent_operation_get_button_pressed(packet) > 0 ? "PRESS" : "RELEASE";
+        DEBUGV("AVRCP Target: operation %s (%s)\n", avrcp_operation2str(operation_id), button_state);
+        if (_avrcpCB) {
+            _avrcpCB(_avrcpData, operation_id, avrcp_subevent_operation_get_button_pressed(packet) > 0);
+        }
         switch (operation_id) {
         case AVRCP_OPERATION_ID_VOLUME_UP:
             DEBUGV("AVRCP Target    : VOLUME UP (%s)\n", button_state);
@@ -684,7 +684,6 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
     }
 
     a2dp_sink_a2dp_connection_t * a2dp_conn = &a2dp_sink_a2dp_connection;
-    DEBUGV("a2dp_sink_packet_handler: %02x\n", packet[2]);
 
     switch (packet[2]) {
     case A2DP_SUBEVENT_SIGNALING_MEDIA_CODEC_OTHER_CONFIGURATION:
@@ -740,6 +739,7 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
 
         DEBUGV("A2DP  Sink      : Streaming connection is established, address %s, cid 0x%02x, local seid %d\n",
                bd_addr_to_str(a2dp_conn->addr), a2dp_conn->a2dp_cid, a2dp_conn->a2dp_local_seid);
+        memcpy(_sourceAddress, a2dp_conn->addr, sizeof(_sourceAddress));
         break;
 
     case A2DP_SUBEVENT_STREAM_STARTED:

@@ -113,6 +113,66 @@ public:
 
     void playback_handler(int16_t * buffer, uint16_t num_audio_frames);
 
+    void play() {
+        if (_connected) {
+            avrcp_controller_play(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void stop() {
+        if (_connected) {
+            avrcp_controller_stop(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void pause() {
+        if (_connected) {
+            avrcp_controller_pause(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void fastForward() {
+        if (_connected) {
+            avrcp_controller_fast_forward(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void rewind() {
+        if (_connected) {
+            avrcp_controller_rewind(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void forward() {
+        if (_connected) {
+            avrcp_controller_forward(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void backward() {
+        if (_connected) {
+            avrcp_controller_backward(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void volumeUp() {
+        if (_connected) {
+            avrcp_controller_volume_up(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void volumeDown() {
+        if (_connected) {
+            avrcp_controller_volume_down(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
+    void mute() {
+        if (_connected) {
+            avrcp_controller_mute(a2dp_sink_avrcp_connection.avrcp_cid);
+        }
+    }
+
 private:
     void handle_pcm_data(int16_t * data, int num_audio_frames, int num_channels, int sample_rate, void * context);
 
@@ -126,7 +186,6 @@ private:
     int read_media_data_header(uint8_t *packet, int size, int *offset, avdtp_media_packet_header_t *media_header);
     void avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     void avrcp_controller_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
-    void avrcp_volume_changed(uint8_t volume);
     void avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     void a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
 
