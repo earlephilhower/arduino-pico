@@ -535,6 +535,21 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
             avrcp_connection->playing = false;
             break;
         }
+        if (_playbackStatusCB) {
+            PlaybackStatus status;
+            switch (play_status) {
+            case AVRCP_PLAYBACK_STATUS_PLAYING:
+            status = PLAYING;
+            break;
+            case AVRCP_PLAYBACK_STATUS_PAUSED:
+            status = PAUSED;
+            break;
+            default:
+            status = STOPPED;
+            break;
+            }
+            _playbackStatusCB(_playbackStatusData, status);
+        }
         break;
 
     case AVRCP_SUBEVENT_NOTIFICATION_NOW_PLAYING_CONTENT_CHANGED:

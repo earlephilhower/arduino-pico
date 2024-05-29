@@ -95,6 +95,12 @@ public:
         _connectData = cbData;
     }
 
+    typedef enum { STOPPED, PLAYING, PAUSED } PlaybackStatus;
+    void onPlaybackStatus(void (*cb)(void *, PlaybackStatus), void *cbData = nullptr) {
+        _playbackStatusCB = cb;
+        _playbackStatusData = cbData;
+    }
+
     const uint8_t *getSourceAddress() {
         if (!_connected) {
             return nullptr;
@@ -205,6 +211,8 @@ private:
     void *_volumeData;
     void (*_connectCB)(void *, bool) = nullptr;
     void *_connectData;
+    void (*_playbackStatusCB)(void *, PlaybackStatus) = nullptr;
+    void *_playbackStatusData;
     char *_name = nullptr;
     uint8_t _sourceAddress[6];
 

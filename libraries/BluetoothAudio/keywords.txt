@@ -50,6 +50,7 @@ onAVRCP	KEYWORD2
 onBattery	KEYWORD2
 onVolume	KEYWORD2
 onConnect	KEYWORD2
+onPlaybackStatus	KEYWORD2
 
 # BTDeviceInfo
 deviceClass	KEYWORD2
@@ -61,3 +62,6 @@ name	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
+STOPPED	LITERAL
+PLAYING	LITERAL
+PAUSED	LITERAL
