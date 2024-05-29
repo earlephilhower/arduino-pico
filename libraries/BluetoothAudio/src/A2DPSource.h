@@ -27,9 +27,9 @@
 #include <memory>
 
 
-class A2DPSource_ : public Stream {
+class A2DPSource : public Stream {
 public:
-    A2DPSource_() {
+    A2DPSource() {
     }
 
     bool setFrequency(uint32_t rate) {
@@ -249,7 +249,4 @@ private:
     void avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     void avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     void avrcp_controller_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
-
 };
-
-extern A2DPSource_ A2DPSource;

@@ -73,7 +73,7 @@
    static_cast<void(*)(btstack_timer_source_t*)>(_A2DPSOURCECB<void(btstack_timer_source_t*), __COUNTER__ - 1>::callback))
 
 
-bool A2DPSource_::begin() {
+bool A2DPSource::begin() {
     if (_running) {
         return false;
     }
@@ -100,7 +100,7 @@ bool A2DPSource_::begin() {
 
     // Initialize  A2DP Source
     a2dp_source_init();
-    a2dp_source_register_packet_handler(PACKETHANDLERCB(A2DPSource_, a2dp_source_packet_handler));
+    a2dp_source_register_packet_handler(PACKETHANDLERCB(A2DPSource, a2dp_source_packet_handler));
 
     // Create stream endpoint
     avdtp_stream_endpoint_t * local_stream_endpoint = a2dp_source_create_stream_endpoint(AVDTP_AUDIO, AVDTP_CODEC_SBC, media_sbc_codec_capabilities, sizeof(media_sbc_codec_capabilities), media_sbc_codec_configuration, sizeof(media_sbc_codec_configuration));
@@ -115,14 +115,14 @@ bool A2DPSource_::begin() {
 
     // Initialize AVRCP Service
     avrcp_init();
-    avrcp_register_packet_handler(PACKETHANDLERCB(A2DPSource_, avrcp_packet_handler));
+    avrcp_register_packet_handler(PACKETHANDLERCB(A2DPSource, avrcp_packet_handler));
     // Initialize AVRCP Target
     avrcp_target_init();
-    avrcp_target_register_packet_handler(PACKETHANDLERCB(A2DPSource_, avrcp_target_packet_handler));
+    avrcp_target_register_packet_handler(PACKETHANDLERCB(A2DPSource, avrcp_target_packet_handler));
 
     // Initialize AVRCP Controller
     avrcp_controller_init();
-    avrcp_controller_register_packet_handler(PACKETHANDLERCB(A2DPSource_, avrcp_controller_packet_handler));
+    avrcp_controller_register_packet_handler(PACKETHANDLERCB(A2DPSource, avrcp_controller_packet_handler));
 
     // Initialize SDP,
     sdp_init();
@@ -169,7 +169,7 @@ bool A2DPSource_::begin() {
     return true;
 }
 
-bool A2DPSource_::connect(const uint8_t *addr) {
+bool A2DPSource::connect(const uint8_t *addr) {
     if (!_running) {
         return false;
     }
@@ -197,7 +197,7 @@ bool A2DPSource_::connect(const uint8_t *addr) {
     }
 }
 
-bool A2DPSource_::disconnect() {
+bool A2DPSource::disconnect() {
     __lockBluetooth();
     a2dp_source_disconnect(media_tracker.a2dp_cid);
     __unlockBluetooth();
@@ -208,7 +208,7 @@ bool A2DPSource_::disconnect() {
     return true;
 }
 
-void A2DPSource_::clearPairing() {
+void A2DPSource::clearPairing() {
     disconnect();
     __lockBluetooth();
     gap_delete_all_link_keys();
@@ -216,7 +216,7 @@ void A2DPSource_::clearPairing() {
 }
 
 // from Print (see notes on write() methods below)
-size_t A2DPSource_::write(const uint8_t *buffer, size_t size) {
+size_t A2DPSource::write(const uint8_t *buffer, size_t size) {
     size_t count = 0;
     size /= 2;
     __lockBluetooth();
@@ -248,7 +248,7 @@ size_t A2DPSource_::write(const uint8_t *buffer, size_t size) {
     return count;
 }
 
-int A2DPSource_::availableForWrite() {
+int A2DPSource::availableForWrite() {
     int avail = 0;
     __lockBluetooth();
     if (_pcmWriter == _pcmReader) {
@@ -262,7 +262,7 @@ int A2DPSource_::availableForWrite() {
     return avail;
 }
 
-void A2DPSource_::dump_sbc_configuration(media_codec_configuration_sbc_t * configuration) {
+void A2DPSource::dump_sbc_configuration(media_codec_configuration_sbc_t * configuration) {
     (void) configuration;
     DEBUGV("Received media codec configuration:\n");
     DEBUGV("    - num_channels: %d\n", configuration->num_channels);
@@ -274,19 +274,19 @@ void A2DPSource_::dump_sbc_configuration(media_codec_configuration_sbc_t * confi
     DEBUGV("    - bitpool_value [%d, %d] \n", configuration->min_bitpool_value, configuration->max_bitpool_value);
 }
 
-void A2DPSource_::a2dp_timer_start(a2dp_media_sending_context_t * context) {
+void A2DPSource::a2dp_timer_start(a2dp_media_sending_context_t * context) {
     context->max_media_payload_size = btstack_min(a2dp_max_media_payload_size(context->a2dp_cid, context->local_seid), SBC_STORAGE_SIZE);
     context->sbc_storage_count = 0;
     context->sbc_ready_to_send = 0;
     context->streaming = 1;
     btstack_run_loop_remove_timer(&context->audio_timer);
-    btstack_run_loop_set_timer_handler(&context->audio_timer, TIMEOUTHANDLERCB(A2DPSource_, a2dp_audio_timeout_handler));
+    btstack_run_loop_set_timer_handler(&context->audio_timer, TIMEOUTHANDLERCB(A2DPSource, a2dp_audio_timeout_handler));
     btstack_run_loop_set_timer_context(&context->audio_timer, context);
     btstack_run_loop_set_timer(&context->audio_timer, AUDIO_TIMEOUT_MS);
     btstack_run_loop_add_timer(&context->audio_timer);
 }
 
-void A2DPSource_::a2dp_timer_stop(a2dp_media_sending_context_t * context) {
+void A2DPSource::a2dp_timer_stop(a2dp_media_sending_context_t * context) {
     context->time_audio_data_sent = 0;
     context->acc_num_missed_samples = 0;
     context->samples_ready = 0;
@@ -296,7 +296,7 @@ void A2DPSource_::a2dp_timer_stop(a2dp_media_sending_context_t * context) {
     btstack_run_loop_remove_timer(&context->audio_timer);
 }
 
-int A2DPSource_::a2dp_fill_sbc_audio_buffer(a2dp_media_sending_context_t * context) {
+int A2DPSource::a2dp_fill_sbc_audio_buffer(a2dp_media_sending_context_t * context) {
     // perform sbc encoding
     int total_num_bytes_read = 0;
     unsigned int num_audio_samples_per_sbc_buffer = btstack_sbc_encoder_num_audio_frames();
@@ -327,7 +327,7 @@ int A2DPSource_::a2dp_fill_sbc_audio_buffer(a2dp_media_sending_context_t * conte
     return total_num_bytes_read;
 }
 
-void A2DPSource_::a2dp_audio_timeout_handler(btstack_timer_source_t * timer) {
+void A2DPSource::a2dp_audio_timeout_handler(btstack_timer_source_t * timer) {
     a2dp_media_sending_context_t * context = (a2dp_media_sending_context_t *) btstack_run_loop_get_timer_context(timer);
     btstack_run_loop_set_timer(&context->audio_timer, AUDIO_TIMEOUT_MS);
     btstack_run_loop_add_timer(&context->audio_timer);
@@ -361,7 +361,7 @@ void A2DPSource_::a2dp_audio_timeout_handler(btstack_timer_source_t * timer) {
     }
 }
 
-void A2DPSource_::a2dp_send_media_packet() {
+void A2DPSource::a2dp_send_media_packet() {
     int num_bytes_in_frame = btstack_sbc_encoder_sbc_buffer_length();
     int bytes_in_storage = media_tracker.sbc_storage_count;
     uint8_t num_sbc_frames = bytes_in_storage / num_bytes_in_frame;
@@ -382,7 +382,7 @@ void A2DPSource_::a2dp_send_media_packet() {
     }
 }
 
-void A2DPSource_::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(channel);
     UNUSED(size);
     uint8_t status;
@@ -586,7 +586,7 @@ void A2DPSource_::a2dp_source_packet_handler(uint8_t packet_type, uint16_t chann
     }
 }
 
-void A2DPSource_::avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+void A2DPSource::avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(channel);
     UNUSED(size);
     bd_addr_t event_addr;
@@ -637,7 +637,7 @@ void A2DPSource_::avrcp_packet_handler(uint8_t packet_type, uint16_t channel, ui
     }
 }
 
-void A2DPSource_::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+void A2DPSource::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(channel);
     UNUSED(size);
     uint8_t  status = ERROR_CODE_SUCCESS;
@@ -695,7 +695,7 @@ void A2DPSource_::avrcp_target_packet_handler(uint8_t packet_type, uint16_t chan
     }
 }
 
-void A2DPSource_::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+void A2DPSource::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(channel);
     UNUSED(size);
 
@@ -732,5 +732,3 @@ void A2DPSource_::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t 
         break;
     }
 }
-
-A2DPSource_ A2DPSource;

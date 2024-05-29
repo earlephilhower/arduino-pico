@@ -552,6 +552,8 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
     case AVRCP_SUBEVENT_SHUFFLE_AND_REPEAT_MODE: {
         uint8_t shuffle_mode = avrcp_subevent_shuffle_and_repeat_mode_get_shuffle_mode(packet);
         uint8_t repeat_mode  = avrcp_subevent_shuffle_and_repeat_mode_get_repeat_mode(packet);
+        (void) shuffle_mode;
+        (void) repeat_mode;
         DEBUGV("AVRCP Controller: %s, %s\n", avrcp_shuffle2str(shuffle_mode), avrcp_repeat2str(repeat_mode));
         break;
     }
@@ -636,6 +638,7 @@ void A2DPSink::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel
 
     uint8_t volume;
     char const * button_state;
+    (void) button_state;
     avrcp_operation_id_t operation_id;
 
     switch (packet[2]) {
