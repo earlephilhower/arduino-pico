@@ -6,6 +6,8 @@
 # Datatypes (KEYWORD1)
 #######################################
 
+BluetoothAudio	KEYWORD1
+BluetoothHCI	KEYWORD1
 A2DPSource	KEYWORD1
 BTDeviceInfo	KEYWORD1
 
