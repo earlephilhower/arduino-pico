@@ -5,3 +5,4 @@
 #include "A2DPSink.h"
 #include "BluetoothAudioConsumer.h"
 #include "BluetoothAudioConsumerPWM.h"
+#include "BluetoothAudioConsumerI2S.h"
