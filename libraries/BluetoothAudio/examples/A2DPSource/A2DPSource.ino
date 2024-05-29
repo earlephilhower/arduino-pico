@@ -4,6 +4,8 @@
 #include <BluetoothAudio.h>
 #include "raw.h"
 
+A2DPSource a2dp;
+
 int16_t pcm[64 * 2];
 uint32_t phase = 0;
 volatile uint32_t fr = 32;
@@ -39,7 +41,7 @@ void volumeCB(void *param, int pct) {
 void connectCB(void *param, bool connected) {
   (void) param;
   if (connected) {
-    Serial.printf("A2DP connection started to %s\n", bd_addr_to_str(A2DPSource.getSinkAddress()));
+    Serial.printf("A2DP connection started to %s\n", bd_addr_to_str(a2dp.getSinkAddress()));
   } else {
     Serial.printf("A2DP connection stopped\n");
   }
@@ -67,10 +69,10 @@ void fillPCM() {
 
 void setup() {
   delay(2000);
-  A2DPSource.onAVRCP(avrcpCB);
-  A2DPSource.onVolume(volumeCB);
-  A2DPSource.onConnect(connectCB);
-  A2DPSource.begin();
+  a2dp.onAVRCP(avrcpCB);
+  a2dp.onVolume(volumeCB);
+  a2dp.onConnect(connectCB);
+  a2dp.begin();
   Serial.printf("Starting, press BOOTSEL to pair to first found speaker\n");
   Serial.printf("Use the forward button on speaker to change tones\n");
   Serial.printf("Use the reverse button on speaker to alternate between tones and Au Claire De La Lune\n");
@@ -78,18 +80,18 @@ void setup() {
 }
 
 void loop() {
-  while ((size_t)A2DPSource.availableForWrite() > sizeof(pcm)) {
+  while ((size_t)a2dp.availableForWrite() > sizeof(pcm)) {
     fillPCM();
-    A2DPSource.write((const uint8_t *)pcm, sizeof(pcm));
+    a2dp.write((const uint8_t *)pcm, sizeof(pcm));
   }
   if (BOOTSEL) {
     while (BOOTSEL) {
       delay(1);
     }
-    A2DPSource.disconnect();
-    A2DPSource.clearPairing();
+    a2dp.disconnect();
+    a2dp.clearPairing();
     Serial.printf("Connecting...");
-    if (A2DPSource.connect()) {
+    if (a2dp.connect()) {
       Serial.printf("Connected!\n");
     } else {
       Serial.printf("Failed!  :(\n");

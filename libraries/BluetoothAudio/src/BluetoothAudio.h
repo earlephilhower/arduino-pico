@@ -1,3 +1,8 @@
 #include "BluetoothDevice.h"
 #include "BluetoothHCI.h"
+#include "BluetoothMediaConfigurationSBC.h"
 #include "A2DPSource.h"
+#include "A2DPSink.h"
+#include "BluetoothAudioConsumer.h"
+#include "BluetoothAudioConsumerPWM.h"
+#include "BluetoothAudioConsumerI2S.h"
