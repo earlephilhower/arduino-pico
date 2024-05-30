@@ -188,7 +188,30 @@ HTTPServer::ClientFuture HTTPServer::_parseRequest(WiFiClient* client) {
             }
         }
 
-        if (!isForm) {
+        if (!isForm && _currentHandler && _currentHandler->canRaw(_currentUri)) {
+            log_v("Parse raw");
+            _currentRaw.reset(new HTTPRaw());
+            _currentRaw->status = RAW_START;
+            _currentRaw->totalSize = 0;
+            _currentRaw->currentSize = 0;
+            log_v("Start Raw");
+            _currentHandler->raw(*this, _currentUri, *_currentRaw);
+            _currentRaw->status = RAW_WRITE;
+
+            while (_currentRaw->totalSize < (size_t)_clientContentLength) {
+                _currentRaw->currentSize = client->readBytes(_currentRaw->buf, HTTP_RAW_BUFLEN);
+                _currentRaw->totalSize += _currentRaw->currentSize;
+                if (_currentRaw->currentSize == 0) {
+                    _currentRaw->status = RAW_ABORTED;
+                    _currentHandler->raw(*this, _currentUri, *_currentRaw);
+                    return CLIENT_MUST_STOP;
+                }
+                _currentHandler->raw(*this, _currentUri, *_currentRaw);
+            }
+            _currentRaw->status = RAW_END;
+            _currentHandler->raw(*this, _currentUri, *_currentRaw);
+            log_v("Finish Raw");
+        } else if (!isForm) {
             size_t plainLength;
             char* plainBuf = readBytesWithTimeout(client, _clientContentLength, plainLength, HTTP_MAX_POST_WAIT);
             if ((int)plainLength < (int)_clientContentLength) {
@@ -333,7 +356,7 @@ void HTTPServer::_uploadWriteByte(uint8_t b) {
     _currentUpload->buf[_currentUpload->currentSize++] = b;
 }
 
-int HTTPServer::_uploadReadByte(WiFiClient* client) {
+int HTTPServer::_uploadReadByte(WiFiClient * client) {
     int res = client->read();
     if (res < 0) {
         // keep trying until you either read a valid byte or timeout
@@ -376,7 +399,7 @@ int HTTPServer::_uploadReadByte(WiFiClient* client) {
     return res;
 }
 
-bool HTTPServer::_parseForm(WiFiClient* client, String boundary, uint32_t len) {
+bool HTTPServer::_parseForm(WiFiClient * client, String boundary, uint32_t len) {
     (void) len;
     log_v("Parse Form: Boundary: %s Length: %d", boundary.c_str(), len);
     String line;
@@ -595,7 +618,7 @@ readfile:
     return false;
 }
 
-String HTTPServer::urlDecode(const String& text) {
+String HTTPServer::urlDecode(const String & text) {
     String decoded = "";
     char temp[] = "0x00";
     unsigned int len = text.length();
