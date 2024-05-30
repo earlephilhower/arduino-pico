@@ -11,6 +11,7 @@ SerialBT	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+setName	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
