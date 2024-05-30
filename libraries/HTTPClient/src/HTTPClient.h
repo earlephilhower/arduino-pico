@@ -33,6 +33,7 @@
 #include <WiFiClientSecure.h>
 
 #include <memory>
+#include <vector>
 
 #ifdef DEBUG_ESP_HTTP_CLIENT
 #ifdef DEBUG_ESP_PORT
@@ -153,6 +154,28 @@ typedef enum {
 class TransportTraits;
 typedef std::unique_ptr<TransportTraits> TransportTraitsPtr;
 
+
+// cookie jar support
+typedef struct  {
+    String host;       // host which tries to set the cookie
+    time_t date;       // timestamp of the response that set the cookie
+    String name;
+    String value;
+    String domain;
+    String path = "";
+    struct {
+        time_t date = 0;
+        bool valid = false;
+    } expires;
+    struct {
+        time_t duration = 0;
+        bool valid = false;
+    } max_age;
+    bool http_only = false;
+    bool secure = false;
+} Cookie;
+typedef std::vector<Cookie> CookieJar;
+
 class HTTPClient {
 public:
     HTTPClient() = default;
@@ -228,6 +251,11 @@ public:
     int writeToStream(Stream* stream);
     const String& getString(void);
     static String errorToString(int error);
+
+    // Cookie jar support
+    void setCookieJar(CookieJar* cookieJar);
+    void resetCookieJar();
+    void clearAllCookies();
 
     // ----------------------------------------------------------------------------------------------
     // HTTPS support, mirrors the WiFiClientSecure interface
@@ -327,6 +355,10 @@ protected:
     int handleHeaderResponse();
     int writeToStreamDataBlock(Stream * stream, int len);
 
+    // Cookie jar support
+    void setCookie(String date, String headerValue);
+    bool generateCookieString(String *cookieString);
+
     WiFiClient *_clientMade = nullptr;
     bool _clientTLS = false;
 
@@ -350,6 +382,7 @@ protected:
 
     String _uri;
     String _protocol;
+    bool _secure = false;
     String _headers;
     String _base64Authorization;
 
@@ -368,6 +401,6 @@ protected:
     String _location;
     transferEncoding_t _transferEncoding = HTTPC_TE_IDENTITY;
     std::unique_ptr<StreamString> _payload;
-
-
+    // Cookie jar support
+    CookieJar *_cookieJar = nullptr;
 };
