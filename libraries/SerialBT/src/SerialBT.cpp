@@ -76,7 +76,10 @@ void SerialBT_::begin(unsigned long baud, uint16_t config) {
 
     gap_discoverable_control(1);
     gap_ssp_set_io_capability(SSP_IO_CAPABILITY_DISPLAY_YES_NO);
-    gap_set_local_name("PicoW Serial 00:00:00:00:00:00");
+    if (!_name) {
+        setName("PicoW Serial 00:00:00:00:00:00");
+    }
+    gap_set_local_name(_name);
 
     // Turn on!
     hci_power_control(HCI_POWER_ON);

@@ -37,6 +37,14 @@ public:
     SerialBT_();
 
     bool setFIFOSize(size_t size);
+    bool setName(const char *name) {
+        if (_running) {
+            return false;
+        }
+        free(_name);
+        _name = strdup(name);
+        return true;
+    }
 
     void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
@@ -82,4 +90,6 @@ private:
 
     volatile int _writeLen = 0;
     const void *_writeBuff;
+
+    char *_name = nullptr;
 };
