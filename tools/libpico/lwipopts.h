@@ -14,6 +14,10 @@ extern void interrupts();
 extern unsigned long __lwip_rand(void);
 #define LWIP_RAND() __lwip_rand()
 
+#ifndef __LWIP_MEMMULT
+#define __LWIP_MEMMULT 1
+#endif
+
 // Common settings used in most of the pico_w examples
 // (see https://www.nongnu.org/lwip/2_1_x/group__lwip__opts.html for details)
 
@@ -22,10 +26,10 @@ extern unsigned long __lwip_rand(void);
 #define MEM_LIBC_MALLOC             0
 
 #define MEM_ALIGNMENT               4
-#define MEM_SIZE                    16384
-#define MEMP_NUM_TCP_SEG            32
-#define MEMP_NUM_ARP_QUEUE          10
-#define PBUF_POOL_SIZE              24
+#define MEM_SIZE                    (__LWIP_MEMMULT * 16384)
+#define MEMP_NUM_TCP_SEG            (32)
+#define MEMP_NUM_ARP_QUEUE          (10)
+#define PBUF_POOL_SIZE              (__LWIP_MEMMULT > 1 ? 32 : 24)
 #define LWIP_ARP                    2
 #define LWIP_ETHERNET               1
 #define LWIP_ICMP                   1
@@ -38,11 +42,10 @@ extern unsigned long __lwip_rand(void);
 #define LWIP_NETIF_LINK_CALLBACK    1
 #define LWIP_NETIF_HOSTNAME         1
 #define LWIP_NETCONN                0
-#define MEM_STATS                   1
-#define SYS_STATS                   1
-#define MEMP_STATS                  1
+#define MEM_STATS                   0
+#define SYS_STATS                   0
+#define MEMP_STATS                  0
 #define LINK_STATS                  0
-// #define ETH_PAD_SIZE                2
 #define LWIP_CHKSUM_ALGORITHM       0
 #define LWIP_DHCP                   1
 #define LWIP_IPV4                   1
@@ -55,7 +58,8 @@ extern unsigned long __lwip_rand(void);
 #define LWIP_DHCP_DOES_ACD_CHECK    0
 
 // See #1285
-#define MEMP_NUM_UDP_PCB            6
+#define MEMP_NUM_UDP_PCB            (__LWIP_MEMMULT * 6)
+#define MEMP_NUM_TCP_PCB            (__LWIP_MEMMULT * 5)
 
 #if LWIP_IPV6
 #define LWIP_IPV6_DHCP6             1
