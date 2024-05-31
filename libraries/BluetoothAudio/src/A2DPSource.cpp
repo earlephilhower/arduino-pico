@@ -196,11 +196,11 @@ bool A2DPSource::connect(const uint8_t *addr) {
         return false;
     }
 }
-
 bool A2DPSource::disconnect() {
-    __lockBluetooth();
-    a2dp_source_disconnect(media_tracker.a2dp_cid);
-    __unlockBluetooth();
+    BluetoothLock b;
+    if (_connected) {
+        a2dp_source_disconnect(media_tracker.a2dp_cid);
+    }
     if (!_running || !_connected) {
         return false;
     }
@@ -209,17 +209,20 @@ bool A2DPSource::disconnect() {
 }
 
 void A2DPSource::clearPairing() {
-    disconnect();
-    __lockBluetooth();
+    BluetoothLock b;
+    if (_connected) {
+        a2dp_source_disconnect(media_tracker.a2dp_cid);
+    }
     gap_delete_all_link_keys();
-    __unlockBluetooth();
 }
 
 // from Print (see notes on write() methods below)
 size_t A2DPSource::write(const uint8_t *buffer, size_t size) {
+    BluetoothLock b;
+
     size_t count = 0;
     size /= 2;
-    __lockBluetooth();
+
     // First copy from writer to either end of
     uint32_t start = _pcmWriter;
     uint32_t end = _pcmReader > _pcmWriter ? _pcmReader : _pcmBufferSize;
@@ -244,13 +247,12 @@ size_t A2DPSource::write(const uint8_t *buffer, size_t size) {
         _pcmWriter += end - start;
         _pcmWriter %= _pcmBufferSize;
     }
-    __unlockBluetooth();
     return count;
 }
 
 int A2DPSource::availableForWrite() {
+    BluetoothLock b;
     int avail = 0;
-    __lockBluetooth();
     if (_pcmWriter == _pcmReader) {
         avail =  _pcmBufferSize - 1;
     } else if (_pcmReader > _pcmWriter) {
@@ -258,7 +260,6 @@ int A2DPSource::availableForWrite() {
     } else {
         avail = _pcmBufferSize - _pcmWriter + _pcmReader - 1;
     }
-    __unlockBluetooth();
     return avail;
 }
 

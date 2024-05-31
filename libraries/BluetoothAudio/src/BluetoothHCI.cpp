@@ -24,6 +24,7 @@
 #include <memory>
 
 #include "BluetoothHCI.h"
+#include "BluetoothLock.h"
 
 #define CCALLBACKNAME _BTHCICB
 #include <ctocppcallback.h>
@@ -46,10 +47,9 @@ void BluetoothHCI_::begin() {
 }
 
 void BluetoothHCI_::uninstall() {
-    __lockBluetooth();
+    BluetoothLock b;
     hci_remove_event_handler(&hci_event_callback_registration);
     _running = false;
-    __unlockBluetooth();
 }
 
 bool BluetoothHCI_::running() {
@@ -72,9 +72,11 @@ std::list<BTDeviceInfo> BluetoothHCI_::scan(uint32_t mask, int scanTimeSec, bool
         inquiryTime = 1;
     }
     DEBUGV("HCI::scan(): inquiry start\n");
-    __lockBluetooth();
-    gap_inquiry_start(inquiryTime);
-    __unlockBluetooth();
+    // Only need to lock around the inquiry start command, not the wait
+    {
+        BluetoothLock b;
+        gap_inquiry_start(inquiryTime);
+    }
     if (async) {
         return _btdList;
     }

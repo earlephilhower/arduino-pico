@@ -22,6 +22,7 @@
 
 #include <Arduino.h>
 #include "BluetoothHCI.h"
+#include "BluetoothLock.h"
 #include "BluetoothAudioConsumer.h"
 #include "BluetoothMediaConfigurationSBC.h"
 
@@ -120,60 +121,70 @@ public:
     void playback_handler(int16_t * buffer, uint16_t num_audio_frames);
 
     void play() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_play(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void stop() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_stop(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void pause() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_pause(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void fastForward() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_fast_forward(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void rewind() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_rewind(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void forward() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_forward(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void backward() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_backward(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void volumeUp() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_volume_up(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void volumeDown() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_volume_down(a2dp_sink_avrcp_connection.avrcp_cid);
         }
     }
 
     void mute() {
+        BluetoothLock b;
         if (_connected) {
             avrcp_controller_mute(a2dp_sink_avrcp_connection.avrcp_cid);
         }

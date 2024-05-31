@@ -1,3 +1,4 @@
+#include "BluetoothLock.h"
 #include "BluetoothDevice.h"
 #include "BluetoothHCI.h"
 #include "BluetoothMediaConfigurationSBC.h"
