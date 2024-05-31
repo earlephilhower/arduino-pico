@@ -191,9 +191,10 @@ bool A2DPSink::begin() {
 }
 
 bool A2DPSink::disconnect() {
-    __lockBluetooth();
-    a2dp_sink_disconnect(a2dp_sink_a2dp_connection.a2dp_cid);
-    __unlockBluetooth();
+    BluetoothLock b;
+    if (_connected) {
+        a2dp_sink_disconnect(a2dp_sink_a2dp_connection.a2dp_cid);
+    }
     if (!_running || !_connected) {
         return false;
     }
@@ -202,10 +203,11 @@ bool A2DPSink::disconnect() {
 }
 
 void A2DPSink::clearPairing() {
-    disconnect();
-    __lockBluetooth();
+    BluetoothLock b;
+    if (_connected) {
+        a2dp_sink_disconnect(a2dp_sink_a2dp_connection.a2dp_cid);
+    }
     gap_delete_all_link_keys();
-    __unlockBluetooth();
 }
 
 

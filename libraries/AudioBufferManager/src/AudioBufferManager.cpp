@@ -24,8 +24,9 @@
 #include <hardware/irq.h>
 #include "AudioBufferManager.h"
 
-static int                 __channelCount = 0;    // # of channels left.  When we hit 0, then remove our handler
-static AudioBufferManager* __channelMap[12];      // Lets the IRQ handler figure out where to dispatch to
+static int                 __channelCount = 0;     // # of channels left.  When we hit 0, then remove our handler
+static AudioBufferManager* __channelMap[12];       // Lets the IRQ handler figure out where to dispatch to
+static bool                __irqInstalled = false; // Have we put in our IRQ handler yet?
 
 AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction, enum dma_channel_transfer_size dmaSize) {
     _running = false;
@@ -78,11 +79,6 @@ AudioBufferManager::~AudioBufferManager() {
             dma_channel_unclaim(_channelDMA[i]);
             __channelCount--;
         }
-        if (!__channelCount) {
-            irq_set_enabled(DMA_IRQ_0, false);
-            // TODO - how can we know if there are no other parts of the core using DMA0 IRQ??
-            irq_remove_handler(DMA_IRQ_0, _irq);
-        }
     }
     interrupts();
     for (int i = 0; i < 2; i++) {
@@ -120,7 +116,7 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
             return false;
         }
     }
-    bool needSetIRQ = __channelCount == 0;
+
     // Need to know both channels to set up ping-pong, so do in 2 stages
     for (auto i = 0; i < 2; i++) {
         dma_channel_config c = dma_channel_get_default_config(_channelDMA[i]);
@@ -146,9 +142,10 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
         __channelMap[_channelDMA[i]] = this;
         __channelCount++;
     }
-    if (needSetIRQ) {
+    if (!__irqInstalled) {
         irq_add_shared_handler(DMA_IRQ_0, _irq, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
         irq_set_enabled(DMA_IRQ_0, true);
+        __irqInstalled = true;
     }
 
     dma_channel_start(_channelDMA[0]);

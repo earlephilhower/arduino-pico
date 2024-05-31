@@ -45,7 +45,6 @@ void setup() {
 
 void loop() {
   if (BOOTSEL) {
-    __lockBluetooth();
     if (status == A2DPSink::PAUSED) {
       a2dp.play();
       Serial.printf("Resuming\n");
@@ -53,7 +52,6 @@ void loop() {
       a2dp.pause();
       Serial.printf("Pausing\n");
     }
-    __unlockBluetooth();
     while (BOOTSEL);
   }
 }

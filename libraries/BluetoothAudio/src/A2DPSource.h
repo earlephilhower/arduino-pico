@@ -22,6 +22,7 @@
 
 #include <Arduino.h>
 #include "BluetoothHCI.h"
+#include "BluetoothLock.h"
 #include "BluetoothMediaConfigurationSBC.h"
 #include <functional>
 #include <list>
@@ -84,13 +85,12 @@ public:
     }
 
     bool getUnderflow() {
+        BluetoothLock b;
         if (!_running) {
             return false;
         }
-        __lockBluetooth();
         auto ret = _underflow;
         _underflow = false;
-        __unlockBluetooth();
         return ret;
     }
 
