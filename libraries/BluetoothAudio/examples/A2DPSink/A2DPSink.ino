@@ -43,6 +43,8 @@ void setup() {
   a2dp.begin();
 }
 
+char *nowPlaying = nullptr;
+
 void loop() {
   if (BOOTSEL) {
     if (status == A2DPSink::PAUSED) {
@@ -53,5 +55,10 @@ void loop() {
       Serial.printf("Pausing\n");
     }
     while (BOOTSEL);
+  }
+  if (!nowPlaying || strcmp(nowPlaying, a2dp.trackTitle())) {
+    free(nowPlaying);
+    nowPlaying = strdup(a2dp.trackTitle());
+    Serial.printf("NOW PLAYING: %s\n", nowPlaying);
   }
 }

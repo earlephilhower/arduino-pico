@@ -559,6 +559,14 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
         break;
 
     case AVRCP_SUBEVENT_NOTIFICATION_TRACK_CHANGED:
+        _title[0] = 0;
+        _artist[0] = 0;
+        _album[0] = 0;
+        _genre[0] = 0;
+        avrcp_controller_get_now_playing_info(avrcp_connection->avrcp_cid);
+        if (_trackChangedCB) {
+            _trackChangedCB(_trackChangedData);
+        }
         DEBUGV("AVRCP Controller: Track changed\n");
         break;
 
@@ -585,6 +593,8 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
     case AVRCP_SUBEVENT_NOW_PLAYING_TITLE_INFO:
         if (avrcp_subevent_now_playing_title_info_get_value_len(packet) > 0) {
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_title_info_get_value(packet), avrcp_subevent_now_playing_title_info_get_value_len(packet));
+            strncpy(_title, (char *)avrcp_subevent_value, sizeof(_title));
+            _title[sizeof(_title) - 1] = 0;
             DEBUGV("AVRCP Controller: Title %s\n", avrcp_subevent_value);
         }
         break;
@@ -592,6 +602,8 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
     case AVRCP_SUBEVENT_NOW_PLAYING_ARTIST_INFO:
         if (avrcp_subevent_now_playing_artist_info_get_value_len(packet) > 0) {
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_artist_info_get_value(packet), avrcp_subevent_now_playing_artist_info_get_value_len(packet));
+            strncpy(_artist, (char *)avrcp_subevent_value, sizeof(_artist));
+            _artist[sizeof(_artist) - 1] = 0;
             DEBUGV("AVRCP Controller: Artist %s\n", avrcp_subevent_value);
         }
         break;
@@ -599,6 +611,8 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
     case AVRCP_SUBEVENT_NOW_PLAYING_ALBUM_INFO:
         if (avrcp_subevent_now_playing_album_info_get_value_len(packet) > 0) {
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_album_info_get_value(packet), avrcp_subevent_now_playing_album_info_get_value_len(packet));
+            strncpy(_album, (char *)avrcp_subevent_value, sizeof(_album));
+            _album[sizeof(_album) - 1] = 0;
             DEBUGV("AVRCP Controller: Album %s\n", avrcp_subevent_value);
         }
         break;
@@ -606,6 +620,8 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
     case AVRCP_SUBEVENT_NOW_PLAYING_GENRE_INFO:
         if (avrcp_subevent_now_playing_genre_info_get_value_len(packet) > 0) {
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_genre_info_get_value(packet), avrcp_subevent_now_playing_genre_info_get_value_len(packet));
+            strncpy(_genre, (char *)avrcp_subevent_value, sizeof(_genre));
+            _genre[sizeof(_genre) - 1] = 0;
             DEBUGV("AVRCP Controller: Genre %s\n", avrcp_subevent_value);
         }
         break;

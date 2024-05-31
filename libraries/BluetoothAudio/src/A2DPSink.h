@@ -33,6 +33,10 @@
 class A2DPSink : public Stream {
 public:
     A2DPSink() {
+        _title[0] = 0;
+        _artist[0] = 0;
+        _album[0] = 0;
+        _genre[0] = 0;
     }
     virtual int available() override {
         return 0; // Unreadable, this is output only
@@ -94,6 +98,11 @@ public:
     void onConnect(void (*cb)(void *, bool), void *cbData = nullptr) {
         _connectCB = cb;
         _connectData = cbData;
+    }
+
+    void onTrackChanged(void (*cb)(void *), void *cbData = nullptr) {
+        _trackChangedCB = cb;
+        _trackChangedData = cbData;
     }
 
     typedef enum { STOPPED, PLAYING, PAUSED } PlaybackStatus;
@@ -190,6 +199,22 @@ public:
         }
     }
 
+    const char *trackTitle() {
+        return _title;
+    }
+
+    const char *trackArtist() {
+        return _artist;
+    }
+
+    const char *trackAlbum() {
+        return _album;
+    }
+
+    const char *trackGenre() {
+        return _genre;
+    }
+
 private:
     void handle_pcm_data(int16_t * data, int num_audio_frames, int num_channels, int sample_rate, void * context);
 
@@ -224,6 +249,9 @@ private:
     void *_connectData;
     void (*_playbackStatusCB)(void *, PlaybackStatus) = nullptr;
     void *_playbackStatusData;
+    void (*_trackChangedCB)(void *) = nullptr;
+    void *_trackChangedData;
+
     char *_name = nullptr;
     uint8_t _sourceAddress[6];
 
@@ -301,4 +329,9 @@ private:
     a2dp_sink_avrcp_connection_t a2dp_sink_avrcp_connection;
 
     int16_t output_buffer[(128 + 16) * NUM_CHANNELS]; // 16 * 8 * 2
+
+    char _title[64];
+    char _artist[64];
+    char _album[64];
+    char _genre[32];
 };
