@@ -1212,7 +1212,7 @@ static uint16_t handle_prepare_write_request(att_connection_t * att_connection, 
 }
 
 /*
-    @brief transcation queue of prepared writes, e.g., after disconnect
+    @brief transaction queue of prepared writes, e.g., after disconnect
 */
 void att_clear_transaction_queue(att_connection_t * att_connection) {
     (*att_write_callback)(att_connection->con_handle, 0, ATT_TRANSACTION_MODE_CANCEL, 0, NULL, 0);

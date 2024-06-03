@@ -39,6 +39,13 @@ public:
     // Sends one buffer and receives into another, much faster! can set rx or txbuf to nullptr
     void transfer(const void *txbuf, void *rxbuf, size_t count) override;
 
+    // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
+    // All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+    bool transferAsync(const void *send, void *recv, size_t bytes);
+    bool finishedAsync(); // Call to check if the async operations is completed and the buffer can be reused/read
+    void abortAsync(); // Cancel an outstanding async operation
+
+
     // Call before/after every complete transaction
     void beginTransaction(SPISettings settings) override;
     void endTransaction(void) override;
@@ -51,7 +58,7 @@ public:
     bool setCS(pin_size_t pin);
     bool setSCK(pin_size_t pin);
     bool setTX(pin_size_t pin);
-    bool setMOSI(pin_size_t pin) {
+    inline bool setMOSI(pin_size_t pin) {
         return setTX(pin);
     }
 
@@ -92,6 +99,14 @@ private:
     bool _initted; // Transaction begun
 
     std::map<int, int> _usingIRQs;
+
+    // DMA
+    int _channelDMA;
+    int _channelSendDMA;
+    uint8_t *_dmaBuffer = nullptr;
+    int _dmaBytes;
+    uint8_t *_rxFinalBuffer;
+    uint32_t _dummy;
 };
 
 extern SPIClassRP2040 SPI;

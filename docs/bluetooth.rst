@@ -40,8 +40,8 @@ For many BTStack examples, you simply need call the included
 called afterwards to start processing (in the background).
 
 You will also need to acquire the BT ``async_context`` system lock before
-calling any BTStack APIs.  See the ``libraries/PicoBluetoothHID`` helper
-class for an example of how to do this.
+calling any BTStack APIs.  ``__lockBluetooth`` and ``unlockBluetooth`` are
+provided in the PicoW variant code.
 
 Note that if you need to modify the system ``btstack_config.h`` file, do so
 in the ``tools/libpico`` directory and rebuild the Pico SDK static library.

@@ -257,7 +257,7 @@ extern "C" {
             uint8_t * response_buffer);
 
     /**
-        @brief transcation queue of prepared writes, e.g., after disconnect
+        @brief transaction queue of prepared writes, e.g., after disconnect
         @return att_connection
     */
     void att_clear_transaction_queue(att_connection_t * att_connection);

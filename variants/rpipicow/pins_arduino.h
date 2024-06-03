@@ -3,7 +3,16 @@
 // Pin definitions taken from:
 //    https://datasheets.raspberrypi.org/pico/pico-datasheet.pdf
 
-extern bool  __isPicoW;
+extern bool __isPicoW;
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+extern void __lockBluetooth();
+extern void __unlockBluetooth();
+#ifdef __cplusplus
+}; // extern "C"
+#endif // __cplusplus
 
 // LEDs
 #define PIN_LED        (32u)

@@ -31,6 +31,7 @@
 enum HTTPUploadStatus { UPLOAD_FILE_START, UPLOAD_FILE_WRITE, UPLOAD_FILE_END,
                         UPLOAD_FILE_ABORTED
                       };
+enum HTTPRawStatus { RAW_START, RAW_WRITE, RAW_END, RAW_ABORTED };
 enum HTTPClientStatus { HC_NONE, HC_WAIT_READ, HC_WAIT_CLOSE };
 enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 
@@ -38,6 +39,10 @@ enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 
 #ifndef HTTP_UPLOAD_BUFLEN
 #define HTTP_UPLOAD_BUFLEN 1436
+#endif
+
+#ifndef HTTP_RAW_BUFLEN
+#define HTTP_RAW_BUFLEN 1436
 #endif
 
 #define HTTP_MAX_DATA_WAIT 5000 //ms to wait for the client to send the request
@@ -62,6 +67,16 @@ typedef struct {
     size_t  currentSize;  // size of data currently in buf
     uint8_t buf[HTTP_UPLOAD_BUFLEN];
 } HTTPUpload;
+
+
+typedef struct {
+    HTTPRawStatus status;
+    size_t  totalSize;   // content size
+    size_t  currentSize; // size of data currently in buf
+    uint8_t buf[HTTP_UPLOAD_BUFLEN];
+    void    *data;       // additional data
+} HTTPRaw;
+
 
 #include "detail/RequestHandler.h"
 
@@ -96,6 +111,9 @@ public:
     }
     HTTPUpload& upload() {
         return *_currentUpload;
+    }
+    HTTPRaw& raw() {
+        return *_currentRaw;
     }
 
     String pathArg(unsigned int i); // get request path argument by number
@@ -257,6 +275,7 @@ protected:
     RequestArgument* _postArgs;
 
     std::unique_ptr<HTTPUpload> _currentUpload;
+    std::unique_ptr<HTTPRaw>    _currentRaw;
 
     int              _headerKeysCount;
     RequestArgument* _currentHeaders;

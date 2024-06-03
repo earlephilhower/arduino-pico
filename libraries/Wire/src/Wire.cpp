@@ -22,6 +22,7 @@
 */
 
 #include <Arduino.h>
+#include <hardware/dma.h>
 #include <hardware/gpio.h>
 #include <hardware/i2c.h>
 #include <hardware/irq.h>
@@ -438,6 +439,176 @@ int TwoWire::peek(void) {
 void TwoWire::flush(void) {
     // Do nothing, use endTransmission(..) to force
     // data transfer.
+}
+
+
+// DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
+// All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+bool TwoWire::writeAsync(uint8_t address, const void *buffer, size_t bytes, bool sendStop) {
+    if (!_running || _txBegun || _rxBegun) {
+        return false;
+    }
+
+    // We need to expand the data to include side-channel start/stop bits for the I2C FIFO
+    _dmaBuffer = (uint16_t*)malloc(bytes * 2);
+    if (!_dmaBuffer) {
+        return false;
+    }
+    const uint8_t *srcBuff = (const uint8_t *)buffer;
+    for (size_t i = 0; i < bytes; i++) {
+        bool first = i == 0;
+        bool last = i == bytes - 1;
+        _dmaBuffer[i] = bool_to_bit(first && _i2c->restart_on_next) << I2C_IC_DATA_CMD_RESTART_LSB | bool_to_bit(last && sendStop) << I2C_IC_DATA_CMD_STOP_LSB | srcBuff[i];
+    }
+
+    _channelDMA = dma_claim_unused_channel(false);
+    if (_channelDMA == -1) {
+        free(_dmaBuffer);
+        _dmaBuffer = nullptr;
+        return false;
+    }
+    dma_channel_config c = dma_channel_get_default_config(_channelDMA);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_16); // 16b transfers into I2C FIFO
+    channel_config_set_read_increment(&c, true); // Reading incrementing addresses
+    channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
+    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, true)); // Wait for the TX FIFO specified
+    channel_config_set_chain_to(&c, _channelDMA); // No chaining
+    channel_config_set_irq_quiet(&c, true); // No need for IRQ
+    dma_channel_configure(_channelDMA, &c, &_i2c->hw->data_cmd, _dmaBuffer, bytes, false);
+
+    _i2c->hw->enable = 0;
+    _i2c->hw->tar = address;
+    _i2c->hw->dma_cr = 1 << 1; // TDMAE
+    _i2c->hw->enable = 1;
+    _i2c->restart_on_next = !sendStop;
+    dma_channel_start(_channelDMA);
+    _txBegun = true;
+    return true;
+}
+
+bool TwoWire::readAsync(uint8_t address, void *buffer, size_t bytes, bool sendStop) {
+    if (!_running || _txBegun || _rxBegun) {
+        return false;
+    }
+    _channelDMA = dma_claim_unused_channel(false);
+    if (_channelDMA == -1) {
+        return false;
+    }
+    _channelSendDMA = dma_claim_unused_channel(false);
+    if (_channelSendDMA == -1) {
+        dma_channel_unclaim(_channelDMA);
+        return false;
+    }
+
+    // We need to expand the data to include side-channel start/stop bits for the I2C FIFO
+    _dmaBuffer = (uint16_t*)malloc(bytes * 2);
+    if (!_dmaBuffer) {
+        return false;
+    }
+    // We need to write one entry for every byte we want to read for the sideband info
+    _dmaSendBuffer = (uint16_t *)malloc(bytes * 2);
+    if (!_dmaSendBuffer) {
+        free(_dmaBuffer);
+        _dmaBuffer = nullptr;
+        return false;
+    }
+    for (size_t i = 0; i < bytes; i++) {
+        bool first = i == 0;
+        bool last = i == bytes - 1;
+        _dmaSendBuffer[i] =
+            bool_to_bit(first && _i2c->restart_on_next) << I2C_IC_DATA_CMD_RESTART_LSB |
+            bool_to_bit(last && sendStop) << I2C_IC_DATA_CMD_STOP_LSB |
+            I2C_IC_DATA_CMD_CMD_BITS; // -> 1 for read
+    }
+
+    _dmaBytes = bytes;
+    _rxFinalBuffer = (uint8_t *)buffer;
+
+    dma_channel_config c = dma_channel_get_default_config(_channelSendDMA);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_16); // 16b transfers into I2C FIFO
+    channel_config_set_read_increment(&c, true); // Reading incrementing addresses
+    channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
+    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, true)); // Wait for the TX FIFO specified
+    channel_config_set_chain_to(&c, _channelSendDMA); // No chaining
+    channel_config_set_irq_quiet(&c, true); // No need for IRQ
+    dma_channel_configure(_channelSendDMA, &c, &_i2c->hw->data_cmd, _dmaSendBuffer, bytes, false);
+
+    c = dma_channel_get_default_config(_channelDMA);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_16); // 16b transfers into I2C FIFO
+    channel_config_set_read_increment(&c, false); // Reading same FIFO address
+    channel_config_set_write_increment(&c, true); // Writing to the buffer
+    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, false)); // Wait for the RX FIFO specified
+    channel_config_set_chain_to(&c, _channelDMA); // No chaining
+    channel_config_set_irq_quiet(&c, true); // No need for IRQ
+    dma_channel_configure(_channelDMA, &c, _dmaBuffer, &_i2c->hw->data_cmd, bytes, false);
+
+    _i2c->hw->enable = 0;
+    _i2c->hw->tar = address;
+    _i2c->hw->dma_cr = 1 | (1 << 1); // TDMAE | RDMAE
+    _i2c->hw->enable = 1;
+    _i2c->restart_on_next = !sendStop;
+    dma_channel_start(_channelDMA);
+    dma_channel_start(_channelSendDMA);
+    _rxBegun = true;
+    return true;
+}
+
+bool TwoWire::finishedAsync() {
+    if (!_running || !_dmaBuffer) {
+        return true;
+    }
+    if (dma_channel_is_busy(_channelDMA)) {
+        return false;
+    }
+    if (_txBegun) {
+        if (_i2c->hw->txflr) {
+            return false;
+        }
+        dma_channel_cleanup(_channelDMA);
+        dma_channel_unclaim(_channelDMA);
+        _i2c->hw->dma_cr = 0;
+        free(_dmaBuffer);
+        _dmaBuffer = nullptr;
+        _txBegun = false;
+        return true;
+    } else if (_rxBegun) {
+        // For RX, don't care if more data in FIFO.  The DMA read is done for the size requested
+        dma_channel_cleanup(_channelDMA);
+        dma_channel_unclaim(_channelDMA);
+        dma_channel_cleanup(_channelSendDMA);
+        dma_channel_unclaim(_channelSendDMA);
+        _i2c->hw->dma_cr = 0;
+        // Need to convert from x16 to x8, strip off the status bits
+        for (auto i = 0; i < _dmaBytes; i++) {
+            _rxFinalBuffer[i] = _dmaBuffer[i] & 0xff;
+        }
+        free(_dmaBuffer);
+        _dmaBuffer = nullptr;
+        free(_dmaSendBuffer);
+        _dmaSendBuffer = nullptr;
+        _rxBegun = false;
+        return true;
+    }
+    return true;
+}
+
+void TwoWire::abortAsync() {
+    if (!_running || !_dmaBuffer) {
+        return;
+    }
+    dma_channel_cleanup(_channelDMA);
+    dma_channel_unclaim(_channelDMA);
+    if (_rxBegun) {
+        dma_channel_cleanup(_channelSendDMA);
+        dma_channel_unclaim(_channelSendDMA);
+    }
+    _i2c->hw->dma_cr = 0;
+    free(_dmaBuffer);
+    _dmaBuffer = nullptr;
+    free(_dmaSendBuffer);
+    _dmaSendBuffer = nullptr;
+    _rxBegun = false;
+    _txBegun = false;
 }
 
 

@@ -60,8 +60,9 @@ void handleRoot() {
   static int cnt = 0;
   digitalWrite(led, 1);
   int sec = millis() / 1000;
-  int min = sec / 60;
-  int hr = min / 60;
+  int hr = sec / 3600;
+  int min = (sec / 60) % 60;
+  sec = sec % 60;
 
   StreamString temp;
   temp.reserve(500); // Preallocate a large chunk to avoid memory fragmentation
@@ -80,7 +81,7 @@ void handleRoot() {
     <p>Page Count: %d</p>\
     <img src=\"/test.svg\" />\
   </body>\
-</html>", hr, min % 60, sec % 60, rp2040.getFreeHeap(), ++cnt);
+</html>", hr, min, sec, rp2040.getFreeHeap(), ++cnt);
   server.send(200, "text/html", temp);
   digitalWrite(led, 0);
 }

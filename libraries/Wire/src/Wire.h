@@ -82,6 +82,13 @@ public:
     }
     using Print::write;
 
+    // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
+    // All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+    bool writeAsync(uint8_t address, const void *buffer, size_t bytes, bool sendStop);
+    bool readAsync(uint8_t address, void *buffer, size_t bytes, bool sendStop);
+    bool finishedAsync(); // Call to check if the async operations is completed and the buffer can be reused/read
+    void abortAsync(); // Cancel an outstanding async I2C operation
+
     void setTimeout(uint32_t timeout = 25, bool reset_with_timeout = false);     // sets the maximum number of milliseconds to wait
     bool getTimeoutFlag(void);
     void clearTimeoutFlag(void);
@@ -116,6 +123,15 @@ private:
 
     // TWI clock frequency
     static const uint32_t TWI_CLOCK = 100000;
+
+    // DMA
+    bool _rxBegun = false;
+    int _channelDMA;
+    int _channelSendDMA;
+    uint16_t *_dmaBuffer = nullptr;
+    uint16_t *_dmaSendBuffer = nullptr;
+    int _dmaBytes;
+    uint8_t *_rxFinalBuffer;
 };
 
 extern TwoWire Wire;

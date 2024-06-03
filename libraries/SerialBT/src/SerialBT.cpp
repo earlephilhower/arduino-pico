@@ -20,6 +20,13 @@
 
 #include "SerialBT.h"
 #include <CoreMutex.h>
+#define CCALLBACKNAME _SERIALBTCB
+#include <ctocppcallback.h>
+
+#define PACKETHANDLERCB(class, cbFcn) \
+  (CCALLBACKNAME<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__>::func = std::bind(&class::cbFcn, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4), \
+   static_cast<btstack_packet_handler_t>(CCALLBACKNAME<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__ - 1>::callback))
+
 
 bool SerialBT_::setFIFOSize(size_t size) {
     if (!size || _running) {
@@ -48,7 +55,7 @@ void SerialBT_::begin(unsigned long baud, uint16_t config) {
     _reader = 0;
 
     // register for HCI events
-    _hci_event_callback_registration.callback = &SerialBT_::PacketHandlerWrapper;
+    _hci_event_callback_registration.callback = PACKETHANDLERCB(SerialBT_, packetHandler);
     hci_add_event_handler(&_hci_event_callback_registration);
 
     l2cap_init();
@@ -59,7 +66,7 @@ void SerialBT_::begin(unsigned long baud, uint16_t config) {
 #endif
 
     rfcomm_init();
-    rfcomm_register_service(SerialBT_::PacketHandlerWrapper, RFCOMM_SERVER_CHANNEL, 0xffff);  // reserved channel, mtu limited by l2cap
+    rfcomm_register_service(PACKETHANDLERCB(SerialBT_, packetHandler), RFCOMM_SERVER_CHANNEL, 0xffff);  // reserved channel, mtu limited by l2cap
 
     // init SDP, create record for SPP and register with SDP
     sdp_init();
@@ -69,7 +76,10 @@ void SerialBT_::begin(unsigned long baud, uint16_t config) {
 
     gap_discoverable_control(1);
     gap_ssp_set_io_capability(SSP_IO_CAPABILITY_DISPLAY_YES_NO);
-    gap_set_local_name("PicoW Serial 00:00:00:00:00:00");
+    if (!_name) {
+        setName("PicoW Serial 00:00:00:00:00:00");
+    }
+    gap_set_local_name(_name);
 
     // Turn on!
     hci_power_control(HCI_POWER_ON);
@@ -84,9 +94,9 @@ void SerialBT_::end() {
     _running = false;
 
     hci_power_control(HCI_POWER_OFF);
-    lockBluetooth();
+    __lockBluetooth();
     delete[] _queue;
-    unlockBluetooth();
+    __unlockBluetooth();
 }
 
 int SerialBT_::peek() {
@@ -121,10 +131,10 @@ bool SerialBT_::overflow() {
         return false;
     }
 
-    lockBluetooth();
+    __lockBluetooth();
     bool ovf = _overflow;
     _overflow = false;
-    unlockBluetooth();
+    __unlockBluetooth();
 
     return ovf;
 }
@@ -160,9 +170,9 @@ size_t SerialBT_::write(const uint8_t *p, size_t len) {
     }
     _writeBuff = p;
     _writeLen = len;
-    lockBluetooth();
+    __lockBluetooth();
     rfcomm_request_can_send_now_event(_channelID);
-    unlockBluetooth();
+    __unlockBluetooth();
     while (_connected && _writeLen) {
         /* noop busy wait */
     }
