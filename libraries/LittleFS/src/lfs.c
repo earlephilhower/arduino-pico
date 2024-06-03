@@ -2,7 +2,7 @@
 // Just have a stub here that redirects to the actual source file
 
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#define LFS_NAME_MAX 32
+#define LFS_NAME_MAX 255
 #define LFS_NO_DEBUG
 #define LFS_NO_WARN
 #define LFS_NO_ERROR
