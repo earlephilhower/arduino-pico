@@ -21,8 +21,8 @@
 #pragma once
 
 #include <Arduino.h>
-#include "BluetoothHCI.h"
-#include "BluetoothLock.h"
+#include <BluetoothHCI.h>
+#include <BluetoothLock.h>
 #include "BluetoothAudioConsumer.h"
 #include "BluetoothMediaConfigurationSBC.h"
 
@@ -231,7 +231,7 @@ private:
     void avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     void a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
 
-    BluetoothHCI_ _hci;
+    BluetoothHCI _hci;
     BluetoothAudioConsumer_ *_consumer = nullptr;
     bool _running = false;
     bool _connected = false;

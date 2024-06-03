@@ -21,8 +21,8 @@
 #pragma once
 
 #include <Arduino.h>
-#include "BluetoothHCI.h"
-#include "BluetoothLock.h"
+#include <BluetoothHCI.h>
+#include <BluetoothLock.h>
 #include "BluetoothMediaConfigurationSBC.h"
 #include <functional>
 #include <list>
@@ -104,7 +104,7 @@ public:
 
     bool begin();
 
-    std::list<BTDeviceInfo> scan(uint32_t mask = BluetoothHCI_::speaker_cod, int scanTimeSec = 5, bool async = false) {
+    std::list<BTDeviceInfo> scan(uint32_t mask = BluetoothHCI::speaker_cod, int scanTimeSec = 5, bool async = false) {
         return _hci.scan(mask, scanTimeSec, async);
     }
 
@@ -144,7 +144,7 @@ public:
 
 
 private:
-    BluetoothHCI_ _hci;
+    BluetoothHCI _hci;
     bool _running = false;
     bool _connected = false;
 

@@ -28,7 +28,7 @@
 #include <btstack.h>
 
 
-class BluetoothHCI_ {
+class BluetoothHCI {
 public:
     void install();
     void begin();

@@ -1,6 +1,6 @@
-#include "BluetoothLock.h"
-#include "BluetoothDevice.h"
-#include "BluetoothHCI.h"
+#include <BluetoothLock.h>
+#include <BluetoothDevice.h>
+#include <BluetoothHCI.h>
 #include "BluetoothMediaConfigurationSBC.h"
 #include "A2DPSource.h"
 #include "A2DPSink.h"
