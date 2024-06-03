@@ -35,28 +35,28 @@
    static_cast<btstack_packet_handler_t>(_BTHCICB<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__ - 1>::callback))
 
 
-void BluetoothHCI_::install() {
+void BluetoothHCI::install() {
     // Register for HCI events.
-    hci_event_callback_registration.callback = PACKETHANDLERCB(BluetoothHCI_, hci_packet_handler);
+    hci_event_callback_registration.callback = PACKETHANDLERCB(BluetoothHCI, hci_packet_handler);
     hci_add_event_handler(&hci_event_callback_registration);
 }
 
-void BluetoothHCI_::begin() {
+void BluetoothHCI::begin() {
     _running = true;
     hci_power_control(HCI_POWER_ON);
 }
 
-void BluetoothHCI_::uninstall() {
+void BluetoothHCI::uninstall() {
     BluetoothLock b;
     hci_remove_event_handler(&hci_event_callback_registration);
     _running = false;
 }
 
-bool BluetoothHCI_::running() {
+bool BluetoothHCI::running() {
     return _hciRunning;
 }
 
-std::list<BTDeviceInfo> BluetoothHCI_::scan(uint32_t mask, int scanTimeSec, bool async) {
+std::list<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool async) {
     _scanMask = mask;
     _btdList.clear();
     if (!_running) {
@@ -88,15 +88,15 @@ std::list<BTDeviceInfo> BluetoothHCI_::scan(uint32_t mask, int scanTimeSec, bool
     return _btdList;
 }
 
-bool BluetoothHCI_::scanAsyncDone() {
+bool BluetoothHCI::scanAsyncDone() {
     return _scanning;
 }
-std::list<BTDeviceInfo> BluetoothHCI_::scanAsyncResult() {
+std::list<BTDeviceInfo> BluetoothHCI::scanAsyncResult() {
     return _btdList;
 }
 
 
-void BluetoothHCI_::hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     (void)channel;
     (void)size;
 

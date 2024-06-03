@@ -7,9 +7,7 @@
 #######################################
 
 BluetoothAudio	KEYWORD1
-BluetoothHCI	KEYWORD1
 A2DPSource	KEYWORD1
-BTDeviceInfo	KEYWORD1
 BluetoothAudioConsumer	KEYWORD1
 BluetoothAudioConsumerI2S	KEYWORD1
 BluetoothAudioConsumerPWM	KEYWORD1
@@ -18,6 +16,7 @@ A2DPSink	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
+scan	KEYWORD2
 begin	KEYWORD2
 end	KEYWORD2
 
@@ -51,13 +50,6 @@ onBattery	KEYWORD2
 onVolume	KEYWORD2
 onConnect	KEYWORD2
 onPlaybackStatus	KEYWORD2
-
-# BTDeviceInfo
-deviceClass	KEYWORD2
-address	KEYWORD2
-addressString	KEYWORD2
-rssi	KEYWORD2
-name	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
