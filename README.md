@@ -86,6 +86,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 # Features
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
 * Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
+* Bluetooth Classic HID master mode (connect to BT keyboard or mouse)
 * Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
 * WiFi (Pico W, ESP32-based ESPHost, Atmel WINC1500)
 * Ethernet (Wired W5500, W5100, ENC28J60)
@@ -99,7 +100,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * digitalWrite/Read, shiftIn/Out, tone, analogWrite(PWM)/Read, temperature
 * Analog stereo audio in using DMA and the built-in ADC
 * Analog stereo audio out using PWM hardware
-* Bluetooth A2DP audio source (output) on the PicoW
+* Bluetooth A2DP audio source (output) and sink (input) on the PicoW
 * USB drive mode for data loggers (SingleFileDrive, FatFSUSB)
 * Peripherals:  SPI master/slave, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input/output, Servo
 * printf (i.e. debug) output over USB serial

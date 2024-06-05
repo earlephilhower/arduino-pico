@@ -242,8 +242,8 @@ size_t PWMAudio::write(const uint8_t *buffer, size_t size) {
             return writtenSize;
         } else {
             p++;
-            size -= 4;
-            writtenSize += 4;
+            size -= 2;
+            writtenSize += 2;
         }
     }
     return writtenSize;

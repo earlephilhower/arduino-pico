@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <_needsbt.h>
 #include <Arduino.h>
 
 class BluetoothLock {
