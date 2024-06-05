@@ -1,3 +1,4 @@
+#include <_needsbt.h>
 #include <BluetoothLock.h>
 #include <BluetoothDevice.h>
 #include <BluetoothHCI.h>
