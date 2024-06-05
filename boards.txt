@@ -7961,6 +7961,196 @@ extelec_rc2040.menu.uploadmethod.picodebug.upload.tool=picodebug
 extelec_rc2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
+# GroundStudio Marble Pico
+# -----------------------------------
+groundstudio_marble_pico.name=GroundStudio Marble Pico
+groundstudio_marble_pico.vid.0=0x2e8a
+groundstudio_marble_pico.pid.0=0x0003
+groundstudio_marble_pico.upload_port.0.vid=0x2e8a
+groundstudio_marble_pico.upload_port.0.pid=0x0003
+groundstudio_marble_pico.build.usbvid=-DUSBD_VID=0x2e8a
+groundstudio_marble_pico.build.usbpid=-DUSBD_PID=0x0003
+groundstudio_marble_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+groundstudio_marble_pico.build.board=MARBLE_PICO
+groundstudio_marble_pico.build.mcu=cortex-m0plus
+groundstudio_marble_pico.build.variant=groundstudio_marble_pico
+groundstudio_marble_pico.upload.maximum_size=8388608
+groundstudio_marble_pico.upload.wait_for_upload_port=true
+groundstudio_marble_pico.upload.erase_cmd=
+groundstudio_marble_pico.serial.disableDTR=false
+groundstudio_marble_pico.serial.disableRTS=false
+groundstudio_marble_pico.build.f_cpu=125000000
+groundstudio_marble_pico.build.led=
+groundstudio_marble_pico.build.core=rp2040
+groundstudio_marble_pico.build.ldscript=memmap_default.ld
+groundstudio_marble_pico.build.boot2=boot2_w25q16jvxq_4_padded_checksum
+groundstudio_marble_pico.build.usb_manufacturer="GroundStudio"
+groundstudio_marble_pico.build.usb_product="Marble Pico"
+groundstudio_marble_pico.menu.flash.8388608_0=8MB (no FS)
+groundstudio_marble_pico.menu.flash.8388608_0.upload.maximum_size=8384512
+groundstudio_marble_pico.menu.flash.8388608_0.build.flash_total=8388608
+groundstudio_marble_pico.menu.flash.8388608_0.build.flash_length=8384512
+groundstudio_marble_pico.menu.flash.8388608_0.build.eeprom_start=276819968
+groundstudio_marble_pico.menu.flash.8388608_0.build.fs_start=276819968
+groundstudio_marble_pico.menu.flash.8388608_0.build.fs_end=276819968
+groundstudio_marble_pico.menu.flash.8388608_7340032=8MB (Sketch: 1MB, FS: 7MB)
+groundstudio_marble_pico.menu.flash.8388608_7340032.upload.maximum_size=1044480
+groundstudio_marble_pico.menu.flash.8388608_7340032.build.flash_total=8388608
+groundstudio_marble_pico.menu.flash.8388608_7340032.build.flash_length=1044480
+groundstudio_marble_pico.menu.flash.8388608_7340032.build.eeprom_start=276819968
+groundstudio_marble_pico.menu.flash.8388608_7340032.build.fs_start=269479936
+groundstudio_marble_pico.menu.flash.8388608_7340032.build.fs_end=276819968
+groundstudio_marble_pico.menu.flash.8388608_4194304=8MB (Sketch: 4MB, FS: 4MB)
+groundstudio_marble_pico.menu.flash.8388608_4194304.upload.maximum_size=4190208
+groundstudio_marble_pico.menu.flash.8388608_4194304.build.flash_total=8388608
+groundstudio_marble_pico.menu.flash.8388608_4194304.build.flash_length=4190208
+groundstudio_marble_pico.menu.flash.8388608_4194304.build.eeprom_start=276819968
+groundstudio_marble_pico.menu.flash.8388608_4194304.build.fs_start=272625664
+groundstudio_marble_pico.menu.flash.8388608_4194304.build.fs_end=276819968
+groundstudio_marble_pico.menu.flash.8388608_2097152=8MB (Sketch: 6MB, FS: 2MB)
+groundstudio_marble_pico.menu.flash.8388608_2097152.upload.maximum_size=6287360
+groundstudio_marble_pico.menu.flash.8388608_2097152.build.flash_total=8388608
+groundstudio_marble_pico.menu.flash.8388608_2097152.build.flash_length=6287360
+groundstudio_marble_pico.menu.flash.8388608_2097152.build.eeprom_start=276819968
+groundstudio_marble_pico.menu.flash.8388608_2097152.build.fs_start=274722816
+groundstudio_marble_pico.menu.flash.8388608_2097152.build.fs_end=276819968
+groundstudio_marble_pico.menu.freq.133=133 MHz
+groundstudio_marble_pico.menu.freq.133.build.f_cpu=133000000L
+groundstudio_marble_pico.menu.freq.50=50 MHz
+groundstudio_marble_pico.menu.freq.50.build.f_cpu=50000000L
+groundstudio_marble_pico.menu.freq.100=100 MHz
+groundstudio_marble_pico.menu.freq.100.build.f_cpu=100000000L
+groundstudio_marble_pico.menu.freq.120=120 MHz
+groundstudio_marble_pico.menu.freq.120.build.f_cpu=120000000L
+groundstudio_marble_pico.menu.freq.125=125 MHz
+groundstudio_marble_pico.menu.freq.125.build.f_cpu=125000000L
+groundstudio_marble_pico.menu.freq.128=128 MHz
+groundstudio_marble_pico.menu.freq.128.build.f_cpu=128000000L
+groundstudio_marble_pico.menu.freq.150=150 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.150.build.f_cpu=150000000L
+groundstudio_marble_pico.menu.freq.175=175 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.175.build.f_cpu=175000000L
+groundstudio_marble_pico.menu.freq.200=200 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.200.build.f_cpu=200000000L
+groundstudio_marble_pico.menu.freq.225=225 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.225.build.f_cpu=225000000L
+groundstudio_marble_pico.menu.freq.240=240 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.240.build.f_cpu=240000000L
+groundstudio_marble_pico.menu.freq.250=250 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.250.build.f_cpu=250000000L
+groundstudio_marble_pico.menu.freq.275=275 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.275.build.f_cpu=275000000L
+groundstudio_marble_pico.menu.freq.300=300 MHz (Overclock)
+groundstudio_marble_pico.menu.freq.300.build.f_cpu=300000000L
+groundstudio_marble_pico.menu.opt.Small=Small (-Os) (standard)
+groundstudio_marble_pico.menu.opt.Small.build.flags.optimize=-Os
+groundstudio_marble_pico.menu.opt.Optimize=Optimize (-O)
+groundstudio_marble_pico.menu.opt.Optimize.build.flags.optimize=-O
+groundstudio_marble_pico.menu.opt.Optimize2=Optimize More (-O2)
+groundstudio_marble_pico.menu.opt.Optimize2.build.flags.optimize=-O2
+groundstudio_marble_pico.menu.opt.Optimize3=Optimize Even More (-O3)
+groundstudio_marble_pico.menu.opt.Optimize3.build.flags.optimize=-O3
+groundstudio_marble_pico.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+groundstudio_marble_pico.menu.opt.Fast.build.flags.optimize=-Ofast
+groundstudio_marble_pico.menu.opt.Debug=Debug (-Og)
+groundstudio_marble_pico.menu.opt.Debug.build.flags.optimize=-Og
+groundstudio_marble_pico.menu.rtti.Disabled=Disabled
+groundstudio_marble_pico.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+groundstudio_marble_pico.menu.rtti.Enabled=Enabled
+groundstudio_marble_pico.menu.rtti.Enabled.build.flags.rtti=
+groundstudio_marble_pico.menu.stackprotect.Disabled=Disabled
+groundstudio_marble_pico.menu.stackprotect.Disabled.build.flags.stackprotect=
+groundstudio_marble_pico.menu.stackprotect.Enabled=Enabled
+groundstudio_marble_pico.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+groundstudio_marble_pico.menu.exceptions.Disabled=Disabled
+groundstudio_marble_pico.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+groundstudio_marble_pico.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+groundstudio_marble_pico.menu.exceptions.Enabled=Enabled
+groundstudio_marble_pico.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+groundstudio_marble_pico.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+groundstudio_marble_pico.menu.dbgport.Disabled=Disabled
+groundstudio_marble_pico.menu.dbgport.Disabled.build.debug_port=
+groundstudio_marble_pico.menu.dbgport.Serial=Serial
+groundstudio_marble_pico.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+groundstudio_marble_pico.menu.dbgport.Serial1=Serial1
+groundstudio_marble_pico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+groundstudio_marble_pico.menu.dbgport.Serial2=Serial2
+groundstudio_marble_pico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+groundstudio_marble_pico.menu.dbglvl.None=None
+groundstudio_marble_pico.menu.dbglvl.None.build.debug_level=
+groundstudio_marble_pico.menu.dbglvl.Core=Core
+groundstudio_marble_pico.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+groundstudio_marble_pico.menu.dbglvl.SPI=SPI
+groundstudio_marble_pico.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+groundstudio_marble_pico.menu.dbglvl.Wire=Wire
+groundstudio_marble_pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+groundstudio_marble_pico.menu.dbglvl.Bluetooth=Bluetooth
+groundstudio_marble_pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+groundstudio_marble_pico.menu.dbglvl.All=All
+groundstudio_marble_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH
+groundstudio_marble_pico.menu.dbglvl.NDEBUG=NDEBUG
+groundstudio_marble_pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+groundstudio_marble_pico.menu.usbstack.picosdk=Pico SDK
+groundstudio_marble_pico.menu.usbstack.picosdk.build.usbstack_flags=
+groundstudio_marble_pico.menu.usbstack.tinyusb=Adafruit TinyUSB
+groundstudio_marble_pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+groundstudio_marble_pico.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+groundstudio_marble_pico.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+groundstudio_marble_pico.menu.usbstack.nousb=No USB
+groundstudio_marble_pico.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+groundstudio_marble_pico.menu.ipbtstack.ipv4only=IPv4 Only
+groundstudio_marble_pico.menu.ipbtstack.ipv4only.build.libpicow=libpicow-noipv6-nobtc-noble.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libpicow-ipv6-nobtc-noble.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+groundstudio_marble_pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+groundstudio_marble_pico.menu.ipbtstack.ipv4btcble.build.libpicow=libpicow-noipv6-btc-ble.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libpicow-ipv6-btc-ble.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+groundstudio_marble_pico.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+groundstudio_marble_pico.menu.ipbtstack.ipv4onlybig.build.libpicow=libpicow-noipv6-nobtc-noble-big.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6big.build.libpicow=libpicow-ipv6-nobtc-noble-big.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+groundstudio_marble_pico.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+groundstudio_marble_pico.menu.ipbtstack.ipv4btcblebig.build.libpicow=libpicow-noipv6-btc-ble-big.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=libpicow-ipv6-btc-ble-big.a
+groundstudio_marble_pico.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+groundstudio_marble_pico.menu.uploadmethod.default=Default (UF2)
+groundstudio_marble_pico.menu.uploadmethod.default.build.ram_length=256k
+groundstudio_marble_pico.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+groundstudio_marble_pico.menu.uploadmethod.default.upload.maximum_data_size=262144
+groundstudio_marble_pico.menu.uploadmethod.default.upload.tool=uf2conv
+groundstudio_marble_pico.menu.uploadmethod.default.upload.tool.default=uf2conv
+groundstudio_marble_pico.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+groundstudio_marble_pico.menu.uploadmethod.picotool=Picotool
+groundstudio_marble_pico.menu.uploadmethod.picotool.build.ram_length=256k
+groundstudio_marble_pico.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+groundstudio_marble_pico.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+groundstudio_marble_pico.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+groundstudio_marble_pico.menu.uploadmethod.picotool.upload.tool=picotool
+groundstudio_marble_pico.menu.uploadmethod.picotool.upload.tool.default=picotool
+groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe (CMSIS-DAP)
+groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+groundstudio_marble_pico.menu.uploadmethod.picodebug=Pico-Debug
+groundstudio_marble_pico.menu.uploadmethod.picodebug.build.ram_length=240k
+groundstudio_marble_pico.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
+groundstudio_marble_pico.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
+groundstudio_marble_pico.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
+groundstudio_marble_pico.menu.uploadmethod.picodebug.upload.tool=picodebug
+groundstudio_marble_pico.menu.uploadmethod.picodebug.upload.tool.default=picodebug
+
+# -----------------------------------
 # iLabs Challenger 2040 LTE
 # -----------------------------------
 challenger_2040_lte.name=iLabs Challenger 2040 LTE
