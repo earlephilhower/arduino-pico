@@ -75,10 +75,8 @@ void BluetoothAudioConsumerI2S::fill() {
         _a2dpSink->playback_handler((int16_t *) buff, 32);
         num_samples -= 64;
         for (int i = 0; i < 64; i++) {
-            int32_t tmp = buff[i];
-            tmp *= _gain;
-            tmp >>= 8;
-            _i2s->write((int16_t)tmp);
+            buff[i] = (((int32_t)buff[i]) * _gain) >> 8;
         }
+        _i2s->write((uint8_t *)buff, 64 * 2);
     }
 }
