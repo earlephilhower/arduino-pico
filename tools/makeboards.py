@@ -397,6 +397,9 @@ MakeBoard("arduino_nano_connect", "Arduino", "Nano RP2040 Connect", "0x2341", ["
 # ArtronShop
 MakeBoard("artronshop_rp2_nano", "ArtronShop", "RP2 Nano", "0x2e8a", "0x000a", 250, "ARTRONSHOP_RP2_NANO", 2, "boot2_w25q080_2_padded_checksum")
 
+# Breadstick
+MakeBoard("breadstick_raspberry", "Breadstick", "Raspberry", "0x2e8a", "0x105e" , 500, "Breadstick_Raspberry", 16, "boot2_w25q080_2_padded_checksum", board_url="https://shop.breadstick.ca/products/raspberry-breadstick-rp2040")
+
 # BridgeTek
 MakeBoard("bridgetek_idm2040-7a", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040-7A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
 
