@@ -73,22 +73,41 @@
    static_cast<btstack_packet_handler_t>(CCALLBACKNAME<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__ - 1>::callback))
 
 
-void BluetoothHIDMaster::begin() {
-    // Initialize HID Host
-    hid_host_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
-    hid_host_register_packet_handler(PACKETHANDLERCB(BluetoothHIDMaster, hid_packet_handler));
+void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
+    _ble = ble;
+    if (!ble) {
+        // Initialize HID Host
+        hid_host_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
+        hid_host_register_packet_handler(PACKETHANDLERCB(BluetoothHIDMaster, hid_packet_handler));
+    } else {
+        if (bleName) {
+            _hci.setBLEName(bleName);
+        }
+        _hci.setPairOnMeta(true);
+    }
 
     // Initialize L2CAP
     l2cap_init();
 
     // Initialize LE Security Manager. Needed for cross-transport key derivation
+    if (ble) {
+        // register for events from Security Manager
+        _sm_event_callback_registration.callback = PACKETHANDLERCB(BluetoothHIDMaster, sm_packet_handler);
+        sm_add_event_handler(&_sm_event_callback_registration);
+    }
     sm_init();
 
-    // Allow sniff mode requests by HID device and support role switch
-    gap_set_default_link_policy_settings(LM_LINK_POLICY_ENABLE_SNIFF_MODE | LM_LINK_POLICY_ENABLE_ROLE_SWITCH);
+    if (ble) {
+        gatt_client_init();
+        hids_client_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
+    } else {
+        // Allow sniff mode requests by HID device and support role switch
+        gap_set_default_link_policy_settings(LM_LINK_POLICY_ENABLE_SNIFF_MODE | LM_LINK_POLICY_ENABLE_ROLE_SWITCH);
 
-    // try to become master on incoming connections
-    hci_set_master_slave_policy(HCI_ROLE_MASTER);
+        // try to become master on incoming connections
+        hci_set_master_slave_policy(HCI_ROLE_MASTER);
+    }
+
     // enabled EIR
     hci_set_inquiry_mode(INQUIRY_MODE_RSSI_AND_EIR);
 
@@ -158,7 +177,7 @@ bool BluetoothHIDMaster::connected() {
 }
 
 bool BluetoothHIDMaster::connect(const uint8_t *addr) {
-    if (!_running) {
+    if (!_running || _ble) {
         return false;
     }
     while (!_hci.running()) {
@@ -170,7 +189,7 @@ bool BluetoothHIDMaster::connect(const uint8_t *addr) {
 }
 
 bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
-    if (!_running) {
+    if (!_running || _ble) {
         return false;
     }
     while (!_hci.running()) {
@@ -192,6 +211,39 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
     return false;
 }
 
+bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
+    if (!_running || !_ble) {
+        return false;
+    }
+    while (!_hci.running()) {
+        delay(10);
+    }
+    uint8_t a[6];
+    memcpy(a, addr, sizeof(a));
+    return ERROR_CODE_SUCCESS == gap_connect(a, (bd_addr_type_t)addrType);
+}
+
+bool BluetoothHIDMaster::connectBLE() {
+    if (!_running || !_ble) {
+        return false;
+    }
+    while (!_hci.running()) {
+        delay(10);
+    }
+
+    clearPairing();
+    auto l = _hci.scanBLE(0x1812 /* HID */);
+    for (auto e : l) {
+        DEBUGV("Scan connecting %s at %s ... ", e.name(), e.addressString());
+        if (connectBLE(e.address(), e.addressType())) {
+            DEBUGV("Connection established\n");
+            return true;
+        }
+        DEBUGV("Failed\n");
+    }
+    return false;
+}
+
 bool BluetoothHIDMaster::connectKeyboard() {
     return connectCOD(0x2540);
 }
@@ -202,11 +254,13 @@ bool BluetoothHIDMaster::connectMouse() {
 
 bool BluetoothHIDMaster::disconnect() {
     BluetoothLock b;
-    if (connected()) {
-        hid_host_disconnect(_hid_host_cid);
-    }
     if (!_running || !connected()) {
         return false;
+    }
+    if (!_ble && connected()) {
+        hid_host_disconnect(_hid_host_cid);
+    } else if (_ble && connected()) {
+        gap_disconnect(_hci.getHCIConn());
     }
     _hid_host_descriptor_available = false;
     return true;
@@ -215,7 +269,11 @@ bool BluetoothHIDMaster::disconnect() {
 void BluetoothHIDMaster::clearPairing() {
     BluetoothLock b;
     if (connected()) {
-        hid_host_disconnect(_hid_host_cid);
+        if (_ble) {
+            gap_disconnect(_hci.getHCIConn());
+        } else {
+            hid_host_disconnect(_hid_host_cid);
+        }
     }
     gap_delete_all_link_keys();
     _hid_host_descriptor_available = false;
@@ -450,6 +508,102 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
     }
 }
+
+
+
+void BluetoothHIDMaster::sm_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+    UNUSED(channel);
+    UNUSED(size);
+
+    if (packet_type != HCI_EVENT_PACKET) {
+        return;
+    }
+
+    switch (hci_event_packet_get_type(packet)) {
+    case SM_EVENT_JUST_WORKS_REQUEST:
+        DEBUGV("Just works requested\n");
+        sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
+        break;
+    case SM_EVENT_NUMERIC_COMPARISON_REQUEST:
+        DEBUGV("Confirming numeric comparison: %" PRIu32 "\n", sm_event_numeric_comparison_request_get_passkey(packet));
+        sm_numeric_comparison_confirm(sm_event_passkey_display_number_get_handle(packet));
+        break;
+    case SM_EVENT_PASSKEY_DISPLAY_NUMBER:
+        DEBUGV("Display Passkey: %" PRIu32 "\n", sm_event_passkey_display_number_get_passkey(packet));
+        break;
+    case SM_EVENT_PAIRING_COMPLETE:
+        switch (sm_event_pairing_complete_get_status(packet)) {
+        case ERROR_CODE_SUCCESS:
+            DEBUGV("Pairing complete, success\n");
+            // continue - query primary services
+            DEBUGV("Search for HID service.\n");
+            //app_state = W4_HID_CLIENT_CONNECTED;
+            hids_client_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+            break;
+        case ERROR_CODE_CONNECTION_TIMEOUT:
+            DEBUGV("Pairing failed, timeout\n");
+            break;
+        case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
+            DEBUGV("Pairing failed, disconnected\n");
+            break;
+        case ERROR_CODE_AUTHENTICATION_FAILURE:
+            DEBUGV("Pairing failed, reason = %u\n", sm_event_pairing_complete_get_reason(packet));
+            break;
+        default:
+            break;
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+
+void BluetoothHIDMaster::handle_gatt_client_event(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
+    UNUSED(packet_type);
+    UNUSED(channel);
+    UNUSED(size);
+
+    uint8_t status;
+    int idx;
+
+    if (hci_event_packet_get_type(packet) != HCI_EVENT_GATTSERVICE_META) {
+        return;
+    }
+
+    switch (hci_event_gattservice_meta_get_subevent_code(packet)) {
+    case GATTSERVICE_SUBEVENT_HID_SERVICE_CONNECTED:
+        status = gattservice_subevent_hid_service_connected_get_status(packet);
+        switch (status) {
+        case ERROR_CODE_SUCCESS:
+            DEBUGV("HID service client connected, found %d services\n", gattservice_subevent_hid_service_connected_get_num_instances(packet));
+            _hidConnected = true;
+            _hid_host_descriptor_available = true;
+            break;
+        default:
+            DEBUGV("HID service client connection failed, status 0x%02x.\n", status);
+            gap_disconnect(_hci.getHCIConn());
+            //handle_outgoing_connection_error();
+            break;
+        }
+        break;
+
+    case GATTSERVICE_SUBEVENT_HID_REPORT:
+        idx = gattservice_subevent_hid_report_get_service_index(packet);
+        btstack_hid_parser_t parser;
+        btstack_hid_parser_init(&parser, hids_client_descriptor_storage_get_descriptor_data(_hid_host_cid, idx), hids_client_descriptor_storage_get_descriptor_len(_hid_host_cid, idx), HID_REPORT_TYPE_INPUT, gattservice_subevent_hid_report_get_report(packet), gattservice_subevent_hid_report_get_report_len(packet));
+        hid_host_handle_interrupt_report(&parser);
+        //hid_handle_input_report(
+        //                gattservice_subevent_hid_report_get_service_index(packet),
+        //                gattservice_subevent_hid_report_get_report(packet),
+        //                gattservice_subevent_hid_report_get_report_len(packet));
+        break;
+
+    default:
+        break;
+    }
+}
+
 
 
 

@@ -27,14 +27,26 @@ public:
     BTDeviceInfo(uint32_t dc, const uint8_t addr[6], int rssi, const char *name) {
         _deviceClass = dc;
         memcpy(_address, addr, sizeof(_address));
+        _addressType = -1;
         sprintf(_addressString, "%02x:%02x:%02x:%02x:%02x:%02x", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
         _rssi = rssi;
         _name = strdup(name);
+    }
+    BTDeviceInfo(uint32_t dc, const uint8_t addr[6], int addressType, int rssi, const char *name, size_t nameLen) {
+        _deviceClass = dc;
+        memcpy(_address, addr, sizeof(_address));
+        sprintf(_addressString, "%02x:%02x:%02x:%02x:%02x:%02x", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
+        _addressType = addressType;
+        _rssi = rssi;
+        _name = (char *)malloc(nameLen + 1);
+        memcpy(_name, name, nameLen);
+        _name[nameLen] = 0;
     }
     // Copy constructor to ensure we deep-copy the string
     BTDeviceInfo(const BTDeviceInfo &b) {
         _deviceClass = b._deviceClass;
         memcpy(_address, b._address, sizeof(_address));
+        _addressType = b._addressType;
         memcpy(_addressString, b._addressString, sizeof(_addressString));
         _rssi = b._rssi;
         _name = strdup(b._name);
@@ -57,9 +69,13 @@ public:
     const char *name() {
         return _name;
     }
+    int addressType() {
+        return _addressType;
+    }
 private:
     uint32_t _deviceClass;
     uint8_t _address[6];
+    int _addressType;
     char _addressString[18];
     int8_t _rssi;
     char *_name;
