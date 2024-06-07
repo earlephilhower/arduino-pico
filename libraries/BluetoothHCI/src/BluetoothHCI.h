@@ -32,6 +32,7 @@
 class BluetoothHCI {
 public:
     void install();
+    void setBLEName(const char *bleMasterName);
     void begin();
     void uninstall();
     bool running();
@@ -42,6 +43,18 @@ public:
     bool scanAsyncDone();
     std::list<BTDeviceInfo> scanAsyncResult();
 
+    std::list<BTDeviceInfo> scanBLE(uint32_t uuid, int scanTimeSec = 5);
+
+    friend class BluetoothHIDMaster;
+
+protected:
+    hci_con_handle_t getHCIConn() {
+        return _hciConn;
+    }
+    void setPairOnMeta(bool v) {
+        _smPair = v;
+    }
+
 private:
     void hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     btstack_packet_callback_registration_t hci_event_callback_registration;
@@ -50,4 +63,10 @@ private:
     std::list<BTDeviceInfo> _btdList;
     volatile bool _scanning = false;
     bool _running = false;
+
+    // BLE specific
+    uint8_t *_att = nullptr;
+    void parse_advertisement_data(uint8_t *packet);
+    volatile hci_con_handle_t _hciConn = HCI_CON_HANDLE_INVALID;
+    bool _smPair = false;
 };

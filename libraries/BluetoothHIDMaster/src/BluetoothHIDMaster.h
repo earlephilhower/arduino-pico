@@ -1,5 +1,6 @@
 /*
     Bluetooth HID Master class, can connect to keyboards, mice, and joypads
+    Works with Bluetooth Classic and BLE devices
 
     Copyright (c) 2024 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
@@ -66,7 +67,10 @@ private:
 
 class BluetoothHIDMaster {
 public:
-    void begin();
+    void begin(const char *bleName) {
+        begin(true, bleName);
+    }
+    void begin(bool ble = false, const char *bleName = nullptr);
     bool connected();
     void end();
     bool hciRunning();
@@ -82,6 +86,10 @@ public:
     bool connect(const uint8_t *addr);
     bool connectKeyboard();
     bool connectMouse();
+
+    bool connectBLE(const uint8_t *addr, int addrType);
+    bool connectBLE();
+
     bool disconnect();
     void clearPairing();
 
@@ -93,6 +101,7 @@ public:
     void onConsumerKeyUp(void (*)(void *, int), void *cbData = nullptr);
 
 private:
+    bool _ble = false;
     bool connectCOD(uint32_t cod);
     BluetoothHCI _hci;
     void hid_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
@@ -121,4 +130,8 @@ private:
     void *_consumerKeyDownData;
     void (*_consumerKeyUpCB)(void *, int) = nullptr;
     void *_consumerKeyUpData;
+
+    btstack_packet_callback_registration_t _sm_event_callback_registration;
+    void sm_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
+    void handle_gatt_client_event(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
 };

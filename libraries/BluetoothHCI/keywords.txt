@@ -20,9 +20,13 @@ scan	KEYWORD2
 scanAsyncDone	KEYWORD2
 scanAsyncResult	KEYWORD2
 
+setName	KEYWORD2
+scanBLE	KEYWORD2
+
 # BTDeviceInfo
 deviceClass	KEYWORD2
 address	KEYWORD2
+addressType	KEYWORD2
 addressString	KEYWORD2
 rssi	KEYWORD2
 name	KEYWORD2
