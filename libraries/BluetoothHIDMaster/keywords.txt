@@ -21,6 +21,8 @@ scanAsyncResult	KEYWORD2
 
 connectKeyboard	KEYWORD2
 connectMouse	KEYWORD2
+connectJoypad	KEYWORD2
+connectAny	KEYWORD2
 
 hidConnected	KEYWORD2
 onMouseMove	KEYWORD2
@@ -29,6 +31,7 @@ onKeyDown	KEYWORD2
 onKeyUp	KEYWORD2
 onConsumerKeyDown	KEYWORD2
 onConsumerKeyUp	KEYWORD2
+onJoypad	KEYWORD2
 
 # BTDeviceInfo
 deviceClass	KEYWORD2

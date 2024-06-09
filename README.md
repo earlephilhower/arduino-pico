@@ -87,7 +87,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 # Features
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
 * Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
-* Bluetooth Classic and BLE HID master mode (connect to BT keyboard or mouse)
+* Bluetooth Classic and BLE HID master mode (connect to BT keyboard, mouse, or joystick)
 * Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
 * WiFi (Pico W, ESP32-based ESPHost, Atmel WINC1500)
 * Ethernet (Wired W5500, W5100, ENC28J60)
