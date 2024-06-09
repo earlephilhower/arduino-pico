@@ -78,6 +78,7 @@ public:
 
     static const uint32_t keyboard_cod = 0x2540;
     static const uint32_t mouse_cod = 0x2540;
+    static const uint32_t joypad_cod = 0x2508;
     static const uint32_t any_cod = 0;
     std::list<BTDeviceInfo> scan(uint32_t mask, int scanTimeSec = 5, bool async = false);
     bool scanAsyncDone();
@@ -86,6 +87,8 @@ public:
     bool connect(const uint8_t *addr);
     bool connectKeyboard();
     bool connectMouse();
+    bool connectJoypad();
+    bool connectAny();
 
     bool connectBLE(const uint8_t *addr, int addrType);
     bool connectBLE();
@@ -99,6 +102,7 @@ public:
     void onKeyUp(void (*)(void *, int), void *cbData = nullptr);
     void onConsumerKeyDown(void (*)(void *, int), void *cbData = nullptr);
     void onConsumerKeyUp(void (*)(void *, int), void *cbData = nullptr);
+    void onJoypad(void (*)(void *, int, int, int, int, uint8_t, uint32_t), void *cbData = nullptr);
 
 private:
     bool _ble = false;
@@ -130,6 +134,10 @@ private:
     void *_consumerKeyDownData;
     void (*_consumerKeyUpCB)(void *, int) = nullptr;
     void *_consumerKeyUpData;
+
+    void (*_joypadCB)(void *, int, int, int, int, uint8_t, uint32_t) = nullptr;
+    void *_joypadData;
+
 
     btstack_packet_callback_registration_t _sm_event_callback_registration;
     void sm_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);

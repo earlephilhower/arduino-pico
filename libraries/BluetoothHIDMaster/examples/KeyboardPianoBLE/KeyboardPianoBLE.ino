@@ -157,6 +157,18 @@ void ckb(void *cbdata, int key) {
   Serial.printf("Consumer: %02x %s\n", key, state ? "DOWN" : "UP");
 }
 
+// Joystick can get reports of 4 analog axes, 1 d-pad bitfield, and up to 32 buttons
+// Axes and hats that aren't reported by the pad are read as 0
+void joy(void *cbdata, int x, int y, int z, int rz, uint8_t hat, uint32_t buttons) {
+  (void) cbdata;
+  const char *hats[16] = { "U", "UR", "R", "DR", "D", "DL", "L", "UL", "", "", "", "", "", "", "", "." };
+  Serial.printf("Joystick: (%4d, %4d) (%4d, %4d), Hat: %-2s, Buttons:", x, y, z, rz, hats[hat & 15]);
+  for (int i = 0; i < 32; i++) {
+    Serial.printf(" %c", (buttons & 1 << i) ? '*' : '.');
+  }
+  Serial.println();
+}
+
 
 void setup() {
   Serial.begin();
@@ -190,10 +202,11 @@ void setup() {
   hid.onConsumerKeyDown(ckb, (void *)true);
   hid.onConsumerKeyUp(ckb, (void *)false);
 
+  hid.onJoypad(joy);
+
   hid.begin(true);
 
-  hid.connectBLE(); //Keyboard();
-  // or hid.connectMouse();
+  hid.connectBLE();
 }
 
 void loop() {
@@ -204,6 +217,6 @@ void loop() {
     hid.disconnect();
     hid.clearPairing();
     Serial.printf("Restarting HID master, put your device in pairing mode now.\n");
-    hid.connectBLE(); //Keyboard();
+    hid.connectBLE();
   }
 }

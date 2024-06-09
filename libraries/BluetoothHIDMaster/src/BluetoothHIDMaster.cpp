@@ -161,6 +161,11 @@ void BluetoothHIDMaster::onConsumerKeyUp(void (*cb)(void *, int), void *cbData) 
     _consumerKeyUpData = cbData;
 }
 
+void BluetoothHIDMaster::onJoypad(void (*cb)(void *, int, int, int, int, uint8_t, uint32_t), void *cbData) {
+    _joypadCB = cb;
+    _joypadData = cbData;
+}
+
 std::list<BTDeviceInfo> BluetoothHIDMaster::scan(uint32_t mask, int scanTimeSec, bool async) {
     return _hci.scan(mask, scanTimeSec, async);
 }
@@ -252,6 +257,14 @@ bool BluetoothHIDMaster::connectMouse() {
     return connectCOD(0x2580);
 }
 
+bool BluetoothHIDMaster::connectJoypad() {
+    return connectCOD(0x2508);
+}
+
+bool BluetoothHIDMaster::connectAny() {
+    return connectCOD(0x2500);
+}
+
 bool BluetoothHIDMaster::disconnect() {
     BluetoothLock b;
     if (!_running || !connected()) {
@@ -287,17 +300,21 @@ void BluetoothHIDMaster::hid_host_handle_interrupt_report(btstack_hid_parser_t *
     int     new_keys_count = 0;
 
     uint16_t new_consumer_key = 0;
-    uint8_t newMB = 0;
+    uint32_t newMB = 0;
     bool noMB = false;
 
     bool updCons = false;
     bool updKey = false;
     bool updMB = false;
+    bool updJoy = false;
 
     bool updMouse = false;
     int dx = 0;
     int dy = 0;
+    int dz = 0;
+    int rz = 0;
     int dwheel = 0;
+    uint8_t hat = 0;
 
     while (btstack_hid_parser_has_more(parser)) {
         uint16_t usage_page;
@@ -306,19 +323,26 @@ void BluetoothHIDMaster::hid_host_handle_interrupt_report(btstack_hid_parser_t *
         btstack_hid_parser_get_field(parser, &usage_page, &usage, &value);
         if (usage_page == 0x01) {
             updMouse = true;
+            updJoy = true;
             if (usage == 0x30) {
                 dx = value;
             } else if (usage == 0x31) {
                 dy = value;
+            } else if (usage == 0x32) {
+                dz = value;
+            } else if (usage == 0x35) {
+                rz = value;
             } else if (usage == 0x38) {
                 dwheel = value;
+            } else if (usage == 0x39) {
+                hat = value & 0xff;
             }
         } else if (usage_page == 0x09) {
             updMB = true;
             if (usage == 0) {
                 noMB = true;
             }
-            if (!noMB && value && (usage > 0) && (usage < 9)) {
+            if (!noMB && value && (usage > 0)) {
                 newMB |= 1 << (usage - 1);
             }
 
@@ -386,13 +410,13 @@ void BluetoothHIDMaster::hid_host_handle_interrupt_report(btstack_hid_parser_t *
     if (updCons) {
         last_consumer_key = new_consumer_key;
     }
-    if (updMB)  {
+    if (updMB && _mouseButtonCB)  {
         if (lastMB != newMB) {
             for (int i = 0; i < 8; i++) {
                 int mask = 1 << i;
-                if ((lastMB & mask) && !(newMB & mask) && _mouseButtonCB) {
+                if ((lastMB & mask) && !(newMB & mask)) {
                     _mouseButtonCB(_mouseButtonData, i, false);
-                } else if (!(lastMB & mask) && (newMB & mask) && _mouseButtonCB) {
+                } else if (!(lastMB & mask) && (newMB & mask)) {
                     _mouseButtonCB(_mouseButtonData, i, true);
                 }
             }
@@ -402,6 +426,9 @@ void BluetoothHIDMaster::hid_host_handle_interrupt_report(btstack_hid_parser_t *
 
     if (updMouse && _mouseMoveCB) {
         _mouseMoveCB(_mouseMoveData, dx, dy, dwheel);
+    }
+    if (updJoy && _joypadCB) {
+        _joypadCB(_joypadData, dx, dy, dz, rz, hat, newMB);
     }
 }
 
