@@ -2,9 +2,6 @@ Bluetooth on PicoW Support
 ==========================
 
 As of the Pico-SDK version 1.5.0, the PicoW has **BETA** Bluetooth support.
-So, since this core builds off the SDK the best that can be suggested it
-that we have **ALPHA** Bluetooth support.  As such, bug reports are welcome,
-but Pull Requests fixing problems you find are seriously appreciated.
 
 Enabling Bluetooth
 ------------------
@@ -23,6 +20,11 @@ Bluetooth Low Energy (BLE) HID device using the same API as their USB versions.
 
 The ``SerialBT`` library implements a very simple SPP (Serial Port Profile)
 Serial-compatible port.
+
+Connect and use Bluetooth peripherals with the PicoW using the
+``BluetoothHIDMaster`` library.
+
+``BluetoothAudio`` (A2DP) is also supported, both sink and source.
 
 Writing Custom Bluetooth Applications
 -------------------------------------
