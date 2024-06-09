@@ -99,7 +99,7 @@ HID key and the up/down state to the stream and read back the ASCII for use in a
 
     void keyDownCB(void *cbdata, int key) {
         keystream.write((uint8_t )key);
-        keystream.write((uint8_t) true); // Keystream now has 1 ASCII characted to read out and use
+        keystream.write((uint8_t) true); // Keystream now has 1 ASCII character to read out and use
         char ascii = keystream.read();
         // ....
     }
