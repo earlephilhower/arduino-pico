@@ -46,6 +46,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    Bluetooth <bluetooth>
    Bluetooth HID Master <hidmaster>
+   Bluetooth Audio (A2DP) <a2dp>
 
    Single File USB Drive <singlefile>
    FatFSUSB - full FS access over USB <fatfsusb>
