@@ -161,9 +161,9 @@ void BluetoothHIDMaster::onConsumerKeyUp(void (*cb)(void *, int), void *cbData) 
     _consumerKeyUpData = cbData;
 }
 
-void BluetoothHIDMaster::onJoypad(void (*cb)(void *, int, int, int, int, uint8_t, uint32_t), void *cbData) {
-    _joypadCB = cb;
-    _joypadData = cbData;
+void BluetoothHIDMaster::onJoystick(void (*cb)(void *, int, int, int, int, uint8_t, uint32_t), void *cbData) {
+    _joystickCB = cb;
+    _joystickData = cbData;
 }
 
 std::list<BTDeviceInfo> BluetoothHIDMaster::scan(uint32_t mask, int scanTimeSec, bool async) {
@@ -257,7 +257,7 @@ bool BluetoothHIDMaster::connectMouse() {
     return connectCOD(0x2580);
 }
 
-bool BluetoothHIDMaster::connectJoypad() {
+bool BluetoothHIDMaster::connectJoystick() {
     return connectCOD(0x2508);
 }
 
@@ -427,8 +427,8 @@ void BluetoothHIDMaster::hid_host_handle_interrupt_report(btstack_hid_parser_t *
     if (updMouse && _mouseMoveCB) {
         _mouseMoveCB(_mouseMoveData, dx, dy, dwheel);
     }
-    if (updJoy && _joypadCB) {
-        _joypadCB(_joypadData, dx, dy, dz, rz, hat, newMB);
+    if (updJoy && _joystickCB) {
+        _joystickCB(_joystickData, dx, dy, dz, rz, hat, newMB);
     }
 }
 

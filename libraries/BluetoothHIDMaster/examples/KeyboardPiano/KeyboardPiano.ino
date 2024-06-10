@@ -159,7 +159,7 @@ void ckb(void *cbdata, int key) {
 
 
 // Joystick can get reports of 4 analog axes, 1 d-pad bitfield, and up to 32 buttons
-// Axes and hats that aren't reported by the pad are read as 0
+// Axes and hats that aren't reported by the joystick are read as 0
 void joy(void *cbdata, int x, int y, int z, int rz, uint8_t hat, uint32_t buttons) {
   (void) cbdata;
   const char *hats[16] = { "U", "UR", "R", "DR", "D", "DL", "L", "UL", "", "", "", "", "", "", "", "." };
@@ -202,7 +202,7 @@ void setup() {
   hid.onConsumerKeyDown(ckb, (void *)true);
   hid.onConsumerKeyUp(ckb, (void *)false);
 
-  hid.onJoypad(joy);
+  hid.onJoystick(joy);
 
   hid.begin();
 
