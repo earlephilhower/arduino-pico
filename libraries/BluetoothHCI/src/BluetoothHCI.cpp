@@ -103,8 +103,9 @@ bool BluetoothHCI::running() {
     return _hciRunning;
 }
 
-std::list<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool async) {
+std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool async) {
     _scanMask = mask;
+    _btdList.reserve(MAX_DEVICES_TO_DISCOVER);
     _btdList.clear();
     if (!_running) {
         return _btdList;
@@ -135,8 +136,9 @@ std::list<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool 
     return _btdList;
 }
 
-std::list<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) {
+std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) {
     _scanMask = uuid;
+    _btdList.reserve(MAX_DEVICES_TO_DISCOVER);
     _btdList.clear();
     if (!_running) {
         return _btdList;
@@ -168,6 +170,10 @@ std::list<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) {
     return _btdList;
 }
 
+void BluetoothHCI::scanFree() {
+    _btdList.clear();
+    _btdList.shrink_to_fit();
+}
 
 void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
     bd_addr_t address;
@@ -298,7 +304,9 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         }
         if (!seen) {
             BTDeviceInfo btd(uuid, address, address_type, rssi, nameptr ? nameptr : "", nameptr ? namelen : 0);
-            _btdList.push_back(btd);
+            if (_btdList.size() < MAX_DEVICES_TO_DISCOVER) {
+                _btdList.push_back(btd);
+            }
         }
     }
 }
@@ -394,7 +402,9 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
                 }
             }
             BTDeviceInfo btd(cod, address, rssi, name);
-            _btdList.push_back(btd);
+            if (_btdList.size() < MAX_DEVICES_TO_DISCOVER) {
+                _btdList.push_back(btd);
+            }
         }
         break;
     case GAP_EVENT_INQUIRY_COMPLETE:

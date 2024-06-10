@@ -80,9 +80,9 @@ public:
     static const uint32_t mouse_cod = 0x2540;
     static const uint32_t joystick_cod = 0x2508;
     static const uint32_t any_cod = 0;
-    std::list<BTDeviceInfo> scan(uint32_t mask, int scanTimeSec = 5, bool async = false);
+    std::vector<BTDeviceInfo> scan(uint32_t mask, int scanTimeSec = 5, bool async = false);
     bool scanAsyncDone();
-    std::list<BTDeviceInfo> scanAsyncResult();
+    std::vector<BTDeviceInfo> scanAsyncResult();
 
     bool connect(const uint8_t *addr);
     bool connectKeyboard();

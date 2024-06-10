@@ -11,7 +11,7 @@ BTDeviceInfo Class
 ------------------
 
 The ``BluetoothHCI`` class implements a scanning function for classic
-and BLE devices and can return a ``std::list`` of discovered devices to an application.
+and BLE devices and can return a ``std::vector`` of discovered devices to an application.
 Iterate over the list using any of the STL iteration methods (i.e. ``for (auto e : list)``).
 The elements of this list are ``BTDeviceInfo`` objects which have the following
 member functions:
@@ -179,7 +179,7 @@ bool BluetoothHIDMaster::hciRunning()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Returns if the Bluetooth stack has passed the initial HCI start up phase.  Until this returns ``true`` no Bluetooth operations can be performed.
 
-std::list<BTDeviceInfo> BluetoothHIDMaster::scan(uint32_t mask, int scanTimeSec, bool async)
+std::vector<BTDeviceInfo> BluetoothHIDMaster::scan(uint32_t mask, int scanTimeSec, bool async)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Passes through the ``BluetoothHCI::scan()`` function to manually scan for a list of nearby devices.  If you want to connect to the first found device, this is not needed.
 
