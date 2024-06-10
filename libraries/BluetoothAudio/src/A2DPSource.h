@@ -104,7 +104,7 @@ public:
 
     bool begin();
 
-    std::list<BTDeviceInfo> scan(uint32_t mask = BluetoothHCI::speaker_cod, int scanTimeSec = 5, bool async = false) {
+    std::vector<BTDeviceInfo> scan(uint32_t mask = BluetoothHCI::speaker_cod, int scanTimeSec = 5, bool async = false) {
         return _hci.scan(mask, scanTimeSec, async);
     }
 

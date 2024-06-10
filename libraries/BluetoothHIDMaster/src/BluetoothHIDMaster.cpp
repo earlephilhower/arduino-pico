@@ -166,14 +166,14 @@ void BluetoothHIDMaster::onJoystick(void (*cb)(void *, int, int, int, int, uint8
     _joystickData = cbData;
 }
 
-std::list<BTDeviceInfo> BluetoothHIDMaster::scan(uint32_t mask, int scanTimeSec, bool async) {
+std::vector<BTDeviceInfo> BluetoothHIDMaster::scan(uint32_t mask, int scanTimeSec, bool async) {
     return _hci.scan(mask, scanTimeSec, async);
 }
 
 bool BluetoothHIDMaster::scanAsyncDone() {
     return _hci.scanAsyncDone();
 }
-std::list<BTDeviceInfo> BluetoothHIDMaster::scanAsyncResult() {
+std::vector<BTDeviceInfo> BluetoothHIDMaster::scanAsyncResult() {
     return _hci.scanAsyncResult();
 }
 

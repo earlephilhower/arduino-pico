@@ -39,11 +39,13 @@ public:
 
     static const uint32_t speaker_cod = 0x200000 | 0x040000 | 0x000400;  // Service Class: Rendering | Audio, Major Device Class: Audio
     static const uint32_t any_cod = 0;
-    std::list<BTDeviceInfo> scan(uint32_t mask, int scanTimeSec = 5, bool async = false);
+    std::vector<BTDeviceInfo> scan(uint32_t mask, int scanTimeSec = 5, bool async = false);
     bool scanAsyncDone();
-    std::list<BTDeviceInfo> scanAsyncResult();
+    std::vector<BTDeviceInfo> scanAsyncResult();
 
-    std::list<BTDeviceInfo> scanBLE(uint32_t uuid, int scanTimeSec = 5);
+    std::vector<BTDeviceInfo> scanBLE(uint32_t uuid, int scanTimeSec = 5);
+
+    void scanFree(); // Free allocated scan buffers
 
     friend class BluetoothHIDMaster;
 
@@ -60,7 +62,11 @@ private:
     btstack_packet_callback_registration_t hci_event_callback_registration;
     volatile bool _hciRunning = false;
     uint32_t _scanMask;
-    std::list<BTDeviceInfo> _btdList;
+    // Use a .reserve()'d vector to avoid any memory allocations in the
+    // HCI callback, since the callback happens at IRQ time.  Any more
+    // elements than MAX_DEVICES_TO_DISCOVER will be thrown out
+    enum { MAX_DEVICES_TO_DISCOVER = 32 };
+    std::vector<BTDeviceInfo> _btdList;
     volatile bool _scanning = false;
     bool _running = false;
 
