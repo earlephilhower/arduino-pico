@@ -119,13 +119,13 @@ HID key and the up/down state to the stream and read back the ASCII for use in a
 
 Joystick Callbacks
 ~~~~~~~~~~~~~~~~~~
-A single ``BluetoothHIDMaster::onJoypad`` callback gets activated every time a report from a joystick is processed.
+A single ``BluetoothHIDMaster::onJoystick`` callback gets activated every time a report from a joystick is processed.
 It receives (potentially, if supported by the device) 4 analog axes, one 8-way digital hat switch position, and up
 to 32 button states at a time.
 
 .. code :: cpp
 
-    void joypadCB(void *cbdata, int x, int y, int z, int rz, uint8_t hat, uint32_t buttons) {
+    void joystickCB(void *cbdata, int x, int y, int z, int rz, uint8_t hat, uint32_t buttons) {
         // HAT 0 = UP and continues clockwise.  If no hat direction it is set to 0x0f.
         // Use "buttons & (1 << buttonNumber)" to look at the individual button states
         // ...
@@ -147,7 +147,7 @@ BluetoothHIDMaster::onXXX Callback Installers
     void BluetoothHIDMaster::onKeyUp(void (*)(void *, int), void *cbData = nullptr);
     void BluetoothHIDMaster::onConsumerKeyDown(void (*)(void *, int), void *cbData = nullptr);
     void BluetoothHIDMaster::onConsumerKeyUp(void (*)(void *, int), void *cbData = nullptr);
-    void BluetoothHIDMaster::onJoypad(void (*)(void *, int, int, int, int, uint8_t, uint32_t), void *cbData = nullptr);
+    void BluetoothHIDMaster::onJoystick(void (*)(void *, int, int, int, int, uint8_t, uint32_t), void *cbData = nullptr);
 
 BluetoothHIDMaster Class
 ------------------------
@@ -187,7 +187,7 @@ bool BluetoothHIDMaster::connect(const uint8_t *addr)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Start the connection process to the Bluetooth Classic device with the given MAC.  Note that this returns immediately, but it may take several seconds until ``connected()`` reports that the connection has been established.
 
-bool BluetoothHIDMaster::connectKeyboard(), connectMouse(), connectJoypad(), connectAny()
+bool BluetoothHIDMaster::connectKeyboard(), connectMouse(), connectJoystick(), connectAny()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Connect to the first found specified Bluetooth Classic device type (or any HID device) in pairing mode.  No need to call ``scan()`` or have an address.
 
