@@ -43,8 +43,9 @@ public:
 
     void end(bool endSPI = true) {
         SDFS.end();
-        if (endSPI) {
+        if (endSPI && _spi) {
             _spi->end();
+            _spi = nullptr;
         }
     }
 
@@ -205,7 +206,7 @@ private:
         return time(nullptr);
     }
 
-    HardwareSPI *_spi;
+    HardwareSPI *_spi = nullptr;
 };
 
 
