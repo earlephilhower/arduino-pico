@@ -29,7 +29,7 @@
 #include <FS.h>
 #include <FSImpl.h>
 
-#define LFS_NAME_MAX 32
+#define LFS_NAME_MAX 255
 #include "../lib/littlefs/lfs.h"
 
 using namespace fs;
@@ -157,6 +157,14 @@ public:
             return false;
         }
         int rc = lfs_mkdir(&_lfs, path);
+        if ((rc == 0) && _timeCallback) {
+            time_t now = _timeCallback();
+            // Add metadata with creation time to the directory marker
+            int rc = lfs_setattr(&_lfs, path, 'c', (const void *)&now, sizeof(now));
+            if (rc < 0) {
+                DEBUGV("Unable to set creation time on '%s' to %ld\n", path, (long)now);
+            }
+        }
         return (rc == 0);
     }
 

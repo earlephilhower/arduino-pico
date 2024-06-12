@@ -37,6 +37,11 @@ Pausing Cores
 
 Sometimes an application needs to pause the other core on chip (i.e. it is
 writing to flash or needs to stop processing while some other event occurs).
+In most cases, however, these calls are **SHOULD NOT BE USED**.  To synchronize
+cross-core operations use normal multiprocessor methods such as circular buffers,
+global ``volatile`` flags, mutexes, and the like.  Stopping a core has massive
+implications and can kill networking and USB communications if done too long or
+too frequently.
 
 void rp2040.idleOtherCore()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +74,12 @@ Communicating Between Cores
 The RP2040 provides a hardware FIFO for communicating between cores, but it
 is used exclusively for the idle/resume calls described above.  Instead, please
 use the following functions to access a software-managed, multicore safe
-FIFO.
+FIFO.  There are two FIFOs, one written to by core 0 and read by core 1, and
+the other written to by core 1 and read by core 0.
+
+You can (and probably should) use shared memory (such as ``volatile`` globals)
+or other normal multiprocessor communication algorithms to transfer data or
+work between cores, but for simple tasks these FIFO routines can suffice.
 
 void rp2040.fifo.push(uint32_t)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,4 +106,4 @@ Reads a value from this core's FIFO and places it in dest.  Will return
 int rp2040.fifo.available()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Returns the number of values available in this core's FIFO.
+Returns the number of values available to read in this core's FIFO.

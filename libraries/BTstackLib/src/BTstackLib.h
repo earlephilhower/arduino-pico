@@ -143,6 +143,7 @@ extern "C" {
         void enableDebugLogger();
 
         void setAdvData(uint16_t size, const uint8_t * data);
+        void setScanData(uint16_t size, const uint8_t * data);
         void iBeaconConfigure(UUID * uuid, uint16_t major_id, uint16_t minor_id, uint8_t measured_power = 0xc6);
         void startAdvertising();
         void stopAdvertising();

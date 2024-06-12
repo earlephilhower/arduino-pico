@@ -44,9 +44,12 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
 
-   Bluetooth (Alpha/Beta) <bluetooth>
+   Bluetooth <bluetooth>
+   Bluetooth HID Master <hidmaster>
+   Bluetooth Audio (A2DP) <a2dp>
 
    Single File USB Drive <singlefile>
+   FatFSUSB - full FS access over USB <fatfsusb>
 
    FreeRTOS SMP (multicore) <freertos>
 

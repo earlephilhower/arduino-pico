@@ -15,6 +15,10 @@ public:
         (void) uri;
         return false;
     }
+    virtual bool canRaw(String uri) {
+        (void) uri;
+        return false;
+    }
     virtual bool handle(HTTPServer& server, HTTPMethod requestMethod, String requestUri) {
         (void) server;
         (void) requestMethod;
@@ -25,6 +29,11 @@ public:
         (void) server;
         (void) requestUri;
         (void) upload;
+    }
+    virtual void raw(HTTPServer& server, String requestUri, HTTPRaw& raw) {
+        (void) server;
+        (void) requestUri;
+        (void) raw;
     }
 
     RequestHandler* next() {

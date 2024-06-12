@@ -9,21 +9,21 @@ jobs:
     name: Update master JSON file
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
     - name: Cache pip
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.x'          
 #     - name: Cache PlatformIO
-#       uses: actions/cache@v3
+#       uses: actions/cache@v4
 #       with:
 #         path: ~/.platformio
 #         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}

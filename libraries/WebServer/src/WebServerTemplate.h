@@ -171,6 +171,7 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
         }
         _currentStatus = HC_NONE;
         _currentUpload.reset();
+        _currentRaw.reset();
     }
 
     if (callYield) {

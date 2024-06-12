@@ -33,12 +33,17 @@
 
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
 extern void ethernet_arch_lwip_end() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_mask() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_unmask() __attribute__((weak));
 
 auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 
 class LWIPMutex {
 public:
     LWIPMutex() {
+        if (ethernet_arch_lwip_gpio_mask)  {
+            ethernet_arch_lwip_gpio_mask();
+        }
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_begin();
@@ -56,13 +61,18 @@ public:
 #if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_end();
-            return;
+        } else {
+#endif
+            if (ethernet_arch_lwip_end) {
+                ethernet_arch_lwip_end();
+            } else {
+                recursive_mutex_exit(&__lwipMutex);
+            }
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
         }
 #endif
-        if (ethernet_arch_lwip_end) {
-            ethernet_arch_lwip_end();
-        } else {
-            recursive_mutex_exit(&__lwipMutex);
+        if (ethernet_arch_lwip_gpio_unmask) {
+            ethernet_arch_lwip_gpio_unmask();
         }
     }
 };
@@ -79,7 +89,7 @@ extern "C" {
     extern void __real_lwip_init();
     void __wrap_lwip_init() {
         if (!_lwip_rng) {
-            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(get_rand_64());
+            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros() * rp2040.getCycleCount());
             __real_lwip_init();
         }
     }
@@ -346,6 +356,18 @@ extern "C" {
     void __wrap_raw_remove(struct raw_pcb *pcb) {
         LWIPMutex m;
         __real_raw_remove(pcb);
+    }
+
+    extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
+    struct netif *__wrap_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input) {
+        LWIPMutex m;
+        return __real_netif_add(netif, ipaddr, netmask, gw, state, init, input);
+    }
+
+    extern void __real_netif_remove(struct netif *netif);
+    void __wrap_netif_remove(struct netif *netif) {
+        LWIPMutex m;
+        __real_netif_remove(netif);
     }
 
 }; // extern "C"

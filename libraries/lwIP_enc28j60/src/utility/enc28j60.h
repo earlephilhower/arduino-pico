@@ -62,6 +62,11 @@ public:
     bool begin(const uint8_t* address, netif *net);
 
     /**
+        Shut down the Ethernet controlled
+    */
+    void end();
+
+    /**
         Send an Ethernet frame
         @param data a pointer to the data to send
         @param datalen the length of the data in the packet
@@ -99,7 +104,11 @@ public:
     netif *_netif;
 protected:
     static constexpr bool interruptIsPossible() {
-        return false;
+        return true;
+    }
+
+    static constexpr PinStatus interruptMode() {
+        return LOW;
     }
 
     /**
@@ -154,6 +163,7 @@ private:
 
     uint8_t   _bank;
     int8_t    _cs;
+    int8_t    _intr;
     SPIClass& _spi;
 
     const uint8_t* _localMac;

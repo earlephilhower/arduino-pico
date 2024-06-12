@@ -808,9 +808,6 @@ void BTstackManager::setup(const char * name) {
     hci_add_event_handler(&hci_event_callback_registration);
     l2cap_init();
 
-    // setup central device db
-    le_device_db_init();
-
     sm_init();
 
     att_server_init(att_db_util_get_address(), att_read_callback, att_write_callback);
@@ -888,6 +885,9 @@ uint16_t BTstackManager::addGATTCharacteristicDynamic(UUID * uuid, uint16_t flag
 }
 void BTstackManager::setAdvData(uint16_t adv_data_len, const uint8_t * adv_data) {
     gap_advertisements_set_data(adv_data_len, (uint8_t*) adv_data);
+}
+void BTstackManager::setScanData(uint16_t scan_data_len, const uint8_t * scan_data) {
+    gap_scan_response_set_data(scan_data_len, (uint8_t*) scan_data);
 }
 void BTstackManager::startAdvertising() {
     gap_advertisements_enable(1);

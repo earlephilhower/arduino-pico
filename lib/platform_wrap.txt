@@ -203,6 +203,9 @@
 -Wl,--wrap=raw_sendto
 -Wl,--wrap=raw_remove
 
+-Wl,--wrap=netif_add
+-Wl,--wrap=netif_remove
+
 -Wl,--wrap=cyw43_cb_process_ethernet
 -Wl,--wrap=cyw43_cb_tcpip_set_link_up
 -Wl,--wrap=cyw43_cb_tcpip_set_link_down

@@ -29,7 +29,7 @@ const char *softAP_password = APPSK;
 /* hostname for mDNS. Should work at least on windows. Try http://picow.local */
 const char *myHostname = "picow";
 
-/* Don't set this wifi credentials. They are configurated at runtime and stored on EEPROM */
+/* Don't set this wifi credentials. They are configured at runtime and stored on EEPROM */
 char ssid[33] = "";
 char password[65] = "";
 

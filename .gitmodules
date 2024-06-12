@@ -37,3 +37,6 @@
 [submodule "libraries/http_parser/lib/http-parser"]
 	path = libraries/http-parser/lib/http-parser
 	url = https://github.com/nodejs/http-parser.git
+[submodule "libraries/FatFS/lib/SPIFTL"]
+	path = libraries/FatFS/lib/SPIFTL
+	url = https://github.com/earlephilhower/SPIFTL.git

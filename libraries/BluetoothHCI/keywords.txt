@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BluetoothHCI	KEYWORD1
+BTDeviceInfo	KEYWORD1
+BluetoothLock	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+end	KEYWORD2
+
+scan	KEYWORD2
+scanAsyncDone	KEYWORD2
+scanAsyncResult	KEYWORD2
+
+setName	KEYWORD2
+scanBLE	KEYWORD2
+
+# BTDeviceInfo
+deviceClass	KEYWORD2
+address	KEYWORD2
+addressType	KEYWORD2
+addressString	KEYWORD2
+rssi	KEYWORD2
+name	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################

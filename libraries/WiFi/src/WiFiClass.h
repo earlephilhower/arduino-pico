@@ -25,6 +25,10 @@
 #include <Arduino.h>
 #ifdef ARDUINO_RASPBERRY_PI_PICO_W
 #include <lwIP_CYW43.h>
+#elif defined(ESPHOSTSPI)
+#include <lwIP_ESPHost.h>
+#elif defined(WINC1501_SPI)
+#include <lwIP_WINC1500.h>
 #else
 #include "utility/lwIP_nodriver.h"
 #endif
@@ -68,6 +72,12 @@ public:
         param ssid: Pointer to the SSID string.
     */
     int begin(const char* ssid);
+    /*  Start WiFi connection for OPEN networks, without blocking
+
+        param ssid: Pointer to the SSID string.
+    */
+    int beginNoBlock(const char* ssid);
+
     int beginBSSID(const char* ssid, const uint8_t *bssid);
 
     /*  Start WiFi connection with WEP encryption.
@@ -90,6 +100,15 @@ public:
         param bssid: If non-null, the BSSID associated w/the SSID to connect to
     */
     int begin(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+    /*  Start WiFi connection with passphrase, without blocking. Check for .connected() for a connection
+        the most secure supported mode will be automatically selected
+
+        param ssid: Pointer to the SSID string.
+        param passphrase: Passphrase. Valid characters in a passphrase
+              must be between ASCII 32-126 (decimal).
+        param bssid: If non-null, the BSSID associated w/the SSID to connect to
+    */
+    int beginNoBlock(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     bool connected();
     bool isConnected() {
@@ -152,7 +171,7 @@ public:
     }
 
     String softAPmacAddress(void) {
-        uint8_t mac[8];
+        uint8_t mac[6];
         macAddress(mac);
         char buff[32];
         sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
@@ -238,7 +257,7 @@ public:
     */
     uint8_t* macAddress(uint8_t* mac);
     String macAddress(void) {
-        uint8_t mac[8];
+        uint8_t mac[6];
         macAddress(mac);
         char buff[32];
         sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
@@ -411,6 +430,9 @@ public:
     }
 
 private:
+    // Internal wifi begin. Returns true on success
+    bool _beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+
     int _timeout = 15000;
     String _ssid;
     uint8_t _bssid[6];

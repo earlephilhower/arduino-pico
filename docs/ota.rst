@@ -12,7 +12,7 @@ OTA may be done using:
 -  `Arduino IDE <#arduino-ide>`__
 -  `Web Browser <#web-browser>`__
 -  `HTTP Server <#http-server>`__
-- Any other method (ZModen receive over a UART port, etc.) by using the ``Updater`` object in your sketch
+- Any other method (ZModem receive over a UART port, etc.) by using the ``Updater`` object in your sketch
 
 The Arduino IDE option is intended primarily for the software development phase. The other two options would be more useful after deployment, to provide the module with application updates either manually with a web browser, or automatically using an HTTP server.
 
@@ -189,7 +189,7 @@ Uploading modules wirelessly from Arduino IDE is intended for the following typi
 
 To upload wirelessly from the IDE:
 
-1. Build a sketch starts ``WiFi`` and includes the appropriate calls to ``ArduinoOTA`` (see the examples for reference).  These include the ``ArduinoOTA.begin()`` call in ``setup()`` and periodically calling ``ArduinoOTA.handle();`` from the ``loop()``
+1. Build a sketch that starts ``WiFi`` and includes the appropriate calls to ``ArduinoOTA`` (see the examples for reference).  These include the ``ArduinoOTA.begin()`` call in ``setup()`` and periodically calling ``ArduinoOTA.handle();`` from the ``loop()``
 
 2. Upload using standard USB connection the first time.
 
@@ -212,9 +212,9 @@ Before implementing it in your sketch, it is a good idea to check how it works u
 
 Enter the password and upload should be initiated as usual with the only difference being ``Authenticating...OK`` message visible in the upload log.
 
-You will not be prompted for a reentering the same password next time. Arduino IDE will remember it for you. You will see a prompt for password only after reopening IDE, or if you change it in your sketch, upload the sketch and then try to upload it again.
+You will not be prompted for a reentering the same password next time. Arduino IDE will remember it for you. You will see a prompt for password only after reopening the IDE, or if you change it in your sketch, upload the sketch and then try to upload it again.
 
-Please note, it is possible to reveal password entered previously in Arduino IDE, if IDE has not been closed since last upload. This can be done by enabling *Show verbose output during: upload* in *File > Preferences* and attempting to upload the module.
+Please note, it is possible to reveal password entered previously in Arduino IDE, if the IDE has not been closed since last upload. This can be done by enabling *Show verbose output during: upload* in *File > Preferences* and attempting to upload the module.
 
 
 

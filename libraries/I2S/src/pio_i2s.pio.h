@@ -378,6 +378,8 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
     pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
     pio_sm_set_pins(pio, sm, 0); // clear pins
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
+    pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits)); // Shift in 1st L data
+    pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits - 1)); // Shift in 1st R data modulo one bit, avoiding bit shift from #2037
 }
 
 #endif

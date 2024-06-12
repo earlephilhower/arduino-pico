@@ -32,6 +32,10 @@
 #ifdef ARDUINO_RASPBERRY_PI_PICO_W
 #include <pico/cyw43_arch.h>
 static CYW43lwIP _wifi(1);
+#elif defined(ESPHOSTSPI)
+static ESPHostLwIP _wifi;
+#elif defined(WINC1501_SPI)
+static WINC1500LwIP _wifi;
 #else
 static NoDriverLwIP _wifi;
 #endif
@@ -65,6 +69,41 @@ void WiFiClass::mode(WiFiMode_t m) {
     }
 }
 
+bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+    // Simple ESP8266 compatibility hack
+    if (_modeESP == WIFI_AP) {
+        // When beginAP was a success, it returns WL_CONNECTED and we return true as success.
+        return beginAP(ssid, passphrase) == WL_CONNECTED;
+    }
+
+    end();
+
+    _ssid = ssid;
+    _password = passphrase;
+    if (bssid) {
+        memcpy(_bssid, bssid, sizeof(_bssid));
+    } else {
+        bzero(_bssid, sizeof(_bssid));
+    }
+    _wifi.setSTA();
+    _wifi.setSSID(_ssid.c_str());
+    _wifi.setBSSID(_bssid);
+    _wifi.setPassword(passphrase);
+    _wifi.setTimeout(_timeout);
+    _apMode = false;
+    _wifiHWInitted = true;
+
+    // Internal wifi.begin returns false when failed, therefore we return false as error
+    if (!_wifi.begin()) {
+        return false;
+    }
+    noLowPowerMode();
+    // Enable CYW43 event debugging (make sure Debug Port is set)
+    //cyw43_state.trace_flags = 0xffff;
+
+    return true;
+}
+
 
 /*  Start WiFi connection for OPEN networks
 
@@ -73,6 +112,15 @@ void WiFiClass::mode(WiFiMode_t m) {
 int WiFiClass::begin(const char* ssid) {
     return begin(ssid, nullptr);
 }
+
+/*  Start WiFi connection for OPEN networks, but non blocking.
+
+    param ssid: Pointer to the SSID string.
+*/
+int WiFiClass::beginNoBlock(const char* ssid) {
+    return beginNoBlock(ssid, nullptr);
+}
+
 
 int WiFiClass::beginBSSID(const char* ssid, const uint8_t *bssid) {
     return begin(ssid, nullptr, bssid);
@@ -86,36 +134,23 @@ int WiFiClass::beginBSSID(const char* ssid, const uint8_t *bssid) {
           must be between ASCII 32-126 (decimal).
 */
 int WiFiClass::begin(const char* ssid, const char *passphrase, const uint8_t *bssid) {
-    // Simple ESP8266 compatibility hack
-    if (_modeESP == WIFI_AP) {
-        return beginAP(ssid, passphrase);
-    }
-
-    end();
-
-    _ssid = ssid;
-    _password = passphrase;
-    if (bssid) {
-        memcpy(_bssid, bssid, sizeof(_bssid));
-    } else {
-        bzero(_bssid, sizeof(_bssid));
-    }
-    _wifi.setSSID(_ssid.c_str());
-    _wifi.setBSSID(_bssid);
-    _wifi.setPassword(passphrase);
-    _wifi.setTimeout(_timeout);
-    _wifi.setSTA();
-    _apMode = false;
-    _wifiHWInitted = true;
     uint32_t start = millis(); // The timeout starts from network init, not network link up
-    if (!_wifi.begin()) {
+
+    // Returns WL_IDLE_STATUS on error for compatibility.
+    if (!_beginInternal(ssid, passphrase, bssid)) {
         return WL_IDLE_STATUS;
     }
-    noLowPowerMode();
-    // Enable CYW43 event debugging (make sure Debug Port is set)
-    //cyw43_state.trace_flags = 0xffff;
+
     while (!_calledESP && ((millis() - start < (uint32_t)2 * _timeout)) && !connected()) {
         delay(10);
+    }
+    return status();
+}
+
+int WiFiClass::beginNoBlock(const char* ssid, const char *passphrase, const uint8_t *bssid) {
+    // Returns WL_IDLE_STATUS on error for compatibility.
+    if (!_beginInternal(ssid, passphrase, bssid)) {
+        return WL_IDLE_STATUS;
     }
     return status();
 }
@@ -139,10 +174,10 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 
     _ssid = ssid;
     _password = passphrase;
+    _wifi.setAP();
     _wifi.setSSID(_ssid.c_str());
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
-    _wifi.setAP();
     _apMode = true;
     IPAddress gw = _wifi.gatewayIP();
     if (!gw.isSet()) {

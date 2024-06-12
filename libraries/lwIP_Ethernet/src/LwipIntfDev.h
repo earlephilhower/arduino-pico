@@ -50,6 +50,11 @@
 #define DEFAULT_MTU 1500
 #endif
 
+enum EthernetLinkStatus {
+    Unknown,
+    LinkON,
+    LinkOFF
+};
 
 extern "C" void cyw43_hal_generate_laa_mac(__unused int idx, uint8_t buf[6]);
 
@@ -137,9 +142,20 @@ public:
         _spiSettings = s;
     }
 
+    uint32_t packetsReceived() {
+        return _packetsReceived;
+    }
+    uint32_t packetsSent() {
+        return _packetsSent;
+    }
+
+
     // ESP8266WiFi API compatibility
 
     wl_status_t status();
+
+    // Arduino Ethernet compatibility
+    EthernetLinkStatus linkStatus();
 
 protected:
     err_t netif_init();
@@ -149,6 +165,7 @@ protected:
     static err_t netif_init_s(netif* netif);
     static err_t linkoutput_s(netif* netif, struct pbuf* p);
     static void  netif_status_callback_s(netif* netif);
+    static void _irq(void *param);
 public:
     // called on a regular basis or on interrupt
     err_t handlePackets();
@@ -172,6 +189,9 @@ protected:
 
     // Packet handler number
     int _phID = -1;
+
+    uint32_t _packetsReceived = 0;
+    uint32_t _packetsSent = 0;
 };
 
 
@@ -185,8 +205,8 @@ u8_t LwipIntfDev<RawDev>::_pingCB(void *arg, struct raw_pcb *pcb, struct pbuf *p
     (void) addr;
     LwipIntfDev<RawDev> *w = (LwipIntfDev<RawDev> *)arg;
     struct icmp_echo_hdr *iecho;
-    if (pbuf_header(p, -20) == 0) {
-        iecho = (struct icmp_echo_hdr *)p->payload;
+    if (p->len > 20) {
+        iecho = (struct icmp_echo_hdr *)((uint8_t*)p->payload + 20);
         if ((iecho->id == w->_ping_id) && (iecho->seqno == htons(w->_ping_seq_num))) {
             w->_ping_ttl = pcb->ttl;
             pbuf_free(p);
@@ -290,6 +310,11 @@ bool LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
 extern char wifi_station_hostname[];
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
+    if (_started) {
+        // ERROR - Need to ::end before calling ::begin again
+        return false;
+    }
+
     lwip_init();
     __startEthernetContext();
 
@@ -348,7 +373,9 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         return false;
     }
 
-    _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
+    if (_intrPin < 0) {
+        _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
+    }
 
     if (localIP().v4() == 0) {
         // IP not set, starting DHCP
@@ -383,7 +410,11 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
     if (_intrPin >= 0) {
         if (RawDev::interruptIsPossible()) {
-            // attachInterrupt(_intrPin, [&]() { this->handlePackets(); }, FALLING);
+            noInterrupts(); // Ensure this is atomically set up
+            pinMode(_intrPin, INPUT);
+            attachInterruptParam(_intrPin, _irq, RawDev::interruptMode(), (void*)this);
+            __addEthernetGPIO(_intrPin);
+            interrupts();
         } else {
             ::printf((PGM_P)F(
                          "lwIP_Intf: Interrupt not implemented yet, enabling transparent polling\r\n"));
@@ -396,7 +427,12 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
-    __removeEthernetPacketHandler(_phID);
+    if (_intrPin < 0) {
+        __removeEthernetPacketHandler(_phID);
+    } else {
+        detachInterrupt(_intrPin);
+        __removeEthernetGPIO(_intrPin);
+    }
 
     RawDev::end();
 
@@ -405,6 +441,14 @@ void LwipIntfDev<RawDev>::end() {
     _started = false;
 }
 
+template<class RawDev>
+void LwipIntfDev<RawDev>::_irq(void *param) {
+    LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
+    ethernet_arch_lwip_begin();
+    d->handlePackets();
+    sys_check_timeouts();
+    ethernet_arch_lwip_end();
+}
 
 template<class RawDev>
 wl_status_t LwipIntfDev<RawDev>::status() {
@@ -412,11 +456,16 @@ wl_status_t LwipIntfDev<RawDev>::status() {
 }
 
 template<class RawDev>
+EthernetLinkStatus LwipIntfDev<RawDev>::linkStatus() {
+    return RawDev::isLinkDetectable() ? _started && RawDev::isLinked() ? LinkON : LinkOFF : Unknown;
+}
+
+template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
     ethernet_arch_lwip_begin();
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
-
+    lid->_packetsSent++;
 #if PHY_HAS_CAPTURE
     if (phy_capture) {
         phy_capture(lid->_netif.num, (const char*)pbuf->payload, pbuf->len, /*out*/ 1,
@@ -529,6 +578,8 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
             pbuf_free(pbuf);
             return ERR_BUF;
         }
+
+        _packetsReceived++;
 
         err_t err = _netif.input(pbuf, &_netif);
 

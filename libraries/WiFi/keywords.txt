@@ -9,12 +9,20 @@
 WiFi	KEYWORD1
 WiFiUdp	KEYWORD1
 WiFiClient	KEYWORD1
-WiFiSSLClient	KEYWORD1
+WiFiClientSecure	KEYWORD1
 WiFiServer	KEYWORD1
+WiFiServerSecure	KEYWORD1
 WiFiUDP	KEYWORD1
 WiFiMulti	KEYWORD1
 NTP	KEYWORD1
-
+BearSSL	KEYWORD1
+PublicKey	KEYWORD1
+PrivateKey	KEYWORD1
+X509List	KEYWORD1
+Session	KEYWORD1
+ServerSessions	KEYWORD1
+HashSHA256	KEYWORD1
+SigningVerifier	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -38,6 +46,7 @@ macAddress	KEYWORD2
 localIP	KEYWORD2
 subnetMask	KEYWORD2
 gatewayIP	KEYWORD2
+scanNetworks	KEYWORD2
 SSID	KEYWORD2
 BSSID		KEYWORD2
 RSSI	KEYWORD2

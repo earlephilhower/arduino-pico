@@ -201,7 +201,7 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         break;
     }
     uart_set_format(_uart, bits, stop, parity);
-    uart_set_hw_flow(_uart, _rts != UART_PIN_NOT_DEFINED, _cts != UART_PIN_NOT_DEFINED);
+    uart_set_hw_flow(_uart, _cts != UART_PIN_NOT_DEFINED, _rts != UART_PIN_NOT_DEFINED);
     _writer = 0;
     _reader = 0;
 

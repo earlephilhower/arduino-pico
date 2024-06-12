@@ -81,7 +81,7 @@ rm exclude.txt
 
 # Get previous release name
 curl --silent https://api.github.com/repos/earlephilhower/arduino-pico/releases > releases.json
-# Previous final release (prerelase == false)
+# Previous final release (prerelease == false)
 prev_release=$(jq -r '. | map(select(.draft == false and .prerelease == false)) | sort_by(.created_at | - fromdateiso8601) | .[0].tag_name' releases.json)
 # Previous release (possibly a pre-release)
 prev_any_release=$(jq -r '. | map(select(.draft == false)) | sort_by(.created_at | - fromdateiso8601)  | .[0].tag_name' releases.json)

@@ -12,7 +12,7 @@
 #include <task.h>
 #include <semphr.h>
 
-#define SERIAL_PORT Serial1
+#define SERIAL_PORT Serial
 #define BLINK_ON_TIME   250
 #define BLINK_OFF_TIME  500
 
@@ -58,6 +58,7 @@ void led_ON(void *pvParameters)
     digitalWrite(LED_BUILTIN, HIGH);
     delay(BLINK_ON_TIME);
     xSemaphoreGive( xSemaphore );
+    delay(1);
   }
 }
 
@@ -71,6 +72,7 @@ void led_OFF(void *pvParameters)
     digitalWrite(LED_BUILTIN, LOW);
     delay(BLINK_OFF_TIME);
     xSemaphoreGive( xSemaphore );
+    delay(1);
   }
 }
 

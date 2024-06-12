@@ -79,79 +79,9 @@ public:
         _onCanSendNow = cb;
     }
 
-    bool startHID(const char *localName, const char *hidName, uint16_t appearance, const uint8_t *hidDescriptor, uint16_t hidDescriptorSize, int battery = 100) {
-        if (_running) {
-            return false;
-        }
-        _running = true;
+    bool startHID(const char *localName, const char *hidName, uint16_t appearance, const uint8_t *hidDescriptor, uint16_t hidDescriptorSize, int battery = 100);
 
-        _buildAdvData(localName, appearance);
-        _buildAttdb(hidName);
-
-        _battery = battery;
-
-        // Setup L2CAP
-        l2cap_init();
-
-        // Setup SM
-        sm_init();
-        sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
-        sm_set_authentication_requirements(SM_AUTHREQ_SECURE_CONNECTION | SM_AUTHREQ_BONDING);
-
-        // Setup ATT server
-        att_server_init(_attdb, NULL, NULL);
-
-        // Setup battery service
-        battery_service_server_init(battery);
-
-        // Setup device information service
-        device_information_service_server_init();
-
-        // Setup HID Device service, depending on activated reports
-        uint8_t numreports = 1; //start with 1 (feature report)
-        if (__BLEInstallKeyboard) {
-            numreports += 2; //add keycodes + consumer keys
-        }
-        if (__BLEInstallMouse) {
-            numreports += 1;
-        }
-        if (__BLEInstallJoystick) {
-            numreports += 1;
-        }
-        //allocate memory for hid reports
-        _reportStorage = (hids_device_report_t *) malloc(sizeof(hids_device_report_t) * numreports);
-        hids_device_init_with_storage(0, hidDescriptor, hidDescriptorSize, numreports, _reportStorage);
-
-        // Setup advertisements
-        uint16_t adv_int_min = 0x0030;
-        uint16_t adv_int_max = 0x0030;
-        uint8_t adv_type = 0;
-        bd_addr_t null_addr;
-        memset(null_addr, 0, 6);
-        gap_advertisements_set_params(adv_int_min, adv_int_max, adv_type, 0, null_addr, 0x07, 0x00);
-        gap_advertisements_set_data(_advDataLen, _advData);
-        gap_advertisements_enable(1);
-
-        // Register for HCI events
-        _hci_event_callback_registration.callback = PacketHandlerWrapper;
-        hci_add_event_handler(&_hci_event_callback_registration);
-
-        // Register for SM events
-        _sm_event_callback_registration.callback = PacketHandlerWrapper;
-        sm_add_event_handler(&_sm_event_callback_registration);
-
-        // Register for HIDS events
-        hids_device_register_packet_handler(PacketHandlerWrapper);
-
-        // GO!
-        hci_power_control(HCI_POWER_ON);
-        return true;
-    }
-
-    static void PacketHandlerWrapper(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t packet_size) {
-        PicoBluetoothBLEHID.packetHandler(packet_type, channel, packet, packet_size);
-    }
-
+private:
     void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
         uint8_t result;
         uint8_t reportID;
@@ -214,14 +144,6 @@ public:
                     if (result) {
                         Serial.printf("Error sending %d - report ID: %d\n", result, reportID);
                     }
-                    //else Serial.printf("Sent report for ID: %d\n",reportID);
-#if 0
-                    Serial.printf("Sending report for ID %d, len: %d:\n", reportID, _sendReportLen);
-                    for (uint8_t i = 0; i < _sendReportLen; i++) {
-                        Serial.printf("0x%02X - ", ((const uint8_t *)_sendReport)[i]);
-                    }
-                    Serial.println("");
-#endif
                     break;
                 default:
                     break;
@@ -237,7 +159,7 @@ public:
             break;
         }
     }
-
+public:
     bool end() {
         if (_running) {
             hci_power_control(HCI_POWER_OFF);
@@ -259,9 +181,9 @@ public:
         _needToSend = true;
         _sendReport = rpt;
         _sendReportLen = len;
-        lockBluetooth();
+        __lockBluetooth();
         hids_device_request_can_send_now_event(_con_handle);
-        unlockBluetooth();
+        __unlockBluetooth();
         while (connected() && _needToSend) {
             /* noop busy wait */
         }
@@ -274,14 +196,6 @@ public:
         }
         battery_service_server_set_battery_value(level);
         return true;
-    }
-
-    static void lockBluetooth() {
-        async_context_acquire_lock_blocking(cyw43_arch_async_context());
-    }
-
-    static void unlockBluetooth() {
-        async_context_release_lock(cyw43_arch_async_context());
     }
 
     uint8_t *_attdb = nullptr;
