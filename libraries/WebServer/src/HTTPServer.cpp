@@ -208,54 +208,54 @@ void HTTPServer::requestAuthentication(HTTPAuthMethod mode, const char* realm, c
 }
 
 RequestHandler& HTTPServer::on(const Uri &uri, HTTPServer::THandlerFunction handler) {
-  return on(uri, HTTP_ANY, handler);
+    return on(uri, HTTP_ANY, handler);
 }
 
 RequestHandler& HTTPServer::on(const Uri &uri, HTTPMethod method, HTTPServer::THandlerFunction fn) {
-  return on(uri, method, fn, _fileUploadHandler);
+    return on(uri, method, fn, _fileUploadHandler);
 }
 
 RequestHandler& HTTPServer::on(const Uri &uri, HTTPMethod method, HTTPServer::THandlerFunction fn, HTTPServer::THandlerFunction ufn) {
-  FunctionRequestHandler *handler = new FunctionRequestHandler(fn, ufn, uri, method);
-  _addRequestHandler(handler);
-  return *handler;
+    FunctionRequestHandler *handler = new FunctionRequestHandler(fn, ufn, uri, method);
+    _addRequestHandler(handler);
+    return *handler;
 }
 
 bool HTTPServer::removeRoute(const char *uri) {
-  return removeRoute(String(uri), HTTP_ANY);
+    return removeRoute(String(uri), HTTP_ANY);
 }
 
 bool HTTPServer::removeRoute(const char *uri, HTTPMethod method) {
-  return removeRoute(String(uri), method);
+    return removeRoute(String(uri), method);
 }
 
 bool HTTPServer::removeRoute(const String &uri) {
-  return removeRoute(uri, HTTP_ANY);
+    return removeRoute(uri, HTTP_ANY);
 }
 
 bool HTTPServer::removeRoute(const String &uri, HTTPMethod method) {
-  bool anyHandlerRemoved = false;
-  RequestHandler *handler = _firstHandler;
-  RequestHandler *previousHandler = nullptr;
+    bool anyHandlerRemoved = false;
+    RequestHandler *handler = _firstHandler;
+    RequestHandler *previousHandler = nullptr;
 
-  while (handler) {
-    if (handler->canHandle(method, uri)) {
-      if (_removeRequestHandler(handler)) {
-        anyHandlerRemoved = true;
-        // Move to the next handler
-        if (previousHandler) {
-          handler = previousHandler->next();
-        } else {
-          handler = _firstHandler;
+    while (handler) {
+        if (handler->canHandle(method, uri)) {
+            if (_removeRequestHandler(handler)) {
+                anyHandlerRemoved = true;
+                // Move to the next handler
+                if (previousHandler) {
+                    handler = previousHandler->next();
+                } else {
+                    handler = _firstHandler;
+                }
+                continue;
+            }
         }
-        continue;
-      }
+        previousHandler = handler;
+        handler = handler->next();
     }
-    previousHandler = handler;
-    handler = handler->next();
-  }
 
-  return anyHandlerRemoved;
+    return anyHandlerRemoved;
 }
 
 void HTTPServer::addHandler(RequestHandler* handler) {
@@ -263,7 +263,7 @@ void HTTPServer::addHandler(RequestHandler* handler) {
 }
 
 bool HTTPServer::removeHandler(RequestHandler *handler) {
-  return _removeRequestHandler(handler);
+    return _removeRequestHandler(handler);
 }
 
 void HTTPServer::_addRequestHandler(RequestHandler* handler) {
@@ -277,29 +277,29 @@ void HTTPServer::_addRequestHandler(RequestHandler* handler) {
 }
 
 bool HTTPServer::_removeRequestHandler(RequestHandler *handler) {
-  RequestHandler *current = _firstHandler;
-  RequestHandler *previous = nullptr;
+    RequestHandler *current = _firstHandler;
+    RequestHandler *previous = nullptr;
 
-  while (current != nullptr) {
-    if (current == handler) {
-      if (previous == nullptr) {
-        _firstHandler = current->next();
-      } else {
-        previous->next(current->next());
-      }
+    while (current != nullptr) {
+        if (current == handler) {
+            if (previous == nullptr) {
+                _firstHandler = current->next();
+            } else {
+                previous->next(current->next());
+            }
 
-      if (current == _lastHandler) {
-        _lastHandler = previous;
-      }
+            if (current == _lastHandler) {
+                _lastHandler = previous;
+            }
 
-      // Delete 'matching' handler
-      delete current;
-      return true;
+            // Delete 'matching' handler
+            delete current;
+            return true;
+        }
+        previous = current;
+        current = current->next();
     }
-    previous = current;
-    current = current->next();
-  }
-  return false;
+    return false;
 }
 
 void HTTPServer::serveStatic(const char* uri, FS& fs, const char* path, const char* cache_header) {
