@@ -115,6 +115,9 @@ public:
     HTTPMethod method() {
         return _currentMethod;
     }
+    WiFiClient& client() {
+        return *_currentClient;
+    }
     HTTPUpload& upload() {
         return *_currentUpload;
     }
