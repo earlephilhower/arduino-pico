@@ -18,12 +18,12 @@ WebServer server(80);
 const int led = LED_BUILTIN;
 
 // ON_STA_FILTER - Only accept requests coming from STA interface
-bool ON_STA_FILTER(WebServer &server) {
+bool ON_STA_FILTER(HTTPServer &server) {
   return WiFi.localIP() == server.client().localIP();
 }
 
 // ON_AP_FILTER - Only accept requests coming from AP interface
-bool ON_AP_FILTER(WebServer &server) {
+bool ON_AP_FILTER(HTTPServer &server) {
   return WiFi.softAPIP() == server.client().localIP();
 }
 
