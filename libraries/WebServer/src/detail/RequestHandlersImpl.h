@@ -53,21 +53,22 @@ public:
 
     bool canHandle(HTTPServer &server, HTTPMethod requestMethod, String requestUri) override {
         if (_method != HTTP_ANY && _method != requestMethod) {
-        return false;
+            return false;
         }
 
         return _uri->canHandle(requestUri, pathArgs) && (_filter != NULL ? _filter(server) : true);
     }
     bool canUpload(HTTPServer &server, String requestUri) override {
         if (!_ufn || !canHandle(server, HTTP_POST, requestUri)) {
-        return false;
+            return false;
         }
 
         return true;
     }
     bool canRaw(HTTPServer &server, String requestUri) override {
+        (void) requestUri;
         if (!_ufn || _method == HTTP_GET || (_filter != NULL ? _filter(server) == false : false)) {
-        return false;
+            return false;
         }
 
         return true;
@@ -139,15 +140,15 @@ public:
 
     bool canHandle(HTTPServer &server, HTTPMethod requestMethod, String requestUri) override {
         if (requestMethod != HTTP_GET) {
-        return false;
+            return false;
         }
 
         if ((_isFile && requestUri != _uri) || !requestUri.startsWith(_uri)) {
-        return false;
+            return false;
         }
 
         if (_filter != NULL ? _filter(server) == false : false) {
-        return false;
+            return false;
         }
 
         return true;
