@@ -40,3 +40,6 @@
 [submodule "libraries/FatFS/lib/SPIFTL"]
 	path = libraries/FatFS/lib/SPIFTL
 	url = https://github.com/earlephilhower/SPIFTL.git
+[submodule "libraries/AsyncUDP"]
+	path = libraries/AsyncUDP
+	url = https://github.com/earlephilhower/AsyncUDP.git
