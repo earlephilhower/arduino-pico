@@ -20,7 +20,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=Raspberry Pi RP2040 Boards
-version=3.9.2
+version=3.9.3
 
 # Required discoveries and monitors
 # ---------------------------------
