@@ -1,5 +1,6 @@
 #include "NetBIOS.h"
 #include <functional>
+#include <lwip/ip.h>
 #include <lwip/netif.h>
 
 #define NBNS_PORT             137
@@ -92,17 +93,7 @@ void NetBIOS::_onPacket(AsyncUDPPacket &packet) {
                 append_32((void *)&nbnsa.ttl, 300000);
                 append_16((void *)&nbnsa.data_len, 6);
                 append_16((void *)&nbnsa.flags, 0);
-                nbnsa.addr = packet.localIP(); // Wrong, but better than nothing
-                // Iterate over all netifs, see if the incoming address matches one of the netmaskes networks
-                // TODO - is there an easier way of seeing whicn netif produced a packet?
-                for (auto netif = netif_list; netif; netif = netif->next) {
-                    auto maskedip = ip4_addr_get_u32(netif_ip4_addr(netif)) & ip4_addr_get_u32(netif_ip4_netmask(netif));
-                    auto maskedin = ((uint32_t)packet.localIP()) & ip4_addr_get_u32(netif_ip4_netmask(netif));
-                    if (maskedip == maskedin) {
-                        nbnsa.addr = ip4_addr_get_u32(netif_ip4_addr(netif));
-                        break;
-                    }
-                }
+                nbnsa.addr = ip4_addr_get_u32(&ip_current_netif()->ip_addr);
                 _udp.writeTo((uint8_t *)&nbnsa, sizeof(nbnsa), packet.remoteIP(), NBNS_PORT);
             }
         }
