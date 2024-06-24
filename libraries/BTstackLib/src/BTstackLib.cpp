@@ -526,6 +526,10 @@ const gatt_client_characteristic_t * BLECharacteristic::getCharacteristic(void) 
     return &characteristic;
 }
 
+gatt_client_notification_t *BLECharacteristic::getNotifier() {
+    return &notify;
+}
+
 
 BLEService::BLEService(void) {
 }
@@ -703,6 +707,7 @@ int  BTstackManager::writeCharacteristicWithoutResponse(BLEDevice * device, BLEC
 }
 int BTstackManager::subscribeForNotifications(BLEDevice * device, BLECharacteristic * characteristic) {
     gattAction = gattActionSubscribe;
+    gatt_client_listen_for_characteristic_value_updates(characteristic->getNotifier(), gatt_client_callback,  device->getHandle(), (gatt_client_characteristic_t*) characteristic->getCharacteristic());
     return gatt_client_write_client_characteristic_configuration(gatt_client_callback, device->getHandle(), (gatt_client_characteristic_t*) characteristic->getCharacteristic(),
             GATT_CLIENT_CHARACTERISTICS_CONFIGURATION_NOTIFICATION);
 }
@@ -713,6 +718,7 @@ int BTstackManager::subscribeForIndications(BLEDevice * device, BLECharacteristi
 }
 int BTstackManager::unsubscribeFromNotifications(BLEDevice * device, BLECharacteristic * characteristic) {
     gattAction = gattActionUnsubscribe;
+    gatt_client_stop_listening_for_characteristic_value_updates(characteristic->getNotifier());
     return gatt_client_write_client_characteristic_configuration(gatt_client_callback, device->getHandle(), (gatt_client_characteristic_t*) characteristic->getCharacteristic(),
             GATT_CLIENT_CHARACTERISTICS_CONFIGURATION_NONE);
 }
