@@ -85,5 +85,7 @@ int64_t Ticker::_alarm_callback(alarm_id_t id, void *user_data) {
     if (_this && _this->_callback_function) {
         _this->_callback_with_arg(_this->_callback_arg);
     }
+    _this->_alarm_id = -1;
+    _this->_callback_with_arg = nullptr;
     return 0; // These are only a 1-shot
 }
