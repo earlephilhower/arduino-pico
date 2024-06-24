@@ -84,6 +84,7 @@ extern "C" {
 
     class BLECharacteristic {
     private:
+        gatt_client_notification_t notify;
         gatt_client_characteristic_t characteristic;
         UUID uuid;
     public:
@@ -93,6 +94,7 @@ extern "C" {
         bool matches(UUID * uuid);
         bool isValueHandle(uint16_t value_handle);
         const gatt_client_characteristic_t * getCharacteristic();
+        gatt_client_notification_t *getNotifier();
     };
 
     class BLEService {
