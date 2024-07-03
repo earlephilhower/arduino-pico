@@ -1,10 +1,10 @@
-#define configNUM_CORES               2
-#define configUSE_CORE_AFFINITY       1
-#define configRUN_MULTIPLE_PRIORITIES 1
+#define configNUMBER_OF_CORES             2
+#define configUSE_CORE_AFFINITY           1
+#define configRUN_MULTIPLE_PRIORITIES     1
 
 #define configUSE_PREEMPTION              1
 #define configUSE_IDLE_HOOK               1
-#define configUSE_MINIMAL_IDLE_HOOK       1
+#define configUSE_PASSIVE_IDLE_HOOK       1
 #define configUSE_TICK_HOOK               1
 #define configCPU_CLOCK_HZ                ( ( unsigned long ) F_CPU  )
 #define configTICK_RATE_HZ                ( ( TickType_t ) 1000 )
@@ -38,7 +38,7 @@ extern unsigned long ulMainGetRunTimeCounterValue(void);
 #define portGET_RUN_TIME_COUNTER_VALUE() ulMainGetRunTimeCounterValue()
 
 /* Co-routine definitions. */
-#define configUSE_CO_ROUTINES           1
+#define configUSE_CO_ROUTINES           0
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
 
 /* Software timer definitions. */
@@ -99,12 +99,21 @@ extern unsigned long ulMainGetRunTimeCounterValue(void);
     See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY ( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 
-extern void rtosFatalError(void);
+#ifdef __cplusplus
+extern "C" {
+#endif
+void rtosFatalError(void);
+#ifdef __cplusplus
+};
+#endif
+
 #define configASSERT( x ) \
 	if( ( x ) == 0 ) { portDISABLE_INTERRUPTS(); rtosFatalError(); }
 
 #define configUSE_DYNAMIC_EXCEPTION_HANDLERS 0
 #define configSUPPORT_PICO_SYNC_INTEROP      1
 #define configSUPPORT_PICO_TIME_INTEROP      1
+
+#define LIB_PICO_MULTICORE 1
 
 #include "rp2040_config.h"
