@@ -36,6 +36,9 @@
                      "name": "Adafruit Feather RP2040 DVI"
                   },
                   {
+                     "name": "Adafruit Feather RP2040 Adalogger"
+                  },
+                  {
                      "name": "Adafruit Feather RP2040 RFM"
                   },
                   {
@@ -82,6 +85,9 @@
                   },
                   {
                      "name": "BridgeTek IDM2040-7A"
+                  },
+                  {
+                     "name": "BridgeTek IDM2040-43A"
                   },
                   {
                      "name": "Cytron Maker Nano RP2040"
@@ -157,6 +163,9 @@
                   },
                   {
                      "name": "Melopero Shake RP2040"
+                  },
+                  {
+                     "name": "METE HOCA Akana R1"
                   },
                   {
                      "name": "Neko Systems BL2040 Mini"
