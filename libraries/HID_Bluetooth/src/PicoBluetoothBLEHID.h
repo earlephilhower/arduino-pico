@@ -178,11 +178,13 @@ public:
         while (connected() && _needToSend) {
             /* noop busy wait */
         }
-        _needToSend = true;
-        _sendReport = rpt;
-        _sendReportLen = len;
         __lockBluetooth();
-        hids_device_request_can_send_now_event(_con_handle);
+        if (connected()) {
+            _needToSend = true;
+            _sendReport = rpt;
+            _sendReportLen = len;
+            hids_device_request_can_send_now_event(_con_handle);
+        }
         __unlockBluetooth();
         while (connected() && _needToSend) {
             /* noop busy wait */

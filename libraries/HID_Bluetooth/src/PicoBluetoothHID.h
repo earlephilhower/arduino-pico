@@ -142,12 +142,14 @@ public:
     }
 
     bool send(int id, void *rpt, int len) {
-        _needToSend = true;
-        _sendReportID = id;
-        _sendReport = rpt;
-        _sendReportLen = len;
         __lockBluetooth();
-        hid_device_request_can_send_now_event(getCID());
+        if (connected()) {
+            _needToSend = true;
+            _sendReportID = id;
+            _sendReport = rpt;
+            _sendReportLen = len;
+            hid_device_request_can_send_now_event(getCID());
+        }
         __unlockBluetooth();
         while (connected() && _needToSend) {
             /* noop busy wait */
