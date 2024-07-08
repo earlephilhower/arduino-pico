@@ -179,7 +179,11 @@ typedef std::vector<Cookie> CookieJar;
 class HTTPClient {
 public:
     HTTPClient() = default;
-    ~HTTPClient() = default;
+    ~HTTPClient() {
+        if (_clientMade) {
+            delete _clientMade;
+        }
+    }
     HTTPClient(HTTPClient&&) = default;
     HTTPClient& operator=(HTTPClient&&) = default;
 

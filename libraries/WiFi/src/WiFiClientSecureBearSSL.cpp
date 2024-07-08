@@ -123,6 +123,10 @@ WiFiClientSecureCtx::~WiFiClientSecureCtx() {
         _client->unref();
         _client = nullptr;
     }
+    if (_esp32_ta) {
+        delete _esp32_ta;
+    }
+
     _cipher_list = nullptr; // std::shared will free if last reference
     _freeSSL();
     stack_thunk_del_ref();
