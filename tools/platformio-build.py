@@ -190,7 +190,10 @@ else:
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
     ])
-
+    env.Append(ASFLAGS=[
+        "-iprefix" + os.path.join(FRAMEWORK_DIR),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+    ])
 
 def configure_usb_flags(cpp_defines):
     if "USE_TINYUSB" in cpp_defines:
