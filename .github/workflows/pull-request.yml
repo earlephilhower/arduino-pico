@@ -263,6 +263,6 @@ jobs:
         pio pkg install --global --tool symlink://.
     - name: Build Every Variant
       run: |
-        for b in $(cut -f1 -d. /home/runner/work/arduino-pico/arduino-pico/boards.txt | sed 's/#.*//' | sort -u); do
+        for b in $(cut -f1 -d. /home/runner/work/arduino-pico/arduino-pico/boards.txt | sed 's/#.*//' | sed 's/^menu$//' | sort -u); do
           pio ci --board=$b -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Bootsel/Bootsel.ino
         done
