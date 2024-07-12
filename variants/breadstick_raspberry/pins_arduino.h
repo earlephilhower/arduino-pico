@@ -11,6 +11,10 @@
 #define PIN_SERIAL1_TX (20u)
 #define PIN_SERIAL1_RX (21u)
 
+// Not pinned
+#define PIN_SERIAL2_TX (31)
+#define PIN_SERIAL2_RX (31)
+
 // SPI
 
 #define PIN_SPI1_MISO  (8u)
@@ -36,6 +40,7 @@
 #define ADC_RESOLUTION      (12u)
 #define WIRE_INTERFACES_COUNT (WIRE_HOWMANY)
 
+// TODO - fix to use newly defined common.h
 static const uint8_t D1 = (27u);
 static const uint8_t D2 = (26u);
 static const uint8_t D3 = (11u);
@@ -57,9 +62,9 @@ static const uint8_t D18 = (28u);
 
 
 #ifdef __PIN_A2
-static const uint8_t A2 = __PIN_A2;
+static const uint8_t A0 = __PIN_A0;
 #else
-static const uint8_t A2 = (26u);
+static const uint8_t A0 = (26u);
 #endif
 
 #ifdef __PIN_A1
@@ -69,15 +74,15 @@ static const uint8_t A1 = (27u);
 #endif
 
 #ifdef __PIN_A18
-static const uint8_t A18 = __PIN_A18;
+static const uint8_t A2 = __PIN_A2;
 #else
-static const uint8_t A18 = (28u);
+static const uint8_t A2 = (28u);
 #endif
 
 #ifdef __PIN_A17
-static const uint8_t A17 = __PIN_A17;
+static const uint8_t A3 = __PIN_A3;
 #else
-static const uint8_t A17 = (29u);
+static const uint8_t A3 = (29u);
 #endif
 
 static const uint8_t SS = PIN_SPI1_SS;
