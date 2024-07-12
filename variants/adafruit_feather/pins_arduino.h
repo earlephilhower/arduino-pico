@@ -41,4 +41,9 @@
 #define SPI_HOWMANY    (1u)
 #define WIRE_HOWMANY   (1u)
 
+// D pins
+#define D4             (6u)
+#define D5             (7u)
+#define D6             (8u)
+
 #include "../generic/common.h"
