@@ -223,3 +223,47 @@ jobs:
       run: pio ci --board=rpipicow -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/ArduinoOTA/examples/SignedOTA/SignedOTA.ino
     - name: Build Bluetooth Example
       run: pio ci --board=rpipicow -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" -O "build_flags=-DPIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" libraries/MouseBLE/examples/BLECircle/BLECircle.ino
+
+# Build every variant using PIO for simplicity
+  build-variants:
+    name: Build Every Variant
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'true'
+    - name: Initialize needed submodules
+      run: |
+        cd pico-sdk
+        git submodule update --init
+        cd ../libraries/Adafruit_TinyUSB_Arduino
+        git submodule update --init
+        cd ../..
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Cache PlatformIO
+      uses: actions/cache@v4
+      with:
+        path: ~/.platformio
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install --upgrade platformio
+        pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
+        pio pkg install --global --tool symlink://.
+    - name: Build Every Variant
+      run: |
+        # Temporarily remove bridgeteck since they had borked names and need an update to the PIO config
+        for b in $(cut -f1 -d. /home/runner/work/arduino-pico/arduino-pico/boards.txt | sed 's/#.*//' | sed 's/^menu$//' | sed 's/bridgetek.*//' | sort -u); do
+          pio ci --board=$b -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Bootsel/Bootsel.ino
+        done

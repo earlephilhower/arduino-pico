@@ -3,13 +3,13 @@
     "arduino": {
       "earlephilhower": {
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
-        "usb_vid": "0x2E8B",
-        "usb_pid": "0xF00A"
+        "usb_vid": "0x2E8A",
+        "usb_pid": "0x1041"
       }
     },
     "core": "earlephilhower",
     "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_BRIDGETEK_IDM2040-43A -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250 -DFT8XX_TYPE=BT883 -DDISPLAY_RES=WQVGA -DPLATFORM_RP2040",
+    "extra_flags": "-D ARDUINO_BRIDGETEK_IDM2040_7A -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250 -DFT8XX_TYPE=BT817 -DDISPLAY_RES=WVGA -DPLATFORM_RP2040",
     "f_cpu": "133000000L",
     "hwids": [
       [
@@ -17,12 +17,12 @@
         "0x00C0"
       ],
       [
-        "0x2E8B",
-        "0xF00A"
+        "0x2E8A",
+        "0x1041"
       ]
     ],
     "mcu": "rp2040",
-    "variant": "bridgetek_idm2040-43a"
+    "variant": "bridgetek_idm2040_7a"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",
@@ -32,7 +32,7 @@
   "frameworks": [
     "arduino"
   ],
-  "name": "IDM2040-43A",
+  "name": "IDM2040-7A",
   "upload": {
     "maximum_ram_size": 270336,
     "maximum_size": 8388608,
