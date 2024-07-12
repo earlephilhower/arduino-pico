@@ -41,15 +41,15 @@
 #define WIRE_HOWMANY   (2u)
 
 // D pins
-#define D2             (12u)
-#define D3             (5u)
-#define D4             (4u)
-#define D5             (14u)
-#define D7             (6u)
-#define D9             (7u)
-#define D10            (8u)
-#define D11            (9u)
-#define D12            (10u)
-#define D13            (11u)
+#define __PIN_D2             (12u)
+#define __PIN_D3             (5u)
+#define __PIN_D4             (4u)
+#define __PIN_D5             (14u)
+#define __PIN_D7             (6u)
+#define __PIN_D9             (7u)
+#define __PIN_D10            (8u)
+#define __PIN_D11            (9u)
+#define __PIN_D12            (10u)
+#define __PIN_D13            (11u)
 
 #include "../generic/common.h"
