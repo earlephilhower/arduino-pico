@@ -406,8 +406,8 @@ MakeBoard("artronshop_rp2_nano", "ArtronShop", "RP2 Nano", "0x2e8a", "0x000a", 2
 MakeBoard("breadstick_raspberry", "Breadstick", "Raspberry", "0x2e8a", "0x105e" , 500, "Breadstick_Raspberry", 16, "boot2_w25q080_2_padded_checksum", board_url="https://shop.breadstick.ca/products/raspberry-breadstick-rp2040")
 
 # BridgeTek
-MakeBoard("bridgetek_idm2040-7a", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040-7A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
-MakeBoard("bridgetek_idm2040-43a", "BridgeTek", "IDM2040-43A", "0x2e8b", "0xf00a", 250, "BRIDGETEK_IDM2040-43A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT883", "DISPLAY_RES=WQVGA", "PLATFORM_RP2040"])
+MakeBoard("bridgetek_idm2040_7a", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040_7A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
+MakeBoard("bridgetek_idm2040_43a", "BridgeTek", "IDM2040-43A", "0x2e8b", "0xf00a", 250, "BRIDGETEK_IDM2040_43A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT883", "DISPLAY_RES=WQVGA", "PLATFORM_RP2040"])
  
 # Cytron
 MakeBoard("cytron_maker_nano_rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
