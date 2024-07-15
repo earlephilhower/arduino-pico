@@ -356,14 +356,14 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
 .replace('USBPWR', str(pwr))\
 .replace(' EXTRA_INFO', m_extra.rstrip())
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
-    f = open(jsondir + "/" + name + ".json", "w", newline='\n')
+    f = open(jsondir + "/" + name + ".json", "w")
     f.write(json)
     f.close()
 
 pkgjson = json.load(open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json'))
 pkgjson['packages'][0]['platforms'][0]['boards'] = []
 
-sys.stdout = open(os.path.abspath(os.path.dirname(__file__)) + "/../boards.txt", "w", newline='\n')
+sys.stdout = open(os.path.abspath(os.path.dirname(__file__)) + "/../boards.txt", "w")
 WriteWarning()
 BuildGlobalMenuList()
 
@@ -406,9 +406,8 @@ MakeBoard("artronshop_rp2_nano", "ArtronShop", "RP2 Nano", "0x2e8a", "0x000a", 2
 MakeBoard("breadstick_raspberry", "Breadstick", "Raspberry", "0x2e8a", "0x105e" , 500, "Breadstick_Raspberry", 16, "boot2_w25q080_2_padded_checksum", board_url="https://shop.breadstick.ca/products/raspberry-breadstick-rp2040")
 
 # BridgeTek
-MakeBoard("bridgetek_idm2040_7a", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040_7A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
-MakeBoard("bridgetek_idm2040_43a", "BridgeTek", "IDM2040-43A", "0x2e8b", "0xf00a", 250, "BRIDGETEK_IDM2040_43A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT883", "DISPLAY_RES=WQVGA", "PLATFORM_RP2040"])
- 
+MakeBoard("bridgetek_idm2040-7a", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040-7A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
+
 # Cytron
 MakeBoard("cytron_maker_nano_rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_pi_rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x1000", 250, "CYTRON_MAKER_PI_RP2040", 2, "boot2_w25q080_2_padded_checksum")
@@ -432,11 +431,11 @@ MakeBoard("DudesCab", "L'atelier d'Arnoz", "DudesCab", "0x2e8a", "0x106F", 250, 
 # ElectronicCat
 MakeBoard("electroniccats_huntercat_nfc", "ElectronicCats", "HunterCat NFC RP2040", "0x2E8A", "0x1037", 500, "ELECTRONICCATS_HUNTERCAT_NFC", 2, "boot2_w25q080_2_padded_checksum")
 
-# EVN
-MakeBoard("evn_alpha", "EVN", "Alpha", "0x2e8a", "0xf00a", 500, "EVN_ALPHA", 16, "boot2_generic_03h_2_padded_checksum", board_url="https://coresg.tech/evn")
-
 # ExtremeElectronics
 MakeBoard("extelec_rc2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, "boot2_w25q080_2_padded_checksum")
+
+# Elecrow
+MakeBoard("elecrow_crowpanel_dvi", "Elecrow", "Elecrow RP2040 DVI", "0x2e85", "0xae27", 250, "ELECROW_CROWPANEL_RP2040_DVI", 8, "boot2_w25q080_2_padded_checksum")
 
 # GroundStudio
 MakeBoard('groundstudio_marble_pico', "GroundStudio", "Marble Pico", "0x2e8a", "0x0003", 500, "MARBLE_PICO", 8, "boot2_w25q16jvxq_4_padded_checksum", None, "https://ardushop.ro/2652-marble-pico.html")
@@ -533,5 +532,5 @@ MakeBoard("wiznet_5500_evb_pico", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029"
 MakeBoard("generic", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
 
 sys.stdout.close()
-with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w', newline='\n') as f:
+with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w') as f:
     f.write(json.dumps(pkgjson, indent=3))
