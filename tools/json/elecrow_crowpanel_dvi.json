@@ -3,8 +3,8 @@
     "arduino": {
       "earlephilhower": {
         "boot2_source": "boot2_w25q080_2_padded_checksum.S",
-        "usb_vid": "0x239a",
-        "usb_pid": "0x8127"
+        "usb_vid": "0x23EE",
+        "usb_pid": "0x8E27"
       }
     },
     "core": "earlephilhower",
@@ -17,12 +17,12 @@
         "0x00C0"
       ],
       [
-        "0x239a",
-        "0x8127"
+        "0x23EE",
+        "0x8E27"
       ]
     ],
     "mcu": "rp2040",
-    "variant": "elecrow_crowpanel_dvi"
+    "variant": "adafruit_feather_dvi"
   },
   "debug": {
     "jlink_device": "RP2040_M0_0",
@@ -32,7 +32,7 @@
   "frameworks": [
     "arduino"
   ],
-  "name": "CrowPanel RP2040 DVI",
+  "name": "Feather RP2040 DVI",
   "upload": {
     "maximum_ram_size": 270336,
     "maximum_size": 8388608,
