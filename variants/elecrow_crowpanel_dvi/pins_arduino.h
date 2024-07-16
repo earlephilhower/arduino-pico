@@ -1,7 +1,7 @@
 #pragma once
 
 // Pin definitions taken from:
-//    https://learn.adafruit.com/assets/100337
+//    https://www.elecrow.com
 
 // LEDs
 #define PIN_LED        (13u)
