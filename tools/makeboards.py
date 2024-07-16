@@ -435,7 +435,7 @@ MakeBoard("electroniccats_huntercat_nfc", "ElectronicCats", "HunterCat NFC RP204
 MakeBoard("extelec_rc2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, "boot2_w25q080_2_padded_checksum")
 
 # Elecrow
-MakeBoard("elecrow_crowpanel_dvi", "Elecrow", "Elecrow RP2040 DVI", "0x239a", "0x8127", 250, "ELECROW_CROWPANEL_RP2040_DVI", 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_dvi", "Elecrow", "CrowPanel RP2040 DVI", "0x23ee", "0x8e27", 250, "ELECROW_CROWPANEL_RP2040_DVI", 8, "boot2_w25q080_2_padded_checksum")
 
 # GroundStudio
 MakeBoard('groundstudio_marble_pico', "GroundStudio", "Marble Pico", "0x2e8a", "0x0003", 500, "MARBLE_PICO", 8, "boot2_w25q16jvxq_4_padded_checksum", None, "https://ardushop.ro/2652-marble-pico.html")
