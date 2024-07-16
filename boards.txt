@@ -8548,16 +8548,16 @@ extelec_rc2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 # Elecrow CrowPanel RP2040 DVI
 # -----------------------------------
 elecrow_crowpanel_dvi.name=Elecrow CrowPanel RP2040 DVI
-elecrow_crowpanel_dvi.vid.0=0x2e85
-elecrow_crowpanel_dvi.pid.0=0xae27
-elecrow_crowpanel_dvi.vid.1=0x2e85
+elecrow_crowpanel_dvi.vid.0=0x239a
+elecrow_crowpanel_dvi.pid.0=0x8127
+elecrow_crowpanel_dvi.vid.1=0x239a
 elecrow_crowpanel_dvi.pid.1=0xc127
-elecrow_crowpanel_dvi.upload_port.0.vid=0x2e85
-elecrow_crowpanel_dvi.upload_port.0.pid=0xae27
-elecrow_crowpanel_dvi.upload_port.1.vid=0x2e85
+elecrow_crowpanel_dvi.upload_port.0.vid=0x239a
+elecrow_crowpanel_dvi.upload_port.0.pid=0x8127
+elecrow_crowpanel_dvi.upload_port.1.vid=0x239a
 elecrow_crowpanel_dvi.upload_port.1.pid=0xc127
-elecrow_crowpanel_dvi.build.usbvid=-DUSBD_VID=0x2e85
-elecrow_crowpanel_dvi.build.usbpid=-DUSBD_PID=0xae27
+elecrow_crowpanel_dvi.build.usbvid=-DUSBD_VID=0x239a
+elecrow_crowpanel_dvi.build.usbpid=-DUSBD_PID=0x8127
 elecrow_crowpanel_dvi.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 elecrow_crowpanel_dvi.build.board=Elecrow_CrowPanel_RP2040_DVI
 elecrow_crowpanel_dvi.build.mcu=cortex-m0plus
