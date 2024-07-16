@@ -39,6 +39,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * DFRobot Beetle RP2040
 * ElectronicCats Hunter Cat NFC
 * EVN Alpha
+* Elecrow CrowPanel RP2040 DVI
 * ExtremeElectronics RC2040
 * GroundStudio Marble Pico
 * Invector Labs Challenger RP2040 WiFi
