@@ -435,6 +435,9 @@ MakeBoard("electroniccats_huntercat_nfc", "ElectronicCats", "HunterCat NFC RP204
 # EVN
 MakeBoard("evn_alpha", "EVN", "Alpha", "0x2e8a", "0xf00a", 500, "EVN_ALPHA", 16, "boot2_generic_03h_2_padded_checksum", board_url="https://coresg.tech/evn")
 
+# Elecrow
+MakeBoard("elecrow_crowpanel_dvi", "Elecrow", "CrowPanel", "0x23ee", "0x8e27", 250, "ELECROW_CROWPANEL_RP2040_DVI", 8, "boot2_w25q080_2_padded_checksum")
+
 # ExtremeElectronics
 MakeBoard("extelec_rc2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, "boot2_w25q080_2_padded_checksum")
 
