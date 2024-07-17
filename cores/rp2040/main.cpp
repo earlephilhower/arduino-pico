@@ -80,7 +80,36 @@ static struct _reent *_impure_ptr1 = nullptr;
 
 extern "C" int main() {
 #if F_CPU != 125000000
-    set_sys_clock_khz(F_CPU / 1000, true);
+
+    // Optimal core frequency (under and overvolting) based on
+    // https://forums.raspberrypi.com/viewtopic.php?p=1820686&sid=a1bc42fab114da743f958a5dbf160925#p1820686
+    uint32_t frequency_khz = F_CPU / 1000;
+    if (frequency_khz <= 120000) {
+        vreg_set_voltage(VREG_VOLTAGE_0_85);
+    } else if (frequency_khz <= 150000) {
+        vreg_set_voltage(VREG_VOLTAGE_0_90);
+    } else if (frequency_khz <= 180000) {
+        vreg_set_voltage(VREG_VOLTAGE_0_95);
+    } else if (frequency_khz <= 210000) {
+        vreg_set_voltage(VREG_VOLTAGE_1_00);
+    } else if (frequency_khz <= 240000) {
+        vreg_set_voltage(VREG_VOLTAGE_1_05);
+    } else if (frequency_khz <= 270000) {
+        vreg_set_voltage(VREG_VOLTAGE_1_10);
+    } else if (frequency_khz <= 300000) {
+        vreg_set_voltage(VREG_VOLTAGE_1_15);
+    } else if (frequency_khz <= 330000) {
+        vreg_set_voltage(VREG_VOLTAGE_1_20);
+    } else if (frequency_khz <= 360000) {
+        vreg_set_voltage(VREG_VOLTAGE_1_25);
+    } else if (frequency_khz <= 402000) {
+        vreg_set_voltage(VREG_VOLTAGE_1_30);
+    } else {
+        // If the frequency is out of the safe range, set to the highest safe voltage
+        vreg_set_voltage(VREG_VOLTAGE_1_30);
+    }
+    sleep_ms(1); // Allow time for voltage change
+    set_sys_clock_khz(frequency_khz, true); // Set the system clock frequency
 #endif
 
     // Let rest of core know if we're using FreeRTOS
