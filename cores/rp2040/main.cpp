@@ -22,6 +22,7 @@
 #include "RP2040USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
+#include <hardware/vreg.h>
 #include <reent.h>
 
 RP2040 rp2040;
