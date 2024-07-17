@@ -34,9 +34,10 @@ def BuildDebugLevel(name):
         print("%s.menu.dbglvl.%s.build.debug_level=%s" % (name, l[0], l[1]))
 
 def BuildFreq(name):
-    for f in [ 133,  50, 100, 120, 125, 128, 150, 175, 200, 225, 240, 250, 275, 300]:
+    for f in [ 133,  50, 100, 120, 125, 128, 150, 175, 200, 225, 240, 250, 275, 300, 402, 436]:
         warn = ""
         if f > 133: warn = " (Overclock)"
+        if f > 300: warn = " (Experimental, not all chips supported.)"
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
