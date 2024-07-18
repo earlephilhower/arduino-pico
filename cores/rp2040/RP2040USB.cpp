@@ -155,11 +155,52 @@ static uint8_t *GetDescHIDReport(int *len) {
     return __hid_report;
 }
 
+#define TUD_HID_REPORT_DESC_GAMEPAD16(...) \
+  HID_USAGE_PAGE ( HID_USAGE_PAGE_DESKTOP     )                 ,\
+  HID_USAGE      ( HID_USAGE_DESKTOP_GAMEPAD  )                 ,\
+  HID_COLLECTION ( HID_COLLECTION_APPLICATION )                 ,\
+    /* Report ID if any */\
+    __VA_ARGS__ \
+    /* 16 bit X, Y, Z, Rz, Rx, Ry (min -32767, max 32767 ) */ \
+    HID_USAGE_PAGE     ( HID_USAGE_PAGE_DESKTOP                 ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_X                    ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_Y                    ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_Z                    ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_RZ                   ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_RX                   ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_RY                   ) ,\
+    HID_LOGICAL_MIN_N  ( -32767, 2                              ) ,\
+    HID_LOGICAL_MAX_N  ( 32767, 2                               ) ,\
+    HID_REPORT_COUNT   ( 6                                      ) ,\
+    HID_REPORT_SIZE    ( 16                                     ) ,\
+    HID_INPUT          ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE ) ,\
+    /* 8 bit DPad/Hat Button Map  */ \
+    HID_USAGE_PAGE     ( HID_USAGE_PAGE_DESKTOP                 ) ,\
+    HID_USAGE          ( HID_USAGE_DESKTOP_HAT_SWITCH           ) ,\
+    HID_LOGICAL_MIN    ( 1                                      ) ,\
+    HID_LOGICAL_MAX    ( 8                                      ) ,\
+    HID_PHYSICAL_MIN   ( 0                                      ) ,\
+    HID_PHYSICAL_MAX_N ( 315, 2                                 ) ,\
+    HID_REPORT_COUNT   ( 1                                      ) ,\
+    HID_REPORT_SIZE    ( 8                                      ) ,\
+    HID_INPUT          ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE ) ,\
+    /* 32 bit Button Map */ \
+    HID_USAGE_PAGE     ( HID_USAGE_PAGE_BUTTON                  ) ,\
+    HID_USAGE_MIN      ( 1                                      ) ,\
+    HID_USAGE_MAX      ( 32                                     ) ,\
+    HID_LOGICAL_MIN    ( 0                                      ) ,\
+    HID_LOGICAL_MAX    ( 1                                      ) ,\
+    HID_REPORT_COUNT   ( 32                                     ) ,\
+    HID_REPORT_SIZE    ( 1                                      ) ,\
+    HID_INPUT          ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE ) ,\
+  HID_COLLECTION_END \
+
+
 void __SetupDescHIDReport() {
     //allocate memory for the HID report descriptors. We don't use them, but need the size here.
     uint8_t desc_hid_report_mouse[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_absmouse[] = { TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(1)) };
-    uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(1)) };
+    uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD16(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)), TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2)) };
     int size = 0;
 
@@ -229,7 +270,7 @@ void __SetupDescHIDReport() {
                 reportid++;
                 offset += sizeof(desc_hid_report_absmouse);
             }
-            uint8_t desc_local[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(reportid)) };
+            uint8_t desc_local[] = { TUD_HID_REPORT_DESC_GAMEPAD16(HID_REPORT_ID(reportid)) };
             memcpy(__hid_report + offset, desc_local, sizeof(desc_local));
         }
     }

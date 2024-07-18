@@ -68,10 +68,10 @@ void KeyboardBLE_::sendReport(KeyReport* keys) {
     memcpy(data.keycode, keys->keys, sizeof(data.keycode));
 
     //stitch in report id
-    static uint8_t report[sizeof(hid_keyboard_report_t) +1];
+    static uint8_t report[sizeof(hid_keyboard_report_t) + 1];
     report[0] = __BLEGetKeyboardReportID();
     memcpy(&report[1], (uint8_t*)&data, sizeof(hid_keyboard_report_t));
-    PicoBluetoothBLEHID.send(&report, sizeof(hid_keyboard_report_t) +1);
+    PicoBluetoothBLEHID.send(&report, sizeof(hid_keyboard_report_t) + 1);
 }
 
 void KeyboardBLE_::sendConsumerReport(uint16_t key) {
