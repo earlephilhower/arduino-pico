@@ -65,7 +65,7 @@ void JoystickBLE_::setBattery(int lvl) {
 
 void JoystickBLE_::send_now() {
     //insert report ID; not part of the hid_gamepad_report_t
-    uint8_t *report = (uint8_t *)malloc(sizeof(hid_gamepad_report_t) +1);
+    uint8_t *report = (uint8_t *)malloc(sizeof(hid_gamepad16_report_t) + 1);
     if (report) {
         report[0] = __BLEGetJoystickReportID();
         memcpy(&report[1], (uint8_t*)&data, sizeof(data));

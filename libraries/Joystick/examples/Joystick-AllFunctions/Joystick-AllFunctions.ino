@@ -33,8 +33,8 @@ void loop() {
     }
     Joystick.useManualSend(false);
 
+    Joystick.use10bit();
     // Iterate all joystick axis
-    // Note: although you can use 0-1023 here (10bit), internally 8bits are used (-127 to 127)
     Serial.println("Joystick X");
     for (uint16_t i = 0; i < 1023; i++) {
       Joystick.X(i);
@@ -74,7 +74,7 @@ void loop() {
     // Use int8 mode for the axis.
     // Note: hat is not used differently.
     Serial.println("Now all axis in 8bit mode, -127 to 127");
-    Joystick.use8bit(true);
+    Joystick.use8bit();
     Serial.println("Joystick X");
     for (int16_t i = -127; i < 128; i++) {
       Joystick.X(i);
@@ -105,6 +105,6 @@ void loop() {
       Joystick.sliderRight(i);
       delay(2);
     } Joystick.sliderRight(0);
-    Joystick.use8bit(false);
+    Joystick.use10bit();
   }
 }

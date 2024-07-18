@@ -156,8 +156,6 @@ Switch axis value range between 10bit and 8bit.
 * Default: 10bit, range for an axis from 0 to 1023
 * 8bit mode: range from -127 to 127.
 
-__Note:__ due to the gamepad descriptor of tinyUSB, the maximum range is -127/127. 10bit mode enables mapping, not a higher resolution.
-
 
 #### Syntax 
 
@@ -215,6 +213,11 @@ void loop() {
 * [Joystick.sliderLeft()](#joysticksliderleft)
 * [Joystick.sliderRight()](#joysticksliderright)
 
+
+### `Joystick.use10bit()`
+### `Joystick.use16bit()`
+
+Set axis value range to 10-bit (0...1024) or 16-bit (-32767...32767).
 
 ### `Joystick.useManualSend()`
 

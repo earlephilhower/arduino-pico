@@ -68,7 +68,7 @@ void MouseBLE_::setAbsolute(bool absolute) {
 }
 
 void MouseBLE_::move(int x, int y, signed char wheel) {
-    static uint8_t report[sizeof(hid_abs_mouse_report_t) +1];
+    static uint8_t report[sizeof(hid_abs_mouse_report_t) + 1];
 
     if (!_absolute) {
         hid_mouse_report_t data;
