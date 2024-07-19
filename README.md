@@ -25,6 +25,10 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Adafruit QTPy RP2040
 * Adafruit STEMMA Friend RP2040
 * Adafruit Trinkey RP2040 QT
+* Amken Bunny
+* Amken Revelop
+* Amken Revelop Plus
+* Amken Revelop eS
 * Arduino Nano RP2040 Connect
 * ArtronShop RP2 Nano
 * Breadstick Raspberry
