@@ -396,6 +396,13 @@ MakeBoard("adafruit_trinkeyrp2040qt", "Adafruit", "Trinkey RP2040 QT", "0x239a",
 MakeBoard("adafruit_macropad2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", 250, "ADAFRUIT_MACROPAD_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_kb2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, "boot2_w25q080_2_padded_checksum")
 
+
+#Amken
+MakeBoard("amken_bunny","Amken","BunnyBoard","0x2770",["0x7303"],250,"AMKEN_BB",128,"boot2_w25q128jvxq_4_padded_checksum","","https://www.amken3d.com")
+MakeBoard("amken_revelop","Amken","Revelop","0x2770",["0x7304"],250,"AMKEN_REVELOP",32,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
+MakeBoard("amken_revelop_plus","Amken","Revelop Plus","0x2770",["0x7305"],250,"AMKEN_REVELOP_PLUS",32,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
+MakeBoard("amken_revelop_es","Amken","Revelop eS","0x2770",["0x7306"],250,"AMKEN_ES",16,"boot2_w25q16jvxq_4_padded_checksum","","https://www.amken3d.com")
+
 # Arduino
 MakeBoard("arduino_nano_connect", "Arduino", "Nano RP2040 Connect", "0x2341", ["0x005e", "0x805e", "0x015e", "0x025e"] , 250, "NANO_RP2040_CONNECT", 16, "boot2_w25q080_2_padded_checksum")
 
