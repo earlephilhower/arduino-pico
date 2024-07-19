@@ -481,7 +481,7 @@ MakeBoard("pimoroni_plasma2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 5
 MakeBoard("pimoroni_tiny2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, "boot2_w25q64jv_4_padded_checksum")
 
 # Pintronix
-MakeBoard("PinMax", "Pintronix", "PinMax", "0x2e8a", "0x9101", 250, "RASPBERRY_PI_PICO", 4, "boot2_w25q080_2_padded_checksum")
+MakeBoard("pintronix_pinmax", "Pintronix", "PinMax", "0x2e8a", "0x9101", 250, "PINTRONIX_PINMAX", 4, "boot2_w25q080_2_padded_checksum")
 
 # RAKwireless
 MakeBoard("rakwireless_rak11300", "RAKwireless", "RAK11300", "0x2e8a", "0x00c0", 500, "RAKWIRELESS_RAK11300", 2, "boot2_w25q16jvxq_4_padded_checksum", None, "https://store.rakwireless.com/products/wisduo-lpwan-module-rak11300")
