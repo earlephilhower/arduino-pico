@@ -2,7 +2,7 @@
 
 for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleFileDrive \
            ./libraries/LittleFS/src ./libraries/LittleFS/examples ./libraries/PWMAudio \
-           ./libraries/rp2040 ./libraries/SD ./libraries/ESP8266SdFat ./libraries/ADCInput \
+           ./libraries/rp2040 ./libraries/SD ./libraries/ADCInput \
            ./libraries/Servo ./libraries/SPI ./libraries/Wire ./libraries/PDM \
            ./libraries/WiFi ./libraries/lwIP_Ethernet ./libraries/lwIP_CYW43 \
            ./libraries/FreeRTOS/src ./libraries/LEAmDNS ./libraries/MD5Builder \
