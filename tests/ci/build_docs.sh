@@ -4,6 +4,6 @@
 
 set -ev
 
-cd $TRAVIS_BUILD_DIR/doc
+cd $GITHUB_WORKSPACE/doc
 
 SPHINXOPTS="-W" make html

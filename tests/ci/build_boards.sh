@@ -4,7 +4,7 @@
 
 set -ev
 
-cd $TRAVIS_BUILD_DIR
+cd $GITHUB_WORKSPACE
 
 tools/boards.txt.py --boardsgen --ldgen --packagegen --docgen
 

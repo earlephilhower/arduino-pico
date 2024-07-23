@@ -2,7 +2,7 @@
 
 cache_dir=$(mktemp -d)
 
-source "$TRAVIS_BUILD_DIR"/tests/common.sh
+source "$GITHUB_WORKSPACE"/tests/common.sh
 
 install_arduino nodebug
 

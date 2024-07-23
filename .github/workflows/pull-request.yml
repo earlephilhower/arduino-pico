@@ -6,11 +6,6 @@ name: Arduino-Pico CI
 on:
   pull_request:
 
-env:
-  TRAVIS_BUILD_DIR: ${{ github.workspace }}
-  TRAVIS_TAG: ${{ github.ref }}
-
-
 jobs:
 
 # Consistent style, spelling
