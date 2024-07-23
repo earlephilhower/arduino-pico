@@ -33,7 +33,6 @@ jobs:
 #         pip install --upgrade platformio
     - name: Deploy updated JSON
       env:
-        TRAVIS_BUILD_DIR: ${{ github.workspace }}
         BUILD_TYPE: package
         CI_GITHUB_API_KEY: ${{ secrets.GITHUB_TOKEN }}
         PLATFORMIO_AUTH_TOKEN: ${{ secrets.PLATFORMIO_AUTH_TOKEN }}

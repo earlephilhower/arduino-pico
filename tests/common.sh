@@ -230,9 +230,9 @@ function install_arduino()
 {
     local debug=$1
     # Install Arduino IDE and required libraries
-    cd $TRAVIS_BUILD_DIR
-    install_ide $HOME/arduino_ide $TRAVIS_BUILD_DIR $debug
-    cd $TRAVIS_BUILD_DIR
+    cd $GITHUB_WORKSPACE
+    install_ide $HOME/arduino_ide $GITHUB_WORKSPACE $debug
+    cd $GITHUB_WORKSPACE
     install_libraries
 }
 
@@ -244,7 +244,7 @@ function build_sketches_with_arduino()
 
     # Compile sketches
     build_sketches $HOME/arduino_ide $HOME/arduino_ide/examples "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
-    build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
+    build_sketches $HOME/arduino_ide $GITHUB_WORKSPACE/libraries "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
 
     # Generate size report
     cat size.log
@@ -253,11 +253,11 @@ function build_sketches_with_arduino()
 
 set -e
 
-if [ -z "$TRAVIS_BUILD_DIR" ]; then
-    echo "TRAVIS_BUILD_DIR is not set, trying to guess:"
+if [ -z "$GITHUB_WORKSPACE" ]; then
+    echo "GITHUB_WORKSPACE is not set, trying to guess:"
     pushd $(dirname $0)/../ > /dev/null
-    TRAVIS_BUILD_DIR=$PWD
+    GITHUB_WORKSPACE=$PWD
     popd > /dev/null
-    echo "TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR"
+    echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
 fi
 
