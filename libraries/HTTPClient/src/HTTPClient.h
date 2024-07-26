@@ -35,9 +35,9 @@
 #include <memory>
 #include <vector>
 
-#ifdef DEBUG_ESP_HTTP_CLIENT
-#ifdef DEBUG_ESP_PORT
-#define DEBUG_HTTPCLIENT(fmt, ...) DEBUG_ESP_PORT.printf_P( (PGM_P)PSTR(fmt), ## __VA_ARGS__ )
+#ifdef DEBUG_RP2040_CORE
+#ifdef DEBUG_RP2040_PORT
+#define DEBUG_HTTPCLIENT(fmt, ...) DEBUG_RP2040_PORT.printf_P( (PGM_P)PSTR(fmt), ## __VA_ARGS__ )
 #endif
 #endif
 
