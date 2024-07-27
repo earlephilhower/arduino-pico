@@ -427,18 +427,20 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
-    if (_intrPin < 0) {
-        __removeEthernetPacketHandler(_phID);
-    } else {
-        detachInterrupt(_intrPin);
-        __removeEthernetGPIO(_intrPin);
+    if (_started) {
+        if (_intrPin < 0) {
+            __removeEthernetPacketHandler(_phID);
+        } else {
+            detachInterrupt(_intrPin);
+            __removeEthernetGPIO(_intrPin);
+        }
+
+        RawDev::end();
+
+        netif_remove(&_netif);
+
+        _started = false;
     }
-
-    RawDev::end();
-
-    netif_remove(&_netif);
-
-    _started = false;
 }
 
 template<class RawDev>
