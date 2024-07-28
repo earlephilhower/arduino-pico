@@ -171,7 +171,7 @@ public:
         _on_rx = handler;
     }
 
-#ifdef DEBUG_ESP_CORE
+#ifdef DEBUG_RP2040_CORE
     // this helper is ready to be used when debugging UDP
     void printChain(const pbuf* pb, const char* msg, size_t n) const {
         // printf the pb pbuf chain, buffered and all at once

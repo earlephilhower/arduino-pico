@@ -39,7 +39,7 @@ extern "C" void netif_status_changed(struct netif* netif) {
 
 bool LwipIntf::stateChangeSysCB(LwipIntf::CBType&& cb) {
     if (netifStatusChangeListLength >= NETIF_STATUS_CB_SIZE) {
-#if defined(DEBUG_ESP_CORE)
+#if defined(DEBUG_RP2040_CORE)
         DEBUGV("NETIF_STATUS_CB_SIZE is too low\n");
 #endif
         return false;

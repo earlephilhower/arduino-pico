@@ -31,9 +31,9 @@
 #include <WiFiUdp.h>
 #include <HTTPClient.h>
 
-#ifdef DEBUG_ESP_HTTP_UPDATE
-#ifdef DEBUG_ESP_PORT
-#define DEBUG_HTTP_UPDATE(fmt, ...) DEBUG_ESP_PORT.printf_P( (PGM_P)PSTR(fmt), ## __VA_ARGS__ )
+#ifdef DEBUG_RP2040_CORE
+#ifdef DEBUG_RP2040_PORT
+#define DEBUG_HTTP_UPDATE(fmt, ...) DEBUG_RP2040_PORT.printf_P( (PGM_P)PSTR(fmt), ## __VA_ARGS__ )
 #endif
 #endif
 

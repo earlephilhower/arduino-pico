@@ -29,18 +29,14 @@
 #include "WiFiClientSecureBearSSL.h"
 #include "WiFiNTP.h"
 #include "StackThunk.h"
-#include "lwip/opt.h"
-#include "lwip/ip.h"
-#include "lwip/tcp.h"
-#include "lwip/inet.h"
-#include "lwip/netif.h"
+#include <lwip/opt.h>
+#include <lwip/ip.h>
+#include <lwip/tcp.h>
+#include <lwip/inet.h>
+#include <lwip/netif.h>
 #include <include/ClientContext.h>
-//#include "c_types.h"
-//#include <mmu_iram.h>
-//#include <umm_malloc/umm_malloc.h>
-//#include <umm_malloc/umm_heap_select.h>
-#if 1
-#if !CORE_MOCK
+
+#if !defined(CORE_MOCK)
 
 // The BearSSL thunks in use for now
 #define br_ssl_engine_recvapp_ack thunk_br_ssl_engine_recvapp_ack
@@ -53,10 +49,9 @@
 #define br_ssl_engine_sendrec_buf thunk_br_ssl_engine_sendrec_buf
 
 #endif
-#endif
 
-#if defined(DEBUG_ESP_SSL) && defined(DEBUG_ESP_PORT)
-#define DEBUG_BSSL(fmt, ...)  DEBUG_ESP_PORT.printf_P((PGM_P)PSTR( "BSSL:" fmt), ## __VA_ARGS__)
+#if defined(DEBUG_RP2040_CORE) && defined(DEBUG_RP2040_PORT)
+#define DEBUG_BSSL(fmt, ...)  DEBUG_RP2040_PORT.printf_P((PGM_P)PSTR( "BSSL:" fmt), ## __VA_ARGS__)
 #else
 #define DEBUG_BSSL(...)
 #endif
@@ -721,12 +716,12 @@ extern "C" {
         if (!xc->done_cert) {
             br_sha1_update(&xc->sha1_cert, buf, len);
             br_x509_decoder_push(&xc->ctx, (const void*)buf, len);
-#if defined(DEBUG_ESP_SSL) && defined(DEBUG_ESP_PORT)
+#if defined(DEBUG_RP2040_CORE) && defined(DEBUG_RP2040_PORT)
             DEBUG_BSSL("CERT: ");
             for (size_t i = 0; i < len; i++) {
-                DEBUG_ESP_PORT.printf_P(PSTR("%02x "), buf[i] & 0xff);
+                DEBUG_RP2040_PORT.printf_P(PSTR("%02x "), buf[i] & 0xff);
             }
-            DEBUG_ESP_PORT.printf_P(PSTR("\n"));
+            DEBUG_RP2040_PORT.printf_P(PSTR("\n"));
 #endif
         }
     }
@@ -750,7 +745,7 @@ extern "C" {
         char res[20];
         br_sha1_out(&xc->sha1_cert, res);
         if (xc->match_fingerprint && memcmp(res, xc->match_fingerprint, sizeof(res))) {
-#ifdef DEBUG_ESP_SSL
+#if defined(DEBUG_RP2040_CORE) && defined(DEBUG_RP2040_PORT)
             DEBUG_BSSL("insecure_end_chain: Received cert FP doesn't match\n");
             char buff[3 * sizeof(res) + 1]; // 3 chars per byte XX_, and null
             buff[0] = 0;
@@ -1143,7 +1138,7 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
         }
     }
 
-#ifdef DEBUG_ESP_SSL
+#if defined(DEBUG_RP2040_CORE) && defined(DEBUG_RP2040_PORT)
     // BearSSL will reject all connections unless an authentication option is set, warn in DEBUG builds
     if (!_use_insecure && !_use_fingerprint && !_use_self_signed && !_knownkey && !_certStore && !_ta) {
         DEBUG_BSSL("Connection *will* fail, no authentication method is setup\n");
@@ -1213,7 +1208,7 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
     }
 
     auto ret = _wait_for_handshake();
-#ifdef DEBUG_ESP_SSL
+#if defined(DEBUG_RP2040_CORE) && defined(DEBUG_RP2040_PORT)
     if (!ret) {
         char err[256];
         getLastSSLError(err, sizeof(err));
