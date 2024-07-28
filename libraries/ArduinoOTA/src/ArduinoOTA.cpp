@@ -22,23 +22,22 @@
 #include <functional>
 #include <WiFiUdp.h>
 #include "ArduinoOTA.h"
-#include "MD5Builder.h"
+#include <MD5Builder.h>
 #include <PicoOTA.h>
 #include <StreamString.h>
 
-#include "lwip/udp.h"
-#include "include/UdpContext.h"
+#include <lwip/udp.h>
+#include <include/UdpContext.h>
 
 #if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_MDNS)
 #include <LEAmDNS.h>
 #endif
 
-//#ifdef DEBUG_ESP_OTA
-//#ifdef DEBUG_ESP_PORT
-//#define OTA_DEBUG DEBUG_ESP_PORT
-//#endif
-//#endif
-#define OTA_DEBUG Serial
+#ifdef DEBUG_RP2040_CORE
+#ifdef DEBUG_RP2040_PORT
+#define OTA_DEBUG DEBUG_RP2040_PORT
+#endif
+#endif
 
 ArduinoOTAClass::ArduinoOTAClass() {
 }

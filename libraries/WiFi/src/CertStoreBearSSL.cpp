@@ -21,8 +21,8 @@
 #include <memory>
 
 
-#if defined(DEBUG_ESP_SSL) && defined(DEBUG_ESP_PORT)
-#define DEBUG_BSSL(fmt, ...)  DEBUG_ESP_PORT.printf_P((PGM_P)PSTR( "BSSL:" fmt), ## __VA_ARGS__)
+#if defined(DEBUG_RP2040_CORE) && defined(DEBUG_RP2040_PORT)
+#define DEBUG_BSSL(fmt, ...)  DEBUG_RP2040_PORT.printf_P((PGM_P)PSTR( "BSSL:" fmt), ## __VA_ARGS__)
 #else
 #define DEBUG_BSSL(...)
 #endif

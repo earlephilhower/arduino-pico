@@ -1,5 +1,5 @@
 /*
-    SD.h - A thin shim for Arduino ESP8266 Filesystems
+    SD.h - A thin shim for Arduino RP2040 Filesystems
     Copyright (c) 2019 Earle F. Philhower, III.  All rights reserved.
 
     This library is free software; you can redistribute it and/or
@@ -139,9 +139,9 @@ public:
 
     size_t size() {
         uint64_t sz = size64();
-#ifdef DEBUG_ESP_PORT
+#ifdef DEBUG_RP2040_PORT
         if (sz > std::numeric_limits<uint32_t>::max()) {
-            DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use size64().\n"), (long long)sz);
+            DEBUG_RP2040_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use size64().\n"), (long long)sz);
         }
 #endif
         return (size_t)sz;
