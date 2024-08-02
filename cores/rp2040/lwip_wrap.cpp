@@ -247,19 +247,19 @@ extern "C" {
     extern void __real_tcp_setprio(struct tcp_pcb *pcb, u8_t prio);
     void __wrap_tcp_setprio(struct tcp_pcb *pcb, u8_t prio) {
         LWIPMutex m;
-        return __real_tcp_setprio(pcb, prio);
+        __real_tcp_setprio(pcb, prio);
     }
 
     extern void __real_tcp_backlog_delayed(struct tcp_pcb* pcb);
     void __wrap_tcp_backlog_delayed(struct tcp_pcb* pcb) {
         LWIPMutex m;
-        return __real_tcp_backlog_delayed(pcb);
+        __real_tcp_backlog_delayed(pcb);
     }
 
     extern void __real_tcp_backlog_accepted(struct tcp_pcb* pcb);
     void __wrap_tcp_backlog_accepted(struct tcp_pcb* pcb) {
         LWIPMutex m;
-        return __real_tcp_backlog_accepted(pcb);
+        __real_tcp_backlog_accepted(pcb);
     }
     extern struct udp_pcb *__real_udp_new(void);
     struct udp_pcb *__wrap_udp_new(void) {
