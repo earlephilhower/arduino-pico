@@ -166,6 +166,7 @@
 
 -Wl,--wrap=tcp_arg
 -Wl,--wrap=tcp_new
+-Wl,--wrap=tcp_bind
 -Wl,--wrap=tcp_listen
 -Wl,--wrap=tcp_listen_with_backlog
 -Wl,--wrap=tcp_accept
