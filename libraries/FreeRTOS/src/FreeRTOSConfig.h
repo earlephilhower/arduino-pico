@@ -26,6 +26,7 @@
 #define configSUPPORT_STATIC_ALLOCATION   1
 #define configSTACK_DEPTH_TYPE            uint32_t
 #define configUSE_TASK_PREEMPTION_DISABLE 1
+#define configTASK_NOTIFICATION_ARRAY_ENTRIES 4
 
 #define configUSE_NEWLIB_REENTRANT        1
 #define configNEWLIB_REENTRANT_IS_DYNAMIC 1

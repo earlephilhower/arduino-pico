@@ -195,7 +195,7 @@ typedef struct {
     size_t bufsize;
     u16_t len;
     u16_t offset;
-    void *ret;
+    void **ret;
 } __pbuf_get_contiguous_req;
 
 typedef struct {

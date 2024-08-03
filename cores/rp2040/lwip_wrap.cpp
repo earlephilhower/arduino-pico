@@ -238,18 +238,6 @@ extern "C" {
         return __real_tcp_bind(pcb, ipaddr, port);
     }
 
-    extern struct tcp_pcb *__real_tcp_listen(struct tcp_pcb *pcb);
-    struct tcp_pcb *__wrap_tcp_listen(struct tcp_pcb *pcb) {
-        if (__isFreeRTOS) {
-            struct tcp_pcb *ret;
-            __tcp_listen_req req = { pcb, &ret };
-            __lwip(__tcp_listen, &req);
-            return ret;
-        }
-        LWIPMutex m;
-        return __real_tcp_listen(pcb);
-    }
-
     extern struct tcp_pcb *__real_tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog);
     struct tcp_pcb *__wrap_tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog) {
         if (__isFreeRTOS) {
