@@ -97,6 +97,7 @@ typedef enum {
 // Set up a local request buffer and call this to add to lwip work queue.  Will only return once lwip operation completed
 // LWIP callbacks will happen from the LWIP task at some future time
 void __lwip(__lwip_op op, void *req);
+void __lwipISR(__lwip_op op, void *req);
 
 extern void __real_lwip_init();
 extern u8_t __real_pbuf_header(struct pbuf *p, s16_t header_size);

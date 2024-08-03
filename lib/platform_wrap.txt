@@ -194,9 +194,6 @@
 
 -Wl,--wrap=sys_check_timeouts
 
--Wl,--wrap=dns_gethostbyname
--Wl,--wrap=dns_gethostbyname_addrtype
-
 -Wl,--wrap=raw_new
 -Wl,--wrap=raw_recv
 -Wl,--wrap=raw_bind

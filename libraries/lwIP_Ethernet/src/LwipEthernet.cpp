@@ -170,8 +170,8 @@ static async_context_t *lwip_ethernet_init_default_async_context(void) {
 uint32_t __ethernet_timeout_reached_calls = 0;
 static uint32_t _pollingPeriod = 20;
 // This will only be called under the protection of the async context mutex, so no re-entrancy checks needed
-static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
-    assert(worker == &ethernet_timeout_worker);
+extern "C" void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
+//    assert(worker == &ethernet_timeout_worker);
     __ethernet_timeout_reached_calls++;
     ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
     for (auto handlePacket : _handlePacketList) {
@@ -192,6 +192,7 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
     worker->work_pending = true;
     async_context_add_at_time_worker_in_ms(context, &ethernet_timeout_worker, _pollingPeriod);
 }
+extern void __startEthernetTask() __attribute((weak));
 
 void __startEthernetContext() {
     if (__ethernetContextInitted) {
@@ -209,7 +210,11 @@ void __startEthernetContext() {
     ethernet_timeout_worker.do_work = ethernet_timeout_reached;
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;
-    async_context_add_when_pending_worker(_context, &always_pending_update_timeout_worker);
+    if (__isFreeRTOS) {
+        __startEthernetTask();
+    } else {
+        async_context_add_when_pending_worker(_context, &always_pending_update_timeout_worker);
+    }
     __ethernetContextInitted = true;
 }
 

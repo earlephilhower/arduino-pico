@@ -218,7 +218,6 @@ extern "C" void __lwip(__lwip_op op, void *req) {
     ulTaskNotifyTakeIndexed(TASK_NOTIFY_LWIP_WAKEUP, pdTRUE, portMAX_DELAY);
 }
 
-
 static void lwipThread(void *params) {
     (void) params;
     LWIPWork w;
@@ -448,14 +447,14 @@ static void lwipThread(void *params) {
                 }
                 case __dns_gethostbyname:
                 {
-                    __dns_gethostbyname_req *r = (__dns_gethostbyname_req *)w.req;
-                    *(r->ret) = __real_dns_gethostbyname(r->hostname, r->addr, r->found, r->callback_arg);
+//                    __dns_gethostbyname_req *r = (__dns_gethostbyname_req *)w.req;
+//                    *(r->ret) = __real_dns_gethostbyname(r->hostname, r->addr, r->found, r->callback_arg);
                     break;
                 }
                 case __dns_gethostbyname_addrtype:
                 {
-                    __dns_gethostbyname_addrtype_req *r = (__dns_gethostbyname_addrtype_req *)w.req;
-                    *(r->ret) = __real_dns_gethostbyname_addrtype(r->hostname, r->addr, r->found, r->callback_arg, r->dns_addrtype);
+//                    __dns_gethostbyname_addrtype_req *r = (__dns_gethostbyname_addrtype_req *)w.req;
+//                    *(r->ret) = __real_dns_gethostbyname_addrtype(r->hostname, r->addr, r->found, r->callback_arg, r->dns_addrtype);
                     break;
                 }
                 case __raw_new:
@@ -511,6 +510,24 @@ static void lwipThread(void *params) {
             xTaskNotifyGiveIndexed(w.wakeup, TASK_NOTIFY_LWIP_WAKEUP);
         }
     }
+}
+
+
+
+extern "C" void ethernet_timeout_reached(void *context, void *worker);
+static TaskHandle_t __ethernetTask;
+
+static void ethernetTask(void *param) {
+    (void) param;
+    while (true) {
+        delay(20);
+        ethernet_timeout_reached(nullptr, nullptr);
+    }
+}
+
+void __startEthernetTask() {
+    xTaskCreate(ethernetTask, "Ethernet", 1024, 0, configMAX_PRIORITIES / 2 - 1, &__ethernetTask);
+    vTaskCoreAffinitySet(__ethernetTask, 1 << 0);
 }
 
 extern mutex_t __usb_mutex;

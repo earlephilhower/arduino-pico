@@ -36,7 +36,7 @@ target_compile_definitions(common INTERFACE
 
 target_compile_options(common INTERFACE
     -fno-exceptions
-    -Os
+    -Og
     $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 )
 
