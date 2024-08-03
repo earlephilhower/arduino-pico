@@ -218,9 +218,17 @@ extern "C" void __lwip(__lwip_op op, void *req) {
     ulTaskNotifyTakeIndexed(TASK_NOTIFY_LWIP_WAKEUP, pdTRUE, portMAX_DELAY);
 }
 
+extern "C" bool __isLWIPThread() {
+    TaskStatus_t t;
+    vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
+    return t.xHandle == __lwipTask;
+}
+
+
 static void lwipThread(void *params) {
     (void) params;
     LWIPWork w;
+    assert(__isLWIPThread());
 
     while (true) {
         if (xQueueReceive(__lwipQueue, &w, portMAX_DELAY)) {
@@ -447,14 +455,14 @@ static void lwipThread(void *params) {
                 }
                 case __dns_gethostbyname:
                 {
-//                    __dns_gethostbyname_req *r = (__dns_gethostbyname_req *)w.req;
-//                    *(r->ret) = __real_dns_gethostbyname(r->hostname, r->addr, r->found, r->callback_arg);
+                    __dns_gethostbyname_req *r = (__dns_gethostbyname_req *)w.req;
+                    *(r->ret) = __real_dns_gethostbyname(r->hostname, r->addr, r->found, r->callback_arg);
                     break;
                 }
                 case __dns_gethostbyname_addrtype:
                 {
-//                    __dns_gethostbyname_addrtype_req *r = (__dns_gethostbyname_addrtype_req *)w.req;
-//                    *(r->ret) = __real_dns_gethostbyname_addrtype(r->hostname, r->addr, r->found, r->callback_arg, r->dns_addrtype);
+                    __dns_gethostbyname_addrtype_req *r = (__dns_gethostbyname_addrtype_req *)w.req;
+                    *(r->ret) = __real_dns_gethostbyname_addrtype(r->hostname, r->addr, r->found, r->callback_arg, r->dns_addrtype);
                     break;
                 }
                 case __raw_new:
@@ -521,7 +529,10 @@ static void ethernetTask(void *param) {
     (void) param;
     while (true) {
         delay(20);
-        ethernet_timeout_reached(nullptr, nullptr);
+        {
+            LWIPMutex m;
+            ethernet_timeout_reached(nullptr, nullptr);
+        }
     }
 }
 
