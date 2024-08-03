@@ -120,7 +120,7 @@ Valid values for min and max are `BR_TLS10`, `BR_TLS11`, `BR_TLS12`.  Min and ma
 
 
 ESP32 Compatibility
-===================
+~~~~~~~~~~~~~~~~~~~
 Simple ESP32 ``WiFiClientSecure`` compatibility is built-in, allow for some sketches to run without any modification.
 The following methods are implemented:
 
