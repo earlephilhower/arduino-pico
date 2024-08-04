@@ -18,11 +18,14 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef _JOYSTICK_h
-#define _JOYSTICK_h
+#pragma once
+
+#ifdef USE_TINYUSB
+#error Joystick is not compatible with Adafruit TinyUSB
+#endif
 
 #include <HID_Joystick.h>
-#include "class/hid/hid.h"
+#include <class/hid/hid.h>
 
 //======================================================================
 class Joystick_ : public HID_Joystick {
@@ -31,5 +34,3 @@ public:
     virtual void send_now(void) override;
 };
 extern Joystick_ Joystick;
-
-#endif /* _JOYSTICK_h */

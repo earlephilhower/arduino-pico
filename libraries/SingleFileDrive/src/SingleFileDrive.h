@@ -19,6 +19,10 @@
 
 #pragma once
 
+#ifdef USE_TINYUSB
+#error SingleFileDrive is not compatible with Adafruit TinyUSB
+#endif
+
 #include <Arduino.h>
 
 class SingleFileDrive {
