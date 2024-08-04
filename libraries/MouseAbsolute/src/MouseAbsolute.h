@@ -1,5 +1,5 @@
 /*
-    Mouse.h
+    MouseAbsolute.h
 
     Copyright (c) 2015, Arduino LLC
     Original code (pre-library): Copyright (c) 2011, Peter Barrett
@@ -19,8 +19,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef MOUSEABSOLUTE_h
-#define MOUSEABSOLUTE_h
+#pragma once
+
+#ifdef USE_TINYUSB
+#error MouseAbsolute is not compatible with Adafruit TinyUSB
+#endif
 
 #include <HID_Mouse.h>
 
@@ -30,5 +33,3 @@ public:
     virtual void move(int x, int y, signed char wheel = 0) override;
 };
 extern MouseAbsolute_ MouseAbsolute;
-
-#endif

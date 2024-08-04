@@ -19,6 +19,10 @@
 
 #pragma once
 
+#ifdef USE_TINYUSB
+#error FatFSUSB is not compatible with Adafruit TinyUSB
+#endif
+
 #include <Arduino.h>
 
 class FatFSUSBClass {
