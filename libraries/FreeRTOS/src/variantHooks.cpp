@@ -524,6 +524,7 @@ static void lwipThread(void *params) {
 
 extern "C" void ethernet_timeout_reached(void *context, void *worker);
 static TaskHandle_t __ethernetTask;
+SemaphoreHandle_t __hwMutex;
 
 static void ethernetTask(void *param) {
     (void) param;
@@ -565,6 +566,7 @@ void startFreeRTOS(void) {
 
     // LWIP runs on core 0 only
     __lwipQueue = xQueueCreate(16, sizeof(LWIPWork));
+    __hwMutex = xSemaphoreCreateMutex();
     xTaskCreate(lwipThread, "LWIP", 1024, 0, configMAX_PRIORITIES / 2 - 1, &__lwipTask);
     vTaskCoreAffinitySet(__lwipTask, 1 << 0);
 

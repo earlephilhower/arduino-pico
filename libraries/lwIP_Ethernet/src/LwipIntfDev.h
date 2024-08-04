@@ -40,6 +40,9 @@
 #include <lwip/inet_chksum.h>
 #include <lwip/apps/sntp.h>
 
+#include <_freertos.h>
+extern SemaphoreHandle_t __hwMutex;
+
 
 #include "SPI.h"
 #include "LwipIntf.h"
@@ -369,9 +372,12 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         return false;
     }
 
+    __freertos_mutex_take(__hwMutex);
     if (!RawDev::begin(_macAddress, &_netif)) {
+        __freertos_mutex_give(__hwMutex);
         return false;
     }
+    __freertos_mutex_give(__hwMutex);
 
     if (_intrPin < 0) {
         _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
@@ -435,7 +441,9 @@ void LwipIntfDev<RawDev>::end() {
             __removeEthernetGPIO(_intrPin);
         }
 
+        __freertos_mutex_take(__hwMutex);
         RawDev::end();
+        __freertos_mutex_give(__hwMutex);
 
         netif_remove(&_netif);
 
@@ -466,7 +474,9 @@ template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
     ethernet_arch_lwip_begin();
+    __freertos_mutex_take(__hwMutex);
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
+    __freertos_mutex_give(__hwMutex);
     lid->_packetsSent++;
 #if PHY_HAS_CAPTURE
     if (phy_capture) {
@@ -550,7 +560,9 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
             return ERR_OK;
         }
 
+        __freertos_mutex_take(__hwMutex);
         uint16_t tot_len = RawDev::readFrameSize();
+        __freertos_mutex_give(__hwMutex);
         if (!tot_len) {
             return ERR_OK;
         }
@@ -568,11 +580,15 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
             if (pbuf) {
                 pbuf_free(pbuf);
             }
+            __freertos_mutex_take(__hwMutex);
             RawDev::discardFrame(tot_len);
+            __freertos_mutex_give(__hwMutex);
             return ERR_BUF;
         }
 
+        __freertos_mutex_take(__hwMutex);
         uint16_t len = RawDev::readFrameData((uint8_t*)pbuf->payload, tot_len);
+        __freertos_mutex_give(__hwMutex);
         if (len != tot_len) {
             // tot_len is given by readFrameSize()
             // and is supposed to be honoured by readFrameData()
