@@ -99,3 +99,13 @@ bootloader.
 void rp2040.rebootToBootloader()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Will reboot the RP2040 into USB UF2 upload mode.
+
+DMA-based MEMCPY
+----------------
+The onboard DMA engines can copy 4-byte aligned quantities faster than the CPU.
+
+void \*rp2040.memcpyDMA(void \*dest, const void \*src, size_t count);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Uses a DMA engine to transfer data from src to dest in 4-byte chunks without CPU
+intervention.  If any arguments are not 4-byte aligned, or if the count is not a
+multiple of 4, then it will fall back to CPU-managed memcpy.
