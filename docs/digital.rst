@@ -6,6 +6,10 @@ Board-Specific Pins
 The Raspberry Pi Pico RP2040 chip supports up to 30 digital I/O pins,
 however not all boards provide access to all pins.
 
+Pin Notation
+-----------
+Keep in mind that for using Digital Pins, you need to specify the number of the pin with letter D prepended to it, e.g. D4.
+
 Input Modes
 -----------
 The Raspberry Pi Pico has 3 Input modes settings for use with `pinMode`: `INPUT`, `INPUT_PULLUP` and `INPUT_PULLDOWN`
