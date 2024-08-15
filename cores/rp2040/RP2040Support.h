@@ -27,6 +27,7 @@
 #include <hardware/structs/rosc.h>
 #include <hardware/structs/systick.h>
 #include <pico/multicore.h>
+#include <hardware/dma.h>
 #include <pico/rand.h>
 #include <pico/util/queue.h>
 #include <pico/bootrom.h>
@@ -311,6 +312,36 @@ public:
         return id;
     }
 
+#pragma GCC push_options
+#pragma GCC optimize ("Os")
+    void *memcpyDMA(void *dest, const void *src, size_t n) {
+        // Allocate a DMA channel on 1st call, reuse it every call after
+        if (memcpyDMAChannel < 1) {
+            memcpyDMAChannel = dma_claim_unused_channel(true);
+            dma_channel_config c = dma_channel_get_default_config(memcpyDMAChannel);
+            channel_config_set_transfer_data_size(&c, DMA_SIZE_32);
+            channel_config_set_read_increment(&c, true);
+            channel_config_set_write_increment(&c, true);
+            channel_config_set_irq_quiet(&c, true);
+            dma_channel_set_config(memcpyDMAChannel, &c, false);
+        }
+        // If there's any misalignment or too small, use regular memcpy which can handle it
+        if ((n < 64) || (((uint32_t)dest) | ((uint32_t)src) | n) & 3) {
+            return memcpy(dest, src, n);
+        }
+
+        int words = n / 4;
+        dma_channel_set_read_addr(memcpyDMAChannel, src, false);
+        dma_channel_set_write_addr(memcpyDMAChannel, dest, false);
+        dma_channel_set_trans_count(memcpyDMAChannel, words, false);
+        dma_channel_start(memcpyDMAChannel);
+        while (dma_channel_is_busy(memcpyDMAChannel)) {
+            /* busy wait dma */
+        }
+        return dest;
+    }
+#pragma GCC pop_options
+
     // Multicore comms FIFO
     _MFIFO fifo;
 
@@ -336,4 +367,5 @@ private:
     PIO _pio;
     int _sm;
     PIOProgram *_ccountPgm;
+    int memcpyDMAChannel = -1;
 };
