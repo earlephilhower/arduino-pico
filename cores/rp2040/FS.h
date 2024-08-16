@@ -48,6 +48,14 @@ enum SeekMode {
     SeekEnd = 2
 };
 
+struct FSStat {
+    size_t size;
+    size_t blocksize;
+    time_t ctime;
+    time_t atime;
+    bool isDir;
+};
+
 class File : public Stream {
 public:
     File(FileImplPtr p = FileImplPtr(), FS *baseFS = nullptr) : _p(p), _fakeDir(nullptr), _baseFS(baseFS) {
@@ -118,6 +126,8 @@ public:
     time_t getLastWrite();
     time_t getCreationTime();
     void setTimeCallback(time_t (*cb)(void));
+
+    bool stat(FSStat *st);
 
 protected:
     FileImplPtr _p;
@@ -211,6 +221,9 @@ public:
 
     bool rmdir(const char* path);
     bool rmdir(const String& path);
+
+    bool stat(const char *path, FSStat *st);
+    bool stat(const String& path, FSStat *st);
 
     // Low-level FS routines, not needed by most applications
     bool gc();
