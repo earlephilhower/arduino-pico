@@ -148,6 +148,34 @@ public:
 
     bool format() override;
 
+    bool stat(const char *path, FSStat *st) override {
+        if (!_mounted || !path || !path[0]) {
+            return false;
+        }
+        bzero(st, sizeof(*st));
+        File32 f;
+        f = _fs.open(path, O_RDONLY);
+        if (!f) {
+            return false;
+        }
+        st->size = f.fileSize();
+        st->blocksize = clusterSize();
+        st->isDir = f.isDir();
+        if (st->isDir) {
+            st->size = 0;
+        }
+        uint16_t date;
+        uint16_t time;
+        if (f.getCreateDateTime(&date, &time)) {
+            st->ctime = FatToTimeT(date, time);
+        }
+        if (f.getAccessDate(&date)) {
+            st->atime = FatToTimeT(date, 0);
+        }
+        f.close();
+        return true;
+    }
+
     // The following are not common FS interfaces, but are needed only to
     // support the older SD.h exports
     uint8_t type() {

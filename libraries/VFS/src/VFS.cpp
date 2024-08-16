@@ -131,11 +131,10 @@ extern "C" int _lseek(int fd, int ptr, int dir) {
     return f->second.seek(ptr, d) ? 0 : 1;
 }
 
-
 extern "C" int _read(int fd, char *buf, int size) {
     auto f = files.find(fd);
     if (f == files.end()) {
-        return 0; // FD not found
+        return -1; // FD not found
     }
     return f->second.read((uint8_t *)buf, size);
 }
@@ -146,6 +145,42 @@ extern "C" int _unlink(char *name) {
         return f->remove(name) ? 0 : -1;
     }
     return -1;
+}
+
+extern "C" int _stat(const char *name, struct stat *st) {
+    auto f = pathToFS((const char **)&name);
+    if (f) {
+        fs::FSStat s;
+        if (!f->stat(name, &s)) {
+            return -1;
+        }
+        bzero(st, sizeof(*st));
+        st->st_size = s.size;
+        st->st_blksize = s.blocksize;
+        st->st_ctim.tv_sec = s.ctime;
+        st->st_atim.tv_sec = s.atime;
+        st->st_mode = s.isDir ? S_IFDIR : S_IFREG;
+        return 0;
+    }
+    return -1;
+}
+
+extern "C" int _fstat(int fd, struct stat *st) {
+    auto f = files.find(fd);
+    if (f == files.end()) {
+        return -1; // FD not found
+    }
+    fs::FSStat s;
+    if (!f->second.stat(&s)) {
+        return -1;
+    }
+    bzero(st, sizeof(*st));
+    st->st_size = s.size;
+    st->st_blksize = s.blocksize;
+    st->st_ctim.tv_sec = s.ctime;
+    st->st_ctim.tv_sec = s.ctime;
+    st->st_mode = s.isDir ? S_IFDIR : S_IFREG;
+    return 0;
 }
 
 VFSClass VFS;

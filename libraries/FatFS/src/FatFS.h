@@ -117,6 +117,26 @@ public:
         return _mounted ? (FR_OK == f_unlink(path)) : false;
     }
 
+    bool stat(const char *path, FSStat *st) override {
+        if (!_mounted || !path || !path[0]) {
+            return false;
+        }
+        bzero(st, sizeof(*st));
+        FILINFO fno;
+        if (FR_OK != f_stat(path, &fno)) {
+            return false;
+        }
+        st->size = fno.fsize;
+        st->blocksize = 0;
+        st->isDir = (fno.fattrib & AM_DIR) == AM_DIR;
+        if (st->isDir) {
+            st->size = 0;
+        }
+        st->ctime = FatToTimeT(fno.fdate, fno.ftime);
+        st->atime = FatToTimeT(fno.fdate, fno.ftime);
+        return true;
+    }
+
     bool setConfig(const FSConfig &cfg) override {
         if ((cfg._type != FatFSConfig::FSId) || _mounted) {
             DEBUGV("FatFS::setConfig: invalid config or already mounted\n");

@@ -126,6 +126,7 @@ public:
     virtual bool remove(const char* path) = 0;
     virtual bool mkdir(const char* path) = 0;
     virtual bool rmdir(const char* path) = 0;
+    virtual bool stat(const char *path, FSStat *st) = 0;
     virtual bool gc() {
         return true;    // May not be implemented in all file systems.
     }

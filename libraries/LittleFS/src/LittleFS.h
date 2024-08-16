@@ -237,6 +237,27 @@ public:
         return true;
     }
 
+    bool stat(const char *path, FSStat *st) override {
+        if (!_mounted || !path || !path[0]) {
+            return false;
+        }
+        lfs_info info;
+        if (lfs_stat(&_lfs, path, &info) < 0) {
+            return false;
+        }
+        st->size = info.size;
+        st->blocksize = _blockSize;
+        st->isDir = info.type == LFS_TYPE_DIR;
+        if (st->isDir) {
+            st->size = 0;
+        }
+        if (lfs_getattr(&_lfs, path, 'c', (void *)&st->ctime, sizeof(st->ctime)) != sizeof(st->ctime)) {
+            st->ctime = 0;
+        }
+        st->atime = st->ctime;
+        return true;
+    }
+
     time_t getCreationTime() override {
         time_t t;
         uint32_t t32b;
