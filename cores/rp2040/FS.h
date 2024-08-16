@@ -152,18 +152,8 @@ protected:
     time_t (*_timeCallback)(void) = nullptr;
 };
 
-// Backwards compatible, <4GB filesystem usage
-struct FSInfo {
-    size_t totalBytes;
-    size_t usedBytes;
-    size_t blockSize;
-    size_t pageSize;
-    size_t maxOpenFiles;
-    size_t maxPathLength;
-};
-
 // Support > 4GB filesystems (SD, etc.)
-struct FSInfo64 {
+struct FSInfo {
     uint64_t totalBytes;
     uint64_t usedBytes;
     size_t blockSize;
@@ -171,7 +161,6 @@ struct FSInfo64 {
     size_t maxOpenFiles;
     size_t maxPathLength;
 };
-
 
 class FSConfig {
 public:
@@ -201,7 +190,6 @@ public:
 
     bool format();
     bool info(FSInfo& info);
-    bool info64(FSInfo64& info);
 
     File open(const char* path, const char* mode);
     File open(const String& path, const char* mode);

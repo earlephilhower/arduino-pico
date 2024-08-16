@@ -92,7 +92,7 @@ public:
         return _mounted ? _fs.rename(pathFrom, pathTo) : false;
     }
 
-    bool info64(FSInfo64& info) override {
+    bool info(FSInfo& info) override {
         if (!_mounted) {
             DEBUGV("SDFS::info: FS not mounted\n");
             return false;
@@ -103,26 +103,6 @@ public:
         info.maxPathLength = 255; // TODO ?
         info.totalBytes = (uint64_t)_fs.vol()->clusterCount() * (uint64_t)info.blockSize;
         info.usedBytes = info.totalBytes - ((uint64_t)_fs.vol()->freeClusterCount() * (uint64_t)_fs.vol()->bytesPerCluster());
-        return true;
-    }
-
-    bool info(FSInfo& info) override {
-        FSInfo64 i;
-        if (!info64(i)) {
-            return false;
-        }
-        info.blockSize     = i.blockSize;
-        info.pageSize      = i.pageSize;
-        info.maxOpenFiles  = i.maxOpenFiles;
-        info.maxPathLength = i.maxPathLength;
-#ifdef DEBUG_RP2040_PORT
-        if (i.totalBytes > std::numeric_limits<uint32_t>::max()) {
-            // This catches both total and used cases, since used must always be < total.
-            DEBUG_RP2040_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use info64().\n"), (long long)i.totalBytes);
-        }
-#endif
-        info.totalBytes    = (size_t)i.totalBytes;
-        info.usedBytes     = (size_t)i.usedBytes;
         return true;
     }
 
