@@ -139,9 +139,9 @@ void HTTPUpdateServerTemplate<ServerType, ServerPort>::setup(WebServerTemplate<S
                     }
                 }
             } else {
-                FSInfo64 i;
+                FSInfo i;
                 LittleFS.begin();
-                LittleFS.info64(i);
+                LittleFS.info(i);
                 uint32_t maxSketchSpace = i.totalBytes - i.usedBytes;
                 if (!Update.begin(maxSketchSpace, U_FLASH)) { //start with max available size
                     _setUpdaterError();
