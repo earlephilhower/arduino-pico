@@ -88,7 +88,7 @@ public:
         return _mounted ? (FR_OK == f_rename(pathFrom, pathTo)) : false;
     }
 
-    bool info64(FSInfo64& info) override {
+    bool info(FSInfo& info) override {
         if (!_mounted) {
             DEBUGV("FatFS::info: FS not mounted\n");
             return false;
@@ -102,20 +102,6 @@ public:
         info.maxPathLength = 255; // TODO ?
         info.totalBytes = (uint64_t)(fs->n_fatent - 2) * (uint64_t)fs->csize * 512;
         info.usedBytes = info.totalBytes - (uint64_t)fre_clust * fs->csize * 512;
-        return true;
-    }
-
-    bool info(FSInfo& info) override {
-        FSInfo64 i;
-        if (!info64(i)) {
-            return false;
-        }
-        info.blockSize     = i.blockSize;
-        info.pageSize      = i.pageSize;
-        info.maxOpenFiles  = i.maxOpenFiles;
-        info.maxPathLength = i.maxPathLength;
-        info.totalBytes    = (size_t)i.totalBytes;
-        info.usedBytes     = (size_t)i.usedBytes;
         return true;
     }
 
