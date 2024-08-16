@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 
+# Enable PicoW driver support.  Compatible with standard Pico
+set(PICO_BOARD pico_w)
+
 include(pico_sdk_import.cmake)
 
 project(pico_lib C CXX ASM)
@@ -7,8 +10,9 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-# Enable PicoW driver support.  Compatible with standard Pico
-set(PICO_BOARD pico_w)
+
+set(PICO_PLATFORM rp2040)
+set(PICO_CYW43_SUPPORTED 1)
 
 # Initialize the SDK
 pico_sdk_init()
@@ -27,11 +31,16 @@ target_compile_definitions(common INTERFACE
     PICO_RP2040_B1_SUPPORTED=1
     PICO_RP2040_B2_SUPPORTED=1
     PICO_NO_BINARY_INFO=1
+    LIB_PICO_CYW43_ARCH=1
+    LIB_PICO_ASYNC_CONTEXT_THREADSAFE_BACKGROUND=1
+    CYW43_LWIP=1
     PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1
     LWIP_IPV4=1
     LWIP_UDP=1
     LWIP_IGMP=1
     LWIP_CHECKSUM_CTRL_PER_NETIF=1
+    PICO_PLATFORM=rp2040
+    PICO_CYW43_SUPPORTED=1
 )
 
 target_compile_options(common INTERFACE
@@ -111,6 +120,7 @@ target_compile_definitions(picow-noipv6-nobtc-noble-big PUBLIC
 
 set(picow_link_libraries
     common
+    pico_cyw43_driver
     cyw43_driver
     cyw43_driver_picow
     pico_async_context
