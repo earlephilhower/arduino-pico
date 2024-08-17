@@ -33,10 +33,14 @@ def BuildDebugLevel(name):
         print("%s.menu.dbglvl.%s=%s" % (name, l[0], l[0]))
         print("%s.menu.dbglvl.%s.build.debug_level=%s" % (name, l[0], l[1]))
 
-def BuildFreq(name):
-    for f in [ 133,  50, 100, 120, 125, 128, 150, 175, 200, 225, 240, 250, 275, 300]:
+def BuildFreq(name, defmhz):
+    out = 0
+    for f in [ defmhz, 50, 100, 120, 125, 128, 133, 150, 175, 200, 225, 240, 250, 275, 300]:
         warn = ""
-        if f > 133: warn = " (Overclock)"
+        if f > defmhz: warn = " (Overclock)"
+        if (out == 1) and (f == defmhz):
+            continue
+        out = 1
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
@@ -131,11 +135,13 @@ def BuildIPBTStack(name):
     print('%s.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2' % (name))
 
 
-def BuildUploadMethodMenu(name):
-    for a, b, c, d, e, f in [ ["default", "Default (UF2)", 256, "picoprobe_cmsis_dap.tcl", "uf2conv", "uf2conv-network"],
-                              ["picotool", "Picotool", 256, "picoprobe.tcl", "picotool", None],
-                              ["picoprobe_cmsis_dap", "Picoprobe/Debugprobe (CMSIS-DAP)", 256, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None],
+def BuildUploadMethodMenu(name, ram):
+    for a, b, c, d, e, f in [ ["default", "Default (UF2)", ram, "picoprobe_cmsis_dap.tcl", "uf2conv", "uf2conv-network"],
+                              ["picotool", "Picotool", ram, "picoprobe.tcl", "picotool", None],
+                              ["picoprobe_cmsis_dap", "Picoprobe/Debugprobe (CMSIS-DAP)", ram, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None],
                               ["picodebug", "Pico-Debug", 240, "picodebug.tcl", "picodebug", None] ]:
+        if (ram > 256) and (a == "picodebug"):
+            continue
         print("%s.menu.uploadmethod.%s=%s" % (name, a, b))
         print("%s.menu.uploadmethod.%s.build.ram_length=%dk" % (name, a, c))
         print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
@@ -249,7 +255,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         opts = "-march=armv6-m -mcpu=cortex-m0plus -mthumb"
     elif chip == "rp2350":
         tup =  "arm-none-eabi"
-        opts = "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse "
+        opts = "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse"
     elif chip == "rp2530rv":
         tup = "riscv-none-eabi"
         opts = "TBD"
@@ -270,7 +276,10 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, flashsizemb * 1024 * 1024, fssizelist)
-    BuildFreq(name)
+    if chip == "rp2350":
+        BuildFreq(name, 150)
+    else:
+        BuildFreq(name, 133)
     BuildOptimize(name)
     BuildRTTI(name)
     BuildStackProtect(name)
@@ -285,7 +294,10 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildBoot(name)
     elif name.startswith("adafruit") and "w25q080" in boot2:
         BuildBootW25Q(name)
-    BuildUploadMethodMenu(name)
+    if chip == "rp2040":
+        BuildUploadMethodMenu(name, 256)
+    else:
+        BuildUploadMethodMenu(name, 512)
     MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url)
     global pkgjson
     thisbrd = {}
@@ -388,6 +400,7 @@ BuildGlobalMenuList()
 # Raspberry Pi
 MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000b", 250, "RASPBERRY_PI_PICO_2", 2, "boot2_generic_03h_2_padded_checksum")
 
 # 0xCB
 MakeBoard("0xcb_helios", "rp2040", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, "boot2_w25q128jvxq_4_padded_checksum")

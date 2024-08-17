@@ -26,7 +26,9 @@
 #include <lwip/dns.h>
 #include <lwip/raw.h>
 #include <lwip/timeouts.h>
+#ifdef PICO_RP2040
 #include <pico/cyw43_arch.h>
+#endif
 #include <pico/mutex.h>
 #include <sys/lock.h>
 #include "_xoshiro.h"

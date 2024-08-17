@@ -60,8 +60,13 @@ public:
     void registerCore() {
         if (!__isFreeRTOS) {
             multicore_fifo_clear_irq();
+#ifdef PICO_RP2350
+            irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
+            irq_set_enabled(SIO_IRQ_FIFO, true);
+#else
             irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
             irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
+#endif
         }
         // FreeRTOS port.c will handle the IRQ hooking
     }
