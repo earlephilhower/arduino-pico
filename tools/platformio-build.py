@@ -19,26 +19,29 @@ from SCons.Script import DefaultEnvironment, Builder, AlwaysBuild
 env = DefaultEnvironment()
 platform = env.PioPlatform()
 board = env.BoardConfig()
+chip = board.get("build.mcu")
 upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
-#ram_size = board.get("upload.maximum_ram_size") # PlatformIO gives 264K here
-# but the RAM size we need is without the SCRATCH memory.
-if upload_protocol == "pico-debug":
-    ram_size = 240 * 1024 # pico-debug needs 16K of the upper memory for itself with pico-debug-gimmecache.uf2
-    # this only works when the user disables the USB stack.
-    if "PIO_FRAMEWORK_ARDUINO_NO_USB" not in env.Flatten(env.get("CPPDEFINES", [])):
-        sys.stderr.write("Must define PIO_FRAMEWORK_ARDUINO_NO_USB when using pico-debug!\n")
-        env.Exit(-1)
-else:
-    ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y).
-# Update available RAM size
-board.update("upload.maximum_ram_size", ram_size)
+ram_size = int(board.get("upload.maximum_ram_size"))
+if chip == "rp2040":
+    #ram_size = board.get("upload.maximum_ram_size") # PlatformIO gives 264K here
+    # but the RAM size we need is without the SCRATCH memory.
+    if upload_protocol == "pico-debug":
+        ram_size = 240 * 1024 # pico-debug needs 16K of the upper memory for itself with pico-debug-gimmecache.uf2
+        # this only works when the user disables the USB stack.
+        if "PIO_FRAMEWORK_ARDUINO_NO_USB" not in env.Flatten(env.get("CPPDEFINES", [])):
+            sys.stderr.write("Must define PIO_FRAMEWORK_ARDUINO_NO_USB when using pico-debug!\n")
+            env.Exit(-1)
+    else:
+        ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y).
+    # Update available RAM size
+    board.update("upload.maximum_ram_size", ram_size)
 
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
 
 # read includes from this file to add them into CPPPATH later for good IDE intellisense
 # will use original -iprefix <prefix> @<file> for compilation though.
-includes_file = os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_inc.txt")
+includes_file = os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_inc.txt")
 file_lines = []
 includes = []
 with open(includes_file, "r") as fp:
@@ -92,12 +95,12 @@ env.Replace(
 )
 
 # pico support library depends on ipv6 enable/disable
-libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libpico.a"))
+libpico = File(os.path.join(FRAMEWORK_DIR, "lib", chip, "libpico.a"))
 if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
     if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
-        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4-ipv6-bt.a"))
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", chip, "libipv4-ipv6-bt.a"))
     else:
-        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4-bt.a"))
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", chip, "libipv4-bt.a"))
     env.Append(
         CPPDEFINES=[
             ("ENABLE_CLASSIC", 1),
@@ -105,24 +108,112 @@ if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
         ]
     )
 elif "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
-    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4-ipv6.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", chip, "libipv4-ipv6.a"))
 else:
-    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", chip, "libipv4.a"))
 
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
+)
 
+if chip == "rp2040":
+    env.Append(
+        CPPDEFINES=[
+            ("ARDUINO", 10810),
+            "ARDUINO_ARCH_RP2040",
+            ("F_CPU", "$BOARD_F_CPU"),
+            ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
+            "ARM_MATH_CM0_FAMILY",
+            "ARM_MATH_CM0_PLUS",
+            "TARGET_RP2040",
+            ("PICO_RP2040", "1"),
+            # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
+            # so it's the original value for the full flash.
+            ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
+        ]
+    )
+elif chip == "rp2350":
+    env.Append(
+        CPPDEFINES=[
+            ("ARDUINO", 10810),
+            "ARDUINO_ARCH_RP2350",
+            ("F_CPU", "$BOARD_F_CPU"),
+            ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
+            ("CFG_TUSB_DEBUG", "0"),
+            ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
+            ("CFG_TUSB_OS", "OPT_OS_PICO"),
+            ("LIB_BOOT_STAGE2_HEADERS", "1"),
+            ("LIB_PICO_ATOMIC", "1"),
+            ("LIB_PICO_BIT_OPS", "1"),
+            ("LIB_PICO_BIT_OPS_PICO", "1"),
+            ("LIB_PICO_CLIB_INTERFACE", "1"),
+            ("LIB_PICO_CRT0", "1"),
+            ("LIB_PICO_CXX_OPTIONS", "1"),
+            ("LIB_PICO_DIVIDER", "1"),
+            ("LIB_PICO_DIVIDER_COMPILER", "1"),
+            ("LIB_PICO_DOUBLE", "1"),
+            ("LIB_PICO_DOUBLE_PICO", "1"),
+            ("LIB_PICO_FIX_RP2040_USB_DEVICE_ENUMERATION", "1"),
+            ("LIB_PICO_FLOAT", "1"),
+            ("LIB_PICO_FLOAT_PICO", "1"),
+            ("LIB_PICO_FLOAT_PICO_VFP", "1"),
+            ("LIB_PICO_INT64_OPS", "1"),
+            ("LIB_PICO_INT64_OPS_COMPILER", "1"),
+            ("LIB_PICO_MEM_OPS", "1"),
+            ("LIB_PICO_MEM_OPS_COMPILER", "1"),
+            ("LIB_PICO_NEWLIB_INTERFACE", "1"),
+            ("LIB_PICO_PLATFORM", "1"),
+            ("LIB_PICO_PLATFORM_COMPILER", "1"),
+            ("LIB_PICO_PLATFORM_PANIC", "1"),
+            ("LIB_PICO_PLATFORM_SECTIONS", "1"),
+            ("LIB_PICO_RUNTIME", "1"),
+            ("LIB_PICO_RUNTIME_INIT", "1"),
+            ("LIB_PICO_STANDARD_BINARY_INFO", "1"),
+            ("LIB_PICO_STANDARD_LINK", "1"),
+            ("LIB_PICO_SYNC", "1"),
+            ("LIB_PICO_SYNC_CRITICAL_SECTION", "1"),
+            ("LIB_PICO_SYNC_MUTEX", "1"),
+            ("LIB_PICO_SYNC_SEM", "1"),
+            ("LIB_PICO_TIME", "1"),
+            ("LIB_PICO_TIME_ADAPTER", "1"),
+            ("LIB_PICO_UNIQUE_ID", "1"),
+            ("LIB_PICO_UTIL", "1"),
+            ("LIB_TINYUSB_BOARD", "1"),
+            ("LIB_TINYUSB_DEVICE", "1"),
+            ("PICO_32BIT", "1"),
+            ("PICO_BOARD", '\\"pico2\\"'),
+            ("PICO_BUILD", "1"),
+            ("PICO_COPY_TO_RAM", "0"),
+            ("PICO_CXX_ENABLE_EXCEPTIONS", "0"),
+            ("PICO_NO_FLASH", "0"),
+            ("PICO_NO_HARDWARE", "0"),
+            ("PICO_ON_DEVICE", "1"),
+            ("PICO_RP2040_USB_DEVICE_ENUMERATION_FIX", "1"),
+            ("PICO_RP2040_USB_DEVICE_UFRAME_FIX", "1"),
+            ("PICO_RP2350", "1"),
+            ("PICO_USE_BLOCKED_RAM", "0"),
+            "TARGET_RP2350",
+            ("PICO_RP2350", "1"),
+            # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
+            # so it's the original value for the full flash.
+            ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
+        ]
+    )
+
+if chip == "rp2040":
+    toolopts = ["-march=armv6-m", "-mcpu=cortex-m0plus", "-mthumb"]
+elif chip == "rp2350":
+    toolopts = ["-mcpu=cortex-m33", "-mthumb", "-march=armv8-m.main+fp+dsp", "-mfloat-abi=softfp", "-mcmse"]
+
+env.Append(
     CCFLAGS=[
         "-Os", # Optimize for size by default
         "-Werror=return-type",
         "-Wno-psabi",
-        "-march=armv6-m",
-        "-mcpu=cortex-m0plus",
-        "-mthumb",
         "-ffunction-sections",
         "-fdata-sections",
         # -iprefix etc. added later if in build mode
-    ],
+    ] + toolopts,
 
     CFLAGS=[
         "-std=gnu17"
@@ -130,20 +221,6 @@ env.Append(
 
     CXXFLAGS=[
         "-std=gnu++17",
-    ],
-
-    CPPDEFINES=[
-        ("ARDUINO", 10810),
-        "ARDUINO_ARCH_RP2040",
-        ("F_CPU", "$BOARD_F_CPU"),
-        ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
-        "ARM_MATH_CM0_FAMILY",
-        "ARM_MATH_CM0_PLUS",
-        "TARGET_RP2040",
-        ("PICO_RP2040", "1"),
-        # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
-        # so it's the original value for the full flash.
-        ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
     ],
 
     CPPPATH=[
@@ -154,10 +231,7 @@ env.Append(
     ],
 
     LINKFLAGS=[
-        "-march=armv6-m",
-        "-mcpu=cortex-m0plus",
-        "-mthumb",
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_wrap.txt"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_wrap.txt"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_wrap.txt"),
         "-u_printf_float",
         "-u_scanf_float",
@@ -169,7 +243,7 @@ env.Append(
         "-Wl,--unresolved-symbols=report-all",
         "-Wl,--warn-common",
         "-Wl,--undefined=runtime_init_install_ram_vector_table"
-    ],
+    ] + toolopts,
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
 
@@ -181,12 +255,13 @@ env.Append(
 
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
-        File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "ota.o")),
+        File(os.path.join(FRAMEWORK_DIR, "lib", chip, "ota.o")),
         libpico,
         libpicow,
-        File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libbearssl.a")),
+        File(os.path.join(FRAMEWORK_DIR, "lib", chip, "libbearssl.a")),
         "m", "c", stdcpp_lib, "c"]
 )
+
 
 # expand with read includes for IDE, but use -iprefix command for actual building
 if not is_pio_build():
@@ -194,12 +269,12 @@ if not is_pio_build():
 else:
     env.Append(CCFLAGS=[
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_inc.txt"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_inc.txt"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_inc.txt")
     ])
     env.Append(ASFLAGS=[
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_inc.txt"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_inc.txt"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_inc.txt")
     ])
 
@@ -307,7 +382,7 @@ env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "include")])
  
 linkerscript_cmd = env.Command(
     os.path.join("$BUILD_DIR", "memmap_default.ld"),  # $TARGET
-    os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "memmap_default.ld"),  # $SOURCE
+    os.path.join(FRAMEWORK_DIR, "lib", chip, "memmap_default.ld"),  # $SOURCE
     env.VerboseAction(" ".join([
         '"$PYTHONEXE" "%s"' % os.path.join(
             FRAMEWORK_DIR, "tools", "simplesub.py"),
@@ -366,14 +441,14 @@ bootloader_src_file = board.get(
 # Only build the needed .S file, exclude all others via src_filter.
 env.BuildSources(
     os.path.join("$BUILD_DIR", "FrameworkArduinoBootloader"),
-    os.path.join(FRAMEWORK_DIR, "boot2", "rp2040"),
+    os.path.join(FRAMEWORK_DIR, "boot2", chip),
     "-<*> +<%s>" % bootloader_src_file,
 )
 # Add include flags for all .S assembly file builds
 env.Append(
     ASFLAGS=[
         "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src",
-                           "rp2040", "hardware_regs", "include"),
+                           chip, "hardware_regs", "include"),
         "-I", os.path.join(FRAMEWORK_DIR, "pico-sdk", "src",
                            "common", "pico_binary_info", "include")
     ]
