@@ -83,6 +83,6 @@ target_link_libraries(ota
 
 add_custom_command(TARGET ota POST_BUILD
         COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-ld -r -A armv6-m  -b binary -o ota.o ota.bin
-        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-objcopy --rename-section .data=.OTA ota.o ../../lib/ota.o
-        COMMAND cp ../ota_command.h ../../include/pico_base/pico/.
+        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-objcopy --rename-section .data=.OTA ota.o ../../lib/rp2040/ota.o
+        COMMAND cp ../ota_command.h ../../include/rp2040/pico_base/pico/.
 )

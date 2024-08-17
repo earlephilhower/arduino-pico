@@ -6,8 +6,8 @@ all T0 clean: bearssl/README.txt
 	PATH="$(PWD)/../../system/arm-none-eabi/bin/:$(PATH)" && arm-none-eabi-gcc --version && cd bearssl && $(MAKE) CONF=pico $@
 
 install: all version-header
-	cp bearssl/pico/libbearssl.a ../../lib/.
-	ar d ../../lib/libbearssl.a `ar t ../../lib/libbearssl.a | egrep 'x86|sse|pwr8|i62|m32|m62|m64|ct64|ctmul64'` # Remove unneeded objects
+	cp bearssl/pico/libbearssl.a ../../lib/rp2040/.
+	ar d ../../lib/rp2040/libbearssl.a `ar t ../../lib/rp2040/libbearssl.a | egrep 'x86|sse|pwr8|i62|m32|m62|m64|ct64|ctmul64'` # Remove unneeded objects
 	cp bearssl/inc/bearssl*.h ../../include/bearssl/.
 
 bearssl/README.txt:

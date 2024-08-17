@@ -211,6 +211,6 @@ foreach(tgt pico ipv4 ipv4-ipv6 ipv4-bt ipv4-ipv6-bt ipv4-big ipv4-ipv6-big ipv4
     add_custom_command(TARGET ${tgt} POST_BUILD
         COMMAND ar d lib${tgt}.a stdio.c.obj stdio_uart.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj pico_malloc.c.obj newlib_interface.c.obj
         COMMAND ar d lib${tgt}.a btstack_flash_bank.c.obj  # Need to override with our own implementation
-        COMMAND cp lib${tgt}.a ../../../lib/.
+        COMMAND cp lib${tgt}.a ../../../lib/rp2040/.
     )
 endforeach()

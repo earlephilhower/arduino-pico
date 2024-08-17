@@ -12,10 +12,10 @@ cmake ..
 make -j V=1
 
 # Put everything in its place
-mv generated/pico_base/pico/version.h ../../../include/pico_base/pico/.
 cp ../lwipopts.h ../../../include/.
-cp ../tusb_config.h ../../../include/.
-cp ../btstack_config.h ../../../include/.
+mv generated/pico_base/pico/version.h ../../../include/rp2040/pico_base/pico/.
+cp ../tusb_config.h ../../../include/rp2040/.
+cp ../btstack_config.h ../../../include/rp2040/.
 
 rm -rf boot
 mkdir boot
@@ -49,4 +49,4 @@ for type in boot2_generic_03h boot2_is25lp080 boot2_w25q080 boot2_w25x10cl; do
                    -s 0xffffffff $type.$div.bin ${type}_${div}_padded_checksum.S
     done
 done
-mv *.S ../../../../boot2/.
+mv *.S ../../../../boot2/rp2040/.
