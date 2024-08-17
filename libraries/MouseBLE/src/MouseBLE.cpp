@@ -20,7 +20,6 @@
 */
 
 #include "MouseBLE.h"
-#include <sdkoverride/tusb_absmouse.h>
 #include <HID_Bluetooth.h>
 #include <PicoBluetoothBLEHID.h>
 

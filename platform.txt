@@ -46,10 +46,10 @@ compiler.warning_flags=-Werror=return-type -Wno-psabi
 compiler.warning_flags.none=-Werror=return-type -Wno-psabi
 compiler.warning_flags.default=-Werror=return-type -Wno-psabi
 compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi
-compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi
+compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi -Wno-unused-parameter -Wno-missing-field-initializers
 
 compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=1 {build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
-compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 {build.usbpid} {build.usbvid} {build.usbpwr} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040 -DPICO_FLASH_SIZE_BYTES={build.flash_total}
+compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 {build.usbpid} {build.usbvid} {build.usbpwr} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040 -DPICO_FLASH_SIZE_BYTES={build.flash_total} -DPICO_RP2040=1
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/include"
 compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.flags.cmsis} {build.picodebugflags}
 compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
@@ -71,7 +71,7 @@ compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,
 compiler.elf2hex.bin.flags=-O binary
 compiler.elf2hex.hex.flags=-O ihex -R .eeprom
 compiler.elf2hex.cmd=arm-none-eabi-objcopy
-compiler.ldflags={compiler.wrap} -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common
+compiler.ldflags={compiler.wrap} -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--undefined=runtime_init_install_ram_vector_table
 compiler.size.cmd=arm-none-eabi-size
 compiler.define=-DARDUINO=
 compiler.readelf.cmd=arm-none-eabi-readelf

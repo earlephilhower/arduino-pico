@@ -200,7 +200,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         _initted = true;
     }
     // Disable any IRQs that are being used for SPI
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     DEBUGSPI("SPI: IRQ masks before = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
     for (auto entry : _usingIRQs) {
         int gpio = entry.first;
@@ -225,7 +225,7 @@ void SPIClassRP2040::endTransaction(void) {
         int mode = entry.second;
         gpio_set_irq_enabled(gpio, mode, true);
     }
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     (void) irq_ctrl_base;
     DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
     interrupts();

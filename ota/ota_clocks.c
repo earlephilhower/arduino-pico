@@ -23,12 +23,12 @@
 // - An auxiliary (glitchy) mux, whose output glitches when switched, but has
 //   no constraints on its inputs
 // Not all clocks have both types of mux.
-static inline bool has_glitchless_mux(enum clock_index clk_index) {
+static inline bool has_glitchless_mux(clock_handle_t clk_index) {
     return clk_index == clk_sys || clk_index == clk_ref;
 }
 
 /// \tag::clock_configure[]
-bool _clock_configure(enum clock_index clk_index, uint32_t src, uint32_t auxsrc, uint32_t src_freq, uint32_t freq, uint32_t div) {
+bool _clock_configure(clock_handle_t clk_index, uint32_t src, uint32_t auxsrc, uint32_t src_freq, uint32_t freq, uint32_t div) {
     //uint32_t div;
 
     assert(src_freq >= freq);

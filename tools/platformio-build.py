@@ -92,9 +92,9 @@ env.Replace(
 libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))
 if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
     if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
-        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-ipv6-btc-ble.a"))
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4-ipv6-bt.a"))
     else:
-        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-noipv6-btc-ble.a"))
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4-bt.a"))
     env.Append(
         CPPDEFINES=[
             ("ENABLE_CLASSIC", 1),
@@ -102,9 +102,9 @@ if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
         ]
     )
 elif "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
-    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-ipv6-nobtc-noble.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4-ipv6.a"))
 else:
-    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libpicow-noipv6-nobtc-noble.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4.a"))
 
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
@@ -137,6 +137,7 @@ env.Append(
         "ARM_MATH_CM0_FAMILY",
         "ARM_MATH_CM0_PLUS",
         "TARGET_RP2040",
+        ("PICO_RP2040", "1"),
         # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
         # so it's the original value for the full flash.
         ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
@@ -162,7 +163,8 @@ env.Append(
         "-Wl,--check-sections",
         "-Wl,--gc-sections",
         "-Wl,--unresolved-symbols=report-all",
-        "-Wl,--warn-common"
+        "-Wl,--warn-common",
+        "-Wl,--undefined=runtime_init_install_ram_vector_table"
     ],
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],

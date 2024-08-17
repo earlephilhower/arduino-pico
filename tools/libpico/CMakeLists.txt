@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 3.12)
 
+# Enable PicoW driver support.  Compatible with standard Pico
+set(PICO_BOARD pico_w)
+set(PICO_PLATFORM rp2040)
+set(PICO_CYW43_SUPPORTED 1)
+
 include(pico_sdk_import.cmake)
 
 project(pico_lib C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
-
-# Enable PicoW driver support.  Compatible with standard Pico
-set(PICO_BOARD pico_w)
 
 # Initialize the SDK
 pico_sdk_init()
@@ -32,6 +34,8 @@ target_compile_definitions(common INTERFACE
     LWIP_UDP=1
     LWIP_IGMP=1
     LWIP_CHECKSUM_CTRL_PER_NETIF=1
+    PICO_PLATFORM=rp2040
+    PICO_CYW43_SUPPORTED=1
 )
 
 target_compile_options(common INTERFACE
@@ -90,6 +94,7 @@ target_link_libraries(pico
     pico_platform
     pico_rand
     pico_runtime
+    pico_runtime_init
     pico_standard_link
     pico_stdlib
     pico_unique_id
@@ -98,19 +103,20 @@ target_link_libraries(pico
     tinyusb_device_unmarked
 )
 
-add_library(picow-noipv6-nobtc-noble STATIC)
-target_compile_definitions(picow-noipv6-nobtc-noble PUBLIC
+add_library(ipv4 STATIC)
+target_compile_definitions(ipv4 PUBLIC
     LWIP_IPV6=0
 )
 
-add_library(picow-noipv6-nobtc-noble-big STATIC)
-target_compile_definitions(picow-noipv6-nobtc-noble-big PUBLIC
+add_library(ipv4-big STATIC)
+target_compile_definitions(ipv4-big PUBLIC
     __LWIP_MEMMULT=2
     LWIP_IPV6=0
 )
 
 set(picow_link_libraries
     common
+    pico_cyw43_driver
     cyw43_driver
     cyw43_driver_picow
     pico_async_context
@@ -123,40 +129,40 @@ set(picow_link_libraries
     pico_stdlib
 )
 
-target_link_libraries(picow-noipv6-nobtc-noble
+target_link_libraries(ipv4
     ${picow_link_libraries}
 )
 
-target_link_libraries(picow-noipv6-nobtc-noble-big
+target_link_libraries(ipv4-big
     ${picow_link_libraries}
 )
 
-add_library(picow-ipv6-nobtc-noble STATIC)
-target_compile_definitions(picow-ipv6-nobtc-noble PUBLIC
+add_library(ipv4-ipv6 STATIC)
+target_compile_definitions(ipv4-ipv6 PUBLIC
     LWIP_IPV6=1
 )
 
-add_library(picow-ipv6-nobtc-noble-big STATIC)
-target_compile_definitions(picow-ipv6-nobtc-noble-big PUBLIC
+add_library(ipv4-ipv6-big STATIC)
+target_compile_definitions(ipv4-ipv6-big PUBLIC
     __LWIP_MEMMULT=2
     LWIP_IPV6=1
 )
 
-target_link_libraries(picow-ipv6-nobtc-noble
+target_link_libraries(ipv4-ipv6
     ${picow_link_libraries}
 )
 
-target_link_libraries(picow-ipv6-nobtc-noble-big
+target_link_libraries(ipv4-ipv6-big
     ${picow_link_libraries}
 )
 
-add_library(picow-noipv6-btc-ble STATIC)
-target_compile_definitions(picow-noipv6-btc-ble PUBLIC
+add_library(ipv4-bt STATIC)
+target_compile_definitions(ipv4-bt PUBLIC
     LWIP_IPV6=0
 )
 
-add_library(picow-noipv6-btc-ble-big STATIC)
-target_compile_definitions(picow-noipv6-btc-ble-big PUBLIC
+add_library(ipv4-bt-big STATIC)
+target_compile_definitions(ipv4-bt PUBLIC
     __LWIP_MEMMULT=2
     LWIP_IPV6=0
 )
@@ -169,41 +175,41 @@ set(picow_bt_link_libraries
     pico_btstack_sbc_decoder
 )
 
-target_link_libraries(picow-noipv6-btc-ble
+target_link_libraries(ipv4-bt
     ${picow_link_libraries}
     ${picow_bt_link_libraries}
 )
 
-target_link_libraries(picow-noipv6-btc-ble-big
+target_link_libraries(ipv4-bt-big
     ${picow_link_libraries}
     ${picow_bt_link_libraries}
 )
 
-add_library(picow-ipv6-btc-ble STATIC)
-target_compile_definitions(picow-ipv6-btc-ble PUBLIC
+add_library(ipv4-ipv6-bt STATIC)
+target_compile_definitions(ipv4-ipv6-bt PUBLIC
     LWIP_IPV6=1
 )
 
-add_library(picow-ipv6-btc-ble-big STATIC)
-target_compile_definitions(picow-ipv6-btc-ble-big PUBLIC
+add_library(ipv4-ipv6-bt-big STATIC)
+target_compile_definitions(ipv4-ipv6-bt-big PUBLIC
     __LWIP_MEMMULT=2
     LWIP_IPV6=1
 )
 
-target_link_libraries(picow-ipv6-btc-ble
+target_link_libraries(ipv4-ipv6-bt
     ${picow_link_libraries}
     ${picow_bt_link_libraries}
 )
 
-target_link_libraries(picow-ipv6-btc-ble-big
+target_link_libraries(ipv4-ipv6-bt-big
     ${picow_link_libraries}
     ${picow_bt_link_libraries}
 )
 
 
-foreach(tgt pico picow-noipv6-nobtc-noble picow-ipv6-nobtc-noble picow-noipv6-btc-ble picow-ipv6-btc-ble picow-noipv6-nobtc-noble-big picow-ipv6-nobtc-noble-big picow-noipv6-btc-ble-big picow-ipv6-btc-ble-big)
+foreach(tgt pico ipv4 ipv4-ipv6 ipv4-bt ipv4-ipv6-bt ipv4-big ipv4-ipv6-big ipv4-bt-big ipv4-ipv6-bt-big)
     add_custom_command(TARGET ${tgt} POST_BUILD
-        COMMAND ar d lib${tgt}.a stdio.c.obj stdio_uart.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj pico_malloc.c.obj
+        COMMAND ar d lib${tgt}.a stdio.c.obj stdio_uart.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj pico_malloc.c.obj newlib_interface.c.obj
         COMMAND ar d lib${tgt}.a btstack_flash_bank.c.obj  # Need to override with our own implementation
         COMMAND cp lib${tgt}.a ../../../lib/.
     )

@@ -14,6 +14,7 @@
 
 #define pio_tx_wrap_target 0
 #define pio_tx_wrap 5
+#define pio_tx_pio_version 0
 
 static const uint16_t pio_tx_program_instructions[] = {
     //     .wrap_target
@@ -31,6 +32,10 @@ static const struct pio_program pio_tx_program = {
     .instructions = pio_tx_program_instructions,
     .length = 6,
     .origin = -1,
+    .pio_version = 0,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
 };
 
 static inline pio_sm_config pio_tx_program_get_default_config(uint offset) {
@@ -47,6 +52,7 @@ static inline pio_sm_config pio_tx_program_get_default_config(uint offset) {
 
 #define pio_tx_inv_wrap_target 0
 #define pio_tx_inv_wrap 5
+#define pio_tx_inv_pio_version 0
 
 static const uint16_t pio_tx_inv_program_instructions[] = {
     //     .wrap_target
@@ -64,6 +70,10 @@ static const struct pio_program pio_tx_inv_program = {
     .instructions = pio_tx_inv_program_instructions,
     .length = 6,
     .origin = -1,
+    .pio_version = 0,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
 };
 
 static inline pio_sm_config pio_tx_inv_program_get_default_config(uint offset) {
@@ -100,6 +110,7 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 
 #define pio_rx_wrap_target 0
 #define pio_rx_wrap 6
+#define pio_rx_pio_version 0
 
 static const uint16_t pio_rx_program_instructions[] = {
     //     .wrap_target
@@ -118,6 +129,10 @@ static const struct pio_program pio_rx_program = {
     .instructions = pio_rx_program_instructions,
     .length = 7,
     .origin = -1,
+    .pio_version = 0,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
 };
 
 static inline pio_sm_config pio_rx_program_get_default_config(uint offset) {
@@ -133,6 +148,7 @@ static inline pio_sm_config pio_rx_program_get_default_config(uint offset) {
 
 #define pio_rx_inv_wrap_target 0
 #define pio_rx_inv_wrap 6
+#define pio_rx_inv_pio_version 0
 
 static const uint16_t pio_rx_inv_program_instructions[] = {
     //     .wrap_target
@@ -151,6 +167,10 @@ static const struct pio_program pio_rx_inv_program = {
     .instructions = pio_rx_inv_program_instructions,
     .length = 7,
     .origin = -1,
+    .pio_version = 0,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
 };
 
 static inline pio_sm_config pio_rx_inv_program_get_default_config(uint offset) {

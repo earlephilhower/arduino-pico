@@ -8,11 +8,6 @@
 
 #pragma once
 
-//necessary to implement the absolute mouse descriptor define,
-//remove if merged into TinyUSB
-#include <sdkoverride/tusb_absmouse.h>
-
-
 //override weak declarations to include HID report to report map.
 //done in each library (KeyboardBT,...)
 extern void __BTInstallKeyboard() __attribute__((weak));
