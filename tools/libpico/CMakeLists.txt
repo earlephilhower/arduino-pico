@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 
 # Enable PicoW driver support.  Compatible with standard Pico
 set(PICO_BOARD pico_w)
+set(PICO_PLATFORM rp2040)
+set(PICO_CYW43_SUPPORTED 1)
 
 include(pico_sdk_import.cmake)
 
@@ -9,10 +11,6 @@ project(pico_lib C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
-
-
-set(PICO_PLATFORM rp2040)
-set(PICO_CYW43_SUPPORTED 1)
 
 # Initialize the SDK
 pico_sdk_init()
@@ -99,6 +97,7 @@ target_link_libraries(pico
     pico_platform
     pico_rand
     pico_runtime
+    pico_runtime_init
     pico_standard_link
     pico_stdlib
     pico_unique_id

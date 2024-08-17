@@ -139,7 +139,7 @@ SECTIONS
     /* End of .text-like segments */
     __etext = .;
 
-   .ram_vector_table (COPY): {
+    .ram_vector_table (NOLOAD): {
         *(.ram_vector_table)
     } > RAM
 
