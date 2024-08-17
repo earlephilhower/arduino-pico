@@ -34,7 +34,7 @@
   ],
   "name": "Revelop Plus",
   "upload": {
-    "maximum_ram_size": 270336,
+    "maximum_ram_size": 262144,
     "maximum_size": 33554432,
     "require_upload_port": true,
     "native_usb": true,

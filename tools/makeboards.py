@@ -298,13 +298,13 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildUploadMethodMenu(name, 256)
     else:
         BuildUploadMethodMenu(name, 512)
-    MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url)
+    MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url)
     global pkgjson
     thisbrd = {}
     thisbrd['name'] = "%s %s" % (vendor_name, product_name)
     pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
-def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url):
+def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url):
     # TODO FIX: Use the same expanded PID list as in BuildHeader above?
     if isinstance(pid, list):
         pid = pid[0]
@@ -314,6 +314,14 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
             m_extra += '-D' + m_item + ' '
     else:
         m_extra = ''
+    if chip == "rp2040":
+        cpu = "cortex-m0plus"
+        ramsize = 256
+        jlink = "RP2040_M0_0"
+    elif chip == "rp2350":
+        cpu = "cortex-m33"
+        ramsize = 512
+        jlink = "RP2350_0"
     json = """{
   "build": {
     "arduino": {
@@ -324,8 +332,8 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
       }
     },
     "core": "earlephilhower",
-    "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR EXTRA_INFO",
+    "cpu": "CPU",
+    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_ARCHDEF -DUSBD_MAX_POWER_MA=USBPWR EXTRA_INFO",
     "f_cpu": "133000000L",
     "hwids": [
       [
@@ -337,20 +345,20 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
         "PID"
       ]
     ],
-    "mcu": "rp2040",
+    "mcu": "MCUCHIP",
     "variant": "VARIANTNAME"
   },
   "debug": {
-    "jlink_device": "RP2040_M0_0",
-    "openocd_target": "rp2040.cfg",
-    "svd_path": "rp2040.svd"
+    "jlink_device": "JLINK",
+    "openocd_target": "MCUCHIP.cfg",
+    "svd_path": "MCUCHIP.svd"
   },
   "frameworks": [
     "arduino"
   ],
   "name": "PRODUCTNAME",
   "upload": {
-    "maximum_ram_size": 270336,
+    "maximum_ram_size": RAMSIZE,
     "maximum_size": FLASHSIZE,
     "require_upload_port": true,
     "native_usb": true,
@@ -373,11 +381,16 @@ def MakeBoardJSON(name, vendor_name, product_name, vid, pid, pwr, boarddefine, f
 .replace('VARIANTNAME', name)\
 .replace('BOARDDEFINE', boarddefine)\
 .replace('BOOT2', boot2)\
+.replace('MCUCHIP', chip)\
+.replace('CPU', cpu)\
+.replace('ARCHDEF', chip.upper())\
+.replace('JLINK', jlink)\
 .replace('VID', vid.upper().replace("X", "x"))\
 .replace('PID', pid.upper().replace("X", "x"))\
 .replace('BOARDURL', board_url or 'https://www.raspberrypi.org/products/raspberry-pi-pico/')\
 .replace('VENDORNAME', vendor_name)\
 .replace('PRODUCTNAME', product_name)\
+.replace('RAMSIZE', str(ramsize * 1024))\
 .replace('FLASHSIZE', str(1024*1024*flashsizemb))\
 .replace('USBPWR', str(pwr))\
 .replace(' EXTRA_INFO', m_extra.rstrip())
