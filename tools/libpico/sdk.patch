@@ -1,0 +1,13 @@
+diff --git a/pico_sdk_init.cmake b/pico_sdk_init.cmake
+index 48b44db..eae83be 100644
+--- a/pico_sdk_init.cmake
++++ b/pico_sdk_init.cmake
+@@ -45,7 +45,7 @@ if (NOT TARGET _pico_sdk_pre_init_marker)
+         if (NOT CMAKE_PROJECT_NAME)
+             message(WARNING "pico_sdk_init() should be called after the project is created (and languages added)")
+         endif()
+-        add_subdirectory(${PICO_SDK_PATH} pico-sdk)
++        add_subdirectory(${PICO_SDK_PATH} pico-sdk-${cpu})
+     endmacro()
+ 
+     macro(add_sub_list_dirs var)

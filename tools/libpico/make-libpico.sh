@@ -6,17 +6,13 @@ set -x
 export PICO_SDK_PATH="$(cd ../../pico-sdk/; pwd)"
 export PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
 
+(cd ../../pico-sdk/ && git reset --hard && patch -p1 < ../tools/libpico/sdk.patch)
+
 rm -rf build
 mkdir build
 cd build
 cmake ..
 make -j
-
-# Put everything in its place
-#cp ../lwipopts.h ../../../include/.
-#mv generated/pico_base/pico/version.h ../../../include/rp2040/pico_base/pico/.
-#cp ../tusb_config.h ../../../include/rp2040/.
-#cp ../btstack_config.h ../../../include/rp2040/.
 
 rm -rf boot
 mkdir boot
@@ -52,7 +48,7 @@ for type in boot2_generic_03h boot2_is25lp080 boot2_w25q080 boot2_w25x10cl; do
 done
 mv *.S ../../../../boot2/rp2040/.
 
-#for type in boot2_at25sf128a boot2_generic_03h boot2_is25lp080 boot2_w25q080 boot2_w25x10cl; do
+# Some in the rp2350 boot2 directory don't compile(!?)
 for type in boot2_generic_03h boot2_w25q080; do
     for div in 2 4; do
         arm-none-eabi-gcc -mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -O3 \
@@ -83,3 +79,4 @@ for type in boot2_generic_03h boot2_w25q080; do
     done
 done
 mv *.S ../../../../boot2/rp2350/.
+(cd ../../../../pico-sdk/ && git reset --hard)
