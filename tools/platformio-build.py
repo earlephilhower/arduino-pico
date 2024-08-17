@@ -137,6 +137,7 @@ env.Append(
         "ARM_MATH_CM0_FAMILY",
         "ARM_MATH_CM0_PLUS",
         "TARGET_RP2040",
+        ("PICO_RP2040", "1"),
         # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
         # so it's the original value for the full flash.
         ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
@@ -162,7 +163,8 @@ env.Append(
         "-Wl,--check-sections",
         "-Wl,--gc-sections",
         "-Wl,--unresolved-symbols=report-all",
-        "-Wl,--warn-common"
+        "-Wl,--warn-common",
+        "-Wl,--undefined=runtime_init_install_ram_vector_table"
     ],
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
