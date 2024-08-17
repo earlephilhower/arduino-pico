@@ -38,11 +38,14 @@ assert os.path.isdir(FRAMEWORK_DIR)
 
 # read includes from this file to add them into CPPPATH later for good IDE intellisense
 # will use original -iprefix <prefix> @<file> for compilation though.
-includes_file = os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+includes_file = os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_inc.txt")
 file_lines = []
 includes = []
 with open(includes_file, "r") as fp:
     file_lines = fp.readlines()
+includes_file = os.path.join(FRAMEWORK_DIR, "lib", "core_inc.txt")
+with open(includes_file, "r") as fp:
+    file_lines = file_lines + fp.readlines()
 for l in file_lines:
     path = l.strip().replace("-iwithprefixbefore/", "").replace("/", os.sep)
     # emulate -iprefix <framework path>.
@@ -89,12 +92,12 @@ env.Replace(
 )
 
 # pico support library depends on ipv6 enable/disable
-libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "libpico.a"))
+libpico = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libpico.a"))
 if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
     if "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
-        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4-ipv6-bt.a"))
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4-ipv6-bt.a"))
     else:
-        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4-bt.a"))
+        libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4-bt.a"))
     env.Append(
         CPPDEFINES=[
             ("ENABLE_CLASSIC", 1),
@@ -102,9 +105,9 @@ if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
         ]
     )
 elif "PIO_FRAMEWORK_ARDUINO_ENABLE_IPV6" in flatten_cppdefines:
-    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4-ipv6.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4-ipv6.a"))
 else:
-    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "libipv4.a"))
+    libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libipv4.a"))
 
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
@@ -117,7 +120,7 @@ env.Append(
         "-mcpu=cortex-m0plus",
         "-mthumb",
         "-ffunction-sections",
-        "-fdata-sections"
+        "-fdata-sections",
         # -iprefix etc. added later if in build mode
     ],
 
@@ -154,7 +157,8 @@ env.Append(
         "-march=armv6-m",
         "-mcpu=cortex-m0plus",
         "-mthumb",
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_wrap.txt"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_wrap.txt"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_wrap.txt"),
         "-u_printf_float",
         "-u_scanf_float",
         # no cross-reference table, heavily spams the output
@@ -177,10 +181,10 @@ env.Append(
 
     # link lib/libpico.a by full path, ignore libstdc++
     LIBS=[
-        File(os.path.join(FRAMEWORK_DIR, "lib", "ota.o")),
+        File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "ota.o")),
         libpico,
         libpicow,
-        File(os.path.join(FRAMEWORK_DIR, "lib", "libbearssl.a")),
+        File(os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "libbearssl.a")),
         "m", "c", stdcpp_lib, "c"]
 )
 
@@ -190,11 +194,13 @@ if not is_pio_build():
 else:
     env.Append(CCFLAGS=[
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_inc.txt"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_inc.txt")
     ])
     env.Append(ASFLAGS=[
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
-        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "platform_inc.txt")
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "platform_inc.txt"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_inc.txt")
     ])
 
 def configure_usb_flags(cpp_defines):
@@ -301,7 +307,7 @@ env.Append(CPPPATH=[os.path.join(FRAMEWORK_DIR, "include")])
  
 linkerscript_cmd = env.Command(
     os.path.join("$BUILD_DIR", "memmap_default.ld"),  # $TARGET
-    os.path.join(FRAMEWORK_DIR, "lib", "memmap_default.ld"),  # $SOURCE
+    os.path.join(FRAMEWORK_DIR, "lib", "rp2040", "memmap_default.ld"),  # $SOURCE
     env.VerboseAction(" ".join([
         '"$PYTHONEXE" "%s"' % os.path.join(
             FRAMEWORK_DIR, "tools", "simplesub.py"),
@@ -360,7 +366,7 @@ bootloader_src_file = board.get(
 # Only build the needed .S file, exclude all others via src_filter.
 env.BuildSources(
     os.path.join("$BUILD_DIR", "FrameworkArduinoBootloader"),
-    os.path.join(FRAMEWORK_DIR, "boot2"),
+    os.path.join(FRAMEWORK_DIR, "boot2", "rp2040"),
     "-<*> +<%s>" % bootloader_src_file,
 )
 # Add include flags for all .S assembly file builds
