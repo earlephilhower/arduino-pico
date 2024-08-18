@@ -363,10 +363,10 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.picotool-f6fe6b7.240125a.zip",
-                     "archiveFileName": "i686-w64-mingw32.picotool-f6fe6b7.240125a.zip",
-                     "checksum": "SHA-256:75a6672f56972bdc95cd6422a4709c372cd84e08ac07eefd8b1c2842b8617d99",
-                     "size": "291095"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.picotool-8a9af99.240818.zip",
+                     "archiveFileName": "i686-w64-mingw32.picotool-8a9af99.240818.zip",
+                     "checksum": "SHA-256:74a8183ebdbc510e3d418a071c6c2e2dbeb33221f028c534141b470cd05fab2b",
+                     "size": "863373"
                   },
                   {
                      "host": "x86_64-apple-darwin",
@@ -384,10 +384,10 @@
                   },
                   {
                      "host": "x86_64-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.picotool-f6fe6b7.240125a.zip",
-                     "archiveFileName": "x86_64-w64-mingw32.picotool-f6fe6b7.240125a.zip",
-                     "checksum": "SHA-256:79a68e3d3d080cacfafc9c1546a3675ce5c7f858e6e85c690584251e63a2bee3",
-                     "size": "276468"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.picotool-8a9af99.240818.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.picotool-8a9af99.240818.zip",
+                     "checksum": "SHA-256:9b1c7ed158727ae854b737eec28911e06798179e14f811a25d90039ac1853009",
+                     "size": "764039"
                   }
                ]
             },
