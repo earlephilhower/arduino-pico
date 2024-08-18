@@ -205,6 +205,11 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.chip=%s" % (name, chip))
     print("%s.build.toolchain=%s" % (name, chaintuple))
     print("%s.build.toolchainopts=%s" % (name, chipoptions))
+    if chip == "rp2350":
+        uf2family = "--family rp2350-arm-s --abs-block"
+    elif chip == "rp2040":
+        uf2family = "--family rp2040"
+    print("%s.build.uf2family=%s" % (name, uf2family))
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
     print("%s.upload.wait_for_upload_port=true" % (name))

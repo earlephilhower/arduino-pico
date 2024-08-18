@@ -335,7 +335,7 @@
                "systems": [
                   {
                      "host": "arm64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.picotool-8a9af99.240818.tar.gzz",
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.picotool-8a9af99.240818.tar.gz",
                      "archiveFileName": "aarch64-apple-darwin20.4.picotool-8a9af99.240818.tar.gz",
                      "checksum": "SHA-256:5896d2e71c3a287a5c4d24e6fe8a3144e87bff1ff071d5a2095623f16da64dd7",
                      "size": "851010"

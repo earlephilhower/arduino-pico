@@ -60,6 +60,7 @@ rpipico.build.board=RASPBERRY_PI_PICO
 rpipico.build.chip=rp2040
 rpipico.build.toolchain=arm-none-eabi
 rpipico.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+rpipico.build.uf2family=--family rp2040
 rpipico.build.variant=rpipico
 rpipico.upload.maximum_size=2097152
 rpipico.upload.wait_for_upload_port=true
@@ -270,6 +271,7 @@ rpipicow.build.board=RASPBERRY_PI_PICO_W
 rpipicow.build.chip=rp2040
 rpipicow.build.toolchain=arm-none-eabi
 rpipicow.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+rpipicow.build.uf2family=--family rp2040
 rpipicow.build.variant=rpipicow
 rpipicow.upload.maximum_size=2097152
 rpipicow.upload.wait_for_upload_port=true
@@ -608,6 +610,7 @@ rpipico2.build.board=RASPBERRY_PI_PICO_2
 rpipico2.build.chip=rp2350
 rpipico2.build.toolchain=arm-none-eabi
 rpipico2.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+rpipico2.build.uf2family=--family rp2350-arm-s --abs-block
 rpipico2.build.variant=rpipico2
 rpipico2.upload.maximum_size=4194304
 rpipico2.upload.wait_for_upload_port=true
@@ -821,6 +824,7 @@ rpipico2.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cms
 0xcb_helios.build.chip=rp2040
 0xcb_helios.build.toolchain=arm-none-eabi
 0xcb_helios.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+0xcb_helios.build.uf2family=--family rp2040
 0xcb_helios.build.variant=0xcb_helios
 0xcb_helios.upload.maximum_size=16777216
 0xcb_helios.upload.wait_for_upload_port=true
@@ -1137,6 +1141,7 @@ adafruit_feather.build.board=ADAFRUIT_FEATHER_RP2040
 adafruit_feather.build.chip=rp2040
 adafruit_feather.build.toolchain=arm-none-eabi
 adafruit_feather.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather.build.uf2family=--family rp2040
 adafruit_feather.build.variant=adafruit_feather
 adafruit_feather.upload.maximum_size=8388608
 adafruit_feather.upload.wait_for_upload_port=true
@@ -1389,6 +1394,7 @@ adafruit_feather_scorpio.build.board=ADAFRUIT_FEATHER_RP2040_SCORPIO
 adafruit_feather_scorpio.build.chip=rp2040
 adafruit_feather_scorpio.build.toolchain=arm-none-eabi
 adafruit_feather_scorpio.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_scorpio.build.uf2family=--family rp2040
 adafruit_feather_scorpio.build.variant=adafruit_feather_scorpio
 adafruit_feather_scorpio.upload.maximum_size=8388608
 adafruit_feather_scorpio.upload.wait_for_upload_port=true
@@ -1645,6 +1651,7 @@ adafruit_feather_dvi.build.board=ADAFRUIT_FEATHER_RP2040_DVI
 adafruit_feather_dvi.build.chip=rp2040
 adafruit_feather_dvi.build.toolchain=arm-none-eabi
 adafruit_feather_dvi.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_dvi.build.uf2family=--family rp2040
 adafruit_feather_dvi.build.variant=adafruit_feather_dvi
 adafruit_feather_dvi.upload.maximum_size=8388608
 adafruit_feather_dvi.upload.wait_for_upload_port=true
@@ -1901,6 +1908,7 @@ adafruit_feather_adalogger.build.board=ADAFRUIT_FEATHER_RP2040_ADALOGGER
 adafruit_feather_adalogger.build.chip=rp2040
 adafruit_feather_adalogger.build.toolchain=arm-none-eabi
 adafruit_feather_adalogger.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_adalogger.build.uf2family=--family rp2040
 adafruit_feather_adalogger.build.variant=adafruit_feather_adalogger
 adafruit_feather_adalogger.upload.maximum_size=8388608
 adafruit_feather_adalogger.upload.wait_for_upload_port=true
@@ -2157,6 +2165,7 @@ adafruit_feather_rfm.build.board=ADAFRUIT_FEATHER_RP2040_RFM
 adafruit_feather_rfm.build.chip=rp2040
 adafruit_feather_rfm.build.toolchain=arm-none-eabi
 adafruit_feather_rfm.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_rfm.build.uf2family=--family rp2040
 adafruit_feather_rfm.build.variant=adafruit_feather_rfm
 adafruit_feather_rfm.upload.maximum_size=8388608
 adafruit_feather_rfm.upload.wait_for_upload_port=true
@@ -2413,6 +2422,7 @@ adafruit_feather_thinkink.build.board=ADAFRUIT_FEATHER_RP2040_THINKINK
 adafruit_feather_thinkink.build.chip=rp2040
 adafruit_feather_thinkink.build.toolchain=arm-none-eabi
 adafruit_feather_thinkink.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_thinkink.build.uf2family=--family rp2040
 adafruit_feather_thinkink.build.variant=adafruit_feather_thinkink
 adafruit_feather_thinkink.upload.maximum_size=8388608
 adafruit_feather_thinkink.upload.wait_for_upload_port=true
@@ -2669,6 +2679,7 @@ adafruit_feather_usb_host.build.board=ADAFRUIT_FEATHER_RP2040_USB_HOST
 adafruit_feather_usb_host.build.chip=rp2040
 adafruit_feather_usb_host.build.toolchain=arm-none-eabi
 adafruit_feather_usb_host.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_usb_host.build.uf2family=--family rp2040
 adafruit_feather_usb_host.build.variant=adafruit_feather_usb_host
 adafruit_feather_usb_host.upload.maximum_size=8388608
 adafruit_feather_usb_host.upload.wait_for_upload_port=true
@@ -2925,6 +2936,7 @@ adafruit_feather_can.build.board=ADAFRUIT_FEATHER_RP2040_CAN
 adafruit_feather_can.build.chip=rp2040
 adafruit_feather_can.build.toolchain=arm-none-eabi
 adafruit_feather_can.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_can.build.uf2family=--family rp2040
 adafruit_feather_can.build.variant=adafruit_feather_can
 adafruit_feather_can.upload.maximum_size=8388608
 adafruit_feather_can.upload.wait_for_upload_port=true
@@ -3181,6 +3193,7 @@ adafruit_feather_prop_maker.build.board=ADAFRUIT_FEATHER_RP2040_PROP_MAKER
 adafruit_feather_prop_maker.build.chip=rp2040
 adafruit_feather_prop_maker.build.toolchain=arm-none-eabi
 adafruit_feather_prop_maker.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_feather_prop_maker.build.uf2family=--family rp2040
 adafruit_feather_prop_maker.build.variant=adafruit_feather_prop_maker
 adafruit_feather_prop_maker.upload.maximum_size=8388608
 adafruit_feather_prop_maker.upload.wait_for_upload_port=true
@@ -3445,6 +3458,7 @@ adafruit_itsybitsy.build.board=ADAFRUIT_ITSYBITSY_RP2040
 adafruit_itsybitsy.build.chip=rp2040
 adafruit_itsybitsy.build.toolchain=arm-none-eabi
 adafruit_itsybitsy.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_itsybitsy.build.uf2family=--family rp2040
 adafruit_itsybitsy.build.variant=adafruit_itsybitsy
 adafruit_itsybitsy.upload.maximum_size=8388608
 adafruit_itsybitsy.upload.wait_for_upload_port=true
@@ -3701,6 +3715,7 @@ adafruit_metro.build.board=ADAFRUIT_METRO_RP2040
 adafruit_metro.build.chip=rp2040
 adafruit_metro.build.toolchain=arm-none-eabi
 adafruit_metro.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_metro.build.uf2family=--family rp2040
 adafruit_metro.build.variant=adafruit_metro
 adafruit_metro.upload.maximum_size=16777216
 adafruit_metro.upload.wait_for_upload_port=true
@@ -4021,6 +4036,7 @@ adafruit_qtpy.build.board=ADAFRUIT_QTPY_RP2040
 adafruit_qtpy.build.chip=rp2040
 adafruit_qtpy.build.toolchain=arm-none-eabi
 adafruit_qtpy.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_qtpy.build.uf2family=--family rp2040
 adafruit_qtpy.build.variant=adafruit_qtpy
 adafruit_qtpy.upload.maximum_size=8388608
 adafruit_qtpy.upload.wait_for_upload_port=true
@@ -4285,6 +4301,7 @@ adafruit_stemmafriend.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
 adafruit_stemmafriend.build.chip=rp2040
 adafruit_stemmafriend.build.toolchain=arm-none-eabi
 adafruit_stemmafriend.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_stemmafriend.build.uf2family=--family rp2040
 adafruit_stemmafriend.build.variant=adafruit_stemmafriend
 adafruit_stemmafriend.upload.maximum_size=8388608
 adafruit_stemmafriend.upload.wait_for_upload_port=true
@@ -4541,6 +4558,7 @@ adafruit_trinkeyrp2040qt.build.board=ADAFRUIT_TRINKEYQT_RP2040
 adafruit_trinkeyrp2040qt.build.chip=rp2040
 adafruit_trinkeyrp2040qt.build.toolchain=arm-none-eabi
 adafruit_trinkeyrp2040qt.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_trinkeyrp2040qt.build.uf2family=--family rp2040
 adafruit_trinkeyrp2040qt.build.variant=adafruit_trinkeyrp2040qt
 adafruit_trinkeyrp2040qt.upload.maximum_size=8388608
 adafruit_trinkeyrp2040qt.upload.wait_for_upload_port=true
@@ -4797,6 +4815,7 @@ adafruit_macropad2040.build.board=ADAFRUIT_MACROPAD_RP2040
 adafruit_macropad2040.build.chip=rp2040
 adafruit_macropad2040.build.toolchain=arm-none-eabi
 adafruit_macropad2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_macropad2040.build.uf2family=--family rp2040
 adafruit_macropad2040.build.variant=adafruit_macropad2040
 adafruit_macropad2040.upload.maximum_size=8388608
 adafruit_macropad2040.upload.wait_for_upload_port=true
@@ -5053,6 +5072,7 @@ adafruit_kb2040.build.board=ADAFRUIT_KB2040_RP2040
 adafruit_kb2040.build.chip=rp2040
 adafruit_kb2040.build.toolchain=arm-none-eabi
 adafruit_kb2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+adafruit_kb2040.build.uf2family=--family rp2040
 adafruit_kb2040.build.variant=adafruit_kb2040
 adafruit_kb2040.upload.maximum_size=8388608
 adafruit_kb2040.upload.wait_for_upload_port=true
@@ -5305,6 +5325,7 @@ amken_bunny.build.board=AMKEN_BB
 amken_bunny.build.chip=rp2040
 amken_bunny.build.toolchain=arm-none-eabi
 amken_bunny.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+amken_bunny.build.uf2family=--family rp2040
 amken_bunny.build.variant=amken_bunny
 amken_bunny.upload.maximum_size=134217728
 amken_bunny.upload.wait_for_upload_port=true
@@ -6394,6 +6415,7 @@ amken_revelop.build.board=AMKEN_REVELOP
 amken_revelop.build.chip=rp2040
 amken_revelop.build.toolchain=arm-none-eabi
 amken_revelop.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+amken_revelop.build.uf2family=--family rp2040
 amken_revelop.build.variant=amken_revelop
 amken_revelop.upload.maximum_size=33554432
 amken_revelop.upload.wait_for_upload_port=true
@@ -6811,6 +6833,7 @@ amken_revelop_plus.build.board=AMKEN_REVELOP_PLUS
 amken_revelop_plus.build.chip=rp2040
 amken_revelop_plus.build.toolchain=arm-none-eabi
 amken_revelop_plus.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+amken_revelop_plus.build.uf2family=--family rp2040
 amken_revelop_plus.build.variant=amken_revelop_plus
 amken_revelop_plus.upload.maximum_size=33554432
 amken_revelop_plus.upload.wait_for_upload_port=true
@@ -7228,6 +7251,7 @@ amken_revelop_es.build.board=AMKEN_ES
 amken_revelop_es.build.chip=rp2040
 amken_revelop_es.build.toolchain=arm-none-eabi
 amken_revelop_es.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+amken_revelop_es.build.uf2family=--family rp2040
 amken_revelop_es.build.variant=amken_revelop_es
 amken_revelop_es.upload.maximum_size=16777216
 amken_revelop_es.upload.wait_for_upload_port=true
@@ -7545,6 +7569,7 @@ arduino_nano_connect.build.board=NANO_RP2040_CONNECT
 arduino_nano_connect.build.chip=rp2040
 arduino_nano_connect.build.toolchain=arm-none-eabi
 arduino_nano_connect.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+arduino_nano_connect.build.uf2family=--family rp2040
 arduino_nano_connect.build.variant=arduino_nano_connect
 arduino_nano_connect.upload.maximum_size=16777216
 arduino_nano_connect.upload.wait_for_upload_port=true
@@ -7877,6 +7902,7 @@ artronshop_rp2_nano.build.board=ARTRONSHOP_RP2_NANO
 artronshop_rp2_nano.build.chip=rp2040
 artronshop_rp2_nano.build.toolchain=arm-none-eabi
 artronshop_rp2_nano.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+artronshop_rp2_nano.build.uf2family=--family rp2040
 artronshop_rp2_nano.build.variant=artronshop_rp2_nano
 artronshop_rp2_nano.upload.maximum_size=2097152
 artronshop_rp2_nano.upload.wait_for_upload_port=true
@@ -8111,6 +8137,7 @@ breadstick_raspberry.build.board=Breadstick_Raspberry
 breadstick_raspberry.build.chip=rp2040
 breadstick_raspberry.build.toolchain=arm-none-eabi
 breadstick_raspberry.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+breadstick_raspberry.build.uf2family=--family rp2040
 breadstick_raspberry.build.variant=breadstick_raspberry
 breadstick_raspberry.upload.maximum_size=16777216
 breadstick_raspberry.upload.wait_for_upload_port=true
@@ -8443,6 +8470,7 @@ bridgetek_idm2040_7a.build.board=BRIDGETEK_IDM2040_7A
 bridgetek_idm2040_7a.build.chip=rp2040
 bridgetek_idm2040_7a.build.toolchain=arm-none-eabi
 bridgetek_idm2040_7a.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+bridgetek_idm2040_7a.build.uf2family=--family rp2040
 bridgetek_idm2040_7a.build.variant=bridgetek_idm2040_7a
 bridgetek_idm2040_7a.upload.maximum_size=8388608
 bridgetek_idm2040_7a.upload.wait_for_upload_port=true
@@ -8696,6 +8724,7 @@ bridgetek_idm2040_43a.build.board=BRIDGETEK_IDM2040_43A
 bridgetek_idm2040_43a.build.chip=rp2040
 bridgetek_idm2040_43a.build.toolchain=arm-none-eabi
 bridgetek_idm2040_43a.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+bridgetek_idm2040_43a.build.uf2family=--family rp2040
 bridgetek_idm2040_43a.build.variant=bridgetek_idm2040_43a
 bridgetek_idm2040_43a.upload.maximum_size=8388608
 bridgetek_idm2040_43a.upload.wait_for_upload_port=true
@@ -8973,6 +9002,7 @@ cytron_maker_nano_rp2040.build.board=CYTRON_MAKER_NANO_RP2040
 cytron_maker_nano_rp2040.build.chip=rp2040
 cytron_maker_nano_rp2040.build.toolchain=arm-none-eabi
 cytron_maker_nano_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+cytron_maker_nano_rp2040.build.uf2family=--family rp2040
 cytron_maker_nano_rp2040.build.variant=cytron_maker_nano_rp2040
 cytron_maker_nano_rp2040.upload.maximum_size=2097152
 cytron_maker_nano_rp2040.upload.wait_for_upload_port=true
@@ -9207,6 +9237,7 @@ cytron_maker_pi_rp2040.build.board=CYTRON_MAKER_PI_RP2040
 cytron_maker_pi_rp2040.build.chip=rp2040
 cytron_maker_pi_rp2040.build.toolchain=arm-none-eabi
 cytron_maker_pi_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+cytron_maker_pi_rp2040.build.uf2family=--family rp2040
 cytron_maker_pi_rp2040.build.variant=cytron_maker_pi_rp2040
 cytron_maker_pi_rp2040.upload.maximum_size=2097152
 cytron_maker_pi_rp2040.upload.wait_for_upload_port=true
@@ -9441,6 +9472,7 @@ cytron_maker_uno_rp2040.build.board=CYTRON_MAKER_UNO_RP2040
 cytron_maker_uno_rp2040.build.chip=rp2040
 cytron_maker_uno_rp2040.build.toolchain=arm-none-eabi
 cytron_maker_uno_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+cytron_maker_uno_rp2040.build.uf2family=--family rp2040
 cytron_maker_uno_rp2040.build.variant=cytron_maker_uno_rp2040
 cytron_maker_uno_rp2040.upload.maximum_size=2097152
 cytron_maker_uno_rp2040.upload.wait_for_upload_port=true
@@ -9675,6 +9707,7 @@ datanoisetv_picoadk.build.board=DATANOISETV_PICOADK
 datanoisetv_picoadk.build.chip=rp2040
 datanoisetv_picoadk.build.toolchain=arm-none-eabi
 datanoisetv_picoadk.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+datanoisetv_picoadk.build.uf2family=--family rp2040
 datanoisetv_picoadk.build.variant=datanoisetv_picoadk
 datanoisetv_picoadk.upload.maximum_size=2097152
 datanoisetv_picoadk.upload.wait_for_upload_port=true
@@ -9885,6 +9918,7 @@ degz_suibo.build.board=DEGZ_SUIBO_RP2040
 degz_suibo.build.chip=rp2040
 degz_suibo.build.toolchain=arm-none-eabi
 degz_suibo.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+degz_suibo.build.uf2family=--family rp2040
 degz_suibo.build.variant=degz_suibo
 degz_suibo.upload.maximum_size=16777216
 degz_suibo.upload.wait_for_upload_port=true
@@ -10217,6 +10251,7 @@ flyboard2040_core.build.board=FLYBOARD2040_CORE
 flyboard2040_core.build.chip=rp2040
 flyboard2040_core.build.toolchain=arm-none-eabi
 flyboard2040_core.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+flyboard2040_core.build.uf2family=--family rp2040
 flyboard2040_core.build.variant=flyboard2040_core
 flyboard2040_core.upload.maximum_size=4194304
 flyboard2040_core.upload.wait_for_upload_port=true
@@ -10449,6 +10484,7 @@ dfrobot_beetle_rp2040.build.board=DFROBOT_BEETLE_RP2040
 dfrobot_beetle_rp2040.build.chip=rp2040
 dfrobot_beetle_rp2040.build.toolchain=arm-none-eabi
 dfrobot_beetle_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+dfrobot_beetle_rp2040.build.uf2family=--family rp2040
 dfrobot_beetle_rp2040.build.variant=dfrobot_beetle_rp2040
 dfrobot_beetle_rp2040.upload.maximum_size=2097152
 dfrobot_beetle_rp2040.upload.wait_for_upload_port=true
@@ -10683,6 +10719,7 @@ DudesCab.build.board=RASPBERRY_PI_PICO
 DudesCab.build.chip=rp2040
 DudesCab.build.toolchain=arm-none-eabi
 DudesCab.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+DudesCab.build.uf2family=--family rp2040
 DudesCab.build.variant=DudesCab
 DudesCab.upload.maximum_size=4194304
 DudesCab.upload.wait_for_upload_port=true
@@ -10931,6 +10968,7 @@ electroniccats_huntercat_nfc.build.board=ELECTRONICCATS_HUNTERCAT_NFC
 electroniccats_huntercat_nfc.build.chip=rp2040
 electroniccats_huntercat_nfc.build.toolchain=arm-none-eabi
 electroniccats_huntercat_nfc.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+electroniccats_huntercat_nfc.build.uf2family=--family rp2040
 electroniccats_huntercat_nfc.build.variant=electroniccats_huntercat_nfc
 electroniccats_huntercat_nfc.upload.maximum_size=2097152
 electroniccats_huntercat_nfc.upload.wait_for_upload_port=true
@@ -11141,6 +11179,7 @@ evn_alpha.build.board=EVN_ALPHA
 evn_alpha.build.chip=rp2040
 evn_alpha.build.toolchain=arm-none-eabi
 evn_alpha.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+evn_alpha.build.uf2family=--family rp2040
 evn_alpha.build.variant=evn_alpha
 evn_alpha.upload.maximum_size=16777216
 evn_alpha.upload.wait_for_upload_port=true
@@ -11449,6 +11488,7 @@ extelec_rc2040.build.board=EXTREMEELEXTRONICS_RC2040
 extelec_rc2040.build.chip=rp2040
 extelec_rc2040.build.toolchain=arm-none-eabi
 extelec_rc2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+extelec_rc2040.build.uf2family=--family rp2040
 extelec_rc2040.build.variant=extelec_rc2040
 extelec_rc2040.upload.maximum_size=2097152
 extelec_rc2040.upload.wait_for_upload_port=true
@@ -11683,6 +11723,7 @@ groundstudio_marble_pico.build.board=MARBLE_PICO
 groundstudio_marble_pico.build.chip=rp2040
 groundstudio_marble_pico.build.toolchain=arm-none-eabi
 groundstudio_marble_pico.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+groundstudio_marble_pico.build.uf2family=--family rp2040
 groundstudio_marble_pico.build.variant=groundstudio_marble_pico
 groundstudio_marble_pico.upload.maximum_size=8388608
 groundstudio_marble_pico.upload.wait_for_upload_port=true
@@ -11959,6 +12000,7 @@ challenger_2040_lte.build.board=CHALLENGER_2040_LTE_RP2040
 challenger_2040_lte.build.chip=rp2040
 challenger_2040_lte.build.toolchain=arm-none-eabi
 challenger_2040_lte.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_lte.build.uf2family=--family rp2040
 challenger_2040_lte.build.variant=challenger_2040_lte
 challenger_2040_lte.upload.maximum_size=8388608
 challenger_2040_lte.upload.wait_for_upload_port=true
@@ -12235,6 +12277,7 @@ challenger_2040_lora.build.board=CHALLENGER_2040_LORA_RP2040
 challenger_2040_lora.build.chip=rp2040
 challenger_2040_lora.build.toolchain=arm-none-eabi
 challenger_2040_lora.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_lora.build.uf2family=--family rp2040
 challenger_2040_lora.build.variant=challenger_2040_lora
 challenger_2040_lora.upload.maximum_size=8388608
 challenger_2040_lora.upload.wait_for_upload_port=true
@@ -12511,6 +12554,7 @@ challenger_2040_subghz.build.board=CHALLENGER_2040_SUBGHZ_RP2040
 challenger_2040_subghz.build.chip=rp2040
 challenger_2040_subghz.build.toolchain=arm-none-eabi
 challenger_2040_subghz.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_subghz.build.uf2family=--family rp2040
 challenger_2040_subghz.build.variant=challenger_2040_subghz
 challenger_2040_subghz.upload.maximum_size=8388608
 challenger_2040_subghz.upload.wait_for_upload_port=true
@@ -12787,6 +12831,7 @@ challenger_2040_wifi.build.board=CHALLENGER_2040_WIFI_RP2040
 challenger_2040_wifi.build.chip=rp2040
 challenger_2040_wifi.build.toolchain=arm-none-eabi
 challenger_2040_wifi.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_wifi.build.uf2family=--family rp2040
 challenger_2040_wifi.build.variant=challenger_2040_wifi
 challenger_2040_wifi.upload.maximum_size=8388608
 challenger_2040_wifi.upload.wait_for_upload_port=true
@@ -13064,6 +13109,7 @@ challenger_2040_wifi_ble.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
 challenger_2040_wifi_ble.build.chip=rp2040
 challenger_2040_wifi_ble.build.toolchain=arm-none-eabi
 challenger_2040_wifi_ble.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_wifi_ble.build.uf2family=--family rp2040
 challenger_2040_wifi_ble.build.variant=challenger_2040_wifi_ble
 challenger_2040_wifi_ble.upload.maximum_size=8388608
 challenger_2040_wifi_ble.upload.wait_for_upload_port=true
@@ -13341,6 +13387,7 @@ challenger_2040_wifi6_ble.build.board=CHALLENGER_2040_WIFI6_BLE_RP2040
 challenger_2040_wifi6_ble.build.chip=rp2040
 challenger_2040_wifi6_ble.build.toolchain=arm-none-eabi
 challenger_2040_wifi6_ble.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_wifi6_ble.build.uf2family=--family rp2040
 challenger_2040_wifi6_ble.build.variant=challenger_2040_wifi6_ble
 challenger_2040_wifi6_ble.upload.maximum_size=8388608
 challenger_2040_wifi6_ble.upload.wait_for_upload_port=true
@@ -13618,6 +13665,7 @@ challenger_nb_2040_wifi.build.board=CHALLENGER_NB_2040_WIFI_RP2040
 challenger_nb_2040_wifi.build.chip=rp2040
 challenger_nb_2040_wifi.build.toolchain=arm-none-eabi
 challenger_nb_2040_wifi.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_nb_2040_wifi.build.uf2family=--family rp2040
 challenger_nb_2040_wifi.build.variant=challenger_nb_2040_wifi
 challenger_nb_2040_wifi.upload.maximum_size=8388608
 challenger_nb_2040_wifi.upload.wait_for_upload_port=true
@@ -13895,6 +13943,7 @@ challenger_2040_sdrtc.build.board=CHALLENGER_2040_SDRTC_RP2040
 challenger_2040_sdrtc.build.chip=rp2040
 challenger_2040_sdrtc.build.toolchain=arm-none-eabi
 challenger_2040_sdrtc.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_sdrtc.build.uf2family=--family rp2040
 challenger_2040_sdrtc.build.variant=challenger_2040_sdrtc
 challenger_2040_sdrtc.upload.maximum_size=8388608
 challenger_2040_sdrtc.upload.wait_for_upload_port=true
@@ -14171,6 +14220,7 @@ challenger_2040_nfc.build.board=CHALLENGER_2040_NFC_RP2040
 challenger_2040_nfc.build.chip=rp2040
 challenger_2040_nfc.build.toolchain=arm-none-eabi
 challenger_2040_nfc.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_nfc.build.uf2family=--family rp2040
 challenger_2040_nfc.build.variant=challenger_2040_nfc
 challenger_2040_nfc.upload.maximum_size=8388608
 challenger_2040_nfc.upload.wait_for_upload_port=true
@@ -14447,6 +14497,7 @@ challenger_2040_uwb.build.board=CHALLENGER_2040_UWB_RP2040
 challenger_2040_uwb.build.chip=rp2040
 challenger_2040_uwb.build.toolchain=arm-none-eabi
 challenger_2040_uwb.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+challenger_2040_uwb.build.uf2family=--family rp2040
 challenger_2040_uwb.build.variant=challenger_2040_uwb
 challenger_2040_uwb.upload.maximum_size=8388608
 challenger_2040_uwb.upload.wait_for_upload_port=true
@@ -14723,6 +14774,7 @@ connectivity_2040_lte_wifi_ble.build.board=CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040
 connectivity_2040_lte_wifi_ble.build.chip=rp2040
 connectivity_2040_lte_wifi_ble.build.toolchain=arm-none-eabi
 connectivity_2040_lte_wifi_ble.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+connectivity_2040_lte_wifi_ble.build.uf2family=--family rp2040
 connectivity_2040_lte_wifi_ble.build.variant=connectivity_2040_lte_wifi_ble
 connectivity_2040_lte_wifi_ble.upload.maximum_size=8388608
 connectivity_2040_lte_wifi_ble.upload.wait_for_upload_port=true
@@ -15000,6 +15052,7 @@ ilabs_rpico32.build.board=ILABS_2040_RPICO32_RP2040
 ilabs_rpico32.build.chip=rp2040
 ilabs_rpico32.build.toolchain=arm-none-eabi
 ilabs_rpico32.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+ilabs_rpico32.build.uf2family=--family rp2040
 ilabs_rpico32.build.variant=ilabs_rpico32
 ilabs_rpico32.upload.maximum_size=8388608
 ilabs_rpico32.upload.wait_for_upload_port=true
@@ -15277,6 +15330,7 @@ melopero_cookie_rp2040.build.board=MELOPERO_COOKIE_RP2040
 melopero_cookie_rp2040.build.chip=rp2040
 melopero_cookie_rp2040.build.toolchain=arm-none-eabi
 melopero_cookie_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+melopero_cookie_rp2040.build.uf2family=--family rp2040
 melopero_cookie_rp2040.build.variant=melopero_cookie_rp2040
 melopero_cookie_rp2040.upload.maximum_size=8388608
 melopero_cookie_rp2040.upload.wait_for_upload_port=true
@@ -15553,6 +15607,7 @@ melopero_shake_rp2040.build.board=MELOPERO_SHAKE_RP2040
 melopero_shake_rp2040.build.chip=rp2040
 melopero_shake_rp2040.build.toolchain=arm-none-eabi
 melopero_shake_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+melopero_shake_rp2040.build.uf2family=--family rp2040
 melopero_shake_rp2040.build.variant=melopero_shake_rp2040
 melopero_shake_rp2040.upload.maximum_size=16777216
 melopero_shake_rp2040.upload.wait_for_upload_port=true
@@ -15885,6 +15940,7 @@ akana_r1.build.board=METEHOCA_AKANA_R1
 akana_r1.build.chip=rp2040
 akana_r1.build.toolchain=arm-none-eabi
 akana_r1.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+akana_r1.build.uf2family=--family rp2040
 akana_r1.build.variant=akana_r1
 akana_r1.upload.maximum_size=16777216
 akana_r1.upload.wait_for_upload_port=true
@@ -16168,6 +16224,7 @@ nekosystems_bl2040_mini.build.board=NEKOSYSTEMS_BL2040_MINI
 nekosystems_bl2040_mini.build.chip=rp2040
 nekosystems_bl2040_mini.build.toolchain=arm-none-eabi
 nekosystems_bl2040_mini.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+nekosystems_bl2040_mini.build.uf2family=--family rp2040
 nekosystems_bl2040_mini.build.variant=nekosystems_bl2040_mini
 nekosystems_bl2040_mini.upload.maximum_size=4194304
 nekosystems_bl2040_mini.upload.wait_for_upload_port=true
@@ -16416,6 +16473,7 @@ newsan_archi.build.board=NEWSAN_ARCHI
 newsan_archi.build.chip=rp2040
 newsan_archi.build.toolchain=arm-none-eabi
 newsan_archi.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+newsan_archi.build.uf2family=--family rp2040
 newsan_archi.build.variant=newsan_archi
 newsan_archi.upload.maximum_size=4194304
 newsan_archi.upload.wait_for_upload_port=true
@@ -16648,6 +16706,7 @@ nullbits_bit_c_pro.build.board=NULLBITS_BIT_C_PRO
 nullbits_bit_c_pro.build.chip=rp2040
 nullbits_bit_c_pro.build.toolchain=arm-none-eabi
 nullbits_bit_c_pro.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+nullbits_bit_c_pro.build.uf2family=--family rp2040
 nullbits_bit_c_pro.build.variant=nullbits_bit_c_pro
 nullbits_bit_c_pro.upload.maximum_size=4194304
 nullbits_bit_c_pro.upload.wait_for_upload_port=true
@@ -16896,6 +16955,7 @@ olimex_rp2040pico30_2mb.build.board=OLIMEX_RP2040_PICO30_2MB
 olimex_rp2040pico30_2mb.build.chip=rp2040
 olimex_rp2040pico30_2mb.build.toolchain=arm-none-eabi
 olimex_rp2040pico30_2mb.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+olimex_rp2040pico30_2mb.build.uf2family=--family rp2040
 olimex_rp2040pico30_2mb.build.variant=olimex_rp2040pico30_2mb
 olimex_rp2040pico30_2mb.upload.maximum_size=2097152
 olimex_rp2040pico30_2mb.upload.wait_for_upload_port=true
@@ -17130,6 +17190,7 @@ olimex_rp2040pico30_16mb.build.board=OLIMEX_RP2040_PICO30_16MB
 olimex_rp2040pico30_16mb.build.chip=rp2040
 olimex_rp2040pico30_16mb.build.toolchain=arm-none-eabi
 olimex_rp2040pico30_16mb.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+olimex_rp2040pico30_16mb.build.uf2family=--family rp2040
 olimex_rp2040pico30_16mb.build.variant=olimex_rp2040pico30_16mb
 olimex_rp2040pico30_16mb.upload.maximum_size=16777216
 olimex_rp2040pico30_16mb.upload.wait_for_upload_port=true
@@ -17462,6 +17523,7 @@ pimoroni_pga2040.build.board=PIMORONI_PGA2040
 pimoroni_pga2040.build.chip=rp2040
 pimoroni_pga2040.build.toolchain=arm-none-eabi
 pimoroni_pga2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+pimoroni_pga2040.build.uf2family=--family rp2040
 pimoroni_pga2040.build.variant=pimoroni_pga2040
 pimoroni_pga2040.upload.maximum_size=8388608
 pimoroni_pga2040.upload.wait_for_upload_port=true
@@ -17738,6 +17800,7 @@ pimoroni_plasma2040.build.board=PIMORONI_PLASMA2040
 pimoroni_plasma2040.build.chip=rp2040
 pimoroni_plasma2040.build.toolchain=arm-none-eabi
 pimoroni_plasma2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+pimoroni_plasma2040.build.uf2family=--family rp2040
 pimoroni_plasma2040.build.variant=pimoroni_plasma2040
 pimoroni_plasma2040.upload.maximum_size=2097152
 pimoroni_plasma2040.upload.wait_for_upload_port=true
@@ -17972,6 +18035,7 @@ pimoroni_tiny2040.build.board=PIMORONI_TINY2040
 pimoroni_tiny2040.build.chip=rp2040
 pimoroni_tiny2040.build.toolchain=arm-none-eabi
 pimoroni_tiny2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+pimoroni_tiny2040.build.uf2family=--family rp2040
 pimoroni_tiny2040.build.variant=pimoroni_tiny2040
 pimoroni_tiny2040.upload.maximum_size=2097152
 pimoroni_tiny2040.upload.wait_for_upload_port=true
@@ -18210,6 +18274,7 @@ pintronix_pinmax.build.board=PINTRONIX_PINMAX
 pintronix_pinmax.build.chip=rp2040
 pintronix_pinmax.build.toolchain=arm-none-eabi
 pintronix_pinmax.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+pintronix_pinmax.build.uf2family=--family rp2040
 pintronix_pinmax.build.variant=pintronix_pinmax
 pintronix_pinmax.upload.maximum_size=4194304
 pintronix_pinmax.upload.wait_for_upload_port=true
@@ -18458,6 +18523,7 @@ rakwireless_rak11300.build.board=RAKWIRELESS_RAK11300
 rakwireless_rak11300.build.chip=rp2040
 rakwireless_rak11300.build.toolchain=arm-none-eabi
 rakwireless_rak11300.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+rakwireless_rak11300.build.uf2family=--family rp2040
 rakwireless_rak11300.build.variant=rakwireless_rak11300
 rakwireless_rak11300.upload.maximum_size=2097152
 rakwireless_rak11300.upload.wait_for_upload_port=true
@@ -18676,6 +18742,7 @@ redscorp_rp2040_eins.build.board=REDSCORP_RP2040_EINS
 redscorp_rp2040_eins.build.chip=rp2040
 redscorp_rp2040_eins.build.toolchain=arm-none-eabi
 redscorp_rp2040_eins.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+redscorp_rp2040_eins.build.uf2family=--family rp2040
 redscorp_rp2040_eins.build.variant=redscorp_rp2040_eins
 redscorp_rp2040_eins.upload.maximum_size=16777216
 redscorp_rp2040_eins.upload.wait_for_upload_port=true
@@ -18992,6 +19059,7 @@ redscorp_rp2040_promini.build.board=REDSCORP_RP2040_PROMINI
 redscorp_rp2040_promini.build.chip=rp2040
 redscorp_rp2040_promini.build.toolchain=arm-none-eabi
 redscorp_rp2040_promini.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+redscorp_rp2040_promini.build.uf2family=--family rp2040
 redscorp_rp2040_promini.build.variant=redscorp_rp2040_promini
 redscorp_rp2040_promini.upload.maximum_size=16777216
 redscorp_rp2040_promini.upload.wait_for_upload_port=true
@@ -19300,6 +19368,7 @@ sea_picro.build.board=SEA_PICRO
 sea_picro.build.chip=rp2040
 sea_picro.build.toolchain=arm-none-eabi
 sea_picro.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+sea_picro.build.uf2family=--family rp2040
 sea_picro.build.variant=sea_picro
 sea_picro.upload.maximum_size=8388608
 sea_picro.upload.wait_for_upload_port=true
@@ -19548,6 +19617,7 @@ silicognition_rp2040_shim.build.board=SILICOGNITION_RP2040_SHIM
 silicognition_rp2040_shim.build.chip=rp2040
 silicognition_rp2040_shim.build.toolchain=arm-none-eabi
 silicognition_rp2040_shim.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+silicognition_rp2040_shim.build.uf2family=--family rp2040
 silicognition_rp2040_shim.build.variant=silicognition_rp2040_shim
 silicognition_rp2040_shim.upload.maximum_size=4194304
 silicognition_rp2040_shim.upload.wait_for_upload_port=true
@@ -19772,6 +19842,7 @@ solderparty_rp2040_stamp.build.board=SOLDERPARTY_RP2040_STAMP
 solderparty_rp2040_stamp.build.chip=rp2040
 solderparty_rp2040_stamp.build.toolchain=arm-none-eabi
 solderparty_rp2040_stamp.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+solderparty_rp2040_stamp.build.uf2family=--family rp2040
 solderparty_rp2040_stamp.build.variant=solderparty_rp2040_stamp
 solderparty_rp2040_stamp.upload.maximum_size=8388608
 solderparty_rp2040_stamp.upload.wait_for_upload_port=true
@@ -20048,6 +20119,7 @@ sparkfun_micromodrp2040.build.board=SPARKFUN_MICROMOD_RP2040
 sparkfun_micromodrp2040.build.chip=rp2040
 sparkfun_micromodrp2040.build.toolchain=arm-none-eabi
 sparkfun_micromodrp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+sparkfun_micromodrp2040.build.uf2family=--family rp2040
 sparkfun_micromodrp2040.build.variant=sparkfun_micromodrp2040
 sparkfun_micromodrp2040.upload.maximum_size=16777216
 sparkfun_micromodrp2040.upload.wait_for_upload_port=true
@@ -20380,6 +20452,7 @@ sparkfun_promicrorp2040.build.board=SPARKFUN_PROMICRO_RP2040
 sparkfun_promicrorp2040.build.chip=rp2040
 sparkfun_promicrorp2040.build.toolchain=arm-none-eabi
 sparkfun_promicrorp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+sparkfun_promicrorp2040.build.uf2family=--family rp2040
 sparkfun_promicrorp2040.build.variant=sparkfun_promicrorp2040
 sparkfun_promicrorp2040.upload.maximum_size=16777216
 sparkfun_promicrorp2040.upload.wait_for_upload_port=true
@@ -20712,6 +20785,7 @@ sparkfun_thingplusrp2040.build.board=SPARKFUN_THINGPLUS_RP2040
 sparkfun_thingplusrp2040.build.chip=rp2040
 sparkfun_thingplusrp2040.build.toolchain=arm-none-eabi
 sparkfun_thingplusrp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+sparkfun_thingplusrp2040.build.uf2family=--family rp2040
 sparkfun_thingplusrp2040.build.variant=sparkfun_thingplusrp2040
 sparkfun_thingplusrp2040.upload.maximum_size=16777216
 sparkfun_thingplusrp2040.upload.wait_for_upload_port=true
@@ -21044,6 +21118,7 @@ upesy_rp2040_devkit.build.board=UPESY_RP2040_DEVKIT
 upesy_rp2040_devkit.build.chip=rp2040
 upesy_rp2040_devkit.build.toolchain=arm-none-eabi
 upesy_rp2040_devkit.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+upesy_rp2040_devkit.build.uf2family=--family rp2040
 upesy_rp2040_devkit.build.variant=upesy_rp2040_devkit
 upesy_rp2040_devkit.upload.maximum_size=2097152
 upesy_rp2040_devkit.upload.wait_for_upload_port=true
@@ -21278,6 +21353,7 @@ seeed_indicator_rp2040.build.board=SEEED_INDICATOR_RP2040
 seeed_indicator_rp2040.build.chip=rp2040
 seeed_indicator_rp2040.build.toolchain=arm-none-eabi
 seeed_indicator_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+seeed_indicator_rp2040.build.uf2family=--family rp2040
 seeed_indicator_rp2040.build.variant=seeed_indicator_rp2040
 seeed_indicator_rp2040.upload.maximum_size=2097152
 seeed_indicator_rp2040.upload.wait_for_upload_port=true
@@ -21512,6 +21588,7 @@ seeed_xiao_rp2040.build.board=SEEED_XIAO_RP2040
 seeed_xiao_rp2040.build.chip=rp2040
 seeed_xiao_rp2040.build.toolchain=arm-none-eabi
 seeed_xiao_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+seeed_xiao_rp2040.build.uf2family=--family rp2040
 seeed_xiao_rp2040.build.variant=seeed_xiao_rp2040
 seeed_xiao_rp2040.upload.maximum_size=2097152
 seeed_xiao_rp2040.upload.wait_for_upload_port=true
@@ -21730,6 +21807,7 @@ vccgnd_yd_rp2040.build.board=YD_RP2040
 vccgnd_yd_rp2040.build.chip=rp2040
 vccgnd_yd_rp2040.build.toolchain=arm-none-eabi
 vccgnd_yd_rp2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+vccgnd_yd_rp2040.build.uf2family=--family rp2040
 vccgnd_yd_rp2040.build.variant=vccgnd_yd_rp2040
 vccgnd_yd_rp2040.upload.maximum_size=16777216
 vccgnd_yd_rp2040.upload.wait_for_upload_port=true
@@ -22034,6 +22112,7 @@ viyalab_mizu.build.board=VIYALAB_MIZU_RP2040
 viyalab_mizu.build.chip=rp2040
 viyalab_mizu.build.toolchain=arm-none-eabi
 viyalab_mizu.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+viyalab_mizu.build.uf2family=--family rp2040
 viyalab_mizu.build.variant=viyalab_mizu
 viyalab_mizu.upload.maximum_size=8388608
 viyalab_mizu.upload.wait_for_upload_port=true
@@ -22310,6 +22389,7 @@ waveshare_rp2040_zero.build.board=WAVESHARE_RP2040_ZERO
 waveshare_rp2040_zero.build.chip=rp2040
 waveshare_rp2040_zero.build.toolchain=arm-none-eabi
 waveshare_rp2040_zero.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_zero.build.uf2family=--family rp2040
 waveshare_rp2040_zero.build.variant=waveshare_rp2040_zero
 waveshare_rp2040_zero.upload.maximum_size=2097152
 waveshare_rp2040_zero.upload.wait_for_upload_port=true
@@ -22544,6 +22624,7 @@ waveshare_rp2040_one.build.board=WAVESHARE_RP2040_ONE
 waveshare_rp2040_one.build.chip=rp2040
 waveshare_rp2040_one.build.toolchain=arm-none-eabi
 waveshare_rp2040_one.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_one.build.uf2family=--family rp2040
 waveshare_rp2040_one.build.variant=waveshare_rp2040_one
 waveshare_rp2040_one.upload.maximum_size=4194304
 waveshare_rp2040_one.upload.wait_for_upload_port=true
@@ -22792,6 +22873,7 @@ waveshare_rp2040_matrix.build.board=WAVESHARE_RP2040_MATRIX
 waveshare_rp2040_matrix.build.chip=rp2040
 waveshare_rp2040_matrix.build.toolchain=arm-none-eabi
 waveshare_rp2040_matrix.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_matrix.build.uf2family=--family rp2040
 waveshare_rp2040_matrix.build.variant=waveshare_rp2040_matrix
 waveshare_rp2040_matrix.upload.maximum_size=2097152
 waveshare_rp2040_matrix.upload.wait_for_upload_port=true
@@ -23026,6 +23108,7 @@ waveshare_rp2040_pizero.build.board=WAVESHARE_RP2040_PIZERO
 waveshare_rp2040_pizero.build.chip=rp2040
 waveshare_rp2040_pizero.build.toolchain=arm-none-eabi
 waveshare_rp2040_pizero.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_pizero.build.uf2family=--family rp2040
 waveshare_rp2040_pizero.build.variant=waveshare_rp2040_pizero
 waveshare_rp2040_pizero.upload.maximum_size=16777216
 waveshare_rp2040_pizero.upload.wait_for_upload_port=true
@@ -23358,6 +23441,7 @@ waveshare_rp2040_plus_4mb.build.board=WAVESHARE_RP2040_PLUS
 waveshare_rp2040_plus_4mb.build.chip=rp2040
 waveshare_rp2040_plus_4mb.build.toolchain=arm-none-eabi
 waveshare_rp2040_plus_4mb.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_plus_4mb.build.uf2family=--family rp2040
 waveshare_rp2040_plus_4mb.build.variant=waveshare_rp2040_plus_4mb
 waveshare_rp2040_plus_4mb.upload.maximum_size=4194304
 waveshare_rp2040_plus_4mb.upload.wait_for_upload_port=true
@@ -23606,6 +23690,7 @@ waveshare_rp2040_plus_16mb.build.board=WAVESHARE_RP2040_PLUS
 waveshare_rp2040_plus_16mb.build.chip=rp2040
 waveshare_rp2040_plus_16mb.build.toolchain=arm-none-eabi
 waveshare_rp2040_plus_16mb.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_plus_16mb.build.uf2family=--family rp2040
 waveshare_rp2040_plus_16mb.build.variant=waveshare_rp2040_plus_16mb
 waveshare_rp2040_plus_16mb.upload.maximum_size=16777216
 waveshare_rp2040_plus_16mb.upload.wait_for_upload_port=true
@@ -23938,6 +24023,7 @@ waveshare_rp2040_lcd_0_96.build.board=WAVESHARE_RP2040_LCD_0_96
 waveshare_rp2040_lcd_0_96.build.chip=rp2040
 waveshare_rp2040_lcd_0_96.build.toolchain=arm-none-eabi
 waveshare_rp2040_lcd_0_96.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_lcd_0_96.build.uf2family=--family rp2040
 waveshare_rp2040_lcd_0_96.build.variant=waveshare_rp2040_lcd_0_96
 waveshare_rp2040_lcd_0_96.upload.maximum_size=2097152
 waveshare_rp2040_lcd_0_96.upload.wait_for_upload_port=true
@@ -24172,6 +24258,7 @@ waveshare_rp2040_lcd_1_28.build.board=WAVESHARE_RP2040_LCD_1_28
 waveshare_rp2040_lcd_1_28.build.chip=rp2040
 waveshare_rp2040_lcd_1_28.build.toolchain=arm-none-eabi
 waveshare_rp2040_lcd_1_28.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_lcd_1_28.build.uf2family=--family rp2040
 waveshare_rp2040_lcd_1_28.build.variant=waveshare_rp2040_lcd_1_28
 waveshare_rp2040_lcd_1_28.upload.maximum_size=2097152
 waveshare_rp2040_lcd_1_28.upload.wait_for_upload_port=true
@@ -24406,6 +24493,7 @@ wiznet_5100s_evb_pico.build.board=WIZNET_5100S_EVB_PICO
 wiznet_5100s_evb_pico.build.chip=rp2040
 wiznet_5100s_evb_pico.build.toolchain=arm-none-eabi
 wiznet_5100s_evb_pico.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+wiznet_5100s_evb_pico.build.uf2family=--family rp2040
 wiznet_5100s_evb_pico.build.variant=wiznet_5100s_evb_pico
 wiznet_5100s_evb_pico.upload.maximum_size=2097152
 wiznet_5100s_evb_pico.upload.wait_for_upload_port=true
@@ -24640,6 +24728,7 @@ wiznet_wizfi360_evb_pico.build.board=WIZNET_WIZFI360_EVB_PICO
 wiznet_wizfi360_evb_pico.build.chip=rp2040
 wiznet_wizfi360_evb_pico.build.toolchain=arm-none-eabi
 wiznet_wizfi360_evb_pico.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+wiznet_wizfi360_evb_pico.build.uf2family=--family rp2040
 wiznet_wizfi360_evb_pico.build.variant=wiznet_wizfi360_evb_pico
 wiznet_wizfi360_evb_pico.upload.maximum_size=2097152
 wiznet_wizfi360_evb_pico.upload.wait_for_upload_port=true
@@ -24874,6 +24963,7 @@ wiznet_5500_evb_pico.build.board=WIZNET_5500_EVB_PICO
 wiznet_5500_evb_pico.build.chip=rp2040
 wiznet_5500_evb_pico.build.toolchain=arm-none-eabi
 wiznet_5500_evb_pico.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+wiznet_5500_evb_pico.build.uf2family=--family rp2040
 wiznet_5500_evb_pico.build.variant=wiznet_5500_evb_pico
 wiznet_5500_evb_pico.upload.maximum_size=2097152
 wiznet_5500_evb_pico.upload.wait_for_upload_port=true
@@ -25084,6 +25174,7 @@ generic.build.board=GENERIC_RP2040
 generic.build.chip=rp2040
 generic.build.toolchain=arm-none-eabi
 generic.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+generic.build.uf2family=--family rp2040
 generic.build.variant=generic
 generic.upload.maximum_size=16777216
 generic.upload.wait_for_upload_port=true

@@ -144,7 +144,7 @@ recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compil
 recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.ldflags} "-Wl,--script={build.path}/memmap_default.ld" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.elf" -Wl,--no-warn-rwx-segments -Wl,--start-group {object_files} "{build.path}/{archive_file}" "{build.path}/boot2.o" "{runtime.platform.path}/lib/{build.chip}/ota.o" {compiler.libraries.ldflags} "{runtime.platform.path}/lib/{build.chip}/{build.libpico}" "{runtime.platform.path}/lib/{build.chip}/{build.libpicow}"  {compiler.libbearssl} -lm -lc {build.flags.libstdcpp} -lc -Wl,--end-group
 
 ## Create output (UF2 file)
-recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2"
+recipe.objcopy.uf2.pattern="{runtime.tools.pqt-picotool.path}/picotool" uf2 convert "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2" {build.uf2family}
 
 ## Create output BIN (for OTA)
 recipe.objcopy.bin.1.pattern="{compiler.path}/{compiler.objcopy.cmd}" -Obinary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
