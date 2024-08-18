@@ -232,7 +232,7 @@ endforeach()
 add_custom_command(TARGET pico-${cpu} POST_BUILD
     COMMAND mkdir -p ../../../include/${cpu}/pico_base/pico
     COMMAND cp ./generated/pico_base/pico/version.h ../../../include/${cpu}/pico_base/pico/.
-    COMMAND cp ./generated/pico_base/pico/config_autogen.h ../../../include/${cpu}/pico_base/pico/.
+    COMMAND sed 's/include.*pico-sdk/include \"..\\/..\\/pico-sdk/' ./generated/pico_base/pico/config_autogen.h > ../../../include/${cpu}/pico_base/pico/config_autogen.h
     COMMAND cp ../tusb_config.h ../../../include/${cpu}/.
     COMMAND cp ../btstack_config.h ../../../include/${cpu}/.
 )
