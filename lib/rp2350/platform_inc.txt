@@ -1,5 +1,5 @@
--iwithprefixbefore/include/rp2040
--iwithprefixbefore/include/rp2040/pico_base
+-iwithprefixbefore/include/rp2350
+-iwithprefixbefore/include/rp2350/pico_base
 -iwithprefixbefore/pico-sdk/src/rp2350/hardware_regs/include
 -iwithprefixbefore/pico-sdk/src/rp2350/hardware_structs/include
 -iwithprefixbefore/pico-sdk/src/rp2350/pico_platform/include

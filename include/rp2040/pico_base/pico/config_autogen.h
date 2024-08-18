@@ -4,6 +4,7 @@
 
 // based on PICO_CONFIG_HEADER_FILES:
 
-#include "../../pico-sdk/src/boards/include/boards/pico.h"
+#include "/home/earle/Arduino/hardware/pico/rp2040/pico-sdk/src/boards/include/boards/pico_w.h"
+#include "/home/earle/Arduino/hardware/pico/rp2040/pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h"
 
 // based on PICO_RP2040_CONFIG_HEADER_FILES:
