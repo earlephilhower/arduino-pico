@@ -22,10 +22,10 @@
 #include "PIOProgram.h"
 #include <map>
 
-#if defined(TARGET_RP2350)
+#if defined(PICO_RP2350)
 #define PIOS pio0, pio1, pio2
 #define PIOCNT 3
-#elif defined(TARGET_RP2040)
+#elif defined(PICO_RP2040)
 #define PIOS pio0, pio1
 #define PIOCNT 2
 #endif
