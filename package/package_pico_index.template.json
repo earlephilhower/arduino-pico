@@ -365,8 +365,8 @@
                      "host": "i686-mingw32",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.picotool-8a9af99.240818.zip",
                      "archiveFileName": "i686-w64-mingw32.picotool-8a9af99.240818.zip",
-                     "checksum": "SHA-256:74a8183ebdbc510e3d418a071c6c2e2dbeb33221f028c534141b470cd05fab2b",
-                     "size": "863373"
+                     "checksum": "SHA-256:a9e4d744a431ed4cca41752a5085f583afa3763be6877614061e7810433acb56",
+                     "size": "1884014"
                   },
                   {
                      "host": "x86_64-apple-darwin",
@@ -386,8 +386,8 @@
                      "host": "x86_64-mingw32",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.picotool-8a9af99.240818.zip",
                      "archiveFileName": "x86_64-w64-mingw32.picotool-8a9af99.240818.zip",
-                     "checksum": "SHA-256:9b1c7ed158727ae854b737eec28911e06798179e14f811a25d90039ac1853009",
-                     "size": "764039"
+                     "checksum": "SHA-256:58e050af07a682805bec35a0f7a0df66d98c8e026126f469221326c11b7071aa",
+                     "size": "1774494"
                   }
                ]
             },
