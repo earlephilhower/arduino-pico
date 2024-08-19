@@ -50,6 +50,21 @@
 #define DEFAULT_MTU 1500
 #endif
 
+
+// Dup'd to avoid CYW43 dependency
+// Generate a mac address if one is not set in otp
+extern "C" {
+    static void cyw43_hal_generate_laa_mac(__unused int idx, uint8_t buf[6]) {
+        pico_unique_board_id_t board_id;
+        pico_get_unique_board_id(&board_id);
+        memcpy(buf, &board_id.id[2], 6);
+        buf[0] &= (uint8_t)~0x1; // unicast
+        buf[0] |= 0x2; // locally administered
+    }
+};
+
+
+
 enum EthernetLinkStatus {
     Unknown,
     LinkON,

@@ -8,14 +8,7 @@ function skip_ino()
     local skiplistrp2350=""
     if [ "$PICO_BOARD" == "rp2350" ]; then
          read -d '' skiplistrp2350 << EOL || true
-/WiFi/
-/AsyncUDP/
-/ArduinoOTA/
-/HTTPClient/
-/HTTPUpdate/
-/HTTPUpdateServer/
-/WebServer/
-/DNSServer/
+/FreeRTOS/
 /BTstackLib/
 /JoystickBT/
 /KeyboardBT/
@@ -29,8 +22,6 @@ function skip_ino()
 /BluetoothHCI/
 /BluetoothHIDMaster/
 /HID_Bluetooth/
-/PicoOTA/
-/FreeRTOS/
 EOL
     fi
     # Add items to the following list with "\n" netween them to skip running.  No spaces, tabs, etc. allowed

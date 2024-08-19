@@ -53,6 +53,11 @@ cd build-rp2350
 CPU=rp2350 cmake ..
 make -j
 
+rm -rf boot
+mkdir boot
+cd boot
+mkdir -p pico
+touch pico/config.h
 # Some in the rp2350 boot2 directory don't compile(!?)
 for type in boot2_generic_03h boot2_w25q080; do
     for div in 2 4; do

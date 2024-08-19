@@ -22,7 +22,9 @@
 #include <lwip/timeouts.h>
 #include <lwip/dns.h>
 #include <pico/mutex.h>
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
 #include <pico/cyw43_arch.h>
+#endif
 #include <pico/async_context_threadsafe_background.h>
 #include <functional>
 #include <map>

@@ -131,6 +131,7 @@ endif()
 set(picow_link_libraries
     common-${cpu}
     pico_async_context
+    pico_async_context_threadsafe_background
     ${xll}
     pico_lwip
     pico_lwip_nosys

@@ -33,7 +33,8 @@
 #include <errno.h>
 
 #include "dhcpserver.h"
-#include "lwip/udp.h"
+#include <lwip/udp.h>
+#include <pico/time.h>
 
 #define DHCPDISCOVER    (1)
 #define DHCPOFFER       (2)
@@ -85,6 +86,11 @@ typedef struct {
     uint8_t file[128]; // boot file name
     uint8_t options[312]; // optional parameters, variable, starts with magic
 } dhcp_msg_t;
+
+// Imported to avoid needing CYW43 internals
+static inline uint32_t cyw43_hal_ticks_ms(void) {
+    return to_ms_since_boot(get_absolute_time());
+}
 
 static int dhcp_socket_new_dgram(struct udp_pcb **udp, void *cb_data, udp_recv_fn cb_udp_recv) {
     // family is AF_INET
