@@ -32,7 +32,6 @@
 #include <string.h>
 #include <errno.h>
 
-#include "cyw43_config.h"
 #include "dhcpserver.h"
 #include "lwip/udp.h"
 
