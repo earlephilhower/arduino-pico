@@ -41,14 +41,14 @@ void loop() {
 
   uint8_t *mem = mems;
   Serial.printf("%05d: Filling %d memory locations @0x%08x with random values and verifying in %d byte chunks.\r\n", cntr++, _psram_size, mem, CHUNK_SIZE);
-  
-  for (int m=0; m < (_psram_size / CHUNK_SIZE); m++) {
-    for (i=0; i<CHUNK_SIZE; i++) {
+
+  for (int m = 0; m < (_psram_size / CHUNK_SIZE); m++) {
+    for (i = 0; i < CHUNK_SIZE; i++) {
       tmp[i] = (char)random(0, 255);
       mem[i] = tmp[i];
     }
-    
-    for (i=0; i<CHUNK_SIZE; i++) {
+
+    for (i = 0; i < CHUNK_SIZE; i++) {
       if (mem[i] != tmp[i]) {
         Serial.printf("Memory error @0x%08x(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
         delay(10);
