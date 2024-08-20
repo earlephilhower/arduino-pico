@@ -19,4 +19,6 @@
 */
 #pragma once
 
+#if defined(PICO_RP2350)
 void setup_psram(void);
+#endif
