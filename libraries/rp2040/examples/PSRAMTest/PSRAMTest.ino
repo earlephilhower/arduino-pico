@@ -1,23 +1,35 @@
 /*
-  RAM Test
+  PSRAM Test
 
   This section of code tests the onboard ram of RP2350 based boards with external
   PSRAM.
-  
+
   This example code is in the public domain.
 
 */
 
-#define CHUNK_SIZE    131072
+#if !defined(XIP_RAM_CHIP_SELECT_GPIO)
+
+void setup() {
+  Serial.println("This example needs an RP2350 with PSRAM attached");
+}
+
+void loop() {
+}
+
+#else
+
+#define CHUNK_SIZE 131072
 uint8_t tmp[CHUNK_SIZE];
-uint8_t mems[1024*1024*8] PSRAM;
+uint8_t mems[1024 * 1024 * 8] PSRAM;
 
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
-  while(!Serial)
+  while (!Serial) {
     delay(10);
+  }
   Serial.begin(115200);
   Serial.printf("Memory size: %d\r\n", rp2040.getPSRAMSize());
 }
@@ -48,3 +60,5 @@ void loop() {
   }
   Serial.printf("\nDone, testing %d bytes again\r\n", _psram_size);
 }
+
+#endif // RAM_CHIP_SELECT
