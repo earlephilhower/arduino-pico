@@ -1,5 +1,5 @@
 /*
-    RP2040 utility class
+    RP2350 utility class
 
     Copyright (c) 2021 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
@@ -17,6 +17,8 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+#if defined (PICO_RP2350)
 
 #include <Arduino.h>
 #include "hardware/gpio.h"
@@ -163,3 +165,4 @@ void __no_inline_not_in_flash_func(setup_psram)(void) {
 }
 #endif
 
+#endif // RP2350
