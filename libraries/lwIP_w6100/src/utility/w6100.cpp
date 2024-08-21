@@ -192,7 +192,7 @@ void Wiznet6100::wizchip_recv_ignore(uint16_t len) {
 }
 
 bool Wiznet6100::wizchip_sw_reset() {
-    setChipLOCK(W6100_CHPLCKR_UNLOCK);
+    setChipLOCK(CHPLCKR_UNLOCK);
     uint16_t count = 0;
     do
     { // Wait Unlock Complete
@@ -200,7 +200,7 @@ bool Wiznet6100::wizchip_sw_reset() {
         {             // Check retry count
             return false; // Over Limit retry count
         }
-    } while ((getStatus() & W6100_SYSR_CHPL_LOCK) ^ W6100_SYSR_CHPL_ULOCK); // Exit Wait Unlock Complete
+    } while ((getStatus() & SYSR_CHPL_LOCK) ^ SYSR_CHPL_ULOCK); // Exit Wait Unlock Complete
 
     setCommand0(0x0); // Software Reset
 
@@ -211,7 +211,7 @@ bool Wiznet6100::wizchip_sw_reset() {
             return false; // Over Limit retry count
         }
 
-    } while ((getStatus() & W6100_SYSR_CHPL_LOCK) ^ W6100_SYSR_CHPL_LOCK); // Exit Wait Lock Complete
+    } while ((getStatus() & SYSR_CHPL_LOCK) ^ SYSR_CHPL_LOCK); // Exit Wait Lock Complete
 
     return true;
 }
@@ -286,9 +286,9 @@ bool Wiznet6100::begin(const uint8_t* mac_address, netif *net) {
     wizchip_sw_reset();
 
     // Unlock
-    setChipLOCK(W6100_CHPLCKR_UNLOCK);
-    setNetLOCK(W6100_NETLCKR_UNLOCK);
-    setPHYLOCK(W6100_PHYLCKR_UNLOCK);
+    setChipLOCK(CHPLCKR_UNLOCK);
+    setNetLOCK(NETLCKR_UNLOCK);
+    setPHYLOCK(PHYLCKR_UNLOCK);
 
     // W6100 CIDR0
     // Version 97(dec) 0x61(hex)
@@ -324,16 +324,16 @@ bool Wiznet6100::begin(const uint8_t* mac_address, netif *net) {
         
 
         // Configure socket 0 interrupts
-        setSn_IMR(W6100_Sn_IMR_RECV); // we're not interested in W6100_Sn_IMR_SENDOK atm
+        setSn_IMR(Sn_IMR_RECV); // we're not interested in Sn_IMR_SENDOK atm
 
         // Enable socket 0 interrupts
-        setSIMR(W6100_SIMR_S0_INT);
+        setSIMR(SIMR_S0_INT);
 
         // Disable unused interrupts
         setIMR(0);
 
         // Enable interrupt pin
-        setCommand1(W6100_SYCR1_IEN);
+        setCommand1(SYCR1_IEN);
         
     }
 
@@ -390,7 +390,7 @@ uint16_t Wiznet6100::readFrameSize() {
     data_len -= 2;
 
     // Clear interrupt flags
-    setICLR(W6100_Sn_IRCLR_RECV);
+    setICLR(Sn_IRCLR_RECV);
 
     return data_len;
 }

@@ -40,39 +40,6 @@
 #include <SPI.h>
 #include <LwipEthernet.h>
 
-#define W6100_CHPLCKR_UNLOCK 0xCE
-#define W6100_NETLCKR_UNLOCK 0x3A
-#define W6100_PHYLCKR_UNLOCK 0x53
-
-#define W6100_SYSR_CHPL_LOCK (1 << 7)
-#define W6100_SYSR_CHPL_ULOCK (0 << 7)
-
-#define W6100_SYCR1_IEN 0x80
-
-// Socket Interrupt Mask register
-#define W6100_SIMR_S7_INT 0x80
-#define W6100_SIMR_S6_INT 0x40
-#define W6100_SIMR_S5_INT 0x20
-#define W6100_SIMR_S4_INT 0x10
-#define W6100_SIMR_S3_INT 0x08
-#define W6100_SIMR_S2_INT 0x04
-#define W6100_SIMR_S1_INT 0x02
-#define W6100_SIMR_S0_INT 0x01
-
-// Sn_IR Clear register
-#define W6100_Sn_IRCLR_SENDOK 0x10
-#define W6100_Sn_IRCLR_TIMEOUT 0x08
-#define W6100_Sn_IRCLR_RECV 0x04
-#define W6100_Sn_IRCLR_DISCON 0x02
-#define W6100_Sn_IRCLR_CON 0x01
-
-// Socket n Interrupt Mask register
-#define W6100_Sn_IMR_SENDOK 0x10
-#define W6100_Sn_IMR_TIMEOUT 0x08
-#define W6100_Sn_IMR_RECV 0x04
-#define W6100_Sn_IMR_DISCON 0x02
-#define W6100_Sn_IMR_CON 0x01
-
 class Wiznet6100 {
 public:
     /**
@@ -493,6 +460,54 @@ private:
         PHYCFGR_SPD_10      = (0 << 1),
         PHYCFGR_LNK_ON      = (1 << 0),
         PHYCFGR_LNK_OFF     = (0 << 0),
+    };
+    
+    /* Lock register commands */
+    enum {
+        CHPLCKR_UNLOCK      = 0xCE,
+        NETLCKR_UNLOCK      = 0x3A,
+        PHYLCKR_UNLOCK      = 0x53,
+    };
+
+    /* SYS Lock register commands */
+    enum {
+        SYSR_CHPL_LOCK      = (1 << 7),
+        SYSR_CHPL_ULOCK     = (0 << 7),
+    };
+
+    /* SYS1 register commands */
+    enum {
+        SYCR1_IEN           = 0x80,
+    };
+
+    /* Socket Interrupt Mask register */
+    enum {
+        SIMR_S7_INT         = 0x80,
+        SIMR_S6_INT         = 0x40,
+        SIMR_S5_INT         = 0x20,
+        SIMR_S4_INT         = 0x10,
+        SIMR_S3_INT         = 0x08,
+        SIMR_S2_INT         = 0x04,
+        SIMR_S1_INT         = 0x02,
+        SIMR_S0_INT         = 0x01,
+    };
+
+    /* Sn_IR Clear register */
+    enum {
+        Sn_IRCLR_SENDOK     = 0x10,
+        Sn_IRCLR_TIMEOUT    = 0x08,
+        Sn_IRCLR_RECV       = 0x04,
+        Sn_IRCLR_DISCON     = 0x02,
+        Sn_IRCLR_CON        = 0x01,
+    };
+
+    /* Socket n Interrupt Mask register */
+    enum {
+        Sn_IMR_SENDOK       = 0x10,
+        Sn_IMR_TIMEOUT      = 0x08,
+        Sn_IMR_RECV         = 0x04,
+        Sn_IMR_DISCON       = 0x02,
+        Sn_IMR_CON          = 0x01,
     };
 
     enum {
