@@ -44,6 +44,15 @@ def BuildFreq(name, defmhz):
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
+def BuildPSRAM(name, psramsize):
+    out = 0
+    if psramsize != 0:
+        for s in [ psramsize, 0, 2, 4, 8]:
+            if (out == 1) and (s == psramsize):
+                continue
+            print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
+            print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
+
 def BuildOptimize(name):
     for l in [ ("Small", "Small", "-Os", " (standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
                ("Optimize3", "Optimize Even More", "-O3", ""), ("Fast", "Fast", "-Ofast", " (maybe slower)"), ("Debug", "Debug", "-Og", "") ]:
@@ -238,6 +247,7 @@ def WriteWarning():
 def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
     print("menu.flash=Flash Size")
+    print("menu.psram=PSRAM Size")
     print("menu.freq=CPU Speed")
     print("menu.opt=Optimize")
     print("menu.rtti=RTTI")
@@ -251,7 +261,7 @@ def BuildGlobalMenuList():
     print("menu.ipbtstack=IP/Bluetooth Stack")
     print("menu.uploadmethod=Upload Method")
 
-def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra = None, board_url = None):
+def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra = None, board_url = None):
     fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
     for i in range(1, flashsizemb):
         fssizelist.append(i * 1024 * 1024)
@@ -283,6 +293,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, flashsizemb * 1024 * 1024, fssizelist)
     if chip == "rp2350":
         BuildFreq(name, 150)
+        BuildPSRAM(name, psramsize)
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
@@ -416,178 +427,178 @@ BuildGlobalMenuList()
 # Otherwise it is difficult to find a specific board in the menu.
 
 # Raspberry Pi
-MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000b", 250, "RASPBERRY_PI_PICO_2", 4, "boot2_generic_03h_2_padded_checksum")
+MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000b", 250, "RASPBERRY_PI_PICO_2", 4, 0, "boot2_generic_03h_2_padded_checksum")
 
 # 0xCB
-MakeBoard("0xcb_helios", "rp2040", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, "boot2_w25q128jvxq_4_padded_checksum")
+MakeBoard("0xcb_helios", "rp2040", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, 0, "boot2_w25q128jvxq_4_padded_checksum")
 
 # Adafruit
-MakeBoard("adafruit_feather", "rp2040", "Adafruit", "Feather RP2040", "0x239a", "0x80f1", 250, "ADAFRUIT_FEATHER_RP2040", 8, "boot2_w25x10cl_4_padded_checksum")
-MakeBoard("adafruit_feather_scorpio", "rp2040", "Adafruit", "Feather RP2040 SCORPIO", "0x239a", "0x8121", 250, "ADAFRUIT_FEATHER_RP2040_SCORPIO", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_dvi", "rp2040", "Adafruit", "Feather RP2040 DVI", "0x239a", "0x8127", 250, "ADAFRUIT_FEATHER_RP2040_DVI", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_adalogger", "rp2040", "Adafruit", "Feather RP2040 Adalogger", "0x239a", "0x815d", 250, "ADAFRUIT_FEATHER_RP2040_ADALOGGER", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_rfm", "rp2040", "Adafruit", "Feather RP2040 RFM", "0x239a", "0x812D", 250, "ADAFRUIT_FEATHER_RP2040_RFM", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_thinkink", "rp2040", "Adafruit", "Feather RP2040 ThinkINK", "0x239a", "0x812B", 250, "ADAFRUIT_FEATHER_RP2040_THINKINK", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_usb_host", "rp2040", "Adafruit", "Feather RP2040 USB Host", "0x239a", "0x8129", 250, "ADAFRUIT_FEATHER_RP2040_USB_HOST", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_can", "rp2040", "Adafruit", "Feather RP2040 CAN", "0x239a", "0x812f", 250, "ADAFRUIT_FEATHER_RP2040_CAN", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_prop_maker", "rp2040", "Adafruit", "Feather RP2040 Prop-Maker", "0x239a", "0x8131", 250, "ADAFRUIT_FEATHER_RP2040_PROP_MAKER", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_itsybitsy", "rp2040", "Adafruit", "ItsyBitsy RP2040", "0x239a", "0x80fd", 250, "ADAFRUIT_ITSYBITSY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_metro", "rp2040", "Adafruit", "Metro RP2040", "0x239a", "0x813d", 250, "ADAFRUIT_METRO_RP2040", 16, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_qtpy", "rp2040", "Adafruit", "QT Py RP2040", "0x239a", "0x80f7", 250, "ADAFRUIT_QTPY_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_stemmafriend", "rp2040", "Adafruit", "STEMMA Friend RP2040", "0x239a", "0x80e3", 250, "ADAFRUIT_STEMMAFRIEND_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_trinkeyrp2040qt", "rp2040", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", 250, "ADAFRUIT_TRINKEYQT_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_macropad2040", "rp2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", 250, "ADAFRUIT_MACROPAD_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_kb2040", "rp2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather", "rp2040", "Adafruit", "Feather RP2040", "0x239a", "0x80f1", 250, "ADAFRUIT_FEATHER_RP2040", 8, 0, "boot2_w25x10cl_4_padded_checksum")
+MakeBoard("adafruit_feather_scorpio", "rp2040", "Adafruit", "Feather RP2040 SCORPIO", "0x239a", "0x8121", 250, "ADAFRUIT_FEATHER_RP2040_SCORPIO", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_dvi", "rp2040", "Adafruit", "Feather RP2040 DVI", "0x239a", "0x8127", 250, "ADAFRUIT_FEATHER_RP2040_DVI", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_adalogger", "rp2040", "Adafruit", "Feather RP2040 Adalogger", "0x239a", "0x815d", 250, "ADAFRUIT_FEATHER_RP2040_ADALOGGER", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_rfm", "rp2040", "Adafruit", "Feather RP2040 RFM", "0x239a", "0x812D", 250, "ADAFRUIT_FEATHER_RP2040_RFM", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_thinkink", "rp2040", "Adafruit", "Feather RP2040 ThinkINK", "0x239a", "0x812B", 250, "ADAFRUIT_FEATHER_RP2040_THINKINK", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_usb_host", "rp2040", "Adafruit", "Feather RP2040 USB Host", "0x239a", "0x8129", 250, "ADAFRUIT_FEATHER_RP2040_USB_HOST", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_can", "rp2040", "Adafruit", "Feather RP2040 CAN", "0x239a", "0x812f", 250, "ADAFRUIT_FEATHER_RP2040_CAN", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_prop_maker", "rp2040", "Adafruit", "Feather RP2040 Prop-Maker", "0x239a", "0x8131", 250, "ADAFRUIT_FEATHER_RP2040_PROP_MAKER", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_itsybitsy", "rp2040", "Adafruit", "ItsyBitsy RP2040", "0x239a", "0x80fd", 250, "ADAFRUIT_ITSYBITSY_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_metro", "rp2040", "Adafruit", "Metro RP2040", "0x239a", "0x813d", 250, "ADAFRUIT_METRO_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_qtpy", "rp2040", "Adafruit", "QT Py RP2040", "0x239a", "0x80f7", 250, "ADAFRUIT_QTPY_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_stemmafriend", "rp2040", "Adafruit", "STEMMA Friend RP2040", "0x239a", "0x80e3", 250, "ADAFRUIT_STEMMAFRIEND_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_trinkeyrp2040qt", "rp2040", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", 250, "ADAFRUIT_TRINKEYQT_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_macropad2040", "rp2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", 250, "ADAFRUIT_MACROPAD_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_kb2040", "rp2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 
 
 #Amken
-MakeBoard("amken_bunny", "rp2040","Amken","BunnyBoard","0x2770",["0x7303"],250,"AMKEN_BB",128,"boot2_w25q128jvxq_4_padded_checksum","","https://www.amken3d.com")
-MakeBoard("amken_revelop", "rp2040","Amken","Revelop","0x2770",["0x7304"],250,"AMKEN_REVELOP",32,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
-MakeBoard("amken_revelop_plus", "rp2040","Amken","Revelop Plus","0x2770",["0x7305"],250,"AMKEN_REVELOP_PLUS",32,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
-MakeBoard("amken_revelop_es", "rp2040","Amken","Revelop eS","0x2770",["0x7306"],250,"AMKEN_ES",16,"boot2_w25q16jvxq_4_padded_checksum","","https://www.amken3d.com")
+MakeBoard("amken_bunny", "rp2040","Amken","BunnyBoard","0x2770",["0x7303"],250,"AMKEN_BB",128,0,"boot2_w25q128jvxq_4_padded_checksum","","https://www.amken3d.com")
+MakeBoard("amken_revelop", "rp2040","Amken","Revelop","0x2770",["0x7304"],250,"AMKEN_REVELOP",32,0,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
+MakeBoard("amken_revelop_plus", "rp2040","Amken","Revelop Plus","0x2770",["0x7305"],250,"AMKEN_REVELOP_PLUS",32,0,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
+MakeBoard("amken_revelop_es", "rp2040","Amken","Revelop eS","0x2770",["0x7306"],250,"AMKEN_ES",16,0,"boot2_w25q16jvxq_4_padded_checksum","","https://www.amken3d.com")
 
 # Arduino
-MakeBoard("arduino_nano_connect", "rp2040", "Arduino", "Nano RP2040 Connect", "0x2341", ["0x005e", "0x805e", "0x015e", "0x025e"] , 250, "NANO_RP2040_CONNECT", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("arduino_nano_connect", "rp2040", "Arduino", "Nano RP2040 Connect", "0x2341", ["0x005e", "0x805e", "0x015e", "0x025e"] , 250, "NANO_RP2040_CONNECT", 16, 0, "boot2_w25q080_2_padded_checksum")
 
 # ArtronShop
-MakeBoard("artronshop_rp2_nano", "rp2040", "ArtronShop", "RP2 Nano", "0x2e8a", "0x000a", 250, "ARTRONSHOP_RP2_NANO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("artronshop_rp2_nano", "rp2040", "ArtronShop", "RP2 Nano", "0x2e8a", "0x000a", 250, "ARTRONSHOP_RP2_NANO", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # Breadstick
-MakeBoard("breadstick_raspberry", "rp2040", "Breadstick", "Raspberry", "0x2e8a", "0x105e" , 500, "Breadstick_Raspberry", 16, "boot2_w25q080_2_padded_checksum", board_url="https://shop.breadstick.ca/products/raspberry-breadstick-rp2040")
+MakeBoard("breadstick_raspberry", "rp2040", "Breadstick", "Raspberry", "0x2e8a", "0x105e" , 500, "Breadstick_Raspberry", 16, 0, "boot2_w25q080_2_padded_checksum", board_url="https://shop.breadstick.ca/products/raspberry-breadstick-rp2040")
 
 # BridgeTek
-MakeBoard("bridgetek_idm2040_7a", "rp2040", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040_7A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
-MakeBoard("bridgetek_idm2040_43a", "rp2040", "BridgeTek", "IDM2040-43A", "0x2e8b", "0xf00a", 250, "BRIDGETEK_IDM2040_43A", 8, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT883", "DISPLAY_RES=WQVGA", "PLATFORM_RP2040"])
+MakeBoard("bridgetek_idm2040_7a", "rp2040", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040_7A", 8, 0, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
+MakeBoard("bridgetek_idm2040_43a", "rp2040", "BridgeTek", "IDM2040-43A", "0x2e8b", "0xf00a", 250, "BRIDGETEK_IDM2040_43A", 8, 0, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT883", "DISPLAY_RES=WQVGA", "PLATFORM_RP2040"])
  
 # Cytron
-MakeBoard("cytron_maker_nano_rp2040", "rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("cytron_maker_pi_rp2040", "rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x1000", 250, "CYTRON_MAKER_PI_RP2040", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("cytron_maker_uno_rp2040", "rp2040", "Cytron", "Maker Uno RP2040", "0x2e8a", "0x1071", 250, "CYTRON_MAKER_UNO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("cytron_maker_nano_rp2040", "rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("cytron_maker_pi_rp2040", "rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x1000", 250, "CYTRON_MAKER_PI_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("cytron_maker_uno_rp2040", "rp2040", "Cytron", "Maker Uno RP2040", "0x2e8a", "0x1071", 250, "CYTRON_MAKER_UNO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # DatanoiseTV
-MakeBoard("datanoisetv_picoadk", "rp2040", "DatanoiseTV", "PicoADK", "0x2e8a", "0x000a", 250, "DATANOISETV_PICOADK", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("datanoisetv_picoadk", "rp2040", "DatanoiseTV", "PicoADK", "0x2e8a", "0x000a", 250, "DATANOISETV_PICOADK", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # Degz Robotics
-MakeBoard("degz_suibo", "rp2040", "Degz Robotics", "Suibo RP2040", "0x2e8a", "0xf00a", 250, "DEGZ_SUIBO_RP2040", 16, "boot2_generic_03h_4_padded_checksum", board_url="https://www.degzrobotics.com/suibo")
+MakeBoard("degz_suibo", "rp2040", "Degz Robotics", "Suibo RP2040", "0x2e8a", "0xf00a", 250, "DEGZ_SUIBO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum", board_url="https://www.degzrobotics.com/suibo")
 
 # DeRuiLab
-MakeBoard("flyboard2040_core", "rp2040", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a", 500, "FLYBOARD2040_CORE", 4, "boot2_w25q080_2_padded_checksum")
+MakeBoard("flyboard2040_core", "rp2040", "DeRuiLab", "FlyBoard2040Core", "0x2e8a", "0x008a", 500, "FLYBOARD2040_CORE", 4, 0, "boot2_w25q080_2_padded_checksum")
 
 # DFRobot
-MakeBoard("dfrobot_beetle_rp2040", "rp2040", "DFRobot", "Beetle RP2040", "0x3343", "0x4253", 250, "DFROBOT_BEETLE_RP2040", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("dfrobot_beetle_rp2040", "rp2040", "DFRobot", "Beetle RP2040", "0x3343", "0x4253", 250, "DFROBOT_BEETLE_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # DudesCab
-MakeBoard("DudesCab", "rp2040", "L'atelier d'Arnoz", "DudesCab", "0x2e8a", "0x106F", 250, "RASPBERRY_PI_PICO", 4, "boot2_w25q080_2_padded_checksum")
+MakeBoard("DudesCab", "rp2040", "L'atelier d'Arnoz", "DudesCab", "0x2e8a", "0x106F", 250, "RASPBERRY_PI_PICO", 4, 0, "boot2_w25q080_2_padded_checksum")
 
 # ElectronicCat
-MakeBoard("electroniccats_huntercat_nfc", "rp2040", "ElectronicCats", "HunterCat NFC RP2040", "0x2E8A", "0x1037", 500, "ELECTRONICCATS_HUNTERCAT_NFC", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("electroniccats_huntercat_nfc", "rp2040", "ElectronicCats", "HunterCat NFC RP2040", "0x2E8A", "0x1037", 500, "ELECTRONICCATS_HUNTERCAT_NFC", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # EVN
-MakeBoard("evn_alpha", "rp2040", "EVN", "Alpha", "0x2e8a", "0xf00a", 500, "EVN_ALPHA", 16, "boot2_generic_03h_2_padded_checksum", board_url="https://coresg.tech/evn")
+MakeBoard("evn_alpha", "rp2040", "EVN", "Alpha", "0x2e8a", "0xf00a", 500, "EVN_ALPHA", 16, 0, "boot2_generic_03h_2_padded_checksum", board_url="https://coresg.tech/evn")
 
 # ExtremeElectronics
-MakeBoard("extelec_rc2040", "rp2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("extelec_rc2040", "rp2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # GroundStudio
-MakeBoard('groundstudio_marble_pico', "rp2040", "GroundStudio", "Marble Pico", "0x2e8a", "0x0003", 500, "MARBLE_PICO", 8, "boot2_w25q16jvxq_4_padded_checksum", None, "https://ardushop.ro/2652-marble-pico.html")
+MakeBoard('groundstudio_marble_pico', "rp2040", "GroundStudio", "Marble Pico", "0x2e8a", "0x0003", 500, "MARBLE_PICO", 8, 0, "boot2_w25q16jvxq_4_padded_checksum", None, "https://ardushop.ro/2652-marble-pico.html")
 
 # iLabs
-MakeBoard("challenger_2040_lte", "rp2040", "iLabs", "Challenger 2040 LTE", "0x2e8a", "0x100b", 500, "CHALLENGER_2040_LTE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("challenger_2040_lora", "rp2040", "iLabs", "Challenger 2040 LoRa", "0x2e8a", "0x1023", 250, "CHALLENGER_2040_LORA_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("challenger_2040_subghz", "rp2040", "iLabs", "Challenger 2040 SubGHz", "0x2e8a", "0x1032", 250, "CHALLENGER_2040_SUBGHZ_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("challenger_2040_wifi", "rp2040", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", 250, "CHALLENGER_2040_WIFI_RP2040", 8, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2040_wifi_ble", "rp2040", "iLabs", "Challenger 2040 WiFi/BLE", "0x2e8a", "0x102C", 500, "CHALLENGER_2040_WIFI_BLE_RP2040", 8, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2040_wifi6_ble", "rp2040", "iLabs", "Challenger 2040 WiFi6/BLE", "0x2e8a", "0x105F", 500, "CHALLENGER_2040_WIFI6_BLE_RP2040", 8, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_nb_2040_wifi", "rp2040", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a", "0x100d", 500, "CHALLENGER_NB_2040_WIFI_RP2040", 8, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2040_sdrtc", "rp2040", "iLabs", "Challenger 2040 SD/RTC", "0x2e8a", "0x102d", 250, "CHALLENGER_2040_SDRTC_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("challenger_2040_nfc", "rp2040", "iLabs", "Challenger 2040 NFC", "0x2e8a", "0x1036", 250, "CHALLENGER_2040_NFC_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("challenger_2040_uwb", "rp2040", "iLabs", "Challenger 2040 UWB", "0x2e8a", "0x1052", 500, "CHALLENGER_2040_UWB_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("connectivity_2040_lte_wifi_ble", "rp2040", "iLabs", "Connectivity 2040 LTE/WiFi/BLE", "0x2e8a", "0x107b", 500, "CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040", 8, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, "boot2_generic_03h_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, "boot2_generic_03h_2_padded_checksum")
+MakeBoard("challenger_2040_lte", "rp2040", "iLabs", "Challenger 2040 LTE", "0x2e8a", "0x100b", 500, "CHALLENGER_2040_LTE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("challenger_2040_lora", "rp2040", "iLabs", "Challenger 2040 LoRa", "0x2e8a", "0x1023", 250, "CHALLENGER_2040_LORA_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("challenger_2040_subghz", "rp2040", "iLabs", "Challenger 2040 SubGHz", "0x2e8a", "0x1032", 250, "CHALLENGER_2040_SUBGHZ_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("challenger_2040_wifi", "rp2040", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", 250, "CHALLENGER_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2040_wifi_ble", "rp2040", "iLabs", "Challenger 2040 WiFi/BLE", "0x2e8a", "0x102C", 500, "CHALLENGER_2040_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2040_wifi6_ble", "rp2040", "iLabs", "Challenger 2040 WiFi6/BLE", "0x2e8a", "0x105F", 500, "CHALLENGER_2040_WIFI6_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_nb_2040_wifi", "rp2040", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a", "0x100d", 500, "CHALLENGER_NB_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2040_sdrtc", "rp2040", "iLabs", "Challenger 2040 SD/RTC", "0x2e8a", "0x102d", 250, "CHALLENGER_2040_SDRTC_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("challenger_2040_nfc", "rp2040", "iLabs", "Challenger 2040 NFC", "0x2e8a", "0x1036", 250, "CHALLENGER_2040_NFC_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("challenger_2040_uwb", "rp2040", "iLabs", "Challenger 2040 UWB", "0x2e8a", "0x1052", 500, "CHALLENGER_2040_UWB_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("connectivity_2040_lte_wifi_ble", "rp2040", "iLabs", "Connectivity 2040 LTE/WiFi/BLE", "0x2e8a", "0x107b", 500, "CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "boot2_generic_03h_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "boot2_generic_03h_2_padded_checksum")
 
 # Melopero
-MakeBoard("melopero_cookie_rp2040", "rp2040", "Melopero", "Cookie RP2040", "0x2e8a", "0x1011", 250, "MELOPERO_COOKIE_RP2040", 8, "boot2_w25q080_2_padded_checksum")
-MakeBoard("melopero_shake_rp2040", "rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005", 250, "MELOPERO_SHAKE_RP2040", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("melopero_cookie_rp2040", "rp2040", "Melopero", "Cookie RP2040", "0x2e8a", "0x1011", 250, "MELOPERO_COOKIE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("melopero_shake_rp2040", "rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005", 250, "MELOPERO_SHAKE_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 
 # Mete Hoca
-MakeBoard("akana_r1", "rp2040", "METE HOCA", "Akana R1", "0x2e8a", "0x3001", 500, "METEHOCA_AKANA_R1", 16, "boot2_generic_03h_4_padded_checksum", board_url="https://www.metehoca.com/")
+MakeBoard("akana_r1", "rp2040", "METE HOCA", "Akana R1", "0x2e8a", "0x3001", 500, "METEHOCA_AKANA_R1", 16, 0, "boot2_generic_03h_4_padded_checksum", board_url="https://www.metehoca.com/")
 
 # Neko Systems
-MakeBoard("nekosystems_bl2040_mini", "rp2040", "Neko Systems", "BL2040 Mini", "0x2e8a", "0x000a", 500, "NEKOSYSTEMS_BL2040_MINI", 4, "boot2_generic_03h_2_padded_checksum")
+MakeBoard("nekosystems_bl2040_mini", "rp2040", "Neko Systems", "BL2040 Mini", "0x2e8a", "0x000a", 500, "NEKOSYSTEMS_BL2040_MINI", 4, 0, "boot2_generic_03h_2_padded_checksum")
 
 # Newsan
-MakeBoard("newsan_archi", "rp2040", "Newsan", "Archi", "0x2E8A", "0x1043", 250, "NEWSAN_ARCHI", 4, "boot2_generic_03h_4_padded_checksum", None, "https://archikids.com.ar/")
+MakeBoard("newsan_archi", "rp2040", "Newsan", "Archi", "0x2E8A", "0x1043", 250, "NEWSAN_ARCHI", 4, 0, "boot2_generic_03h_4_padded_checksum", None, "https://archikids.com.ar/")
 
 # nullbits
-MakeBoard("nullbits_bit_c_pro", "rp2040", "nullbits", "Bit-C PRO", "0x2e8a", "0x6e61", 500, "NULLBITS_BIT_C_PRO", 4, "boot2_w25x10cl_4_padded_checksum")
+MakeBoard("nullbits_bit_c_pro", "rp2040", "nullbits", "Bit-C PRO", "0x2e8a", "0x6e61", 500, "NULLBITS_BIT_C_PRO", 4, 0, "boot2_w25x10cl_4_padded_checksum")
 
 # Olimex
-MakeBoard("olimex_rp2040pico30_2mb", "rp2040", "Olimex", "RP2040-Pico30 2MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_2MB", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("olimex_rp2040pico30_16mb", "rp2040", "Olimex", "RP2040-Pico30 16MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_16MB", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("olimex_rp2040pico30_2mb", "rp2040", "Olimex", "RP2040-Pico30 2MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_2MB", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("olimex_rp2040pico30_16mb", "rp2040", "Olimex", "RP2040-Pico30 16MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_16MB", 16, 0, "boot2_w25q080_2_padded_checksum")
 
 # Pimoroni
-MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, "boot2_w25q64jv_4_padded_checksum")
-MakeBoard("pimoroni_plasma2040", "rp2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("pimoroni_tiny2040", "rp2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, "boot2_w25q64jv_4_padded_checksum")
+MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, 0, "boot2_w25q64jv_4_padded_checksum")
+MakeBoard("pimoroni_plasma2040", "rp2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("pimoroni_tiny2040", "rp2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, 0, "boot2_w25q64jv_4_padded_checksum")
 
 #Pintronix
-MakeBoard("pintronix_pinmax", "rp2040", "Pintronix", "PinMax", "0x2e8a", "0x9101", 250, "PINTRONIX_PINMAX", 4, "boot2_w25q080_2_padded_checksum")
+MakeBoard("pintronix_pinmax", "rp2040", "Pintronix", "PinMax", "0x2e8a", "0x9101", 250, "PINTRONIX_PINMAX", 4, 0, "boot2_w25q080_2_padded_checksum")
 
 # RAKwireless
-MakeBoard("rakwireless_rak11300", "rp2040", "RAKwireless", "RAK11300", "0x2e8a", "0x00c0", 500, "RAKWIRELESS_RAK11300", 2, "boot2_w25q16jvxq_4_padded_checksum", None, "https://store.rakwireless.com/products/wisduo-lpwan-module-rak11300")
+MakeBoard("rakwireless_rak11300", "rp2040", "RAKwireless", "RAK11300", "0x2e8a", "0x00c0", 500, "RAKWIRELESS_RAK11300", 2, 0, "boot2_w25q16jvxq_4_padded_checksum", None, "https://store.rakwireless.com/products/wisduo-lpwan-module-rak11300")
 
 # Redscorp
-MakeBoard("redscorp_rp2040_eins", "rp2040", "redscorp", "RP2040-Eins", "0x2341", ["0x005f", "0x805f", "0x015f", "0x025f"] , 250, "REDSCORP_RP2040_EINS", 16, "boot2_w25q080_2_padded_checksum")
-MakeBoard("redscorp_rp2040_promini", "rp2040", "redscorp", "RP2040-ProMini", "0x2341", ["0x005f", "0x805f", "0x015f", "0x025f"] , 250, "REDSCORP_RP2040_PROMINI", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("redscorp_rp2040_eins", "rp2040", "redscorp", "RP2040-Eins", "0x2341", ["0x005f", "0x805f", "0x015f", "0x025f"] , 250, "REDSCORP_RP2040_EINS", 16, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("redscorp_rp2040_promini", "rp2040", "redscorp", "RP2040-ProMini", "0x2341", ["0x005f", "0x805f", "0x015f", "0x025f"] , 250, "REDSCORP_RP2040_PROMINI", 16, 0, "boot2_w25q080_2_padded_checksum")
 
 # Sea-Picro
-MakeBoard("sea_picro", "rp2040", "Generic", "Sea-Picro", "0x2e8a", "0xf00a", 500, "SEA_PICRO", 8, "boot2_w25q64jv_4_padded_checksum", None, "https://github.com/joshajohnson/sea-picro")
+MakeBoard("sea_picro", "rp2040", "Generic", "Sea-Picro", "0x2e8a", "0xf00a", 500, "SEA_PICRO", 8, 0, "boot2_w25q64jv_4_padded_checksum", None, "https://github.com/joshajohnson/sea-picro")
 
 # Silicognition
-MakeBoard("silicognition_rp2040_shim", "rp2040", "Silicognition", "RP2040-Shim", "0x1209", "0xf502", 500, "SILICOGNITION_RP2040_SHIM", 4, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("silicognition_rp2040_shim", "rp2040", "Silicognition", "RP2040-Shim", "0x1209", "0xf502", 500, "SILICOGNITION_RP2040_SHIM", 4, 0, "boot2_generic_03h_4_padded_checksum")
 
 # Solder Party
-MakeBoard("solderparty_rp2040_stamp", "rp2040", "Solder Party", "RP2040 Stamp", "0x1209", "0xa182", 500, "SOLDERPARTY_RP2040_STAMP", 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("solderparty_rp2040_stamp", "rp2040", "Solder Party", "RP2040 Stamp", "0x1209", "0xa182", 500, "SOLDERPARTY_RP2040_STAMP", 8, 0, "boot2_generic_03h_4_padded_checksum")
 
 # SparkFun
-MakeBoard("sparkfun_micromodrp2040", "rp2040", "SparkFun", "MicroMod RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_MICROMOD_RP2040", 16, "boot2_w25q080_2_padded_checksum")
-MakeBoard("sparkfun_promicrorp2040", "rp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
-MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, "boot2_w25q080_2_padded_checksum")
+MakeBoard("sparkfun_micromodrp2040", "rp2040", "SparkFun", "MicroMod RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_MICROMOD_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("sparkfun_promicrorp2040", "rp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 
 # Upesy
-MakeBoard("upesy_rp2040_devkit", "rp2040", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("upesy_rp2040_devkit", "rp2040", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # Seeed
-MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("seeed_xiao_rp2040", "rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("seeed_xiao_rp2040", "rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # VCC-GND YD-2040 - Use generic SPI/4 because boards seem to come with varied flash modules but same name
-MakeBoard('vccgnd_yd_rp2040', "rp2040", "VCC-GND", "YD RP2040", "0x2e8a", "0x800a", 500, "YD_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
+MakeBoard('vccgnd_yd_rp2040', "rp2040", "VCC-GND", "YD RP2040", "0x2e8a", "0x800a", 500, "YD_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 
 # Viyalab
-MakeBoard("viyalab_mizu", "rp2040", "Viyalab", "Mizu RP2040", "0x2e8a", "0x000a", 250, "VIYALAB_MIZU_RP2040", 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("viyalab_mizu", "rp2040", "Viyalab", "Mizu RP2040", "0x2e8a", "0x000a", 250, "VIYALAB_MIZU_RP2040", 8, 0, "boot2_generic_03h_4_padded_checksum")
 
 # Waveshare
-MakeBoard("waveshare_rp2040_zero", "rp2040", "Waveshare", "RP2040 Zero", "0x2e8a", "0x0003", 500, "WAVESHARE_RP2040_ZERO", 2, "boot2_w25q16jvxq_4_padded_checksum")
-MakeBoard("waveshare_rp2040_one", "rp2040", "Waveshare", "RP2040 One", "0x2e8a", "0x103a", 500, "WAVESHARE_RP2040_ONE", 4, "boot2_w25q16jvxq_4_padded_checksum")
-MakeBoard("waveshare_rp2040_matrix", "rp2040", "Waveshare", "RP2040 Matrix", "0x2e8a", "0x103a", 500, "WAVESHARE_RP2040_MATRIX", 2, "boot2_w25q16jvxq_4_padded_checksum")
-MakeBoard("waveshare_rp2040_pizero", "rp2040", "Waveshare", "RP2040 PiZero", "0x2e8a", "0x0003", 500, "WAVESHARE_RP2040_PIZERO", 16, "boot2_w25q16jvxq_4_padded_checksum")
-MakeBoard("waveshare_rp2040_plus_4mb", "rp2040", "Waveshare", "RP2040 Plus 4MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 4, "boot2_w25q080_2_padded_checksum")
-MakeBoard("waveshare_rp2040_plus_16mb", "rp2040", "Waveshare", "RP2040 Plus 16MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 16, "boot2_w25q080_2_padded_checksum")
-MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, "boot2_w25q16jvxq_4_padded_checksum")
-MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2040_zero", "rp2040", "Waveshare", "RP2040 Zero", "0x2e8a", "0x0003", 500, "WAVESHARE_RP2040_ZERO", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2040_one", "rp2040", "Waveshare", "RP2040 One", "0x2e8a", "0x103a", 500, "WAVESHARE_RP2040_ONE", 4, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2040_matrix", "rp2040", "Waveshare", "RP2040 Matrix", "0x2e8a", "0x103a", 500, "WAVESHARE_RP2040_MATRIX", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2040_pizero", "rp2040", "Waveshare", "RP2040 PiZero", "0x2e8a", "0x0003", 500, "WAVESHARE_RP2040_PIZERO", 16, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2040_plus_4mb", "rp2040", "Waveshare", "RP2040 Plus 4MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 4, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("waveshare_rp2040_plus_16mb", "rp2040", "Waveshare", "RP2040 Plus 16MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 16, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
 
 # WIZnet
-MakeBoard("wiznet_5100s_evb_pico", "rp2040", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("wiznet_wizfi360_evb_pico", "rp2040", "WIZnet", "WizFi360-EVB-Pico", "0x2e8a", "0x1028", 250, "WIZNET_WIZFI360_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
-MakeBoard("wiznet_5500_evb_pico", "rp2040", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO", 2, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_5100s_evb_pico", "rp2040", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_wizfi360_evb_pico", "rp2040", "WIZnet", "WizFi360-EVB-Pico", "0x2e8a", "0x1028", 250, "WIZNET_WIZFI360_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_5500_evb_pico", "rp2040", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # Generic
-MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 
 sys.stdout.close()
 with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w', newline='\n') as f:
