@@ -45,6 +45,7 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_async_context/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_bootrom/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_double/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_float/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_int64_ops/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_lwip/include
