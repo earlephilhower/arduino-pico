@@ -90,7 +90,7 @@ compiler.elf2hex.extra_flags=
 # Board configuration, set in boards.txt.  Present here to ensure substitution works
 build.flash_total=
 build.flash_length=
-build.psram_length=
+build.psram_length=0
 build.eeprom_start=
 build.flags.optimize=-Os
 build.flags.rtti=-fno-rtti
