@@ -8,7 +8,7 @@
 
 */
 
-#if !defined(XIP_RAM_CHIP_SELECT_GPIO)
+#if !defined(RP2350_PSRAM_CS)
 
 void setup() {
   Serial.println("This example needs an RP2350 with PSRAM attached");
@@ -37,12 +37,12 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
   int i;
-  int cntr = 1;
+  static int cntr = 1;
 
   uint8_t *mem = mems;
-  Serial.printf("%05d: Filling %d memory locations @0x%08x with random values and verifying in %d byte chunks.\r\n", cntr++, _psram_size, mem, CHUNK_SIZE);
+  Serial.printf("%05d: Filling %d memory locations @0x%p with random values and verifying in %d byte chunks.\r\n", cntr++, rp2040.getPSRAMSize(), mem, CHUNK_SIZE);
 
-  for (int m = 0; m < (_psram_size / CHUNK_SIZE); m++) {
+  for (size_t m = 0; m < (rp2040.getPSRAMSize() / CHUNK_SIZE); m++) {
     for (i = 0; i < CHUNK_SIZE; i++) {
       tmp[i] = (char)random(0, 255);
       mem[i] = tmp[i];
@@ -50,7 +50,7 @@ void loop() {
 
     for (i = 0; i < CHUNK_SIZE; i++) {
       if (mem[i] != tmp[i]) {
-        Serial.printf("Memory error @0x%08x(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
+        Serial.printf("Memory error @0x%p(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
         delay(10);
       }
     }
@@ -58,7 +58,7 @@ void loop() {
     Serial.flush();
     mem += CHUNK_SIZE;
   }
-  Serial.printf("\nDone, testing %d bytes again\r\n", _psram_size);
+  Serial.printf("\nDone, testing %d bytes again\r\n", rp2040.getPSRAMSize());
 }
 
 #endif // RAM_CHIP_SELECT

@@ -19,12 +19,8 @@
 */
 #include <Arduino.h>
 #include <ChallengerWiFi.h>
-#include <RP2350Support.h>
 
 /* Reset the ESP device before the user starts using the device. */
 void initVariant() {
     Challenger2040WiFi.reset();
-#if defined(XIP_RAM_CHIP_SELECT_GPIO)
-    setup_psram();
-#endif
 }

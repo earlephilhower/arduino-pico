@@ -167,7 +167,6 @@ extern "C" void setup1() __attribute__((weak));
 extern "C" void loop1() __attribute__((weak));
 extern "C" bool core1_separate_stack;
 extern "C" uint32_t* core1_separate_stack_address;
-extern "C" size_t _psram_size;
 
 class RP2040 {
 public:
@@ -270,7 +269,8 @@ public:
 
     inline size_t getPSRAMSize() {
 #if defined(PICO_RP2350)
-        return _psram_size;
+        extern size_t __psram_size;
+        return __psram_size;
 #else
         return 0;
 #endif
