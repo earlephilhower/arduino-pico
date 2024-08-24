@@ -201,7 +201,7 @@ tools.picotool.cmd={runtime.platform.path}/system/picotool
 tools.picotool.upload.protocol=picotool
 tools.picotool.upload.params.verbose=
 tools.picotool.upload.params.quiet=
-tools.picotool.upload.pattern="{cmd}/picotool" load "{build.path}/{build.project_name}.uf2" -f
+tools.picotool.upload.pattern="{cmd}/picotool" load "{build.path}/{build.project_name}.uf2" -f -x
 
 #tools.picoprobe_cmsis_dap.cmd={runtime.tools.pqt-openocd.path}
 tools.picoprobe_cmsis_dap.cmd={runtime.platform.path}/system/openocd
