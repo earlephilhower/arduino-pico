@@ -24,6 +24,7 @@
 MEMORY
 {
     FLASH(rx) : ORIGIN = 0x10000000, LENGTH = __FLASH_LENGTH__
+    PSRAM(rwx) : ORIGIN = 0x11000000, LENGTH = __PSRAM_LENGTH__
     RAM(rwx) : ORIGIN =  0x20000000, LENGTH = __RAM_LENGTH__
     SCRATCH_X(rwx) : ORIGIN = 0x20080000, LENGTH = 4k
     SCRATCH_Y(rwx) : ORIGIN = 0x20081000, LENGTH = 4k
@@ -276,6 +277,10 @@ SECTIONS
         KEEP(*(.embedded_end_block*))
         PROVIDE(__flash_binary_end = .);
     } > FLASH =0xaa
+
+    .psram (NOLOAD) : {
+        *(.psram*)
+    } > PSRAM
 
     /* stack limit is poorly named, but historically is maximum heap ptr */
     __StackLimit = ORIGIN(RAM) + LENGTH(RAM);

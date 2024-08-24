@@ -138,4 +138,5 @@ constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
 #undef stdio_usb_init
 #define stdio_usb_init(...)  static_assert(0, "stdio_usb_init is not supported or needed. Either use Serial.printf() or set the debug port in the IDE to Serial/1/2 and use printf().  See https://github.com/earlephilhower/arduino-pico/issues/1433#issuecomment-1540354673 and https://github.com/earlephilhower/arduino-pico/issues/1433#issuecomment-1546783109")
 
-
+// PSRAM decorator
+#define PSRAM __attribute__((section("\".psram\"")))
