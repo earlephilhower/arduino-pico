@@ -219,7 +219,9 @@ Under Windows a local admin user should be able to access the Picoprobe port aut
 
 To set up user-level access to Picoprobes on Ubuntu (and other OSes which use `udev`):
 ````
-echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", MODE="660", GROUP-"plugdev"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000a", MODE="660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000f", MODE="660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
 sudo udevadm control --reload
 sudo udevadm trigger -w -s usb
 ````
