@@ -3,7 +3,11 @@ import os
 import sys
 import json
 
-def BuildFlashMenu(name, flashsize, fssizelist):
+def BuildFlashMenu(name, chip, flashsize, fssizelist):
+    if chip == "rp2350":
+        delta = 8192
+    elif chip == "rp2040":
+        delta = 4096
     for fssize in fssizelist:
         if fssize == 0:
             fssizename = "no FS"
@@ -13,12 +17,12 @@ def BuildFlashMenu(name, flashsize, fssizelist):
             fssizename = "Sketch: %dMB, FS: %dMB" % ((flashsize - fssize) / (1024 * 1024), fssize / (1024 * 1024))
         mn="%d_%d" % (flashsize, fssize)
         print("%s.menu.flash.%s=%dMB (%s)" % (name, mn, flashsize / (1024 * 1024), fssizename))
-        print("%s.menu.flash.%s.upload.maximum_size=%d" % (name, mn, flashsize - 4096 - fssize))
+        print("%s.menu.flash.%s.upload.maximum_size=%d" % (name, mn, flashsize - delta - fssize))
         print("%s.menu.flash.%s.build.flash_total=%d" % (name, mn, flashsize))
-        print("%s.menu.flash.%s.build.flash_length=%d" % (name, mn, flashsize - 4096 - fssize))
-        print("%s.menu.flash.%s.build.eeprom_start=%d" % (name, mn, int("0x10000000",0) + flashsize - 4096))
-        print("%s.menu.flash.%s.build.fs_start=%d" % (name, mn, int("0x10000000",0) + flashsize - 4096 - fssize))
-        print("%s.menu.flash.%s.build.fs_end=%d" % (name, mn, int("0x10000000",0) + flashsize - 4096))
+        print("%s.menu.flash.%s.build.flash_length=%d" % (name, mn, flashsize - delta - fssize))
+        print("%s.menu.flash.%s.build.eeprom_start=%d" % (name, mn, int("0x10000000",0) + flashsize - delta))
+        print("%s.menu.flash.%s.build.fs_start=%d" % (name, mn, int("0x10000000",0) + flashsize - delta - fssize))
+        print("%s.menu.flash.%s.build.fs_end=%d" % (name, mn, int("0x10000000",0) + flashsize - delta))
 
 def BuildDebugPort(name):
     print("%s.menu.dbgport.Disabled=Disabled" % (name))
@@ -268,19 +272,19 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         raise Exception("Unknown board type " + str(chip));
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, boot2, extra)
     if (name == "generic") or (name == "vccgnd_yd_rp2040"):
-        BuildFlashMenu(name, 2*1024*1024, [0, 1*1024*1024])
-        BuildFlashMenu(name, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
-        BuildFlashMenu(name, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
-        BuildFlashMenu(name, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
+        BuildFlashMenu(name, chip, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     elif name == "pimoroni_tiny2040":
-        BuildFlashMenu(name, 2*1024*1024, fssizelist)
-        BuildFlashMenu(name, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 2*1024*1024, fssizelist)
+        BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
     elif name == "akana_r1":
-        BuildFlashMenu(name, 2*1024*1024, [0, 1*1024*1024])
-        BuildFlashMenu(name, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
-        BuildFlashMenu(name, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
+        BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
-        BuildFlashMenu(name, flashsizemb * 1024 * 1024, fssizelist)
+        BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
     if chip == "rp2350":
         BuildFreq(name, 150)
     else:
