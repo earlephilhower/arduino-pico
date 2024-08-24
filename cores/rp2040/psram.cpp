@@ -1,29 +1,29 @@
 /**
- * @file sfe_psram.c
- *
- * @brief This file contains a function that is used to detect and initialize PSRAM on
- *  SparkFun rp2350 boards.
- */
+    @file sfe_psram.c
+
+    @brief This file contains a function that is used to detect and initialize PSRAM on
+    SparkFun rp2350 boards.
+*/
 
 /*
-The MIT License (MIT)
+    The MIT License (MIT)
 
-Copyright (c) 2024 SparkFun Electronics
+    Copyright (c) 2024 SparkFun Electronics
 
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions: The
-above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED
-"AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
-NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions: The
+    above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED
+    "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+    NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
@@ -118,8 +118,7 @@ const uint8_t PSRAM_ID = RP2350_PSRAM_ID;
 /// @return size_t The size of the PSRAM
 ///
 /// @note This function expects the CS pin set
-static size_t __no_inline_not_in_flash_func(get_psram_size)(void)
-{
+static size_t __no_inline_not_in_flash_func(get_psram_size)(void) {
     size_t psram_size = 0;
     uint32_t intr_stash = save_and_disable_interrupts();
 
@@ -129,8 +128,7 @@ static size_t __no_inline_not_in_flash_func(get_psram_size)(void)
     // Need to poll for the cooldown on the last XIP transfer to expire
     // (via direct-mode BUSY flag) before it is safe to perform the first
     // direct-mode operation
-    while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0)
-    {
+    while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0) {
     }
 
     // Exit out of QMI in case we've inited already
@@ -140,8 +138,7 @@ static size_t __no_inline_not_in_flash_func(get_psram_size)(void)
     qmi_hw->direct_tx =
         QMI_DIRECT_TX_OE_BITS | QMI_DIRECT_TX_IWIDTH_VALUE_Q << QMI_DIRECT_TX_IWIDTH_LSB | PSRAM_CMD_QUAD_END;
 
-    while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0)
-    {
+    while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0) {
     }
 
     (void)qmi_hw->direct_rx;
@@ -151,39 +148,37 @@ static size_t __no_inline_not_in_flash_func(get_psram_size)(void)
     qmi_hw->direct_csr |= QMI_DIRECT_CSR_ASSERT_CS1N_BITS;
     uint8_t kgd = 0;
     uint8_t eid = 0;
-    for (size_t i = 0; i < 7; i++)
-    {
+    for (size_t i = 0; i < 7; i++) {
         qmi_hw->direct_tx = (i == 0 ? PSRAM_CMD_READ_ID : PSRAM_CMD_NOOP);
 
-        while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_TXEMPTY_BITS) == 0)
-        {
+        while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_TXEMPTY_BITS) == 0) {
         }
-        while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0)
-        {
+        while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0) {
         }
-        if (i == 5)
+        if (i == 5) {
             kgd = qmi_hw->direct_rx;
-        else if (i == 6)
+        } else if (i == 6) {
             eid = qmi_hw->direct_rx;
-        else
-            (void)qmi_hw->direct_rx; // just read and discard
+        } else {
+            (void)qmi_hw->direct_rx;    // just read and discard
+        }
     }
 
     // Disable direct csr.
     qmi_hw->direct_csr &= ~(QMI_DIRECT_CSR_ASSERT_CS1N_BITS | QMI_DIRECT_CSR_EN_BITS);
 
     // is this the PSRAM we're looking for obi-wan?
-    if (kgd == PSRAM_ID)
-    {
+    if (kgd == PSRAM_ID) {
         // PSRAM size
         psram_size = 1024 * 1024; // 1 MiB
         uint8_t size_id = eid >> 5;
-        if (eid == 0x26 || size_id == 2)
+        if (eid == 0x26 || size_id == 2) {
             psram_size *= 8;
-        else if (size_id == 0)
+        } else if (size_id == 0) {
             psram_size *= 2;
-        else if (size_id == 1)
+        } else if (size_id == 1) {
             psram_size *= 4;
+        }
     }
     restore_interrupts(intr_stash);
     return psram_size;
@@ -193,8 +188,7 @@ static size_t __no_inline_not_in_flash_func(get_psram_size)(void)
 ///
 /// @note This function expects interrupts to be enabled on entry
 
-static void __no_inline_not_in_flash_func(set_psram_timing)(void)
-{
+static void __no_inline_not_in_flash_func(set_psram_timing)(void) {
     // Get secs / cycle for the system clock - get before disabling interrupts.
     uint32_t sysHz = (uint32_t)clock_get_hz(clk_sys);
 
@@ -234,8 +228,7 @@ static void __no_inline_not_in_flash_func(set_psram_timing)(void)
 /// @brief The setup_psram function - note that this is not in flash
 ///
 ///
-static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t psram_cs_pin*/)
-{
+static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t psram_cs_pin*/) {
     // Set the PSRAM CS pin in the SDK
     gpio_set_function(RP2350_PSRAM_CS, GPIO_FUNC_XIP_CS1);
 
@@ -243,8 +236,9 @@ static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t p
     size_t psram_size = get_psram_size();
 
     // No PSRAM - no dice
-    if (psram_size == 0)
+    if (psram_size == 0) {
         return;
+    }
 
     uint32_t intr_stash = save_and_disable_interrupts();
     // Enable quad mode.
@@ -253,27 +247,26 @@ static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t p
     // Need to poll for the cooldown on the last XIP transfer to expire
     // (via direct-mode BUSY flag) before it is safe to perform the first
     // direct-mode operation
-    while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0)
-    {
+    while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0) {
     }
 
     // RESETEN, RESET and quad enable
-    for (uint8_t i = 0; i < 3; i++)
-    {
+    for (uint8_t i = 0; i < 3; i++) {
         qmi_hw->direct_csr |= QMI_DIRECT_CSR_ASSERT_CS1N_BITS;
-        if (i == 0)
+        if (i == 0) {
             qmi_hw->direct_tx = PSRAM_CMD_RSTEN;
-        else if (i == 1)
+        } else if (i == 1) {
             qmi_hw->direct_tx = PSRAM_CMD_RST;
-        else
+        } else {
             qmi_hw->direct_tx = PSRAM_CMD_QUAD_ENABLE;
+        }
 
-        while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0)
-        {
+        while ((qmi_hw->direct_csr & QMI_DIRECT_CSR_BUSY_BITS) != 0) {
         }
         qmi_hw->direct_csr &= ~(QMI_DIRECT_CSR_ASSERT_CS1N_BITS);
-        for (size_t j = 0; j < 20; j++)
+        for (size_t j = 0; j < 20; j++) {
             asm("nop");
+        }
 
         (void)qmi_hw->direct_rx;
     }
@@ -323,8 +316,7 @@ PICO_RUNTIME_INIT_FUNC_RUNTIME(runtime_init_setup_psram, PICO_RUNTIME_INIT_PSRAM
 
 
 // update timing -- used if the system clock/timing was changed.
-void sfe_psram_update_timing(void)
-{
+void sfe_psram_update_timing(void) {
     set_psram_timing();
 }
 
