@@ -58,6 +58,12 @@ extern "C" {
 void interrupts();
 void noInterrupts();
 
+#ifdef RP2350_PSRAM_CS
+void *pmalloc(size_t size);
+void *pcalloc(size_t count, size_t size);
+#endif
+
+
 // AVR compatibility macros...naughty and accesses the HW directly
 #define digitalPinToPort(pin)       (0)
 #define digitalPinToBitMask(pin)    (1UL << (pin))

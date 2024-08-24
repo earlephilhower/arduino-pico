@@ -20,8 +20,9 @@ void loop() {
 #else
 
 #define CHUNK_SIZE 131072
+#define PMALLOCSIZE (CHUNK_SIZE * 13)
 uint8_t tmp[CHUNK_SIZE];
-uint8_t mems[1024 * 1024 * 8] PSRAM;
+uint8_t mems[1024 * 1024 * 1] PSRAM;
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -31,7 +32,7 @@ void setup() {
     delay(10);
   }
   Serial.begin(115200);
-  Serial.printf("Memory size: %d\r\n", rp2040.getPSRAMSize());
+  Serial.printf("PSRAM Size: %d\r\n", rp2040.getPSRAMSize());
 }
 
 // the loop function runs over and over again forever
@@ -40,9 +41,9 @@ void loop() {
   static int cntr = 1;
 
   uint8_t *mem = mems;
-  Serial.printf("%05d: Filling %d memory locations @0x%p with random values and verifying in %d byte chunks.\r\n", cntr++, rp2040.getPSRAMSize(), mem, CHUNK_SIZE);
+  Serial.printf("%05d: Filling %d memory locations @%p with random values and verifying in %d byte chunks.\r\n", cntr++, sizeof(mems), mem, CHUNK_SIZE);
 
-  for (size_t m = 0; m < (rp2040.getPSRAMSize() / CHUNK_SIZE); m++) {
+  for (size_t m = 0; m < (sizeof(mems) / CHUNK_SIZE); m++) {
     for (i = 0; i < CHUNK_SIZE; i++) {
       tmp[i] = (char)random(0, 255);
       mem[i] = tmp[i];
@@ -50,7 +51,7 @@ void loop() {
 
     for (i = 0; i < CHUNK_SIZE; i++) {
       if (mem[i] != tmp[i]) {
-        Serial.printf("Memory error @0x%p(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
+        Serial.printf("Memory error @%p(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
         delay(10);
       }
     }
@@ -58,7 +59,39 @@ void loop() {
     Serial.flush();
     mem += CHUNK_SIZE;
   }
-  Serial.printf("\nDone, testing %d bytes again\r\n", rp2040.getPSRAMSize());
+  Serial.printf("\nDone, testing %d bytes\r\n", sizeof(mems));
+
+  uint8_t *pmem = (uint8_t *)pmalloc(PMALLOCSIZE);
+  if (!pmem) {
+    Serial.printf("Error: Unable to allocate PSRAM chunk!\n");
+    return;
+  }
+
+  Serial.printf("Allocated block @%p, size %d\n", pmem, PMALLOCSIZE);
+  delay(3000);
+  mem = pmem;
+  for (size_t m = 0; m < (PMALLOCSIZE / CHUNK_SIZE); m++) {
+    for (i = 0; i < CHUNK_SIZE; i++) {
+      tmp[i] = (char)random(0, 255);
+      mem[i] = tmp[i];
+    }
+
+    for (i = 0; i < CHUNK_SIZE; i++) {
+      if (mem[i] != tmp[i]) {
+        Serial.printf("Memory error @%p(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
+        delay(10);
+      }
+    }
+    Serial.write('.');
+    Serial.flush();
+    mem += CHUNK_SIZE;
+  }
+  Serial.printf("\nDone, testing %d allocated bytes\r\n", sizeof(mems));
+  delay(1000);
+
+  free(pmem); // Release allocation for next pass
+
+  delay(1000);
 }
 
 #endif // RAM_CHIP_SELECT

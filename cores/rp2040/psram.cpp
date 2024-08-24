@@ -40,18 +40,24 @@
 #include <hardware/spi.h>
 #include <hardware/structs/qmi.h>
 #include <hardware/structs/xip_ctrl.h>
-//#include <hardware/sync.h>
-//#include <pico/binary_info.h>
-//#include <pico/flash.h>
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
 #include <pico/runtime_init.h>
 
+// Include TLSF in this compilation unit
+#include "../../lib/tlsf/tlsf.c"
+static tlsf_t _mem_heap = nullptr;
+static pool_t _mem_psram_pool = nullptr;
+
+// PSRAM heap minus PSRAM global/static variables from the linker
+extern "C" {
+    extern uint8_t __psram_start__;
+    extern uint8_t __psram_heap_start__;
+}
+
+static bool _bInitalized = false;
 size_t __psram_size = 0;
+size_t __psram_heap_size = 0;
 
 #define PICO_RUNTIME_INIT_PSRAM "11001" // Towards the end, after alarms
-
 
 #ifndef RP2350_PSRAM_MAX_SELECT_FS64
 #define RP2350_PSRAM_MAX_SELECT_FS64 (125'000'000)
@@ -309,17 +315,71 @@ static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t p
     restore_interrupts(intr_stash);
 
     __psram_size = psram_size;
-    //TODO - add in 2nd malloc init
+
+    uint32_t used_psram_size = &__psram_heap_start__ - &__psram_start__;
+    __psram_heap_size = __psram_size - used_psram_size;
 }
-
 PICO_RUNTIME_INIT_FUNC_RUNTIME(runtime_init_setup_psram, PICO_RUNTIME_INIT_PSRAM);
-
 
 // update timing -- used if the system clock/timing was changed.
 void sfe_psram_update_timing(void) {
     set_psram_timing();
 }
 
+//
+extern "C" {
+
+    static bool __psram_heap_init() {
+        if (_bInitalized) {
+            return true;
+        }
+
+        _mem_heap = NULL;
+        _mem_psram_pool = NULL;
+        _mem_heap = tlsf_create_with_pool((void *)&__psram_heap_start__, __psram_heap_size, 16 * 1024 * 1024);
+        if (!_mem_heap) {
+            return false;
+        }
+        _mem_psram_pool = tlsf_get_pool(_mem_heap);
+        if (!_mem_psram_pool) {
+            return false;
+        }
+        _bInitalized = true;
+        return true;
+    }
+
+    void *__psram_malloc(size_t size) {
+        if (!__psram_heap_init() || !_mem_heap) {
+            return NULL;
+        }
+        return tlsf_malloc(_mem_heap, size);
+    }
+
+    void __psram_free(void *ptr) {
+        if (!__psram_heap_init() || !_mem_heap) {
+            return;
+        }
+        tlsf_free(_mem_heap, ptr);
+    }
+
+    void *__psram_realloc(void *ptr, size_t size) {
+        if (!__psram_heap_init() || !_mem_heap) {
+            return NULL;
+        }
+        return tlsf_realloc(_mem_heap, ptr, size);
+    }
+
+    void *__psram_calloc(size_t num, size_t size) {
+        if (!__psram_heap_init() || !_mem_heap) {
+            return NULL;
+        }
+        void *ptr = tlsf_malloc(_mem_heap, num * size);
+        if (ptr) {
+            bzero(ptr, num * size);
+        }
+        return ptr;
+    }
+}
 
 
 #endif // RP2350_PSRAM_CS

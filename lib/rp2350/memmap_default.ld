@@ -279,7 +279,10 @@ SECTIONS
     } > FLASH =0xaa
 
     .psram (NOLOAD) : {
+        __psram_start__ = .;
         *(.psram*)
+        . = ALIGN(4096);
+        __psram_heap_start__ = .;
     } > PSRAM
 
     /* stack limit is poorly named, but historically is maximum heap ptr */
@@ -296,6 +299,10 @@ SECTIONS
     PROVIDE( __tls_align = MAX(ALIGNOF(.tdata), ALIGNOF(.tbss)) );
     PROVIDE( __tls_size_align = (__tls_size + __tls_align - 1) & ~(__tls_align - 1));
     PROVIDE( __arm32_tls_tcb_offset = MAX(8, __tls_align) );
+
+    /* TLSF */
+    PROVIDE (__psram_start = __psram_start__);
+    PROVIDE (__psram_heap_start = __psram_heap_start__);
 
     /* llvm-libc */
     PROVIDE (_end = __end__);
