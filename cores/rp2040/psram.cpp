@@ -1,3 +1,4 @@
+// Originally from https://github.com/sparkfun/sparkfun-pico
 /**
     @file sfe_psram.c
 
@@ -322,64 +323,112 @@ static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t p
 PICO_RUNTIME_INIT_FUNC_RUNTIME(runtime_init_setup_psram, PICO_RUNTIME_INIT_PSRAM);
 
 // update timing -- used if the system clock/timing was changed.
-void sfe_psram_update_timing(void) {
+void psram_reinit_timing() {
     set_psram_timing();
 }
 
-//
-extern "C" {
-
-    static bool __psram_heap_init() {
-        if (_bInitalized) {
-            return true;
-        }
-
-        _mem_heap = NULL;
-        _mem_psram_pool = NULL;
-        _mem_heap = tlsf_create_with_pool((void *)&__psram_heap_start__, __psram_heap_size, 16 * 1024 * 1024);
-        if (!_mem_heap) {
-            return false;
-        }
-        _mem_psram_pool = tlsf_get_pool(_mem_heap);
-        if (!_mem_psram_pool) {
-            return false;
-        }
-        _bInitalized = true;
+static bool __psram_heap_init() {
+    if (_bInitalized) {
         return true;
     }
 
-    void *__psram_malloc(size_t size) {
-        if (!__psram_heap_init() || !_mem_heap) {
-            return NULL;
-        }
-        return tlsf_malloc(_mem_heap, size);
+    _mem_heap = NULL;
+    _mem_psram_pool = NULL;
+    _mem_heap = tlsf_create_with_pool((void *)&__psram_heap_start__, __psram_heap_size, 16 * 1024 * 1024);
+    if (!_mem_heap) {
+        return false;
     }
-
-    void __psram_free(void *ptr) {
-        if (!__psram_heap_init() || !_mem_heap) {
-            return;
-        }
-        tlsf_free(_mem_heap, ptr);
+    _mem_psram_pool = tlsf_get_pool(_mem_heap);
+    if (!_mem_psram_pool) {
+        return false;
     }
-
-    void *__psram_realloc(void *ptr, size_t size) {
-        if (!__psram_heap_init() || !_mem_heap) {
-            return NULL;
-        }
-        return tlsf_realloc(_mem_heap, ptr, size);
-    }
-
-    void *__psram_calloc(size_t num, size_t size) {
-        if (!__psram_heap_init() || !_mem_heap) {
-            return NULL;
-        }
-        void *ptr = tlsf_malloc(_mem_heap, num * size);
-        if (ptr) {
-            bzero(ptr, num * size);
-        }
-        return ptr;
-    }
+    _bInitalized = true;
+    return true;
 }
 
+void *__psram_malloc(size_t size) {
+    if (!__psram_heap_init() || !_mem_heap) {
+        return NULL;
+    }
+    return tlsf_malloc(_mem_heap, size);
+}
+
+void __psram_free(void *ptr) {
+    if (!__psram_heap_init() || !_mem_heap) {
+        return;
+    }
+    tlsf_free(_mem_heap, ptr);
+}
+
+void *__psram_realloc(void *ptr, size_t size) {
+    if (!__psram_heap_init() || !_mem_heap) {
+        return NULL;
+    }
+    return tlsf_realloc(_mem_heap, ptr, size);
+}
+
+void *__psram_calloc(size_t num, size_t size) {
+    if (!__psram_heap_init() || !_mem_heap) {
+        return NULL;
+    }
+    void *ptr = tlsf_malloc(_mem_heap, num * size);
+    if (ptr) {
+        bzero(ptr, num * size);
+    }
+    return ptr;
+}
+
+static bool max_free_walker(void *ptr, size_t size, int used, void *user) {
+    size_t *max_size = (size_t *)user;
+    if (!used && *max_size < size) {
+        *max_size = size;
+    }
+    return true;
+}
+
+size_t __psram_largest_free_block() {
+    if (!__psram_heap_init() || !_mem_heap) {
+        return 0;
+    }
+    size_t max_free = 0;
+    if (_mem_psram_pool) {
+        tlsf_walk_pool(_mem_psram_pool, max_free_walker, &max_free);
+    }
+    return max_free;
+}
+
+static bool memory_size_walker(void *ptr, size_t size, int used, void *user) {
+    *((size_t *)user) += size;
+    return true;
+}
+
+size_t __psram_total_space() {
+    if (!__psram_heap_init() || !_mem_heap) {
+        return 0;
+    }
+    size_t total_size = 0;
+    if (_mem_psram_pool) {
+        tlsf_walk_pool(_mem_psram_pool, memory_size_walker, &total_size);
+    }
+    return total_size;
+}
+
+static bool memory_used_walker(void *ptr, size_t size, int used, void *user) {
+    if (used) {
+        *((size_t *)user) += size;
+    }
+    return true;
+}
+
+size_t __psram_total_used() {
+    if (!__psram_heap_init() || !_mem_heap) {
+        return 0;
+    }
+    size_t total_size = 0;
+    if (_mem_psram_pool) {
+        tlsf_walk_pool(_mem_psram_pool, memory_used_walker, &total_size);
+    }
+    return total_size;
+}
 
 #endif // RP2350_PSRAM_CS

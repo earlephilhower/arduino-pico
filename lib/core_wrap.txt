@@ -4,6 +4,7 @@
 -Wl,--wrap=calloc
 -Wl,--wrap=realloc
 -Wl,--wrap=free
+-Wl,--wrap=mallinfo
 
 -Wl,--wrap=lwip_init
 

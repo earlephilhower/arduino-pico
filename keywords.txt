@@ -58,6 +58,9 @@ isPicoW	KEYWORD2
 
 pmalloc	KEYWORD2
 pcalloc	KEYWORD2
+getFreePSRAMHeap	KEYWORD2
+getUsedPSRAMHeap	KEYWORD2
+getTotalPSRAMHeap	KEYWORD2
 
 getChipID	KEYWORD2
 

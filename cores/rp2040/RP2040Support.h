@@ -248,6 +248,28 @@ public:
         return &__StackLimit  - &__bss_end__;
     }
 
+    inline int getFreePSRAMHeap() {
+        return getTotalPSRAMHeap() - getUsedPSRAMHeap();
+    }
+
+    inline int getUsedPSRAMHeap() {
+#if defined(PICO_RP2350)
+        extern size_t __psram_total_used();
+        return __psram_total_used();
+#else
+        return 0;
+#endif
+    }
+
+    inline int getTotalPSRAMHeap() {
+#if defined(PICO_RP2350)
+        extern size_t __psram_total_space();
+        return __psram_total_space();
+#else
+        return 0;
+#endif
+    }
+
     inline uint32_t getStackPointer() {
         uint32_t *sp;
         asm volatile("mov %0, sp" : "=r"(sp));
