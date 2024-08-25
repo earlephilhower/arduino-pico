@@ -1,5 +1,21 @@
 cmake_minimum_required(VERSION 3.12)
 
+set(cpu $ENV{CPU})
+message("Building for CPU ${cpu}")
+
+if (${cpu} MATCHES "rp2040")
+    set(PICO_BOARD pico)
+    set(PICO_PLATFORM rp2040)
+    set(PICO_CYW43_SUPPORTED 0)
+elseif(${cpu} MATCHES "rp2350")
+    set(PICO_BOARD pico2)
+    set(PICO_PLATFORM rp2350)
+    set(PICO_CYW43_SUPPORTED 0)
+else()
+    message(FATAL_ERROR "Unknown CPU, '${cpu}'")
+endif()
+
+
 include(pico_sdk_import.cmake)
 
 project(pico_lib C CXX ASM)
@@ -7,7 +23,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-set(PICO_BOARD pico)
 set(PICO_COPY_TO_RAM 1)
 
 # Initialize the SDK
@@ -66,7 +81,7 @@ target_link_options(ota PUBLIC
 )
 
 set_target_properties(ota PROPERTIES PICO_TARGET_LINKER_SCRIPT
-    ${CMAKE_SOURCE_DIR}/memmap_ota.ld)
+    ${CMAKE_SOURCE_DIR}/memmap_ota_${cpu}.ld)
 
 target_link_libraries(ota
         pico_platform
@@ -82,7 +97,7 @@ target_link_libraries(ota
 )
 
 add_custom_command(TARGET ota POST_BUILD
-        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-ld -r -A armv6-m  -b binary -o ota.o ota.bin
-        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-objcopy --rename-section .data=.OTA ota.o ../../lib/rp2040/ota.o
-        COMMAND cp ../ota_command.h ../../include/rp2040/pico_base/pico/.
+        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-ld -r -A armv6-m -b binary -o ota.o ota.bin
+        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-objcopy --rename-section .data=.OTA ota.o ../../lib/${cpu}/ota.o
+        COMMAND cp ../ota_command.h ../../include/${cpu}/pico_base/pico/.
 )
