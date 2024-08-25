@@ -1,12 +1,12 @@
 Using this core with PlatformIO
 ===============================
 
-What is PlatformIO? 
+What is PlatformIO?
 -------------------
 
 `PlatformIO <https://platformio.org/>`__  is a free, open-source build-tool written in Python, which also integrates into VSCode code as an extension.
 
-PlatformIO significantly simplifies writing embedded software by offering a unified build system, yet being able to create project files for many different IDEs, including VSCode, Eclipse, CLion, etc. 
+PlatformIO significantly simplifies writing embedded software by offering a unified build system, yet being able to create project files for many different IDEs, including VSCode, Eclipse, CLion, etc.
 Through this, PlatformIO can offer extensive features such as IntelliSense (autocomplete), debugging, unit testing etc., which not available in the standard Arduino IDE.
 
 The Arduino IDE experience:
@@ -31,7 +31,7 @@ By default, Windows has a limited path length that is not long enough to fully c
 .. code::
 
     error: unable to create file '.....' : Filename too long
-    
+
 To work around this requires performing two steps and rebooting Windows once.  These steps will enable longer file paths at the Windows OS and the ``git`` level.
 
 Step 1: Enabling long paths in git
@@ -41,7 +41,7 @@ Open up a Windows ``cmd`` or ``terminal`` window and execute the following comma
 
 .. code::
 
-    git config --system core.longpaths true 
+    git config --system core.longpaths true
 
 Step 2: Enabling long paths in the Windows OS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,8 +68,8 @@ Current state of development
 
 At the time of writing, PlatformIO integration for this core is a work-in-progress and not yet merged into mainline PlatformIO. This is subject to change once `this pull request <https://github.com/platformio/platform-raspberrypi/pull/36>`_ is merged.
 
-If you want to use the PlatformIO integration right now, make sure you first create a standard Raspberry Pi Pico + Arduino project within PlatformIO. 
-This will give you a project with the ``platformio.ini`` 
+If you want to use the PlatformIO integration right now, make sure you first create a standard Raspberry Pi Pico + Arduino project within PlatformIO.
+This will give you a project with the ``platformio.ini``
 
 .. code:: ini
 
@@ -87,7 +87,7 @@ Here, you need to change the `platform` to take advantage of the features descri
     board = pico
     framework = arduino
     board_build.core = earlephilhower
-    
+
 When the support for this core has been merged into mainline PlatformIO, this notice will be removed and a standard `platformio.ini` as shown above will work as a base.
 
 Deprecation warnings
@@ -98,7 +98,7 @@ Previous versions of this documentation told users to inject the framework and t
 .. code:: ini
 
     ; note that download link for toolchain is specific for OS. see https://github.com/earlephilhower/pico-quick-toolchain/releases.
-    platform_packages = 
+    platform_packages =
         maxgerhardt/framework-arduinopico@https://github.com/earlephilhower/arduino-pico.git
         maxgerhardt/toolchain-pico@https://github.com/earlephilhower/pico-quick-toolchain/releases/download/1.3.1-a/x86_64-w64-mingw32.arm-none-eabi-7855b0c.210706.zip
 
@@ -209,7 +209,7 @@ either a single line or a newline-separated expression.
     ; example: Debug port on serial 2 and all debug output
     build_flags = -DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_PORT=Serial2
     ; equivalent to above
-    build_flags = 
+    build_flags =
        -DDEBUG_RP2040_WIRE
        -DDEBUG_RP2040_SPI
        -DDEBUG_RP2040_CORE
@@ -263,9 +263,9 @@ Note that the special "No USB" setting is also supported, through the
 shortcut-define ``PIO_FRAMEWORK_ARDUINO_NO_USB``.
 
 IP Stack
----------
+--------
 
-The lwIP stack can be configured to support only IPv4 (default) or additionally IPv6. To activate IPv6 support, add 
+The lwIP stack can be configured to support only IPv4 (default) or additionally IPv6. To activate IPv6 support, add
 
 .. code:: ini
 
@@ -309,11 +309,11 @@ local copy of the core (with e.g. some modifications) on disk (`see documentatio
 Note that this can only be done for versions that have the PlatformIO
 builder script it in, so versions before 1.9.2 are not supported.
 
-Examples 
+Examples
 --------
 
 The following example ``platformio.ini`` can be used for a Raspberry Pi Pico
-and 0.5MByte filesystem. 
+and 0.5MByte filesystem.
 
 .. code:: ini
 
@@ -357,12 +357,12 @@ With that set up, debugging can be started via the left debugging sidebar and wo
 
 For further information on customizing debug options, like the initial breakpoint or debugging / SWD speed, consult `the documentation <https://docs.platformio.org/en/latest/projectconf/section_env_debug.html>`_.
 
-.. note:: 
+.. note::
     For the BlackMagicProbe debugging probe (as can be e.g., created by simply flashing a STM32F103C8 "Bluepill" board), you currently have to use the branch ``fix/rp2040-flash-reliability`` (or at least commit ``1d001bc``) **and** use the `official ARM provided toolchain <https://github.com/blackmagic-debug/blackmagic/issues/1364#issuecomment-1503393266>`_.
 
     You can obtain precompiled binaries from `here <https://github.com/blackmagic-debug/blackmagic/issues/1364#issuecomment-1503372723>`__. A flashing guide is available `here <https://primalcortex.wordpress.com/2017/06/13/building-a-black-magic-debug-probe/>`__. You then have to configure the target serial port ("GDB port") in your project per `documentation <https://docs.platformio.org/en/latest/plus/debug-tools/blackmagic.html#debugging-tool-blackmagic>`__.
 
-.. note:: 
+.. note::
     For the pico-debug (`download <https://github.com/majbthrd/pico-debug/releases>`__) debugging way, *which needs no additional debug probe*, add this snippet to your ``platformio.ini`` and follow the given procedure:
 
     .. code:: ini
@@ -386,7 +386,7 @@ Filesystem Uploading
 
 For the Arduino IDE, `a plugin <https://github.com/earlephilhower/arduino-pico#uploading-filesystem-images>`_ is available that enables a data folder to be packed as a LittleFS filesystem binary and uploaded to the Pico.
 
-This functionality is also built-in in the PlatformIO integration. Open the `project tasks <https://docs.platformio.org/en/latest/integration/ide/vscode.html#project-tasks>`_ and expand the "Platform" tasks: 
+This functionality is also built-in in the PlatformIO integration. Open the `project tasks <https://docs.platformio.org/en/latest/integration/ide/vscode.html#project-tasks>`_ and expand the "Platform" tasks:
 
 .. image:: images/pio_fs_upload.png
 
@@ -394,7 +394,7 @@ The files you want to upload should be placed in a folder called ``data`` inside
 
 The task "Build Filesystem Image" will take all files in the data directory and create a ``littlefs.bin`` file from it using the ``mklittlefs`` tool.
 
-The task "Upload Filesystem Image" will upload the filesystem image to the Pico via the specified ``upload_protocol``. 
+The task "Upload Filesystem Image" will upload the filesystem image to the Pico via the specified ``upload_protocol``.
 
-.. note:: 
+.. note::
     Set the space available for the filesystem in the ``platformio.ini`` using e.g., ``board_build.filesystem_size = 0.5m``, or filesystem creation will fail!

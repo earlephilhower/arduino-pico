@@ -51,7 +51,7 @@ void loop() {
 
     for (i = 0; i < CHUNK_SIZE; i++) {
       if (mem[i] != tmp[i]) {
-        Serial.printf("Memory error @%p(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
+        Serial.printf("Memory error @%p(%d), was 0x%02x, should be 0x%02x\r\n", mem, i, *mem, tmp[i]);
         delay(10);
       }
     }
@@ -59,15 +59,17 @@ void loop() {
     Serial.flush();
     mem += CHUNK_SIZE;
   }
-  Serial.printf("\nDone, testing %d bytes\r\n", sizeof(mems));
+  Serial.printf("\r\nDone, testing %d bytes\r\n", sizeof(mems));
 
+  Serial.printf("\r\nBefore pmalloc, total PSRAM heap: %d, available PSRAM heap: %d\r\n", rp2040.getTotalPSRAMHeap(), rp2040.getFreePSRAMHeap());
   uint8_t *pmem = (uint8_t *)pmalloc(PMALLOCSIZE);
   if (!pmem) {
-    Serial.printf("Error: Unable to allocate PSRAM chunk!\n");
+    Serial.printf("Error: Unable to allocate PSRAM chunk!\r\n");
     return;
   }
+  Serial.printf("After pmalloc, total PSRAM heap: %d, available PSRAM heap: %d\r\n", rp2040.getTotalPSRAMHeap(), rp2040.getFreePSRAMHeap());
 
-  Serial.printf("Allocated block @%p, size %d\n", pmem, PMALLOCSIZE);
+  Serial.printf("Allocated block @%p, size %d\r\n", pmem, PMALLOCSIZE);
   delay(3000);
   mem = pmem;
   for (size_t m = 0; m < (PMALLOCSIZE / CHUNK_SIZE); m++) {
@@ -78,7 +80,7 @@ void loop() {
 
     for (i = 0; i < CHUNK_SIZE; i++) {
       if (mem[i] != tmp[i]) {
-        Serial.printf("Memory error @%p(%d), was 0x%02x, should be 0x%02x\n", mem, i, *mem, tmp[i]);
+        Serial.printf("Memory error @%p(%d), was 0x%02x, should be 0x%02x\r\n", mem, i, *mem, tmp[i]);
         delay(10);
       }
     }
@@ -87,9 +89,8 @@ void loop() {
     mem += CHUNK_SIZE;
   }
   Serial.printf("\nDone, testing %d allocated bytes\r\n", sizeof(mems));
-  delay(1000);
-
   free(pmem); // Release allocation for next pass
+  Serial.printf("After free, total PSRAM heap: %d, available PSRAM heap: %d\r\n", rp2040.getTotalPSRAMHeap(), rp2040.getFreePSRAMHeap());
 
   delay(1000);
 }
