@@ -56,6 +56,7 @@ def BuildPSRAM(name, psramsize):
                 continue
             print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
             print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
+            out = 1
 
 def BuildOptimize(name):
     for l in [ ("Small", "Small", "-Os", " (standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
@@ -169,7 +170,7 @@ def BuildUploadMethodMenu(name, ram):
         if f != None:
             print("%s.menu.uploadmethod.%s.upload.tool.network=%s" % (name, a, f))
 
-def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, vid, pid, pwr, boarddefine, variant, flashsize, boot2, extra):
+def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, vid, pid, pwr, boarddefine, variant, flashsize, psramsize, boot2, extra):
     prettyname = vendor_name + " " + product_name
     print()
     print("# -----------------------------------")
@@ -236,6 +237,8 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.boot2=%s" % (name, boot2))
     print('%s.build.usb_manufacturer="%s"' % (name, vendor_name))
     print('%s.build.usb_product="%s"' % (name, product_name))
+    if (chip == "rp2350") and (name != "generic"):
+        print("%s.build.psram_length=0x%d00000" % (name, psramsize))
     if extra != None:
         m_extra = ''
         for m_item in extra:
@@ -280,7 +283,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         opts = "TBD"
     else:
         raise Exception("Unknown board type " + str(chip));
-    BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, boot2, extra)
+    BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
     if (name == "generic") or (name == "vccgnd_yd_rp2040"):
         BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
         BuildFlashMenu(name, chip, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
@@ -297,7 +300,8 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
     if chip == "rp2350":
         BuildFreq(name, 150)
-        BuildPSRAM(name, psramsize)
+        if name != "generic":
+            BuildPSRAM(name, psramsize)
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
@@ -604,6 +608,7 @@ MakeBoard("wiznet_5500_evb_pico", "rp2040", "WIZnet", "W5500-EVB-Pico", "0x2e8a"
 
 # Generic
 MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("generic_rp2350", "rp2350", "Generic", "RP2350", "0x2e8a", "0xf00f", 250, "GENERIC_RP2350", 16, 8, "boot2_generic_03h_4_padded_checksum")
 
 sys.stdout.close()
 with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w', newline='\n') as f:
