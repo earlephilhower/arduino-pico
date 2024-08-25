@@ -11,7 +11,7 @@
          "platforms": [
             {
                "category": "Raspberry Pi Pico",
-               "name": "Raspberry Pi Pico/RP2040",
+               "name": "Raspberry Pi Pico/RP2040/RP2350",
                "url": "",
                "version": "",
                "architecture": "rp2040",
@@ -450,10 +450,10 @@
                   },
                   {
                      "host": "x86_64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-apple-darwin20.4.openocd-4d87f6dca.240125.tar.gz",
-                     "archiveFileName": "x86_64-apple-darwin20.4.openocd-4d87f6dca.240125.tar.gz",
-                     "checksum": "SHA-256:c37f3f1222b2b5614d09a08ed820a27f79be78daa699884abfa26da9f96b2126",
-                     "size": "3083387"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-apple-darwin20.4.openocd-ebec9504d.240818.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin20.4.openocd-ebec9504d.240818.tar.gz",
+                     "checksum": "SHA-256:2be716a12ca7ea0c036e2a10f89c191426f7e1c71a9cca78fbb3f8911b1df35d",
+                     "size": "3165595"
                   },
                   {
                      "host": "x86_64-pc-linux-gnu",

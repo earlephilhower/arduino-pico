@@ -1,6 +1,6 @@
 # Copyright (c) 2021 Earle F. Philhower, III
 #
-# Raspberry Pi RP2040 Core platform file
+# Raspberry Pi RP2040/R2350 Core platform file
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -19,7 +19,7 @@
 # For more info:
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
-name=Raspberry Pi RP2040 Boards
+name=Raspberry Pi RP2040/RP2350 Boards
 version=3.9.5
 
 # Required discoveries and monitors
