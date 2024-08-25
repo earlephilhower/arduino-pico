@@ -437,10 +437,10 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.openocd-4d87f6dca.240125.zip",
-                     "archiveFileName": "i686-w64-mingw32.openocd-4d87f6dca.240125.zip",
-                     "checksum": "SHA-256:0151d237bb7d4418130346d9296daee2a903bad93ca0fd676db2e0ecc3742b4c",
-                     "size": "2468166"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.openocd-ebec9504d.240818.zip",
+                     "archiveFileName": "i686-w64-mingw32.openocd-ebec9504d.240818.zip",
+                     "checksum": "SHA-256:a103dbecfdaca5a6e582f832bd3a017769f14774f78a30e83097fe78987e8be8",
+                     "size": "3577537"
                   },
                   {
                      "host": "x86_64-apple-darwin",
@@ -458,10 +458,10 @@
                   },
                   {
                      "host": "x86_64-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.openocd-4d87f6dca.240125.zip",
-                     "archiveFileName": "x86_64-w64-mingw32.openocd-4d87f6dca.240125.zip",
-                     "checksum": "SHA-256:a15ba6f4a8054ca787c5ec47ce9a866b033667bbbf3dcbd0941a55539b2fbe37",
-                     "size": "2412178"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.openocd-ebec9504d.240818.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.openocd-ebec9504d.240818.zip",
+                     "checksum": "SHA-256:782d0e955990a03380fa681deaf4a5faf406f4a3fddecb27f71bd2be060d904d",
+                     "size": "3456434"
                   }
                ]
             },
