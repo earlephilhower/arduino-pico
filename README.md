@@ -15,6 +15,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 # Supported Boards
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
+* Raspberry Pi Pico 2
 * 0xCB Helios
 * Adafruit Feather RP2040
 * Adafruit Feather RP2040 SCORPIO
@@ -54,6 +55,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Invector Labs Challenger RP2040 SubGHz
 * Invector Labs Challenger RP2040 SD/RTC
 * Invector Labs Challenger RP2040 UWB
+* Invector Labs Challenger RP2350 BConnect
+* Invector Labs Challenger RP2350 WiFi/BLE
 * Invector Labs RPICO32
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
@@ -74,8 +77,11 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Seeed XIAO RP2040
 * Silicognition RP2040-Shim
 * Solder Party RP2040 Stamp
+* Solder Party RP2350 Stamp
+* Solder Party RP2350 Stamp XL
 * SparkFun MicroMod RP2040
 * SparkFun ProMicro RP2040
+* SparkFun ProMicro RP2350
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
 * VCC-GND YD-RP2040
@@ -90,7 +96,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
-* Generic (configurable flash, I/O pins)
+* Generic RP2040 (configurable flash, I/O pins)
+* Generic RP2350 (configurable flash, I/O pins)
 
 # Features
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
