@@ -60,8 +60,13 @@ public:
     void registerCore() {
         if (!__isFreeRTOS) {
             multicore_fifo_clear_irq();
+#ifdef PICO_RP2350
+            irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
+            irq_set_enabled(SIO_IRQ_FIFO, true);
+#else
             irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
             irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
+#endif
         }
         // FreeRTOS port.c will handle the IRQ hooking
     }
@@ -243,6 +248,28 @@ public:
         return &__StackLimit  - &__bss_end__;
     }
 
+    inline int getFreePSRAMHeap() {
+        return getTotalPSRAMHeap() - getUsedPSRAMHeap();
+    }
+
+    inline int getUsedPSRAMHeap() {
+#if defined(PICO_RP2350)
+        extern size_t __psram_total_used();
+        return __psram_total_used();
+#else
+        return 0;
+#endif
+    }
+
+    inline int getTotalPSRAMHeap() {
+#if defined(PICO_RP2350)
+        extern size_t __psram_total_space();
+        return __psram_total_space();
+#else
+        return 0;
+#endif
+    }
+
     inline uint32_t getStackPointer() {
         uint32_t *sp;
         asm volatile("mov %0, sp" : "=r"(sp));
@@ -260,6 +287,15 @@ public:
             }
         }
         return sp - ref;
+    }
+
+    inline size_t getPSRAMSize() {
+#if defined(PICO_RP2350)
+        extern size_t __psram_size;
+        return __psram_size;
+#else
+        return 0;
+#endif
     }
 
     void idleOtherCore() {

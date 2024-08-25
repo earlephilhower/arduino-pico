@@ -34,7 +34,7 @@
   ],
   "name": "DudesCab",
   "upload": {
-    "maximum_ram_size": 270336,
+    "maximum_ram_size": 262144,
     "maximum_size": 4194304,
     "require_upload_port": true,
     "native_usb": true,

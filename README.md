@@ -2,9 +2,9 @@
 [![Release](https://img.shields.io/github/v/release/earlephilhower/arduino-pico?style=plastic)](https://github.com/earlephilhower/arduino-pico/releases)
 [![Gitter](https://img.shields.io/gitter/room/earlephilhower/arduino-pico?style=plastic)](https://gitter.im/arduino-pico/community)
 
-Raspberry Pi Pico Arduino core, for all RP2040 boards
+Raspberry Pi Pico Arduino core, for all RP2040 and RP2350 boards
 
-This is a port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem. It uses the bare Raspberry Pi Pico SDK and a custom GCC 12.3/Newlib 4.0 toolchain.
+This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) anr RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 12.3/Newlib 4.0 toolchain.
 
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
@@ -15,6 +15,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 # Supported Boards
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
+* Raspberry Pi Pico 2
 * 0xCB Helios
 * Adafruit Feather RP2040
 * Adafruit Feather RP2040 SCORPIO
@@ -54,6 +55,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Invector Labs Challenger RP2040 SubGHz
 * Invector Labs Challenger RP2040 SD/RTC
 * Invector Labs Challenger RP2040 UWB
+* Invector Labs Challenger RP2350 BConnect
+* Invector Labs Challenger RP2350 WiFi/BLE
 * Invector Labs RPICO32
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
@@ -74,8 +77,11 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Seeed XIAO RP2040
 * Silicognition RP2040-Shim
 * Solder Party RP2040 Stamp
+* Solder Party RP2350 Stamp
+* Solder Party RP2350 Stamp XL
 * SparkFun MicroMod RP2040
 * SparkFun ProMicro RP2040
+* SparkFun ProMicro RP2350
 * SparkFun Thing Plus RP2040
 * uPesy RP2040 DevKit
 * VCC-GND YD-RP2040
@@ -90,15 +96,17 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
-* Generic (configurable flash, I/O pins)
+* Generic RP2040 (configurable flash, I/O pins)
+* Generic RP2350 (configurable flash, I/O pins)
 
 # Features
+* Transparent use of PSRAM globals and heap (RP2350 only)
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
 * Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
 * Bluetooth Classic and BLE HID master mode (connect to BT keyboard, mouse, or joystick)
 * Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
 * WiFi (Pico W, ESP32-based ESPHost, Atmel WINC1500)
-* Ethernet (Wired W5500, W5100, ENC28J60)
+* Ethernet (Wired WizNet W6100, WizNet W5500, WizNet W5100, ENC28J60)
 * HTTP client and server (WebServer)
 * SSL/TLS/HTTPS
 * Over-the-Air (OTA) upgrades
@@ -219,7 +227,9 @@ Under Windows a local admin user should be able to access the Picoprobe port aut
 
 To set up user-level access to Picoprobes on Ubuntu (and other OSes which use `udev`):
 ````
-echo 'SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", MODE="0666"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", MODE="660", GROUP-"plugdev"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000a", MODE="660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
+echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000f", MODE="660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-PicoProbe.rules
 sudo udevadm control --reload
 sudo udevadm trigger -w -s usb
 ````
@@ -271,7 +281,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * WebServer code modified from the [ESP32 WebServer](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer) and is copyright (c) 2015 Ivan Grokhotkov and others.
 * [Xoshiro-cpp](https://github.com/Reputeless/Xoshiro-cpp) is copyright (c) 2020 Ryo Suzuki and distributed under the MIT license.
 * [FatFS low-level filesystem](http://elm-chan.org/fsw/ff/) code is Copyright (C) 2024, ChaN, all rights reserved.
-
+* [TLSF memory manager for PSRAM from Espressif fork](https://github.com/espressif/tlsf) of [original](https://github.com/mattconte/tlsf) by Matthew Conte is copyright Matthew Conte and licensed under the MIT license.
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com

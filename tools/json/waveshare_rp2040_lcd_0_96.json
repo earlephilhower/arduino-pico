@@ -34,7 +34,7 @@
   ],
   "name": "RP2040 LCD 0.96",
   "upload": {
-    "maximum_ram_size": 270336,
+    "maximum_ram_size": 262144,
     "maximum_size": 2097152,
     "require_upload_port": true,
     "native_usb": true,

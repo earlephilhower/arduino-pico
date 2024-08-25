@@ -22,9 +22,16 @@
 #include "PIOProgram.h"
 #include <map>
 
-static std::map<const pio_program_t *, int> __pioMap[2];
-auto_init_mutex(_pioMutex);
+#if defined(PICO_RP2350)
+#define PIOS pio0, pio1, pio2
+#define PIOCNT 3
+#elif defined(PICO_RP2040)
+#define PIOS pio0, pio1
+#define PIOCNT 2
+#endif
 
+static std::map<const pio_program_t *, int> __pioMap[PIOCNT];
+auto_init_mutex(_pioMutex);
 
 PIOProgram::PIOProgram(const pio_program_t *pgm) {
     _pgm = pgm;
@@ -42,10 +49,10 @@ PIOProgram::~PIOProgram() {
 // Possibly load into a PIO and allocate a SM
 bool PIOProgram::prepare(PIO *pio, int *sm, int *offset) {
     CoreMutex m(&_pioMutex);
-    PIO pi[2] = { pio0, pio1 };
+    PIO pi[PIOCNT] = { PIOS };
 
     // If it's already loaded into PIO IRAM, try and allocate in that specific PIO
-    for (int o = 0; o < 2; o++) {
+    for (int o = 0; o < PIOCNT; o++) {
         auto p = __pioMap[o].find(_pgm);
         if (p != __pioMap[o].end()) {
             int idx = pio_claim_unused_sm(pi[o], false);
@@ -61,7 +68,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset) {
     }
 
     // Not in any PIO IRAM, so try and add
-    for (int o = 0; o < 2; o++) {
+    for (int o = 0; o < PIOCNT; o++) {
         if (pio_can_add_program(pi[o], _pgm)) {
             int idx = pio_claim_unused_sm(pi[o], false);
             if (idx >= 0) {

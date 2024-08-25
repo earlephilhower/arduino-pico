@@ -21,9 +21,10 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <Arduino.h>
 #include <LwipIntf.h>
 //#include <Schedule.h>
-//#include <debug.h>
+#include <debug_internal.h>
 
 #define NETIF_STATUS_CB_SIZE 3
 

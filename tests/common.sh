@@ -5,6 +5,27 @@ function skip_ino()
 {
     local ino=$1
     local skiplist=""
+    local skiplistrp2350=""
+    if [ "$PICO_BOARD" == "rp2350" ]; then
+        read -d '' skiplistrp2350 << EOL || true
+/FreeRTOS/
+/BTstackLib/
+/JoystickBT/
+/KeyboardBT/
+/MouseBT/
+/SerialBT/
+/ArduinoBLE/
+/JoystickBLE/
+/KeyboardBLE/
+/MouseBLE/
+/BluetoothAudio/
+/BluetoothHCI/
+/BluetoothHIDMaster/
+/HID_Bluetooth/
+/lwIP_ESPHost/
+/lwIP_WINC1500/
+EOL
+    fi
     # Add items to the following list with "\n" netween them to skip running.  No spaces, tabs, etc. allowed
     read -d '' skiplist << EOL || true
 /#attic/
@@ -26,6 +47,7 @@ function skip_ino()
 /PDMSerialPlotter/
 /debug/
 /BackwardCompatibility/
+$skiplistrp2350
 EOL
     echo $ino | grep -q -F "$skiplist"
     echo $(( 1 - $? ))
