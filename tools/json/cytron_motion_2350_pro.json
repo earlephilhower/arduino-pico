@@ -35,7 +35,7 @@
   "name": "Motion 2350 Pro",
   "upload": {
     "maximum_ram_size": 524288,
-    "maximum_size": 4194304,
+    "maximum_size": 2097152,
     "require_upload_port": true,
     "native_usb": true,
     "use_1200bps_touch": true,
