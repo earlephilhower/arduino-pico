@@ -136,7 +136,7 @@ elif chip == "rp2350":
     env.Append(
         CPPDEFINES=[
             ("ARDUINO", 10810),
-            "ARDUINO_ARCH_RP2350",
+            "ARDUINO_ARCH_RP2040",
             ("F_CPU", "$BOARD_F_CPU"),
             ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
             ("CFG_TUSB_DEBUG", "0"),
