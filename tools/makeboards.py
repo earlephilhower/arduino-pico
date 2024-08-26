@@ -357,82 +357,66 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
         ramsize = 512
         jlink = "RP2350_0"
         fcpu = "150000000L"
-    json = """{
-  "build": {
-    "arduino": {
-      "earlephilhower": {
-        "boot2_source": "BOOT2.S",
-        "usb_vid": "VID",
-        "usb_pid": "PID"
-      }
+    j = {
+    "build": {
+        "arduino": {
+            "earlephilhower": {
+                "boot2_source": boot2 + ".S",
+                "usb_vid": vid.upper().replace("X", "x"),
+                "usb_pid": pid.upper().replace("X", "x"),
+            }
+        },
+        "core": "earlephilhower",
+        "cpu": cpu,
+        "extra_flags": "-DARDUINO_" + boarddefine + " -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=" + str(pwr) + " " + m_extra.rstrip(),
+        "f_cpu": fcpu,
+        "hwids": [
+            [
+                "0x2E8A",
+                "0x00C0"
+            ],
+            [
+                vid.upper().replace("X", "x"),
+                pid.upper().replace("X", "x"),
+            ]
+        ],
+        "mcu": chip,
+        "variant": name,
     },
-    "core": "earlephilhower",
-    "cpu": "CPU",
-    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR EXTRA_INFO",
-    "f_cpu": "FCPU",
-    "hwids": [
-      [
-        "0x2E8A",
-        "0x00C0"
-      ],
-      [
-        "VID",
-        "PID"
-      ]
+    "debug": {
+        "jlink_device": jlink,
+        "openocd_target": chip + ".cfg",
+        "svd_path": chip + ".svd"
+    },
+    "frameworks": [
+        "arduino"
     ],
-    "mcu": "MCUCHIP",
-    "variant": "VARIANTNAME"
-  },
-  "debug": {
-    "jlink_device": "JLINK",
-    "openocd_target": "MCUCHIP.cfg",
-    "svd_path": "MCUCHIP.svd"
-  },
-  "frameworks": [
-    "arduino"
-  ],
-  "name": "PRODUCTNAME",
-  "upload": {
-    "maximum_ram_size": RAMSIZE,
-    "maximum_size": FLASHSIZE,
-    "require_upload_port": true,
-    "native_usb": true,
-    "use_1200bps_touch": true,
-    "wait_for_upload_port": false,
-    "protocol": "picotool",
-    "protocols": [
-      "blackmagic",
-      "cmsis-dap",
-      "jlink",
-      "raspberrypi-swd",
-      "picotool",
-      "picoprobe",
-      "pico-debug"
-    ]
-  },
-  "url": "BOARDURL",
-  "vendor": "VENDORNAME"
-}\n"""\
-.replace('VARIANTNAME', name)\
-.replace('BOARDDEFINE', boarddefine)\
-.replace('BOOT2', boot2)\
-.replace('MCUCHIP', chip)\
-.replace('FCPU', fcpu)\
-.replace('CPU', cpu)\
-.replace('JLINK', jlink)\
-.replace('VID', vid.upper().replace("X", "x"))\
-.replace('PID', pid.upper().replace("X", "x"))\
-.replace('BOARDURL', board_url or 'https://www.raspberrypi.org/products/raspberry-pi-pico/')\
-.replace('VENDORNAME', vendor_name)\
-.replace('PRODUCTNAME', product_name)\
-.replace('RAMSIZE', str(ramsize * 1024))\
-.replace('FLASHSIZE', str(1024*1024*flashsizemb))\
-.replace('USBPWR', str(pwr))\
-.replace(' EXTRA_INFO', m_extra.rstrip())
+    "name": product_name,
+    "upload": {
+        "maximum_ram_size": ramsize * 1024,
+        "maximum_size": 1024 * 1024 * flashsizemb,
+        "require_upload_port": True,
+        "native_usb": True,
+        "use_1200bps_touch": True,
+        "wait_for_upload_port": False,
+        "protocol": "picotool",
+        "protocols": [
+            "blackmagic",
+            "cmsis-dap",
+            "jlink",
+            "raspberrypi-swd",
+            "picotool",
+            "picoprobe",
+            "pico-debug"
+        ]
+    },
+    "url": board_url or 'https://www.raspberrypi.org/products/raspberry-pi-pico/',
+    "vendor": vendor_name,
+    }
+
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
-    f = open(jsondir + "/" + name + ".json", "w", newline='\n')
-    f.write(json)
-    f.close()
+    with open(jsondir + "/" + name + ".json", "w", newline='\n') as jout:
+        json.dump(j, jout, indent=4)
 
 pkgjson = json.load(open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json'))
 pkgjson['packages'][0]['platforms'][0]['boards'] = []
