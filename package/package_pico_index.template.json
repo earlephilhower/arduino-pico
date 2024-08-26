@@ -332,12 +332,12 @@
                   },
                   {
                      "packager": "rp2040",
-                     "version": "2.2.0-d04e724",
+                     "version": "2.2.0-8a9af99",
                      "name": "pqt-openocd"
                   },
                   {
                      "packager": "rp2040",
-                     "version": "2.2.0-d04e724",
+                     "version": "2.2.0-8a9af99",
                      "name": "pqt-picotool"
                   }
                ],
@@ -348,7 +348,7 @@
          ],
          "tools": [
             {
-               "version": "2.2.0-d04e724",
+               "version": "2.2.0-8a9af99",
                "name": "pqt-picotool",
                "systems": [
                   {
@@ -410,7 +410,7 @@
                ]
             },
             {
-               "version": "2.2.0-d04e724",
+               "version": "2.2.0-8a9af99",
                "name": "pqt-openocd",
                "systems": [
                   {
