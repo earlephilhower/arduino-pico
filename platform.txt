@@ -49,7 +49,8 @@ compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers -W
 compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi -Wno-unused-parameter -Wno-missing-field-initializers
 
 compiler.netdefines={build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
-compiler.defines={build.led} {build.usbstack_flags} {build.usbpid} {build.usbvid} {build.usbpwr} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DPICO_FLASH_SIZE_BYTES={build.flash_total} "@{runtime.platform.path}/lib/{build.chip}/platform_def.txt"
+compiler.psramdefines={build.psram_cs} {build.psram_freq}
+compiler.defines={build.led} {build.usbstack_flags} {build.usbpid} {build.usbvid} {build.usbpwr} {compiler.psramdefines} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DPICO_FLASH_SIZE_BYTES={build.flash_total} "@{runtime.platform.path}/lib/{build.chip}/platform_def.txt"
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/{build.chip}/platform_inc.txt" "@{runtime.platform.path}/lib/core_inc.txt" "-I{runtime.platform.path}/include"
 compiler.flags={build.toolchainopts} -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.picodebugflags}
 compiler.wrap="@{runtime.platform.path}/lib/{build.chip}/platform_wrap.txt" "@{runtime.platform.path}/lib/core_wrap.txt"
@@ -91,6 +92,8 @@ compiler.elf2hex.extra_flags=
 build.flash_total=
 build.flash_length=
 build.psram_length=0
+build.psram_cs=
+build.psram_freq=
 build.eeprom_start=
 build.flags.optimize=-Os
 build.flags.rtti=-fno-rtti
