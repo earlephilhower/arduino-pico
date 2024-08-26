@@ -10,7 +10,7 @@
     "core": "earlephilhower",
     "cpu": "cortex-m33",
     "extra_flags": "-D ARDUINO_CHALLENGER_2350_BCONNECT_RP2350 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
-    "f_cpu": "133000000L",
+    "f_cpu": "150000000L",
     "hwids": [
       [
         "0x2E8A",

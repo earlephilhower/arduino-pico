@@ -48,15 +48,20 @@ def BuildFreq(name, defmhz):
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
-def BuildPSRAM(name, psramsize):
-    out = 0
-    if psramsize != 0:
-        for s in [ psramsize, 0, 2, 4, 8]:
-            if (out == 1) and (s == psramsize):
-                continue
-            print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
-            print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
-            out = 1
+def BuildPSRAM(name):
+    for s in [ 0, 2, 4, 8]:
+        print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
+        print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
+
+def BuildPSRAMCS(name):
+    for s in range(0, 32):
+        print("%s.menu.psramcs.GPIO%d=GPIO %d" % (name, s, s))
+        print("%s.menu.psramcs.GPIO%d.build.psram_cs=-DRP2350_PSRAM_CS=%d" % (name, s, s))
+
+def BuildPSRAMFreq(name):
+    for s in [ 109, 133 ]:
+        print("%s.menu.psramfreq.freq%d=%d MHz" % (name, s, s))
+        print("%s.menu.psramfreq.freq%d.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=%d" % (name, s, s * 1000000))
 
 def BuildOptimize(name):
     for l in [ ("Small", "Small", "-Os", " (standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
@@ -237,7 +242,7 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.boot2=%s" % (name, boot2))
     print('%s.build.usb_manufacturer="%s"' % (name, vendor_name))
     print('%s.build.usb_product="%s"' % (name, product_name))
-    if (chip == "rp2350") and (name != "generic"):
+    if (chip == "rp2350") and (name != "generic_rp2350"):
         print("%s.build.psram_length=0x%d00000" % (name, psramsize))
     if extra != None:
         m_extra = ''
@@ -255,6 +260,8 @@ def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
     print("menu.flash=Flash Size")
     print("menu.psram=PSRAM Size")
+    print("menu.psramcs=PSRAM CS")
+    print("menu.psramfreq=PSRAM Speed")
     print("menu.freq=CPU Speed")
     print("menu.opt=Optimize")
     print("menu.rtti=RTTI")
@@ -300,8 +307,10 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
     if chip == "rp2350":
         BuildFreq(name, 150)
-        if name != "generic":
-            BuildPSRAM(name, psramsize)
+        if name == "generic_rp2350":
+            BuildPSRAM(name)
+            BuildPSRAMCS(name)
+            BuildPSRAMFreq(name)
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
@@ -342,10 +351,12 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
         cpu = "cortex-m0plus"
         ramsize = 256
         jlink = "RP2040_M0_0"
+        fcpu = "133000000L"
     elif chip == "rp2350":
         cpu = "cortex-m33"
         ramsize = 512
         jlink = "RP2350_0"
+        fcpu = "150000000L"
     json = """{
   "build": {
     "arduino": {
@@ -358,7 +369,7 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
     "core": "earlephilhower",
     "cpu": "CPU",
     "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR EXTRA_INFO",
-    "f_cpu": "133000000L",
+    "f_cpu": "FCPU",
     "hwids": [
       [
         "0x2E8A",
@@ -406,6 +417,7 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
 .replace('BOARDDEFINE', boarddefine)\
 .replace('BOOT2', boot2)\
 .replace('MCUCHIP', chip)\
+.replace('FCPU', fcpu)\
 .replace('CPU', cpu)\
 .replace('JLINK', jlink)\
 .replace('VID', vid.upper().replace("X", "x"))\
