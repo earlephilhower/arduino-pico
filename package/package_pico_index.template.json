@@ -337,7 +337,7 @@
                   },
                   {
                      "packager": "rp2040",
-                     "version": "2.2.0-8a9af99",
+                     "version": "2.2.0-8a9af99-1",
                      "name": "pqt-picotool"
                   }
                ],
@@ -348,7 +348,7 @@
          ],
          "tools": [
             {
-               "version": "2.2.0-8a9af99",
+               "version": "2.2.0-8a9af99-1",
                "name": "pqt-picotool",
                "systems": [
                   {
@@ -381,10 +381,10 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.picotool-8a9af99.240818.zip",
-                     "archiveFileName": "i686-w64-mingw32.picotool-8a9af99.240818.zip",
-                     "checksum": "SHA-256:a9e4d744a431ed4cca41752a5085f583afa3763be6877614061e7810433acb56",
-                     "size": "1884014"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.picotool-8a9af99.240818b.zip",
+                     "archiveFileName": "i686-w64-mingw32.picotool-8a9af99.240818b.zip",
+                     "checksum": "SHA-256:92b783840698a90b85cc381a9368a237fa9e3e2a3f9a48e70cac000c3c3254e6",
+                     "size": "1995105"
                   },
                   {
                      "host": "x86_64-apple-darwin",
@@ -402,10 +402,10 @@
                   },
                   {
                      "host": "x86_64-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.picotool-8a9af99.240818.zip",
-                     "archiveFileName": "x86_64-w64-mingw32.picotool-8a9af99.240818.zip",
-                     "checksum": "SHA-256:58e050af07a682805bec35a0f7a0df66d98c8e026126f469221326c11b7071aa",
-                     "size": "1774494"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.picotool-8a9af99.240818b.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.picotool-8a9af99.240818b.zip",
+                     "checksum": "SHA-256:72609a42205a415734da196190f329a1946f38bd30e742c164931a7abe92fe40",
+                     "size": "1881392"
                   }
                ]
             },
