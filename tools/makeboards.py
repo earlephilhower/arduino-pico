@@ -357,7 +357,7 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
     },
     "core": "earlephilhower",
     "cpu": "CPU",
-    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_ARCHDEF -DUSBD_MAX_POWER_MA=USBPWR EXTRA_INFO",
+    "extra_flags": "-D ARDUINO_BOARDDEFINE -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=USBPWR EXTRA_INFO",
     "f_cpu": "133000000L",
     "hwids": [
       [
@@ -407,7 +407,6 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
 .replace('BOOT2', boot2)\
 .replace('MCUCHIP', chip)\
 .replace('CPU', cpu)\
-.replace('ARCHDEF', chip.upper())\
 .replace('JLINK', jlink)\
 .replace('VID', vid.upper().replace("X", "x"))\
 .replace('PID', pid.upper().replace("X", "x"))\
