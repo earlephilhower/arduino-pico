@@ -480,6 +480,7 @@ MakeBoard("cytron_iriv_io_controller", "rp2350", "Cytron", "IRIV IO Controller",
 MakeBoard("cytron_maker_nano_rp2040", "rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_pi_rp2040", "rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x1000", 250, "CYTRON_MAKER_PI_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_uno_rp2040", "rp2040", "Cytron", "Maker Uno RP2040", "0x2e8a", "0x1071", 250, "CYTRON_MAKER_UNO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("cytron_motion_2350_pro", "rp2350", "Cytron", "Motion 2350 Pro", "0x2e8a", "0x1096", 250, "CYTRON_MOTION_2350_PRO", 2, 0, "boot2_generic_03h_2_padded_checksum")
 
 # DatanoiseTV
 MakeBoard("datanoisetv_picoadk", "rp2040", "DatanoiseTV", "PicoADK", "0x2e8a", "0x000a", 250, "DATANOISETV_PICOADK", 2, 0, "boot2_w25q080_2_padded_checksum")

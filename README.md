@@ -4,7 +4,7 @@
 
 Raspberry Pi Pico Arduino core, for all RP2040 and RP2350 boards
 
-This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) anr RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 12.3/Newlib 4.0 toolchain.
+This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 12.3/Newlib 4.0 toolchain.
 
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
@@ -35,9 +35,11 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Breadstick Raspberry
 * BridgeTek IDM2040-7A
 * BridgeTek IDM2040-43A
+* Cytron IRIV IO Controller
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
 * Cytron Maker Uno RP2040
+* Cytron Motion 2350 Pro
 * DatanoiseTV PicoADK+
 * Degz Suibo RP2040
 * DeRuiLab FlyBoard2040 Core
