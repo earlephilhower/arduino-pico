@@ -1,56 +1,56 @@
 {
-  "build": {
-    "arduino": {
-      "earlephilhower": {
-        "boot2_source": "boot2_generic_03h_2_padded_checksum.S",
-        "usb_vid": "0x2E8A",
-        "usb_pid": "0x109A"
-      }
+    "build": {
+        "arduino": {
+            "earlephilhower": {
+                "boot2_source": "boot2_generic_03h_2_padded_checksum.S",
+                "usb_vid": "0x2E8A",
+                "usb_pid": "0x109A"
+            }
+        },
+        "core": "earlephilhower",
+        "cpu": "cortex-m33",
+        "extra_flags": "-DARDUINO_CHALLENGER_2350_WIFI_BLE_RP2350 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500  -DWIFIESPAT2",
+        "f_cpu": "150000000L",
+        "hwids": [
+            [
+                "0x2E8A",
+                "0x00C0"
+            ],
+            [
+                "0x2E8A",
+                "0x109A"
+            ]
+        ],
+        "mcu": "rp2350",
+        "variant": "challenger_2350_wifi6_ble5"
     },
-    "core": "earlephilhower",
-    "cpu": "cortex-m33",
-    "extra_flags": "-D ARDUINO_CHALLENGER_2350_WIFI_BLE_RP2350 -DARDUINO_ARCH_RP2350 -DUSBD_MAX_POWER_MA=500 -DWIFIESPAT2",
-    "f_cpu": "133000000L",
-    "hwids": [
-      [
-        "0x2E8A",
-        "0x00C0"
-      ],
-      [
-        "0x2E8A",
-        "0x109A"
-      ]
+    "debug": {
+        "jlink_device": "RP2350_0",
+        "openocd_target": "rp2350.cfg",
+        "svd_path": "rp2350.svd"
+    },
+    "frameworks": [
+        "arduino"
     ],
-    "mcu": "rp2350",
-    "variant": "challenger_2350_wifi6_ble5"
-  },
-  "debug": {
-    "jlink_device": "RP2350_0",
-    "openocd_target": "rp2350.cfg",
-    "svd_path": "rp2350.svd"
-  },
-  "frameworks": [
-    "arduino"
-  ],
-  "name": "Challenger 2350 WiFi/BLE",
-  "upload": {
-    "maximum_ram_size": 524288,
-    "maximum_size": 8388608,
-    "require_upload_port": true,
-    "native_usb": true,
-    "use_1200bps_touch": true,
-    "wait_for_upload_port": false,
-    "protocol": "picotool",
-    "protocols": [
-      "blackmagic",
-      "cmsis-dap",
-      "jlink",
-      "raspberrypi-swd",
-      "picotool",
-      "picoprobe",
-      "pico-debug"
-    ]
-  },
-  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
-  "vendor": "iLabs"
+    "name": "Challenger 2350 WiFi/BLE",
+    "upload": {
+        "maximum_ram_size": 524288,
+        "maximum_size": 8388608,
+        "require_upload_port": true,
+        "native_usb": true,
+        "use_1200bps_touch": true,
+        "wait_for_upload_port": false,
+        "protocol": "picotool",
+        "protocols": [
+            "blackmagic",
+            "cmsis-dap",
+            "jlink",
+            "raspberrypi-swd",
+            "picotool",
+            "picoprobe",
+            "pico-debug"
+        ]
+    },
+    "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+    "vendor": "iLabs"
 }

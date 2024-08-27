@@ -59,6 +59,11 @@ add_library(pico-${cpu} STATIC)
 target_compile_definitions(pico-${cpu} PUBLIC
     LWIP_IPV6=0
 )
+if (${cpu} MATCHES "rp2040")
+    set(xll1)
+elseif(${cpu} MATCHES "rp2350")
+    set(xll1 pico_sha256)
+endif()
 
 target_link_libraries(pico-${cpu}
     common-${cpu}
@@ -108,6 +113,7 @@ target_link_libraries(pico-${cpu}
     pico_stdlib
     pico_unique_id
     pico_util
+    ${xll1}
     tinyusb
     tinyusb_device_unmarked
 )

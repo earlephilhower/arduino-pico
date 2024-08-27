@@ -5,6 +5,8 @@
 menu.BoardModel=Model
 menu.flash=Flash Size
 menu.psram=PSRAM Size
+menu.psramcs=PSRAM CS
+menu.psramfreq=PSRAM Speed
 menu.freq=CPU Speed
 menu.opt=Optimize
 menu.rtti=RTTI
@@ -15689,14 +15691,6 @@ challenger_2350_wifi6_ble5.menu.freq.275=275 MHz (Overclock)
 challenger_2350_wifi6_ble5.menu.freq.275.build.f_cpu=275000000L
 challenger_2350_wifi6_ble5.menu.freq.300=300 MHz (Overclock)
 challenger_2350_wifi6_ble5.menu.freq.300.build.f_cpu=300000000L
-challenger_2350_wifi6_ble5.menu.psram.8mb=8MByte PSRAM
-challenger_2350_wifi6_ble5.menu.psram.8mb.build.psram_length=0x800000
-challenger_2350_wifi6_ble5.menu.psram.0mb=0MByte PSRAM
-challenger_2350_wifi6_ble5.menu.psram.0mb.build.psram_length=0x000000
-challenger_2350_wifi6_ble5.menu.psram.2mb=2MByte PSRAM
-challenger_2350_wifi6_ble5.menu.psram.2mb.build.psram_length=0x200000
-challenger_2350_wifi6_ble5.menu.psram.4mb=4MByte PSRAM
-challenger_2350_wifi6_ble5.menu.psram.4mb.build.psram_length=0x400000
 challenger_2350_wifi6_ble5.menu.opt.Small=Small (-Os) (standard)
 challenger_2350_wifi6_ble5.menu.opt.Small.build.flags.optimize=-Os
 challenger_2350_wifi6_ble5.menu.opt.Optimize=Optimize (-O)
@@ -15968,14 +15962,6 @@ challenger_2350_bconnect.menu.freq.275=275 MHz (Overclock)
 challenger_2350_bconnect.menu.freq.275.build.f_cpu=275000000L
 challenger_2350_bconnect.menu.freq.300=300 MHz (Overclock)
 challenger_2350_bconnect.menu.freq.300.build.f_cpu=300000000L
-challenger_2350_bconnect.menu.psram.8mb=8MByte PSRAM
-challenger_2350_bconnect.menu.psram.8mb.build.psram_length=0x800000
-challenger_2350_bconnect.menu.psram.0mb=0MByte PSRAM
-challenger_2350_bconnect.menu.psram.0mb.build.psram_length=0x000000
-challenger_2350_bconnect.menu.psram.2mb=2MByte PSRAM
-challenger_2350_bconnect.menu.psram.2mb.build.psram_length=0x200000
-challenger_2350_bconnect.menu.psram.4mb=4MByte PSRAM
-challenger_2350_bconnect.menu.psram.4mb.build.psram_length=0x400000
 challenger_2350_bconnect.menu.opt.Small=Small (-Os) (standard)
 challenger_2350_bconnect.menu.opt.Small.build.flags.optimize=-Os
 challenger_2350_bconnect.menu.opt.Optimize=Optimize (-O)
@@ -22364,14 +22350,6 @@ sparkfun_promicrorp2350.menu.freq.275=275 MHz (Overclock)
 sparkfun_promicrorp2350.menu.freq.275.build.f_cpu=275000000L
 sparkfun_promicrorp2350.menu.freq.300=300 MHz (Overclock)
 sparkfun_promicrorp2350.menu.freq.300.build.f_cpu=300000000L
-sparkfun_promicrorp2350.menu.psram.8mb=8MByte PSRAM
-sparkfun_promicrorp2350.menu.psram.8mb.build.psram_length=0x800000
-sparkfun_promicrorp2350.menu.psram.0mb=0MByte PSRAM
-sparkfun_promicrorp2350.menu.psram.0mb.build.psram_length=0x000000
-sparkfun_promicrorp2350.menu.psram.2mb=2MByte PSRAM
-sparkfun_promicrorp2350.menu.psram.2mb.build.psram_length=0x200000
-sparkfun_promicrorp2350.menu.psram.4mb=4MByte PSRAM
-sparkfun_promicrorp2350.menu.psram.4mb.build.psram_length=0x400000
 sparkfun_promicrorp2350.menu.opt.Small=Small (-Os) (standard)
 sparkfun_promicrorp2350.menu.opt.Small.build.flags.optimize=-Os
 sparkfun_promicrorp2350.menu.opt.Optimize=Optimize (-O)
@@ -27222,7 +27200,6 @@ generic_rp2350.build.ldscript=memmap_default.ld
 generic_rp2350.build.boot2=boot2_generic_03h_4_padded_checksum
 generic_rp2350.build.usb_manufacturer="Generic"
 generic_rp2350.build.usb_product="RP2350"
-generic_rp2350.build.psram_length=0x800000
 generic_rp2350.menu.flash.16777216_0=16MB (no FS)
 generic_rp2350.menu.flash.16777216_0.upload.maximum_size=16769024
 generic_rp2350.menu.flash.16777216_0.build.flash_total=16777216
@@ -27391,14 +27368,82 @@ generic_rp2350.menu.freq.275=275 MHz (Overclock)
 generic_rp2350.menu.freq.275.build.f_cpu=275000000L
 generic_rp2350.menu.freq.300=300 MHz (Overclock)
 generic_rp2350.menu.freq.300.build.f_cpu=300000000L
-generic_rp2350.menu.psram.8mb=8MByte PSRAM
-generic_rp2350.menu.psram.8mb.build.psram_length=0x800000
 generic_rp2350.menu.psram.0mb=0MByte PSRAM
 generic_rp2350.menu.psram.0mb.build.psram_length=0x000000
 generic_rp2350.menu.psram.2mb=2MByte PSRAM
 generic_rp2350.menu.psram.2mb.build.psram_length=0x200000
 generic_rp2350.menu.psram.4mb=4MByte PSRAM
 generic_rp2350.menu.psram.4mb.build.psram_length=0x400000
+generic_rp2350.menu.psram.8mb=8MByte PSRAM
+generic_rp2350.menu.psram.8mb.build.psram_length=0x800000
+generic_rp2350.menu.psramcs.GPIO0=GPIO 0
+generic_rp2350.menu.psramcs.GPIO0.build.psram_cs=-DRP2350_PSRAM_CS=0
+generic_rp2350.menu.psramcs.GPIO1=GPIO 1
+generic_rp2350.menu.psramcs.GPIO1.build.psram_cs=-DRP2350_PSRAM_CS=1
+generic_rp2350.menu.psramcs.GPIO2=GPIO 2
+generic_rp2350.menu.psramcs.GPIO2.build.psram_cs=-DRP2350_PSRAM_CS=2
+generic_rp2350.menu.psramcs.GPIO3=GPIO 3
+generic_rp2350.menu.psramcs.GPIO3.build.psram_cs=-DRP2350_PSRAM_CS=3
+generic_rp2350.menu.psramcs.GPIO4=GPIO 4
+generic_rp2350.menu.psramcs.GPIO4.build.psram_cs=-DRP2350_PSRAM_CS=4
+generic_rp2350.menu.psramcs.GPIO5=GPIO 5
+generic_rp2350.menu.psramcs.GPIO5.build.psram_cs=-DRP2350_PSRAM_CS=5
+generic_rp2350.menu.psramcs.GPIO6=GPIO 6
+generic_rp2350.menu.psramcs.GPIO6.build.psram_cs=-DRP2350_PSRAM_CS=6
+generic_rp2350.menu.psramcs.GPIO7=GPIO 7
+generic_rp2350.menu.psramcs.GPIO7.build.psram_cs=-DRP2350_PSRAM_CS=7
+generic_rp2350.menu.psramcs.GPIO8=GPIO 8
+generic_rp2350.menu.psramcs.GPIO8.build.psram_cs=-DRP2350_PSRAM_CS=8
+generic_rp2350.menu.psramcs.GPIO9=GPIO 9
+generic_rp2350.menu.psramcs.GPIO9.build.psram_cs=-DRP2350_PSRAM_CS=9
+generic_rp2350.menu.psramcs.GPIO10=GPIO 10
+generic_rp2350.menu.psramcs.GPIO10.build.psram_cs=-DRP2350_PSRAM_CS=10
+generic_rp2350.menu.psramcs.GPIO11=GPIO 11
+generic_rp2350.menu.psramcs.GPIO11.build.psram_cs=-DRP2350_PSRAM_CS=11
+generic_rp2350.menu.psramcs.GPIO12=GPIO 12
+generic_rp2350.menu.psramcs.GPIO12.build.psram_cs=-DRP2350_PSRAM_CS=12
+generic_rp2350.menu.psramcs.GPIO13=GPIO 13
+generic_rp2350.menu.psramcs.GPIO13.build.psram_cs=-DRP2350_PSRAM_CS=13
+generic_rp2350.menu.psramcs.GPIO14=GPIO 14
+generic_rp2350.menu.psramcs.GPIO14.build.psram_cs=-DRP2350_PSRAM_CS=14
+generic_rp2350.menu.psramcs.GPIO15=GPIO 15
+generic_rp2350.menu.psramcs.GPIO15.build.psram_cs=-DRP2350_PSRAM_CS=15
+generic_rp2350.menu.psramcs.GPIO16=GPIO 16
+generic_rp2350.menu.psramcs.GPIO16.build.psram_cs=-DRP2350_PSRAM_CS=16
+generic_rp2350.menu.psramcs.GPIO17=GPIO 17
+generic_rp2350.menu.psramcs.GPIO17.build.psram_cs=-DRP2350_PSRAM_CS=17
+generic_rp2350.menu.psramcs.GPIO18=GPIO 18
+generic_rp2350.menu.psramcs.GPIO18.build.psram_cs=-DRP2350_PSRAM_CS=18
+generic_rp2350.menu.psramcs.GPIO19=GPIO 19
+generic_rp2350.menu.psramcs.GPIO19.build.psram_cs=-DRP2350_PSRAM_CS=19
+generic_rp2350.menu.psramcs.GPIO20=GPIO 20
+generic_rp2350.menu.psramcs.GPIO20.build.psram_cs=-DRP2350_PSRAM_CS=20
+generic_rp2350.menu.psramcs.GPIO21=GPIO 21
+generic_rp2350.menu.psramcs.GPIO21.build.psram_cs=-DRP2350_PSRAM_CS=21
+generic_rp2350.menu.psramcs.GPIO22=GPIO 22
+generic_rp2350.menu.psramcs.GPIO22.build.psram_cs=-DRP2350_PSRAM_CS=22
+generic_rp2350.menu.psramcs.GPIO23=GPIO 23
+generic_rp2350.menu.psramcs.GPIO23.build.psram_cs=-DRP2350_PSRAM_CS=23
+generic_rp2350.menu.psramcs.GPIO24=GPIO 24
+generic_rp2350.menu.psramcs.GPIO24.build.psram_cs=-DRP2350_PSRAM_CS=24
+generic_rp2350.menu.psramcs.GPIO25=GPIO 25
+generic_rp2350.menu.psramcs.GPIO25.build.psram_cs=-DRP2350_PSRAM_CS=25
+generic_rp2350.menu.psramcs.GPIO26=GPIO 26
+generic_rp2350.menu.psramcs.GPIO26.build.psram_cs=-DRP2350_PSRAM_CS=26
+generic_rp2350.menu.psramcs.GPIO27=GPIO 27
+generic_rp2350.menu.psramcs.GPIO27.build.psram_cs=-DRP2350_PSRAM_CS=27
+generic_rp2350.menu.psramcs.GPIO28=GPIO 28
+generic_rp2350.menu.psramcs.GPIO28.build.psram_cs=-DRP2350_PSRAM_CS=28
+generic_rp2350.menu.psramcs.GPIO29=GPIO 29
+generic_rp2350.menu.psramcs.GPIO29.build.psram_cs=-DRP2350_PSRAM_CS=29
+generic_rp2350.menu.psramcs.GPIO30=GPIO 30
+generic_rp2350.menu.psramcs.GPIO30.build.psram_cs=-DRP2350_PSRAM_CS=30
+generic_rp2350.menu.psramcs.GPIO31=GPIO 31
+generic_rp2350.menu.psramcs.GPIO31.build.psram_cs=-DRP2350_PSRAM_CS=31
+generic_rp2350.menu.psramfreq.freq109=109 MHz
+generic_rp2350.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+generic_rp2350.menu.psramfreq.freq133=133 MHz
+generic_rp2350.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
 generic_rp2350.menu.opt.Small=Small (-Os) (standard)
 generic_rp2350.menu.opt.Small.build.flags.optimize=-Os
 generic_rp2350.menu.opt.Optimize=Optimize (-O)
