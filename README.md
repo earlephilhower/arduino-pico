@@ -35,6 +35,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Breadstick Raspberry
 * BridgeTek IDM2040-7A
 * BridgeTek IDM2040-43A
+* Cytron IRIV IO Controller
 * Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
 * Cytron Maker Uno RP2040
