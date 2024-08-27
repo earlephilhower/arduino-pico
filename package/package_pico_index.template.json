@@ -335,12 +335,12 @@
                   },
                   {
                      "packager": "rp2040",
-                     "version": "2.2.0-8a9af99",
+                     "version": "2.2.0-8a9af99-2",
                      "name": "pqt-openocd"
                   },
                   {
                      "packager": "rp2040",
-                     "version": "2.2.0-8a9af99-1",
+                     "version": "2.2.0-8a9af99-2",
                      "name": "pqt-picotool"
                   }
                ],
@@ -351,15 +351,15 @@
          ],
          "tools": [
             {
-               "version": "2.2.0-8a9af99-1",
+               "version": "2.2.0-8a9af99-2",
                "name": "pqt-picotool",
                "systems": [
                   {
                      "host": "arm64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.picotool-8a9af99.240818.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.picotool-8a9af99.240818.tar.gz",
-                     "checksum": "SHA-256:5896d2e71c3a287a5c4d24e6fe8a3144e87bff1ff071d5a2095623f16da64dd7",
-                     "size": "851010"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.picotool-8a9af99.240827.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.picotool-8a9af99.240827.tar.gz",
+                     "checksum": "SHA-256:56495b3b5cd9b2b124c2ac9d9592d07a802c70a46b4453bbf890021475467ce7",
+                     "size": "856307"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -384,17 +384,17 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.picotool-8a9af99.240818b.zip",
-                     "archiveFileName": "i686-w64-mingw32.picotool-8a9af99.240818b.zip",
-                     "checksum": "SHA-256:92b783840698a90b85cc381a9368a237fa9e3e2a3f9a48e70cac000c3c3254e6",
-                     "size": "1995105"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.picotool-8a9af99.240827.zip",
+                     "archiveFileName": "i686-w64-mingw32.picotool-8a9af99.240827.zip",
+                     "checksum": "SHA-256:72519eed61cc01f211fc55d98751c09701a7323ba17b9c1b5d02d29de76c1777",
+                     "size": "1995431"
                   },
                   {
                      "host": "x86_64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-apple-darwin20.4.picotool-8a9af99.240818.tar.gz",
-                     "archiveFileName": "x86_64-apple-darwin20.4.picotool-8a9af99.240818.tar.gz",
-                     "checksum": "SHA-256:2c780bf95fcd5b6a5fc27db70f87a058f4209770febe7435943d153cc811d853",
-                     "size": "826555"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-apple-darwin20.4.picotool-8a9af99.240827.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin20.4.picotool-8a9af99.240827.tar.gz",
+                     "checksum": "SHA-256:54d920cd1731d1f33a63d004b3f26170ff357bc620b5f3172329096d4b461e03",
+                     "size": "831575"
                   },
                   {
                      "host": "x86_64-pc-linux-gnu",
@@ -405,23 +405,23 @@
                   },
                   {
                      "host": "x86_64-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.picotool-8a9af99.240818b.zip",
-                     "archiveFileName": "x86_64-w64-mingw32.picotool-8a9af99.240818b.zip",
-                     "checksum": "SHA-256:72609a42205a415734da196190f329a1946f38bd30e742c164931a7abe92fe40",
-                     "size": "1881392"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.picotool-8a9af99.240827.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.picotool-8a9af99.240827.zip",
+                     "checksum": "SHA-256:5e77c4d624526b8c1afb930acf3e9efd9761176f75eb6f258a0d4b49beaa965c",
+                     "size": "1881720"
                   }
                ]
             },
             {
-               "version": "2.2.0-8a9af99",
+               "version": "2.2.0-8a9af99-2",
                "name": "pqt-openocd",
                "systems": [
                   {
                      "host": "arm64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.openocd-ebec9504d.240818.tar.gz",
-                     "archiveFileName": "aarch64-apple-darwin20.4.openocd-ebec9504d.240818.tar.gz",
-                     "checksum": "SHA-256:7327a049b4abb6d944db31eebb72a71ca71beb999fa6cdc44e83fd1dabf253c8",
-                     "size": "1967271"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/aarch64-apple-darwin20.4.openocd-ebec9504d.240827.tar.gz",
+                     "archiveFileName": "aarch64-apple-darwin20.4.openocd-ebec9504d.240827.tar.gz",
+                     "checksum": "SHA-256:7abbab14197005e9ae5f0a497fcefea420b8cf22f8be6d118f8549787f10c3ce",
+                     "size": "1974865"
                   },
                   {
                      "host": "aarch64-linux-gnu",
@@ -446,17 +446,17 @@
                   },
                   {
                      "host": "i686-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.openocd-ebec9504d.240818.zip",
-                     "archiveFileName": "i686-w64-mingw32.openocd-ebec9504d.240818.zip",
-                     "checksum": "SHA-256:a103dbecfdaca5a6e582f832bd3a017769f14774f78a30e83097fe78987e8be8",
-                     "size": "3577537"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/i686-w64-mingw32.openocd-ebec9504d.240827.zip",
+                     "archiveFileName": "i686-w64-mingw32.openocd-ebec9504d.240827.zip",
+                     "checksum": "SHA-256:c5755e4e7fc008ac8486e9aa085a1e0b486732b70dcd37f9b2953104a0881541",
+                     "size": "3577865"
                   },
                   {
                      "host": "x86_64-apple-darwin",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-apple-darwin20.4.openocd-ebec9504d.240818.tar.gz",
-                     "archiveFileName": "x86_64-apple-darwin20.4.openocd-ebec9504d.240818.tar.gz",
-                     "checksum": "SHA-256:2be716a12ca7ea0c036e2a10f89c191426f7e1c71a9cca78fbb3f8911b1df35d",
-                     "size": "3165595"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-apple-darwin20.4.openocd-ebec9504d.240827.tar.gz",
+                     "archiveFileName": "x86_64-apple-darwin20.4.openocd-ebec9504d.240827.tar.gz",
+                     "checksum": "SHA-256:2382f02b6171268c87409d998f8e9a844a70b9a5d6a40690bdaa8301fda8fbd4",
+                     "size": "3192645"
                   },
                   {
                      "host": "x86_64-pc-linux-gnu",
@@ -467,10 +467,10 @@
                   },
                   {
                      "host": "x86_64-mingw32",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.openocd-ebec9504d.240818.zip",
-                     "archiveFileName": "x86_64-w64-mingw32.openocd-ebec9504d.240818.zip",
-                     "checksum": "SHA-256:782d0e955990a03380fa681deaf4a5faf406f4a3fddecb27f71bd2be060d904d",
-                     "size": "3456434"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.2.0/x86_64-w64-mingw32.openocd-ebec9504d.240827.zip",
+                     "archiveFileName": "x86_64-w64-mingw32.openocd-ebec9504d.240827.zip",
+                     "checksum": "SHA-256:ceaa6aa57be394e853470337d0fa76af3b8f744b3ea7dd45b8325fff4bd824a9",
+                     "size": "3456764"
                   }
                ]
             },
