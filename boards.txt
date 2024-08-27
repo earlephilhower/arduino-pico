@@ -8964,6 +8964,235 @@ bridgetek_idm2040_43a.menu.uploadmethod.picodebug.upload.tool=picodebug
 bridgetek_idm2040_43a.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
+# Cytron IRIV IO Controller
+# -----------------------------------
+cytron_iriv_io_controller.name=Cytron IRIV IO Controller
+cytron_iriv_io_controller.vid.0=0x2e8a
+cytron_iriv_io_controller.pid.0=0x1093
+cytron_iriv_io_controller.vid.1=0x2e8a
+cytron_iriv_io_controller.pid.1=0x1193
+cytron_iriv_io_controller.vid.2=0x2e8a
+cytron_iriv_io_controller.pid.2=0x5093
+cytron_iriv_io_controller.vid.3=0x2e8a
+cytron_iriv_io_controller.pid.3=0x5193
+cytron_iriv_io_controller.vid.4=0x2e8a
+cytron_iriv_io_controller.pid.4=0x9093
+cytron_iriv_io_controller.vid.5=0x2e8a
+cytron_iriv_io_controller.pid.5=0x9193
+cytron_iriv_io_controller.vid.6=0x2e8a
+cytron_iriv_io_controller.pid.6=0xd093
+cytron_iriv_io_controller.vid.7=0x2e8a
+cytron_iriv_io_controller.pid.7=0xd193
+cytron_iriv_io_controller.upload_port.0.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.0.pid=0x1093
+cytron_iriv_io_controller.upload_port.1.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.1.pid=0x1193
+cytron_iriv_io_controller.upload_port.2.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.2.pid=0x5093
+cytron_iriv_io_controller.upload_port.3.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.3.pid=0x5193
+cytron_iriv_io_controller.upload_port.4.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.4.pid=0x9093
+cytron_iriv_io_controller.upload_port.5.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.5.pid=0x9193
+cytron_iriv_io_controller.upload_port.6.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.6.pid=0xd093
+cytron_iriv_io_controller.upload_port.7.vid=0x2e8a
+cytron_iriv_io_controller.upload_port.7.pid=0xd193
+cytron_iriv_io_controller.build.usbvid=-DUSBD_VID=0x2e8a
+cytron_iriv_io_controller.build.usbpid=-DUSBD_PID=0x1093
+cytron_iriv_io_controller.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+cytron_iriv_io_controller.build.board=CYTRON_IRIV_IO_CONTROLLER
+cytron_iriv_io_controller.build.chip=rp2350
+cytron_iriv_io_controller.build.toolchain=arm-none-eabi
+cytron_iriv_io_controller.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+cytron_iriv_io_controller.build.uf2family=--family rp2350-arm-s --abs-block
+cytron_iriv_io_controller.build.variant=cytron_iriv_io_controller
+cytron_iriv_io_controller.upload.maximum_size=2097152
+cytron_iriv_io_controller.upload.wait_for_upload_port=true
+cytron_iriv_io_controller.upload.erase_cmd=
+cytron_iriv_io_controller.serial.disableDTR=false
+cytron_iriv_io_controller.serial.disableRTS=false
+cytron_iriv_io_controller.build.f_cpu=125000000
+cytron_iriv_io_controller.build.led=
+cytron_iriv_io_controller.build.core=rp2040
+cytron_iriv_io_controller.build.ldscript=memmap_default.ld
+cytron_iriv_io_controller.build.boot2=boot2_w25q080_2_padded_checksum
+cytron_iriv_io_controller.build.usb_manufacturer="Cytron"
+cytron_iriv_io_controller.build.usb_product="IRIV IO Controller"
+cytron_iriv_io_controller.build.psram_length=0x000000
+cytron_iriv_io_controller.menu.flash.2097152_0=2MB (no FS)
+cytron_iriv_io_controller.menu.flash.2097152_0.upload.maximum_size=2088960
+cytron_iriv_io_controller.menu.flash.2097152_0.build.flash_total=2097152
+cytron_iriv_io_controller.menu.flash.2097152_0.build.flash_length=2088960
+cytron_iriv_io_controller.menu.flash.2097152_0.build.eeprom_start=270524416
+cytron_iriv_io_controller.menu.flash.2097152_0.build.fs_start=270524416
+cytron_iriv_io_controller.menu.flash.2097152_0.build.fs_end=270524416
+cytron_iriv_io_controller.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+cytron_iriv_io_controller.menu.flash.2097152_65536.upload.maximum_size=2023424
+cytron_iriv_io_controller.menu.flash.2097152_65536.build.flash_total=2097152
+cytron_iriv_io_controller.menu.flash.2097152_65536.build.flash_length=2023424
+cytron_iriv_io_controller.menu.flash.2097152_65536.build.eeprom_start=270524416
+cytron_iriv_io_controller.menu.flash.2097152_65536.build.fs_start=270458880
+cytron_iriv_io_controller.menu.flash.2097152_65536.build.fs_end=270524416
+cytron_iriv_io_controller.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+cytron_iriv_io_controller.menu.flash.2097152_131072.upload.maximum_size=1957888
+cytron_iriv_io_controller.menu.flash.2097152_131072.build.flash_total=2097152
+cytron_iriv_io_controller.menu.flash.2097152_131072.build.flash_length=1957888
+cytron_iriv_io_controller.menu.flash.2097152_131072.build.eeprom_start=270524416
+cytron_iriv_io_controller.menu.flash.2097152_131072.build.fs_start=270393344
+cytron_iriv_io_controller.menu.flash.2097152_131072.build.fs_end=270524416
+cytron_iriv_io_controller.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+cytron_iriv_io_controller.menu.flash.2097152_262144.upload.maximum_size=1826816
+cytron_iriv_io_controller.menu.flash.2097152_262144.build.flash_total=2097152
+cytron_iriv_io_controller.menu.flash.2097152_262144.build.flash_length=1826816
+cytron_iriv_io_controller.menu.flash.2097152_262144.build.eeprom_start=270524416
+cytron_iriv_io_controller.menu.flash.2097152_262144.build.fs_start=270262272
+cytron_iriv_io_controller.menu.flash.2097152_262144.build.fs_end=270524416
+cytron_iriv_io_controller.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+cytron_iriv_io_controller.menu.flash.2097152_524288.upload.maximum_size=1564672
+cytron_iriv_io_controller.menu.flash.2097152_524288.build.flash_total=2097152
+cytron_iriv_io_controller.menu.flash.2097152_524288.build.flash_length=1564672
+cytron_iriv_io_controller.menu.flash.2097152_524288.build.eeprom_start=270524416
+cytron_iriv_io_controller.menu.flash.2097152_524288.build.fs_start=270000128
+cytron_iriv_io_controller.menu.flash.2097152_524288.build.fs_end=270524416
+cytron_iriv_io_controller.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+cytron_iriv_io_controller.menu.flash.2097152_1048576.upload.maximum_size=1040384
+cytron_iriv_io_controller.menu.flash.2097152_1048576.build.flash_total=2097152
+cytron_iriv_io_controller.menu.flash.2097152_1048576.build.flash_length=1040384
+cytron_iriv_io_controller.menu.flash.2097152_1048576.build.eeprom_start=270524416
+cytron_iriv_io_controller.menu.flash.2097152_1048576.build.fs_start=269475840
+cytron_iriv_io_controller.menu.flash.2097152_1048576.build.fs_end=270524416
+cytron_iriv_io_controller.menu.freq.150=150 MHz
+cytron_iriv_io_controller.menu.freq.150.build.f_cpu=150000000L
+cytron_iriv_io_controller.menu.freq.50=50 MHz
+cytron_iriv_io_controller.menu.freq.50.build.f_cpu=50000000L
+cytron_iriv_io_controller.menu.freq.100=100 MHz
+cytron_iriv_io_controller.menu.freq.100.build.f_cpu=100000000L
+cytron_iriv_io_controller.menu.freq.120=120 MHz
+cytron_iriv_io_controller.menu.freq.120.build.f_cpu=120000000L
+cytron_iriv_io_controller.menu.freq.125=125 MHz
+cytron_iriv_io_controller.menu.freq.125.build.f_cpu=125000000L
+cytron_iriv_io_controller.menu.freq.128=128 MHz
+cytron_iriv_io_controller.menu.freq.128.build.f_cpu=128000000L
+cytron_iriv_io_controller.menu.freq.133=133 MHz
+cytron_iriv_io_controller.menu.freq.133.build.f_cpu=133000000L
+cytron_iriv_io_controller.menu.freq.175=175 MHz (Overclock)
+cytron_iriv_io_controller.menu.freq.175.build.f_cpu=175000000L
+cytron_iriv_io_controller.menu.freq.200=200 MHz (Overclock)
+cytron_iriv_io_controller.menu.freq.200.build.f_cpu=200000000L
+cytron_iriv_io_controller.menu.freq.225=225 MHz (Overclock)
+cytron_iriv_io_controller.menu.freq.225.build.f_cpu=225000000L
+cytron_iriv_io_controller.menu.freq.240=240 MHz (Overclock)
+cytron_iriv_io_controller.menu.freq.240.build.f_cpu=240000000L
+cytron_iriv_io_controller.menu.freq.250=250 MHz (Overclock)
+cytron_iriv_io_controller.menu.freq.250.build.f_cpu=250000000L
+cytron_iriv_io_controller.menu.freq.275=275 MHz (Overclock)
+cytron_iriv_io_controller.menu.freq.275.build.f_cpu=275000000L
+cytron_iriv_io_controller.menu.freq.300=300 MHz (Overclock)
+cytron_iriv_io_controller.menu.freq.300.build.f_cpu=300000000L
+cytron_iriv_io_controller.menu.opt.Small=Small (-Os) (standard)
+cytron_iriv_io_controller.menu.opt.Small.build.flags.optimize=-Os
+cytron_iriv_io_controller.menu.opt.Optimize=Optimize (-O)
+cytron_iriv_io_controller.menu.opt.Optimize.build.flags.optimize=-O
+cytron_iriv_io_controller.menu.opt.Optimize2=Optimize More (-O2)
+cytron_iriv_io_controller.menu.opt.Optimize2.build.flags.optimize=-O2
+cytron_iriv_io_controller.menu.opt.Optimize3=Optimize Even More (-O3)
+cytron_iriv_io_controller.menu.opt.Optimize3.build.flags.optimize=-O3
+cytron_iriv_io_controller.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+cytron_iriv_io_controller.menu.opt.Fast.build.flags.optimize=-Ofast
+cytron_iriv_io_controller.menu.opt.Debug=Debug (-Og)
+cytron_iriv_io_controller.menu.opt.Debug.build.flags.optimize=-Og
+cytron_iriv_io_controller.menu.rtti.Disabled=Disabled
+cytron_iriv_io_controller.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+cytron_iriv_io_controller.menu.rtti.Enabled=Enabled
+cytron_iriv_io_controller.menu.rtti.Enabled.build.flags.rtti=
+cytron_iriv_io_controller.menu.stackprotect.Disabled=Disabled
+cytron_iriv_io_controller.menu.stackprotect.Disabled.build.flags.stackprotect=
+cytron_iriv_io_controller.menu.stackprotect.Enabled=Enabled
+cytron_iriv_io_controller.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+cytron_iriv_io_controller.menu.exceptions.Disabled=Disabled
+cytron_iriv_io_controller.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+cytron_iriv_io_controller.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+cytron_iriv_io_controller.menu.exceptions.Enabled=Enabled
+cytron_iriv_io_controller.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+cytron_iriv_io_controller.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+cytron_iriv_io_controller.menu.dbgport.Disabled=Disabled
+cytron_iriv_io_controller.menu.dbgport.Disabled.build.debug_port=
+cytron_iriv_io_controller.menu.dbgport.Serial=Serial
+cytron_iriv_io_controller.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+cytron_iriv_io_controller.menu.dbgport.Serial1=Serial1
+cytron_iriv_io_controller.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+cytron_iriv_io_controller.menu.dbgport.Serial2=Serial2
+cytron_iriv_io_controller.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+cytron_iriv_io_controller.menu.dbglvl.None=None
+cytron_iriv_io_controller.menu.dbglvl.None.build.debug_level=
+cytron_iriv_io_controller.menu.dbglvl.Core=Core
+cytron_iriv_io_controller.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+cytron_iriv_io_controller.menu.dbglvl.SPI=SPI
+cytron_iriv_io_controller.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+cytron_iriv_io_controller.menu.dbglvl.Wire=Wire
+cytron_iriv_io_controller.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+cytron_iriv_io_controller.menu.dbglvl.Bluetooth=Bluetooth
+cytron_iriv_io_controller.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+cytron_iriv_io_controller.menu.dbglvl.All=All
+cytron_iriv_io_controller.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH
+cytron_iriv_io_controller.menu.dbglvl.NDEBUG=NDEBUG
+cytron_iriv_io_controller.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+cytron_iriv_io_controller.menu.usbstack.picosdk=Pico SDK
+cytron_iriv_io_controller.menu.usbstack.picosdk.build.usbstack_flags=
+cytron_iriv_io_controller.menu.usbstack.tinyusb=Adafruit TinyUSB
+cytron_iriv_io_controller.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_iriv_io_controller.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+cytron_iriv_io_controller.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+cytron_iriv_io_controller.menu.usbstack.nousb=No USB
+cytron_iriv_io_controller.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+cytron_iriv_io_controller.menu.ipbtstack.ipv4only=IPv4 Only
+cytron_iriv_io_controller.menu.ipbtstack.ipv4only.build.libpicow=libipv4.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6.build.libpicow=libipv4-ipv6.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+cytron_iriv_io_controller.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+cytron_iriv_io_controller.menu.ipbtstack.ipv4btcble.build.libpicow=libipv4-bt.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libipv4-ipv6-bt.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+cytron_iriv_io_controller.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+cytron_iriv_io_controller.menu.ipbtstack.ipv4onlybig.build.libpicow=libipv4-big.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6big.build.libpicow=libipv4-ipv6-big.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+cytron_iriv_io_controller.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+cytron_iriv_io_controller.menu.ipbtstack.ipv4btcblebig.build.libpicow=libipv4-bt-big.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=libipv4-ipv6-bt-big.a
+cytron_iriv_io_controller.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+cytron_iriv_io_controller.menu.uploadmethod.default=Default (UF2)
+cytron_iriv_io_controller.menu.uploadmethod.default.build.ram_length=512k
+cytron_iriv_io_controller.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+cytron_iriv_io_controller.menu.uploadmethod.default.upload.maximum_data_size=524288
+cytron_iriv_io_controller.menu.uploadmethod.default.upload.tool=uf2conv
+cytron_iriv_io_controller.menu.uploadmethod.default.upload.tool.default=uf2conv
+cytron_iriv_io_controller.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+cytron_iriv_io_controller.menu.uploadmethod.picotool=Picotool
+cytron_iriv_io_controller.menu.uploadmethod.picotool.build.ram_length=512k
+cytron_iriv_io_controller.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+cytron_iriv_io_controller.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+cytron_iriv_io_controller.menu.uploadmethod.picotool.upload.maximum_data_size=524288
+cytron_iriv_io_controller.menu.uploadmethod.picotool.upload.tool=picotool
+cytron_iriv_io_controller.menu.uploadmethod.picotool.upload.tool.default=picotool
+cytron_iriv_io_controller.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+cytron_iriv_io_controller.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=512k
+cytron_iriv_io_controller.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+cytron_iriv_io_controller.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=524288
+cytron_iriv_io_controller.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+cytron_iriv_io_controller.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Cytron Maker Nano RP2040
 # -----------------------------------
 cytron_maker_nano_rp2040.name=Cytron Maker Nano RP2040
