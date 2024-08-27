@@ -1,11 +1,5 @@
 #pragma once
 
-#define PINS_COUNT          (30u)
-#define NUM_DIGITAL_PINS    (30u)
-#define NUM_ANALOG_INPUTS   (4u)
-#define NUM_ANALOG_OUTPUTS  (0u)
-#define ADC_RESOLUTION      (12u)
-
 // LEDs
 #define PIN_LED             (2u)
 
@@ -64,7 +58,5 @@
 #define SERIAL_HOWMANY      (1u)
 #define SPI_HOWMANY         (1u)
 #define WIRE_HOWMANY        (2u)
-
-#define LED_BUILTIN         PIN_LED
 
 #include "../generic/common.h"
