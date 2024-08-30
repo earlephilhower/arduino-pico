@@ -115,8 +115,6 @@ sed 's/^tools.picoprobe_cmsis_dap.cmd=.*//g' | \
 sed 's/^#tools.picoprobe_cmsis_dap.cmd=/tools.picoprobe_cmsis_dap.cmd=/g' | \
 sed 's/^tools.picotool.cmd=.*//g' | \
 sed 's/^#tools.picotool.cmd=/tools.picotool.cmd=/g' | \
-sed 's/^tools.picodebug.cmd=.*//g' | \
-sed 's/^#tools.picodebug.cmd=/tools.picodebug.cmd=/g' | \
 sed 's/^discovery.rp2040.pattern=.*//g' | \
 sed 's/^#discovery.rp2040.pattern=/discovery.rp2040.pattern=/g' | \
 sed 's/^pluggable_discovery.rp2040.pattern=.*//g' | \
