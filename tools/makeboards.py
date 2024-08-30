@@ -331,13 +331,13 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildUploadMethodMenu(name, 256)
     else:
         BuildUploadMethodMenu(name, 512)
-    MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url)
+    MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra, board_url)
     global pkgjson
     thisbrd = {}
     thisbrd['name'] = "%s %s" % (vendor_name, product_name)
     pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
-def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url):
+def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra, board_url):
     # TODO FIX: Use the same expanded PID list as in BuildHeader above?
     if isinstance(pid, list):
         pid = pid[0]
@@ -413,6 +413,9 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
     "url": board_url or 'https://www.raspberrypi.org/products/raspberry-pi-pico/',
     "vendor": vendor_name,
     }
+    # add nonzero PSRAM sizes of known boards (can still be overwritten in platformio.ini)
+    if psramsize != 0 and name != "generic_rp2350":
+        j["upload"]["psram_length"] = psramsize * 1024 * 1024
 
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
     with open(jsondir + "/" + name + ".json", "w", newline='\n') as jout:
