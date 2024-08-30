@@ -247,13 +247,6 @@ rpipico.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_
 rpipico.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 rpipico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 rpipico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-rpipico.menu.uploadmethod.picodebug=Pico-Debug
-rpipico.menu.uploadmethod.picodebug.build.ram_length=240k
-rpipico.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-rpipico.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-rpipico.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-rpipico.menu.uploadmethod.picodebug.upload.tool=picodebug
-rpipico.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Raspberry Pi Pico W
@@ -562,13 +555,6 @@ rpipicow.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis
 rpipicow.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 rpipicow.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 rpipicow.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-rpipicow.menu.uploadmethod.picodebug=Pico-Debug
-rpipicow.menu.uploadmethod.picodebug.build.ram_length=240k
-rpipicow.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-rpipicow.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-rpipicow.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-rpipicow.menu.uploadmethod.picodebug.upload.tool=picodebug
-rpipicow.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Raspberry Pi Pico 2
@@ -1110,13 +1096,6 @@ rpipico2.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cms
 0xcb_helios.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 0xcb_helios.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 0xcb_helios.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-0xcb_helios.menu.uploadmethod.picodebug=Pico-Debug
-0xcb_helios.menu.uploadmethod.picodebug.build.ram_length=240k
-0xcb_helios.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-0xcb_helios.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-0xcb_helios.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-0xcb_helios.menu.uploadmethod.picodebug.upload.tool=picodebug
-0xcb_helios.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040
@@ -1371,13 +1350,6 @@ adafruit_feather.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopro
 adafruit_feather.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 SCORPIO
@@ -1628,13 +1600,6 @@ adafruit_feather_scorpio.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 adafruit_feather_scorpio.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_scorpio.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_scorpio.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_scorpio.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_scorpio.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_scorpio.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_scorpio.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_scorpio.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_scorpio.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_scorpio.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 DVI
@@ -1885,13 +1850,6 @@ adafruit_feather_dvi.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 adafruit_feather_dvi.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_dvi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_dvi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_dvi.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_dvi.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_dvi.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_dvi.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_dvi.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_dvi.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_dvi.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 Adalogger
@@ -2142,13 +2100,6 @@ adafruit_feather_adalogger.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscri
 adafruit_feather_adalogger.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_adalogger.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_adalogger.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_adalogger.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_adalogger.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_adalogger.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_adalogger.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_adalogger.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_adalogger.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_adalogger.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 RFM
@@ -2399,13 +2350,6 @@ adafruit_feather_rfm.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 adafruit_feather_rfm.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_rfm.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_rfm.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_rfm.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_rfm.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_rfm.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_rfm.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_rfm.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_rfm.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_rfm.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 ThinkINK
@@ -2656,13 +2600,6 @@ adafruit_feather_thinkink.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscrip
 adafruit_feather_thinkink.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_thinkink.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_thinkink.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_thinkink.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_thinkink.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_thinkink.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_thinkink.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_thinkink.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_thinkink.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_thinkink.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 USB Host
@@ -2913,13 +2850,6 @@ adafruit_feather_usb_host.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscrip
 adafruit_feather_usb_host.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_usb_host.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_usb_host.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_usb_host.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_usb_host.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_usb_host.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_usb_host.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_usb_host.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_usb_host.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_usb_host.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 CAN
@@ -3170,13 +3100,6 @@ adafruit_feather_can.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 adafruit_feather_can.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_can.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_can.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_can.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_can.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_can.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_can.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_can.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_can.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_can.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Feather RP2040 Prop-Maker
@@ -3427,13 +3350,6 @@ adafruit_feather_prop_maker.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscr
 adafruit_feather_prop_maker.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_feather_prop_maker.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_feather_prop_maker.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_feather_prop_maker.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_feather_prop_maker.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_feather_prop_maker.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_feather_prop_maker.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_feather_prop_maker.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_feather_prop_maker.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_feather_prop_maker.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit ItsyBitsy RP2040
@@ -3692,13 +3608,6 @@ adafruit_itsybitsy.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picop
 adafruit_itsybitsy.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_itsybitsy.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_itsybitsy.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_itsybitsy.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_itsybitsy.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_itsybitsy.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_itsybitsy.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_itsybitsy.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_itsybitsy.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_itsybitsy.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Metro RP2040
@@ -4005,13 +3914,6 @@ adafruit_metro.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe
 adafruit_metro.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_metro.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_metro.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_metro.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_metro.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_metro.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_metro.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_metro.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_metro.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_metro.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit QT Py RP2040
@@ -4270,13 +4172,6 @@ adafruit_qtpy.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_
 adafruit_qtpy.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_qtpy.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_qtpy.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_qtpy.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_qtpy.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_qtpy.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_qtpy.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_qtpy.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_qtpy.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_qtpy.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit STEMMA Friend RP2040
@@ -4535,13 +4430,6 @@ adafruit_stemmafriend.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 adafruit_stemmafriend.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_stemmafriend.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_stemmafriend.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_stemmafriend.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_stemmafriend.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_stemmafriend.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_stemmafriend.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_stemmafriend.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_stemmafriend.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_stemmafriend.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit Trinkey RP2040 QT
@@ -4792,13 +4680,6 @@ adafruit_trinkeyrp2040qt.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 adafruit_trinkeyrp2040qt.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_trinkeyrp2040qt.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_trinkeyrp2040qt.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_trinkeyrp2040qt.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_trinkeyrp2040qt.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_trinkeyrp2040qt.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_trinkeyrp2040qt.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_trinkeyrp2040qt.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_trinkeyrp2040qt.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_trinkeyrp2040qt.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit MacroPad RP2040
@@ -5049,13 +4930,6 @@ adafruit_macropad2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 adafruit_macropad2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_macropad2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_macropad2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_macropad2040.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_macropad2040.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_macropad2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_macropad2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_macropad2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_macropad2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_macropad2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Adafruit KB2040
@@ -5306,13 +5180,6 @@ adafruit_kb2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprob
 adafruit_kb2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 adafruit_kb2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 adafruit_kb2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-adafruit_kb2040.menu.uploadmethod.picodebug=Pico-Debug
-adafruit_kb2040.menu.uploadmethod.picodebug.build.ram_length=240k
-adafruit_kb2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-adafruit_kb2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-adafruit_kb2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-adafruit_kb2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-adafruit_kb2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Amken BunnyBoard
@@ -6396,13 +6263,6 @@ amken_bunny.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cm
 amken_bunny.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 amken_bunny.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 amken_bunny.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-amken_bunny.menu.uploadmethod.picodebug=Pico-Debug
-amken_bunny.menu.uploadmethod.picodebug.build.ram_length=240k
-amken_bunny.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-amken_bunny.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-amken_bunny.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-amken_bunny.menu.uploadmethod.picodebug.upload.tool=picodebug
-amken_bunny.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Amken Revelop
@@ -6814,13 +6674,6 @@ amken_revelop.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_
 amken_revelop.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 amken_revelop.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 amken_revelop.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-amken_revelop.menu.uploadmethod.picodebug=Pico-Debug
-amken_revelop.menu.uploadmethod.picodebug.build.ram_length=240k
-amken_revelop.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-amken_revelop.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-amken_revelop.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-amken_revelop.menu.uploadmethod.picodebug.upload.tool=picodebug
-amken_revelop.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Amken Revelop Plus
@@ -7232,13 +7085,6 @@ amken_revelop_plus.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picop
 amken_revelop_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 amken_revelop_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 amken_revelop_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-amken_revelop_plus.menu.uploadmethod.picodebug=Pico-Debug
-amken_revelop_plus.menu.uploadmethod.picodebug.build.ram_length=240k
-amken_revelop_plus.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-amken_revelop_plus.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-amken_revelop_plus.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-amken_revelop_plus.menu.uploadmethod.picodebug.upload.tool=picodebug
-amken_revelop_plus.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Amken Revelop eS
@@ -7538,13 +7384,6 @@ amken_revelop_es.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopro
 amken_revelop_es.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 amken_revelop_es.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 amken_revelop_es.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-amken_revelop_es.menu.uploadmethod.picodebug=Pico-Debug
-amken_revelop_es.menu.uploadmethod.picodebug.build.ram_length=240k
-amken_revelop_es.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-amken_revelop_es.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-amken_revelop_es.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-amken_revelop_es.menu.uploadmethod.picodebug.upload.tool=picodebug
-amken_revelop_es.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Arduino Nano RP2040 Connect
@@ -7855,13 +7694,6 @@ arduino_nano_connect.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 arduino_nano_connect.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 arduino_nano_connect.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 arduino_nano_connect.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-arduino_nano_connect.menu.uploadmethod.picodebug=Pico-Debug
-arduino_nano_connect.menu.uploadmethod.picodebug.build.ram_length=240k
-arduino_nano_connect.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-arduino_nano_connect.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-arduino_nano_connect.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-arduino_nano_connect.menu.uploadmethod.picodebug.upload.tool=picodebug
-arduino_nano_connect.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # ArtronShop RP2 Nano
@@ -8090,13 +7922,6 @@ artronshop_rp2_nano.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 artronshop_rp2_nano.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 artronshop_rp2_nano.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 artronshop_rp2_nano.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-artronshop_rp2_nano.menu.uploadmethod.picodebug=Pico-Debug
-artronshop_rp2_nano.menu.uploadmethod.picodebug.build.ram_length=240k
-artronshop_rp2_nano.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-artronshop_rp2_nano.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-artronshop_rp2_nano.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-artronshop_rp2_nano.menu.uploadmethod.picodebug.upload.tool=picodebug
-artronshop_rp2_nano.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Breadstick Raspberry
@@ -8423,13 +8248,6 @@ breadstick_raspberry.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 breadstick_raspberry.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 breadstick_raspberry.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 breadstick_raspberry.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-breadstick_raspberry.menu.uploadmethod.picodebug=Pico-Debug
-breadstick_raspberry.menu.uploadmethod.picodebug.build.ram_length=240k
-breadstick_raspberry.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-breadstick_raspberry.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-breadstick_raspberry.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-breadstick_raspberry.menu.uploadmethod.picodebug.upload.tool=picodebug
-breadstick_raspberry.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # BridgeTek IDM2040-7A
@@ -8701,13 +8519,6 @@ bridgetek_idm2040_7a.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 bridgetek_idm2040_7a.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 bridgetek_idm2040_7a.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 bridgetek_idm2040_7a.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-bridgetek_idm2040_7a.menu.uploadmethod.picodebug=Pico-Debug
-bridgetek_idm2040_7a.menu.uploadmethod.picodebug.build.ram_length=240k
-bridgetek_idm2040_7a.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-bridgetek_idm2040_7a.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-bridgetek_idm2040_7a.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-bridgetek_idm2040_7a.menu.uploadmethod.picodebug.upload.tool=picodebug
-bridgetek_idm2040_7a.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # BridgeTek IDM2040-43A
@@ -8955,13 +8766,6 @@ bridgetek_idm2040_43a.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 bridgetek_idm2040_43a.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 bridgetek_idm2040_43a.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 bridgetek_idm2040_43a.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-bridgetek_idm2040_43a.menu.uploadmethod.picodebug=Pico-Debug
-bridgetek_idm2040_43a.menu.uploadmethod.picodebug.build.ram_length=240k
-bridgetek_idm2040_43a.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-bridgetek_idm2040_43a.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-bridgetek_idm2040_43a.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-bridgetek_idm2040_43a.menu.uploadmethod.picodebug.upload.tool=picodebug
-bridgetek_idm2040_43a.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Cytron IRIV IO Controller
@@ -9419,13 +9223,6 @@ cytron_maker_nano_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 cytron_maker_nano_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 cytron_maker_nano_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 cytron_maker_nano_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-cytron_maker_nano_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-cytron_maker_nano_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-cytron_maker_nano_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-cytron_maker_nano_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-cytron_maker_nano_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-cytron_maker_nano_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-cytron_maker_nano_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Cytron Maker Pi RP2040
@@ -9654,13 +9451,6 @@ cytron_maker_pi_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=p
 cytron_maker_pi_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 cytron_maker_pi_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 cytron_maker_pi_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-cytron_maker_pi_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-cytron_maker_pi_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Cytron Maker Uno RP2040
@@ -9889,13 +9679,6 @@ cytron_maker_uno_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 cytron_maker_uno_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 cytron_maker_uno_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 cytron_maker_uno_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-cytron_maker_uno_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-cytron_maker_uno_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-cytron_maker_uno_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-cytron_maker_uno_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-cytron_maker_uno_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-cytron_maker_uno_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-cytron_maker_uno_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Cytron Motion 2350 Pro
@@ -10353,13 +10136,6 @@ datanoisetv_picoadk.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 datanoisetv_picoadk.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 datanoisetv_picoadk.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 datanoisetv_picoadk.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-datanoisetv_picoadk.menu.uploadmethod.picodebug=Pico-Debug
-datanoisetv_picoadk.menu.uploadmethod.picodebug.build.ram_length=240k
-datanoisetv_picoadk.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-datanoisetv_picoadk.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-datanoisetv_picoadk.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-datanoisetv_picoadk.menu.uploadmethod.picodebug.upload.tool=picodebug
-datanoisetv_picoadk.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Degz Robotics Suibo RP2040
@@ -10662,13 +10438,6 @@ degz_suibo.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cms
 degz_suibo.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 degz_suibo.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 degz_suibo.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-degz_suibo.menu.uploadmethod.picodebug=Pico-Debug
-degz_suibo.menu.uploadmethod.picodebug.build.ram_length=240k
-degz_suibo.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-degz_suibo.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-degz_suibo.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-degz_suibo.menu.uploadmethod.picodebug.upload.tool=picodebug
-degz_suibo.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # DeRuiLab FlyBoard2040Core
@@ -10911,13 +10680,6 @@ flyboard2040_core.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopr
 flyboard2040_core.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 flyboard2040_core.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 flyboard2040_core.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-flyboard2040_core.menu.uploadmethod.picodebug=Pico-Debug
-flyboard2040_core.menu.uploadmethod.picodebug.build.ram_length=240k
-flyboard2040_core.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-flyboard2040_core.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-flyboard2040_core.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-flyboard2040_core.menu.uploadmethod.picodebug.upload.tool=picodebug
-flyboard2040_core.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # DFRobot Beetle RP2040
@@ -11130,13 +10892,6 @@ dfrobot_beetle_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 dfrobot_beetle_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 dfrobot_beetle_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 dfrobot_beetle_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-dfrobot_beetle_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-dfrobot_beetle_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-dfrobot_beetle_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-dfrobot_beetle_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-dfrobot_beetle_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-dfrobot_beetle_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-dfrobot_beetle_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # L'atelier d'Arnoz DudesCab
@@ -11379,13 +11134,6 @@ DudesCab.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis
 DudesCab.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 DudesCab.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 DudesCab.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-DudesCab.menu.uploadmethod.picodebug=Pico-Debug
-DudesCab.menu.uploadmethod.picodebug.build.ram_length=240k
-DudesCab.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-DudesCab.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-DudesCab.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-DudesCab.menu.uploadmethod.picodebug.upload.tool=picodebug
-DudesCab.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # ElectronicCats HunterCat NFC RP2040
@@ -11614,13 +11362,6 @@ electroniccats_huntercat_nfc.menu.uploadmethod.picoprobe_cmsis_dap.build.debugsc
 electroniccats_huntercat_nfc.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 electroniccats_huntercat_nfc.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 electroniccats_huntercat_nfc.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-electroniccats_huntercat_nfc.menu.uploadmethod.picodebug=Pico-Debug
-electroniccats_huntercat_nfc.menu.uploadmethod.picodebug.build.ram_length=240k
-electroniccats_huntercat_nfc.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-electroniccats_huntercat_nfc.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-electroniccats_huntercat_nfc.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-electroniccats_huntercat_nfc.menu.uploadmethod.picodebug.upload.tool=picodebug
-electroniccats_huntercat_nfc.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # EVN Alpha
@@ -11923,13 +11664,6 @@ evn_alpha.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsi
 evn_alpha.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 evn_alpha.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 evn_alpha.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-evn_alpha.menu.uploadmethod.picodebug=Pico-Debug
-evn_alpha.menu.uploadmethod.picodebug.build.ram_length=240k
-evn_alpha.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-evn_alpha.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-evn_alpha.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-evn_alpha.menu.uploadmethod.picodebug.upload.tool=picodebug
-evn_alpha.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # ExtremeElectronics RC2040
@@ -12134,13 +11868,6 @@ extelec_rc2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe
 extelec_rc2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 extelec_rc2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 extelec_rc2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-extelec_rc2040.menu.uploadmethod.picodebug=Pico-Debug
-extelec_rc2040.menu.uploadmethod.picodebug.build.ram_length=240k
-extelec_rc2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-extelec_rc2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-extelec_rc2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-extelec_rc2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-extelec_rc2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # GroundStudio Marble Pico
@@ -12411,13 +12138,6 @@ groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 groundstudio_marble_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-groundstudio_marble_pico.menu.uploadmethod.picodebug=Pico-Debug
-groundstudio_marble_pico.menu.uploadmethod.picodebug.build.ram_length=240k
-groundstudio_marble_pico.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-groundstudio_marble_pico.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-groundstudio_marble_pico.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-groundstudio_marble_pico.menu.uploadmethod.picodebug.upload.tool=picodebug
-groundstudio_marble_pico.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 LTE
@@ -12688,13 +12408,6 @@ challenger_2040_lte.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 challenger_2040_lte.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_lte.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_lte.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_lte.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_lte.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_lte.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_lte.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_lte.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_lte.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_lte.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 LoRa
@@ -12965,13 +12678,6 @@ challenger_2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 challenger_2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_lora.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_lora.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_lora.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_lora.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_lora.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_lora.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_lora.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 SubGHz
@@ -13242,13 +12948,6 @@ challenger_2040_subghz.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=p
 challenger_2040_subghz.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_subghz.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_subghz.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_subghz.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_subghz.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_subghz.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_subghz.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_subghz.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_subghz.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_subghz.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi
@@ -13520,13 +13219,6 @@ challenger_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 challenger_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_wifi.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_wifi.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_wifi.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_wifi.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_wifi.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_wifi.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_wifi.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi/BLE
@@ -13798,13 +13490,6 @@ challenger_2040_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 challenger_2040_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_wifi_ble.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_wifi_ble.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_wifi_ble.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_wifi_ble.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_wifi_ble.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_wifi_ble.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_wifi_ble.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 WiFi6/BLE
@@ -14076,13 +13761,6 @@ challenger_2040_wifi6_ble.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscrip
 challenger_2040_wifi6_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_wifi6_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_wifi6_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_wifi6_ble.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_wifi6_ble.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_wifi6_ble.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_wifi6_ble.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_wifi6_ble.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_wifi6_ble.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_wifi6_ble.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger NB 2040 WiFi
@@ -14354,13 +14032,6 @@ challenger_nb_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 challenger_nb_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_nb_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_nb_2040_wifi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_nb_2040_wifi.menu.uploadmethod.picodebug=Pico-Debug
-challenger_nb_2040_wifi.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_nb_2040_wifi.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_nb_2040_wifi.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_nb_2040_wifi.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_nb_2040_wifi.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_nb_2040_wifi.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 SD/RTC
@@ -14631,13 +14302,6 @@ challenger_2040_sdrtc.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 challenger_2040_sdrtc.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_sdrtc.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_sdrtc.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_sdrtc.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_sdrtc.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_sdrtc.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_sdrtc.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_sdrtc.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_sdrtc.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_sdrtc.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 NFC
@@ -14908,13 +14572,6 @@ challenger_2040_nfc.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 challenger_2040_nfc.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_nfc.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_nfc.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_nfc.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_nfc.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_nfc.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_nfc.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_nfc.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_nfc.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_nfc.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2040 UWB
@@ -15185,13 +14842,6 @@ challenger_2040_uwb.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 challenger_2040_uwb.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 challenger_2040_uwb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 challenger_2040_uwb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-challenger_2040_uwb.menu.uploadmethod.picodebug=Pico-Debug
-challenger_2040_uwb.menu.uploadmethod.picodebug.build.ram_length=240k
-challenger_2040_uwb.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-challenger_2040_uwb.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-challenger_2040_uwb.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-challenger_2040_uwb.menu.uploadmethod.picodebug.upload.tool=picodebug
-challenger_2040_uwb.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Connectivity 2040 LTE/WiFi/BLE
@@ -15463,13 +15113,6 @@ connectivity_2040_lte_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.build.debug
 connectivity_2040_lte_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 connectivity_2040_lte_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 connectivity_2040_lte_wifi_ble.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-connectivity_2040_lte_wifi_ble.menu.uploadmethod.picodebug=Pico-Debug
-connectivity_2040_lte_wifi_ble.menu.uploadmethod.picodebug.build.ram_length=240k
-connectivity_2040_lte_wifi_ble.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-connectivity_2040_lte_wifi_ble.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-connectivity_2040_lte_wifi_ble.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-connectivity_2040_lte_wifi_ble.menu.uploadmethod.picodebug.upload.tool=picodebug
-connectivity_2040_lte_wifi_ble.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs RPICO32
@@ -15741,13 +15384,6 @@ ilabs_rpico32.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_
 ilabs_rpico32.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 ilabs_rpico32.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 ilabs_rpico32.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-ilabs_rpico32.menu.uploadmethod.picodebug=Pico-Debug
-ilabs_rpico32.menu.uploadmethod.picodebug.build.ram_length=240k
-ilabs_rpico32.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-ilabs_rpico32.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-ilabs_rpico32.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-ilabs_rpico32.menu.uploadmethod.picodebug.upload.tool=picodebug
-ilabs_rpico32.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # iLabs Challenger 2350 WiFi/BLE
@@ -16561,13 +16197,6 @@ melopero_cookie_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=p
 melopero_cookie_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 melopero_cookie_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 melopero_cookie_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-melopero_cookie_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-melopero_cookie_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-melopero_cookie_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-melopero_cookie_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-melopero_cookie_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-melopero_cookie_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-melopero_cookie_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Melopero Shake RP2040
@@ -16894,13 +16523,6 @@ melopero_shake_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 melopero_shake_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 melopero_shake_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 melopero_shake_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-melopero_shake_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-melopero_shake_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-melopero_shake_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-melopero_shake_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-melopero_shake_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-melopero_shake_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-melopero_shake_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # METE HOCA Akana R1
@@ -17178,13 +16800,6 @@ akana_r1.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis
 akana_r1.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 akana_r1.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 akana_r1.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-akana_r1.menu.uploadmethod.picodebug=Pico-Debug
-akana_r1.menu.uploadmethod.picodebug.build.ram_length=240k
-akana_r1.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-akana_r1.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-akana_r1.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-akana_r1.menu.uploadmethod.picodebug.upload.tool=picodebug
-akana_r1.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Neko Systems BL2040 Mini
@@ -17427,13 +17042,6 @@ nekosystems_bl2040_mini.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 nekosystems_bl2040_mini.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 nekosystems_bl2040_mini.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 nekosystems_bl2040_mini.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-nekosystems_bl2040_mini.menu.uploadmethod.picodebug=Pico-Debug
-nekosystems_bl2040_mini.menu.uploadmethod.picodebug.build.ram_length=240k
-nekosystems_bl2040_mini.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-nekosystems_bl2040_mini.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-nekosystems_bl2040_mini.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-nekosystems_bl2040_mini.menu.uploadmethod.picodebug.upload.tool=picodebug
-nekosystems_bl2040_mini.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Newsan Archi
@@ -17676,13 +17284,6 @@ newsan_archi.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_c
 newsan_archi.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 newsan_archi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 newsan_archi.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-newsan_archi.menu.uploadmethod.picodebug=Pico-Debug
-newsan_archi.menu.uploadmethod.picodebug.build.ram_length=240k
-newsan_archi.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-newsan_archi.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-newsan_archi.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-newsan_archi.menu.uploadmethod.picodebug.upload.tool=picodebug
-newsan_archi.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # nullbits Bit-C PRO
@@ -17909,13 +17510,6 @@ nullbits_bit_c_pro.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picop
 nullbits_bit_c_pro.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 nullbits_bit_c_pro.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 nullbits_bit_c_pro.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-nullbits_bit_c_pro.menu.uploadmethod.picodebug=Pico-Debug
-nullbits_bit_c_pro.menu.uploadmethod.picodebug.build.ram_length=240k
-nullbits_bit_c_pro.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-nullbits_bit_c_pro.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-nullbits_bit_c_pro.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-nullbits_bit_c_pro.menu.uploadmethod.picodebug.upload.tool=picodebug
-nullbits_bit_c_pro.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Olimex RP2040-Pico30 2MB
@@ -18144,13 +17738,6 @@ olimex_rp2040pico30_2mb.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 olimex_rp2040pico30_2mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 olimex_rp2040pico30_2mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 olimex_rp2040pico30_2mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-olimex_rp2040pico30_2mb.menu.uploadmethod.picodebug=Pico-Debug
-olimex_rp2040pico30_2mb.menu.uploadmethod.picodebug.build.ram_length=240k
-olimex_rp2040pico30_2mb.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-olimex_rp2040pico30_2mb.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-olimex_rp2040pico30_2mb.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-olimex_rp2040pico30_2mb.menu.uploadmethod.picodebug.upload.tool=picodebug
-olimex_rp2040pico30_2mb.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Olimex RP2040-Pico30 16MB
@@ -18477,13 +18064,6 @@ olimex_rp2040pico30_16mb.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 olimex_rp2040pico30_16mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 olimex_rp2040pico30_16mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 olimex_rp2040pico30_16mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-olimex_rp2040pico30_16mb.menu.uploadmethod.picodebug=Pico-Debug
-olimex_rp2040pico30_16mb.menu.uploadmethod.picodebug.build.ram_length=240k
-olimex_rp2040pico30_16mb.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-olimex_rp2040pico30_16mb.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-olimex_rp2040pico30_16mb.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-olimex_rp2040pico30_16mb.menu.uploadmethod.picodebug.upload.tool=picodebug
-olimex_rp2040pico30_16mb.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Pimoroni PGA2040
@@ -18754,13 +18334,6 @@ pimoroni_pga2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopro
 pimoroni_pga2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 pimoroni_pga2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 pimoroni_pga2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-pimoroni_pga2040.menu.uploadmethod.picodebug=Pico-Debug
-pimoroni_pga2040.menu.uploadmethod.picodebug.build.ram_length=240k
-pimoroni_pga2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-pimoroni_pga2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-pimoroni_pga2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-pimoroni_pga2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-pimoroni_pga2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Pimoroni Plasma2040
@@ -18989,13 +18562,6 @@ pimoroni_plasma2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 pimoroni_plasma2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 pimoroni_plasma2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 pimoroni_plasma2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-pimoroni_plasma2040.menu.uploadmethod.picodebug=Pico-Debug
-pimoroni_plasma2040.menu.uploadmethod.picodebug.build.ram_length=240k
-pimoroni_plasma2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-pimoroni_plasma2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-pimoroni_plasma2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-pimoroni_plasma2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-pimoroni_plasma2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Pimoroni Tiny2040
@@ -19252,13 +18818,6 @@ pimoroni_tiny2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopr
 pimoroni_tiny2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 pimoroni_tiny2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 pimoroni_tiny2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-pimoroni_tiny2040.menu.uploadmethod.picodebug=Pico-Debug
-pimoroni_tiny2040.menu.uploadmethod.picodebug.build.ram_length=240k
-pimoroni_tiny2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-pimoroni_tiny2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-pimoroni_tiny2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-pimoroni_tiny2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-pimoroni_tiny2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Pintronix PinMax
@@ -19477,13 +19036,6 @@ pintronix_pinmax.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopro
 pintronix_pinmax.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 pintronix_pinmax.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 pintronix_pinmax.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-pintronix_pinmax.menu.uploadmethod.picodebug=Pico-Debug
-pintronix_pinmax.menu.uploadmethod.picodebug.build.ram_length=240k
-pintronix_pinmax.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-pintronix_pinmax.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-pintronix_pinmax.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-pintronix_pinmax.menu.uploadmethod.picodebug.upload.tool=picodebug
-pintronix_pinmax.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # RAKwireless RAK11300
@@ -19712,13 +19264,6 @@ rakwireless_rak11300.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 rakwireless_rak11300.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 rakwireless_rak11300.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 rakwireless_rak11300.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-rakwireless_rak11300.menu.uploadmethod.picodebug=Pico-Debug
-rakwireless_rak11300.menu.uploadmethod.picodebug.build.ram_length=240k
-rakwireless_rak11300.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-rakwireless_rak11300.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-rakwireless_rak11300.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-rakwireless_rak11300.menu.uploadmethod.picodebug.upload.tool=picodebug
-rakwireless_rak11300.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # redscorp RP2040-Eins
@@ -20029,13 +19574,6 @@ redscorp_rp2040_eins.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 redscorp_rp2040_eins.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 redscorp_rp2040_eins.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 redscorp_rp2040_eins.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-redscorp_rp2040_eins.menu.uploadmethod.picodebug=Pico-Debug
-redscorp_rp2040_eins.menu.uploadmethod.picodebug.build.ram_length=240k
-redscorp_rp2040_eins.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-redscorp_rp2040_eins.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-redscorp_rp2040_eins.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-redscorp_rp2040_eins.menu.uploadmethod.picodebug.upload.tool=picodebug
-redscorp_rp2040_eins.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # redscorp RP2040-ProMini
@@ -20346,13 +19884,6 @@ redscorp_rp2040_promini.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 redscorp_rp2040_promini.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 redscorp_rp2040_promini.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 redscorp_rp2040_promini.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-redscorp_rp2040_promini.menu.uploadmethod.picodebug=Pico-Debug
-redscorp_rp2040_promini.menu.uploadmethod.picodebug.build.ram_length=240k
-redscorp_rp2040_promini.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-redscorp_rp2040_promini.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-redscorp_rp2040_promini.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-redscorp_rp2040_promini.menu.uploadmethod.picodebug.upload.tool=picodebug
-redscorp_rp2040_promini.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Generic Sea-Picro
@@ -20599,13 +20130,6 @@ sea_picro.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsi
 sea_picro.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 sea_picro.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 sea_picro.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-sea_picro.menu.uploadmethod.picodebug=Pico-Debug
-sea_picro.menu.uploadmethod.picodebug.build.ram_length=240k
-sea_picro.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-sea_picro.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-sea_picro.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-sea_picro.menu.uploadmethod.picodebug.upload.tool=picodebug
-sea_picro.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Silicognition RP2040-Shim
@@ -20820,13 +20344,6 @@ silicognition_rp2040_shim.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscrip
 silicognition_rp2040_shim.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 silicognition_rp2040_shim.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 silicognition_rp2040_shim.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-silicognition_rp2040_shim.menu.uploadmethod.picodebug=Pico-Debug
-silicognition_rp2040_shim.menu.uploadmethod.picodebug.build.ram_length=240k
-silicognition_rp2040_shim.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-silicognition_rp2040_shim.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-silicognition_rp2040_shim.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-silicognition_rp2040_shim.menu.uploadmethod.picodebug.upload.tool=picodebug
-silicognition_rp2040_shim.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Solder Party RP2040 Stamp
@@ -21073,13 +20590,6 @@ solderparty_rp2040_stamp.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 solderparty_rp2040_stamp.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 solderparty_rp2040_stamp.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 solderparty_rp2040_stamp.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-solderparty_rp2040_stamp.menu.uploadmethod.picodebug=Pico-Debug
-solderparty_rp2040_stamp.menu.uploadmethod.picodebug.build.ram_length=240k
-solderparty_rp2040_stamp.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-solderparty_rp2040_stamp.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-solderparty_rp2040_stamp.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-solderparty_rp2040_stamp.menu.uploadmethod.picodebug.upload.tool=picodebug
-solderparty_rp2040_stamp.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Solder Party RP2350 Stamp
@@ -22012,13 +21522,6 @@ sparkfun_micromodrp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 sparkfun_micromodrp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 sparkfun_micromodrp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 sparkfun_micromodrp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-sparkfun_micromodrp2040.menu.uploadmethod.picodebug=Pico-Debug
-sparkfun_micromodrp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-sparkfun_micromodrp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-sparkfun_micromodrp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-sparkfun_micromodrp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-sparkfun_micromodrp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-sparkfun_micromodrp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # SparkFun ProMicro RP2040
@@ -22345,13 +21848,6 @@ sparkfun_promicrorp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 sparkfun_promicrorp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 sparkfun_promicrorp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 sparkfun_promicrorp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-sparkfun_promicrorp2040.menu.uploadmethod.picodebug=Pico-Debug
-sparkfun_promicrorp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-sparkfun_promicrorp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-sparkfun_promicrorp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-sparkfun_promicrorp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-sparkfun_promicrorp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-sparkfun_promicrorp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # SparkFun ProMicro RP2350
@@ -23005,13 +22501,6 @@ sparkfun_thingplusrp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 sparkfun_thingplusrp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 sparkfun_thingplusrp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 sparkfun_thingplusrp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-sparkfun_thingplusrp2040.menu.uploadmethod.picodebug=Pico-Debug
-sparkfun_thingplusrp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-sparkfun_thingplusrp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-sparkfun_thingplusrp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-sparkfun_thingplusrp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-sparkfun_thingplusrp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-sparkfun_thingplusrp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # uPesy RP2040 DevKit
@@ -23240,13 +22729,6 @@ upesy_rp2040_devkit.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 upesy_rp2040_devkit.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 upesy_rp2040_devkit.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 upesy_rp2040_devkit.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-upesy_rp2040_devkit.menu.uploadmethod.picodebug=Pico-Debug
-upesy_rp2040_devkit.menu.uploadmethod.picodebug.build.ram_length=240k
-upesy_rp2040_devkit.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-upesy_rp2040_devkit.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-upesy_rp2040_devkit.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-upesy_rp2040_devkit.menu.uploadmethod.picodebug.upload.tool=picodebug
-upesy_rp2040_devkit.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Seeed INDICATOR RP2040
@@ -23475,13 +22957,6 @@ seeed_indicator_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=p
 seeed_indicator_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 seeed_indicator_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 seeed_indicator_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-seeed_indicator_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-seeed_indicator_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-seeed_indicator_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-seeed_indicator_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-seeed_indicator_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-seeed_indicator_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-seeed_indicator_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Seeed XIAO RP2040
@@ -23710,13 +23185,6 @@ seeed_xiao_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopr
 seeed_xiao_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 seeed_xiao_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 seeed_xiao_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-seeed_xiao_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-seeed_xiao_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-seeed_xiao_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-seeed_xiao_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-seeed_xiao_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-seeed_xiao_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-seeed_xiao_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # VCC-GND YD RP2040
@@ -23999,13 +23467,6 @@ vccgnd_yd_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picopro
 vccgnd_yd_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 vccgnd_yd_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 vccgnd_yd_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-vccgnd_yd_rp2040.menu.uploadmethod.picodebug=Pico-Debug
-vccgnd_yd_rp2040.menu.uploadmethod.picodebug.build.ram_length=240k
-vccgnd_yd_rp2040.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-vccgnd_yd_rp2040.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-vccgnd_yd_rp2040.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-vccgnd_yd_rp2040.menu.uploadmethod.picodebug.upload.tool=picodebug
-vccgnd_yd_rp2040.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Viyalab Mizu RP2040
@@ -24276,13 +23737,6 @@ viyalab_mizu.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_c
 viyalab_mizu.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 viyalab_mizu.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 viyalab_mizu.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-viyalab_mizu.menu.uploadmethod.picodebug=Pico-Debug
-viyalab_mizu.menu.uploadmethod.picodebug.build.ram_length=240k
-viyalab_mizu.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-viyalab_mizu.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-viyalab_mizu.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-viyalab_mizu.menu.uploadmethod.picodebug.upload.tool=picodebug
-viyalab_mizu.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 Zero
@@ -24511,13 +23965,6 @@ waveshare_rp2040_zero.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 waveshare_rp2040_zero.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_zero.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_zero.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_zero.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_zero.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_zero.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_zero.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_zero.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_zero.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_zero.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 One
@@ -24760,13 +24207,6 @@ waveshare_rp2040_one.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 waveshare_rp2040_one.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_one.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_one.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_one.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_one.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_one.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_one.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_one.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_one.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_one.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 Matrix
@@ -24995,13 +24435,6 @@ waveshare_rp2040_matrix.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 waveshare_rp2040_matrix.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_matrix.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_matrix.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_matrix.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_matrix.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_matrix.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_matrix.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_matrix.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_matrix.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_matrix.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 PiZero
@@ -25328,13 +24761,6 @@ waveshare_rp2040_pizero.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=
 waveshare_rp2040_pizero.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_pizero.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_pizero.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_pizero.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_pizero.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_pizero.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_pizero.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_pizero.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_pizero.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_pizero.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 Plus 4MB
@@ -25577,13 +25003,6 @@ waveshare_rp2040_plus_4mb.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscrip
 waveshare_rp2040_plus_4mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_plus_4mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_plus_4mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_plus_4mb.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_plus_4mb.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_plus_4mb.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_plus_4mb.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_plus_4mb.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_plus_4mb.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_plus_4mb.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 Plus 16MB
@@ -25910,13 +25329,6 @@ waveshare_rp2040_plus_16mb.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscri
 waveshare_rp2040_plus_16mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_plus_16mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_plus_16mb.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_plus_16mb.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_plus_16mb.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_plus_16mb.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_plus_16mb.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_plus_16mb.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_plus_16mb.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_plus_16mb.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 LCD 0.96
@@ -26145,13 +25557,6 @@ waveshare_rp2040_lcd_0_96.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscrip
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_lcd_0_96.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_lcd_0_96.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_lcd_0_96.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_lcd_0_96.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_lcd_0_96.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_lcd_0_96.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_lcd_0_96.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_lcd_0_96.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Waveshare RP2040 LCD 1.28
@@ -26380,13 +25785,6 @@ waveshare_rp2040_lcd_1_28.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscrip
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 waveshare_rp2040_lcd_1_28.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-waveshare_rp2040_lcd_1_28.menu.uploadmethod.picodebug=Pico-Debug
-waveshare_rp2040_lcd_1_28.menu.uploadmethod.picodebug.build.ram_length=240k
-waveshare_rp2040_lcd_1_28.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-waveshare_rp2040_lcd_1_28.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-waveshare_rp2040_lcd_1_28.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-waveshare_rp2040_lcd_1_28.menu.uploadmethod.picodebug.upload.tool=picodebug
-waveshare_rp2040_lcd_1_28.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # WIZnet W5100S-EVB-Pico
@@ -26615,13 +26013,6 @@ wiznet_5100s_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pi
 wiznet_5100s_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 wiznet_5100s_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 wiznet_5100s_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-wiznet_5100s_evb_pico.menu.uploadmethod.picodebug=Pico-Debug
-wiznet_5100s_evb_pico.menu.uploadmethod.picodebug.build.ram_length=240k
-wiznet_5100s_evb_pico.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-wiznet_5100s_evb_pico.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-wiznet_5100s_evb_pico.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-wiznet_5100s_evb_pico.menu.uploadmethod.picodebug.upload.tool=picodebug
-wiznet_5100s_evb_pico.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # WIZnet WizFi360-EVB-Pico
@@ -26850,13 +26241,6 @@ wiznet_wizfi360_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript
 wiznet_wizfi360_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 wiznet_wizfi360_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 wiznet_wizfi360_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-wiznet_wizfi360_evb_pico.menu.uploadmethod.picodebug=Pico-Debug
-wiznet_wizfi360_evb_pico.menu.uploadmethod.picodebug.build.ram_length=240k
-wiznet_wizfi360_evb_pico.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-wiznet_wizfi360_evb_pico.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-wiznet_wizfi360_evb_pico.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-wiznet_wizfi360_evb_pico.menu.uploadmethod.picodebug.upload.tool=picodebug
-wiznet_wizfi360_evb_pico.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # WIZnet W5500-EVB-Pico
@@ -27085,13 +26469,6 @@ wiznet_5500_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pic
 wiznet_5500_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 wiznet_5500_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 wiznet_5500_evb_pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-wiznet_5500_evb_pico.menu.uploadmethod.picodebug=Pico-Debug
-wiznet_5500_evb_pico.menu.uploadmethod.picodebug.build.ram_length=240k
-wiznet_5500_evb_pico.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-wiznet_5500_evb_pico.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-wiznet_5500_evb_pico.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-wiznet_5500_evb_pico.menu.uploadmethod.picodebug.upload.tool=picodebug
-wiznet_5500_evb_pico.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Generic RP2040
@@ -27388,13 +26765,6 @@ generic.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_
 generic.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 generic.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 generic.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-generic.menu.uploadmethod.picodebug=Pico-Debug
-generic.menu.uploadmethod.picodebug.build.ram_length=240k
-generic.menu.uploadmethod.picodebug.build.debugscript=picodebug.tcl
-generic.menu.uploadmethod.picodebug.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico
-generic.menu.uploadmethod.picodebug.upload.maximum_data_size=245760
-generic.menu.uploadmethod.picodebug.upload.tool=picodebug
-generic.menu.uploadmethod.picodebug.upload.tool.default=picodebug
 
 # -----------------------------------
 # Generic RP2350

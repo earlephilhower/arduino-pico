@@ -157,17 +157,12 @@ def BuildIPBTStack(name):
 def BuildUploadMethodMenu(name, ram):
     for a, b, c, d, e, f in [ ["default", "Default (UF2)", ram, "picoprobe_cmsis_dap.tcl", "uf2conv", "uf2conv-network"],
                               ["picotool", "Picotool", ram, "picoprobe.tcl", "picotool", None],
-                              ["picoprobe_cmsis_dap", "Picoprobe/Debugprobe (CMSIS-DAP)", ram, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None],
-                              ["picodebug", "Pico-Debug", 240, "picodebug.tcl", "picodebug", None] ]:
-        if (ram > 256) and (a == "picodebug"):
-            continue
+                              ["picoprobe_cmsis_dap", "Picoprobe/Debugprobe (CMSIS-DAP)", ram, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None] ]:
         print("%s.menu.uploadmethod.%s=%s" % (name, a, b))
         print("%s.menu.uploadmethod.%s.build.ram_length=%dk" % (name, a, c))
         print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
         # For pico-debug, need to disable USB unconditionally
-        if a == "picodebug":
-            print("%s.menu.uploadmethod.%s.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico" % (name, a))
-        elif a == "picotool":
+        if a == "picotool":
             print("%s.menu.uploadmethod.%s.build.picodebugflags=-DENABLE_PICOTOOL_USB" % (name, a))
         print("%s.menu.uploadmethod.%s.upload.maximum_data_size=%d" % (name, a, c * 1024))
         print("%s.menu.uploadmethod.%s.upload.tool=%s" % (name, a, e))
