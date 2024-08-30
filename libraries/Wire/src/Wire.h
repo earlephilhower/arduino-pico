@@ -83,11 +83,14 @@ public:
     using Print::write;
 
     // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
-    // All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+    // All buffers must be valid for entire DMA and not touched until `finishedAsync()` returns true.
+    bool writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, const void *rbuf, size_t rlen, bool sendStop); 
     bool writeAsync(uint8_t address, const void *buffer, size_t bytes, bool sendStop);
     bool readAsync(uint8_t address, void *buffer, size_t bytes, bool sendStop);
     bool finishedAsync(); // Call to check if the async operations is completed and the buffer can be reused/read
     void abortAsync(); // Cancel an outstanding async I2C operation
+    void onFinishedAsync(void(*function)(void)); // Set callback for async operation
+    void _dma_irq_handler(); // "private" method, made public to call this method from low level dma irq handler
 
     void setTimeout(uint32_t timeout = 25, bool reset_with_timeout = false);     // sets the maximum number of milliseconds to wait
     bool getTimeoutFlag(void);
@@ -125,13 +128,15 @@ private:
     static const uint32_t TWI_CLOCK = 100000;
 
     // DMA
-    bool _rxBegun = false;
-    int _channelDMA;
-    int _channelSendDMA;
-    uint16_t *_dmaBuffer = nullptr;
-    uint16_t *_dmaSendBuffer = nullptr;
-    int _dmaBytes;
-    uint8_t *_rxFinalBuffer;
+    bool _dmaRunning = false; // set to true after successful beginAsync() call
+    int _dmaChannelReceive = -1; // dma channel to receive i2c data
+    int _dmaChannelSend = -1; // dma channel to send i2c commands
+    uint16_t *_dmaSendBuffer = nullptr; // dma command send buffer (dynamically allocated)
+    size_t _dmaSendBufferLen = 0; // size of dma command buffer
+    volatile bool _dmaFinished = true; // signals dma completion
+    void (*_dmaOnFinished)(void) = nullptr; // user handler to call on dma completion
+    void beginAsync(); // setup dma channels and irq, called on first use of an async read/write function
+    void endAsync(); // close dma channels, irq, buffers, called from end()
 };
 
 extern TwoWire Wire;
