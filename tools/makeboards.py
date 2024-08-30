@@ -157,17 +157,12 @@ def BuildIPBTStack(name):
 def BuildUploadMethodMenu(name, ram):
     for a, b, c, d, e, f in [ ["default", "Default (UF2)", ram, "picoprobe_cmsis_dap.tcl", "uf2conv", "uf2conv-network"],
                               ["picotool", "Picotool", ram, "picoprobe.tcl", "picotool", None],
-                              ["picoprobe_cmsis_dap", "Picoprobe/Debugprobe (CMSIS-DAP)", ram, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None],
-                              ["picodebug", "Pico-Debug", 240, "picodebug.tcl", "picodebug", None] ]:
-        if (ram > 256) and (a == "picodebug"):
-            continue
+                              ["picoprobe_cmsis_dap", "Picoprobe/Debugprobe (CMSIS-DAP)", ram, "picoprobe_cmsis_dap.tcl", "picoprobe_cmsis_dap", None] ]:
         print("%s.menu.uploadmethod.%s=%s" % (name, a, b))
         print("%s.menu.uploadmethod.%s.build.ram_length=%dk" % (name, a, c))
         print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
         # For pico-debug, need to disable USB unconditionally
-        if a == "picodebug":
-            print("%s.menu.uploadmethod.%s.build.picodebugflags=-UUSE_TINYUSB -DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico" % (name, a))
-        elif a == "picotool":
+        if a == "picotool":
             print("%s.menu.uploadmethod.%s.build.picodebugflags=-DENABLE_PICOTOOL_USB" % (name, a))
         print("%s.menu.uploadmethod.%s.upload.maximum_data_size=%d" % (name, a, c * 1024))
         print("%s.menu.uploadmethod.%s.upload.tool=%s" % (name, a, e))
@@ -331,13 +326,13 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildUploadMethodMenu(name, 256)
     else:
         BuildUploadMethodMenu(name, 512)
-    MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url)
+    MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra, board_url)
     global pkgjson
     thisbrd = {}
     thisbrd['name'] = "%s %s" % (vendor_name, product_name)
     pkgjson['packages'][0]['platforms'][0]['boards'].append(thisbrd)
 
-def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, boot2, extra, board_url):
+def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra, board_url):
     # TODO FIX: Use the same expanded PID list as in BuildHeader above?
     if isinstance(pid, list):
         pid = pid[0]
@@ -413,6 +408,9 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
     "url": board_url or 'https://www.raspberrypi.org/products/raspberry-pi-pico/',
     "vendor": vendor_name,
     }
+    # add nonzero PSRAM sizes of known boards (can still be overwritten in platformio.ini)
+    if psramsize != 0 and name != "generic_rp2350":
+        j["upload"]["psram_length"] = psramsize * 1024 * 1024
 
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
     with open(jsondir + "/" + name + ".json", "w", newline='\n') as jout:

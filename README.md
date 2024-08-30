@@ -102,7 +102,6 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Generic RP2350 (configurable flash, I/O pins)
 
 # Features
-* Transparent use of PSRAM globals and heap (RP2350 only)
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
 * Bluetooth on the PicoW (Classic and BLE) with Keyboard, Mouse, Joystick, and Virtual Serial
 * Bluetooth Classic and BLE HID master mode (connect to BT keyboard, mouse, or joystick)
@@ -123,6 +122,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * USB drive mode for data loggers (SingleFileDrive, FatFSUSB)
 * Peripherals:  SPI master/slave, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input/output, Servo
 * printf (i.e. debug) output over USB serial
+* Transparent use of PSRAM globals and heap (RP2350 only)
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
@@ -195,11 +195,6 @@ cd ../tools
 python3 ./get.py
 `````
 
-# Installing both Arduino and CMake
-Tom's Hardware presented a very nice writeup on installing `arduino-pico` on both Windows and Linux, available at https://www.tomshardware.com/how-to/program-raspberry-pi-pico-with-arduino-ide
-
-If you follow Les' step-by-step you will also have a fully functional `CMake`-based environment to build Pico apps on if you outgrow the Arduino ecosystem.
-
 # Uploading Sketches
 To upload your first sketch, you will need to hold the BOOTSEL button down while plugging in the Pico to your computer.
 Then hit the upload button and the sketch should be transferred and start to run.
@@ -220,9 +215,9 @@ To install, follow the directions in
 * https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md
 
 For detailed usage information, please check the ESP8266 repo documentation (ignore SPIFFS related notes) available at
-* https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
+* https://arduino-pico.readthedocs.io/en/latest/fs.html
 
-# Uploading Sketches with Picoprobe
+# Uploading Sketches with Picoprobe/Debugprobe
 If you have built a Raspberry Pi Picoprobe, you can use OpenOCD to handle your sketch uploads and for debugging with GDB.
 
 Under Windows a local admin user should be able to access the Picoprobe port automatically, but under Linux `udev` must be told about the device and to allow normal users access.
@@ -242,28 +237,8 @@ If for some reason the device file does not appear, manually unplug and re-plug 
 
 Once Picoprobe permissions are set up properly, then select the board "Raspberry Pi Pico (Picoprobe)" in the Tools menu and upload as normal.
 
-# Uploading Sketches with pico-debug
-[pico-debug](https://github.com/majbthrd/pico-debug/) differs from Picoprobe in that pico-debug is a virtual debug pod that runs side-by-side on the same RP2040 that you run your code on; so, you only need one RP2040 board instead of two.  pico-debug also differs from Picoprobe in that pico-debug is standards-based; it uses the CMSIS-DAP protocol, which means even software not specially written for the Raspberry Pi Pico can support it.  pico-debug uses OpenOCD to handle your sketch uploads, and debugging can be accomplished with CMSIS-DAP capable debuggers including GDB.
-
-Under Windows and macOS, any user should be able to access pico-debug automatically, but under Linux `udev` must be told about the device and to allow normal users access.
-
-To set up group-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes which use `udev`):
-````
-echo 'ATTRS{product}=="*CMSIS-DAP*", MODE="664", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-CMSIS-DAP.rules
-sudo udevadm control --reload
-sudo udevadm trigger -w -s usb
-````
-
-The first line creates a device file in `/dev` that matches all CMSIS-DAP adapters, and it enables read+write permissions for members of the `plugdev` group. The second line causes `udev` to load this new rule. The third line requests the kernel generate "device change" events that will cause our new `udev` rule to run. 
-
-If for some reason the device file does not appear, manually unplug and re-plug the USB connection and check again. The output from `dmesg` can reveal useful diagnostics if the device file remains absent.
-
-Once CMSIS-DAP permissions are set up properly, then select the board "Raspberry Pi Pico (pico-debug)" in the Tools menu.
-
-When first connecting the USB port to your PC, you must copy [pico-debug-gimmecache.uf2](https://github.com/majbthrd/pico-debug/releases/) to the Pi Pico to load pico-debug into RAM; after this, upload as normal.
-
-# Debugging with Picoprobe/pico-debug, OpenOCD, and GDB
-The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.  For [pico-debug](https://github.com/majbthrd/pico-debug/), replace the raspberrypi-swd and picoprobe example OpenOCD arguments of "-f interface/raspberrypi-swd.cfg -f target/rp2040.cfg" or "-f interface/picoprobe.cfg -f target/rp2040.cfg" respectively in the Pico Getting Started manual with "-f board/pico-debug.cfg".
+# Debugging with Picoprobe, OpenOCD, and GDB
+The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.  Use the command line `./system/openocd/bin/openocd -f ./lib/rp2040/picoprobe_cmsis_dap.tcl` or `./system/openocd/bin/openocd -f ./lib/rp2350/picoprobe_cmsis_dap.tcl` from the `git` installation directory.
 
 # Licensing and Credits
 * The [Arduino IDE and ArduinoCore-API](https://arduino.cc) are developed and maintained by the Arduino team. The IDE is licensed under GPL.

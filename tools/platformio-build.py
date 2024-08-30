@@ -22,19 +22,7 @@ board = env.BoardConfig()
 chip = board.get("build.mcu")
 upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
 ram_size = int(board.get("upload.maximum_ram_size"))
-if chip == "rp2040":
-    #ram_size = board.get("upload.maximum_ram_size") # PlatformIO gives 264K here
-    # but the RAM size we need is without the SCRATCH memory.
-    if upload_protocol == "pico-debug":
-        ram_size = 240 * 1024 # pico-debug needs 16K of the upper memory for itself with pico-debug-gimmecache.uf2
-        # this only works when the user disables the USB stack.
-        if "PIO_FRAMEWORK_ARDUINO_NO_USB" not in env.Flatten(env.get("CPPDEFINES", [])):
-            sys.stderr.write("Must define PIO_FRAMEWORK_ARDUINO_NO_USB when using pico-debug!\n")
-            env.Exit(-1)
-    else:
-        ram_size = 256 * 1024 # not the 264K, which is 256K SRAM + 2*4K SCRATCH(X/Y).
-    # Update available RAM size
-    board.update("upload.maximum_ram_size", ram_size)
+psram_len = int(board.get("upload.psram_length", "0"))
 
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinopico")
 assert os.path.isdir(FRAMEWORK_DIR)
@@ -317,9 +305,6 @@ def configure_usb_flags(cpp_defines):
     pidtouse = usb_pid
     if upload_protocol == "picoprobe": 
         pidtouse = '0x0004'
-    elif upload_protocol == "pico-debug":
-        vidtouse = '0x1209'
-        pidtouse = '0x2488'
 
     env.Append(CPPDEFINES=[
         ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
@@ -393,6 +378,7 @@ linkerscript_cmd = env.Command(
         "--sub", "__FS_START__", "$FS_START",
         "--sub", "__FS_END__", "$FS_END",
         "--sub", "__RAM_LENGTH__", "%dk" % (ram_size // 1024),
+        "--sub", "__PSRAM_LENGTH__", "%d" % (psram_len)
     ]), "Generating linkerscript $BUILD_DIR/memmap_default.ld")
 )
 
