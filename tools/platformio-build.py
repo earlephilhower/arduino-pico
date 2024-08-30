@@ -22,6 +22,7 @@ board = env.BoardConfig()
 chip = board.get("build.mcu")
 upload_protocol = env.subst("$UPLOAD_PROTOCOL") or "picotool"
 ram_size = int(board.get("upload.maximum_ram_size"))
+psram_len = int(board.get("upload.psram_length", "0"))
 if chip == "rp2040":
     #ram_size = board.get("upload.maximum_ram_size") # PlatformIO gives 264K here
     # but the RAM size we need is without the SCRATCH memory.
@@ -393,6 +394,7 @@ linkerscript_cmd = env.Command(
         "--sub", "__FS_START__", "$FS_START",
         "--sub", "__FS_END__", "$FS_END",
         "--sub", "__RAM_LENGTH__", "%dk" % (ram_size // 1024),
+        "--sub", "__PSRAM_LENGTH__", "%d" % (psram_len)
     ]), "Generating linkerscript $BUILD_DIR/memmap_default.ld")
 )
 
