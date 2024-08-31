@@ -39,28 +39,6 @@ wait_bit:
     jmp y-- wait_bit
     jmp x-- bitloop
 
-    
-
-; inverted-logic version (inverts the stop bit)
-
-.program pio_tx_inv
-.side_set 1 opt
-
-
-; We shift out the start and stop bit as part of the FIFO
-    set x, 9
-
-    pull               side 0 ; Force stop bit low
-
-; Send the bits
-bitloop:
-    out pins, 1
-    mov y, isr                ; ISR is loaded by the setup routine with the period-1 count
-wait_bit:
-    jmp y-- wait_bit
-    jmp x-- bitloop
-
-
 % c-sdk {
 
 static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_tx) {
@@ -109,28 +87,6 @@ wait_half:
     jmp x-- bitloop     ; Loop all bits
     
     push                ; Stuff it and wait for next start
-
-
-.program pio_rx_inv
-
-; IN pin 0 and JMP pin are both mapped to the GPIO used as UART RX.
-
-start:
-    set x, 18           ; Preload bit counter...we'll shift in the start bit and stop bit, and each bit will be double-recorded (to be fixed by RP2040 code)
-    wait 1 pin 0        ; Stall until start bit is asserted
-
-bitloop:
-   ; Delay until 1/2 way into the bit time
-    mov y, osr
-wait_half:
-    jmp y-- wait_half
-
-    ; Read in the bit
-    in pins, 1          ; Shift data bit into ISR
-    jmp x-- bitloop     ; Loop all bits
-    
-    push                ; Stuff it and wait for next start
-
 
 % c-sdk {
 static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) {
