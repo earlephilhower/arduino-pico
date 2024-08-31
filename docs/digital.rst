@@ -7,8 +7,8 @@ The Raspberry Pi Pico RP2040 chip supports up to 30 digital I/O pins,
 however not all boards provide access to all pins.
 
 Pin Notation
------------
-Keep in mind that for using Digital Pins, you need to specify the number of the pin with letter D prepended to it, e.g. D4.
+------------
+When using Analog or Digital I/Os, if you supply an integer it specifies the RP2040 GPIO pin to use. Using Dx or Ax notation (for example, D4 or A3) may be necessary on boards without a direct PCB pin to GPIO mapping.
 
 Input Modes
 -----------
