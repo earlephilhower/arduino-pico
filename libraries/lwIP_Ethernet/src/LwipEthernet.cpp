@@ -22,7 +22,9 @@
 #include <lwip/timeouts.h>
 #include <lwip/dns.h>
 #include <pico/mutex.h>
+#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
 #include <pico/cyw43_arch.h>
+#endif
 #include <pico/async_context_threadsafe_background.h>
 #include <functional>
 #include <map>
@@ -79,7 +81,7 @@ static uint32_t gpioMask[4] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
 void ethernet_arch_lwip_gpio_mask() {
     noInterrupts();
     memmove(gpioMaskStack[1], gpioMaskStack[0], 4 * sizeof(uint32_t) * (GPIOSTACKSIZE - 1)); // Push down the stack
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &io_bank0_hw->proc1_irq_ctrl : &io_bank0_hw->proc0_irq_ctrl;
     for (int i = 0; i < 4; i++) {
         gpioMaskStack[0][i] = irq_ctrl_base->inte[i];
         irq_ctrl_base->inte[i] = irq_ctrl_base->inte[i] & gpioMask[i];
@@ -89,7 +91,7 @@ void ethernet_arch_lwip_gpio_mask() {
 
 void ethernet_arch_lwip_gpio_unmask() {
     noInterrupts();
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
+    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &io_bank0_hw->proc1_irq_ctrl : &io_bank0_hw->proc0_irq_ctrl;
     for (int i = 0; i < 4; i++) {
         irq_ctrl_base->inte[i] = gpioMaskStack[0][i];
     }

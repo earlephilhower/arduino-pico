@@ -1,56 +1,56 @@
 {
-  "build": {
-    "arduino": {
-      "earlephilhower": {
-        "boot2_source": "boot2_w25q128jvxq_4_padded_checksum.S",
-        "usb_vid": "0x1209",
-        "usb_pid": "0xCB74"
-      }
+    "build": {
+        "arduino": {
+            "earlephilhower": {
+                "boot2_source": "boot2_w25q128jvxq_4_padded_checksum.S",
+                "usb_vid": "0x1209",
+                "usb_pid": "0xCB74"
+            }
+        },
+        "core": "earlephilhower",
+        "cpu": "cortex-m0plus",
+        "extra_flags": "-DARDUINO_0XCB_HELIOS -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500 ",
+        "f_cpu": "133000000L",
+        "hwids": [
+            [
+                "0x2E8A",
+                "0x00C0"
+            ],
+            [
+                "0x1209",
+                "0xCB74"
+            ]
+        ],
+        "mcu": "rp2040",
+        "variant": "0xcb_helios"
     },
-    "core": "earlephilhower",
-    "cpu": "cortex-m0plus",
-    "extra_flags": "-D ARDUINO_0XCB_HELIOS -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500",
-    "f_cpu": "133000000L",
-    "hwids": [
-      [
-        "0x2E8A",
-        "0x00C0"
-      ],
-      [
-        "0x1209",
-        "0xCB74"
-      ]
+    "debug": {
+        "jlink_device": "RP2040_M0_0",
+        "openocd_target": "rp2040.cfg",
+        "svd_path": "rp2040.svd"
+    },
+    "frameworks": [
+        "arduino"
     ],
-    "mcu": "rp2040",
-    "variant": "0xcb_helios"
-  },
-  "debug": {
-    "jlink_device": "RP2040_M0_0",
-    "openocd_target": "rp2040.cfg",
-    "svd_path": "rp2040.svd"
-  },
-  "frameworks": [
-    "arduino"
-  ],
-  "name": "Helios",
-  "upload": {
-    "maximum_ram_size": 270336,
-    "maximum_size": 16777216,
-    "require_upload_port": true,
-    "native_usb": true,
-    "use_1200bps_touch": true,
-    "wait_for_upload_port": false,
-    "protocol": "picotool",
-    "protocols": [
-      "blackmagic",
-      "cmsis-dap",
-      "jlink",
-      "raspberrypi-swd",
-      "picotool",
-      "picoprobe",
-      "pico-debug"
-    ]
-  },
-  "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
-  "vendor": "0xCB"
+    "name": "Helios",
+    "upload": {
+        "maximum_ram_size": 262144,
+        "maximum_size": 16777216,
+        "require_upload_port": true,
+        "native_usb": true,
+        "use_1200bps_touch": true,
+        "wait_for_upload_port": false,
+        "protocol": "picotool",
+        "protocols": [
+            "blackmagic",
+            "cmsis-dap",
+            "jlink",
+            "raspberrypi-swd",
+            "picotool",
+            "picoprobe",
+            "pico-debug"
+        ]
+    },
+    "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+    "vendor": "0xCB"
 }

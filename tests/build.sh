@@ -15,6 +15,8 @@ elif [ "$BUILD_PARITY" = "odd" ]; then
     rem=1
 fi
 
+export PICO_BOARD=rp2040
+
 install_arduino nodebug
 build_sketches_with_arduino "$mod" "$rem" ""
 

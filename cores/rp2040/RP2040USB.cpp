@@ -35,7 +35,6 @@
 #include <pico/usb_reset_interface.h>
 #include <hardware/watchdog.h>
 #include <pico/bootrom.h>
-#include "sdkoverride/tusb_absmouse.h"
 #include "sdkoverride/tusb_gamepad16.h"
 #include <device/usbd_pvt.h>
 

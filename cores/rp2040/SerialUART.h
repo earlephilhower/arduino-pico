@@ -43,6 +43,26 @@ public:
         ret &= setTX(tx);
         return ret;
     }
+
+    bool setInvertTX(bool invert = true) {
+        if (!_running) {
+            _invertTX = invert;
+        }
+        return !_running;
+    }
+    bool setInvertRX(bool invert = true) {
+        if (!_running) {
+            _invertRX = invert;
+        }
+        return !_running;
+    }
+    bool setInvertControl(bool invert = true) {
+        if (!_running) {
+            _invertControl = invert;
+        }
+        return !_running;
+    }
+
     bool setFIFOSize(size_t size);
     bool setPollingMode(bool mode = true);
 
@@ -80,12 +100,13 @@ private:
     uart_inst_t *_uart;
     pin_size_t _tx, _rx;
     pin_size_t _rts, _cts;
-    enum gpio_function _fcnTx, _fcnRx, _fcnRts, _fcnCts;
+    gpio_function_t _fcnTx, _fcnRx, _fcnRts, _fcnCts;
     int _baud;
     mutex_t _mutex;
     bool _polling = false;
     bool _overflow;
     bool _break;
+    bool _invertTX, _invertRX, _invertControl;
 
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;

@@ -88,7 +88,7 @@ public:
         return _mounted ? (FR_OK == f_rename(pathFrom, pathTo)) : false;
     }
 
-    bool info64(FSInfo64& info) override {
+    bool info(FSInfo& info) override {
         if (!_mounted) {
             DEBUGV("FatFS::info: FS not mounted\n");
             return false;
@@ -105,20 +105,6 @@ public:
         return true;
     }
 
-    bool info(FSInfo& info) override {
-        FSInfo64 i;
-        if (!info64(i)) {
-            return false;
-        }
-        info.blockSize     = i.blockSize;
-        info.pageSize      = i.pageSize;
-        info.maxOpenFiles  = i.maxOpenFiles;
-        info.maxPathLength = i.maxPathLength;
-        info.totalBytes    = (size_t)i.totalBytes;
-        info.usedBytes     = (size_t)i.usedBytes;
-        return true;
-    }
-
     bool remove(const char* path) override {
         return _mounted ? (FR_OK == f_unlink(path)) : false;
     }
@@ -129,6 +115,26 @@ public:
 
     bool rmdir(const char* path) override {
         return _mounted ? (FR_OK == f_unlink(path)) : false;
+    }
+
+    bool stat(const char *path, FSStat *st) override {
+        if (!_mounted || !path || !path[0]) {
+            return false;
+        }
+        bzero(st, sizeof(*st));
+        FILINFO fno;
+        if (FR_OK != f_stat(path, &fno)) {
+            return false;
+        }
+        st->size = fno.fsize;
+        st->blocksize = 0;
+        st->isDir = (fno.fattrib & AM_DIR) == AM_DIR;
+        if (st->isDir) {
+            st->size = 0;
+        }
+        st->ctime = FatToTimeT(fno.fdate, fno.ftime);
+        st->atime = FatToTimeT(fno.fdate, fno.ftime);
+        return true;
     }
 
     bool setConfig(const FSConfig &cfg) override {

@@ -70,6 +70,37 @@ jobs:
         cd ..
         bash ./tests/build.sh
 
+# Build all rp2350 examples on linux (core and Arduino IDE)
+  build-rp2350-linux:
+    name: Build RP2350 ${{ matrix.chunk }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        chunk: [0, 1, 2, 3, 4, 5]
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Cache Linux toolchain
+      id: cache-linux
+      uses: actions/cache@v4
+      with:
+        path: ./tools/dist
+        key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
+    - name: Build Sketches
+      env:
+        BUILD_PARITY: custom
+        mod: 6
+        rem: ${{ matrix.chunk }}
+      run: |
+        cd pico-sdk
+        git submodule update --init
+        cd ..
+        bash ./tests/build-rp2350.sh
+
 # Build TinyUSB examples, requires custom build command line
   build-tinyusb:
     name: Build TinyUSB Examples
@@ -199,8 +230,9 @@ jobs:
         pip install --upgrade platformio
         pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
         pio pkg install --global --tool symlink://.
+        cp -f /home/runner/work/arduino-pico/arduino-pico/tools/json/*.json /home/runner/.platformio/platforms/raspberrypi/boards/.
     - name: Build Multicore Example
-      run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Multicore/Multicore.ino
+      run: pio ci -v --board=rpipico --board=rpipico2 --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Multicore/Multicore.ino
     - name: Build Fade Example
       run: pio ci --board=rpipico --board=adafruit_feather -O "platform_packages=framework-arduinopico@symlink:///home/runner/work/arduino-pico/arduino-pico" libraries/rp2040/examples/Fade/Fade.ino
     - name: Build TinyUSB Example

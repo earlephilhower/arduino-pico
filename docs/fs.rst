@@ -151,6 +151,48 @@ second SPI port, ``SPI1``.  Just use the following call in place of
     SD.begin(cspin, SPI1);
 
 
+Using VFS (Virtual File System) for POSIX support
+-------------------------------------------------
+The ``VFS`` library enables sketches to use standard POSIX file I/O operations using
+standard ``FILE *`` operations.  Include the ``VFS`` library in your application and
+add a call to map the ``VFS.root()`` to your filesystem.  I.e.:
+
+.. code:: cpp
+
+    #include <VFS.h>
+    #include <LittleFS.h>
+
+    void setup() {
+      LittleFS.begin();
+      VFS.root(LittleFS);
+      FILE *fp = fopen("/thisfilelivesonflash.txt", "w");
+      fprintf(fp, "Hello!\n");
+      fclose(fp);
+    }
+
+Multiple filesystems can be ``VFS.map()`` into the VFS namespace under different directory
+names.  For example, the following will make files on ``/sd`` reside on an external\
+SD card and files on ``/lfs`` live in internal flash.
+
+.. code:: cpp
+
+    #include <VFS.h>
+    #include <LittleFS.h>
+    #include <SDFS.h>
+
+    void setup() {
+      LittleFS.begin();
+      SDFS.begin();
+      VFS.map("/lfs", LittleFS);
+      VFS.map("/sd", SDFS);
+      FILE *onSD = fopen("/sd/thislivesonsd.txt", "wb");
+      ....
+    }
+
+See the examples in the ``VFS`` library for more information.
+
+
+
 File system object (LittleFS/SD/SDFS/FatFS)
 -------------------------------------------
 

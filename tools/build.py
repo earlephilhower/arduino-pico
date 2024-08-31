@@ -58,17 +58,20 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
             cmd += ['-hardware', hw_dir]
     else:
         cmd += ['-hardware', hardware_dir]
-    # Debug=Serial,DebugLevel=Core____
-    fqbn = '-fqbn=pico:rp2040:rpipico:' \
-               'flash=2097152_65536,' \
-               'freq={freq},' \
-               'dbgport={dbgport},' \
-               'dbglvl={dbglvl},' \
-               'usbstack={usbstack}'.format(**vars(args))
-    if ("libraries/WiFi" in sketch) or ("/ArduinoOTA" in sketch) or ("/HTTPClient" in sketch) or ('/HTTPUpdate' in sketch) or ('/WebServer' in sketch) or ('/DNSServer' in sketch) or ('/BT' in sketch) or ('/BLE' in sketch) or ('/Bluetooth' in sketch):
-        fqbn = fqbn.replace("rpipico", "rpipicow")
-    if ('/BT' in sketch) or ('/BLE' in sketch) or ('/Bluetooth' in sketch):
-        fqbn = fqbn + ",ipbtstack=ipv4btcble"
+    if os.environ.get('FQBN'):
+        fqbn = "-fqbn=" + str(os.environ.get('FQBN'))
+    else:
+        # Debug=Serial,DebugLevel=Core____
+        fqbn = '-fqbn=pico:rp2040:rpipico:' \
+                   'flash=2097152_65536,' \
+                   'freq={freq},' \
+                   'dbgport={dbgport},' \
+                   'dbglvl={dbglvl},' \
+                   'usbstack={usbstack}'.format(**vars(args))
+        if ("libraries/WiFi" in sketch) or ("/ArduinoOTA" in sketch) or ("/HTTPClient" in sketch) or ('/HTTPUpdate' in sketch) or ('/WebServer' in sketch) or ('/DNSServer' in sketch) or ('/BT' in sketch) or ('/BLE' in sketch) or ('/Bluetooth' in sketch):
+            fqbn = fqbn.replace("rpipico", "rpipicow")
+        if ('/BT' in sketch) or ('/BLE' in sketch) or ('/Bluetooth' in sketch):
+            fqbn = fqbn + ",ipbtstack=ipv4btcble"
     cmd += [fqbn]
     cmd += ['-built-in-libraries', ide_path + '/libraries']
     cmd += ['-ide-version=10607']

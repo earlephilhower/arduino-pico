@@ -1,6 +1,7 @@
 OTA Updates
 ===========
 
+**NOTE:** OTA is not yet supported on the RP2350.  PRs gladly accepted!
 
 Introduction
 ------------

@@ -115,20 +115,6 @@ public:
         return true;
     }
 
-    virtual bool info64(FSInfo64& info64) {
-        FSInfo i;
-        if (!info(i)) {
-            return false;
-        }
-        info64.blockSize     = i.blockSize;
-        info64.pageSize      = i.pageSize;
-        info64.maxOpenFiles  = i.maxOpenFiles;
-        info64.maxPathLength = i.maxPathLength;
-        info64.totalBytes    = i.totalBytes;
-        info64.usedBytes     = i.usedBytes;
-        return true;
-    }
-
     bool remove(const char* path) override {
         if (!_mounted || !path || !path[0]) {
             return false;
@@ -248,6 +234,27 @@ public:
             return _tryMount();
         }
 
+        return true;
+    }
+
+    bool stat(const char *path, FSStat *st) override {
+        if (!_mounted || !path || !path[0]) {
+            return false;
+        }
+        lfs_info info;
+        if (lfs_stat(&_lfs, path, &info) < 0) {
+            return false;
+        }
+        st->size = info.size;
+        st->blocksize = _blockSize;
+        st->isDir = info.type == LFS_TYPE_DIR;
+        if (st->isDir) {
+            st->size = 0;
+        }
+        if (lfs_getattr(&_lfs, path, 'c', (void *)&st->ctime, sizeof(st->ctime)) != sizeof(st->ctime)) {
+            st->ctime = 0;
+        }
+        st->atime = st->ctime;
         return true;
     }
 
