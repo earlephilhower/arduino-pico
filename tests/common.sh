@@ -112,7 +112,10 @@ function build_sketches()
             mv $build_dir/build.options.json.tmp $build_dir/build.options.json
             # Set the time of the cached core.a file to the future so the GIT header
             # we regen won't cause the builder to throw it out and rebuild from scratch.
-            touch -d 'now + 1 day' $cache_dir/core/*.a
+            uname -a | grep -qi darwin
+            if [ $? == 1 ]; then
+                touch -d 'now + 1 day' $cache_dir/core/*.a
+            fi
         fi
 
         # Clear out the last built sketch, map, elf, bin files, but leave the compiled
