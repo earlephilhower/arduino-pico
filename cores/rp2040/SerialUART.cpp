@@ -138,6 +138,9 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size
     _cts = cts;
     mutex_init(&_mutex);
     mutex_init(&_fifoMutex);
+    _invertTX = false;
+    _invertRX = false;
+    _invertControl = false;
 }
 
 static void _uart0IRQ();
@@ -154,14 +157,18 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     _fcnTx = gpio_get_function(_tx);
     _fcnRx = gpio_get_function(_rx);
     gpio_set_function(_tx, GPIO_FUNC_UART);
+    gpio_set_outover(_tx, _invertTX ? 1 : 0);
     gpio_set_function(_rx, GPIO_FUNC_UART);
+    gpio_set_inover(_rx, _invertRX ? 1 : 0);
     if (_rts != UART_PIN_NOT_DEFINED) {
         _fcnRts = gpio_get_function(_rts);
         gpio_set_function(_rts, GPIO_FUNC_UART);
+        gpio_set_outover(_rts, _invertControl ? 1 : 0);
     }
     if (_cts != UART_PIN_NOT_DEFINED) {
         _fcnCts = gpio_get_function(_cts);
         gpio_set_function(_cts, GPIO_FUNC_UART);
+        gpio_set_inover(_cts, _invertControl ? 1 : 0);
     }
 
     uart_init(_uart, baud);
@@ -246,12 +253,16 @@ void SerialUART::end() {
 
     // Restore pin functions
     gpio_set_function(_tx, _fcnTx);
+    gpio_set_outover(_tx, 0);
     gpio_set_function(_rx, _fcnRx);
+    gpio_set_inover(_rx, 0);
     if (_rts != UART_PIN_NOT_DEFINED) {
         gpio_set_function(_rts, _fcnRts);
+        gpio_set_outover(_rts, 0);
     }
     if (_cts != UART_PIN_NOT_DEFINED) {
         gpio_set_function(_cts, _fcnCts);
+        gpio_set_inover(_cts, 0);
     }
 }
 

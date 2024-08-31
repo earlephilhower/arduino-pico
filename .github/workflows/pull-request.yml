@@ -187,11 +187,16 @@ jobs:
         mod: 500
         rem: 1
       run: |
+        brew update
+        brew install bash
+        /usr/bin/env bash --version
         uname -a
         cd pico-sdk
         git submodule update --init
         cd ..
-        bash ./tests/build.sh
+        /usr/bin/env bash ./tests/build.sh
+        ./system/picotool/picotool version
+        otool -L ./system/picotool/picotool
 
 # Build a few examples with PlatformIO to test if integration works
   build-platformio:

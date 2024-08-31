@@ -47,6 +47,14 @@ For detailed information about the Serial ports, see the
 Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/functions/communication/serial/>`_ .
 
 
+Inversion
+---------
+
+``Serial1`` and ``Serial2`` can both support inverted input and/or outputs via the methods
+``Serial1/2::setInvertRX(bool invert)`` and ``Serial1/2::setInvertTX(bool invert)`` and
+``Serial1/2::serInvertControl(bool invert)``.
+
+
 RP2040 Specific SerialUSB methods
 ---------------------------------
 

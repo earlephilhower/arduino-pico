@@ -73,6 +73,9 @@ prepare	KEYWORD2
 SerialPIO	KEYWORD2
 setFIFOSize	KEYWORD2
 setPollingMode	KEYWORD2
+setInvertTX	KEYWORD2
+setInvertRX	KEYWORD2
+setInvertControl	KEYWORD2
 
 digitalWriteFast	KEYWORD2
 digitalReadFast	KEYWORD2

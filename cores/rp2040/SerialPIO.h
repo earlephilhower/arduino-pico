@@ -41,7 +41,22 @@ public:
     void begin(unsigned long baud, uint16_t config) override;
     void end() override;
 
-    void setInverted(bool invTx = true, bool invRx = true);
+    void setInverted(bool invTx = true, bool invRx = true) {
+        setInvertTX(invTx);
+        setInvertRX(invRx);
+    }
+    bool setInvertTX(bool invert = true) {
+        if (!_running) {
+            _invertTX = invert;
+        }
+        return !_running;
+    }
+    bool setInvertRX(bool invert = true) {
+        if (!_running) {
+            _invertRX = invert;
+        }
+        return !_running;
+    }
 
     virtual int peek() override;
     virtual int read() override;
@@ -65,8 +80,8 @@ protected:
     int _stop;
     bool _overflow;
     mutex_t _mutex;
-    bool _txInverted = false;
-    bool _rxInverted = false;
+    bool _invertTX;
+    bool _invertRX;
 
     PIOProgram *_txPgm;
     PIO _txPIO;
