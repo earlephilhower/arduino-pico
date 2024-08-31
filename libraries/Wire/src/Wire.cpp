@@ -458,20 +458,20 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
     }
 
     // Abort any ongoing transaction
-    abortAsync(); 
+    abortAsync();
 
     // Create or enlarge dma command buffer, we need one entry for every i2c byte we want to write/read
     const size_t bufLen = (wlen + rlen) * 2;
-    if(_dmaSendBufferLen < bufLen) {
-      if (_dmaSendBuffer) {
-          free(_dmaSendBuffer);
-          _dmaSendBuffer = nullptr;
-          _dmaSendBufferLen = 0;
-      }   
-      _dmaSendBuffer = (uint16_t *)malloc(bufLen);
-      if (!_dmaSendBuffer) {
-          return false;
-      }
+    if (_dmaSendBufferLen < bufLen) {
+        if (_dmaSendBuffer) {
+            free(_dmaSendBuffer);
+            _dmaSendBuffer = nullptr;
+            _dmaSendBufferLen = 0;
+        }
+        _dmaSendBuffer = (uint16_t *)malloc(bufLen);
+        if (!_dmaSendBuffer) {
+            return false;
+        }
     }
 
     // Fill the dma command buffer
@@ -485,17 +485,17 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
         _dmaSendBuffer[0] |= I2C_IC_DATA_CMD_RESTART_BITS;
     }
     if (wlen > 0 && rlen > 0) {
-      _dmaSendBuffer[wlen + 0] |= I2C_IC_DATA_CMD_RESTART_BITS;
+        _dmaSendBuffer[wlen + 0] |= I2C_IC_DATA_CMD_RESTART_BITS;
     }
     if (sendStop) {
         _dmaSendBuffer[wlen + rlen - 1] |= I2C_IC_DATA_CMD_STOP_BITS;
     }
 
     // Reconfigure dma command channel
-    dma_channel_set_read_addr(_dmaChannelSend, _dmaSendBuffer,false);
+    dma_channel_set_read_addr(_dmaChannelSend, _dmaSendBuffer, false);
     dma_channel_set_trans_count(_dmaChannelSend, wlen + rlen, false);
 
-    if (rlen>0) {
+    if (rlen > 0) {
         // Reconfigure dma read channel
         dma_channel_set_write_addr(_dmaChannelReceive, (void*) rbuf, false);
         dma_channel_set_trans_count(_dmaChannelReceive, rlen, false);
@@ -512,7 +512,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
     // Setup i2c hardware
     _i2c->hw->enable = 0;
     _i2c->hw->tar = address;
-    if (rlen>0) {
+    if (rlen > 0) {
         _i2c->hw->dma_cr = 1 | (1 << 1); // TDMAE | RDMAE
     } else {
         _i2c->hw->dma_cr = 1 << 1; // TDMAE
@@ -523,7 +523,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
     // Start dma channel(s)
     _txBegun = true;
     _dmaFinished = false;
-    if (rlen>0) {
+    if (rlen > 0) {
         dma_channel_start(_dmaChannelReceive);
     }
     dma_channel_start(_dmaChannelSend);
@@ -543,8 +543,10 @@ bool TwoWire::finishedAsync() {
 }
 
 void TwoWire::abortAsync() {
-    if(!_dmaRunning) return;
-    if(!_dmaFinished) {
+    if (!_dmaRunning) {
+        return;
+    }
+    if (!_dmaFinished) {
         dma_channel_abort(_dmaChannelSend);
         dma_channel_abort(_dmaChannelReceive);
         _i2c->hw->dma_cr = 0;
@@ -557,7 +559,7 @@ void TwoWire::onFinishedAsync(void(*function)(void)) {
 }
 
 // Dma irq mask and wire instance for low level dma completed handlers
-static uint32_t _dma_i2c0_irq_mask = 0; 
+static uint32_t _dma_i2c0_irq_mask = 0;
 static uint32_t _dma_i2c1_irq_mask = 0;
 static TwoWire * _dma_i2c0_wire_instance = nullptr;
 static TwoWire * _dma_i2c1_wire_instance = nullptr;
@@ -565,7 +567,7 @@ static TwoWire * _dma_i2c1_wire_instance = nullptr;
 // Low level dma completed handlers, calls TwoWire::_dma_irq_handler() to do the work
 void _dma_i2c0_irq_handler() {
     uint32_t status = dma_hw->ints0;
-    if(status & _dma_i2c0_irq_mask && _dma_i2c0_wire_instance) {
+    if (status & _dma_i2c0_irq_mask && _dma_i2c0_wire_instance) {
         _dma_i2c0_wire_instance->_dma_irq_handler();
     }
     dma_hw->ints0 = (status & _dma_i2c0_irq_mask); //clear interrupt status
@@ -573,7 +575,7 @@ void _dma_i2c0_irq_handler() {
 
 void _dma_i2c1_irq_handler() {
     uint32_t status = dma_hw->ints0;
-    if(status & _dma_i2c1_irq_mask && _dma_i2c1_wire_instance) {
+    if (status & _dma_i2c1_irq_mask && _dma_i2c1_wire_instance) {
         _dma_i2c1_wire_instance->_dma_irq_handler();
         dma_hw->ints0 = (status & _dma_i2c1_irq_mask);
     }
@@ -590,12 +592,14 @@ void TwoWire::_dma_irq_handler() {
     // Clear the interrupt request.
     dma_hw->ints0 = 1u << _dmaChannelReceive;
     // Call the user handler
-    if(_dmaOnFinished) _dmaOnFinished();
+    if (_dmaOnFinished) {
+        _dmaOnFinished();
+    }
 }
 
 void TwoWire::beginAsync() {
     if (_dmaRunning) {
-      return;
+        return;
     }
 
     // Claim dma channels
@@ -634,7 +638,7 @@ void TwoWire::beginAsync() {
         _dma_i2c0_irq_mask = (1u << _dmaChannelReceive) | (1u << _dmaChannelSend);
         _dma_i2c0_wire_instance = this;
         irq_add_shared_handler(DMA_IRQ_0, _dma_i2c0_irq_handler, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
-    }else{
+    } else {
         _dma_i2c1_irq_mask = (1u << _dmaChannelReceive) | (1u << _dmaChannelSend);
         _dma_i2c1_wire_instance = this;
         irq_add_shared_handler(DMA_IRQ_0, _dma_i2c1_irq_handler, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
@@ -653,7 +657,7 @@ void TwoWire::endAsync() {
         _dma_i2c0_irq_mask = 0;
         _dma_i2c0_wire_instance = nullptr;
         irq_remove_handler(DMA_IRQ_0, _dma_i2c0_irq_handler);
-    }else{
+    } else {
         _dma_i2c1_irq_mask = 0;
         _dma_i2c1_wire_instance = nullptr;
         irq_remove_handler(DMA_IRQ_0, _dma_i2c1_irq_handler);
@@ -667,13 +671,13 @@ void TwoWire::endAsync() {
         dma_channel_cleanup(_dmaChannelSend);
         dma_channel_unclaim(_dmaChannelSend);
         _dmaChannelSend = -1;
-    }    
+    }
     _i2c->hw->dma_cr = 0;
     free(_dmaSendBuffer);
     _dmaSendBuffer = nullptr;
     _dmaSendBufferLen = 0;
     _txBegun = false;
-    _dmaFinished = true; 
+    _dmaFinished = true;
     _dmaOnFinished = nullptr;
     _dmaRunning = false;
 }
