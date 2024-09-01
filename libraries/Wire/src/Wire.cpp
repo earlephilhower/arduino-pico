@@ -444,9 +444,9 @@ void TwoWire::flush(void) {
 }
 
 // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
-// All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+// All buffers must be valid for entire DMA and not touched until `finishedAsync()` returns true.
 bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, const void *rbuf, size_t rlen, bool sendStop) {
-    if (!_running || _txBegun) {
+    if (!_running || _txBegun || (wlen == 0 && rlen == 0)) {
         return false;
     }
 
@@ -491,32 +491,36 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
         _dmaSendBuffer[wlen + rlen - 1] |= I2C_IC_DATA_CMD_STOP_BITS;
     }
 
-    // Reconfigure dma command channel
-    dma_channel_set_read_addr(_dmaChannelSend, _dmaSendBuffer, false);
-    dma_channel_set_trans_count(_dmaChannelSend, wlen + rlen, false);
+    // Cleanup and Setup dma send channel
+    dma_channel_cleanup(_dmaChannelSend);
+    dma_channel_config c = dma_channel_get_default_config(_dmaChannelSend);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_16); // 16b transfers into I2C FIFO
+    channel_config_set_read_increment(&c, true); // Reading incrementing addresses
+    channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
+    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, true)); // Wait for the TX FIFO specified
+    channel_config_set_chain_to(&c, _dmaChannelSend); // No chaining
+    channel_config_set_irq_quiet(&c, false); // Enable interrupt (can be disabled later with dma_channel_set_irq0_enabled() as needed)
+    dma_channel_configure(_dmaChannelSend, &c, &_i2c->hw->data_cmd, _dmaSendBuffer, wlen + rlen, false);
 
-    if (rlen > 0) {
-        // Reconfigure dma read channel
-        dma_channel_set_write_addr(_dmaChannelReceive, (void*) rbuf, false);
-        dma_channel_set_trans_count(_dmaChannelReceive, rlen, false);
+    // Cleanup and setup dma receive channel
+    dma_channel_cleanup(_dmaChannelReceive);
+    c = dma_channel_get_default_config(_dmaChannelReceive);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_8); // 8b transfers from I2C FIFO
+    channel_config_set_read_increment(&c, false); // Reading same FIFO address
+    channel_config_set_write_increment(&c, true); // Writing to the buffer
+    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, false)); // Wait for the RX FIFO specified
+    channel_config_set_chain_to(&c, _dmaChannelReceive); // No chaining
+    channel_config_set_irq_quiet(&c, false); // Enable interrupt (can be disabled later with dma_channel_set_irq0_enabled() as needed)
+    dma_channel_configure(_dmaChannelReceive, &c, (void*) rbuf, &_i2c->hw->data_cmd, rlen, false);
 
-        // Raise irq when the receive channel finishes
-        dma_channel_set_irq0_enabled(_dmaChannelSend, false);
-        dma_channel_set_irq0_enabled(_dmaChannelReceive, true);
-    } else {
-        // Raise irq when the send channel finishes
-        dma_channel_set_irq0_enabled(_dmaChannelSend, true);
-        dma_channel_set_irq0_enabled(_dmaChannelReceive, false);
-    }
+    // Enable dma completed interrupt
+    dma_channel_set_irq0_enabled(_dmaChannelSend, (rlen == 0)); //write only, enable irq on Send channel
+    dma_channel_set_irq0_enabled(_dmaChannelReceive, (rlen > 0)); //when reading, enable irq on Receive channel
 
     // Setup i2c hardware
     _i2c->hw->enable = 0;
     _i2c->hw->tar = address;
-    if (rlen > 0) {
-        _i2c->hw->dma_cr = 1 | (1 << 1); // TDMAE | RDMAE
-    } else {
-        _i2c->hw->dma_cr = 1 << 1; // TDMAE
-    }
+    _i2c->hw->dma_cr = 1 << 1 | (rlen > 0 ? 1 : 0) ; // TDMAE + RDMAE when rlen>0
     _i2c->hw->enable = 1;
     _i2c->restart_on_next = !sendStop;
 
@@ -551,6 +555,7 @@ void TwoWire::abortAsync() {
         dma_channel_abort(_dmaChannelReceive);
         _i2c->hw->dma_cr = 0;
     }
+    _txBegun = false;
     _dmaFinished = true;
 }
 
@@ -577,7 +582,6 @@ void _dma_i2c1_irq_handler() {
     uint32_t status = dma_hw->ints0;
     if (status & _dma_i2c1_irq_mask && _dma_i2c1_wire_instance) {
         _dma_i2c1_wire_instance->_dma_irq_handler();
-        dma_hw->ints0 = (status & _dma_i2c1_irq_mask);
     }
     dma_hw->ints0 = (status & _dma_i2c1_irq_mask); //clear interrupt status
 }
@@ -589,8 +593,6 @@ void TwoWire::_dma_irq_handler() {
     // Disable the DMA IRQs
     dma_channel_set_irq0_enabled(_dmaChannelSend, false);
     dma_channel_set_irq0_enabled(_dmaChannelReceive, false);
-    // Clear the interrupt request.
-    dma_hw->ints0 = 1u << _dmaChannelReceive;
     // Call the user handler
     if (_dmaOnFinished) {
         _dmaOnFinished();
@@ -612,26 +614,6 @@ void TwoWire::beginAsync() {
         dma_channel_unclaim(_dmaChannelReceive);
         return;
     }
-
-    // Setup dma send channel
-    dma_channel_config c = dma_channel_get_default_config(_dmaChannelSend);
-    channel_config_set_transfer_data_size(&c, DMA_SIZE_16); // 16b transfers into I2C FIFO
-    channel_config_set_read_increment(&c, true); // Reading incrementing addresses
-    channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
-    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, true)); // Wait for the TX FIFO specified
-    channel_config_set_chain_to(&c, _dmaChannelSend); // No chaining
-    channel_config_set_irq_quiet(&c, false); // Need IRQ
-    dma_channel_configure(_dmaChannelSend, &c, &_i2c->hw->data_cmd, _dmaSendBuffer, 0, false);
-
-    // Setup dma receive channel
-    c = dma_channel_get_default_config(_dmaChannelReceive);
-    channel_config_set_transfer_data_size(&c, DMA_SIZE_8); // 8b transfers from I2C FIFO
-    channel_config_set_read_increment(&c, false); // Reading same FIFO address
-    channel_config_set_write_increment(&c, true); // Writing to the buffer
-    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, false)); // Wait for the RX FIFO specified
-    channel_config_set_chain_to(&c, _dmaChannelReceive); // No chaining
-    channel_config_set_irq_quiet(&c, false); // Need IRQ
-    dma_channel_configure(_dmaChannelReceive, &c, nullptr, &_i2c->hw->data_cmd, 0, false);
 
     // Setup dma irq
     if (i2c_hw_index(_i2c) == 0) {
