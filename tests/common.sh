@@ -8,7 +8,6 @@ function skip_ino()
     local skiplistrp2350=""
     if [ "$PICO_BOARD" == "rp2350" ]; then
         read -d '' skiplistrp2350 << EOL || true
-/FreeRTOS/
 /BTstackLib/
 /JoystickBT/
 /KeyboardBT/

@@ -82,6 +82,10 @@ extern unsigned long ulMainGetRunTimeCounterValue(void);
 #define configPRIO_BITS 3 /* 8 priority levels */
 #endif
 
+#define configENABLE_MPU                        0
+#define configENABLE_TRUSTZONE                  0
+#define configRUN_FREERTOS_SECURE_ONLY          1
+#define configENABLE_FPU                        1
 /*  The lowest interrupt priority that can be used in a call to a "set priority"
     function. */
 #define configLIBRARY_LOWEST_INTERRUPT_PRIORITY 0x7
@@ -95,9 +99,14 @@ extern unsigned long ulMainGetRunTimeCounterValue(void);
 /*  Interrupt priorities used by the kernel port layer itself.  These are generic
     to all Cortex-M ports, and do not rely on any particular library functions. */
 #define configKERNEL_INTERRUPT_PRIORITY ( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
+
+#ifdef PICO_RP2350
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY    16
+#else
 /* !!!! configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to zero !!!!
     See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY ( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
+#endif
 
 #ifdef __cplusplus
 extern "C" {
