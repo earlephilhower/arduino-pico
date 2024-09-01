@@ -92,8 +92,9 @@ LittleFS File System Limitations
 --------------------------------
 
 The LittleFS implementation for the RP2040 supports filenames of up
-to 31 characters + terminating zero (i.e. ``char filename[32]``), and
-as many subdirectories as space permits.
+to 254 characters + terminating zero (i.e. ``char filename[255]`` or
+better ``char filename[LFS_NAME_MAX]`` ), and as many subdirectories
+as space permits.
 
 Filenames are assumed to be in the root directory if no initial "/" is
 present.
@@ -372,8 +373,8 @@ rename
 Renames file from ``pathFrom`` to ``pathTo``. Paths must be absolute.
 Returns *true* if file was renamed successfully.
 
-info  **DEPRECATED**
-~~~~~~~~~~~~~~~~~~~~
+info
+~~~~
 
 .. code:: cpp
 
@@ -382,9 +383,8 @@ info  **DEPRECATED**
 
 Fills `FSInfo structure <#filesystem-information-structure>`__ with
 information about the file system. Returns ``true`` if successful,
-``false`` otherwise.  Because this cannot report information about
-filesystemd greater than 4MB, don't use it in new code.  Use ``info64``
-instead which uses 64-bit fields for filesystem sizes.
+``false`` otherwise. ``ìnfo()`` has been updated to support filesystems 
+greater than 4MB and ``FSInfo64`` and ``info64()`` have been discarded.
 
 Filesystem information structure
 --------------------------------
@@ -392,8 +392,8 @@ Filesystem information structure
 .. code:: cpp
 
     struct FSInfo {
-        size_t totalBytes;
-        size_t usedBytes;
+        uint64_t totalBytes;
+        uint64_t usedBytes;
         size_t blockSize;
         size_t pageSize;
         size_t maxOpenFiles;
@@ -407,19 +407,6 @@ block size - ``pageSize`` — filesystem logical page size - ``maxOpenFiles``
 — max number of files which may be open simultaneously -
 ``maxPathLength`` — max file name length (including one byte for zero
 termination)
-
-info64
-~~~~~~
-
-.. code:: cpp
-
-    FSInfo64 fsinfo;
-    SDFS.info64(fsinfo);
-    or LittleFS.info64(fsinfo);
-
-Performs the same operation as ``info`` but allows for reporting greater than
-4GB for filesystem size/used/etc.  Should be used with the SD and SDFS
-filesystems since most SD cards today are greater than 4GB in size.
 
 setTimeCallback(time_t (\*cb)(void))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
