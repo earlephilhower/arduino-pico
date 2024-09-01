@@ -384,7 +384,7 @@ info
 Fills `FSInfo structure <#filesystem-information-structure>`__ with
 information about the file system. Returns ``true`` if successful,
 ``false`` otherwise. ``ìnfo()`` has been updated to support filesystems 
-greater than 4MB and ``FSInfo64`` and ``info64()`` have been discarded.
+greater than 4GB and ``FSInfo64`` and ``info64()`` have been discarded.
 
 Filesystem information structure
 --------------------------------
