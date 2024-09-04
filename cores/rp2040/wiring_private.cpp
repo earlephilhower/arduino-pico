@@ -25,7 +25,9 @@
 #include <map>
 
 // Support nested IRQ disable/re-enable
+#ifndef maxIRQs
 #define maxIRQs 15
+#endif
 static uint32_t _irqStackTop[2] = { 0, 0 };
 static uint32_t _irqStack[2][maxIRQs];
 
