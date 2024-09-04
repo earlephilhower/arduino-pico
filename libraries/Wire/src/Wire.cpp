@@ -445,8 +445,8 @@ void TwoWire::flush(void) {
 
 // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
 // All buffers must be valid for entire DMA and not touched until `finishedAsync()` returns true.
-bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, const void *rbuf, size_t rlen, bool sendStop) {
-    if (!_running || _txBegun || (wlen == 0 && rlen == 0)) {
+bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes, const void *rbuffer, size_t rbytes, bool sendStop) {
+    if (!_running || _txBegun || (wbytes == 0 && rbytes == 0)) {
         return false;
     }
 
@@ -461,7 +461,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
     abortAsync();
 
     // Create or enlarge dma command buffer, we need one entry for every i2c byte we want to write/read
-    const size_t bufLen = (wlen + rlen) * 2;
+    const size_t bufLen = (wbytes + rbytes) * 2;
     if (_dmaSendBufferLen < bufLen) {
         if (_dmaSendBuffer) {
             free(_dmaSendBuffer);
@@ -475,20 +475,20 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
     }
 
     // Fill the dma command buffer
-    for (size_t i = 0; i < wlen; i++) {
-        _dmaSendBuffer[i] = ((uint8_t*) wbuf)[i];
+    for (size_t i = 0; i < wbytes; i++) {
+        _dmaSendBuffer[i] = ((uint8_t*) wbuffer)[i];
     }
-    for (size_t i = 0; i < rlen; i++) {
-        _dmaSendBuffer[wlen + i] = I2C_IC_DATA_CMD_CMD_BITS; // -> 1 for read
+    for (size_t i = 0; i < rbytes; i++) {
+        _dmaSendBuffer[wbytes + i] = I2C_IC_DATA_CMD_CMD_BITS; // -> 1 for read
     }
     if (_i2c->restart_on_next) {
         _dmaSendBuffer[0] |= I2C_IC_DATA_CMD_RESTART_BITS;
     }
-    if (wlen > 0 && rlen > 0) {
-        _dmaSendBuffer[wlen + 0] |= I2C_IC_DATA_CMD_RESTART_BITS;
+    if (wbytes > 0 && rbytes > 0) {
+        _dmaSendBuffer[wbytes + 0] |= I2C_IC_DATA_CMD_RESTART_BITS;
     }
     if (sendStop) {
-        _dmaSendBuffer[wlen + rlen - 1] |= I2C_IC_DATA_CMD_STOP_BITS;
+        _dmaSendBuffer[wbytes + rbytes - 1] |= I2C_IC_DATA_CMD_STOP_BITS;
     }
 
     // Cleanup and Setup dma send channel
@@ -500,7 +500,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
     channel_config_set_dreq(&c, i2c_get_dreq(_i2c, true)); // Wait for the TX FIFO specified
     channel_config_set_chain_to(&c, _dmaChannelSend); // No chaining
     channel_config_set_irq_quiet(&c, false); // Enable interrupt (can be disabled later with dma_channel_set_irq0_enabled() as needed)
-    dma_channel_configure(_dmaChannelSend, &c, &_i2c->hw->data_cmd, _dmaSendBuffer, wlen + rlen, false);
+    dma_channel_configure(_dmaChannelSend, &c, &_i2c->hw->data_cmd, _dmaSendBuffer, wbytes + rbytes, false);
 
     // Cleanup and setup dma receive channel
     dma_channel_cleanup(_dmaChannelReceive);
@@ -511,23 +511,23 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuf, size_t wlen, con
     channel_config_set_dreq(&c, i2c_get_dreq(_i2c, false)); // Wait for the RX FIFO specified
     channel_config_set_chain_to(&c, _dmaChannelReceive); // No chaining
     channel_config_set_irq_quiet(&c, false); // Enable interrupt (can be disabled later with dma_channel_set_irq0_enabled() as needed)
-    dma_channel_configure(_dmaChannelReceive, &c, (void*) rbuf, &_i2c->hw->data_cmd, rlen, false);
+    dma_channel_configure(_dmaChannelReceive, &c, (void*) rbuffer, &_i2c->hw->data_cmd, rbytes, false);
 
     // Enable dma completed interrupt
-    dma_channel_set_irq0_enabled(_dmaChannelSend, (rlen == 0)); //write only, enable irq on Send channel
-    dma_channel_set_irq0_enabled(_dmaChannelReceive, (rlen > 0)); //when reading, enable irq on Receive channel
+    dma_channel_set_irq0_enabled(_dmaChannelSend, (rbytes == 0)); //write only, enable irq on Send channel
+    dma_channel_set_irq0_enabled(_dmaChannelReceive, (rbytes > 0)); //when reading, enable irq on Receive channel
 
     // Setup i2c hardware
     _i2c->hw->enable = 0;
     _i2c->hw->tar = address;
-    _i2c->hw->dma_cr = 1 << 1 | (rlen > 0 ? 1 : 0) ; // TDMAE + RDMAE when rlen>0
+    _i2c->hw->dma_cr = 1 << 1 | (rbytes > 0 ? 1 : 0) ; // TDMAE + RDMAE when rbytes>0
     _i2c->hw->enable = 1;
     _i2c->restart_on_next = !sendStop;
 
     // Start dma channel(s)
     _txBegun = true;
     _dmaFinished = false;
-    if (rlen > 0) {
+    if (rbytes > 0) {
         dma_channel_start(_dmaChannelReceive);
     }
     dma_channel_start(_dmaChannelSend);
