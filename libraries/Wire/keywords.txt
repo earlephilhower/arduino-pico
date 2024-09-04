@@ -25,6 +25,8 @@ writeAsync	KEYWORD2
 readAsync	KEYWORD2
 finishedAsync	KEYWORD2
 abortAsync	KEYWORD2
+writeReadAsync	KEYWORD2
+onFinishedAsync	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)
