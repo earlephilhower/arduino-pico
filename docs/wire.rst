@@ -33,32 +33,41 @@ being performed.  For example, a game could send a full screen update out over I
 processing the next frame without waiting for the first one to be sent over I2C.  DMA is used to handle
 the transfer to/from the I2C hardware freeing the CPU from bit-banging or busy waiting.
 
-Note that asynchronous operations can not be intersped with normal, synchronous ones.  Fully complete an
-asynchronous operation before attempting to do a normal ``Wire.beginTransaction()`` or ``Wire.requestFrom``.
-Also, all buffers need to be valid throughout the entire operation.  Read data cannot be accessed until
-the transaction is completed and can't be "peeked" at while the operation is ongoing.
+Note that asynchronous operations can not be intersped with normal, synchronous ones.  Fully complete or 
+abort an asynchronous operation before attempting to do a normal ``Wire.beginTransaction()`` or
+``Wire.requestFrom``.
 
 
-bool writeAsync(uint8_t address, const void \*buffer, size_t bytes, bool sendStop)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Begins an I2C asynchronous write transaction.  Writes to ``address`` of ``bytes`` from ``buffer`` and
-at the end will send an I2C stop if ``sendStop`` is ``true``.
-Check ``finishedAsync()`` to determine when the operation completes and conclude the transaction.
-This operation needs to allocate a buffer from heap equal to 2x ``bytes`` in size.
+bool writeReadAsync(uint8_t address, const void \*wbuffer, size_t wbytes, const void \*rbuffer, size_t rbytes, bool sendStop)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Executes a master I2C asynchronous write/read transaction to I2C slave ``address``.  First ``wbytes`` from
+``wbuffer`` are written to the I2C slave, followed by an I2C restart, then ``rbytes`` are read from the
+I2C slave into ``rbuffer``. The buffers need to be valid throughout the entire asynchronous operation.
 
-bool readAsync(uint8_t address, void \*buffer, size_t bytes, bool sendStop)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Begins an I2C asynchronous read transaction.  Reads from ``address`` for ``bytes`` into ``buffer`` and
-at the end will send an I2C stop if ``sendStop`` is ``true``.
-Check ``finishedAsync()`` to determine when the operation completes and conclude the transaction.
-This operation needs to allocate a buffer from heap equal to 4x ``bytes`` in size.
+At the end of the transaction an I2C stop is sent if ``sendStop`` is ``true``, and at the beginning of the
+transaction an I2C start is sent if the previous write/read had ``sendStop`` set to ``true``.
+
+Check ``finishedAsync()`` to determine when the operation completes, or use ``onFinishedAsync()`` to set a
+callback.
+
+Set ``rbytes`` to 0 to do a write-only operation, set ``wbytes`` to 0 to do a read-only operation. Or use:
+
+``bool writeAsync(uint8_t address, const void \*buffer, size_t bytes, bool sendStop)``
+
+``bool readAsync(uint8_t address, void \*buffer, size_t bytes, bool sendStop)``
+
+The first call to an asynchronous write/read operation allocates the required DMA channels and internal
+buffer.  If desired, call ``end()`` to free these resources.
 
 bool finishedAsync()
 ~~~~~~~~~~~~~~~~~~~~
-Call to check if the asynchronous operations is completed and the buffer passed in can be either read or
-reused.  Frees the allocated memory and completes the asynchronous transaction.
+Call to check if the asynchronous operations is completed.
+
+void onFinishedAsync(void(*function)(void))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Set a (optional) callback for async operation.  The ``function`` will be called when the asynchronous
+operation finishes.
 
 void abortAsync()
 ~~~~~~~~~~~~~~~~~
-Cancels the outstanding asynchronous transaction and frees any allocated memory.
-
+Cancels any outstanding asynchronous transaction.
