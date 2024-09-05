@@ -11,6 +11,10 @@
 #define PIN_SERIAL1_TX (12u)
 #define PIN_SERIAL1_RX (13u)
 
+// Serial 2 - relocated
+#define PIN_SERIAL2_TX (27u)
+#define PIN_SERIAL2_RX (28u)
+
 // SPI0
 #define PIN_SPI0_MISO  (8u)
 #define PIN_SPI0_MOSI  (7u)
