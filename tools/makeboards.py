@@ -161,7 +161,6 @@ def BuildUploadMethodMenu(name, ram):
         print("%s.menu.uploadmethod.%s=%s" % (name, a, b))
         print("%s.menu.uploadmethod.%s.build.ram_length=%dk" % (name, a, c))
         print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
-        # For pico-debug, need to disable USB unconditionally
         if a == "picotool":
             print("%s.menu.uploadmethod.%s.build.picodebugflags=-DENABLE_PICOTOOL_USB" % (name, a))
         print("%s.menu.uploadmethod.%s.upload.maximum_data_size=%d" % (name, a, c * 1024))
@@ -401,8 +400,7 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
             "jlink",
             "raspberrypi-swd",
             "picotool",
-            "picoprobe",
-            "pico-debug"
+            "picoprobe"
         ]
     },
     "url": board_url or 'https://www.raspberrypi.org/products/raspberry-pi-pico/',
