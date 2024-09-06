@@ -68,6 +68,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Newsan Archi
 * nullbits Bit-C PRO
 * Pimoroni PGA2040
+* Pimoroni Pico Plus 2
 * Pimoroni Plasma2040
 * Pimoroni Tiny2040
 * Pintronix PinMax
