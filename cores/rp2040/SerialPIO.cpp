@@ -201,7 +201,6 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
 
         digitalWrite(_tx, HIGH);
         pinMode(_tx, OUTPUT);
-        gpio_set_outover(_tx, _invertTX);
 
         pio_tx_program_init(_txPIO, _txSM, off, _tx);
         pio_sm_clear_fifos(_txPIO, _txSM); // Remove any existing data
@@ -212,6 +211,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         pio_sm_exec(_txPIO, _txSM, pio_encode_mov(pio_isr, pio_osr));
 
         // Start running!
+        gpio_set_outover(_tx, _invertTX);
         pio_sm_set_enabled(_txPIO, _txSM, true);
     }
     if (_rx != NOPIN) {
