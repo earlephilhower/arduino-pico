@@ -10217,6 +10217,104 @@ datanoisetv_picoadk_v2.menu.psram.4mb=4MByte PSRAM
 datanoisetv_picoadk_v2.menu.psram.4mb.build.psram_length=0x400000
 datanoisetv_picoadk_v2.menu.psram.8mb=8MByte PSRAM
 datanoisetv_picoadk_v2.menu.psram.8mb.build.psram_length=0x800000
+datanoisetv_picoadk_v2.menu.psramcs.GPIO0=GPIO 0
+datanoisetv_picoadk_v2.menu.psramcs.GPIO0.build.psram_cs=-DRP2350_PSRAM_CS=0
+datanoisetv_picoadk_v2.menu.psramcs.GPIO1=GPIO 1
+datanoisetv_picoadk_v2.menu.psramcs.GPIO1.build.psram_cs=-DRP2350_PSRAM_CS=1
+datanoisetv_picoadk_v2.menu.psramcs.GPIO2=GPIO 2
+datanoisetv_picoadk_v2.menu.psramcs.GPIO2.build.psram_cs=-DRP2350_PSRAM_CS=2
+datanoisetv_picoadk_v2.menu.psramcs.GPIO3=GPIO 3
+datanoisetv_picoadk_v2.menu.psramcs.GPIO3.build.psram_cs=-DRP2350_PSRAM_CS=3
+datanoisetv_picoadk_v2.menu.psramcs.GPIO4=GPIO 4
+datanoisetv_picoadk_v2.menu.psramcs.GPIO4.build.psram_cs=-DRP2350_PSRAM_CS=4
+datanoisetv_picoadk_v2.menu.psramcs.GPIO5=GPIO 5
+datanoisetv_picoadk_v2.menu.psramcs.GPIO5.build.psram_cs=-DRP2350_PSRAM_CS=5
+datanoisetv_picoadk_v2.menu.psramcs.GPIO6=GPIO 6
+datanoisetv_picoadk_v2.menu.psramcs.GPIO6.build.psram_cs=-DRP2350_PSRAM_CS=6
+datanoisetv_picoadk_v2.menu.psramcs.GPIO7=GPIO 7
+datanoisetv_picoadk_v2.menu.psramcs.GPIO7.build.psram_cs=-DRP2350_PSRAM_CS=7
+datanoisetv_picoadk_v2.menu.psramcs.GPIO8=GPIO 8
+datanoisetv_picoadk_v2.menu.psramcs.GPIO8.build.psram_cs=-DRP2350_PSRAM_CS=8
+datanoisetv_picoadk_v2.menu.psramcs.GPIO9=GPIO 9
+datanoisetv_picoadk_v2.menu.psramcs.GPIO9.build.psram_cs=-DRP2350_PSRAM_CS=9
+datanoisetv_picoadk_v2.menu.psramcs.GPIO10=GPIO 10
+datanoisetv_picoadk_v2.menu.psramcs.GPIO10.build.psram_cs=-DRP2350_PSRAM_CS=10
+datanoisetv_picoadk_v2.menu.psramcs.GPIO11=GPIO 11
+datanoisetv_picoadk_v2.menu.psramcs.GPIO11.build.psram_cs=-DRP2350_PSRAM_CS=11
+datanoisetv_picoadk_v2.menu.psramcs.GPIO12=GPIO 12
+datanoisetv_picoadk_v2.menu.psramcs.GPIO12.build.psram_cs=-DRP2350_PSRAM_CS=12
+datanoisetv_picoadk_v2.menu.psramcs.GPIO13=GPIO 13
+datanoisetv_picoadk_v2.menu.psramcs.GPIO13.build.psram_cs=-DRP2350_PSRAM_CS=13
+datanoisetv_picoadk_v2.menu.psramcs.GPIO14=GPIO 14
+datanoisetv_picoadk_v2.menu.psramcs.GPIO14.build.psram_cs=-DRP2350_PSRAM_CS=14
+datanoisetv_picoadk_v2.menu.psramcs.GPIO15=GPIO 15
+datanoisetv_picoadk_v2.menu.psramcs.GPIO15.build.psram_cs=-DRP2350_PSRAM_CS=15
+datanoisetv_picoadk_v2.menu.psramcs.GPIO16=GPIO 16
+datanoisetv_picoadk_v2.menu.psramcs.GPIO16.build.psram_cs=-DRP2350_PSRAM_CS=16
+datanoisetv_picoadk_v2.menu.psramcs.GPIO17=GPIO 17
+datanoisetv_picoadk_v2.menu.psramcs.GPIO17.build.psram_cs=-DRP2350_PSRAM_CS=17
+datanoisetv_picoadk_v2.menu.psramcs.GPIO18=GPIO 18
+datanoisetv_picoadk_v2.menu.psramcs.GPIO18.build.psram_cs=-DRP2350_PSRAM_CS=18
+datanoisetv_picoadk_v2.menu.psramcs.GPIO19=GPIO 19
+datanoisetv_picoadk_v2.menu.psramcs.GPIO19.build.psram_cs=-DRP2350_PSRAM_CS=19
+datanoisetv_picoadk_v2.menu.psramcs.GPIO20=GPIO 20
+datanoisetv_picoadk_v2.menu.psramcs.GPIO20.build.psram_cs=-DRP2350_PSRAM_CS=20
+datanoisetv_picoadk_v2.menu.psramcs.GPIO21=GPIO 21
+datanoisetv_picoadk_v2.menu.psramcs.GPIO21.build.psram_cs=-DRP2350_PSRAM_CS=21
+datanoisetv_picoadk_v2.menu.psramcs.GPIO22=GPIO 22
+datanoisetv_picoadk_v2.menu.psramcs.GPIO22.build.psram_cs=-DRP2350_PSRAM_CS=22
+datanoisetv_picoadk_v2.menu.psramcs.GPIO23=GPIO 23
+datanoisetv_picoadk_v2.menu.psramcs.GPIO23.build.psram_cs=-DRP2350_PSRAM_CS=23
+datanoisetv_picoadk_v2.menu.psramcs.GPIO24=GPIO 24
+datanoisetv_picoadk_v2.menu.psramcs.GPIO24.build.psram_cs=-DRP2350_PSRAM_CS=24
+datanoisetv_picoadk_v2.menu.psramcs.GPIO25=GPIO 25
+datanoisetv_picoadk_v2.menu.psramcs.GPIO25.build.psram_cs=-DRP2350_PSRAM_CS=25
+datanoisetv_picoadk_v2.menu.psramcs.GPIO26=GPIO 26
+datanoisetv_picoadk_v2.menu.psramcs.GPIO26.build.psram_cs=-DRP2350_PSRAM_CS=26
+datanoisetv_picoadk_v2.menu.psramcs.GPIO27=GPIO 27
+datanoisetv_picoadk_v2.menu.psramcs.GPIO27.build.psram_cs=-DRP2350_PSRAM_CS=27
+datanoisetv_picoadk_v2.menu.psramcs.GPIO28=GPIO 28
+datanoisetv_picoadk_v2.menu.psramcs.GPIO28.build.psram_cs=-DRP2350_PSRAM_CS=28
+datanoisetv_picoadk_v2.menu.psramcs.GPIO29=GPIO 29
+datanoisetv_picoadk_v2.menu.psramcs.GPIO29.build.psram_cs=-DRP2350_PSRAM_CS=29
+datanoisetv_picoadk_v2.menu.psramcs.GPIO30=GPIO 30
+datanoisetv_picoadk_v2.menu.psramcs.GPIO30.build.psram_cs=-DRP2350_PSRAM_CS=30
+datanoisetv_picoadk_v2.menu.psramcs.GPIO31=GPIO 31
+datanoisetv_picoadk_v2.menu.psramcs.GPIO31.build.psram_cs=-DRP2350_PSRAM_CS=31
+datanoisetv_picoadk_v2.menu.psramfreq.freq109=109 MHz
+datanoisetv_picoadk_v2.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+datanoisetv_picoadk_v2.menu.psramfreq.freq133=133 MHz
+datanoisetv_picoadk_v2.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
+datanoisetv_picoadk_v2.menu.freq.400=400 MHz
+datanoisetv_picoadk_v2.menu.freq.400.build.f_cpu=400000000L
+datanoisetv_picoadk_v2.menu.freq.50=50 MHz
+datanoisetv_picoadk_v2.menu.freq.50.build.f_cpu=50000000L
+datanoisetv_picoadk_v2.menu.freq.100=100 MHz
+datanoisetv_picoadk_v2.menu.freq.100.build.f_cpu=100000000L
+datanoisetv_picoadk_v2.menu.freq.120=120 MHz
+datanoisetv_picoadk_v2.menu.freq.120.build.f_cpu=120000000L
+datanoisetv_picoadk_v2.menu.freq.125=125 MHz
+datanoisetv_picoadk_v2.menu.freq.125.build.f_cpu=125000000L
+datanoisetv_picoadk_v2.menu.freq.128=128 MHz
+datanoisetv_picoadk_v2.menu.freq.128.build.f_cpu=128000000L
+datanoisetv_picoadk_v2.menu.freq.133=133 MHz
+datanoisetv_picoadk_v2.menu.freq.133.build.f_cpu=133000000L
+datanoisetv_picoadk_v2.menu.freq.150=150 MHz
+datanoisetv_picoadk_v2.menu.freq.150.build.f_cpu=150000000L
+datanoisetv_picoadk_v2.menu.freq.175=175 MHz
+datanoisetv_picoadk_v2.menu.freq.175.build.f_cpu=175000000L
+datanoisetv_picoadk_v2.menu.freq.200=200 MHz
+datanoisetv_picoadk_v2.menu.freq.200.build.f_cpu=200000000L
+datanoisetv_picoadk_v2.menu.freq.225=225 MHz
+datanoisetv_picoadk_v2.menu.freq.225.build.f_cpu=225000000L
+datanoisetv_picoadk_v2.menu.freq.240=240 MHz
+datanoisetv_picoadk_v2.menu.freq.240.build.f_cpu=240000000L
+datanoisetv_picoadk_v2.menu.freq.250=250 MHz
+datanoisetv_picoadk_v2.menu.freq.250.build.f_cpu=250000000L
+datanoisetv_picoadk_v2.menu.freq.275=275 MHz
+datanoisetv_picoadk_v2.menu.freq.275.build.f_cpu=275000000L
+datanoisetv_picoadk_v2.menu.freq.300=300 MHz
+datanoisetv_picoadk_v2.menu.freq.300.build.f_cpu=300000000L
 datanoisetv_picoadk_v2.menu.freq.150=150 MHz
 datanoisetv_picoadk_v2.menu.freq.150.build.f_cpu=150000000L
 datanoisetv_picoadk_v2.menu.freq.50=50 MHz
