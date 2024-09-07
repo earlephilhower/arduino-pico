@@ -47,8 +47,7 @@
             "jlink",
             "raspberrypi-swd",
             "picotool",
-            "picoprobe",
-            "pico-debug"
+            "picoprobe"
         ],
         "psram_length": 8388608
     },
