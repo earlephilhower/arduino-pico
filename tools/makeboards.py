@@ -54,7 +54,9 @@ def BuildPSRAM(name):
         print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
 
 def BuildPSRAMCS(name):
-    for s in range(0, 32):
+    print("%s.menu.psramcs.GPIOnone=None" % (name))
+    print("%s.menu.psramcs.GPIOnone.build.psram_cs=" % (name))
+    for s in range(0, 48):
         print("%s.menu.psramcs.GPIO%d=GPIO %d" % (name, s, s))
         print("%s.menu.psramcs.GPIO%d.build.psram_cs=-DRP2350_PSRAM_CS=%d" % (name, s, s))
 
@@ -62,6 +64,11 @@ def BuildPSRAMFreq(name):
     for s in [ 109, 133 ]:
         print("%s.menu.psramfreq.freq%d=%d MHz" % (name, s, s))
         print("%s.menu.psramfreq.freq%d.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=%d" % (name, s, s * 1000000))
+
+def BuildRP2350Variant(name):
+    for l in [ ("RP2350A", "-DPICO_RP2350A=1"), ("RP2530B", "-DPICO_RP2350B=1") ]:
+        print("%s.menu.variantchip.%s=%s" % (name, l[0], l[0]))
+        print("%s.menu.variantchip.%s.build.variantdefines=%s" % (name, l[0], l[1]))
 
 def BuildOptimize(name):
     for l in [ ("Small", "Small", "-Os", " (standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
@@ -252,9 +259,10 @@ def WriteWarning():
 
 def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
+    print("menu.variantchip=Chip Variant")
     print("menu.flash=Flash Size")
-    print("menu.psram=PSRAM Size")
     print("menu.psramcs=PSRAM CS")
+    print("menu.psram=PSRAM Size")
     print("menu.psramfreq=PSRAM Speed")
     print("menu.freq=CPU Speed")
     print("menu.opt=Optimize")
@@ -285,7 +293,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     else:
         raise Exception("Unknown board type " + str(chip));
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
-    if (name == "generic") or (name == "vccgnd_yd_rp2040"):
+    if (name == "generic") or (name == "generic_rp2350") or (name == "vccgnd_yd_rp2040"):
         BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
         BuildFlashMenu(name, chip, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
@@ -302,8 +310,9 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     if chip == "rp2350":
         BuildFreq(name, 150)
         if name == "generic_rp2350":
-            BuildPSRAM(name)
+            BuildRP2350Variant(name)
             BuildPSRAMCS(name)
+            BuildPSRAM(name)
             BuildPSRAMFreq(name)
     else:
         BuildFreq(name, 133)
@@ -543,6 +552,7 @@ MakeBoard("olimex_rp2040pico30_16mb", "rp2040", "Olimex", "RP2040-Pico30 16MB", 
 
 # Pimoroni
 MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, 0, "boot2_w25q64jv_4_padded_checksum")
+MakeBoard("pimoroni_pga2350", "rp2350", "Pimoroni", "PGA2350", "0x2e8a", "0x1018", 250, "PIMORONI_PGA2350", 16, 8, "boot2_w25q080_4_padded_checksum")
 MakeBoard("pimoroni_pico_plus_2", "rp2350", "Pimoroni", "PicoPlus2", "0x2e8a", "0x100a", 500, "PIMORONI_PICO_PLUS_2", 16, 8, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("pimoroni_plasma2040", "rp2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "rp2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, 0, "boot2_w25q64jv_4_padded_checksum")
