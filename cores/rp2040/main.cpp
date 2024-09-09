@@ -79,7 +79,7 @@ extern void __loop() {
 static struct _reent *_impure_ptr1 = nullptr;
 
 extern "C" int main() {
-#if F_CPU != 125000000
+#if (defined(PICO_RP2040) && (F_CPU != 125000000)) || (defined(PICO_RP2350) && (F_CPU != 150000000))
     set_sys_clock_khz(F_CPU / 1000, true);
 #endif
 
