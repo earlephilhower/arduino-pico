@@ -58,11 +58,14 @@ extern "C" {
 void interrupts();
 void noInterrupts();
 
+// Only implemented on some RP2350 boards, not the OG Pico 2
 #ifdef RP2350_PSRAM_CS
 void *pmalloc(size_t size);
 void *pcalloc(size_t count, size_t size);
+#else
+[[deprecated("This chip does not have PSRAM, pmalloc will always fail")]] void *pmalloc(size_t size);
+[[deprecated("This chip does not have PSRAM, pcalloc will always fail")]] void *pcalloc(size_t count, size_t size);
 #endif
-
 
 // AVR compatibility macros...naughty and accesses the HW directly
 #define digitalPinToPort(pin)       (0)
