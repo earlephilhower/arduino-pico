@@ -37,8 +37,8 @@ public:
     };
 
     void begin(unsigned long baud, uint16_t config) override {
-        setInvertTX(invert);
-        setInvertRX(invert);
+        setInvertTX(_invert);
+        setInvertRX(_invert);
         SerialPIO::begin(baud, config);
     }
 
