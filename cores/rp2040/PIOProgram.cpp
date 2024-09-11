@@ -21,6 +21,7 @@
 #include <Arduino.h>
 #include "PIOProgram.h"
 #include <map>
+#include <hardware/claim.h>
 
 #if defined(PICO_RP2350)
 #define PIOS pio0, pio1, pio2
@@ -31,6 +32,8 @@
 #endif
 
 static std::map<const pio_program_t *, int> __pioMap[PIOCNT];
+static bool __pioAllocated[PIOCNT];
+static bool __pioHighGPIO[PIOCNT];
 auto_init_mutex(_pioMutex);
 
 PIOProgram::PIOProgram(const pio_program_t *pgm) {
@@ -47,14 +50,16 @@ PIOProgram::~PIOProgram() {
 }
 
 // Possibly load into a PIO and allocate a SM
-bool PIOProgram::prepare(PIO *pio, int *sm, int *offset) {
+bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     CoreMutex m(&_pioMutex);
     PIO pi[PIOCNT] = { PIOS };
+
+    bool needsHigh = (start + cnt) > 32;
 
     // If it's already loaded into PIO IRAM, try and allocate in that specific PIO
     for (int o = 0; o < PIOCNT; o++) {
         auto p = __pioMap[o].find(_pgm);
-        if (p != __pioMap[o].end()) {
+        if ((p != __pioMap[o].end()) && (__pioHighGPIO[o] == needsHigh)) {
             int idx = pio_claim_unused_sm(pi[o], false);
             if (idx >= 0) {
                 _pio = pi[o];
@@ -69,7 +74,31 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset) {
 
     // Not in any PIO IRAM, so try and add
     for (int o = 0; o < PIOCNT; o++) {
-        if (pio_can_add_program(pi[o], _pgm)) {
+        if (__pioAllocated[o] && (__pioHighGPIO[o] == needsHigh)) {
+            if (pio_can_add_program(pi[o], _pgm)) {
+                int idx = pio_claim_unused_sm(pi[o], false);
+                if (idx >= 0) {
+                    int off = pio_add_program(pi[o], _pgm);
+                    __pioMap[o].insert({_pgm, off});
+                    _pio = pi[o];
+                    _sm = idx;
+                    *pio = pi[o];
+                    *sm = idx;
+                    *offset = off;
+                    return true;
+                }
+            }
+        }
+    }
+
+    // No existing PIOs can meet, is there an unallocated one we can allocate?
+    for (int o = 0; o < PIOCNT; o++) {
+        if (!__pioAllocated[o]) {
+            __pioAllocated[o] = true;
+            __pioHighGPIO[o] = true;
+            uint32_t save = hw_claim_lock();
+            pio[o]->gpiobase = needsHigh ? 16 : 0;
+            hw_claim_unlock(save);
             int idx = pio_claim_unused_sm(pi[o], false);
             if (idx >= 0) {
                 int off = pio_add_program(pi[o], _pgm);
