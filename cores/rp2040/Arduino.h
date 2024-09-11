@@ -151,7 +151,7 @@ constexpr uint64_t __bitset(const int (&a)[N], size_t i = 0U) {
 #define PSRAM __attribute__((section("\".psram\"")))
 
 // General GPIO/ADC layout info
-#ifdef PICO_2350B
+#ifdef PICO_RP2350B
 #define __GPIOCNT 48
 #define __FIRSTANALOGGPIO 40
 #else
