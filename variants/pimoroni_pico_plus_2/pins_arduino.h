@@ -76,10 +76,15 @@ static const uint8_t D20 = (20u);
 static const uint8_t D21 = (21u);
 static const uint8_t D22 = (22u);
 
-static const uint8_t A0 = (26u);
-static const uint8_t A1 = (27u);
-static const uint8_t A2 = (28u);
-static const uint8_t A3 = (22u);
+static const uint8_t D26 = (40u);
+static const uint8_t D27 = (41u);
+static const uint8_t D28 = (42u);
+
+static const uint8_t A0 = (40u);
+static const uint8_t A1 = (41u);
+static const uint8_t A2 = (42u);
+
+static const uint8_t A3 = (43u);
 
 static const uint8_t SS = PIN_SPI0_SS;
 static const uint8_t MOSI = PIN_SPI0_MOSI;
