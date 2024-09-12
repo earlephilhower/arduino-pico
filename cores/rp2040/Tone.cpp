@@ -56,7 +56,7 @@ int64_t _stopTonePIO(alarm_id_t id, void *user_data) {
 }
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
-    if (pin > __GPIOCNT) {
+    if (pin >= __GPIOCNT) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
         return;
     }

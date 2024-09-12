@@ -66,23 +66,22 @@ I2S::~I2S() {
 }
 
 bool I2S::setBCLK(pin_size_t pin) {
-    if (_running || (pin > 28)) {
+    if (_running || (pin > __GPIOCNT - 1)) {
         return false;
     }
     _pinBCLK = pin;
     return true;
 }
 
-
 bool I2S::setMCLK(pin_size_t pin) {
-    if (_running || (pin > 28)) {
+    if (_running || (pin >= __GPIOCNT)) {
         return false;
     }
     _pinMCLK = pin;
     return true;
 }
 bool I2S::setDATA(pin_size_t pin) {
-    if (_running || (pin > 29)) {
+    if (_running || (pin >= __GPIOCNT)) {
         return false;
     }
     _pinDOUT = pin;
@@ -198,7 +197,7 @@ void I2S::onReceive(void(*fn)(void)) {
 void I2S::MCLKbegin() {
     int off = 0;
     _i2sMCLK = new PIOProgram(&pio_i2s_mclk_program);
-    _i2sMCLK->prepare(&_pioMCLK, &_smMCLK, &off); // not sure how to use the same PIO
+    _i2sMCLK->prepare(&_pioMCLK, &_smMCLK, &off, _pinMCLK, 1); // not sure how to use the same PIO
     pio_i2s_MCLK_program_init(_pioMCLK, _smMCLK, off, _pinMCLK);
     int mClk = _multMCLK * _freq * 2.0 /* edges per clock */;
     pio_sm_set_clkdiv_int_frac(_pioMCLK, _smMCLK, clock_get_hz(clk_sys) / mClk, 0);
@@ -215,7 +214,9 @@ bool I2S::begin() {
     } else {
         _i2s = new PIOProgram(_isOutput ? (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program)) : &pio_i2s_in_swap_program);
     }
-    if (!_i2s->prepare(&_pio, &_sm, &off)) {
+    int minpin = std::min((int)_pinDOUT, (int)_pinBCLK);
+    int maxpin = std::max((int)_pinDOUT, (int)_pinBCLK + 1);
+    if (!_i2s->prepare(&_pio, &_sm, &off, minpin, maxpin - minpin + 1)) {
         _running = false;
         delete _i2s;
         _i2s = nullptr;

@@ -189,11 +189,25 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         return;
     }
 
+    int minpin = _tx;
+    int maxpin = _rx;
+    if ((_tx != NOPIN) && (_rx != NOPIN)) {
+        minpin = std::min(_tx, _rx);
+        maxpin = std::max(_tx, _rx);
+    } else if (_tx != NOPIN) {
+        minpin = _tx;
+        maxpin = _tx;
+    } else {
+        minpin = _rx;
+        maxpin = _rx;
+    }
+
+
     if (_tx != NOPIN) {
         _txBits = _bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1/*start bit*/;
         _txPgm = _getTxProgram(_txBits);
         int off;
-        if (!_txPgm->prepare(&_txPIO, &_txSM, &off)) {
+        if (!_txPgm->prepare(&_txPIO, &_txSM, &off, minpin, maxpin - minpin + 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources\n");
             // ERROR, no free slots
             return;
@@ -221,7 +235,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1) - 1;
         _rxPgm = _getRxProgram(_rxBits);
         int off;
-        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off)) {
+        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off, minpin, maxpin - minpin + 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources\n");
             return;
         }

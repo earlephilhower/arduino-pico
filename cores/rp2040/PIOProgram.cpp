@@ -54,6 +54,15 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     CoreMutex m(&_pioMutex);
     PIO pi[PIOCNT] = { PIOS };
 
+#if 0
+    uint usm;
+    uint uoff;
+    auto ret = pio_claim_free_sm_and_add_program_for_gpio_range(_pgm, pio, &usm, &uoff, start, cnt, true);
+    *sm = usm;
+    *offset = uoff;
+    return ret;
+#endif
+
     bool needsHigh = (start + cnt) > 32;
 
     // If it's already loaded into PIO IRAM, try and allocate in that specific PIO
@@ -62,6 +71,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
         if ((p != __pioMap[o].end()) && (__pioHighGPIO[o] == needsHigh)) {
             int idx = pio_claim_unused_sm(pi[o], false);
             if (idx >= 0) {
+                DEBUGV("PIOProgram %p: Reusing IMEM ON PIO %p(high=%d) for pins %d-%d\n", _pgm, pi[o], __pioHighGPIO[o] ? 1 : 0, start, start + cnt - 1);
                 _pio = pi[o];
                 _sm = idx;
                 *pio = pi[o];
@@ -78,6 +88,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
             if (pio_can_add_program(pi[o], _pgm)) {
                 int idx = pio_claim_unused_sm(pi[o], false);
                 if (idx >= 0) {
+                    DEBUGV("PIOProgram %p: Adding IMEM ON PIO %p(high=%d) for pins %d-%d\n", _pgm, pi[o], __pioHighGPIO[o] ? 1 : 0, start, start + cnt - 1);
                     int off = pio_add_program(pi[o], _pgm);
                     __pioMap[o].insert({_pgm, off});
                     _pio = pi[o];
@@ -92,25 +103,26 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     }
 
     // No existing PIOs can meet, is there an unallocated one we can allocate?
-    for (int o = 0; o < PIOCNT; o++) {
-        if (!__pioAllocated[o]) {
-            __pioAllocated[o] = true;
-            __pioHighGPIO[o] = true;
-            uint32_t save = hw_claim_lock();
-            pio[o]->gpiobase = needsHigh ? 16 : 0;
-            hw_claim_unlock(save);
-            int idx = pio_claim_unused_sm(pi[o], false);
-            if (idx >= 0) {
-                int off = pio_add_program(pi[o], _pgm);
-                __pioMap[o].insert({_pgm, off});
-                _pio = pi[o];
-                _sm = idx;
-                *pio = pi[o];
-                *sm = idx;
-                *offset = off;
-                return true;
-            }
+    PIO p;
+    uint idx;
+    uint off;
+    auto rc = pio_claim_free_sm_and_add_program_for_gpio_range(_pgm, &p, &idx, &off, start, cnt, true);
+    if (rc) {
+        int o = 0;
+        while (p != pi[o]) {
+            o++;
         }
+        assert(!__pioAllocated[o]);
+        __pioAllocated[o]  = true;
+        __pioHighGPIO[o] = needsHigh;
+        DEBUGV("PIOProgram %p: Allocating new PIO %p(high=%d) for pins %d-%d\n", _pgm, pi[o], __pioHighGPIO[o] ? 1 : 0, start, start + cnt - 1);
+        __pioMap[o].insert({_pgm, off});
+        _pio = pi[o];
+        _sm = idx;
+        *pio = pi[o];
+        *sm = idx;
+        *offset = off;
+        return true;
     }
 
     // Nope, no room either for SMs or INSNs
