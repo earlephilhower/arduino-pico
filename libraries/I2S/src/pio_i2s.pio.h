@@ -369,9 +369,13 @@ static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint 
     sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
     pio_sm_init(pio, sm, offset, &sm_config);
-    uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
 static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
@@ -384,9 +388,13 @@ static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint 
     sm_config_set_out_shift(&sm_config, false, true, 32);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
     pio_sm_init(pio, sm, offset, &sm_config);
-    uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
     // Can't set constant > 31, so push and pop/mov
     pio_sm_put_blocking(pio, sm, bits * channels - 2);
     pio_sm_exec(pio, sm, pio_encode_pull(false, false));
@@ -404,9 +412,13 @@ static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint
     sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
     pio_sm_init(pio, sm, offset, &sm_config);
-    uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
 static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
@@ -419,9 +431,12 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
     sm_config_set_in_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_RX);
     pio_sm_init(pio, sm, offset, &sm_config);
-    uint pin_mask = 3u << clock_pin_base;
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = 3u << clock_pin_base;
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
     pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits)); // Shift in 1st L data
     pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits - 1)); // Shift in 1st R data modulo one bit, avoiding bit shift from #2037
