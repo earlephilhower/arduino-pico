@@ -133,8 +133,8 @@ extern const String emptyString;
 // Template which will evaluate at *compile time* to a single 32b number
 // with the specified bits set.
 template <size_t N>
-constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
-    return i < N ? (1L << a[i]) | __bitset(a, i + 1) : 0;
+constexpr uint64_t __bitset(const int (&a)[N], size_t i = 0U) {
+    return i < N ? (1LL << a[i]) | __bitset(a, i + 1) : 0;
 }
 #endif
 
@@ -149,3 +149,12 @@ constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
 
 // PSRAM decorator
 #define PSRAM __attribute__((section("\".psram\"")))
+
+// General GPIO/ADC layout info
+#ifdef PICO_RP2350B
+#define __GPIOCNT 48
+#define __FIRSTANALOGGPIO 40
+#else
+#define __GPIOCNT 30
+#define __FIRSTANALOGGPIO 26
+#endif

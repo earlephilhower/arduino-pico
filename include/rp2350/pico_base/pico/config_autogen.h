@@ -4,7 +4,7 @@
 
 // based on PICO_CONFIG_HEADER_FILES:
 
-#include "../../pico-sdk/src/boards/include/boards/pico2.h"
+#include "../../pico-sdk/src/boards/include/boards/solderparty_rp2350_stamp_xl.h"
 #include "../../pico-sdk/src/rp2_common/cmsis/include/cmsis/rename_exceptions.h"
 
 // based on PICO_RP2350_ARM_S_CONFIG_HEADER_FILES:

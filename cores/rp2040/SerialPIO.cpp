@@ -33,6 +33,7 @@ static std::map<int, PIOProgram*> _rxMap;
 // Duplicate a program and replace the first insn with a "set x, repl"
 static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
     pio_program_t *p = new pio_program_t;
+    memcpy(p, pg, sizeof(*p));
     p->length = pg->length;
     p->origin = pg->origin;
     uint16_t *insn = (uint16_t *)malloc(p->length * 2);
@@ -193,7 +194,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _txBits = _bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1/*start bit*/;
         _txPgm = _getTxProgram(_txBits);
         int off;
-        if (!_txPgm->prepare(&_txPIO, &_txSM, &off)) {
+        if (!_txPgm->prepare(&_txPIO, &_txSM, &off, _tx, 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources\n");
             // ERROR, no free slots
             return;
@@ -221,7 +222,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1) - 1;
         _rxPgm = _getRxProgram(_rxBits);
         int off;
-        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off)) {
+        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off, _rx, 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources\n");
             return;
         }

@@ -220,9 +220,13 @@ static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint 
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
@@ -241,9 +245,13 @@ static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint 
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
     // Can't set constant > 31, so push and pop/mov
     pio_sm_put_blocking(pio, sm, bits * channels - 2);
@@ -268,9 +276,13 @@ static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
@@ -289,9 +301,12 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    uint pin_mask = 3u << clock_pin_base;
-    pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    pio_sm_set_pins(pio, sm, 0); // clear pins
+    //uint pin_mask = 3u << clock_pin_base;
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 
