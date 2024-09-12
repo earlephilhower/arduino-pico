@@ -33,6 +33,7 @@ static std::map<int, PIOProgram*> _rxMap;
 // Duplicate a program and replace the first insn with a "set x, repl"
 static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
     pio_program_t *p = new pio_program_t;
+    memcpy(p, pg, sizeof(*p));
     p->length = pg->length;
     p->origin = pg->origin;
     uint16_t *insn = (uint16_t *)malloc(p->length * 2);
