@@ -60,10 +60,12 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     auto ret = pio_claim_free_sm_and_add_program_for_gpio_range(_pgm, pio, &usm, &uoff, start, cnt, true);
     *sm = usm;
     *offset = uoff;
+    DEBUGV("clain %d\n", ret);
     return ret;
 #endif
 
-    bool needsHigh = (start + cnt) > 32;
+    bool needsHigh = (start + cnt) >= 32;
+    DEBUGV("PIOProgram %p: Searching for high=%d, pins %d-%d\n", _pgm, needsHigh ? 1 : 0, start, start + cnt - 1);
 
     // If it's already loaded into PIO IRAM, try and allocate in that specific PIO
     for (int o = 0; o < PIOCNT; o++) {
@@ -85,6 +87,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     // Not in any PIO IRAM, so try and add
     for (int o = 0; o < PIOCNT; o++) {
         if (__pioAllocated[o] && (__pioHighGPIO[o] == needsHigh)) {
+            DEBUGV("PIOProgram: Checking PIO %p\n", pi[o]);
             if (pio_can_add_program(pi[o], _pgm)) {
                 int idx = pio_claim_unused_sm(pi[o], false);
                 if (idx >= 0) {
@@ -97,8 +100,14 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
                     *sm = idx;
                     *offset = off;
                     return true;
+                } else {
+                    DEBUGV("PIOProgram: can't claim unused SM\n");
                 }
+            } else {
+                DEBUGV("PIOProgram: can't add program\n");
             }
+        } else {
+            DEBUGV("PIOProgram: Skipping PIO %p, wrong allocated/needhi\n", pi[o]);
         }
     }
 
