@@ -79,9 +79,9 @@ static int _parity(int bits, int data) {
 
 // We need to cache generated SerialPIOs so we can add data to them from
 // the shared handler
-static SerialPIO *_pioSP[2][4];
+static SerialPIO *_pioSP[3][4];
 static void __not_in_flash_func(_fifoIRQ)() {
-    for (int p = 0; p < 2; p++) {
+    for (int p = 0; p < 3; p++) {
         for (int sm = 0; sm < 4; sm++) {
             SerialPIO *s = _pioSP[p][sm];
             if (s) {
@@ -146,6 +146,19 @@ SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifoSize) {
 SerialPIO::~SerialPIO() {
     end();
     delete[] _queue;
+}
+
+static int pio_irq_0(PIO p) {
+    switch(pio_get_index(p)) {
+        case 0:
+        return PIO0_IRQ_0;
+        case 1:
+        return PIO1_IRQ_0;
+        case 2:
+        return PIO2_IRQ_0;
+        default:
+        return -1;
+    }
 }
 
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
@@ -247,7 +260,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         case 2: pio_set_irq0_source_enabled(_rxPIO, pis_sm2_rx_fifo_not_empty, true); break;
         case 3: pio_set_irq0_source_enabled(_rxPIO, pis_sm3_rx_fifo_not_empty, true); break;
         }
-        auto irqno = pio_get_index(_rxPIO) == 0 ? PIO0_IRQ_0 : PIO1_IRQ_0;
+        auto irqno = pio_irq_0(_rxPIO);
         irq_set_exclusive_handler(irqno, _fifoIRQ);
         irq_set_enabled(irqno, true);
 
@@ -278,7 +291,7 @@ void SerialPIO::end() {
             used = used || !!_pioSP[pioNum][i];
         }
         if (!used) {
-            auto irqno = pioNum == 0 ? PIO0_IRQ_0 : PIO1_IRQ_0;
+            auto irqno = pio_irq_0(_rxPIO);
             irq_set_enabled(irqno, false);
         }
         gpio_set_inover(_rx, 0);
