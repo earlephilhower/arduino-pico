@@ -149,14 +149,16 @@ SerialPIO::~SerialPIO() {
 }
 
 static int pio_irq_0(PIO p) {
-    switch(pio_get_index(p)) {
-        case 0:
+    switch (pio_get_index(p)) {
+    case 0:
         return PIO0_IRQ_0;
-        case 1:
+    case 1:
         return PIO1_IRQ_0;
-        case 2:
+#if defined(PICO_RP2350)
+    case 2:
         return PIO2_IRQ_0;
-        default:
+#endif
+    default:
         return -1;
     }
 }
