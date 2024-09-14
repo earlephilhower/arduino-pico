@@ -21,7 +21,6 @@
 #include <Arduino.h>
 #include <malloc.h>
 #include <reent.h>
-#include "pico/mutex.h"
 #include "psram.h"
 
 extern "C" void *__real_malloc(size_t size);
@@ -29,8 +28,6 @@ extern "C" void *__real_calloc(size_t count, size_t size);
 extern "C" void *__real_realloc(void *mem, size_t size);
 extern "C" void __real_free(void *mem);
 extern "C" struct mallinfo __real_mallinfo();
-
-auto_init_mutex(malloc_lock_mutex);
 
 #ifdef RP2350_PSRAM_CS
 extern "C" {
@@ -44,18 +41,14 @@ extern "C" {
 
 extern "C" void *__wrap_malloc(size_t size) {
     noInterrupts();
-    mutex_enter_blocking(&malloc_lock_mutex);
     void *rc = __real_malloc(size);
-    mutex_exit(&malloc_lock_mutex);
     interrupts();
     return rc;
 }
 
 extern "C" void *__wrap_calloc(size_t count, size_t size) {
     noInterrupts();
-    mutex_enter_blocking(&malloc_lock_mutex);
     void *rc = __real_calloc(count, size);
-    mutex_exit(&malloc_lock_mutex);
     interrupts();
     return rc;
 }
@@ -92,9 +85,7 @@ extern "C" void *__wrap_realloc(void *mem, size_t size) {
         rc = __real_realloc(mem, size);
     }
 #else
-    mutex_enter_blocking(&malloc_lock_mutex);
     rc = __real_realloc(mem, size);
-    mutex_exit(&malloc_lock_mutex);
 #endif
     interrupts();
     return rc;
@@ -109,9 +100,7 @@ extern "C" void __wrap_free(void *mem) {
         __real_free(mem);
     }
 #else
-    mutex_enter_blocking(&malloc_lock_mutex);
     __real_free(mem);
-    mutex_exit(&malloc_lock_mutex);
 #endif
     interrupts();
 }
