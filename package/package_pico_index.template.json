@@ -216,10 +216,19 @@
                      "name": "Pimoroni PGA2040"
                   },
                   {
+                     "name": "Pimoroni PGA2350"
+                  },
+                  {
+                     "name": "Pimoroni PicoPlus2"
+                  },
+                  {
                      "name": "Pimoroni Plasma2040"
                   },
                   {
                      "name": "Pimoroni Tiny2040"
+                  },
+                  {
+                     "name": "Pimoroni Tiny2350"
                   },
                   {
                      "name": "Pintronix PinMax"

@@ -13,6 +13,7 @@ Dir	KEYWORD1
 File	KEYWORD1
 timeval	KEYWORD1
 time_t	KEYWORD1
+SoftwareSerial	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -104,4 +105,4 @@ OUTPUT_12MA	LITERAL1
 
 ARDUINO_ARCH_RP2040	LITERAL1
 
-PRAM	LITERAL1
+PSRAM	LITERAL1

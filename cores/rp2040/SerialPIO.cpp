@@ -33,6 +33,7 @@ static std::map<int, PIOProgram*> _rxMap;
 // Duplicate a program and replace the first insn with a "set x, repl"
 static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
     pio_program_t *p = new pio_program_t;
+    memcpy(p, pg, sizeof(*p));
     p->length = pg->length;
     p->origin = pg->origin;
     uint16_t *insn = (uint16_t *)malloc(p->length * 2);
@@ -78,9 +79,9 @@ static int _parity(int bits, int data) {
 
 // We need to cache generated SerialPIOs so we can add data to them from
 // the shared handler
-static SerialPIO *_pioSP[2][4];
+static SerialPIO *_pioSP[3][4];
 static void __not_in_flash_func(_fifoIRQ)() {
-    for (int p = 0; p < 2; p++) {
+    for (int p = 0; p < 3; p++) {
         for (int sm = 0; sm < 4; sm++) {
             SerialPIO *s = _pioSP[p][sm];
             if (s) {
@@ -147,6 +148,21 @@ SerialPIO::~SerialPIO() {
     delete[] _queue;
 }
 
+static int pio_irq_0(PIO p) {
+    switch (pio_get_index(p)) {
+    case 0:
+        return PIO0_IRQ_0;
+    case 1:
+        return PIO1_IRQ_0;
+#if defined(PICO_RP2350)
+    case 2:
+        return PIO2_IRQ_0;
+#endif
+    default:
+        return -1;
+    }
+}
+
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
     _overflow = false;
     _baud = baud;
@@ -193,7 +209,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _txBits = _bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1/*start bit*/;
         _txPgm = _getTxProgram(_txBits);
         int off;
-        if (!_txPgm->prepare(&_txPIO, &_txSM, &off)) {
+        if (!_txPgm->prepare(&_txPIO, &_txSM, &off, _tx, 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources\n");
             // ERROR, no free slots
             return;
@@ -201,7 +217,6 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
 
         digitalWrite(_tx, HIGH);
         pinMode(_tx, OUTPUT);
-        gpio_set_outover(_tx, _invertTX);
 
         pio_tx_program_init(_txPIO, _txSM, off, _tx);
         pio_sm_clear_fifos(_txPIO, _txSM); // Remove any existing data
@@ -212,6 +227,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         pio_sm_exec(_txPIO, _txSM, pio_encode_mov(pio_isr, pio_osr));
 
         // Start running!
+        gpio_set_outover(_tx, _invertTX);
         pio_sm_set_enabled(_txPIO, _txSM, true);
     }
     if (_rx != NOPIN) {
@@ -221,7 +237,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1) - 1;
         _rxPgm = _getRxProgram(_rxBits);
         int off;
-        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off)) {
+        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off, _rx, 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources\n");
             return;
         }
@@ -246,7 +262,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         case 2: pio_set_irq0_source_enabled(_rxPIO, pis_sm2_rx_fifo_not_empty, true); break;
         case 3: pio_set_irq0_source_enabled(_rxPIO, pis_sm3_rx_fifo_not_empty, true); break;
         }
-        auto irqno = pio_get_index(_rxPIO) == 0 ? PIO0_IRQ_0 : PIO1_IRQ_0;
+        auto irqno = pio_irq_0(_rxPIO);
         irq_set_exclusive_handler(irqno, _fifoIRQ);
         irq_set_enabled(irqno, true);
 
@@ -277,7 +293,7 @@ void SerialPIO::end() {
             used = used || !!_pioSP[pioNum][i];
         }
         if (!used) {
-            auto irqno = pioNum == 0 ? PIO0_IRQ_0 : PIO1_IRQ_0;
+            auto irqno = pio_irq_0(_rxPIO);
             irq_set_enabled(irqno, false);
         }
         gpio_set_inover(_rx, 0);
