@@ -296,63 +296,6 @@ static bool _clockStretch(pin_size_t pin) {
     return digitalRead(pin);
 }
 
-bool _probe(int addr, pin_size_t sda, pin_size_t scl, int freq) {
-    int delay = (1000000 / freq) / 2;
-    bool ack = false;
-
-    pinMode(sda, INPUT_PULLUP);
-    pinMode(scl, INPUT_PULLUP);
-    gpio_set_function(scl, GPIO_FUNC_SIO);
-    gpio_set_function(sda, GPIO_FUNC_SIO);
-
-    digitalWrite(sda, HIGH);
-    sleep_us(delay);
-    digitalWrite(scl, HIGH);
-    if (!_clockStretch(scl)) {
-        goto stop;
-    }
-    digitalWrite(sda, LOW);
-    sleep_us(delay);
-    digitalWrite(scl, LOW);
-    sleep_us(delay);
-    for (int i = 0; i < 8; i++) {
-        addr <<= 1;
-        digitalWrite(sda, (addr & (1 << 7)) ? HIGH : LOW);
-        sleep_us(delay);
-        digitalWrite(scl, HIGH);
-        sleep_us(delay);
-        if (!_clockStretch(scl)) {
-            goto stop;
-        }
-        digitalWrite(scl, LOW);
-        sleep_us(5); // Ensure we don't change too close to clock edge
-    }
-
-    digitalWrite(sda, HIGH);
-    sleep_us(delay);
-    digitalWrite(scl, HIGH);
-    if (!_clockStretch(scl)) {
-        goto stop;
-    }
-
-    ack = digitalRead(sda) == LOW;
-    sleep_us(delay);
-    digitalWrite(scl, LOW);
-
-stop:
-    sleep_us(delay);
-    digitalWrite(sda, LOW);
-    sleep_us(delay);
-    digitalWrite(scl, HIGH);
-    sleep_us(delay);
-    digitalWrite(sda, HIGH);
-    sleep_us(delay);
-    gpio_set_function(scl, GPIO_FUNC_I2C);
-    gpio_set_function(sda, GPIO_FUNC_I2C);
-
-    return ack;
-}
-
 void TwoWire::_handleTimeout(bool reset) {
     _timeoutFlag = true;
 
@@ -386,7 +329,7 @@ uint8_t TwoWire::endTransmission(bool stopBit) {
     _txBegun = false;
     if (!_buffLen) {
         // Special-case 0-len writes which are used for I2C probing
-        return _probe(_addr, _sda, _scl, _clkHz) ? 0 : 2;
+        return i2c_read_timeout_us(_i2c, _addr, _buff, 1, false, 1000) < 0 ? 2 : 0;
     } else {
         auto len = _buffLen;
         auto ret = i2c_write_blocking_until(_i2c, _addr, _buff, _buffLen, !stopBit, make_timeout_time_ms(_timeout));
