@@ -24,6 +24,10 @@
 #include <hardware/sync.h>
 #include <map>
 
+// FreeRTOS potential includes
+extern void taskEXIT_CRITICAL() __attribute__((weak));
+extern void taskENTER_CRITICAL() __attribute__((weak));
+
 // Support nested IRQ disable/re-enable
 #ifndef maxIRQs
 #define maxIRQs 15
@@ -32,15 +36,22 @@ static uint32_t _irqStackTop[2] = { 0, 0 };
 static uint32_t _irqStack[2][maxIRQs];
 
 extern "C" void interrupts() {
+    if (__freeRTOSinitted){ 
+        taskEXIT_CRITICAL();
+    } else {
     auto core = get_core_num();
     if (!_irqStackTop[core]) {
         // ERROR
         return;
     }
     restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
+    }
 }
 
 extern "C" void noInterrupts() {
+    if (__freeRTOSinitted) {
+        taskENTER_CRITICAL();
+    } else {
     auto core = get_core_num();
     if (_irqStackTop[core] == maxIRQs) {
         // ERROR
@@ -48,6 +59,7 @@ extern "C" void noInterrupts() {
     }
 
     _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
+    }
 }
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
