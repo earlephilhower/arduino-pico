@@ -298,8 +298,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
-    elif name == "datanoisetv_picoadk_v2":
-        BuildPSRAM(name)
+    
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
     if chip == "rp2350":
@@ -308,6 +307,8 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAM(name)
             BuildPSRAMCS(name)
             BuildPSRAMFreq(name)
+        elif name == "datanoisetv_picoadk_v2":
+            BuildPSRAM(name)
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
