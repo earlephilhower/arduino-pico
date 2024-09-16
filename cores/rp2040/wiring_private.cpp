@@ -23,10 +23,8 @@
 #include <hardware/gpio.h>
 #include <hardware/sync.h>
 #include <map>
+#include "_freertos.h"
 
-// FreeRTOS potential includes
-extern void taskEXIT_CRITICAL() __attribute__((weak));
-extern void taskENTER_CRITICAL() __attribute__((weak));
 
 // Support nested IRQ disable/re-enable
 #ifndef maxIRQs
@@ -37,7 +35,7 @@ static uint32_t _irqStack[2][maxIRQs];
 
 extern "C" void interrupts() {
     if (__freeRTOSinitted) {
-        taskEXIT_CRITICAL();
+        __freertos_task_exit_critical();
     } else {
         auto core = get_core_num();
         if (!_irqStackTop[core]) {
@@ -50,7 +48,7 @@ extern "C" void interrupts() {
 
 extern "C" void noInterrupts() {
     if (__freeRTOSinitted) {
-        taskENTER_CRITICAL();
+        __freertos_task_enter_critical();
     } else {
         auto core = get_core_num();
         if (_irqStackTop[core] == maxIRQs) {

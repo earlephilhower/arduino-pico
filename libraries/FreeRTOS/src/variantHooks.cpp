@@ -91,6 +91,14 @@ extern "C" {
     bool __freertos_check_if_in_isr() {
         return portCHECK_IF_IN_ISR();
     }
+
+    void __freertos_task_exit_critical() {
+        taskEXIT_CRITICAL();
+    }
+
+    void __freertos_task_enter_critical() {
+        taskENTER_CRITICAL();
+    }
 }
 
 
