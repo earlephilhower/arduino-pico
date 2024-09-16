@@ -566,8 +566,6 @@ usbd_class_driver_t const *usbd_app_driver_get_cb(uint8_t *driver_count) {
 
 #elif defined NO_USB
 
-// will ensure backward compatibility with existing code when using pico-debug
-
 #warning "NO_USB selected. No output to Serial will occur!"
 
 #include <Arduino.h>

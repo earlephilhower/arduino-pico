@@ -47,8 +47,7 @@
             "jlink",
             "raspberrypi-swd",
             "picotool",
-            "picoprobe",
-            "pico-debug"
+            "picoprobe"
         ]
     },
     "url": "https://coresg.tech/evn",
