@@ -179,6 +179,12 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
     DEBUGSPI("SPI::transfer completed\n");
 }
 
+#ifdef PICO_RP2350B
+#define GPIOIRQREGS 6
+#else
+#define GPIOIRQREGS 4
+#endif
+
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
     noInterrupts(); // Avoid possible race conditions if IRQ comes in while main app is in middle of this
     DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)\n", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
@@ -201,7 +207,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
     }
     // Disable any IRQs that are being used for SPI
     io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    DEBUGSPI("SPI: IRQ masks before = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
+    DEBUGSPI("SPI: IRQ masks before = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
     for (auto entry : _usingIRQs) {
         int gpio = entry.first;
 
@@ -212,7 +218,7 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         DEBUGSPI("SPI: GPIO %d = %lu\n", gpio, val);
         (*en_reg) ^= val << (4 * (gpio % 8));
     }
-    DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
+    DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
     interrupts();
 }
 
@@ -227,7 +233,7 @@ void SPIClassRP2040::endTransaction(void) {
     }
     io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
     (void) irq_ctrl_base;
-    DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3]);
+    DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
     interrupts();
 }
 
@@ -329,7 +335,7 @@ void SPIClassRP2040::abortAsync() {
 
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
-#ifdef RP2350B
+#ifdef PICO_RP2350B
     constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20, 32, 26}) /* SPI0 */,
                                     __bitset({8, 12, 24, 28, 40, 44})  /* SPI1 */
                                   };
@@ -356,7 +362,7 @@ bool SPIClassRP2040::setRX(pin_size_t pin) {
 }
 
 bool SPIClassRP2040::setCS(pin_size_t pin) {
-#ifdef RP2350B
+#ifdef PICO_RP2350B
     constexpr uint64_t valid[2] = { __bitset({1, 5, 17, 21, 33, 37}) /* SPI0 */,
                                     __bitset({9, 13, 25, 29, 41, 45})  /* SPI1 */
                                   };
@@ -383,7 +389,7 @@ bool SPIClassRP2040::setCS(pin_size_t pin) {
 }
 
 bool SPIClassRP2040::setSCK(pin_size_t pin) {
-#ifdef RP2350B
+#ifdef PICO_RP2350B
     constexpr uint64_t valid[2] = { __bitset({2, 6, 18, 22, 34, 38}) /* SPI0 */,
                                     __bitset({10, 14, 26, 30, 42, 46})  /* SPI1 */
                                   };
@@ -410,7 +416,7 @@ bool SPIClassRP2040::setSCK(pin_size_t pin) {
 }
 
 bool SPIClassRP2040::setTX(pin_size_t pin) {
-#ifdef RP2350B
+#ifdef PICO_RP2350B
     constexpr uint64_t valid[2] = { __bitset({3, 7, 19, 23, 35, 39}) /* SPI0 */,
                                     __bitset({11, 15, 27, 31, 43, 47})  /* SPI1 */
                                   };

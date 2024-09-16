@@ -49,7 +49,7 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
 }
 
 bool TwoWire::setSDA(pin_size_t pin) {
-#ifdef RP2350B
+#ifdef PICO_RP2350B
     constexpr uint64_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44}) /* I2C0 */,
                                     __bitset({2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46})  /* I2C1 */
                                   };
@@ -76,7 +76,7 @@ bool TwoWire::setSDA(pin_size_t pin) {
 }
 
 bool TwoWire::setSCL(pin_size_t pin) {
-#ifdef RP2350B
+#ifdef PICO_RP2350B
     constexpr uint64_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45}) /* I2C0 */,
                                     __bitset({3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47})  /* I2C1 */
                                   };
@@ -409,10 +409,17 @@ size_t TwoWire::write(uint8_t ucData) {
     }
 
     if (_slave) {
-        // Wait for a spot in the TX FIFO
-        while (0 == (_i2c->hw->status & (1 << 1))) { /* noop wait */ }
-        _i2c->hw->data_cmd = ucData;
-        return 1;
+        // Wait for a spot in the TX FIFO and return in case of timeout
+        auto end = make_timeout_time_ms(_timeout);
+        while ((i2c_get_write_available(_i2c) == 0) && !time_reached(end)) { /* noop wait */ }
+
+        if (i2c_get_write_available(_i2c) > 0) {
+            _i2c->hw->data_cmd = ucData;
+            return 1;
+        } else {
+            _handleTimeout(_reset_with_timeout);
+            return 0;
+        }
     } else {
         if (!_txBegun || (_buffLen == sizeof(_buff))) {
             return 0;
