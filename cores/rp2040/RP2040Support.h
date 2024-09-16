@@ -253,7 +253,7 @@ public:
     }
 
     inline int getUsedPSRAMHeap() {
-#if defined(PICO_RP2350)
+#if defined(RP2350_PSRAM_CS)
         extern size_t __psram_total_used();
         return __psram_total_used();
 #else
@@ -262,7 +262,7 @@ public:
     }
 
     inline int getTotalPSRAMHeap() {
-#if defined(PICO_RP2350)
+#if defined(RP2350_PSRAM_CS)
         extern size_t __psram_total_space();
         return __psram_total_space();
 #else
@@ -290,7 +290,7 @@ public:
     }
 
     inline size_t getPSRAMSize() {
-#if defined(PICO_RP2350)
+#if defined(RP2350_PSRAM_CS)
         extern size_t __psram_size;
         return __psram_size;
 #else

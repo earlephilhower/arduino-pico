@@ -48,8 +48,8 @@ static inline pio_sm_config pio_tx_program_get_default_config(uint offset) {
 static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_tx) {
     // Tell PIO to initially drive output-high on the selected pin, then map PIO
     // onto that pin with the IO muxes.
-    pio_sm_set_pins_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
-    pio_sm_set_pindirs_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
+    pio_sm_set_set_pins(pio, sm, pin_tx, 1);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin_tx, 1, true);
     pio_gpio_init(pio, pin_tx);
     pio_sm_config c = pio_tx_program_get_default_config(offset);
     // OUT shifts to right, no autopull

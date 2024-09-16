@@ -6,7 +6,6 @@
 // Pin definitions taken from:
 //    https://github.com/Breadstick-Innovations/Raspberry-Breadstick
 
-
 // Serial
 #define PIN_SERIAL1_TX (20u)
 #define PIN_SERIAL1_RX (21u)

@@ -79,10 +79,16 @@ inline spi_cpha_t SPISlaveClass::cpha(SPISettings _spis) {
 }
 
 bool SPISlaveClass::setRX(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({0, 4, 16, 20}) /* SPI0 */,
+#ifdef RP2350B
+    constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20, 32, 26}) /* SPI0 */,
+                                    __bitset({8, 12, 24, 28, 40, 44})  /* SPI1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20}) /* SPI0 */,
                                     __bitset({8, 12, 24, 28})  /* SPI1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[spi_get_index(_spi)])) {
         _RX = pin;
         return true;
     }
@@ -100,10 +106,16 @@ bool SPISlaveClass::setRX(pin_size_t pin) {
 }
 
 bool SPISlaveClass::setCS(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({1, 5, 17, 21}) /* SPI0 */,
+#ifdef RP2350B
+    constexpr uint64_t valid[2] = { __bitset({1, 5, 17, 21, 33, 37}) /* SPI0 */,
+                                    __bitset({9, 13, 25, 29, 41, 45})  /* SPI1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({1, 5, 17, 21}) /* SPI0 */,
                                     __bitset({9, 13, 25, 29})  /* SPI1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[spi_get_index(_spi)])) {
         _CS = pin;
         return true;
     }
@@ -121,10 +133,16 @@ bool SPISlaveClass::setCS(pin_size_t pin) {
 }
 
 bool SPISlaveClass::setSCK(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({2, 6, 18, 22}) /* SPI0 */,
+#ifdef RP2350B
+    constexpr uint64_t valid[2] = { __bitset({2, 6, 18, 22, 34, 38}) /* SPI0 */,
+                                    __bitset({10, 14, 26, 30, 42, 46})  /* SPI1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({2, 6, 18, 22}) /* SPI0 */,
                                     __bitset({10, 14, 26})  /* SPI1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[spi_get_index(_spi)])) {
         _SCK = pin;
         return true;
     }
@@ -142,10 +160,16 @@ bool SPISlaveClass::setSCK(pin_size_t pin) {
 }
 
 bool SPISlaveClass::setTX(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({3, 7, 19, 23}) /* SPI0 */,
+#ifdef RP2350B
+    constexpr uint64_t valid[2] = { __bitset({3, 7, 19, 23, 35, 39}) /* SPI0 */,
+                                    __bitset({11, 15, 27, 31, 43, 47})  /* SPI1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({3, 7, 19, 23}) /* SPI0 */,
                                     __bitset({11, 15, 27})  /* SPI1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[spi_get_index(_spi)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[spi_get_index(_spi)])) {
         _TX = pin;
         return true;
     }

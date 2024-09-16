@@ -54,7 +54,7 @@ static inline void pdm_pio_program_init(PIO pio, uint sm, uint offset, uint clkP
     pio_sm_set_consecutive_pindirs(pio, sm, dataPin, 1, false);
     pio_sm_set_consecutive_pindirs(pio, sm, clkPin, 1, true);
     pio_sm_set_pins_with_mask(pio, sm, 0, (1u << clkPin));
-    //pio_gpio_init(pio, dataPin);
+    pio_gpio_init(pio, dataPin);
     pio_gpio_init(pio, clkPin);
     pio_sm_init(pio, sm, offset, &c);
     pio_sm_set_enabled(pio, sm, true);

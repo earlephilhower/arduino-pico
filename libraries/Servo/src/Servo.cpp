@@ -85,7 +85,7 @@ int Servo::attach(pin_size_t pin, int minUs, int maxUs, int value) {
         digitalWrite(pin, LOW);
         pinMode(pin, OUTPUT);
         _pin = pin;
-        if (!_servoPgm.prepare(&_pio, &_smIdx, &_pgmOffset)) {
+        if (!_servoPgm.prepare(&_pio, &_smIdx, &_pgmOffset, pin, 1)) {
             // ERROR, no free slots
             return -1;
         }

@@ -15,7 +15,7 @@
 
 //Accelerometer
 #define PIN_LIS_CS         (1u)
-#define PIN_LIS_INTERRUPT1 (23u)
+//#define PIN_LIS_INTERRUPT1 (23u)
 #define PIN_LIS_INTERRUPT1 (25u)
 
 //MAX31865
