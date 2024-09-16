@@ -1,8 +1,6 @@
 FreeRTOS SMP
 ============
 
-**NOTE:** FreeRTOS is not yet supported on the RP2350.  PRs gladly accepted!
-
 The SMP (multicore) port of FreeRTOS is included with the core.  This allows complex
 task operations and real preemptive multithreading in your sketches.  While the
 ``setup1`` and ``loop1`` way of multitasking is simplest for most folks, FreeRTOS
