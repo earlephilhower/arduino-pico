@@ -409,10 +409,17 @@ size_t TwoWire::write(uint8_t ucData) {
     }
 
     if (_slave) {
-        // Wait for a spot in the TX FIFO
-        while (0 == (_i2c->hw->status & (1 << 1))) { /* noop wait */ }
-        _i2c->hw->data_cmd = ucData;
-        return 1;
+        // Wait for a spot in the TX FIFO and return in case of timeout
+        auto end = make_timeout_time_ms(_timeout);
+        while ((i2c_get_write_available(_i2c) == 0) && !time_reached(end)) { /* noop wait */ }
+
+        if (i2c_get_write_available(_i2c) > 0) {
+            _i2c->hw->data_cmd = ucData;
+            return 1;
+        } else {
+            _handleTimeout(_reset_with_timeout);
+            return 0;
+        }
     } else {
         if (!_txBegun || (_buffLen == sizeof(_buff))) {
             return 0;
