@@ -38,8 +38,13 @@
 #define PIN_SPI1_SCK        (14u)
 #define PIN_SPI1_SS         (13u)
 // Handshake signal from ESP32C3
-#define ESP32_HS            (18u)
+#define PIN_ESP32_HS        (18u)
 #define ESP32_SPI           SPI1
+// Definitions for ESP hosted
+#define ESPHOST_DATA_READY  PIN_ESP_MODE
+#define ESPHOST_RESET       PIN_ESP_RST
+#define ESPHOST_HANDSHAKE   PIN_ESP32_HS
+#define ESPHOST_CS          PIN_SPI1_SS
 
 // Wire
 #define PIN_WIRE0_SDA       (0u)
@@ -85,3 +90,14 @@ static const uint8_t A2 = (28u);
 static const uint8_t A3 = (29u);
 static const uint8_t A4 = (25u);
 static const uint8_t A5 = (21u);
+
+static const uint8_t SS = PIN_SPI0_SS;
+static const uint8_t MOSI = PIN_SPI0_MOSI;
+static const uint8_t MISO = PIN_SPI0_MISO;
+static const uint8_t SCK = PIN_SPI0_SCK;
+
+static const uint8_t SDA = PIN_WIRE0_SDA;
+static const uint8_t SCL = PIN_WIRE0_SCL;
+
+static const uint8_t RX = PIN_SERIAL1_RX;
+static const uint8_t TX = PIN_SERIAL1_TX;
