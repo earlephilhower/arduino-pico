@@ -127,7 +127,6 @@ elif chip == "rp2350":
             "ARDUINO_ARCH_RP2040",
             ("F_CPU", "$BOARD_F_CPU"),
             ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
-            ("CFG_TUSB_DEBUG", "0"),
             ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
             ("CFG_TUSB_OS", "OPT_OS_PICO"),
             ("LIB_BOOT_STAGE2_HEADERS", "1"),
