@@ -27,7 +27,6 @@ EOL
     fi
     # Add items to the following list with "\n" netween them to skip running.  No spaces, tabs, etc. allowed
     read -d '' skiplist << EOL || true
-/ESPHost/
 /#attic/
 /AvrAdcLogger/
 /examplesV1/
