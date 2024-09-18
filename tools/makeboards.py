@@ -274,7 +274,7 @@ def BuildGlobalMenuList():
     print("menu.boot2=Boot Stage 2")
     print("menu.wificountry=WiFi Region")
     print("menu.usbstack=USB Stack")
-    print("menu.espwifitype=ESP wifi type")
+    print("menu.espwifitype=ESP Wifi Type")
     print("menu.ipbtstack=IP/Bluetooth Stack")
     print("menu.uploadmethod=Upload Method")
 
