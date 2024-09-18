@@ -69,19 +69,11 @@ bool Challenger2040WiFiClass::waitForReady() {
     return false;
 }
 
-int esp_host_spi_init(void);
 // Reset the ESP and wait for the "ready" prompt to be returned.
 bool Challenger2040WiFiClass::reset() {
-#if defined(WIFIESPAT2)
     runReset();
-    delay(100);
-
     _serial->begin(DEFAULT_ESP_BAUDRATE);
     return waitForReady();
-#else
-    esp_host_spi_init();
-    return true;
-#endif
 }
 
 // Checks to see if the modem responds to the "AT" poll command.

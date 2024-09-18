@@ -18,6 +18,7 @@ menu.dbglvl=Debug Level
 menu.boot2=Boot Stage 2
 menu.wificountry=WiFi Region
 menu.usbstack=USB Stack
+menu.espwifitype=ESP Wifi Type
 menu.ipbtstack=IP/Bluetooth Stack
 menu.uploadmethod=Upload Method
 
@@ -13529,7 +13530,114 @@ challenger_2040_wifi_ble.build.ldscript=memmap_default.ld
 challenger_2040_wifi_ble.build.boot2=boot2_w25q080_2_padded_checksum
 challenger_2040_wifi_ble.build.usb_manufacturer="iLabs"
 challenger_2040_wifi_ble.build.usb_product="Challenger 2040 WiFi/BLE"
-challenger_2040_wifi_ble.build.extra_flags=-DWIFIESPAT2
+challenger_2040_wifi_ble.menu.espwifitype.esp_at=ESP AT
+challenger_2040_wifi_ble.menu.espwifitype.esp_at.build.espwifitype=-DWIFIESPAT2
+challenger_2040_wifi_ble.menu.espwifitype.esp_hosted=ESP Hosted
+challenger_2040_wifi_ble.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1
+challenger_2040_wifi_ble.menu.wificountry.worldwide=Worldwide
+challenger_2040_wifi_ble.menu.wificountry.worldwide.build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
+challenger_2040_wifi_ble.menu.wificountry.australia=Australia
+challenger_2040_wifi_ble.menu.wificountry.australia.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRALIA
+challenger_2040_wifi_ble.menu.wificountry.austria=Austria
+challenger_2040_wifi_ble.menu.wificountry.austria.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRIA
+challenger_2040_wifi_ble.menu.wificountry.belgium=Belgium
+challenger_2040_wifi_ble.menu.wificountry.belgium.build.wificc=-DWIFICC=CYW43_COUNTRY_BELGIUM
+challenger_2040_wifi_ble.menu.wificountry.brazil=Brazil
+challenger_2040_wifi_ble.menu.wificountry.brazil.build.wificc=-DWIFICC=CYW43_COUNTRY_BRAZIL
+challenger_2040_wifi_ble.menu.wificountry.canada=Canada
+challenger_2040_wifi_ble.menu.wificountry.canada.build.wificc=-DWIFICC=CYW43_COUNTRY_CANADA
+challenger_2040_wifi_ble.menu.wificountry.chile=Chile
+challenger_2040_wifi_ble.menu.wificountry.chile.build.wificc=-DWIFICC=CYW43_COUNTRY_CHILE
+challenger_2040_wifi_ble.menu.wificountry.china=China
+challenger_2040_wifi_ble.menu.wificountry.china.build.wificc=-DWIFICC=CYW43_COUNTRY_CHINA
+challenger_2040_wifi_ble.menu.wificountry.colombia=Colombia
+challenger_2040_wifi_ble.menu.wificountry.colombia.build.wificc=-DWIFICC=CYW43_COUNTRY_COLOMBIA
+challenger_2040_wifi_ble.menu.wificountry.czech_republic=Czech Republic
+challenger_2040_wifi_ble.menu.wificountry.czech_republic.build.wificc=-DWIFICC=CYW43_COUNTRY_CZECH_REPUBLIC
+challenger_2040_wifi_ble.menu.wificountry.denmark=Denmark
+challenger_2040_wifi_ble.menu.wificountry.denmark.build.wificc=-DWIFICC=CYW43_COUNTRY_DENMARK
+challenger_2040_wifi_ble.menu.wificountry.estonia=Estonia
+challenger_2040_wifi_ble.menu.wificountry.estonia.build.wificc=-DWIFICC=CYW43_COUNTRY_ESTONIA
+challenger_2040_wifi_ble.menu.wificountry.finland=Finland
+challenger_2040_wifi_ble.menu.wificountry.finland.build.wificc=-DWIFICC=CYW43_COUNTRY_FINLAND
+challenger_2040_wifi_ble.menu.wificountry.france=France
+challenger_2040_wifi_ble.menu.wificountry.france.build.wificc=-DWIFICC=CYW43_COUNTRY_FRANCE
+challenger_2040_wifi_ble.menu.wificountry.germany=Germany
+challenger_2040_wifi_ble.menu.wificountry.germany.build.wificc=-DWIFICC=CYW43_COUNTRY_GERMANY
+challenger_2040_wifi_ble.menu.wificountry.greece=Greece
+challenger_2040_wifi_ble.menu.wificountry.greece.build.wificc=-DWIFICC=CYW43_COUNTRY_GREECE
+challenger_2040_wifi_ble.menu.wificountry.hong_kong=Hong Kong
+challenger_2040_wifi_ble.menu.wificountry.hong_kong.build.wificc=-DWIFICC=CYW43_COUNTRY_HONG_KONG
+challenger_2040_wifi_ble.menu.wificountry.hungary=Hungary
+challenger_2040_wifi_ble.menu.wificountry.hungary.build.wificc=-DWIFICC=CYW43_COUNTRY_HUNGARY
+challenger_2040_wifi_ble.menu.wificountry.iceland=Iceland
+challenger_2040_wifi_ble.menu.wificountry.iceland.build.wificc=-DWIFICC=CYW43_COUNTRY_ICELAND
+challenger_2040_wifi_ble.menu.wificountry.india=India
+challenger_2040_wifi_ble.menu.wificountry.india.build.wificc=-DWIFICC=CYW43_COUNTRY_INDIA
+challenger_2040_wifi_ble.menu.wificountry.israel=Israel
+challenger_2040_wifi_ble.menu.wificountry.israel.build.wificc=-DWIFICC=CYW43_COUNTRY_ISRAEL
+challenger_2040_wifi_ble.menu.wificountry.italy=Italy
+challenger_2040_wifi_ble.menu.wificountry.italy.build.wificc=-DWIFICC=CYW43_COUNTRY_ITALY
+challenger_2040_wifi_ble.menu.wificountry.japan=Japan
+challenger_2040_wifi_ble.menu.wificountry.japan.build.wificc=-DWIFICC=CYW43_COUNTRY_JAPAN
+challenger_2040_wifi_ble.menu.wificountry.kenya=Kenya
+challenger_2040_wifi_ble.menu.wificountry.kenya.build.wificc=-DWIFICC=CYW43_COUNTRY_KENYA
+challenger_2040_wifi_ble.menu.wificountry.latvia=Latvia
+challenger_2040_wifi_ble.menu.wificountry.latvia.build.wificc=-DWIFICC=CYW43_COUNTRY_LATVIA
+challenger_2040_wifi_ble.menu.wificountry.liechtenstein=Liechtenstein
+challenger_2040_wifi_ble.menu.wificountry.liechtenstein.build.wificc=-DWIFICC=CYW43_COUNTRY_LIECHTENSTEIN
+challenger_2040_wifi_ble.menu.wificountry.lithuania=Lithuania
+challenger_2040_wifi_ble.menu.wificountry.lithuania.build.wificc=-DWIFICC=CYW43_COUNTRY_LITHUANIA
+challenger_2040_wifi_ble.menu.wificountry.luxembourg=Luxembourg
+challenger_2040_wifi_ble.menu.wificountry.luxembourg.build.wificc=-DWIFICC=CYW43_COUNTRY_LUXEMBOURG
+challenger_2040_wifi_ble.menu.wificountry.malaysia=Malaysia
+challenger_2040_wifi_ble.menu.wificountry.malaysia.build.wificc=-DWIFICC=CYW43_COUNTRY_MALAYSIA
+challenger_2040_wifi_ble.menu.wificountry.malta=Malta
+challenger_2040_wifi_ble.menu.wificountry.malta.build.wificc=-DWIFICC=CYW43_COUNTRY_MALTA
+challenger_2040_wifi_ble.menu.wificountry.mexico=Mexico
+challenger_2040_wifi_ble.menu.wificountry.mexico.build.wificc=-DWIFICC=CYW43_COUNTRY_MEXICO
+challenger_2040_wifi_ble.menu.wificountry.netherlands=Netherlands
+challenger_2040_wifi_ble.menu.wificountry.netherlands.build.wificc=-DWIFICC=CYW43_COUNTRY_NETHERLANDS
+challenger_2040_wifi_ble.menu.wificountry.new_zealand=New Zealand
+challenger_2040_wifi_ble.menu.wificountry.new_zealand.build.wificc=-DWIFICC=CYW43_COUNTRY_NEW_ZEALAND
+challenger_2040_wifi_ble.menu.wificountry.nigeria=Nigeria
+challenger_2040_wifi_ble.menu.wificountry.nigeria.build.wificc=-DWIFICC=CYW43_COUNTRY_NIGERIA
+challenger_2040_wifi_ble.menu.wificountry.norway=Norway
+challenger_2040_wifi_ble.menu.wificountry.norway.build.wificc=-DWIFICC=CYW43_COUNTRY_NORWAY
+challenger_2040_wifi_ble.menu.wificountry.peru=Peru
+challenger_2040_wifi_ble.menu.wificountry.peru.build.wificc=-DWIFICC=CYW43_COUNTRY_PERU
+challenger_2040_wifi_ble.menu.wificountry.philippines=Philippines
+challenger_2040_wifi_ble.menu.wificountry.philippines.build.wificc=-DWIFICC=CYW43_COUNTRY_PHILIPPINES
+challenger_2040_wifi_ble.menu.wificountry.poland=Poland
+challenger_2040_wifi_ble.menu.wificountry.poland.build.wificc=-DWIFICC=CYW43_COUNTRY_POLAND
+challenger_2040_wifi_ble.menu.wificountry.portugal=Portugal
+challenger_2040_wifi_ble.menu.wificountry.portugal.build.wificc=-DWIFICC=CYW43_COUNTRY_PORTUGAL
+challenger_2040_wifi_ble.menu.wificountry.singapore=Singapore
+challenger_2040_wifi_ble.menu.wificountry.singapore.build.wificc=-DWIFICC=CYW43_COUNTRY_SINGAPORE
+challenger_2040_wifi_ble.menu.wificountry.slovakia=Slovakia
+challenger_2040_wifi_ble.menu.wificountry.slovakia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVAKIA
+challenger_2040_wifi_ble.menu.wificountry.slovenia=Slovenia
+challenger_2040_wifi_ble.menu.wificountry.slovenia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVENIA
+challenger_2040_wifi_ble.menu.wificountry.south_africa=South Africa
+challenger_2040_wifi_ble.menu.wificountry.south_africa.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_AFRICA
+challenger_2040_wifi_ble.menu.wificountry.south_korea=South Korea
+challenger_2040_wifi_ble.menu.wificountry.south_korea.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_KOREA
+challenger_2040_wifi_ble.menu.wificountry.spain=Spain
+challenger_2040_wifi_ble.menu.wificountry.spain.build.wificc=-DWIFICC=CYW43_COUNTRY_SPAIN
+challenger_2040_wifi_ble.menu.wificountry.sweden=Sweden
+challenger_2040_wifi_ble.menu.wificountry.sweden.build.wificc=-DWIFICC=CYW43_COUNTRY_SWEDEN
+challenger_2040_wifi_ble.menu.wificountry.switzerland=Switzerland
+challenger_2040_wifi_ble.menu.wificountry.switzerland.build.wificc=-DWIFICC=CYW43_COUNTRY_SWITZERLAND
+challenger_2040_wifi_ble.menu.wificountry.taiwan=Taiwan
+challenger_2040_wifi_ble.menu.wificountry.taiwan.build.wificc=-DWIFICC=CYW43_COUNTRY_TAIWAN
+challenger_2040_wifi_ble.menu.wificountry.thailand=Thailand
+challenger_2040_wifi_ble.menu.wificountry.thailand.build.wificc=-DWIFICC=CYW43_COUNTRY_THAILAND
+challenger_2040_wifi_ble.menu.wificountry.turkey=Turkey
+challenger_2040_wifi_ble.menu.wificountry.turkey.build.wificc=-DWIFICC=CYW43_COUNTRY_TURKEY
+challenger_2040_wifi_ble.menu.wificountry.uk=UK
+challenger_2040_wifi_ble.menu.wificountry.uk.build.wificc=-DWIFICC=CYW43_COUNTRY_UK
+challenger_2040_wifi_ble.menu.wificountry.usa=USA
+challenger_2040_wifi_ble.menu.wificountry.usa.build.wificc=-DWIFICC=CYW43_COUNTRY_USA
 challenger_2040_wifi_ble.menu.flash.8388608_0=8MB (no FS)
 challenger_2040_wifi_ble.menu.flash.8388608_0.upload.maximum_size=8384512
 challenger_2040_wifi_ble.menu.flash.8388608_0.build.flash_total=8388608
@@ -13537,76 +13645,6 @@ challenger_2040_wifi_ble.menu.flash.8388608_0.build.flash_length=8384512
 challenger_2040_wifi_ble.menu.flash.8388608_0.build.eeprom_start=276819968
 challenger_2040_wifi_ble.menu.flash.8388608_0.build.fs_start=276819968
 challenger_2040_wifi_ble.menu.flash.8388608_0.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_65536=8MB (Sketch: 8128KB, FS: 64KB)
-challenger_2040_wifi_ble.menu.flash.8388608_65536.upload.maximum_size=8318976
-challenger_2040_wifi_ble.menu.flash.8388608_65536.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_65536.build.flash_length=8318976
-challenger_2040_wifi_ble.menu.flash.8388608_65536.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_65536.build.fs_start=276754432
-challenger_2040_wifi_ble.menu.flash.8388608_65536.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_131072=8MB (Sketch: 8064KB, FS: 128KB)
-challenger_2040_wifi_ble.menu.flash.8388608_131072.upload.maximum_size=8253440
-challenger_2040_wifi_ble.menu.flash.8388608_131072.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_131072.build.flash_length=8253440
-challenger_2040_wifi_ble.menu.flash.8388608_131072.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_131072.build.fs_start=276688896
-challenger_2040_wifi_ble.menu.flash.8388608_131072.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_262144=8MB (Sketch: 7936KB, FS: 256KB)
-challenger_2040_wifi_ble.menu.flash.8388608_262144.upload.maximum_size=8122368
-challenger_2040_wifi_ble.menu.flash.8388608_262144.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_262144.build.flash_length=8122368
-challenger_2040_wifi_ble.menu.flash.8388608_262144.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_262144.build.fs_start=276557824
-challenger_2040_wifi_ble.menu.flash.8388608_262144.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_524288=8MB (Sketch: 7680KB, FS: 512KB)
-challenger_2040_wifi_ble.menu.flash.8388608_524288.upload.maximum_size=7860224
-challenger_2040_wifi_ble.menu.flash.8388608_524288.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_524288.build.flash_length=7860224
-challenger_2040_wifi_ble.menu.flash.8388608_524288.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_524288.build.fs_start=276295680
-challenger_2040_wifi_ble.menu.flash.8388608_524288.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_1048576=8MB (Sketch: 7MB, FS: 1MB)
-challenger_2040_wifi_ble.menu.flash.8388608_1048576.upload.maximum_size=7335936
-challenger_2040_wifi_ble.menu.flash.8388608_1048576.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_1048576.build.flash_length=7335936
-challenger_2040_wifi_ble.menu.flash.8388608_1048576.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_1048576.build.fs_start=275771392
-challenger_2040_wifi_ble.menu.flash.8388608_1048576.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_2097152=8MB (Sketch: 6MB, FS: 2MB)
-challenger_2040_wifi_ble.menu.flash.8388608_2097152.upload.maximum_size=6287360
-challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.flash_length=6287360
-challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.fs_start=274722816
-challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_3145728=8MB (Sketch: 5MB, FS: 3MB)
-challenger_2040_wifi_ble.menu.flash.8388608_3145728.upload.maximum_size=5238784
-challenger_2040_wifi_ble.menu.flash.8388608_3145728.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_3145728.build.flash_length=5238784
-challenger_2040_wifi_ble.menu.flash.8388608_3145728.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_3145728.build.fs_start=273674240
-challenger_2040_wifi_ble.menu.flash.8388608_3145728.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_4194304=8MB (Sketch: 4MB, FS: 4MB)
-challenger_2040_wifi_ble.menu.flash.8388608_4194304.upload.maximum_size=4190208
-challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.flash_length=4190208
-challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.fs_start=272625664
-challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_5242880=8MB (Sketch: 3MB, FS: 5MB)
-challenger_2040_wifi_ble.menu.flash.8388608_5242880.upload.maximum_size=3141632
-challenger_2040_wifi_ble.menu.flash.8388608_5242880.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_5242880.build.flash_length=3141632
-challenger_2040_wifi_ble.menu.flash.8388608_5242880.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_5242880.build.fs_start=271577088
-challenger_2040_wifi_ble.menu.flash.8388608_5242880.build.fs_end=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_6291456=8MB (Sketch: 2MB, FS: 6MB)
-challenger_2040_wifi_ble.menu.flash.8388608_6291456.upload.maximum_size=2093056
-challenger_2040_wifi_ble.menu.flash.8388608_6291456.build.flash_total=8388608
-challenger_2040_wifi_ble.menu.flash.8388608_6291456.build.flash_length=2093056
-challenger_2040_wifi_ble.menu.flash.8388608_6291456.build.eeprom_start=276819968
-challenger_2040_wifi_ble.menu.flash.8388608_6291456.build.fs_start=270528512
-challenger_2040_wifi_ble.menu.flash.8388608_6291456.build.fs_end=276819968
 challenger_2040_wifi_ble.menu.flash.8388608_7340032=8MB (Sketch: 1MB, FS: 7MB)
 challenger_2040_wifi_ble.menu.flash.8388608_7340032.upload.maximum_size=1044480
 challenger_2040_wifi_ble.menu.flash.8388608_7340032.build.flash_total=8388608
@@ -13614,6 +13652,69 @@ challenger_2040_wifi_ble.menu.flash.8388608_7340032.build.flash_length=1044480
 challenger_2040_wifi_ble.menu.flash.8388608_7340032.build.eeprom_start=276819968
 challenger_2040_wifi_ble.menu.flash.8388608_7340032.build.fs_start=269479936
 challenger_2040_wifi_ble.menu.flash.8388608_7340032.build.fs_end=276819968
+challenger_2040_wifi_ble.menu.flash.8388608_4194304=8MB (Sketch: 4MB, FS: 4MB)
+challenger_2040_wifi_ble.menu.flash.8388608_4194304.upload.maximum_size=4190208
+challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.flash_total=8388608
+challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.flash_length=4190208
+challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.eeprom_start=276819968
+challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.fs_start=272625664
+challenger_2040_wifi_ble.menu.flash.8388608_4194304.build.fs_end=276819968
+challenger_2040_wifi_ble.menu.flash.8388608_2097152=8MB (Sketch: 6MB, FS: 2MB)
+challenger_2040_wifi_ble.menu.flash.8388608_2097152.upload.maximum_size=6287360
+challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.flash_total=8388608
+challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.flash_length=6287360
+challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.eeprom_start=276819968
+challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.fs_start=274722816
+challenger_2040_wifi_ble.menu.flash.8388608_2097152.build.fs_end=276819968
+challenger_2040_wifi_ble.menu.flash.16777216_0=16MB (no FS)
+challenger_2040_wifi_ble.menu.flash.16777216_0.upload.maximum_size=16773120
+challenger_2040_wifi_ble.menu.flash.16777216_0.build.flash_total=16777216
+challenger_2040_wifi_ble.menu.flash.16777216_0.build.flash_length=16773120
+challenger_2040_wifi_ble.menu.flash.16777216_0.build.eeprom_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_0.build.fs_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_0.build.fs_end=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_15728640=16MB (Sketch: 1MB, FS: 15MB)
+challenger_2040_wifi_ble.menu.flash.16777216_15728640.upload.maximum_size=1044480
+challenger_2040_wifi_ble.menu.flash.16777216_15728640.build.flash_total=16777216
+challenger_2040_wifi_ble.menu.flash.16777216_15728640.build.flash_length=1044480
+challenger_2040_wifi_ble.menu.flash.16777216_15728640.build.eeprom_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_15728640.build.fs_start=269479936
+challenger_2040_wifi_ble.menu.flash.16777216_15728640.build.fs_end=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_14680064=16MB (Sketch: 2MB, FS: 14MB)
+challenger_2040_wifi_ble.menu.flash.16777216_14680064.upload.maximum_size=2093056
+challenger_2040_wifi_ble.menu.flash.16777216_14680064.build.flash_total=16777216
+challenger_2040_wifi_ble.menu.flash.16777216_14680064.build.flash_length=2093056
+challenger_2040_wifi_ble.menu.flash.16777216_14680064.build.eeprom_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_14680064.build.fs_start=270528512
+challenger_2040_wifi_ble.menu.flash.16777216_14680064.build.fs_end=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_12582912=16MB (Sketch: 4MB, FS: 12MB)
+challenger_2040_wifi_ble.menu.flash.16777216_12582912.upload.maximum_size=4190208
+challenger_2040_wifi_ble.menu.flash.16777216_12582912.build.flash_total=16777216
+challenger_2040_wifi_ble.menu.flash.16777216_12582912.build.flash_length=4190208
+challenger_2040_wifi_ble.menu.flash.16777216_12582912.build.eeprom_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_12582912.build.fs_start=272625664
+challenger_2040_wifi_ble.menu.flash.16777216_12582912.build.fs_end=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_8388608=16MB (Sketch: 8MB, FS: 8MB)
+challenger_2040_wifi_ble.menu.flash.16777216_8388608.upload.maximum_size=8384512
+challenger_2040_wifi_ble.menu.flash.16777216_8388608.build.flash_total=16777216
+challenger_2040_wifi_ble.menu.flash.16777216_8388608.build.flash_length=8384512
+challenger_2040_wifi_ble.menu.flash.16777216_8388608.build.eeprom_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_8388608.build.fs_start=276819968
+challenger_2040_wifi_ble.menu.flash.16777216_8388608.build.fs_end=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_4194304=16MB (Sketch: 12MB, FS: 4MB)
+challenger_2040_wifi_ble.menu.flash.16777216_4194304.upload.maximum_size=12578816
+challenger_2040_wifi_ble.menu.flash.16777216_4194304.build.flash_total=16777216
+challenger_2040_wifi_ble.menu.flash.16777216_4194304.build.flash_length=12578816
+challenger_2040_wifi_ble.menu.flash.16777216_4194304.build.eeprom_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_4194304.build.fs_start=281014272
+challenger_2040_wifi_ble.menu.flash.16777216_4194304.build.fs_end=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_2097152=16MB (Sketch: 14MB, FS: 2MB)
+challenger_2040_wifi_ble.menu.flash.16777216_2097152.upload.maximum_size=14675968
+challenger_2040_wifi_ble.menu.flash.16777216_2097152.build.flash_total=16777216
+challenger_2040_wifi_ble.menu.flash.16777216_2097152.build.flash_length=14675968
+challenger_2040_wifi_ble.menu.flash.16777216_2097152.build.eeprom_start=285208576
+challenger_2040_wifi_ble.menu.flash.16777216_2097152.build.fs_start=283111424
+challenger_2040_wifi_ble.menu.flash.16777216_2097152.build.fs_end=285208576
 challenger_2040_wifi_ble.menu.freq.133=133 MHz
 challenger_2040_wifi_ble.menu.freq.133.build.f_cpu=133000000L
 challenger_2040_wifi_ble.menu.freq.50=50 MHz
@@ -15695,7 +15796,114 @@ challenger_2350_wifi6_ble5.build.boot2=boot2_generic_03h_2_padded_checksum
 challenger_2350_wifi6_ble5.build.usb_manufacturer="iLabs"
 challenger_2350_wifi6_ble5.build.usb_product="Challenger 2350 WiFi/BLE"
 challenger_2350_wifi6_ble5.build.psram_length=0x800000
-challenger_2350_wifi6_ble5.build.extra_flags=-DWIFIESPAT2
+challenger_2350_wifi6_ble5.menu.espwifitype.esp_at=ESP AT
+challenger_2350_wifi6_ble5.menu.espwifitype.esp_at.build.espwifitype=-DWIFIESPAT2
+challenger_2350_wifi6_ble5.menu.espwifitype.esp_hosted=ESP Hosted
+challenger_2350_wifi6_ble5.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1
+challenger_2350_wifi6_ble5.menu.wificountry.worldwide=Worldwide
+challenger_2350_wifi6_ble5.menu.wificountry.worldwide.build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
+challenger_2350_wifi6_ble5.menu.wificountry.australia=Australia
+challenger_2350_wifi6_ble5.menu.wificountry.australia.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRALIA
+challenger_2350_wifi6_ble5.menu.wificountry.austria=Austria
+challenger_2350_wifi6_ble5.menu.wificountry.austria.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRIA
+challenger_2350_wifi6_ble5.menu.wificountry.belgium=Belgium
+challenger_2350_wifi6_ble5.menu.wificountry.belgium.build.wificc=-DWIFICC=CYW43_COUNTRY_BELGIUM
+challenger_2350_wifi6_ble5.menu.wificountry.brazil=Brazil
+challenger_2350_wifi6_ble5.menu.wificountry.brazil.build.wificc=-DWIFICC=CYW43_COUNTRY_BRAZIL
+challenger_2350_wifi6_ble5.menu.wificountry.canada=Canada
+challenger_2350_wifi6_ble5.menu.wificountry.canada.build.wificc=-DWIFICC=CYW43_COUNTRY_CANADA
+challenger_2350_wifi6_ble5.menu.wificountry.chile=Chile
+challenger_2350_wifi6_ble5.menu.wificountry.chile.build.wificc=-DWIFICC=CYW43_COUNTRY_CHILE
+challenger_2350_wifi6_ble5.menu.wificountry.china=China
+challenger_2350_wifi6_ble5.menu.wificountry.china.build.wificc=-DWIFICC=CYW43_COUNTRY_CHINA
+challenger_2350_wifi6_ble5.menu.wificountry.colombia=Colombia
+challenger_2350_wifi6_ble5.menu.wificountry.colombia.build.wificc=-DWIFICC=CYW43_COUNTRY_COLOMBIA
+challenger_2350_wifi6_ble5.menu.wificountry.czech_republic=Czech Republic
+challenger_2350_wifi6_ble5.menu.wificountry.czech_republic.build.wificc=-DWIFICC=CYW43_COUNTRY_CZECH_REPUBLIC
+challenger_2350_wifi6_ble5.menu.wificountry.denmark=Denmark
+challenger_2350_wifi6_ble5.menu.wificountry.denmark.build.wificc=-DWIFICC=CYW43_COUNTRY_DENMARK
+challenger_2350_wifi6_ble5.menu.wificountry.estonia=Estonia
+challenger_2350_wifi6_ble5.menu.wificountry.estonia.build.wificc=-DWIFICC=CYW43_COUNTRY_ESTONIA
+challenger_2350_wifi6_ble5.menu.wificountry.finland=Finland
+challenger_2350_wifi6_ble5.menu.wificountry.finland.build.wificc=-DWIFICC=CYW43_COUNTRY_FINLAND
+challenger_2350_wifi6_ble5.menu.wificountry.france=France
+challenger_2350_wifi6_ble5.menu.wificountry.france.build.wificc=-DWIFICC=CYW43_COUNTRY_FRANCE
+challenger_2350_wifi6_ble5.menu.wificountry.germany=Germany
+challenger_2350_wifi6_ble5.menu.wificountry.germany.build.wificc=-DWIFICC=CYW43_COUNTRY_GERMANY
+challenger_2350_wifi6_ble5.menu.wificountry.greece=Greece
+challenger_2350_wifi6_ble5.menu.wificountry.greece.build.wificc=-DWIFICC=CYW43_COUNTRY_GREECE
+challenger_2350_wifi6_ble5.menu.wificountry.hong_kong=Hong Kong
+challenger_2350_wifi6_ble5.menu.wificountry.hong_kong.build.wificc=-DWIFICC=CYW43_COUNTRY_HONG_KONG
+challenger_2350_wifi6_ble5.menu.wificountry.hungary=Hungary
+challenger_2350_wifi6_ble5.menu.wificountry.hungary.build.wificc=-DWIFICC=CYW43_COUNTRY_HUNGARY
+challenger_2350_wifi6_ble5.menu.wificountry.iceland=Iceland
+challenger_2350_wifi6_ble5.menu.wificountry.iceland.build.wificc=-DWIFICC=CYW43_COUNTRY_ICELAND
+challenger_2350_wifi6_ble5.menu.wificountry.india=India
+challenger_2350_wifi6_ble5.menu.wificountry.india.build.wificc=-DWIFICC=CYW43_COUNTRY_INDIA
+challenger_2350_wifi6_ble5.menu.wificountry.israel=Israel
+challenger_2350_wifi6_ble5.menu.wificountry.israel.build.wificc=-DWIFICC=CYW43_COUNTRY_ISRAEL
+challenger_2350_wifi6_ble5.menu.wificountry.italy=Italy
+challenger_2350_wifi6_ble5.menu.wificountry.italy.build.wificc=-DWIFICC=CYW43_COUNTRY_ITALY
+challenger_2350_wifi6_ble5.menu.wificountry.japan=Japan
+challenger_2350_wifi6_ble5.menu.wificountry.japan.build.wificc=-DWIFICC=CYW43_COUNTRY_JAPAN
+challenger_2350_wifi6_ble5.menu.wificountry.kenya=Kenya
+challenger_2350_wifi6_ble5.menu.wificountry.kenya.build.wificc=-DWIFICC=CYW43_COUNTRY_KENYA
+challenger_2350_wifi6_ble5.menu.wificountry.latvia=Latvia
+challenger_2350_wifi6_ble5.menu.wificountry.latvia.build.wificc=-DWIFICC=CYW43_COUNTRY_LATVIA
+challenger_2350_wifi6_ble5.menu.wificountry.liechtenstein=Liechtenstein
+challenger_2350_wifi6_ble5.menu.wificountry.liechtenstein.build.wificc=-DWIFICC=CYW43_COUNTRY_LIECHTENSTEIN
+challenger_2350_wifi6_ble5.menu.wificountry.lithuania=Lithuania
+challenger_2350_wifi6_ble5.menu.wificountry.lithuania.build.wificc=-DWIFICC=CYW43_COUNTRY_LITHUANIA
+challenger_2350_wifi6_ble5.menu.wificountry.luxembourg=Luxembourg
+challenger_2350_wifi6_ble5.menu.wificountry.luxembourg.build.wificc=-DWIFICC=CYW43_COUNTRY_LUXEMBOURG
+challenger_2350_wifi6_ble5.menu.wificountry.malaysia=Malaysia
+challenger_2350_wifi6_ble5.menu.wificountry.malaysia.build.wificc=-DWIFICC=CYW43_COUNTRY_MALAYSIA
+challenger_2350_wifi6_ble5.menu.wificountry.malta=Malta
+challenger_2350_wifi6_ble5.menu.wificountry.malta.build.wificc=-DWIFICC=CYW43_COUNTRY_MALTA
+challenger_2350_wifi6_ble5.menu.wificountry.mexico=Mexico
+challenger_2350_wifi6_ble5.menu.wificountry.mexico.build.wificc=-DWIFICC=CYW43_COUNTRY_MEXICO
+challenger_2350_wifi6_ble5.menu.wificountry.netherlands=Netherlands
+challenger_2350_wifi6_ble5.menu.wificountry.netherlands.build.wificc=-DWIFICC=CYW43_COUNTRY_NETHERLANDS
+challenger_2350_wifi6_ble5.menu.wificountry.new_zealand=New Zealand
+challenger_2350_wifi6_ble5.menu.wificountry.new_zealand.build.wificc=-DWIFICC=CYW43_COUNTRY_NEW_ZEALAND
+challenger_2350_wifi6_ble5.menu.wificountry.nigeria=Nigeria
+challenger_2350_wifi6_ble5.menu.wificountry.nigeria.build.wificc=-DWIFICC=CYW43_COUNTRY_NIGERIA
+challenger_2350_wifi6_ble5.menu.wificountry.norway=Norway
+challenger_2350_wifi6_ble5.menu.wificountry.norway.build.wificc=-DWIFICC=CYW43_COUNTRY_NORWAY
+challenger_2350_wifi6_ble5.menu.wificountry.peru=Peru
+challenger_2350_wifi6_ble5.menu.wificountry.peru.build.wificc=-DWIFICC=CYW43_COUNTRY_PERU
+challenger_2350_wifi6_ble5.menu.wificountry.philippines=Philippines
+challenger_2350_wifi6_ble5.menu.wificountry.philippines.build.wificc=-DWIFICC=CYW43_COUNTRY_PHILIPPINES
+challenger_2350_wifi6_ble5.menu.wificountry.poland=Poland
+challenger_2350_wifi6_ble5.menu.wificountry.poland.build.wificc=-DWIFICC=CYW43_COUNTRY_POLAND
+challenger_2350_wifi6_ble5.menu.wificountry.portugal=Portugal
+challenger_2350_wifi6_ble5.menu.wificountry.portugal.build.wificc=-DWIFICC=CYW43_COUNTRY_PORTUGAL
+challenger_2350_wifi6_ble5.menu.wificountry.singapore=Singapore
+challenger_2350_wifi6_ble5.menu.wificountry.singapore.build.wificc=-DWIFICC=CYW43_COUNTRY_SINGAPORE
+challenger_2350_wifi6_ble5.menu.wificountry.slovakia=Slovakia
+challenger_2350_wifi6_ble5.menu.wificountry.slovakia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVAKIA
+challenger_2350_wifi6_ble5.menu.wificountry.slovenia=Slovenia
+challenger_2350_wifi6_ble5.menu.wificountry.slovenia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVENIA
+challenger_2350_wifi6_ble5.menu.wificountry.south_africa=South Africa
+challenger_2350_wifi6_ble5.menu.wificountry.south_africa.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_AFRICA
+challenger_2350_wifi6_ble5.menu.wificountry.south_korea=South Korea
+challenger_2350_wifi6_ble5.menu.wificountry.south_korea.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_KOREA
+challenger_2350_wifi6_ble5.menu.wificountry.spain=Spain
+challenger_2350_wifi6_ble5.menu.wificountry.spain.build.wificc=-DWIFICC=CYW43_COUNTRY_SPAIN
+challenger_2350_wifi6_ble5.menu.wificountry.sweden=Sweden
+challenger_2350_wifi6_ble5.menu.wificountry.sweden.build.wificc=-DWIFICC=CYW43_COUNTRY_SWEDEN
+challenger_2350_wifi6_ble5.menu.wificountry.switzerland=Switzerland
+challenger_2350_wifi6_ble5.menu.wificountry.switzerland.build.wificc=-DWIFICC=CYW43_COUNTRY_SWITZERLAND
+challenger_2350_wifi6_ble5.menu.wificountry.taiwan=Taiwan
+challenger_2350_wifi6_ble5.menu.wificountry.taiwan.build.wificc=-DWIFICC=CYW43_COUNTRY_TAIWAN
+challenger_2350_wifi6_ble5.menu.wificountry.thailand=Thailand
+challenger_2350_wifi6_ble5.menu.wificountry.thailand.build.wificc=-DWIFICC=CYW43_COUNTRY_THAILAND
+challenger_2350_wifi6_ble5.menu.wificountry.turkey=Turkey
+challenger_2350_wifi6_ble5.menu.wificountry.turkey.build.wificc=-DWIFICC=CYW43_COUNTRY_TURKEY
+challenger_2350_wifi6_ble5.menu.wificountry.uk=UK
+challenger_2350_wifi6_ble5.menu.wificountry.uk.build.wificc=-DWIFICC=CYW43_COUNTRY_UK
+challenger_2350_wifi6_ble5.menu.wificountry.usa=USA
+challenger_2350_wifi6_ble5.menu.wificountry.usa.build.wificc=-DWIFICC=CYW43_COUNTRY_USA
 challenger_2350_wifi6_ble5.menu.flash.8388608_0=8MB (no FS)
 challenger_2350_wifi6_ble5.menu.flash.8388608_0.upload.maximum_size=8380416
 challenger_2350_wifi6_ble5.menu.flash.8388608_0.build.flash_total=8388608
@@ -15703,76 +15911,6 @@ challenger_2350_wifi6_ble5.menu.flash.8388608_0.build.flash_length=8380416
 challenger_2350_wifi6_ble5.menu.flash.8388608_0.build.eeprom_start=276815872
 challenger_2350_wifi6_ble5.menu.flash.8388608_0.build.fs_start=276815872
 challenger_2350_wifi6_ble5.menu.flash.8388608_0.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_65536=8MB (Sketch: 8128KB, FS: 64KB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_65536.upload.maximum_size=8314880
-challenger_2350_wifi6_ble5.menu.flash.8388608_65536.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_65536.build.flash_length=8314880
-challenger_2350_wifi6_ble5.menu.flash.8388608_65536.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_65536.build.fs_start=276750336
-challenger_2350_wifi6_ble5.menu.flash.8388608_65536.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_131072=8MB (Sketch: 8064KB, FS: 128KB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_131072.upload.maximum_size=8249344
-challenger_2350_wifi6_ble5.menu.flash.8388608_131072.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_131072.build.flash_length=8249344
-challenger_2350_wifi6_ble5.menu.flash.8388608_131072.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_131072.build.fs_start=276684800
-challenger_2350_wifi6_ble5.menu.flash.8388608_131072.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_262144=8MB (Sketch: 7936KB, FS: 256KB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_262144.upload.maximum_size=8118272
-challenger_2350_wifi6_ble5.menu.flash.8388608_262144.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_262144.build.flash_length=8118272
-challenger_2350_wifi6_ble5.menu.flash.8388608_262144.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_262144.build.fs_start=276553728
-challenger_2350_wifi6_ble5.menu.flash.8388608_262144.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_524288=8MB (Sketch: 7680KB, FS: 512KB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_524288.upload.maximum_size=7856128
-challenger_2350_wifi6_ble5.menu.flash.8388608_524288.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_524288.build.flash_length=7856128
-challenger_2350_wifi6_ble5.menu.flash.8388608_524288.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_524288.build.fs_start=276291584
-challenger_2350_wifi6_ble5.menu.flash.8388608_524288.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_1048576=8MB (Sketch: 7MB, FS: 1MB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_1048576.upload.maximum_size=7331840
-challenger_2350_wifi6_ble5.menu.flash.8388608_1048576.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_1048576.build.flash_length=7331840
-challenger_2350_wifi6_ble5.menu.flash.8388608_1048576.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_1048576.build.fs_start=275767296
-challenger_2350_wifi6_ble5.menu.flash.8388608_1048576.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_2097152=8MB (Sketch: 6MB, FS: 2MB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.upload.maximum_size=6283264
-challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.flash_length=6283264
-challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.fs_start=274718720
-challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_3145728=8MB (Sketch: 5MB, FS: 3MB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_3145728.upload.maximum_size=5234688
-challenger_2350_wifi6_ble5.menu.flash.8388608_3145728.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_3145728.build.flash_length=5234688
-challenger_2350_wifi6_ble5.menu.flash.8388608_3145728.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_3145728.build.fs_start=273670144
-challenger_2350_wifi6_ble5.menu.flash.8388608_3145728.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_4194304=8MB (Sketch: 4MB, FS: 4MB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.upload.maximum_size=4186112
-challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.flash_length=4186112
-challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.fs_start=272621568
-challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_5242880=8MB (Sketch: 3MB, FS: 5MB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_5242880.upload.maximum_size=3137536
-challenger_2350_wifi6_ble5.menu.flash.8388608_5242880.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_5242880.build.flash_length=3137536
-challenger_2350_wifi6_ble5.menu.flash.8388608_5242880.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_5242880.build.fs_start=271572992
-challenger_2350_wifi6_ble5.menu.flash.8388608_5242880.build.fs_end=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_6291456=8MB (Sketch: 2MB, FS: 6MB)
-challenger_2350_wifi6_ble5.menu.flash.8388608_6291456.upload.maximum_size=2088960
-challenger_2350_wifi6_ble5.menu.flash.8388608_6291456.build.flash_total=8388608
-challenger_2350_wifi6_ble5.menu.flash.8388608_6291456.build.flash_length=2088960
-challenger_2350_wifi6_ble5.menu.flash.8388608_6291456.build.eeprom_start=276815872
-challenger_2350_wifi6_ble5.menu.flash.8388608_6291456.build.fs_start=270524416
-challenger_2350_wifi6_ble5.menu.flash.8388608_6291456.build.fs_end=276815872
 challenger_2350_wifi6_ble5.menu.flash.8388608_7340032=8MB (Sketch: 1MB, FS: 7MB)
 challenger_2350_wifi6_ble5.menu.flash.8388608_7340032.upload.maximum_size=1040384
 challenger_2350_wifi6_ble5.menu.flash.8388608_7340032.build.flash_total=8388608
@@ -15780,6 +15918,69 @@ challenger_2350_wifi6_ble5.menu.flash.8388608_7340032.build.flash_length=1040384
 challenger_2350_wifi6_ble5.menu.flash.8388608_7340032.build.eeprom_start=276815872
 challenger_2350_wifi6_ble5.menu.flash.8388608_7340032.build.fs_start=269475840
 challenger_2350_wifi6_ble5.menu.flash.8388608_7340032.build.fs_end=276815872
+challenger_2350_wifi6_ble5.menu.flash.8388608_4194304=8MB (Sketch: 4MB, FS: 4MB)
+challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.upload.maximum_size=4186112
+challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.flash_total=8388608
+challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.flash_length=4186112
+challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.eeprom_start=276815872
+challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.fs_start=272621568
+challenger_2350_wifi6_ble5.menu.flash.8388608_4194304.build.fs_end=276815872
+challenger_2350_wifi6_ble5.menu.flash.8388608_2097152=8MB (Sketch: 6MB, FS: 2MB)
+challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.upload.maximum_size=6283264
+challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.flash_total=8388608
+challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.flash_length=6283264
+challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.eeprom_start=276815872
+challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.fs_start=274718720
+challenger_2350_wifi6_ble5.menu.flash.8388608_2097152.build.fs_end=276815872
+challenger_2350_wifi6_ble5.menu.flash.16777216_0=16MB (no FS)
+challenger_2350_wifi6_ble5.menu.flash.16777216_0.upload.maximum_size=16769024
+challenger_2350_wifi6_ble5.menu.flash.16777216_0.build.flash_total=16777216
+challenger_2350_wifi6_ble5.menu.flash.16777216_0.build.flash_length=16769024
+challenger_2350_wifi6_ble5.menu.flash.16777216_0.build.eeprom_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_0.build.fs_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_0.build.fs_end=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_15728640=16MB (Sketch: 1MB, FS: 15MB)
+challenger_2350_wifi6_ble5.menu.flash.16777216_15728640.upload.maximum_size=1040384
+challenger_2350_wifi6_ble5.menu.flash.16777216_15728640.build.flash_total=16777216
+challenger_2350_wifi6_ble5.menu.flash.16777216_15728640.build.flash_length=1040384
+challenger_2350_wifi6_ble5.menu.flash.16777216_15728640.build.eeprom_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_15728640.build.fs_start=269475840
+challenger_2350_wifi6_ble5.menu.flash.16777216_15728640.build.fs_end=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_14680064=16MB (Sketch: 2MB, FS: 14MB)
+challenger_2350_wifi6_ble5.menu.flash.16777216_14680064.upload.maximum_size=2088960
+challenger_2350_wifi6_ble5.menu.flash.16777216_14680064.build.flash_total=16777216
+challenger_2350_wifi6_ble5.menu.flash.16777216_14680064.build.flash_length=2088960
+challenger_2350_wifi6_ble5.menu.flash.16777216_14680064.build.eeprom_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_14680064.build.fs_start=270524416
+challenger_2350_wifi6_ble5.menu.flash.16777216_14680064.build.fs_end=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_12582912=16MB (Sketch: 4MB, FS: 12MB)
+challenger_2350_wifi6_ble5.menu.flash.16777216_12582912.upload.maximum_size=4186112
+challenger_2350_wifi6_ble5.menu.flash.16777216_12582912.build.flash_total=16777216
+challenger_2350_wifi6_ble5.menu.flash.16777216_12582912.build.flash_length=4186112
+challenger_2350_wifi6_ble5.menu.flash.16777216_12582912.build.eeprom_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_12582912.build.fs_start=272621568
+challenger_2350_wifi6_ble5.menu.flash.16777216_12582912.build.fs_end=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_8388608=16MB (Sketch: 8MB, FS: 8MB)
+challenger_2350_wifi6_ble5.menu.flash.16777216_8388608.upload.maximum_size=8380416
+challenger_2350_wifi6_ble5.menu.flash.16777216_8388608.build.flash_total=16777216
+challenger_2350_wifi6_ble5.menu.flash.16777216_8388608.build.flash_length=8380416
+challenger_2350_wifi6_ble5.menu.flash.16777216_8388608.build.eeprom_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_8388608.build.fs_start=276815872
+challenger_2350_wifi6_ble5.menu.flash.16777216_8388608.build.fs_end=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_4194304=16MB (Sketch: 12MB, FS: 4MB)
+challenger_2350_wifi6_ble5.menu.flash.16777216_4194304.upload.maximum_size=12574720
+challenger_2350_wifi6_ble5.menu.flash.16777216_4194304.build.flash_total=16777216
+challenger_2350_wifi6_ble5.menu.flash.16777216_4194304.build.flash_length=12574720
+challenger_2350_wifi6_ble5.menu.flash.16777216_4194304.build.eeprom_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_4194304.build.fs_start=281010176
+challenger_2350_wifi6_ble5.menu.flash.16777216_4194304.build.fs_end=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_2097152=16MB (Sketch: 14MB, FS: 2MB)
+challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.upload.maximum_size=14671872
+challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.flash_total=16777216
+challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.flash_length=14671872
+challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.eeprom_start=285204480
+challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.fs_start=283107328
+challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.fs_end=285204480
 challenger_2350_wifi6_ble5.menu.freq.150=150 MHz
 challenger_2350_wifi6_ble5.menu.freq.150.build.f_cpu=150000000L
 challenger_2350_wifi6_ble5.menu.freq.50=50 MHz
