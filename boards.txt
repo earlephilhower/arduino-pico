@@ -18,7 +18,7 @@ menu.dbglvl=Debug Level
 menu.boot2=Boot Stage 2
 menu.wificountry=WiFi Region
 menu.usbstack=USB Stack
-menu.espwifitype=ESP wifi type
+menu.espwifitype=ESP Wifi Type
 menu.ipbtstack=IP/Bluetooth Stack
 menu.uploadmethod=Upload Method
 
