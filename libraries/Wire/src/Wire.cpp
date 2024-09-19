@@ -366,6 +366,33 @@ void TwoWire::_handleTimeout(bool reset) {
         } else {
             int prev_clkHz = _clkHz;
             end();
+
+            // Attempt bus recovery if SDA is held LOW by another device
+            // See RP2040 datasheet "Bus clear feature" (not implemented in HW)
+            int delay = 5; //5us LOW/HIGH -> 10us period -> 100kHz freq
+            pinMode(_sda, INPUT_PULLUP);
+            pinMode(_scl, INPUT_PULLUP);
+            gpio_set_function(_scl, GPIO_FUNC_SIO);
+            gpio_set_function(_sda, GPIO_FUNC_SIO);
+
+            if (digitalRead(_sda) == LOW) {
+                int sclPulseCount = 0;
+                while (sclPulseCount < 9 && digitalRead(_sda) == LOW) {
+                    sclPulseCount++;
+                    digitalWrite(_scl, LOW);
+                    sleep_us(delay);
+                    digitalWrite(_scl, HIGH);
+                    sleep_us(delay);
+                }
+
+                if (digitalRead(_sda) == HIGH) {
+                    // Bus recovered : send a STOP
+                    digitalWrite(_sda, LOW);
+                    sleep_us(delay);
+                    digitalWrite(_sda, HIGH);
+                }
+            }
+
             setClock(prev_clkHz);
             begin();
         }
