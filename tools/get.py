@@ -51,7 +51,10 @@ def unpack(filename, destination):
     if filename.endswith('tar.gz'):
         tfile = tarfile.open(filename, 'r:gz')
         os.chdir("../system/")
-        tfile.extractall(destination, filter='fully_trusted')
+        try:
+            tfile.extractall(destination, filter='fully_trusted')
+        except TypeError:
+            tfile.extractall(destination)
         dirname= tfile.getnames()[0]
     elif filename.endswith('zip'):
         zfile = zipfile.ZipFile(filename)
