@@ -392,7 +392,7 @@ void TwoWire::_handleTimeout(bool reset) {
                     digitalWrite(_sda, HIGH);
                 }
             }
-            
+
             setClock(prev_clkHz);
             begin();
         }
