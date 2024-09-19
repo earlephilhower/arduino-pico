@@ -28,22 +28,22 @@ void verify(const char *name, uint32_t *src) {
 void loop() {
   uint64_t start, stop;
 
-  start = rp2040.getCycleCount();
+  start = rp2040.getCycleCount64();
   for (int i = 0; i < 1000; i++) {
     memcpy(dest, src, 4 * 1024);
     memcpy(src, dest, 4 * 1024);
   }
-  stop = rp2040.getCycleCount();
+  stop = rp2040.getCycleCount64();
   verify("CPU", src);
   verify("CPU", dest);
   Serial.printf("CPU: %lld clock cycles for 4K\n", (stop - start) / 1000);
 
-  start = rp2040.getCycleCount();
+  start = rp2040.getCycleCount64();
   for (int i = 0; i < 1000; i++) {
     rp2040.memcpyDMA(dest, src, 4 * 1024);
     rp2040.memcpyDMA(src, dest, 4 * 1024);
   }
-  stop = rp2040.getCycleCount();
+  stop = rp2040.getCycleCount64();
   verify("DMA", src);
   verify("DMA", dest);
   Serial.printf("DMA: %lld clock cycles for 4K\n\n\n", (stop - start) / 1000);
