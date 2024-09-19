@@ -11,7 +11,7 @@ install: all version-header
 	cp bearssl/inc/bearssl*.h ../../include/bearssl/.
 
 all2: bearssl/README.txt
-	PATH="$(PWD)/../../system/arm-none-eabi/bin/:$(PATH)" && arm-none-eabi-gcc --version && cd bearssl && $(MAKE) CONF=pico2 all
+	PATH="$(PWD)/../../system/arm-none-eabi/bin/:$(PATH)" && arm-none-eabi-gcc --version && cd bearssl && $(MAKE) CONF=pico2 clean all
 
 install2: all2 version-header
 	cp bearssl/pico/libbearssl.a ../../lib/rp2350/.
