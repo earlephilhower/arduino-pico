@@ -370,7 +370,7 @@
                "name": "pqt-picotool",
                "systems": [
                   {
-                     "host": "aarch64-apple-darwin",
+                     "host": "arm64-apple-darwin",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.3.0/aarch64-apple-darwin20.4.picotool-8a9af99.240919.tar.gz",
                      "archiveFileName": "aarch64-apple-darwin20.4.picotool-8a9af99.240919.tar.gz",
                      "checksum": "SHA-256:3e20acb5e8c97448a5ffa316cfc74307df0fd887cf4364d787956ddc359608c1",
@@ -432,7 +432,7 @@
                "name": "pqt-openocd",
                "systems": [
                   {
-                     "host": "aarch64-apple-darwin",
+                     "host": "arm64-apple-darwin",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.3.0/aarch64-apple-darwin20.4.openocd-ebec9504d.240919.tar.gz",
                      "archiveFileName": "aarch64-apple-darwin20.4.openocd-ebec9504d.240919.tar.gz",
                      "checksum": "SHA-256:eb89c3fb9d797e6dadbc14a866d1cfe27b425689a32687773aef6bf3dbe8d855",
@@ -563,7 +563,7 @@
                "name": "pqt-gcc",
                "systems": [
                   {
-                     "host": "aarch64-apple-darwin",
+                     "host": "arm64-apple-darwin",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.3.0/aarch64-apple-darwin20.4.arm-none-eabi-dfd82b2.240919.tar.gz",
                      "archiveFileName": "aarch64-apple-darwin20.4.arm-none-eabi-dfd82b2.240919.tar.gz",
                      "checksum": "SHA-256:9a0bce8ae3d28489cdc2bf4d1d849b7b9c93f13b74f2449d07499f224801ed99",
@@ -625,7 +625,7 @@
                "name": "pqt-pioasm",
                "systems": [
                   {
-                     "host": "aarch64-apple-darwin",
+                     "host": "arm64-apple-darwin",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.3.0/aarch64-apple-darwin20.4.pioasm-efe2103.240919.tar.gz",
                      "archiveFileName": "aarch64-apple-darwin20.4.pioasm-efe2103.240919.tar.gz",
                      "checksum": "SHA-256:7db03dddebe3f2d736fb88fd1435076b0874667a9be8cfc18a273acc75067a11",
@@ -687,7 +687,7 @@
                "name": "pqt-mklittlefs",
                "systems": [
                   {
-                     "host": "aarch64-apple-darwin",
+                     "host": "arm64-apple-darwin",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/2.3.0/aarch64-apple-darwin20.4.mklittlefs-2f7654f.240919.tar.gz",
                      "archiveFileName": "aarch64-apple-darwin20.4.mklittlefs-2f7654f.240919.tar.gz",
                      "checksum": "SHA-256:fe35b65fd8d9c03dfcd754f10c3e1ca0c750e850ce9a86302ab1e141d1ea8709",
