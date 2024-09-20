@@ -291,12 +291,16 @@ bool UpdaterClass::_writeBuffer() {
             return false;
         }
     } else {
-        noInterrupts();
+        if (!__isFreeRTOS) {
+            noInterrupts();
+        }
         rp2040.idleOtherCore();
         flash_range_erase((intptr_t)_currentAddress - (intptr_t)XIP_BASE, 4096);
         flash_range_program((intptr_t)_currentAddress - (intptr_t)XIP_BASE, _buffer, 4096);
         rp2040.resumeOtherCore();
-        interrupts();
+        if (!__isFreeRTOS) {
+            interrupts();
+        }
     }
     if (!_verify) {
         _md5.add(_buffer, _bufferLen);
