@@ -46,3 +46,6 @@
 [submodule "cores/rp2040/tlsf"]
 	path = lib/tlsf
 	url = https://github.com/earlephilhower/tlsf.git
+[submodule "libraries/ESPHost"]
+	path = libraries/ESPHost
+	url = https://github.com/Networking-for-Arduino/ESPHost.git

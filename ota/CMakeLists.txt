@@ -7,10 +7,14 @@ if (${cpu} MATCHES "rp2040")
     set(PICO_BOARD pico)
     set(PICO_PLATFORM rp2040)
     set(PICO_CYW43_SUPPORTED 0)
+    set(OBJARCH armv6-m)
+    set(WRAP -Wl,--wrap=clocks_init)
 elseif(${cpu} MATCHES "rp2350")
     set(PICO_BOARD pico2)
     set(PICO_PLATFORM rp2350)
     set(PICO_CYW43_SUPPORTED 0)
+    set(OBJARCH armv8-m)
+    set(WRAP )
 else()
     message(FATAL_ERROR "Unknown CPU, '${cpu}'")
 endif()
@@ -71,7 +75,7 @@ target_compile_options(ota PUBLIC
 )
 
 target_link_options(ota PUBLIC
-        -Wl,--wrap=clocks_init
+        ${WRAP}
         -Wl,--wrap=exit
         -Wl,--wrap=atexit
         -Wl,--wrap=panic_unsupported
@@ -97,7 +101,7 @@ target_link_libraries(ota
 )
 
 add_custom_command(TARGET ota POST_BUILD
-        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-ld -r -A armv6-m -b binary -o ota.o ota.bin
+        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-ld -r -A ${OBJARCH} -b binary -o ota.o ota.bin
         COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-objcopy --rename-section .data=.OTA ota.o ../../lib/${cpu}/ota.o
         COMMAND cp ../ota_command.h ../../include/${cpu}/pico_base/pico/.
 )

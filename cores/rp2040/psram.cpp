@@ -332,6 +332,9 @@ static bool __psram_heap_init() {
         return true;
     }
 
+    if (!__psram_heap_size) {
+        return false;
+    }
     _mem_heap = NULL;
     _mem_psram_pool = NULL;
     _mem_heap = tlsf_create_with_pool((void *)&__psram_heap_start__, __psram_heap_size, 16 * 1024 * 1024);

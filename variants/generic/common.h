@@ -164,6 +164,8 @@ static const uint8_t D29 = __PIN_D29;
 static const uint8_t D29 = (29u);
 #endif
 
+#if !defined(PICO_RP2350B)
+
 #ifdef __PIN_A0
 static const uint8_t A0 = __PIN_A0;
 #else
@@ -187,6 +189,150 @@ static const uint8_t A3 = __PIN_A3;
 #else
 static const uint8_t A3 = (29u);
 #endif
+
+#elif defined(PICO_RP2350B)
+
+#ifdef __PIN_D30
+static const uint8_t D30 = __PIN_D30;
+#else
+static const uint8_t D30 = (30u);
+#endif
+#ifdef __PIN_D31
+static const uint8_t D31 = __PIN_D31;
+#else
+static const uint8_t D31 = (31u);
+#endif
+#ifdef __PIN_D32
+static const uint8_t D32 = __PIN_D32;
+#else
+static const uint8_t D32 = (32u);
+#endif
+#ifdef __PIN_D33
+static const uint8_t D33 = __PIN_D33;
+#else
+static const uint8_t D33 = (33u);
+#endif
+#ifdef __PIN_D34
+static const uint8_t D34 = __PIN_D34;
+#else
+static const uint8_t D34 = (34u);
+#endif
+#ifdef __PIN_D35
+static const uint8_t D35 = __PIN_D35;
+#else
+static const uint8_t D35 = (35u);
+#endif
+#ifdef __PIN_D36
+static const uint8_t D36 = __PIN_D36;
+#else
+static const uint8_t D36 = (36u);
+#endif
+#ifdef __PIN_D37
+static const uint8_t D37 = __PIN_D37;
+#else
+static const uint8_t D37 = (37u);
+#endif
+#ifdef __PIN_D38
+static const uint8_t D38 = __PIN_D38;
+#else
+static const uint8_t D38 = (38u);
+#endif
+#ifdef __PIN_D39
+static const uint8_t D39 = __PIN_D39;
+#else
+static const uint8_t D39 = (39u);
+#endif
+#ifdef __PIN_D40
+static const uint8_t D40 = __PIN_D40;
+#else
+static const uint8_t D40 = (40u);
+#endif
+#ifdef __PIN_D41
+static const uint8_t D41 = __PIN_D41;
+#else
+static const uint8_t D41 = (41u);
+#endif
+#ifdef __PIN_D42
+static const uint8_t D42 = __PIN_D42;
+#else
+static const uint8_t D42 = (42u);
+#endif
+#ifdef __PIN_D43
+static const uint8_t D43 = __PIN_D43;
+#else
+static const uint8_t D43 = (43u);
+#endif
+#ifdef __PIN_D44
+static const uint8_t D44 = __PIN_D44;
+#else
+static const uint8_t D44 = (44u);
+#endif
+#ifdef __PIN_D45
+static const uint8_t D45 = __PIN_D45;
+#else
+static const uint8_t D45 = (45u);
+#endif
+#ifdef __PIN_D46
+static const uint8_t D46 = __PIN_D46;
+#else
+static const uint8_t D46 = (46u);
+#endif
+#ifdef __PIN_D47
+static const uint8_t D47 = __PIN_D47;
+#else
+static const uint8_t D47 = (47u);
+#endif
+
+#ifdef __PIN_A0
+static const uint8_t A0 = __PIN_A0;
+#else
+static const uint8_t A0 = (40u);
+#endif
+
+#ifdef __PIN_A1
+static const uint8_t A1 = __PIN_A1;
+#else
+static const uint8_t A1 = (41u);
+#endif
+
+#ifdef __PIN_A2
+static const uint8_t A2 = __PIN_A2;
+#else
+static const uint8_t A2 = (42u);
+#endif
+
+#ifdef __PIN_A3
+static const uint8_t A3 = __PIN_A3;
+#else
+static const uint8_t A3 = (43u);
+#endif
+
+#ifdef __PIN_A4
+static const uint8_t A4 = __PIN_A4;
+#else
+static const uint8_t A4 = (44u);
+#endif
+
+#ifdef __PIN_A5
+static const uint8_t A5 = __PIN_A5;
+#else
+static const uint8_t A5 = (45u);
+#endif
+
+#ifdef __PIN_A6
+static const uint8_t A6 = __PIN_A6;
+#else
+static const uint8_t A6 = (46u);
+#endif
+
+#ifdef __PIN_A7
+static const uint8_t A7 = __PIN_A7;
+#else
+static const uint8_t A7 = (47u);
+#endif
+
+#endif
+
 
 static const uint8_t SS = PIN_SPI0_SS;
 static const uint8_t MOSI = PIN_SPI0_MOSI;

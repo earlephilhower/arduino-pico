@@ -28,7 +28,7 @@ public:
     PIOProgram(const pio_program_t *pgm);
     ~PIOProgram();
     // Possibly load into a PIO and allocate a SM
-    bool prepare(PIO *pio, int *sm, int *offset);
+    bool prepare(PIO *pio, int *sm, int *offset, int gpio_start = 0, int gpio_cnt = 1);
 
 private:
     const pio_program_t *_pgm;

@@ -56,7 +56,7 @@ int64_t _stopTonePIO(alarm_id_t id, void *user_data) {
 }
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
-    if (pin > 29) {
+    if (pin >= __GPIOCNT) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
         return;
     }
@@ -81,7 +81,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         newTone = new Tone();
         newTone->pin = pin;
         pinMode(pin, OUTPUT);
-        if (!_tone2Pgm.prepare(&newTone->pio, &newTone->sm, &newTone->off)) {
+        if (!_tone2Pgm.prepare(&newTone->pio, &newTone->sm, &newTone->off, pin, 1)) {
             DEBUGCORE("ERROR: tone unable to start, out of PIO resources\n");
             // ERROR, no free slots
             delete newTone;
@@ -118,7 +118,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
 void noTone(uint8_t pin) {
     CoreMutex m(&_toneMutex);
 
-    if ((pin > 29) || !m) {
+    if ((pin > __GPIOCNT) || !m) {
         DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
         return;
     }

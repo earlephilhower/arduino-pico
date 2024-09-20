@@ -9,7 +9,8 @@
 
 #include <PicoOTA.h>
 #include <LittleFS.h>
-#include "blink_100_1000.h"
+#include "blink_100_1000_rp2040.h"
+#include "blink_500_500_rp2350.h"
 
 void setup() {
   Serial.begin(115200);

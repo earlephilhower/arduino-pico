@@ -30,7 +30,7 @@ void __clearADCPin(pin_size_t p);
 
 static uint32_t analogScale = 255;
 static uint32_t analogFreq = 1000;
-static uint32_t pwmInitted = 0;
+static uint64_t pwmInitted = 0;
 static bool scaleInitted = false;
 static bool adcInitted = false;
 static uint16_t analogWritePseudoScale = 1;
@@ -79,7 +79,7 @@ extern "C" void analogWriteResolution(int res) {
 extern "C" void analogWrite(pin_size_t pin, int val) {
     CoreMutex m(&_dacMutex);
 
-    if ((pin > 29) || !m) {
+    if ((pin >= __GPIOCNT) || !m) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
     }
@@ -101,12 +101,12 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         }
         scaleInitted = true;
     }
-    if (!(pwmInitted & (1 << pwm_gpio_to_slice_num(pin)))) {
+    if (!(pwmInitted & (1LL << pwm_gpio_to_slice_num(pin)))) {
         pwm_config c = pwm_get_default_config();
         pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / ((float)analogScale * analogFreq));
         pwm_config_set_wrap(&c, analogScale - 1);
         pwm_init(pwm_gpio_to_slice_num(pin), &c, true);
-        pwmInitted |= 1 << pwm_gpio_to_slice_num(pin);
+        pwmInitted |= 1LL << pwm_gpio_to_slice_num(pin);
     }
 
     val <<= analogWritePseudoScale;
@@ -125,17 +125,17 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
 auto_init_mutex(_adcMutex);
 static uint8_t _readBits = 10;
 static uint8_t _lastADCMux = 0;
-static uint32_t _adcGPIOInit = 0;
+static uint64_t _adcGPIOInit = 0;
 
 void __clearADCPin(pin_size_t p) {
-    _adcGPIOInit &= ~(1 << p);
+    _adcGPIOInit &= ~(1LL << p);
 }
 
 extern "C" int analogRead(pin_size_t pin) {
     CoreMutex m(&_adcMutex);
 
-    pin_size_t maxPin = max(A0, A3);
-    pin_size_t minPin = min(A0, A3);
+    pin_size_t maxPin = __GPIOCNT;
+    pin_size_t minPin = __FIRSTANALOGGPIO;
 
     if ((pin < minPin) || (pin > maxPin) || !m) {
         DEBUGCORE("ERROR: Illegal analogRead pin (%d)\n", pin);
@@ -145,9 +145,9 @@ extern "C" int analogRead(pin_size_t pin) {
         adc_init();
         adcInitted = true;
     }
-    if (!(_adcGPIOInit & (1 << pin))) {
+    if (!(_adcGPIOInit & (1LL << pin))) {
         adc_gpio_init(pin);
-        _adcGPIOInit |= 1 << pin;
+        _adcGPIOInit |= 1LL << pin;
     }
     if (_lastADCMux != pin) {
         adc_select_input(pin - minPin);
@@ -169,7 +169,7 @@ extern "C" float analogReadTemp(float vref) {
     _lastADCMux = 0;
     adc_set_temp_sensor_enabled(true);
     delay(1); // Allow things to settle.  Without this, readings can be erratic
-    adc_select_input(4); // Temperature sensor
+    adc_select_input(__GPIOCNT - __FIRSTANALOGGPIO); // Temperature sensor
     int v = adc_read();
     adc_set_temp_sensor_enabled(false);
     float t = 27.0f - ((v * vref / 4096.0f) - 0.706f) / 0.001721f; // From the datasheet

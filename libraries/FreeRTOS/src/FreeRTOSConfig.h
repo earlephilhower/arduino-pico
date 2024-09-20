@@ -200,6 +200,10 @@ extern unsigned long ulMainGetRunTimeCounterValue(void);
 #endif
 #endif
 
+#define configENABLE_MPU                        0
+#define configENABLE_TRUSTZONE                  0
+#define configRUN_FREERTOS_SECURE_ONLY          1
+#define configENABLE_FPU                        1
 /*  The lowest interrupt priority that can be used in a call to a "set priority"
     function. */
 #ifndef configLIBRARY_LOWEST_INTERRUPT_PRIORITY
@@ -219,10 +223,15 @@ extern unsigned long ulMainGetRunTimeCounterValue(void);
 #ifndef configKERNEL_INTERRUPT_PRIORITY
 #define configKERNEL_INTERRUPT_PRIORITY ( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 #endif
+
 /* !!!! configMAX_SYSCALL_INTERRUPT_PRIORITY must not be set to zero !!!!
     See http://www.FreeRTOS.org/RTOS-Cortex-M3-M4.html. */
 #ifndef configMAX_SYSCALL_INTERRUPT_PRIORITY
+#ifdef PICO_RP2350
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY    16
+#else
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY ( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
+#endif
 #endif
 
 #ifndef configASSERT
