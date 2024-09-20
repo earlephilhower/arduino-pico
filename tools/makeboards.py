@@ -54,7 +54,9 @@ def BuildPSRAM(name):
         print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
 
 def BuildPSRAMCS(name):
-    for s in range(0, 32):
+    print("%s.menu.psramcs.GPIOnone=None" % (name))
+    print("%s.menu.psramcs.GPIOnone.build.psram_cs=" % (name))
+    for s in range(0, 48):
         print("%s.menu.psramcs.GPIO%d=GPIO %d" % (name, s, s))
         print("%s.menu.psramcs.GPIO%d.build.psram_cs=-DRP2350_PSRAM_CS=%d" % (name, s, s))
 
@@ -62,6 +64,11 @@ def BuildPSRAMFreq(name):
     for s in [ 109, 133 ]:
         print("%s.menu.psramfreq.freq%d=%d MHz" % (name, s, s))
         print("%s.menu.psramfreq.freq%d.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=%d" % (name, s, s * 1000000))
+
+def BuildRP2350Variant(name):
+    for l in [ ("RP2350A", "-DPICO_RP2350A=1"), ("RP2530B", "-DPICO_RP2350B=1") ]:
+        print("%s.menu.variantchip.%s=%s" % (name, l[0], l[0]))
+        print("%s.menu.variantchip.%s.build.variantdefines=%s" % (name, l[0], l[1]))
 
 def BuildOptimize(name):
     for l in [ ("Small", "Small", "-Os", " (standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
@@ -252,9 +259,10 @@ def WriteWarning():
 
 def BuildGlobalMenuList():
     print("menu.BoardModel=Model")
+    print("menu.variantchip=Chip Variant")
     print("menu.flash=Flash Size")
-    print("menu.psram=PSRAM Size")
     print("menu.psramcs=PSRAM CS")
+    print("menu.psram=PSRAM Size")
     print("menu.psramfreq=PSRAM Speed")
     print("menu.freq=CPU Speed")
     print("menu.opt=Optimize")
@@ -266,8 +274,15 @@ def BuildGlobalMenuList():
     print("menu.boot2=Boot Stage 2")
     print("menu.wificountry=WiFi Region")
     print("menu.usbstack=USB Stack")
+    print("menu.espwifitype=ESP Wifi Type")
     print("menu.ipbtstack=IP/Bluetooth Stack")
     print("menu.uploadmethod=Upload Method")
+
+def BuildWifiType(name):
+    print("%s.menu.espwifitype.esp_at=ESP AT" % (name))
+    print("%s.menu.espwifitype.esp_at.build.espwifitype=-DWIFIESPAT2" % (name))
+    print("%s.menu.espwifitype.esp_hosted=ESP Hosted" % (name))
+    print("%s.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1" % (name))
 
 def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra = None, board_url = None):
     fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
@@ -285,7 +300,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     else:
         raise Exception("Unknown board type " + str(chip));
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
-    if (name == "generic") or (name == "vccgnd_yd_rp2040"):
+    if (name == "generic") or (name == "generic_rp2350") or (name == "vccgnd_yd_rp2040"):
         BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
         BuildFlashMenu(name, chip, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
@@ -297,21 +312,24 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
-    elif name == "datanoisetv_picoadk_v2":
-            BuildPSRAM(name)
-            BuildPSRAMCS(name)
-            BuildPSRAMFreq(name)
-            BuildFreq(name, 400)
+    elif (name == "challenger_2350_wifi6_ble5") or (name == "challenger_2040_wifi_ble"):        
+        BuildWifiType(name)
+        BuildCountry(name)
+        BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
     if chip == "rp2350":
         BuildFreq(name, 150)
         if name == "generic_rp2350":
-            BuildPSRAM(name)
+            BuildRP2350Variant(name)
             BuildPSRAMCS(name)
+            BuildPSRAM(name)
             BuildPSRAMFreq(name)
         elif name == "datanoisetv_picoadk_v2":
             BuildPSRAM(name)
+            BuildPSRAMFreq(name)
+            BuildFreq(name, 400)
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
@@ -457,6 +475,7 @@ MakeBoard("adafruit_stemmafriend", "rp2040", "Adafruit", "STEMMA Friend RP2040",
 MakeBoard("adafruit_trinkeyrp2040qt", "rp2040", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", 250, "ADAFRUIT_TRINKEYQT_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_macropad2040", "rp2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", 250, "ADAFRUIT_MACROPAD_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_kb2040", "rp2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_rp2350_hstx", "rp2350", "Adafruit", "Feather RP2350 HSTX", "0x239a", "0x814f", 250, "ADAFRUIT_FEATHER_RP2350_HSTX", 8, 0, "boot2_w25q080_2_padded_checksum")
 
 
 #Amken
@@ -518,7 +537,7 @@ MakeBoard("challenger_2040_lte", "rp2040", "iLabs", "Challenger 2040 LTE", "0x2e
 MakeBoard("challenger_2040_lora", "rp2040", "iLabs", "Challenger 2040 LoRa", "0x2e8a", "0x1023", 250, "CHALLENGER_2040_LORA_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_subghz", "rp2040", "iLabs", "Challenger 2040 SubGHz", "0x2e8a", "0x1032", 250, "CHALLENGER_2040_SUBGHZ_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_wifi", "rp2040", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", 250, "CHALLENGER_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2040_wifi_ble", "rp2040", "iLabs", "Challenger 2040 WiFi/BLE", "0x2e8a", "0x102C", 500, "CHALLENGER_2040_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2040_wifi_ble", "rp2040", "iLabs", "Challenger 2040 WiFi/BLE", "0x2e8a", "0x102C", 500, "CHALLENGER_2040_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_wifi6_ble", "rp2040", "iLabs", "Challenger 2040 WiFi6/BLE", "0x2e8a", "0x105F", 500, "CHALLENGER_2040_WIFI6_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
 MakeBoard("challenger_nb_2040_wifi", "rp2040", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a", "0x100d", 500, "CHALLENGER_NB_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
 MakeBoard("challenger_2040_sdrtc", "rp2040", "iLabs", "Challenger 2040 SD/RTC", "0x2e8a", "0x102d", 250, "CHALLENGER_2040_SDRTC_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
@@ -526,7 +545,7 @@ MakeBoard("challenger_2040_nfc", "rp2040", "iLabs", "Challenger 2040 NFC", "0x2e
 MakeBoard("challenger_2040_uwb", "rp2040", "iLabs", "Challenger 2040 UWB", "0x2e8a", "0x1052", 500, "CHALLENGER_2040_UWB_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("connectivity_2040_lte_wifi_ble", "rp2040", "iLabs", "Connectivity 2040 LTE/WiFi/BLE", "0x2e8a", "0x107b", 500, "CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
 MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "boot2_generic_03h_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "boot2_generic_03h_2_padded_checksum")
 MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "boot2_generic_03h_2_padded_checksum")
 
 # Melopero
@@ -551,6 +570,7 @@ MakeBoard("olimex_rp2040pico30_16mb", "rp2040", "Olimex", "RP2040-Pico30 16MB", 
 
 # Pimoroni
 MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, 0, "boot2_w25q64jv_4_padded_checksum")
+MakeBoard("pimoroni_pga2350", "rp2350", "Pimoroni", "PGA2350", "0x2e8a", "0x1018", 250, "PIMORONI_PGA2350", 16, 8, "boot2_w25q080_4_padded_checksum")
 MakeBoard("pimoroni_pico_plus_2", "rp2350", "Pimoroni", "PicoPlus2", "0x2e8a", "0x100a", 500, "PIMORONI_PICO_PLUS_2", 16, 8, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("pimoroni_plasma2040", "rp2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "rp2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, 0, "boot2_w25q64jv_4_padded_checksum")

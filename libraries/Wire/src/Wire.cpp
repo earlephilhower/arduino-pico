@@ -49,10 +49,16 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
 }
 
 bool TwoWire::setSDA(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28}) /* I2C0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44}) /* I2C0 */,
+                                    __bitset({2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46})  /* I2C1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28}) /* I2C0 */,
                                     __bitset({2, 6, 10, 14, 18, 22, 26})  /* I2C1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[i2c_hw_index(_i2c)])) {
         _sda = pin;
         return true;
     }
@@ -70,10 +76,16 @@ bool TwoWire::setSDA(pin_size_t pin) {
 }
 
 bool TwoWire::setSCL(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29}) /* I2C0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45}) /* I2C0 */,
+                                    __bitset({3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47})  /* I2C1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29}) /* I2C0 */,
                                     __bitset({3, 7, 11, 15, 19, 23, 27})  /* I2C1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[i2c_hw_index(_i2c)])) {
         _scl = pin;
         return true;
     }
@@ -354,6 +366,33 @@ void TwoWire::_handleTimeout(bool reset) {
         } else {
             int prev_clkHz = _clkHz;
             end();
+
+            // Attempt bus recovery if SDA is held LOW by another device
+            // See RP2040 datasheet "Bus clear feature" (not implemented in HW)
+            int delay = 5; //5us LOW/HIGH -> 10us period -> 100kHz freq
+            pinMode(_sda, INPUT_PULLUP);
+            pinMode(_scl, INPUT_PULLUP);
+            gpio_set_function(_scl, GPIO_FUNC_SIO);
+            gpio_set_function(_sda, GPIO_FUNC_SIO);
+
+            if (digitalRead(_sda) == LOW) {
+                int sclPulseCount = 0;
+                while (sclPulseCount < 9 && digitalRead(_sda) == LOW) {
+                    sclPulseCount++;
+                    digitalWrite(_scl, LOW);
+                    sleep_us(delay);
+                    digitalWrite(_scl, HIGH);
+                    sleep_us(delay);
+                }
+
+                if (digitalRead(_sda) == HIGH) {
+                    // Bus recovered : send a STOP
+                    digitalWrite(_sda, LOW);
+                    sleep_us(delay);
+                    digitalWrite(_sda, HIGH);
+                }
+            }
+
             setClock(prev_clkHz);
             begin();
         }
@@ -397,10 +436,17 @@ size_t TwoWire::write(uint8_t ucData) {
     }
 
     if (_slave) {
-        // Wait for a spot in the TX FIFO
-        while (0 == (_i2c->hw->status & (1 << 1))) { /* noop wait */ }
-        _i2c->hw->data_cmd = ucData;
-        return 1;
+        // Wait for a spot in the TX FIFO and return in case of timeout
+        auto end = make_timeout_time_ms(_timeout);
+        while ((i2c_get_write_available(_i2c) == 0) && !time_reached(end)) { /* noop wait */ }
+
+        if (i2c_get_write_available(_i2c) > 0) {
+            _i2c->hw->data_cmd = ucData;
+            return 1;
+        } else {
+            _handleTimeout(_reset_with_timeout);
+            return 0;
+        }
     } else {
         if (!_txBegun || (_buffLen == sizeof(_buff))) {
             return 0;

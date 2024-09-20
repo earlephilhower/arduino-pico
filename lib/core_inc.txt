@@ -2,6 +2,7 @@
 
 -iwithprefixbefore/pico-sdk/lib/tinyusb/src
 -iwithprefixbefore/pico-sdk/src/boards/include
+-iwithprefixbefore/pico-sdk/src/common/hardware_claim/include
 -iwithprefixbefore/pico-sdk/src/common/pico_base/include
 -iwithprefixbefore/pico-sdk/src/common/pico_base_headers/include
 -iwithprefixbefore/pico-sdk/src/common/pico_binary_info/include
@@ -19,7 +20,6 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_adc/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_base/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_boot_lock/include
--iwithprefixbefore/pico-sdk/src/rp2_common/hardware_claim/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_clocks/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_divider/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_dma/include

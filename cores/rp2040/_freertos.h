@@ -54,5 +54,8 @@ extern "C" {
 
     extern void __freertos_idle_other_core() __attribute__((weak));
     extern void __freertos_resume_other_core() __attribute__((weak));
+
+    extern void __freertos_task_exit_critical() __attribute__((weak));
+    extern void __freertos_task_enter_critical() __attribute__((weak));
 }
 extern SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive = false);

@@ -21,6 +21,9 @@
     __stack (== StackTop)
 */
 
+
+
+
 MEMORY
 {
     FLASH(rx) : ORIGIN = 0x10000000, LENGTH = __FLASH_LENGTH__
@@ -42,6 +45,20 @@ SECTIONS
         __flash_binary_start = .;
     } > FLASH
 
+    .ota : {
+        /* Start image with OTA */
+        KEEP (*(.OTA))
+        *ota.o
+    } > FLASH
+
+    .partition : {
+        . = __flash_binary_start + 0x2ff0;
+        LONG(__FS_START__)
+        LONG(__FS_END__)
+        LONG(__EEPROM_START__)
+        LONG(__FLASH_LENGTH__)
+    } > FLASH
+
     /* The bootrom will enter the image at the point indicated in your
        IMAGE_DEF, which is usually the reset handler of your vector table.
 
@@ -53,8 +70,8 @@ SECTIONS
     */
 
     .text : {
-        __logical_binary_start = .;
         KEEP (*(.vectors))
+        __logical_binary_start = .;
         KEEP (*(.binary_info_header))
         __binary_info_header_end = .;
         KEEP (*(.embedded_block))
@@ -276,7 +293,7 @@ SECTIONS
     .flash_end : {
         KEEP(*(.embedded_end_block*))
         PROVIDE(__flash_binary_end = .);
-    } > FLASH =0xaa
+    } > FLASH = 0xaa
 
     .psram (NOLOAD) : {
         __psram_start__ = .;

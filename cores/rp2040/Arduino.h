@@ -58,11 +58,14 @@ extern "C" {
 void interrupts();
 void noInterrupts();
 
+// Only implemented on some RP2350 boards, not the OG Pico 2
 #ifdef RP2350_PSRAM_CS
 void *pmalloc(size_t size);
 void *pcalloc(size_t count, size_t size);
+#else
+[[deprecated("This chip does not have PSRAM, pmalloc will always fail")]] void *pmalloc(size_t size);
+[[deprecated("This chip does not have PSRAM, pcalloc will always fail")]] void *pcalloc(size_t count, size_t size);
 #endif
-
 
 // AVR compatibility macros...naughty and accesses the HW directly
 #define digitalPinToPort(pin)       (0)
@@ -130,8 +133,8 @@ extern const String emptyString;
 // Template which will evaluate at *compile time* to a single 32b number
 // with the specified bits set.
 template <size_t N>
-constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
-    return i < N ? (1L << a[i]) | __bitset(a, i + 1) : 0;
+constexpr uint64_t __bitset(const int (&a)[N], size_t i = 0U) {
+    return i < N ? (1LL << a[i]) | __bitset(a, i + 1) : 0;
 }
 #endif
 
@@ -146,3 +149,12 @@ constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
 
 // PSRAM decorator
 #define PSRAM __attribute__((section("\".psram\"")))
+
+// General GPIO/ADC layout info
+#ifdef PICO_RP2350B
+#define __GPIOCNT 48
+#define __FIRSTANALOGGPIO 40
+#else
+#define __GPIOCNT 30
+#define __FIRSTANALOGGPIO 26
+#endif

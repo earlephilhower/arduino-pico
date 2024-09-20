@@ -89,6 +89,43 @@ code that only runs on this core, use the following define.
         ~~~ your changes ~~~
         #endif
 
+Identifying RP2040, RP2530A, or RP2350B
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To check if a board is an original RP2040
+
+.. code:: cpp
+
+    #if defined(PICO_RP2040)
+    ...OG Pico code...
+    #endif
+
+For RP2350(A or B):
+
+.. code:: cpp
+
+    #if defined(PICO_RP2350)
+    ...Pico 2 code...
+    #endif
+
+For only RP2350A variants (using the compile options, not the onboard ID register):
+
+.. code:: cpp
+
+    #if defined(PICO_RP2350) && !defined(PICO_RP2350B)
+    ...RP2350A only code...
+    #endif
+
+For only RP2350B variants (again, at compile time as identified by the selected board
+and not the chip ID register):
+
+.. code:: cpp
+
+    #if defined(PICO_RP2350B)
+    ...48-GPIO version code here
+    #endif
+
+
 Library Architectures
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -98,3 +135,4 @@ not know your new code is compatible here.
 
 Add ``rp2040`` to ``architectures`` (in ``library.properties``) and
 ``"rp2040"`` to ``platforms[]`` (in ``library.json``) to let the tools know.
+Note that even the RP2350 is identified as ``rp2040`` for this purpose.

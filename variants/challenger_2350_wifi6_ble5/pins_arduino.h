@@ -37,16 +37,14 @@
 #define PIN_SPI1_MOSI       (11u)
 #define PIN_SPI1_SCK        (10u)
 #define PIN_SPI1_SS         (9u)
-// Handshake signal from ESP32C3
-#define ESP32_HS            (22u)
+// Handshake signal from ESP32C6
+#define PIN_ESP32_HS        (22u)
 #define ESP32_SPI           SPI1
-// Declarations for ESPHOSTSPI
-// -DESPHOST_RESET=D5 -DESPHOST_HANDSHAKE=D7 -DESPHOST_DATA_READY=D6 -DESPHOST_CS=D1 -DESPHOSTSPI=SPI
-#define ESPHOST_RESET       PIN_ESP_RST
-#define ESPHOST_HANDSHAKE   ESP32_HS
+// Definitions for ESP hosted
 #define ESPHOST_DATA_READY  PIN_ESP_MODE
+#define ESPHOST_RESET       PIN_ESP_RST
+#define ESPHOST_HANDSHAKE   PIN_ESP32_HS
 #define ESPHOST_CS          PIN_SPI1_SS
-#define ESPHOSTSPI_MHZ      1
 
 // Wire
 #define PIN_WIRE0_SDA       (20u)

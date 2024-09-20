@@ -8,7 +8,6 @@ function skip_ino()
     local skiplistrp2350=""
     if [ "$PICO_BOARD" == "rp2350" ]; then
         read -d '' skiplistrp2350 << EOL || true
-/FreeRTOS/
 /BTstackLib/
 /JoystickBT/
 /KeyboardBT/
@@ -188,7 +187,6 @@ function install_libraries()
     { test -r Adafruit_CircuitPlayground-1.11.3.zip || curl -sS --output Adafruit_CircuitPlayground-1.11.3.zip -L https://github.com/adafruit/Adafruit_CircuitPlayground/archive/refs/tags/1.11.3.zip; } && unzip -qo Adafruit_CircuitPlayground-1.11.3.zip
     { test -r Adafruit_NeoPixel-1.8.1.zip || curl -sS --output Adafruit_NeoPixel-1.8.1.zip -L https://github.com/adafruit/Adafruit_NeoPixel/archive/refs/tags/1.8.1.zip; } && unzip -qo Adafruit_NeoPixel-1.8.1.zip
     { test -r Arduino_MIDI_Library-5.0.2.zip || curl -sS --output Arduino_MIDI_Library-5.0.2.zip -L https://github.com/FortySevenEffects/arduino_midi_library/archive/refs/tags/5.0.2.zip; } && unzip -qo Arduino_MIDI_Library-5.0.2.zip
-    git clone https://github.com/JAndrassy/ESPHost.git
     popd
 }
 
