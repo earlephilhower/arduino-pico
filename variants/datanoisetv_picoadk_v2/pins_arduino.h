@@ -45,8 +45,9 @@
 #define WIRE_HOWMANY   (2u)
 
 // PSRAM
-#define RP2350_PSRAM_CS   (0u)
-#define PIN_PSRAM_CS      RP2350_PSRAM_CS
+#define RP2350_PSRAM_CS         (19u)
+#define RP2350_PSRAM_MAX_SCK_HZ (109*1000*1000)
+#define PIN_PSRAM_CS            RP2350_PSRAM_CS
 
 // SDIO for SD Card
 #define PIN_SDIO_CLK    (20u)

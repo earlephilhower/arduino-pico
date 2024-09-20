@@ -327,9 +327,6 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
         elif name == "datanoisetv_picoadk_v2":
-            BuildRP2350Variant(name)
-            BuildPSRAM(name)
-            BuildPSRAMFreq(name)
             BuildFreq(name, 400)
     else:
         BuildFreq(name, 133)
