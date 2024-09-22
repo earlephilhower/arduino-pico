@@ -324,8 +324,16 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
 
     static const char *const usbd_desc_str[] = {
         [USBD_STR_0] = "",
+#ifdef CUSTOM_USB_MANUFACTURER
+        [USBD_STR_MANUF] = CUSTOM_USB_MANUFACTURER,
+#else
         [USBD_STR_MANUF] = USB_MANUFACTURER,
+#endif
+#ifdef CUSTOM_USB_PRODUCT
+        [USBD_STR_PRODUCT] = CUSTOM_USB_PRODUCT,
+#else
         [USBD_STR_PRODUCT] = USB_PRODUCT,
+#endif
         [USBD_STR_SERIAL] = idString,
         [USBD_STR_CDC] = "Board CDC",
 #ifdef ENABLE_PICOTOOL_USB
