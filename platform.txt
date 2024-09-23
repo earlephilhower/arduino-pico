@@ -72,7 +72,7 @@ compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,
 compiler.elf2hex.bin.flags=-O binary
 compiler.elf2hex.hex.flags=-O ihex -R .eeprom
 compiler.elf2hex.cmd={build.toolchain}-objcopy
-compiler.ldflags={compiler.wrap} -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--undefined=runtime_init_install_ram_vector_table
+compiler.ldflags={compiler.wrap} -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--undefined=runtime_init_install_ram_vector_table -Wl,--undefined=__pre_init_runtime_init_clocks -Wl,--undefined=__pre_init_runtime_init_bootrom_reset -Wl,--undefined=__pre_init_runtime_init_early_resets -Wl,--undefined=__pre_init_runtime_init_usb_power_down -Wl,--undefined=__pre_init_runtime_init_clocks -Wl,--undefined=__pre_init_runtime_init_post_clock_resets -Wl,--undefined=__pre_init_runtime_init_spin_locks_reset -Wl,--undefined=__pre_init_runtime_init_boot_locks_reset -Wl,--undefined=__pre_init_runtime_init_bootrom_locking_enable -Wl,--undefined=__pre_init_runtime_init_mutex -Wl,--undefined=__pre_init_runtime_init_default_alarm_pool -Wl,--undefined=__pre_init_first_per_core_initializer -Wl,--undefined=__pre_init_runtime_init_per_core_bootrom_reset -Wl,--undefined=__pre_init_runtime_init_per_core_h3_irq_registers -Wl,--undefined=__pre_init_runtime_init_per_core_irq_priorities
 compiler.size.cmd={build.toolchain}-size
 compiler.define=-DARDUINO=
 compiler.readelf.cmd={build.toolchain}-readelf
