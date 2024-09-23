@@ -31,7 +31,7 @@ typedef struct {
 static FMMap *_map = nullptr;
 SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
     if (!_map) {
-        _map = (FMMap *)calloc(sizeof(FMMap), 16);
+        _map = (FMMap *)calloc(16, sizeof(FMMap));
     }
     // Pre-existing map
     for (int i = 0; i < 16; i++) {

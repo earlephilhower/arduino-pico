@@ -78,6 +78,40 @@ extern void __loop() {
 }
 static struct _reent *_impure_ptr1 = nullptr;
 
+#ifndef LED_DELAY_MS
+#define LED_DELAY_MS 250
+#endif
+#define PICO_DEFAULT_LED_PIN LED_BUILTIN
+// Perform initialisation
+int pico_led_init(void) {
+    // A device like Pico that uses a GPIO for the LED will define PICO_DEFAULT_LED_PIN
+    // so we can use normal GPIO functionality to turn the led on and off
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+    return PICO_OK;
+}
+
+// Turn the led on or off
+void pico_set_led(bool led_on) {
+    // Just set the GPIO on or off
+    gpio_put(PICO_DEFAULT_LED_PIN, led_on);
+}
+
+extern "C" int mainx() {
+    int rc = pico_led_init();
+    hard_assert(rc == PICO_OK);
+    while (true) {
+        pico_set_led(true);
+        sleep_ms(LED_DELAY_MS);
+        pico_set_led(false);
+        sleep_ms(LED_DELAY_MS);
+    }
+    return 0;
+}
+
+
+
+
 extern "C" int main() {
 #if (defined(PICO_RP2040) && (F_CPU != 125000000)) || (defined(PICO_RP2350) && (F_CPU != 150000000))
     set_sys_clock_khz(F_CPU / 1000, true);
@@ -88,7 +122,7 @@ extern "C" int main() {
 
     // Allocate impure_ptr (newlib temps) if there is a 2nd core running
     if (!__isFreeRTOS && (setup1 || loop1)) {
-        _impure_ptr1 = (struct _reent*)calloc(sizeof(struct _reent), 1);
+        _impure_ptr1 = (struct _reent*)calloc(1, sizeof(struct _reent));
         _REENT_INIT_PTR(_impure_ptr1);
     }
 
@@ -117,6 +151,7 @@ extern "C" int main() {
 #endif
 #endif
 
+//mainx();
 #if defined DEBUG_RP2040_PORT
     if (!__isFreeRTOS) {
         DEBUG_RP2040_PORT.begin(115200);
@@ -134,7 +169,6 @@ extern "C" int main() {
         }
         rp2040.fifo.registerCore();
     }
-
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             delay(1); // Needed to make Picoprobe upload start 2nd core
