@@ -128,7 +128,8 @@ target_compile_definitions(pico-${cpu} PUBLIC
 if (${cpu} MATCHES "rp2040")
     set(xll1)
 elseif(${cpu} MATCHES "rp2350")
-    set(xll1 pico_sha256)
+    set(xll1
+        pico_sha256)
 endif()
 
 target_link_libraries(pico-${cpu}
@@ -159,6 +160,7 @@ target_link_libraries(pico-${cpu}
     hardware_watchdog
     hardware_xosc
     cmsis
+    pico_aon_timer
     pico_bit_ops
     pico_bootrom
     pico_bootsel_via_double_reset
