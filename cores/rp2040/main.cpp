@@ -97,20 +97,6 @@ void pico_set_led(bool led_on) {
     gpio_put(PICO_DEFAULT_LED_PIN, led_on);
 }
 
-extern "C" int mainx() {
-    int rc = pico_led_init();
-    hard_assert(rc == PICO_OK);
-    while (true) {
-        pico_set_led(true);
-        sleep_ms(LED_DELAY_MS);
-        pico_set_led(false);
-        sleep_ms(LED_DELAY_MS);
-    }
-    return 0;
-}
-
-
-
 
 extern "C" int main() {
 #if (defined(PICO_RP2040) && (F_CPU != 125000000)) || (defined(PICO_RP2350) && (F_CPU != 150000000))
@@ -151,7 +137,6 @@ extern "C" int main() {
 #endif
 #endif
 
-//mainx();
 #if defined DEBUG_RP2040_PORT
     if (!__isFreeRTOS) {
         DEBUG_RP2040_PORT.begin(115200);

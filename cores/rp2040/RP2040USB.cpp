@@ -374,7 +374,6 @@ static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
 }
 
 void __USBStart() __attribute__((weak));
-extern "C" int mainx();
 
 void __USBStart() {
     if (tusb_inited()) {
@@ -387,7 +386,6 @@ void __USBStart() {
 
     mutex_init(&__usb_mutex);
 
-//mainx();
     tusb_init();
 
     __usb_task_irq = user_irq_claim_unused(true);
