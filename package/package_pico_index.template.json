@@ -27,6 +27,9 @@
                      "name": "Raspberry Pi Pico 2"
                   },
                   {
+                     "name": "Raspberry Pi Pico 2 RISC-V"
+                  },
+                  {
                      "name": "0xCB Helios"
                   },
                   {
@@ -331,7 +334,7 @@
                   {
                      "packager": "rp2040",
                      "version": "4.0.0-b1fade8",
-                     "name": "pqt-gcc"
+                     "name": "pqt-gcc-riscv"
                   },
                   {
                      "packager": "rp2040",
@@ -462,7 +465,7 @@
             },
             {
                "version": "4.0.0-b1fade8",
-               "name": "pqt-gcc",
+               "name": "pqt-gcc-riscv",
                "systems": [
                   {
                      "host": "x86_64-pc-linux-gnu",

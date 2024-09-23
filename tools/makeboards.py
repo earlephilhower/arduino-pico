@@ -4,7 +4,7 @@ import sys
 import json
 
 def BuildFlashMenu(name, chip, flashsize, fssizelist):
-    if chip == "rp2350":
+    if (chip == "rp2350") or (chip == 'rp2350-riscv'):
         delta = 8192
     elif chip == "rp2040":
         delta = 4096
@@ -229,6 +229,8 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
         uf2family = "--family rp2350-arm-s --abs-block"
     elif chip == "rp2040":
         uf2family = "--family rp2040"
+    elif chip == "rp2350-riscv":
+        uf2family = "--family rp2350-riscv"
     print("%s.build.uf2family=%s" % (name, uf2family))
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
@@ -294,9 +296,9 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     elif chip == "rp2350":
         tup =  "arm-none-eabi"
         opts = "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse"
-    elif chip == "rp2530rv":
-        tup = "riscv-none-eabi"
-        opts = "TBD"
+    elif chip == "rp2350-riscv":
+        tup = "riscv32-unknown-elf"
+        opts = "-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32"
     else:
         raise Exception("Unknown board type " + str(chip));
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
@@ -369,6 +371,11 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
         fcpu = "133000000L"
     elif chip == "rp2350":
         cpu = "cortex-m33"
+        ramsize = 512
+        jlink = "RP2350_0"
+        fcpu = "150000000L"
+    elif chip == "rp2350-riscv":
+        cpu = "riscv"
         ramsize = 512
         jlink = "RP2350_0"
         fcpu = "150000000L"
@@ -450,6 +457,7 @@ BuildGlobalMenuList()
 MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000f", 250, "RASPBERRY_PI_PICO_2", 4, 0, "boot2_generic_03h_2_padded_checksum")
+MakeBoard("rpipico2rv", "rp2350-riscv", "Raspberry Pi", "Pico 2 RISC-V", "0x2e8a", "0x000f", 250, "RASPBERRY_PI_PICO_2_RISC_V", 4, 0, "boot2_generic_03h_2_padded_checksum")
 
 # 0xCB
 MakeBoard("0xcb_helios", "rp2040", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, 0, "boot2_w25q128jvxq_4_padded_checksum")

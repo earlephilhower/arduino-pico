@@ -37,7 +37,7 @@
 #ifdef abs
 #undef abs
 #endif // abs
-#ifdef __cplusplus
+#if defined(__cplusplus) && !defined(__riscv)
 using std::abs;
 using std::round;
 #else

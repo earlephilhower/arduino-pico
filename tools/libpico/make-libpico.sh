@@ -5,6 +5,13 @@ set -x
 
 export PICO_SDK_PATH="$(cd ../../pico-sdk/; pwd)"
 export PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
+export PATH="$(cd ../../system/riscv32-unknown-elf/bin; pwd):$PATH"
+
+rm -rf build-rp2350-riscv
+mkdir build-rp2350-riscv
+cd build-rp2350-riscv
+CPU=rp2350-riscv cmake ..
+make -j
 
 rm -rf build-rp2040
 mkdir build-rp2040
@@ -89,3 +96,4 @@ for type in boot2_generic_03h boot2_w25q080; do
     done
 done
 mv *.S ../../../../boot2/rp2350/.
+
