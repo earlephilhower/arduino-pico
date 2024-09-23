@@ -99,7 +99,12 @@ static SemaphoreHandle_t __getFreeRTOSRecursiveMutex(_LOCK_T lock) {
     return __get_freertos_mutex_for_ptr((mutex_t *)l, true);
 }
 
+#ifdef __riscv
 void __retarget_lock_init(_LOCK_T lock) {
+#else
+void __retarget_lock_init(_LOCK_T *lock) {
+    // TODO TBD - Rebuild ARM lib
+#endif
     if (__freeRTOSinitted) {
         mutex_t *l = (mutex_t *)lock;
         if ((l == &__lock___at_quick_exit_mutex) || (l == &__lock___tz_mutex) || (l == &__lock___dd_hash_mutex) || (l == &__lock___arc4random_mutex)) {
@@ -113,7 +118,12 @@ void __retarget_lock_init(_LOCK_T lock) {
     }
 }
 
+#ifdef __riscv
 void __retarget_lock_init_recursive(_LOCK_T lock) {
+#else
+void __retarget_lock_init_recursive(_LOCK_T *lock) {
+    // TODO TBD - Rebuild ARM lib
+#endif
     if (__freeRTOSinitted) {
         recursive_mutex_t *l = (recursive_mutex_t *)lock;
         if ((l == &__lock___sinit_recursive_mutex) || (l == &__lock___sfp_recursive_mutex) || (l == &__lock___atexit_recursive_mutex) || (l == &__lock___malloc_recursive_mutex) || (l == &__lock___env_recursive_mutex)) {

@@ -78,26 +78,6 @@ extern void __loop() {
 }
 static struct _reent *_impure_ptr1 = nullptr;
 
-#ifndef LED_DELAY_MS
-#define LED_DELAY_MS 250
-#endif
-#define PICO_DEFAULT_LED_PIN LED_BUILTIN
-// Perform initialisation
-int pico_led_init(void) {
-    // A device like Pico that uses a GPIO for the LED will define PICO_DEFAULT_LED_PIN
-    // so we can use normal GPIO functionality to turn the led on and off
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
-    return PICO_OK;
-}
-
-// Turn the led on or off
-void pico_set_led(bool led_on) {
-    // Just set the GPIO on or off
-    gpio_put(PICO_DEFAULT_LED_PIN, led_on);
-}
-
-
 extern "C" int main() {
 #if (defined(PICO_RP2040) && (F_CPU != 125000000)) || (defined(PICO_RP2350) && (F_CPU != 150000000))
     set_sys_clock_khz(F_CPU / 1000, true);

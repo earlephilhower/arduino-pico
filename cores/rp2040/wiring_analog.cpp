@@ -78,7 +78,7 @@ extern "C" void analogWriteResolution(int res) {
 
 extern "C" void analogWrite(pin_size_t pin, int val) {
     CoreMutex m(&_dacMutex);
-    auto speed = clock_get_hz(clk_sys);
+
     if ((pin >= __GPIOCNT) || !m) {
         DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
         return;
