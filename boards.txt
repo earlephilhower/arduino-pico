@@ -844,7 +844,7 @@ rpipico2rv.build.board=RASPBERRY_PI_PICO_2_RISC_V
 rpipico2rv.build.chip=rp2350-riscv
 rpipico2rv.build.toolchain=riscv32-unknown-elf
 rpipico2rv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
-rpipico2rv.build.uf2family=--family rp2350-riscv
+rpipico2rv.build.uf2family=--family rp2350-riscv --abs-block
 rpipico2rv.build.variant=rpipico2rv
 rpipico2rv.upload.maximum_size=4194304
 rpipico2rv.upload.wait_for_upload_port=true

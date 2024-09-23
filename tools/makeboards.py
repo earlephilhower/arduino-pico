@@ -230,7 +230,7 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     elif chip == "rp2040":
         uf2family = "--family rp2040"
     elif chip == "rp2350-riscv":
-        uf2family = "--family rp2350-riscv"
+        uf2family = "--family rp2350-riscv --abs-block"
     print("%s.build.uf2family=%s" % (name, uf2family))
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
