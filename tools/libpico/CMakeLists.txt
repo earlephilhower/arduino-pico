@@ -8,11 +8,12 @@ if (${cpu} MATCHES "rp2040")
     set(PICO_BOARD pico_w)
     set(PICO_PLATFORM rp2040)
     set(PICO_CYW43_SUPPORTED 1)
-elseif(${cpu} MATCHES "rp2350")
+elseif(${cpu} MATCHES "rp2350$")
     set(PICO_BOARD solderparty_rp2350_stamp_xl)  # Pico2 sets to RP2350A which disables all code for RP2350B
     set(PICO_PLATFORM rp2350)
     set(PICO_CYW43_SUPPORTED 0)
-    elseif(${cpu} MATCHES "rp2350-riscv")
+elseif(${cpu} MATCHES "rp2350-riscv$")
+    message(INFO "Building RISCV")
     set(PICO_BOARD solderparty_rp2350_stamp_xl)  # Pico2 sets to RP2350A which disables all code for RP2350B
     set(PICO_PLATFORM rp2350-riscv)
     set(PICO_CYW43_SUPPORTED 0)
@@ -44,7 +45,7 @@ if (${cpu} MATCHES "rp2040")
         PICO_DOUBLE_SUPPORT_ROM_V1=1
         PICO_RP2040=1
         PICO_CYW43_SUPPORTED=1)
-elseif(${cpu} MATCHES "rp2350" OR ${cpu} MATCHES "rp2350-riscv")
+elseif(${cpu} MATCHES "rp2350")
     set(xcd
         CFG_TUSB_DEBUG=0
         CFG_TUSB_MCU=OPT_MCU_RP2040
@@ -103,9 +104,9 @@ elseif(${cpu} MATCHES "rp2350" OR ${cpu} MATCHES "rp2350-riscv")
 endif()
 if (${cpu} MATCHES "rp2040")
     set(ppp PICO_PLATFORM=rp2040)
-elseif(${cpu} MATCHES "rp2350")
+elseif(${cpu} MATCHES "rp2350$")
     set(ppp PICO_PLATFORM=rp2350)
-elseif(${cpu} MATCHES "rp2350-riscv")
+elseif(${cpu} MATCHES "rp2350-riscv$")
     set(ppp PICO_PLATFORM=rp2350-riscv)
 endif()
 
@@ -137,7 +138,7 @@ target_compile_definitions(pico-${cpu} PUBLIC
 )
 if (${cpu} MATCHES "rp2040")
     set(xll1)
-elseif(${cpu} MATCHES "rp2350" OR ${cpu} MATCHES "rp2350-riscv")
+elseif(${cpu} MATCHES "rp2350")
     set(xll1
         pico_sha256)
 endif()

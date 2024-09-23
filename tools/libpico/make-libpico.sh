@@ -11,7 +11,8 @@ rm -rf build-rp2350-riscv
 mkdir build-rp2350-riscv
 cd build-rp2350-riscv
 CPU=rp2350-riscv cmake ..
-make -j
+make -j VERBOSE=1
+exit
 
 rm -rf build-rp2040
 mkdir build-rp2040
