@@ -61,12 +61,8 @@ public:
         if (!__isFreeRTOS) {
             multicore_fifo_clear_irq();
 #ifdef PICO_RP2350
-#ifdef __riscv
-            //TBD RP2350-RISCV
-#else
             irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
             irq_set_enabled(SIO_IRQ_FIFO, true);
-#endif // RP2350 - ARM
 #else
             irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
             irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
