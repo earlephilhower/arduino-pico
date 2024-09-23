@@ -227,10 +227,10 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.toolchainopts=%s" % (name, chipoptions))
     if chip == "rp2350":
         uf2family = "--family rp2350-arm-s --abs-block"
-    elif chip == "rp2040":
-        uf2family = "--family rp2040"
     elif chip == "rp2350-riscv":
         uf2family = "--family rp2350-riscv --abs-block"
+    elif chip == "rp2040":
+        uf2family = "--family rp2040"
     print("%s.build.uf2family=%s" % (name, uf2family))
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
@@ -245,7 +245,7 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.boot2=%s" % (name, boot2))
     print('%s.build.usb_manufacturer="%s"' % (name, vendor_name))
     print('%s.build.usb_product="%s"' % (name, product_name))
-    if (chip == "rp2350") and (name != "generic_rp2350"):
+    if ((chip == "rp2350") or (chip == "rp2350-riscv")) and (name != "generic_rp2350"):
         print("%s.build.psram_length=0x%d00000" % (name, psramsize))
     if extra != None:
         m_extra = ''
@@ -321,7 +321,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
-    if chip == "rp2350":
+    if (chip == "rp2350") or (chip == "rp2350-riscv"):
         BuildFreq(name, 150)
         if name == "generic_rp2350":
             BuildRP2350Variant(name)
@@ -435,7 +435,7 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
     "vendor": vendor_name,
     }
     # add nonzero PSRAM sizes of known boards (can still be overwritten in platformio.ini)
-    if psramsize != 0 and name != "generic_rp2350":
+    if (psramsize != 0) and (name != "generic_rp2350"):
         j["upload"]["psram_length"] = psramsize * 1024 * 1024
 
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
