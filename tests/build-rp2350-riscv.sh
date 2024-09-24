@@ -15,7 +15,7 @@ elif [ "$BUILD_PARITY" = "odd" ]; then
     rem=1
 fi
 
-export FQBN=pico:rp2040:rpipico2rv:flash=4194304_0,freq=150,opt=Small,rtti=Disabled,stackprotect=Disabled,exceptions=Enabled,dbgport=Disabled,dbglvl=None,usbstack=picosdk,ipbtstack=ipv4only,uploadmethod=default
+export FQBN=pico:rp2040:rpipico2rv:flash=4194304_0,freq=150,opt=Small,rtti=Disabled,stackprotect=Disabled,exceptions=Disabled,dbgport=Disabled,dbglvl=None,usbstack=picosdk,ipbtstack=ipv4only,uploadmethod=default
 export PICO_BOARD=rp2350
 
 install_arduino nodebug

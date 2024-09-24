@@ -536,10 +536,10 @@
                "systems": [
                   {
                      "host": "x86_64-pc-linux-gnu",
-                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/4.0.0/x86_64-linux-gnu.riscv32-unknown-elf-b1fade8.240923.tar.gz",
-                     "archiveFileName": "x86_64-linux-gnu.riscv32-unknown-elf-b1fade8.240923.tar.gz",
-                     "checksum": "SHA-256:32b360914aa729cd0e19f99b73d670009c679c26e2a2ff607532494184d3f0e5",
-                     "size": "308706281"
+                     "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/4.0.0/x86_64-linux-gnu.riscv32-unknown-elf-b1fade8.240924.tar.gz",
+                     "archiveFileName": "x86_64-linux-gnu.riscv32-unknown-elf-b1fade8.240924.tar.gz",
+                     "checksum": "SHA-256:d76440208d0fac65971f45a19dafa0d2aabcc4f6ed384be46b63f76e8bc58db9",
+                     "size": "308691422"
                   }
                ]
             },
