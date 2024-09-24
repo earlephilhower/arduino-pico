@@ -61,7 +61,7 @@ compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags}
 compiler.c.elf.cmd={build.toolchain}-g++
 compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize} -u _printf_float -u _scanf_float
 compiler.S.cmd={build.toolchain}-gcc
-compiler.S.flags=-c {compiler.warning_flags} {compiler.defines} -g -x assembler-with-cpp -MMD {compiler.includes} -g
+compiler.S.flags=-c {compiler.warning_flags} {compiler.defines} -g -x assembler-with-cpp -MMD {compiler.includes} {build.toolchainopts} -g
 compiler.cpp.cmd={build.toolchain}-g++
 compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} -std=gnu++17 -g -pipe
 
