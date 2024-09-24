@@ -9,6 +9,7 @@ menu.psramcs=PSRAM CS
 menu.psram=PSRAM Size
 menu.psramfreq=PSRAM Speed
 menu.freq=CPU Speed
+menu.arch=CPU Architecture
 menu.opt=Optimize
 menu.rtti=RTTI
 menu.stackprotect=Stack Protector
@@ -598,10 +599,6 @@ rpipico2.build.usbvid=-DUSBD_VID=0x2e8a
 rpipico2.build.usbpid=-DUSBD_PID=0x000f
 rpipico2.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipico2.build.board=RASPBERRY_PI_PICO_2
-rpipico2.build.chip=rp2350
-rpipico2.build.toolchain=arm-none-eabi
-rpipico2.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-rpipico2.build.uf2family=--family rp2350-arm-s --abs-block
 rpipico2.build.variant=rpipico2
 rpipico2.upload.maximum_size=4194304
 rpipico2.upload.wait_for_upload_port=true
@@ -672,6 +669,16 @@ rpipico2.menu.flash.4194304_3145728.build.flash_length=1040384
 rpipico2.menu.flash.4194304_3145728.build.eeprom_start=272621568
 rpipico2.menu.flash.4194304_3145728.build.fs_start=269475840
 rpipico2.menu.flash.4194304_3145728.build.fs_end=272621568
+rpipico2.menu.arch.arm=ARM
+rpipico2.menu.arch.arm.build.chip=rp2350
+rpipico2.menu.arch.arm.build.toolchain=arm-none-eabi
+rpipico2.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+rpipico2.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+rpipico2.menu.arch.riscv=RISC-V
+rpipico2.menu.arch.riscv.build.chip=rp2350-riscv
+rpipico2.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+rpipico2.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+rpipico2.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 rpipico2.menu.freq.150=150 MHz
 rpipico2.menu.freq.150.build.f_cpu=150000000L
 rpipico2.menu.freq.50=50 MHz
@@ -800,249 +807,6 @@ rpipico2.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis
 rpipico2.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=524288
 rpipico2.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 rpipico2.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
-
-# -----------------------------------
-# Raspberry Pi Pico 2 RISC-V
-# -----------------------------------
-rpipico2rv.name=Raspberry Pi Pico 2 RISC-V
-rpipico2rv.vid.0=0x2e8a
-rpipico2rv.pid.0=0x000f
-rpipico2rv.vid.1=0x2e8a
-rpipico2rv.pid.1=0x010f
-rpipico2rv.vid.2=0x2e8a
-rpipico2rv.pid.2=0x400f
-rpipico2rv.vid.3=0x2e8a
-rpipico2rv.pid.3=0x410f
-rpipico2rv.vid.4=0x2e8a
-rpipico2rv.pid.4=0x800f
-rpipico2rv.vid.5=0x2e8a
-rpipico2rv.pid.5=0x810f
-rpipico2rv.vid.6=0x2e8a
-rpipico2rv.pid.6=0xc00f
-rpipico2rv.vid.7=0x2e8a
-rpipico2rv.pid.7=0xc10f
-rpipico2rv.upload_port.0.vid=0x2e8a
-rpipico2rv.upload_port.0.pid=0x000f
-rpipico2rv.upload_port.1.vid=0x2e8a
-rpipico2rv.upload_port.1.pid=0x010f
-rpipico2rv.upload_port.2.vid=0x2e8a
-rpipico2rv.upload_port.2.pid=0x400f
-rpipico2rv.upload_port.3.vid=0x2e8a
-rpipico2rv.upload_port.3.pid=0x410f
-rpipico2rv.upload_port.4.vid=0x2e8a
-rpipico2rv.upload_port.4.pid=0x800f
-rpipico2rv.upload_port.5.vid=0x2e8a
-rpipico2rv.upload_port.5.pid=0x810f
-rpipico2rv.upload_port.6.vid=0x2e8a
-rpipico2rv.upload_port.6.pid=0xc00f
-rpipico2rv.upload_port.7.vid=0x2e8a
-rpipico2rv.upload_port.7.pid=0xc10f
-rpipico2rv.build.usbvid=-DUSBD_VID=0x2e8a
-rpipico2rv.build.usbpid=-DUSBD_PID=0x000f
-rpipico2rv.build.usbpwr=-DUSBD_MAX_POWER_MA=250
-rpipico2rv.build.board=RASPBERRY_PI_PICO_2
-rpipico2rv.build.chip=rp2350-riscv
-rpipico2rv.build.toolchain=riscv32-unknown-elf
-rpipico2rv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
-rpipico2rv.build.uf2family=--family rp2350-riscv --abs-block
-rpipico2rv.build.variant=rpipico2rv
-rpipico2rv.upload.maximum_size=4194304
-rpipico2rv.upload.wait_for_upload_port=true
-rpipico2rv.upload.erase_cmd=
-rpipico2rv.serial.disableDTR=false
-rpipico2rv.serial.disableRTS=false
-rpipico2rv.build.f_cpu=125000000
-rpipico2rv.build.led=
-rpipico2rv.build.core=rp2040
-rpipico2rv.build.ldscript=memmap_default.ld
-rpipico2rv.build.boot2=none
-rpipico2rv.build.usb_manufacturer="Raspberry Pi"
-rpipico2rv.build.usb_product="Pico 2 RISC-V"
-rpipico2rv.build.psram_length=0x000000
-rpipico2rv.menu.flash.4194304_0=4MB (no FS)
-rpipico2rv.menu.flash.4194304_0.upload.maximum_size=4186112
-rpipico2rv.menu.flash.4194304_0.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_0.build.flash_length=4186112
-rpipico2rv.menu.flash.4194304_0.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_0.build.fs_start=272621568
-rpipico2rv.menu.flash.4194304_0.build.fs_end=272621568
-rpipico2rv.menu.flash.4194304_65536=4MB (Sketch: 4032KB, FS: 64KB)
-rpipico2rv.menu.flash.4194304_65536.upload.maximum_size=4120576
-rpipico2rv.menu.flash.4194304_65536.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_65536.build.flash_length=4120576
-rpipico2rv.menu.flash.4194304_65536.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_65536.build.fs_start=272556032
-rpipico2rv.menu.flash.4194304_65536.build.fs_end=272621568
-rpipico2rv.menu.flash.4194304_131072=4MB (Sketch: 3968KB, FS: 128KB)
-rpipico2rv.menu.flash.4194304_131072.upload.maximum_size=4055040
-rpipico2rv.menu.flash.4194304_131072.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_131072.build.flash_length=4055040
-rpipico2rv.menu.flash.4194304_131072.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_131072.build.fs_start=272490496
-rpipico2rv.menu.flash.4194304_131072.build.fs_end=272621568
-rpipico2rv.menu.flash.4194304_262144=4MB (Sketch: 3840KB, FS: 256KB)
-rpipico2rv.menu.flash.4194304_262144.upload.maximum_size=3923968
-rpipico2rv.menu.flash.4194304_262144.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_262144.build.flash_length=3923968
-rpipico2rv.menu.flash.4194304_262144.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_262144.build.fs_start=272359424
-rpipico2rv.menu.flash.4194304_262144.build.fs_end=272621568
-rpipico2rv.menu.flash.4194304_524288=4MB (Sketch: 3584KB, FS: 512KB)
-rpipico2rv.menu.flash.4194304_524288.upload.maximum_size=3661824
-rpipico2rv.menu.flash.4194304_524288.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_524288.build.flash_length=3661824
-rpipico2rv.menu.flash.4194304_524288.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_524288.build.fs_start=272097280
-rpipico2rv.menu.flash.4194304_524288.build.fs_end=272621568
-rpipico2rv.menu.flash.4194304_1048576=4MB (Sketch: 3MB, FS: 1MB)
-rpipico2rv.menu.flash.4194304_1048576.upload.maximum_size=3137536
-rpipico2rv.menu.flash.4194304_1048576.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_1048576.build.flash_length=3137536
-rpipico2rv.menu.flash.4194304_1048576.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_1048576.build.fs_start=271572992
-rpipico2rv.menu.flash.4194304_1048576.build.fs_end=272621568
-rpipico2rv.menu.flash.4194304_2097152=4MB (Sketch: 2MB, FS: 2MB)
-rpipico2rv.menu.flash.4194304_2097152.upload.maximum_size=2088960
-rpipico2rv.menu.flash.4194304_2097152.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_2097152.build.flash_length=2088960
-rpipico2rv.menu.flash.4194304_2097152.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_2097152.build.fs_start=270524416
-rpipico2rv.menu.flash.4194304_2097152.build.fs_end=272621568
-rpipico2rv.menu.flash.4194304_3145728=4MB (Sketch: 1MB, FS: 3MB)
-rpipico2rv.menu.flash.4194304_3145728.upload.maximum_size=1040384
-rpipico2rv.menu.flash.4194304_3145728.build.flash_total=4194304
-rpipico2rv.menu.flash.4194304_3145728.build.flash_length=1040384
-rpipico2rv.menu.flash.4194304_3145728.build.eeprom_start=272621568
-rpipico2rv.menu.flash.4194304_3145728.build.fs_start=269475840
-rpipico2rv.menu.flash.4194304_3145728.build.fs_end=272621568
-rpipico2rv.menu.freq.150=150 MHz
-rpipico2rv.menu.freq.150.build.f_cpu=150000000L
-rpipico2rv.menu.freq.50=50 MHz
-rpipico2rv.menu.freq.50.build.f_cpu=50000000L
-rpipico2rv.menu.freq.100=100 MHz
-rpipico2rv.menu.freq.100.build.f_cpu=100000000L
-rpipico2rv.menu.freq.120=120 MHz
-rpipico2rv.menu.freq.120.build.f_cpu=120000000L
-rpipico2rv.menu.freq.125=125 MHz
-rpipico2rv.menu.freq.125.build.f_cpu=125000000L
-rpipico2rv.menu.freq.128=128 MHz
-rpipico2rv.menu.freq.128.build.f_cpu=128000000L
-rpipico2rv.menu.freq.133=133 MHz
-rpipico2rv.menu.freq.133.build.f_cpu=133000000L
-rpipico2rv.menu.freq.175=175 MHz (Overclock)
-rpipico2rv.menu.freq.175.build.f_cpu=175000000L
-rpipico2rv.menu.freq.200=200 MHz (Overclock)
-rpipico2rv.menu.freq.200.build.f_cpu=200000000L
-rpipico2rv.menu.freq.225=225 MHz (Overclock)
-rpipico2rv.menu.freq.225.build.f_cpu=225000000L
-rpipico2rv.menu.freq.240=240 MHz (Overclock)
-rpipico2rv.menu.freq.240.build.f_cpu=240000000L
-rpipico2rv.menu.freq.250=250 MHz (Overclock)
-rpipico2rv.menu.freq.250.build.f_cpu=250000000L
-rpipico2rv.menu.freq.275=275 MHz (Overclock)
-rpipico2rv.menu.freq.275.build.f_cpu=275000000L
-rpipico2rv.menu.freq.300=300 MHz (Overclock)
-rpipico2rv.menu.freq.300.build.f_cpu=300000000L
-rpipico2rv.menu.opt.Small=Small (-Os) (standard)
-rpipico2rv.menu.opt.Small.build.flags.optimize=-Os
-rpipico2rv.menu.opt.Optimize=Optimize (-O)
-rpipico2rv.menu.opt.Optimize.build.flags.optimize=-O
-rpipico2rv.menu.opt.Optimize2=Optimize More (-O2)
-rpipico2rv.menu.opt.Optimize2.build.flags.optimize=-O2
-rpipico2rv.menu.opt.Optimize3=Optimize Even More (-O3)
-rpipico2rv.menu.opt.Optimize3.build.flags.optimize=-O3
-rpipico2rv.menu.opt.Fast=Fast (-Ofast) (maybe slower)
-rpipico2rv.menu.opt.Fast.build.flags.optimize=-Ofast
-rpipico2rv.menu.opt.Debug=Debug (-Og)
-rpipico2rv.menu.opt.Debug.build.flags.optimize=-Og
-rpipico2rv.menu.rtti.Disabled=Disabled
-rpipico2rv.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
-rpipico2rv.menu.rtti.Enabled=Enabled
-rpipico2rv.menu.rtti.Enabled.build.flags.rtti=
-rpipico2rv.menu.stackprotect.Disabled=Disabled
-rpipico2rv.menu.stackprotect.Disabled.build.flags.stackprotect=
-rpipico2rv.menu.stackprotect.Enabled=Enabled
-rpipico2rv.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
-rpipico2rv.menu.exceptions.Disabled=Disabled
-rpipico2rv.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
-rpipico2rv.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
-rpipico2rv.menu.exceptions.Enabled=Enabled
-rpipico2rv.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
-rpipico2rv.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
-rpipico2rv.menu.dbgport.Disabled=Disabled
-rpipico2rv.menu.dbgport.Disabled.build.debug_port=
-rpipico2rv.menu.dbgport.Serial=Serial
-rpipico2rv.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
-rpipico2rv.menu.dbgport.Serial1=Serial1
-rpipico2rv.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
-rpipico2rv.menu.dbgport.Serial2=Serial2
-rpipico2rv.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
-rpipico2rv.menu.dbglvl.None=None
-rpipico2rv.menu.dbglvl.None.build.debug_level=
-rpipico2rv.menu.dbglvl.Core=Core
-rpipico2rv.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
-rpipico2rv.menu.dbglvl.SPI=SPI
-rpipico2rv.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
-rpipico2rv.menu.dbglvl.Wire=Wire
-rpipico2rv.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
-rpipico2rv.menu.dbglvl.Bluetooth=Bluetooth
-rpipico2rv.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
-rpipico2rv.menu.dbglvl.All=All
-rpipico2rv.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH
-rpipico2rv.menu.dbglvl.NDEBUG=NDEBUG
-rpipico2rv.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
-rpipico2rv.menu.usbstack.picosdk=Pico SDK
-rpipico2rv.menu.usbstack.picosdk.build.usbstack_flags=
-rpipico2rv.menu.usbstack.tinyusb=Adafruit TinyUSB
-rpipico2rv.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
-rpipico2rv.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
-rpipico2rv.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
-rpipico2rv.menu.usbstack.nousb=No USB
-rpipico2rv.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
-rpipico2rv.menu.ipbtstack.ipv4only=IPv4 Only
-rpipico2rv.menu.ipbtstack.ipv4only.build.libpicow=libipv4.a
-rpipico2rv.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
-rpipico2rv.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
-rpipico2rv.menu.ipbtstack.ipv4ipv6.build.libpicow=libipv4-ipv6.a
-rpipico2rv.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
-rpipico2rv.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
-rpipico2rv.menu.ipbtstack.ipv4btcble.build.libpicow=libipv4-bt.a
-rpipico2rv.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
-rpipico2rv.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
-rpipico2rv.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libipv4-ipv6-bt.a
-rpipico2rv.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
-rpipico2rv.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
-rpipico2rv.menu.ipbtstack.ipv4onlybig.build.libpicow=libipv4-big.a
-rpipico2rv.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
-rpipico2rv.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
-rpipico2rv.menu.ipbtstack.ipv4ipv6big.build.libpicow=libipv4-ipv6-big.a
-rpipico2rv.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
-rpipico2rv.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
-rpipico2rv.menu.ipbtstack.ipv4btcblebig.build.libpicow=libipv4-bt-big.a
-rpipico2rv.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
-rpipico2rv.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
-rpipico2rv.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=libipv4-ipv6-bt-big.a
-rpipico2rv.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
-rpipico2rv.menu.uploadmethod.default=Default (UF2)
-rpipico2rv.menu.uploadmethod.default.build.ram_length=512k
-rpipico2rv.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
-rpipico2rv.menu.uploadmethod.default.upload.maximum_data_size=524288
-rpipico2rv.menu.uploadmethod.default.upload.tool=uf2conv
-rpipico2rv.menu.uploadmethod.default.upload.tool.default=uf2conv
-rpipico2rv.menu.uploadmethod.default.upload.tool.network=uf2conv-network
-rpipico2rv.menu.uploadmethod.picotool=Picotool
-rpipico2rv.menu.uploadmethod.picotool.build.ram_length=512k
-rpipico2rv.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
-rpipico2rv.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
-rpipico2rv.menu.uploadmethod.picotool.upload.maximum_data_size=524288
-rpipico2rv.menu.uploadmethod.picotool.upload.tool=picotool
-rpipico2rv.menu.uploadmethod.picotool.upload.tool.default=picotool
-rpipico2rv.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
-rpipico2rv.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=512k
-rpipico2rv.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
-rpipico2rv.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=524288
-rpipico2rv.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
-rpipico2rv.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
 # 0xCB Helios
@@ -5442,10 +5206,6 @@ adafruit_feather_rp2350_hstx.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_rp2350_hstx.build.usbpid=-DUSBD_PID=0x814f
 adafruit_feather_rp2350_hstx.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_rp2350_hstx.build.board=ADAFRUIT_FEATHER_RP2350_HSTX
-adafruit_feather_rp2350_hstx.build.chip=rp2350
-adafruit_feather_rp2350_hstx.build.toolchain=arm-none-eabi
-adafruit_feather_rp2350_hstx.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-adafruit_feather_rp2350_hstx.build.uf2family=--family rp2350-arm-s --abs-block
 adafruit_feather_rp2350_hstx.build.variant=adafruit_feather_rp2350_hstx
 adafruit_feather_rp2350_hstx.upload.maximum_size=8388608
 adafruit_feather_rp2350_hstx.upload.wait_for_upload_port=true
@@ -5544,6 +5304,16 @@ adafruit_feather_rp2350_hstx.menu.flash.8388608_7340032.build.flash_length=10403
 adafruit_feather_rp2350_hstx.menu.flash.8388608_7340032.build.eeprom_start=276815872
 adafruit_feather_rp2350_hstx.menu.flash.8388608_7340032.build.fs_start=269475840
 adafruit_feather_rp2350_hstx.menu.flash.8388608_7340032.build.fs_end=276815872
+adafruit_feather_rp2350_hstx.menu.arch.arm=ARM
+adafruit_feather_rp2350_hstx.menu.arch.arm.build.chip=rp2350
+adafruit_feather_rp2350_hstx.menu.arch.arm.build.toolchain=arm-none-eabi
+adafruit_feather_rp2350_hstx.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+adafruit_feather_rp2350_hstx.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+adafruit_feather_rp2350_hstx.menu.arch.riscv=RISC-V
+adafruit_feather_rp2350_hstx.menu.arch.riscv.build.chip=rp2350-riscv
+adafruit_feather_rp2350_hstx.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+adafruit_feather_rp2350_hstx.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+adafruit_feather_rp2350_hstx.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 adafruit_feather_rp2350_hstx.menu.freq.150=150 MHz
 adafruit_feather_rp2350_hstx.menu.freq.150.build.f_cpu=150000000L
 adafruit_feather_rp2350_hstx.menu.freq.50=50 MHz
@@ -9299,10 +9069,6 @@ cytron_iriv_io_controller.build.usbvid=-DUSBD_VID=0x2e8a
 cytron_iriv_io_controller.build.usbpid=-DUSBD_PID=0x1093
 cytron_iriv_io_controller.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_iriv_io_controller.build.board=CYTRON_IRIV_IO_CONTROLLER
-cytron_iriv_io_controller.build.chip=rp2350
-cytron_iriv_io_controller.build.toolchain=arm-none-eabi
-cytron_iriv_io_controller.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-cytron_iriv_io_controller.build.uf2family=--family rp2350-arm-s --abs-block
 cytron_iriv_io_controller.build.variant=cytron_iriv_io_controller
 cytron_iriv_io_controller.upload.maximum_size=2097152
 cytron_iriv_io_controller.upload.wait_for_upload_port=true
@@ -9359,6 +9125,16 @@ cytron_iriv_io_controller.menu.flash.2097152_1048576.build.flash_length=1040384
 cytron_iriv_io_controller.menu.flash.2097152_1048576.build.eeprom_start=270524416
 cytron_iriv_io_controller.menu.flash.2097152_1048576.build.fs_start=269475840
 cytron_iriv_io_controller.menu.flash.2097152_1048576.build.fs_end=270524416
+cytron_iriv_io_controller.menu.arch.arm=ARM
+cytron_iriv_io_controller.menu.arch.arm.build.chip=rp2350
+cytron_iriv_io_controller.menu.arch.arm.build.toolchain=arm-none-eabi
+cytron_iriv_io_controller.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+cytron_iriv_io_controller.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+cytron_iriv_io_controller.menu.arch.riscv=RISC-V
+cytron_iriv_io_controller.menu.arch.riscv.build.chip=rp2350-riscv
+cytron_iriv_io_controller.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+cytron_iriv_io_controller.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+cytron_iriv_io_controller.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 cytron_iriv_io_controller.menu.freq.150=150 MHz
 cytron_iriv_io_controller.menu.freq.150.build.f_cpu=150000000L
 cytron_iriv_io_controller.menu.freq.50=50 MHz
@@ -10212,10 +9988,6 @@ cytron_motion_2350_pro.build.usbvid=-DUSBD_VID=0x2e8a
 cytron_motion_2350_pro.build.usbpid=-DUSBD_PID=0x1096
 cytron_motion_2350_pro.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_motion_2350_pro.build.board=CYTRON_MOTION_2350_PRO
-cytron_motion_2350_pro.build.chip=rp2350
-cytron_motion_2350_pro.build.toolchain=arm-none-eabi
-cytron_motion_2350_pro.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-cytron_motion_2350_pro.build.uf2family=--family rp2350-arm-s --abs-block
 cytron_motion_2350_pro.build.variant=cytron_motion_2350_pro
 cytron_motion_2350_pro.upload.maximum_size=2097152
 cytron_motion_2350_pro.upload.wait_for_upload_port=true
@@ -10272,6 +10044,16 @@ cytron_motion_2350_pro.menu.flash.2097152_1048576.build.flash_length=1040384
 cytron_motion_2350_pro.menu.flash.2097152_1048576.build.eeprom_start=270524416
 cytron_motion_2350_pro.menu.flash.2097152_1048576.build.fs_start=269475840
 cytron_motion_2350_pro.menu.flash.2097152_1048576.build.fs_end=270524416
+cytron_motion_2350_pro.menu.arch.arm=ARM
+cytron_motion_2350_pro.menu.arch.arm.build.chip=rp2350
+cytron_motion_2350_pro.menu.arch.arm.build.toolchain=arm-none-eabi
+cytron_motion_2350_pro.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+cytron_motion_2350_pro.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+cytron_motion_2350_pro.menu.arch.riscv=RISC-V
+cytron_motion_2350_pro.menu.arch.riscv.build.chip=rp2350-riscv
+cytron_motion_2350_pro.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+cytron_motion_2350_pro.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+cytron_motion_2350_pro.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 cytron_motion_2350_pro.menu.freq.150=150 MHz
 cytron_motion_2350_pro.menu.freq.150.build.f_cpu=150000000L
 cytron_motion_2350_pro.menu.freq.50=50 MHz
@@ -16017,10 +15799,6 @@ challenger_2350_wifi6_ble5.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2350_wifi6_ble5.build.usbpid=-DUSBD_PID=0x109a
 challenger_2350_wifi6_ble5.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2350_wifi6_ble5.build.board=CHALLENGER_2350_WIFI_BLE_RP2350
-challenger_2350_wifi6_ble5.build.chip=rp2350
-challenger_2350_wifi6_ble5.build.toolchain=arm-none-eabi
-challenger_2350_wifi6_ble5.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-challenger_2350_wifi6_ble5.build.uf2family=--family rp2350-arm-s --abs-block
 challenger_2350_wifi6_ble5.build.variant=challenger_2350_wifi6_ble5
 challenger_2350_wifi6_ble5.upload.maximum_size=8388608
 challenger_2350_wifi6_ble5.upload.wait_for_upload_port=true
@@ -16220,6 +15998,16 @@ challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.flash_length=146718
 challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.eeprom_start=285204480
 challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.fs_start=283107328
 challenger_2350_wifi6_ble5.menu.flash.16777216_2097152.build.fs_end=285204480
+challenger_2350_wifi6_ble5.menu.arch.arm=ARM
+challenger_2350_wifi6_ble5.menu.arch.arm.build.chip=rp2350
+challenger_2350_wifi6_ble5.menu.arch.arm.build.toolchain=arm-none-eabi
+challenger_2350_wifi6_ble5.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+challenger_2350_wifi6_ble5.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+challenger_2350_wifi6_ble5.menu.arch.riscv=RISC-V
+challenger_2350_wifi6_ble5.menu.arch.riscv.build.chip=rp2350-riscv
+challenger_2350_wifi6_ble5.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+challenger_2350_wifi6_ble5.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+challenger_2350_wifi6_ble5.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 challenger_2350_wifi6_ble5.menu.freq.150=150 MHz
 challenger_2350_wifi6_ble5.menu.freq.150.build.f_cpu=150000000L
 challenger_2350_wifi6_ble5.menu.freq.50=50 MHz
@@ -16389,10 +16177,6 @@ challenger_2350_bconnect.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2350_bconnect.build.usbpid=-DUSBD_PID=0x109b
 challenger_2350_bconnect.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2350_bconnect.build.board=CHALLENGER_2350_BCONNECT_RP2350
-challenger_2350_bconnect.build.chip=rp2350
-challenger_2350_bconnect.build.toolchain=arm-none-eabi
-challenger_2350_bconnect.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-challenger_2350_bconnect.build.uf2family=--family rp2350-arm-s --abs-block
 challenger_2350_bconnect.build.variant=challenger_2350_bconnect
 challenger_2350_bconnect.upload.maximum_size=8388608
 challenger_2350_bconnect.upload.wait_for_upload_port=true
@@ -16491,6 +16275,16 @@ challenger_2350_bconnect.menu.flash.8388608_7340032.build.flash_length=1040384
 challenger_2350_bconnect.menu.flash.8388608_7340032.build.eeprom_start=276815872
 challenger_2350_bconnect.menu.flash.8388608_7340032.build.fs_start=269475840
 challenger_2350_bconnect.menu.flash.8388608_7340032.build.fs_end=276815872
+challenger_2350_bconnect.menu.arch.arm=ARM
+challenger_2350_bconnect.menu.arch.arm.build.chip=rp2350
+challenger_2350_bconnect.menu.arch.arm.build.toolchain=arm-none-eabi
+challenger_2350_bconnect.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+challenger_2350_bconnect.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+challenger_2350_bconnect.menu.arch.riscv=RISC-V
+challenger_2350_bconnect.menu.arch.riscv.build.chip=rp2350-riscv
+challenger_2350_bconnect.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+challenger_2350_bconnect.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+challenger_2350_bconnect.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 challenger_2350_bconnect.menu.freq.150=150 MHz
 challenger_2350_bconnect.menu.freq.150.build.f_cpu=150000000L
 challenger_2350_bconnect.menu.freq.50=50 MHz
@@ -19067,10 +18861,6 @@ pimoroni_pga2350.build.usbvid=-DUSBD_VID=0x2e8a
 pimoroni_pga2350.build.usbpid=-DUSBD_PID=0x1018
 pimoroni_pga2350.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 pimoroni_pga2350.build.board=PIMORONI_PGA2350
-pimoroni_pga2350.build.chip=rp2350
-pimoroni_pga2350.build.toolchain=arm-none-eabi
-pimoroni_pga2350.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-pimoroni_pga2350.build.uf2family=--family rp2350-arm-s --abs-block
 pimoroni_pga2350.build.variant=pimoroni_pga2350
 pimoroni_pga2350.upload.maximum_size=16777216
 pimoroni_pga2350.upload.wait_for_upload_port=true
@@ -19225,6 +19015,16 @@ pimoroni_pga2350.menu.flash.16777216_15728640.build.flash_length=1040384
 pimoroni_pga2350.menu.flash.16777216_15728640.build.eeprom_start=285204480
 pimoroni_pga2350.menu.flash.16777216_15728640.build.fs_start=269475840
 pimoroni_pga2350.menu.flash.16777216_15728640.build.fs_end=285204480
+pimoroni_pga2350.menu.arch.arm=ARM
+pimoroni_pga2350.menu.arch.arm.build.chip=rp2350
+pimoroni_pga2350.menu.arch.arm.build.toolchain=arm-none-eabi
+pimoroni_pga2350.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+pimoroni_pga2350.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+pimoroni_pga2350.menu.arch.riscv=RISC-V
+pimoroni_pga2350.menu.arch.riscv.build.chip=rp2350-riscv
+pimoroni_pga2350.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+pimoroni_pga2350.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+pimoroni_pga2350.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 pimoroni_pga2350.menu.freq.150=150 MHz
 pimoroni_pga2350.menu.freq.150.build.f_cpu=150000000L
 pimoroni_pga2350.menu.freq.50=50 MHz
@@ -19394,10 +19194,6 @@ pimoroni_pico_plus_2.build.usbvid=-DUSBD_VID=0x2e8a
 pimoroni_pico_plus_2.build.usbpid=-DUSBD_PID=0x100a
 pimoroni_pico_plus_2.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 pimoroni_pico_plus_2.build.board=PIMORONI_PICO_PLUS_2
-pimoroni_pico_plus_2.build.chip=rp2350
-pimoroni_pico_plus_2.build.toolchain=arm-none-eabi
-pimoroni_pico_plus_2.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-pimoroni_pico_plus_2.build.uf2family=--family rp2350-arm-s --abs-block
 pimoroni_pico_plus_2.build.variant=pimoroni_pico_plus_2
 pimoroni_pico_plus_2.upload.maximum_size=16777216
 pimoroni_pico_plus_2.upload.wait_for_upload_port=true
@@ -19552,6 +19348,16 @@ pimoroni_pico_plus_2.menu.flash.16777216_15728640.build.flash_length=1040384
 pimoroni_pico_plus_2.menu.flash.16777216_15728640.build.eeprom_start=285204480
 pimoroni_pico_plus_2.menu.flash.16777216_15728640.build.fs_start=269475840
 pimoroni_pico_plus_2.menu.flash.16777216_15728640.build.fs_end=285204480
+pimoroni_pico_plus_2.menu.arch.arm=ARM
+pimoroni_pico_plus_2.menu.arch.arm.build.chip=rp2350
+pimoroni_pico_plus_2.menu.arch.arm.build.toolchain=arm-none-eabi
+pimoroni_pico_plus_2.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+pimoroni_pico_plus_2.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+pimoroni_pico_plus_2.menu.arch.riscv=RISC-V
+pimoroni_pico_plus_2.menu.arch.riscv.build.chip=rp2350-riscv
+pimoroni_pico_plus_2.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+pimoroni_pico_plus_2.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+pimoroni_pico_plus_2.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 pimoroni_pico_plus_2.menu.freq.150=150 MHz
 pimoroni_pico_plus_2.menu.freq.150.build.f_cpu=150000000L
 pimoroni_pico_plus_2.menu.freq.50=50 MHz
@@ -20205,10 +20011,6 @@ pimoroni_tiny2350.build.usbvid=-DUSBD_VID=0x2e8a
 pimoroni_tiny2350.build.usbpid=-DUSBD_PID=0x100b
 pimoroni_tiny2350.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 pimoroni_tiny2350.build.board=PIMORONI_TINY2350
-pimoroni_tiny2350.build.chip=rp2350
-pimoroni_tiny2350.build.toolchain=arm-none-eabi
-pimoroni_tiny2350.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-pimoroni_tiny2350.build.uf2family=--family rp2350-arm-s --abs-block
 pimoroni_tiny2350.build.variant=pimoroni_tiny2350
 pimoroni_tiny2350.upload.maximum_size=4194304
 pimoroni_tiny2350.upload.wait_for_upload_port=true
@@ -20279,6 +20081,16 @@ pimoroni_tiny2350.menu.flash.4194304_3145728.build.flash_length=1040384
 pimoroni_tiny2350.menu.flash.4194304_3145728.build.eeprom_start=272621568
 pimoroni_tiny2350.menu.flash.4194304_3145728.build.fs_start=269475840
 pimoroni_tiny2350.menu.flash.4194304_3145728.build.fs_end=272621568
+pimoroni_tiny2350.menu.arch.arm=ARM
+pimoroni_tiny2350.menu.arch.arm.build.chip=rp2350
+pimoroni_tiny2350.menu.arch.arm.build.toolchain=arm-none-eabi
+pimoroni_tiny2350.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+pimoroni_tiny2350.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+pimoroni_tiny2350.menu.arch.riscv=RISC-V
+pimoroni_tiny2350.menu.arch.riscv.build.chip=rp2350-riscv
+pimoroni_tiny2350.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+pimoroni_tiny2350.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+pimoroni_tiny2350.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 pimoroni_tiny2350.menu.freq.150=150 MHz
 pimoroni_tiny2350.menu.freq.150.build.f_cpu=150000000L
 pimoroni_tiny2350.menu.freq.50=50 MHz
@@ -22196,10 +22008,6 @@ solderparty_rp2350_stamp.build.usbvid=-DUSBD_VID=0x1209
 solderparty_rp2350_stamp.build.usbpid=-DUSBD_PID=0xa183
 solderparty_rp2350_stamp.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 solderparty_rp2350_stamp.build.board=SOLDERPARTY_RP2350_STAMP
-solderparty_rp2350_stamp.build.chip=rp2350
-solderparty_rp2350_stamp.build.toolchain=arm-none-eabi
-solderparty_rp2350_stamp.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-solderparty_rp2350_stamp.build.uf2family=--family rp2350-arm-s --abs-block
 solderparty_rp2350_stamp.build.variant=solderparty_rp2350_stamp
 solderparty_rp2350_stamp.upload.maximum_size=16777216
 solderparty_rp2350_stamp.upload.wait_for_upload_port=true
@@ -22354,6 +22162,16 @@ solderparty_rp2350_stamp.menu.flash.16777216_15728640.build.flash_length=1040384
 solderparty_rp2350_stamp.menu.flash.16777216_15728640.build.eeprom_start=285204480
 solderparty_rp2350_stamp.menu.flash.16777216_15728640.build.fs_start=269475840
 solderparty_rp2350_stamp.menu.flash.16777216_15728640.build.fs_end=285204480
+solderparty_rp2350_stamp.menu.arch.arm=ARM
+solderparty_rp2350_stamp.menu.arch.arm.build.chip=rp2350
+solderparty_rp2350_stamp.menu.arch.arm.build.toolchain=arm-none-eabi
+solderparty_rp2350_stamp.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+solderparty_rp2350_stamp.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+solderparty_rp2350_stamp.menu.arch.riscv=RISC-V
+solderparty_rp2350_stamp.menu.arch.riscv.build.chip=rp2350-riscv
+solderparty_rp2350_stamp.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+solderparty_rp2350_stamp.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+solderparty_rp2350_stamp.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 solderparty_rp2350_stamp.menu.freq.150=150 MHz
 solderparty_rp2350_stamp.menu.freq.150.build.f_cpu=150000000L
 solderparty_rp2350_stamp.menu.freq.50=50 MHz
@@ -22499,10 +22317,6 @@ solderparty_rp2350_stamp_xl.build.usbvid=-DUSBD_VID=0x1209
 solderparty_rp2350_stamp_xl.build.usbpid=-DUSBD_PID=0xa184
 solderparty_rp2350_stamp_xl.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 solderparty_rp2350_stamp_xl.build.board=SOLDERPARTY_RP2350_STAMP_XL
-solderparty_rp2350_stamp_xl.build.chip=rp2350
-solderparty_rp2350_stamp_xl.build.toolchain=arm-none-eabi
-solderparty_rp2350_stamp_xl.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-solderparty_rp2350_stamp_xl.build.uf2family=--family rp2350-arm-s --abs-block
 solderparty_rp2350_stamp_xl.build.variant=solderparty_rp2350_stamp_xl
 solderparty_rp2350_stamp_xl.upload.maximum_size=16777216
 solderparty_rp2350_stamp_xl.upload.wait_for_upload_port=true
@@ -22657,6 +22471,16 @@ solderparty_rp2350_stamp_xl.menu.flash.16777216_15728640.build.flash_length=1040
 solderparty_rp2350_stamp_xl.menu.flash.16777216_15728640.build.eeprom_start=285204480
 solderparty_rp2350_stamp_xl.menu.flash.16777216_15728640.build.fs_start=269475840
 solderparty_rp2350_stamp_xl.menu.flash.16777216_15728640.build.fs_end=285204480
+solderparty_rp2350_stamp_xl.menu.arch.arm=ARM
+solderparty_rp2350_stamp_xl.menu.arch.arm.build.chip=rp2350
+solderparty_rp2350_stamp_xl.menu.arch.arm.build.toolchain=arm-none-eabi
+solderparty_rp2350_stamp_xl.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+solderparty_rp2350_stamp_xl.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+solderparty_rp2350_stamp_xl.menu.arch.riscv=RISC-V
+solderparty_rp2350_stamp_xl.menu.arch.riscv.build.chip=rp2350-riscv
+solderparty_rp2350_stamp_xl.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+solderparty_rp2350_stamp_xl.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+solderparty_rp2350_stamp_xl.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 solderparty_rp2350_stamp_xl.menu.freq.150=150 MHz
 solderparty_rp2350_stamp_xl.menu.freq.150.build.f_cpu=150000000L
 solderparty_rp2350_stamp_xl.menu.freq.50=50 MHz
@@ -23478,10 +23302,6 @@ sparkfun_promicrorp2350.build.usbvid=-DUSBD_VID=0x1b4f
 sparkfun_promicrorp2350.build.usbpid=-DUSBD_PID=0x0026
 sparkfun_promicrorp2350.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2350.build.board=SPARKFUN_PROMICRO_RP2350
-sparkfun_promicrorp2350.build.chip=rp2350
-sparkfun_promicrorp2350.build.toolchain=arm-none-eabi
-sparkfun_promicrorp2350.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-sparkfun_promicrorp2350.build.uf2family=--family rp2350-arm-s --abs-block
 sparkfun_promicrorp2350.build.variant=sparkfun_promicrorp2350
 sparkfun_promicrorp2350.upload.maximum_size=16777216
 sparkfun_promicrorp2350.upload.wait_for_upload_port=true
@@ -23636,6 +23456,16 @@ sparkfun_promicrorp2350.menu.flash.16777216_15728640.build.flash_length=1040384
 sparkfun_promicrorp2350.menu.flash.16777216_15728640.build.eeprom_start=285204480
 sparkfun_promicrorp2350.menu.flash.16777216_15728640.build.fs_start=269475840
 sparkfun_promicrorp2350.menu.flash.16777216_15728640.build.fs_end=285204480
+sparkfun_promicrorp2350.menu.arch.arm=ARM
+sparkfun_promicrorp2350.menu.arch.arm.build.chip=rp2350
+sparkfun_promicrorp2350.menu.arch.arm.build.toolchain=arm-none-eabi
+sparkfun_promicrorp2350.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+sparkfun_promicrorp2350.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+sparkfun_promicrorp2350.menu.arch.riscv=RISC-V
+sparkfun_promicrorp2350.menu.arch.riscv.build.chip=rp2350-riscv
+sparkfun_promicrorp2350.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+sparkfun_promicrorp2350.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+sparkfun_promicrorp2350.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 sparkfun_promicrorp2350.menu.freq.150=150 MHz
 sparkfun_promicrorp2350.menu.freq.150.build.f_cpu=150000000L
 sparkfun_promicrorp2350.menu.freq.50=50 MHz
@@ -28371,10 +28201,6 @@ generic_rp2350.build.usbvid=-DUSBD_VID=0x2e8a
 generic_rp2350.build.usbpid=-DUSBD_PID=0xf00f
 generic_rp2350.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 generic_rp2350.build.board=GENERIC_RP2350
-generic_rp2350.build.chip=rp2350
-generic_rp2350.build.toolchain=arm-none-eabi
-generic_rp2350.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-generic_rp2350.build.uf2family=--family rp2350-arm-s --abs-block
 generic_rp2350.build.variant=generic_rp2350
 generic_rp2350.upload.maximum_size=16777216
 generic_rp2350.upload.wait_for_upload_port=true
@@ -28500,6 +28326,16 @@ generic_rp2350.menu.flash.16777216_2097152.build.flash_length=14671872
 generic_rp2350.menu.flash.16777216_2097152.build.eeprom_start=285204480
 generic_rp2350.menu.flash.16777216_2097152.build.fs_start=283107328
 generic_rp2350.menu.flash.16777216_2097152.build.fs_end=285204480
+generic_rp2350.menu.arch.arm=ARM
+generic_rp2350.menu.arch.arm.build.chip=rp2350
+generic_rp2350.menu.arch.arm.build.toolchain=arm-none-eabi
+generic_rp2350.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+generic_rp2350.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+generic_rp2350.menu.arch.riscv=RISC-V
+generic_rp2350.menu.arch.riscv.build.chip=rp2350-riscv
+generic_rp2350.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+generic_rp2350.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+generic_rp2350.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 generic_rp2350.menu.freq.150=150 MHz
 generic_rp2350.menu.freq.150.build.f_cpu=150000000L
 generic_rp2350.menu.freq.50=50 MHz

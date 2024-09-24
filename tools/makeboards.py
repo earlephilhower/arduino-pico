@@ -4,7 +4,7 @@ import sys
 import json
 
 def BuildFlashMenu(name, chip, flashsize, fssizelist):
-    if (chip == "rp2350") or (chip == 'rp2350-riscv'):
+    if chip == "rp2350":
         delta = 8192
     elif chip == "rp2040":
         delta = 4096
@@ -47,6 +47,20 @@ def BuildFreq(name, defmhz):
         out = 1
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
+
+def BuildArch(name):
+    # Cortex M-33
+    print("%s.menu.arch.arm=ARM" % (name))
+    print("%s.menu.arch.arm.build.chip=%s" % (name, "rp2350"))
+    print("%s.menu.arch.arm.build.toolchain=arm-none-eabi" % (name))
+    print("%s.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse" % (name))
+    print("%s.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block" % (name))
+    # RISC-V Hazard3
+    print("%s.menu.arch.riscv=RISC-V" % (name))
+    print("%s.menu.arch.riscv.build.chip=%s" % (name, "rp2350-riscv"))
+    print("%s.menu.arch.riscv.build.toolchain=riscv32-unknown-elf" % (name))
+    print("%s.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32" % (name))
+    print("%s.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block" % (name))
 
 def BuildPSRAM(name):
     for s in [ 0, 2, 4, 8]:
@@ -222,16 +236,11 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
 #    print("%s.build.mcu=cortex-m0plus" % (name))
-    print("%s.build.chip=%s" % (name, chip))
-    print("%s.build.toolchain=%s" % (name, chaintuple))
-    print("%s.build.toolchainopts=%s" % (name, chipoptions))
-    if chip == "rp2350":
-        uf2family = "--family rp2350-arm-s --abs-block"
-    elif chip == "rp2350-riscv":
-        uf2family = "--family rp2350-riscv --abs-block"
-    elif chip == "rp2040":
-        uf2family = "--family rp2040"
-    print("%s.build.uf2family=%s" % (name, uf2family))
+    if chip == "rp2040":  # RP2350 has menu for this later on
+        print("%s.build.chip=%s" % (name, chip))
+        print("%s.build.toolchain=%s" % (name, chaintuple))
+        print("%s.build.toolchainopts=%s" % (name, chipoptions))
+        print("%s.build.uf2family=%s" % (name, "--family rp2040"))
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
     print("%s.upload.wait_for_upload_port=true" % (name))
@@ -267,6 +276,7 @@ def BuildGlobalMenuList():
     print("menu.psram=PSRAM Size")
     print("menu.psramfreq=PSRAM Speed")
     print("menu.freq=CPU Speed")
+    print("menu.arch=CPU Architecture")
     print("menu.opt=Optimize")
     print("menu.rtti=RTTI")
     print("menu.stackprotect=Stack Protector")
@@ -322,6 +332,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
     if (chip == "rp2350") or (chip == "rp2350-riscv"):
+        BuildArch(name)
         BuildFreq(name, 150)
         if name == "generic_rp2350":
             BuildRP2350Variant(name)
@@ -457,7 +468,6 @@ BuildGlobalMenuList()
 MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000f", 250, "RASPBERRY_PI_PICO_2", 4, 0, "none")
-MakeBoard("rpipico2rv", "rp2350-riscv", "Raspberry Pi", "Pico 2 RISC-V", "0x2e8a", "0x000f", 250, "RASPBERRY_PI_PICO_2", 4, 0, "none")
 
 # 0xCB
 MakeBoard("0xcb_helios", "rp2040", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, 0, "boot2_w25q128jvxq_4_padded_checksum")
