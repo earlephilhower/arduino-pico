@@ -520,6 +520,7 @@ MakeBoard("cytron_motion_2350_pro", "rp2350", "Cytron", "Motion 2350 Pro", "0x2e
 
 # DatanoiseTV
 MakeBoard("datanoisetv_picoadk", "rp2040", "DatanoiseTV", "PicoADK", "0x2e8a", "0x000a", 250, "DATANOISETV_PICOADK", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("datanoisetv_picoadk_v2", "rp2350", "DatanoiseTV", "PicoADK v2", "0x2e8a", "0x10ae", 250, "DATANOISETV_PICOADK_V2", 4, 0, "boot2_w25q080_2_padded_checksum")
 
 # Degz Robotics
 MakeBoard("degz_suibo", "rp2040", "Degz Robotics", "Suibo RP2040", "0x2e8a", "0xf00a", 250, "DEGZ_SUIBO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum", board_url="https://www.degzrobotics.com/suibo")
