@@ -291,7 +291,7 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity) {
 }
 
 static bool _clockStretch(pin_size_t pin) {
-    auto end = time_us_64() + 100;
+    auto end = time_us_64() + 500;
     while ((time_us_64() < end) && (!digitalRead(pin))) { /* noop */ }
     return digitalRead(pin);
 }
