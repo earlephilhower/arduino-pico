@@ -40,7 +40,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Cytron Maker Nano RP2040
 * Cytron Maker Uno RP2040
 * Cytron Motion 2350 Pro
-* DatanoiseTV PicoADK+
+* Datanoise PicoADK v1
+* Datanoise PicoADK v2 (RP2350)
 * Degz Suibo RP2040
 * DeRuiLab FlyBoard2040 Core
 * DFRobot Beetle RP2040
