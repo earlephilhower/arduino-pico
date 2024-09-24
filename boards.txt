@@ -10451,10 +10451,6 @@ datanoisetv_picoadk_v2.build.usbvid=-DUSBD_VID=0x2e8a
 datanoisetv_picoadk_v2.build.usbpid=-DUSBD_PID=0x10ae
 datanoisetv_picoadk_v2.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 datanoisetv_picoadk_v2.build.board=DATANOISETV_PICOADK_V2
-datanoisetv_picoadk_v2.build.chip=rp2350
-datanoisetv_picoadk_v2.build.toolchain=arm-none-eabi
-datanoisetv_picoadk_v2.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
-datanoisetv_picoadk_v2.build.uf2family=--family rp2350-arm-s --abs-block
 datanoisetv_picoadk_v2.build.variant=datanoisetv_picoadk_v2
 datanoisetv_picoadk_v2.upload.maximum_size=4194304
 datanoisetv_picoadk_v2.upload.wait_for_upload_port=true
@@ -10465,7 +10461,7 @@ datanoisetv_picoadk_v2.build.f_cpu=125000000
 datanoisetv_picoadk_v2.build.led=
 datanoisetv_picoadk_v2.build.core=rp2040
 datanoisetv_picoadk_v2.build.ldscript=memmap_default.ld
-datanoisetv_picoadk_v2.build.boot2=boot2_w25q080_2_padded_checksum
+datanoisetv_picoadk_v2.build.boot2=none
 datanoisetv_picoadk_v2.build.usb_manufacturer="DatanoiseTV"
 datanoisetv_picoadk_v2.build.usb_product="PicoADK v2"
 datanoisetv_picoadk_v2.build.psram_length=0x000000
@@ -10525,6 +10521,16 @@ datanoisetv_picoadk_v2.menu.flash.4194304_3145728.build.flash_length=1040384
 datanoisetv_picoadk_v2.menu.flash.4194304_3145728.build.eeprom_start=272621568
 datanoisetv_picoadk_v2.menu.flash.4194304_3145728.build.fs_start=269475840
 datanoisetv_picoadk_v2.menu.flash.4194304_3145728.build.fs_end=272621568
+datanoisetv_picoadk_v2.menu.arch.arm=ARM
+datanoisetv_picoadk_v2.menu.arch.arm.build.chip=rp2350
+datanoisetv_picoadk_v2.menu.arch.arm.build.toolchain=arm-none-eabi
+datanoisetv_picoadk_v2.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+datanoisetv_picoadk_v2.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+datanoisetv_picoadk_v2.menu.arch.riscv=RISC-V
+datanoisetv_picoadk_v2.menu.arch.riscv.build.chip=rp2350-riscv
+datanoisetv_picoadk_v2.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+datanoisetv_picoadk_v2.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+datanoisetv_picoadk_v2.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
 datanoisetv_picoadk_v2.menu.freq.150=150 MHz
 datanoisetv_picoadk_v2.menu.freq.150.build.f_cpu=150000000L
 datanoisetv_picoadk_v2.menu.freq.50=50 MHz
