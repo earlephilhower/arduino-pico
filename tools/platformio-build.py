@@ -293,7 +293,7 @@ else:
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_inc.txt"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_inc.txt")
-    ])
+    ] + toolopts)
 
 def configure_usb_flags(cpp_defines):
     if "USE_TINYUSB" in cpp_defines:
