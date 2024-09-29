@@ -88,7 +88,7 @@ extern "C" int main() {
 
     // Allocate impure_ptr (newlib temps) if there is a 2nd core running
     if (!__isFreeRTOS && (setup1 || loop1)) {
-        _impure_ptr1 = (struct _reent*)calloc(sizeof(struct _reent), 1);
+        _impure_ptr1 = (struct _reent*)calloc(1, sizeof(struct _reent));
         _REENT_INIT_PTR(_impure_ptr1);
     }
 
@@ -134,7 +134,6 @@ extern "C" int main() {
         }
         rp2040.fifo.registerCore();
     }
-
     if (!__isFreeRTOS) {
         if (setup1 || loop1) {
             delay(1); // Needed to make Picoprobe upload start 2nd core

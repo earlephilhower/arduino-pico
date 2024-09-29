@@ -1,0 +1,10 @@
+-iwithprefixbefore/include/rp2350
+-iwithprefixbefore/include/rp2350/pico_base
+-iwithprefixbefore/pico-sdk/src/rp2350/hardware_regs/include
+-iwithprefixbefore/pico-sdk/src/rp2350/hardware_structs/include
+-iwithprefixbefore/pico-sdk/src/rp2350/pico_platform/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_riscv/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_riscv_platform_timer/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_hazard3/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_sha256/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_sha256/include

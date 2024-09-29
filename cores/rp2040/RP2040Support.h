@@ -175,18 +175,22 @@ public:
 
     void begin() {
         _epoch = 0;
+#if !defined(__riscv)
         if (!__isFreeRTOS) {
             // Enable SYSTICK exception
             exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
             systick_hw->csr = 0x7;
             systick_hw->rvr = 0x00FFFFFF;
         } else {
+#endif
             int off = 0;
             _ccountPgm = new PIOProgram(&ccount_program);
             _ccountPgm->prepare(&_pio, &_sm, &off);
             ccount_program_init(_pio, _sm, off);
             pio_sm_set_enabled(_pio, _sm, true);
+#if !defined(__riscv)
         }
+#endif
     }
 
     // Convert from microseconds to PIO clock cycles
@@ -208,6 +212,7 @@ public:
     // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
     volatile uint64_t _epoch = 0;
     inline uint32_t getCycleCount() {
+#if !defined(__riscv)
         if (!__isFreeRTOS) {
             uint32_t epoch;
             uint32_t ctr;
@@ -217,11 +222,15 @@ public:
             } while (epoch != (uint32_t)_epoch);
             return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
         } else {
+#endif
             return ccount_read(_pio, _sm);
+#if !defined(__riscv)
         }
+#endif
     }
 
     inline uint64_t getCycleCount64() {
+#if !defined(__riscv)
         if (!__isFreeRTOS) {
             uint64_t epoch;
             uint64_t ctr;
@@ -231,8 +240,11 @@ public:
             } while (epoch != _epoch);
             return epoch + (1LL << 24) - ctr;
         } else {
+#endif
             return ccount_read(_pio, _sm);
+#if !defined(__riscv)
         }
+#endif
     }
 
     inline int getFreeHeap() {

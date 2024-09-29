@@ -133,7 +133,7 @@ SECTIONS
        refers to its dual-purpose on RP2040, where it also handled vectoring
        from the bootrom into the user image.
     */
-
+/*
     .boot2 : {
         __boot2_start__ = .;
         *(.boot2)
@@ -142,7 +142,7 @@ SECTIONS
 
     ASSERT(__boot2_end__ - __boot2_start__ <= 256,
         "ERROR: Pico second stage bootloader must be no more than 256 bytes in size")
-
+*/
     .rodata : {
         *(EXCLUDE_FILE(*libgcc.a: *libc.a:*lib_a-mem*.o *libm.a:) .rodata*)
         *(.srodata*)

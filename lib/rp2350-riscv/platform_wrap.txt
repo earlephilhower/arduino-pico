@@ -1,0 +1,1 @@
+-Wl,--wrap=__ctzdi2

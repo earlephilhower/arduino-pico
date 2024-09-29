@@ -6,7 +6,14 @@ is supported by the core with some minor caveats:
 
 * PSRAM is supported via a new ``pmalloc`` call and ``PSRAM`` variable decorator.
 * Both RP2350A and RP2350B (48 GPIOs) are supported.
-* Only ARM mode is available.  For RISC-V (Hazard3), please use the raw SDK.
+
+ARM and RISC-V Modes
+~~~~~~~~~~~~~~~~~~~~
+
+Either set of cores can be used on the RP2350, ARM Cortex-M33 or RISC-V Hazard3.
+Select the desired core from the IDE menus under ``Tools->CPU Architecture``.
+As of the initial release, all libraries should work under the new RISC-V mode with
+the exception of FreeRTOS.  If not, patches are always welcome.
 
 P2350-E9 Errata ("Increased leakage current on Bank 0 GPIO when pad input is enabled")
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -48,6 +48,20 @@ def BuildFreq(name, defmhz):
         print("%s.menu.freq.%s=%s MHz%s" % (name, f, f, warn))
         print("%s.menu.freq.%s.build.f_cpu=%dL" % (name, f, f * 1000000))
 
+def BuildArch(name):
+    # Cortex M-33
+    print("%s.menu.arch.arm=ARM" % (name))
+    print("%s.menu.arch.arm.build.chip=%s" % (name, "rp2350"))
+    print("%s.menu.arch.arm.build.toolchain=arm-none-eabi" % (name))
+    print("%s.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse" % (name))
+    print("%s.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block" % (name))
+    # RISC-V Hazard3
+    print("%s.menu.arch.riscv=RISC-V" % (name))
+    print("%s.menu.arch.riscv.build.chip=%s" % (name, "rp2350-riscv"))
+    print("%s.menu.arch.riscv.build.toolchain=riscv32-unknown-elf" % (name))
+    print("%s.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32" % (name))
+    print("%s.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block" % (name))
+
 def BuildPSRAM(name):
     for s in [ 0, 2, 4, 8]:
         print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
@@ -222,14 +236,11 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
 #    print("%s.build.mcu=cortex-m0plus" % (name))
-    print("%s.build.chip=%s" % (name, chip))
-    print("%s.build.toolchain=%s" % (name, chaintuple))
-    print("%s.build.toolchainopts=%s" % (name, chipoptions))
-    if chip == "rp2350":
-        uf2family = "--family rp2350-arm-s --abs-block"
-    elif chip == "rp2040":
-        uf2family = "--family rp2040"
-    print("%s.build.uf2family=%s" % (name, uf2family))
+    if chip == "rp2040":  # RP2350 has menu for this later on
+        print("%s.build.chip=%s" % (name, chip))
+        print("%s.build.toolchain=%s" % (name, chaintuple))
+        print("%s.build.toolchainopts=%s" % (name, chipoptions))
+        print("%s.build.uf2family=%s" % (name, "--family rp2040"))
     print("%s.build.variant=%s" % (name, variant))
     print("%s.upload.maximum_size=%d" % (name, flashsize))
     print("%s.upload.wait_for_upload_port=true" % (name))
@@ -243,7 +254,7 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.boot2=%s" % (name, boot2))
     print('%s.build.usb_manufacturer="%s"' % (name, vendor_name))
     print('%s.build.usb_product="%s"' % (name, product_name))
-    if (chip == "rp2350") and (name != "generic_rp2350"):
+    if ((chip == "rp2350") or (chip == "rp2350-riscv")) and (name != "generic_rp2350"):
         print("%s.build.psram_length=0x%d00000" % (name, psramsize))
     if extra != None:
         m_extra = ''
@@ -265,6 +276,7 @@ def BuildGlobalMenuList():
     print("menu.psram=PSRAM Size")
     print("menu.psramfreq=PSRAM Speed")
     print("menu.freq=CPU Speed")
+    print("menu.arch=CPU Architecture")
     print("menu.opt=Optimize")
     print("menu.rtti=RTTI")
     print("menu.stackprotect=Stack Protector")
@@ -294,9 +306,9 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     elif chip == "rp2350":
         tup =  "arm-none-eabi"
         opts = "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse"
-    elif chip == "rp2530rv":
-        tup = "riscv-none-eabi"
-        opts = "TBD"
+    elif chip == "rp2350-riscv":
+        tup = "riscv32-unknown-elf"
+        opts = "-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32"
     else:
         raise Exception("Unknown board type " + str(chip));
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
@@ -319,7 +331,8 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
-    if chip == "rp2350":
+    if (chip == "rp2350") or (chip == "rp2350-riscv"):
+        BuildArch(name)
         BuildFreq(name, 150)
         if name == "generic_rp2350":
             BuildRP2350Variant(name)
@@ -369,6 +382,11 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
         fcpu = "133000000L"
     elif chip == "rp2350":
         cpu = "cortex-m33"
+        ramsize = 512
+        jlink = "RP2350_0"
+        fcpu = "150000000L"
+    elif chip == "rp2350-riscv":
+        cpu = "riscv"
         ramsize = 512
         jlink = "RP2350_0"
         fcpu = "150000000L"
@@ -428,7 +446,7 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
     "vendor": vendor_name,
     }
     # add nonzero PSRAM sizes of known boards (can still be overwritten in platformio.ini)
-    if psramsize != 0 and name != "generic_rp2350":
+    if (psramsize != 0) and (name != "generic_rp2350"):
         j["upload"]["psram_length"] = psramsize * 1024 * 1024
 
     jsondir = os.path.abspath(os.path.dirname(__file__)) + "/json"
@@ -449,7 +467,7 @@ BuildGlobalMenuList()
 # Raspberry Pi
 MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000f", 250, "RASPBERRY_PI_PICO_2", 4, 0, "boot2_generic_03h_2_padded_checksum")
+MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000f", 250, "RASPBERRY_PI_PICO_2", 4, 0, "none")
 
 # 0xCB
 MakeBoard("0xcb_helios", "rp2040", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, 0, "boot2_w25q128jvxq_4_padded_checksum")
@@ -471,7 +489,7 @@ MakeBoard("adafruit_stemmafriend", "rp2040", "Adafruit", "STEMMA Friend RP2040",
 MakeBoard("adafruit_trinkeyrp2040qt", "rp2040", "Adafruit", "Trinkey RP2040 QT", "0x239a", "0x8109", 250, "ADAFRUIT_TRINKEYQT_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_macropad2040", "rp2040", "Adafruit", "MacroPad RP2040", "0x239a", "0x8107", 250, "ADAFRUIT_MACROPAD_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_kb2040", "rp2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("adafruit_feather_rp2350_hstx", "rp2350", "Adafruit", "Feather RP2350 HSTX", "0x239a", "0x814f", 250, "ADAFRUIT_FEATHER_RP2350_HSTX", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("adafruit_feather_rp2350_hstx", "rp2350", "Adafruit", "Feather RP2350 HSTX", "0x239a", "0x814f", 250, "ADAFRUIT_FEATHER_RP2350_HSTX", 8, 0, "none")
 
 
 #Amken
@@ -494,15 +512,15 @@ MakeBoard("bridgetek_idm2040_7a", "rp2040", "BridgeTek", "IDM2040-7A", "0x2e8a",
 MakeBoard("bridgetek_idm2040_43a", "rp2040", "BridgeTek", "IDM2040-43A", "0x2e8b", "0xf00a", 250, "BRIDGETEK_IDM2040_43A", 8, 0, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT883", "DISPLAY_RES=WQVGA", "PLATFORM_RP2040"])
  
 # Cytron
-MakeBoard("cytron_iriv_io_controller", "rp2350", "Cytron", "IRIV IO Controller", "0x2e8a", "0x1093", 250, "CYTRON_IRIV_IO_CONTROLLER", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("cytron_iriv_io_controller", "rp2350", "Cytron", "IRIV IO Controller", "0x2e8a", "0x1093", 250, "CYTRON_IRIV_IO_CONTROLLER", 2, 0, "none")
 MakeBoard("cytron_maker_nano_rp2040", "rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_pi_rp2040", "rp2040", "Cytron", "Maker Pi RP2040", "0x2e8a", "0x1000", 250, "CYTRON_MAKER_PI_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("cytron_maker_uno_rp2040", "rp2040", "Cytron", "Maker Uno RP2040", "0x2e8a", "0x1071", 250, "CYTRON_MAKER_UNO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("cytron_motion_2350_pro", "rp2350", "Cytron", "Motion 2350 Pro", "0x2e8a", "0x1096", 250, "CYTRON_MOTION_2350_PRO", 2, 0, "boot2_generic_03h_2_padded_checksum")
+MakeBoard("cytron_motion_2350_pro", "rp2350", "Cytron", "Motion 2350 Pro", "0x2e8a", "0x1096", 250, "CYTRON_MOTION_2350_PRO", 2, 0, "none")
 
 # DatanoiseTV
 MakeBoard("datanoisetv_picoadk", "rp2040", "DatanoiseTV", "PicoADK", "0x2e8a", "0x000a", 250, "DATANOISETV_PICOADK", 2, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("datanoisetv_picoadk_v2", "rp2350", "DatanoiseTV", "PicoADK v2", "0x2e8a", "0x10ae", 250, "DATANOISETV_PICOADK_V2", 4, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("datanoisetv_picoadk_v2", "rp2350", "DatanoiseTV", "PicoADK v2", "0x2e8a", "0x10ae", 250, "DATANOISETV_PICOADK_V2", 4, 0, "none")
 
 # Degz Robotics
 MakeBoard("degz_suibo", "rp2040", "Degz Robotics", "Suibo RP2040", "0x2e8a", "0xf00a", 250, "DEGZ_SUIBO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum", board_url="https://www.degzrobotics.com/suibo")
@@ -541,8 +559,8 @@ MakeBoard("challenger_2040_nfc", "rp2040", "iLabs", "Challenger 2040 NFC", "0x2e
 MakeBoard("challenger_2040_uwb", "rp2040", "iLabs", "Challenger 2040 UWB", "0x2e8a", "0x1052", 500, "CHALLENGER_2040_UWB_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("connectivity_2040_lte_wifi_ble", "rp2040", "iLabs", "Connectivity 2040 LTE/WiFi/BLE", "0x2e8a", "0x107b", 500, "CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
 MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "boot2_generic_03h_2_padded_checksum")
-MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "boot2_generic_03h_2_padded_checksum")
+MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "none")
+MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "none")
 
 # Melopero
 MakeBoard("melopero_cookie_rp2040", "rp2040", "Melopero", "Cookie RP2040", "0x2e8a", "0x1011", 250, "MELOPERO_COOKIE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
@@ -566,11 +584,11 @@ MakeBoard("olimex_rp2040pico30_16mb", "rp2040", "Olimex", "RP2040-Pico30 16MB", 
 
 # Pimoroni
 MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, 0, "boot2_w25q64jv_4_padded_checksum")
-MakeBoard("pimoroni_pga2350", "rp2350", "Pimoroni", "PGA2350", "0x2e8a", "0x1018", 250, "PIMORONI_PGA2350", 16, 8, "boot2_w25q080_4_padded_checksum")
-MakeBoard("pimoroni_pico_plus_2", "rp2350", "Pimoroni", "PicoPlus2", "0x2e8a", "0x100a", 500, "PIMORONI_PICO_PLUS_2", 16, 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("pimoroni_pga2350", "rp2350", "Pimoroni", "PGA2350", "0x2e8a", "0x1018", 250, "PIMORONI_PGA2350", 16, 8, "none")
+MakeBoard("pimoroni_pico_plus_2", "rp2350", "Pimoroni", "PicoPlus2", "0x2e8a", "0x100a", 500, "PIMORONI_PICO_PLUS_2", 16, 8, "none")
 MakeBoard("pimoroni_plasma2040", "rp2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "rp2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, 0, "boot2_w25q64jv_4_padded_checksum")
-MakeBoard("pimoroni_tiny2350", "rp2350", "Pimoroni", "Tiny2350", "0x2e8a", "0x100b", 500, "PIMORONI_TINY2350", 4, 0, "boot2_w25q080_4_padded_checksum")
+MakeBoard("pimoroni_tiny2350", "rp2350", "Pimoroni", "Tiny2350", "0x2e8a", "0x100b", 500, "PIMORONI_TINY2350", 4, 0, "none")
 
 #Pintronix
 MakeBoard("pintronix_pinmax", "rp2040", "Pintronix", "PinMax", "0x2e8a", "0x9101", 250, "PINTRONIX_PINMAX", 4, 0, "boot2_w25q080_2_padded_checksum")
@@ -590,13 +608,13 @@ MakeBoard("silicognition_rp2040_shim", "rp2040", "Silicognition", "RP2040-Shim",
 
 # Solder Party
 MakeBoard("solderparty_rp2040_stamp", "rp2040", "Solder Party", "RP2040 Stamp", "0x1209", "0xa182", 500, "SOLDERPARTY_RP2040_STAMP", 8, 0, "boot2_generic_03h_4_padded_checksum", None, "https://www.solder.party/docs/rp2040-stamp/")
-MakeBoard("solderparty_rp2350_stamp", "rp2350", "Solder Party", "RP2350 Stamp", "0x1209", "0xa183", 500, "SOLDERPARTY_RP2350_STAMP", 16, 0, "boot2_generic_03h_2_padded_checksum", None, "https://www.solder.party/docs/rp2350-stamp/")
-MakeBoard("solderparty_rp2350_stamp_xl", "rp2350", "Solder Party", "RP2350 Stamp XL", "0x1209", "0xa184", 500, "SOLDERPARTY_RP2350_STAMP_XL", 16, 0, "boot2_generic_03h_2_padded_checksum", None, "https://www.solder.party/docs/rp2350-stamp-xl/")
+MakeBoard("solderparty_rp2350_stamp", "rp2350", "Solder Party", "RP2350 Stamp", "0x1209", "0xa183", 500, "SOLDERPARTY_RP2350_STAMP", 16, 0, "none", None, "https://www.solder.party/docs/rp2350-stamp/")
+MakeBoard("solderparty_rp2350_stamp_xl", "rp2350", "Solder Party", "RP2350 Stamp XL", "0x1209", "0xa184", 500, "SOLDERPARTY_RP2350_STAMP_XL", 16, 0, "none", None, "https://www.solder.party/docs/rp2350-stamp-xl/")
 
 # SparkFun
 MakeBoard("sparkfun_micromodrp2040", "rp2040", "SparkFun", "MicroMod RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_MICROMOD_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_promicrorp2040", "rp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
-MakeBoard("sparkfun_promicrorp2350", "rp2350", "SparkFun", "ProMicro RP2350", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2350", 16, 8, "boot2_w25q080_2_padded_checksum")
+MakeBoard("sparkfun_promicrorp2350", "rp2350", "SparkFun", "ProMicro RP2350", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2350", 16, 8, "none")
 MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 
 # Upesy
@@ -629,7 +647,7 @@ MakeBoard("wiznet_5500_evb_pico", "rp2040", "WIZnet", "W5500-EVB-Pico", "0x2e8a"
 
 # Generic
 MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
-MakeBoard("generic_rp2350", "rp2350", "Generic", "RP2350", "0x2e8a", "0xf00f", 250, "GENERIC_RP2350", 16, 8, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("generic_rp2350", "rp2350", "Generic", "RP2350", "0x2e8a", "0xf00f", 250, "GENERIC_RP2350", 16, 8, "none")
 
 sys.stdout.close()
 with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w', newline='\n') as f:

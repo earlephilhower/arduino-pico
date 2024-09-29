@@ -7,7 +7,7 @@ RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2
 processor), intended to make it easier and more fun to use and
 program the Raspberry Pi Pico / RP2040 / RP2350 based boards.
 
-This Arduino core uses a custom toolset with GCC 12.3 and Newlib 4.0.0
+This Arduino core uses a custom toolset with GCC 14.2 and Newlib 4.3
 and doesn't require any system-installed prerequisites.
 
 For the latest version, always check https://github.com/earlephilhower/arduino-pico

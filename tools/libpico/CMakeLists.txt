@@ -8,9 +8,14 @@ if (${cpu} MATCHES "rp2040")
     set(PICO_BOARD pico_w)
     set(PICO_PLATFORM rp2040)
     set(PICO_CYW43_SUPPORTED 1)
-elseif(${cpu} MATCHES "rp2350")
+elseif(${cpu} MATCHES "rp2350$")
     set(PICO_BOARD solderparty_rp2350_stamp_xl)  # Pico2 sets to RP2350A which disables all code for RP2350B
     set(PICO_PLATFORM rp2350)
+    set(PICO_CYW43_SUPPORTED 0)
+elseif(${cpu} MATCHES "rp2350-riscv$")
+    message(INFO "Building RISCV")
+    set(PICO_BOARD solderparty_rp2350_stamp_xl)  # Pico2 sets to RP2350A which disables all code for RP2350B
+    set(PICO_PLATFORM rp2350-riscv)
     set(PICO_CYW43_SUPPORTED 0)
 else()
     message(FATAL_ERROR "Unknown CPU, '${cpu}'")
@@ -28,6 +33,18 @@ pico_sdk_init()
 
 add_library(common-${cpu} INTERFACE)
 
+if (${cpu} MATCHES "rp2350$")
+    set(xcda
+        LIB_PICO_DOUBLE_PICO=1
+        LIB_PICO_FLOAT_PICO=1
+        LIB_PICO_FLOAT_PICO_VFP=1)
+elseif (${cpu} MATCHES "rp2350-riscv$")
+    set(xcda
+        LIB_PICO_DOUBLE_COMPILER=1
+        LIB_PICO_FLOAT_COMPILER=1
+        PICO_RISCV=1)
+endif()
+
 if (${cpu} MATCHES "rp2040")
     set(xcd
         PICO_RP2040_B0_SUPPORTED=1
@@ -39,9 +56,8 @@ if (${cpu} MATCHES "rp2040")
         PICO_FLOAT_SUPPORT_ROM_V1=1
         PICO_DOUBLE_SUPPORT_ROM_V1=1
         PICO_RP2040=1
-        PICO_PLATFORM=rp2040
         PICO_CYW43_SUPPORTED=1)
-elseif(${cpu} MATCHES "rp2350")
+elseif (${cpu} MATCHES "rp2350")
     set(xcd
         CFG_TUSB_DEBUG=0
         CFG_TUSB_MCU=OPT_MCU_RP2040
@@ -56,11 +72,8 @@ elseif(${cpu} MATCHES "rp2350")
         LIB_PICO_DIVIDER=1
         LIB_PICO_DIVIDER_COMPILER=1
         LIB_PICO_DOUBLE=1
-        LIB_PICO_DOUBLE_PICO=1
         LIB_PICO_FIX_RP2040_USB_DEVICE_ENUMERATION=1
         LIB_PICO_FLOAT=1
-        LIB_PICO_FLOAT_PICO=1
-        LIB_PICO_FLOAT_PICO_VFP=1
         LIB_PICO_INT64_OPS=1
         LIB_PICO_INT64_OPS_COMPILER=1
         LIB_PICO_MEM_OPS=1
@@ -97,7 +110,15 @@ elseif(${cpu} MATCHES "rp2350")
         PICO_RP2040_USB_DEVICE_UFRAME_FIX=1
         PICO_RP2350=1
         PICO_USE_BLOCKED_RAM=0
-        PICO_PLATFORM=rp2350)
+        ${xcda})
+endif()
+
+if (${cpu} MATCHES "rp2040")
+    set(ppp PICO_PLATFORM=rp2040)
+elseif(${cpu} MATCHES "rp2350$")
+    set(ppp PICO_PLATFORM=rp2350)
+elseif(${cpu} MATCHES "rp2350-riscv$")
+    set(ppp PICO_PLATFORM=rp2350-riscv)
 endif()
 
 # Use a longer XOSC startup time, to accommodate Adafruit and other boards that may need it.
@@ -110,6 +131,7 @@ target_compile_definitions(common-${cpu} INTERFACE
     LWIP_IGMP=1
     LWIP_CHECKSUM_CTRL_PER_NETIF=1
     ${xcd}
+    ${ppp}
 )
 
 

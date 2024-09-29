@@ -120,7 +120,7 @@ if chip == "rp2040":
             ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
         ]
     )
-elif chip == "rp2350":
+elif (chip == "rp2350") or (chip == "rp2350-riscv"):
     env.Append(
         CPPDEFINES=[
             ("ARDUINO", 10810),
@@ -139,11 +139,8 @@ elif chip == "rp2350":
             ("LIB_PICO_DIVIDER", "1"),
             ("LIB_PICO_DIVIDER_COMPILER", "1"),
             ("LIB_PICO_DOUBLE", "1"),
-            ("LIB_PICO_DOUBLE_PICO", "1"),
             ("LIB_PICO_FIX_RP2040_USB_DEVICE_ENUMERATION", "1"),
             ("LIB_PICO_FLOAT", "1"),
-            ("LIB_PICO_FLOAT_PICO", "1"),
-            ("LIB_PICO_FLOAT_PICO_VFP", "1"),
             ("LIB_PICO_INT64_OPS", "1"),
             ("LIB_PICO_INT64_OPS_COMPILER", "1"),
             ("LIB_PICO_MEM_OPS", "1"),
@@ -186,11 +183,29 @@ elif chip == "rp2350":
             ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
         ]
     )
+    if chip == "rp2350":
+        env.Append(
+            CPPDEFINES=[
+                ("LIB_PICO_DOUBLE_PICO", "1"),
+                ("LIB_PICO_FLOAT_PICO", "1"),
+                ("LIB_PICO_FLOAT_PICO_VFP", "1")
+            ]
+        )
+    elif chip == "rp2350-riscv":
+        env.Append(
+            CPPDEFINES=[
+                ("LIB_PICO_DOUBLE_COMPILER", "1"),
+                ("LIB_PICO_FLOAT_COMPILER", "1"),
+                ("PICO_RISCV", "1")
+            ]
+        )
 
 if chip == "rp2040":
     toolopts = ["-march=armv6-m", "-mcpu=cortex-m0plus", "-mthumb"]
 elif chip == "rp2350":
     toolopts = ["-mcpu=cortex-m33", "-mthumb", "-march=armv8-m.main+fp+dsp", "-mfloat-abi=softfp", "-mcmse"]
+elif chip == "rp2350-riscv":
+    toolopts = ["-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb", "-mabi=ilp32"]
 
 env.Append(
     CCFLAGS=[
@@ -229,7 +244,22 @@ env.Append(
         "-Wl,--gc-sections",
         "-Wl,--unresolved-symbols=report-all",
         "-Wl,--warn-common",
-        "-Wl,--undefined=runtime_init_install_ram_vector_table"
+        "-Wl,--undefined=runtime_init_install_ram_vector_table",
+        "-Wl,--undefined=__pre_init_runtime_init_clocks",
+        "-Wl,--undefined=__pre_init_runtime_init_bootrom_reset",
+        "-Wl,--undefined=__pre_init_runtime_init_early_resets",
+        "-Wl,--undefined=__pre_init_runtime_init_usb_power_down",
+        "-Wl,--undefined=__pre_init_runtime_init_clocks",
+        "-Wl,--undefined=__pre_init_runtime_init_post_clock_resets",
+        "-Wl,--undefined=__pre_init_runtime_init_spin_locks_reset",
+        "-Wl,--undefined=__pre_init_runtime_init_boot_locks_reset",
+        "-Wl,--undefined=__pre_init_runtime_init_bootrom_locking_enable",
+        "-Wl,--undefined=__pre_init_runtime_init_mutex",
+        "-Wl,--undefined=__pre_init_runtime_init_default_alarm_pool",
+        "-Wl,--undefined=__pre_init_first_per_core_initializer",
+        "-Wl,--undefined=__pre_init_runtime_init_per_core_bootrom_reset"
+        "-Wl,--undefined=__pre_init_runtime_init_per_core_h3_irq_registers",
+        "-Wl,--undefined=__pre_init_runtime_init_per_core_irq_priorities"
     ] + toolopts,
 
     LIBSOURCE_DIRS=[os.path.join(FRAMEWORK_DIR, "libraries")],
@@ -263,7 +293,7 @@ else:
         "-iprefix" + os.path.join(FRAMEWORK_DIR),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_inc.txt"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_inc.txt")
-    ])
+    ] + toolopts)
 
 def configure_usb_flags(cpp_defines):
     if "USE_TINYUSB" in cpp_defines:

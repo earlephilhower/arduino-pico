@@ -178,6 +178,13 @@ int main(int a, char **b) {
 
     do_ota();
 
+#ifdef __riscv
+    extern void __mainapp();
+    __mainapp();
+
+    // Should never get here!
+    return 0;
+#else
     // Reset the interrupt/etc. vectors to the real app.  Will be copied to RAM in app's runtime_init
     scb_hw->vtor = (uint32_t)0x10003000;
 
@@ -190,6 +197,7 @@ int main(int a, char **b) {
 
     // Should never get here!
     return *sp;
+#endif
 }
 #pragma GCC pop_options
 

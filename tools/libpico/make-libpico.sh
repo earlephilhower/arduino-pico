@@ -5,6 +5,7 @@ set -x
 
 export PICO_SDK_PATH="$(cd ../../pico-sdk/; pwd)"
 export PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
+export PATH="$(cd ../../system/riscv32-unknown-elf/bin; pwd):$PATH"
 
 rm -rf build-rp2040
 mkdir build-rp2040
@@ -53,39 +54,9 @@ cd build-rp2350
 CPU=rp2350 cmake ..
 make -j
 
-rm -rf boot
-mkdir boot
-cd boot
-mkdir -p pico
-touch pico/config.h
-# Some in the rp2350 boot2 directory don't compile(!?)
-for type in boot2_generic_03h boot2_w25q080; do
-    for div in 2 4; do
-        arm-none-eabi-gcc -mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -O3 \
-                         -DNDEBUG -DPICO_FLASH_SPI_CLKDIV=$div \
-                         -DPICO_RP2350 \
-                         -c "$PICO_SDK_PATH/src/rp2350/boot_stage2/$type.S" \
-                         -I "$PICO_SDK_PATH/src/boards/include/boards/" \
-                         -I "$PICO_SDK_PATH/src/rp2350/hardware_regs/include/" \
-                         -I "$PICO_SDK_PATH/src/rp2040/hardware_regs/include/" \
-                         -I "$PICO_SDK_PATH/src/rp2_common/pico_platform/include/" \
-                         -I "$PICO_SDK_PATH/src/rp2_common/boot_stage2/asminclude/" \
-                         -I "$PICO_SDK_PATH/src/rp2350/pico_platform/include/" \
-                         -I "$PICO_SDK_PATH/src/rp2350/boot_stage2/asminclude/" \
-                         -I .
-
-        arm-none-eabi-gcc -mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -O3 \
-                          -DNDEBUG -Wl,--build-id=none --specs=nosys.specs -nostartfiles \
-                          -Wl,--script="$PICO_SDK_PATH/src/rp2350/boot_stage2/boot_stage2.ld" \
-                          -Wl,-Map=$type.$div.elf.map $type.o -o $type.$div.elf
-
-        arm-none-eabi-objdump -h $type.$div.elf >  $type.$div.dis
-        arm-none-eabi-objdump -d $type.$div.elf >> $type.$div.dis
-
-        arm-none-eabi-objcopy -Obinary $type.$div.elf $type.$div.bin
-
-        python3 "$PICO_SDK_PATH/src/rp2350/boot_stage2/pad_checksum" \
-                   -s 0xffffffff $type.$div.bin ${type}_${div}_padded_checksum.S
-    done
-done
-mv *.S ../../../../boot2/rp2350/.
+cd ..
+rm -rf build-rp2350-riscv
+mkdir build-rp2350-riscv
+cd build-rp2350-riscv
+CPU=rp2350-riscv cmake ..
+make -j
