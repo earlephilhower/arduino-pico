@@ -100,7 +100,6 @@ static SemaphoreHandle_t __getFreeRTOSRecursiveMutex(_LOCK_T lock) {
 }
 
 void __retarget_lock_init(_LOCK_T lock) {
-    // TODO TBD - Rebuild ARM lib
     if (__freeRTOSinitted) {
         mutex_t *l = (mutex_t *)lock;
         if ((l == &__lock___at_quick_exit_mutex) || (l == &__lock___tz_mutex) || (l == &__lock___dd_hash_mutex) || (l == &__lock___arc4random_mutex)) {
