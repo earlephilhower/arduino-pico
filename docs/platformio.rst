@@ -309,6 +309,19 @@ local copy of the core (with e.g. some modifications) on disk (`see documentatio
 Note that this can only be done for versions that have the PlatformIO
 builder script it in, so versions before 1.9.2 are not supported.
 
+Selecting the CPU architecture
+------------------------------
+
+By default Platform.IO will build for the onboard ARM cores on the RP2350.  To build RISC-V binaries
+adjust the ``board_build.mcu`` option accordingly:
+
+.. code:: ini
+
+    ; RP2350 based (RISC-V)
+    [env:rpipico2-riscv]
+    board = rpipico2
+    board_build.mcu = rp2350-riscv
+
 Examples
 --------
 

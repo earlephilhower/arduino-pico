@@ -4,7 +4,7 @@
 
 Raspberry Pi Pico Arduino core, for all RP2040 and RP2350 boards
 
-This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 12.3/Newlib 4.0 toolchain.
+This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 14.2/Newlib 4.3 toolchain and supports ARM and RISC-V cores.
 
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
@@ -126,6 +126,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Peripherals:  SPI master/slave, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input/output, Servo
 * printf (i.e. debug) output over USB serial
 * Transparent use of PSRAM globals and heap (RP2350 only)
+* ARM or RISC-V (Hazard3) support for The RP2350
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
