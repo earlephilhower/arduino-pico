@@ -262,6 +262,18 @@ default Pico SDK USB stack. To change it, add
 Note that the special "No USB" setting is also supported, through the
 shortcut-define ``PIO_FRAMEWORK_ARDUINO_NO_USB``.
 
+USB Customization
+-----------------
+
+If you want to change the USB VID, PID, product or manufacturer name that the device will appear under, configure them as follows:
+
+.. code:: ini
+
+    board_build.arduino.earlephilhower.usb_manufacturer = Custom Manufacturer
+    board_build.arduino.earlephilhower.usb_product = Ultra Cool Product
+    board_build.arduino.earlephilhower.usb_vid = 0xABCD
+    board_build.arduino.earlephilhower.usb_pid = 0x1337
+
 IP Stack
 --------
 

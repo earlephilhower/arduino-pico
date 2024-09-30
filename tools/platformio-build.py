@@ -337,11 +337,15 @@ def configure_usb_flags(cpp_defines):
 
     env.Append(CPPDEFINES=[
         ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
+        # used by TinyUSB stack
         ("USB_VID", usb_vid),
         ("USB_PID", usb_pid),
+        # Used by native USB stack
+        ("USBD_VID", usb_vid),
+        ("USBD_PID", usb_pid),
+        # Used by both stacks
         ("USB_MANUFACTURER", '\\"%s\\"' % usb_manufacturer),
-        ("USB_PRODUCT", '\\"%s\\"' % usb_product),
-        ("SERIALUSB_PID", usb_pid)
+        ("USB_PRODUCT", '\\"%s\\"' % usb_product)
     ])
 
     if "USBD_MAX_POWER_MA" not in env.Flatten(env.get("CPPDEFINES", [])):
