@@ -66,7 +66,7 @@ public:
         return put(address, t);
     }
     size_t length() {
-        return _size;
+        return 4096;
     }
 
     uint8_t& operator[](int const address) {
