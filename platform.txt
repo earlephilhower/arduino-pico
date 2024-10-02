@@ -28,14 +28,15 @@ pluggable_discovery.required.0=builtin:serial-discovery
 pluggable_discovery.required.1=builtin:mdns-discovery
 pluggable_monitor.required.serial=builtin:serial-monitor
 
-runtime.tools.pqt-gcc.path={runtime.platform.path}/system/{build.toolchain}
+runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
+runtime.tools.pqt-gcc-riscv.path={runtime.platform.path}/system/riscv32-unknown-elf
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
 runtime.tools.pqt-mklittlefs.path={runtime.platform.path}/system/mklittlefs
 runtime.tools.pqt-pioasm.path={runtime.platform.path}/system/pioasm
 runtime.tools.pqt-elf2uf2.path={runtime.platform.path}/system/elf2uf2
 runtime.tools.pqt-openocd.path={runtime.platform.path}/system/openocd
 runtime.tools.pqt-picotool.path={runtime.platform.path}/system/picotool
-compiler.path={runtime.tools.pqt-gcc.path}/bin/
+compiler.path={runtime.tools.{build.toolchainpkg}.path}/bin/
 
 compiler.libraries.ldflags=
 
