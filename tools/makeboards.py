@@ -53,12 +53,14 @@ def BuildArch(name):
     print("%s.menu.arch.arm=ARM" % (name))
     print("%s.menu.arch.arm.build.chip=%s" % (name, "rp2350"))
     print("%s.menu.arch.arm.build.toolchain=arm-none-eabi" % (name))
+    print("%s.menu.arch.arm.build.toolchainpkg=pqt-gcc" % (name))
     print("%s.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse" % (name))
     print("%s.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block" % (name))
     # RISC-V Hazard3
     print("%s.menu.arch.riscv=RISC-V" % (name))
     print("%s.menu.arch.riscv.build.chip=%s" % (name, "rp2350-riscv"))
     print("%s.menu.arch.riscv.build.toolchain=riscv32-unknown-elf" % (name))
+    print("%s.menu.arch.riscv.build.toolchainpkg=pqt-gcc-riscv" % (name))
     print("%s.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32" % (name))
     print("%s.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block" % (name))
 
@@ -239,6 +241,7 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     if chip == "rp2040":  # RP2350 has menu for this later on
         print("%s.build.chip=%s" % (name, chip))
         print("%s.build.toolchain=%s" % (name, chaintuple))
+        print("%s.build.toolchainpkg=%s" % (name, "pqt-gcc"))
         print("%s.build.toolchainopts=%s" % (name, chipoptions))
         print("%s.build.uf2family=%s" % (name, "--family rp2040"))
     print("%s.build.variant=%s" % (name, variant))
