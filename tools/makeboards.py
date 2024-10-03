@@ -342,6 +342,11 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMCS(name)
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
+        # Datanoise PicoADK v2 has a place for PSRAM, but it's not populated
+        # so allow to select custom PSRAM size and frequency.
+        elif name == "datanoisetv_picoadk_v2":
+            BuildPSRAM(name)
+            BuildPSRAMFreq(name)
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
