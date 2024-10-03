@@ -30,6 +30,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Amken Revelop 
 * Amken Revelop Plus 
 * Amken Revelop eS
+* Architeuthis Flux Jumperless
+* Architeuthis Flux Jumperless V5
 * Arduino Nano RP2040 Connect
 * ArtronShop RP2 Nano
 * Breadstick Raspberry
