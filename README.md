@@ -128,7 +128,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Peripherals:  SPI master/slave, Wire(I2C) master/slave, dual UART, emulated EEPROM, I2S audio input/output, Servo
 * printf (i.e. debug) output over USB serial
 * Transparent use of PSRAM globals and heap (RP2350 only)
-* ARM or RISC-V (Hazard3) support for The RP2350
+* ARM or RISC-V (Hazard3) support for the RP2350
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
