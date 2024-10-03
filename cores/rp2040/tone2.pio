@@ -23,8 +23,8 @@
 .program tone2
 .side_set 1 opt
 
-    pull                     ; TXFIFO -> OSR, or X -> OSR if no new period
-    mov x, osr               ; OSR -> X
+;    pull                     ; TXFIFO -> OSR, or X -> OSR if no new period
+;    mov x, osr               ; OSR -> X
 
 high:
     pull noblock             ; Potentially grab new HALFCYCLECOUNT, OTW copy from backup in X

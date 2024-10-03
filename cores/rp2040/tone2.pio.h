@@ -13,27 +13,25 @@
 // ----- //
 
 #define tone2_wrap_target 0
-#define tone2_wrap 8
+#define tone2_wrap 6
 #define tone2_pio_version 0
 
 static const uint16_t tone2_program_instructions[] = {
     //     .wrap_target
-    0x80a0, //  0: pull   block
+    0x8080, //  0: pull   noblock
     0xa027, //  1: mov    x, osr
-    0x8080, //  2: pull   noblock
-    0xa027, //  3: mov    x, osr
-    0xb847, //  4: mov    y, osr          side 1
+    0xb847, //  2: mov    y, osr          side 1
+    0x0083, //  3: jmp    y--, 3
+    0xb047, //  4: mov    y, osr          side 0
     0x0085, //  5: jmp    y--, 5
-    0xb047, //  6: mov    y, osr          side 0
-    0x0087, //  7: jmp    y--, 7
-    0x0002, //  8: jmp    2
+    0x0000, //  6: jmp    0
     //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program tone2_program = {
     .instructions = tone2_program_instructions,
-    .length = 9,
+    .length = 7,
     .origin = -1,
     .pio_version = 0,
 #if PICO_PIO_VERSION > 0
