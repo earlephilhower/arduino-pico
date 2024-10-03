@@ -14,7 +14,7 @@
 #define PIN_SERIAL2_RX (19u)
 
 // SPI
-#define PIN_SPI0_MISO  (0u) 
+#define PIN_SPI0_MISO  (0u)
 #define PIN_SPI0_MOSI  (3u)
 #define PIN_SPI0_SCK   (2u)
 #define PIN_SPI0_SS    (1u)
