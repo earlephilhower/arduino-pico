@@ -503,7 +503,7 @@ MakeBoard("amken_revelop_es", "rp2040","Amken","Revelop eS","0x2770",["0x7306"],
 
 # Architeuthis Flux
 MakeBoard("jumperless_v1", "rp2040", "Architeuthis Flux", "Jumperless", "0x1d50", "0xacab", 500, "JUMPERLESS", 16, 0, "boot2_w25q128jvxq_4_padded_checksum","", "https://github.com/Architeuthis-Flux/Jumperless")
-MakeBoard("jumperless_v5", "rp2350", "Architeuthis Flux", "Jumperless V5", "0x1d50", "0xacab", 500, "JUMPERLESS_V5", 16, 0, "boot2_w25q128jvxq_4_padded_checksum","", "https://github.com/Architeuthis-Flux/JumperlessV5")
+MakeBoard("jumperless_v5", "rp2350", "Architeuthis Flux", "Jumperless V5", "0x1d50", "0xacab", 500, "JUMPERLESS_V5", 16, 0, "none","", "https://github.com/Architeuthis-Flux/JumperlessV5")
 
 # Arduino
 MakeBoard("arduino_nano_connect", "rp2040", "Arduino", "Nano RP2040 Connect", "0x2341", ["0x005e", "0x805e", "0x015e", "0x025e"] , 250, "NANO_RP2040_CONNECT", 16, 0, "boot2_w25q080_2_padded_checksum")
