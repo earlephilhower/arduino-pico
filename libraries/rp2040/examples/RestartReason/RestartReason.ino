@@ -11,16 +11,18 @@ void delayCount(void) {
   int t = 1;
   while (1) {
     Serial.print(".");
-    if (t % 50 == 0)
+    if (t % 50 == 0) {
       Serial.println();
+    }
     delay(1000);
   }
 }
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial)
+  while (!Serial) {
     delay(10);
+  }
   delay(1000);
   Serial.println("Reset reason:");
 
@@ -29,8 +31,9 @@ void setup() {
 
   EEPROM.begin(512);
   byte test = EEPROM.read(0);
-  if (test >= NTESTS)  // un-initialised EEPROM read is random
+  if (test >= NTESTS) {  // un-initialised EEPROM read is random
     test = -1;
+  }
   test = (test + 1) % NTESTS; // Go to next test, but limit to NTESTS-1
   Serial.printf("Test %i: %s\n", test, testText[test]);
   EEPROM.write(0, test);
