@@ -22,7 +22,7 @@
 #include <hardware/irq.h>
 #include <hardware/pio.h>
 #include <pico/unique_id.h>
-#include "hardware/regs/vreg_and_chip_reset.h"
+#include <hardware/regs/vreg_and_chip_reset.h>
 #include <hardware/exception.h>
 #include <hardware/watchdog.h>
 #include <hardware/structs/rosc.h>

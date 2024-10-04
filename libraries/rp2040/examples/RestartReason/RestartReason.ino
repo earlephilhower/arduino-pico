@@ -43,7 +43,7 @@ void setup() {
     case 1:   // Power On
       delayCount();
       break;
-    case 2:  // reboot comand
+    case 2:  // reboot command
       rp2040.reboot();
       delayCount();
       break;
