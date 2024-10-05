@@ -342,6 +342,9 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMCS(name)
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
+        elif name == "adafruit_feather_rp2350_hstx":
+            # Optional, user needs to solder themselves
+            BuildPSRAM(name)
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
