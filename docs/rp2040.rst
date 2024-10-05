@@ -57,6 +57,11 @@ void rp2040.wdt_reset()
 ~~~~~~~~~~~~~~~~~~~~~~~
 Reloads the watchdog's counter with the amount of time set by wdt_begin.
 
+RP2040::resetReason_t rp2040.getResetReason()
+~~~~~~~~~~~~~~~~~~~~~~~
+Returns the reason for the last reset, defined in enum ``RP2040::resetReason_t``.
+See example ```ResetReason``` for some details.
+
 
 Memory Information
 ------------------
