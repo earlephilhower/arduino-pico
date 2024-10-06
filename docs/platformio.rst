@@ -161,7 +161,7 @@ PSRAM size
 
 For RP2350 based boards, this controls how much PSRAM the firmware will think it has available in bytes, mapped at starting address 0x11000000.
 
-To learn about PSRAM usage, see: :doc:`RP2350 PSRAM Support <psram>` 
+To learn more about PSRAM usage, see: :doc:`RP2350 PSRAM Support <psram>` 
 
 .. code:: ini
 
