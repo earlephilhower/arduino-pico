@@ -289,7 +289,11 @@ public:
 
     inline uint32_t getStackPointer() {
         uint32_t *sp;
+#if defined(__riscv)
+        asm volatile("mv %0, sp" : "=r"(sp));
+#else
         asm volatile("mov %0, sp" : "=r"(sp));
+#endif
         return (uint32_t)sp;
     }
 
