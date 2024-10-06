@@ -169,6 +169,8 @@ To learn more about PSRAM usage, see: :doc:`RP2350 PSRAM Support <psram>`
     board_upload.psram_length = 1048576
     ; PSRAM size: 2MB
     board_upload.psram_length = 2097152
+    ; PSRAM size: 4MB
+    board_upload.psram_length = 4194304
 
 CPU Speed
 ---------
