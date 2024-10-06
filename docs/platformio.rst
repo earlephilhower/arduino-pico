@@ -156,6 +156,22 @@ platform <https://github.com/maxgerhardt/platform-raspberrypi/blob/77e0d3a29d1db
     ; Flash Size: 2MB (Sketch: 0.5MB, FS:1.5MB)
     board_build.filesystem_size = 1.5m
 
+PSRAM size
+----------
+
+For RP2350 based boards, this controls how much PSRAM the firmware will think it has available in bytes, mapped at starting address 0x11000000.
+
+To learn more about PSRAM usage, see: :doc:`RP2350 PSRAM Support <psram>` 
+
+.. code:: ini
+
+    ; PSRAM size: 1MB
+    board_upload.psram_length = 1048576
+    ; PSRAM size: 2MB
+    board_upload.psram_length = 2097152
+    ; PSRAM size: 4MB
+    board_upload.psram_length = 4194304
+
 CPU Speed
 ---------
 
