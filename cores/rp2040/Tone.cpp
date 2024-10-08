@@ -100,6 +100,8 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     }
     pio_sm_clear_fifos(newTone->pio, newTone->sm); // Remove any old updates that haven't yet taken effect
     pio_sm_put_blocking(newTone->pio, newTone->sm, RP2040::usToPIOCycles(us));
+    pio_sm_exec(newTone->pio, newTone->sm, pio_encode_pull(false, false));
+    pio_sm_exec(newTone->pio, newTone->sm, pio_encode_mov(pio_x, pio_osr));
     pio_sm_set_enabled(newTone->pio, newTone->sm, true);
 
     _toneMap.insert({pin, newTone});

@@ -322,6 +322,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade platformio
         pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
+        pio pkg update --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
         pio pkg install --global --tool symlink://.
         cp -f /home/runner/work/arduino-pico/arduino-pico/tools/json/*.json /home/runner/.platformio/platforms/raspberrypi/boards/.
     - name: Build Every Variant

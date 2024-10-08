@@ -53,7 +53,7 @@ The following example will **NOT** work:
 Using PSRAM for dynamic allocations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-PSRAM can also be used as a heap for dynamica allocations using ``pmalloc`` and
+PSRAM can also be used as a heap for dynamic allocations using ``pmalloc`` and
 ``pcalloc``.  These calls function exactly like normal ``malloc`` and ``calloc``
 except they allocate space from PSRAM.
 
