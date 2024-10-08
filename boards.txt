@@ -11241,6 +11241,18 @@ datanoisetv_picoadk_v2.menu.freq.275=275 MHz (Overclock)
 datanoisetv_picoadk_v2.menu.freq.275.build.f_cpu=275000000L
 datanoisetv_picoadk_v2.menu.freq.300=300 MHz (Overclock)
 datanoisetv_picoadk_v2.menu.freq.300.build.f_cpu=300000000L
+datanoisetv_picoadk_v2.menu.psram.0mb=0MByte PSRAM
+datanoisetv_picoadk_v2.menu.psram.0mb.build.psram_length=0x000000
+datanoisetv_picoadk_v2.menu.psram.2mb=2MByte PSRAM
+datanoisetv_picoadk_v2.menu.psram.2mb.build.psram_length=0x200000
+datanoisetv_picoadk_v2.menu.psram.4mb=4MByte PSRAM
+datanoisetv_picoadk_v2.menu.psram.4mb.build.psram_length=0x400000
+datanoisetv_picoadk_v2.menu.psram.8mb=8MByte PSRAM
+datanoisetv_picoadk_v2.menu.psram.8mb.build.psram_length=0x800000
+datanoisetv_picoadk_v2.menu.psramfreq.freq109=109 MHz
+datanoisetv_picoadk_v2.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+datanoisetv_picoadk_v2.menu.psramfreq.freq133=133 MHz
+datanoisetv_picoadk_v2.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
 datanoisetv_picoadk_v2.menu.opt.Small=Small (-Os) (standard)
 datanoisetv_picoadk_v2.menu.opt.Small.build.flags.optimize=-Os
 datanoisetv_picoadk_v2.menu.opt.Optimize=Optimize (-O)
