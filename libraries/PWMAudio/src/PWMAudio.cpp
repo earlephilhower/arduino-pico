@@ -127,7 +127,7 @@ bool PWMAudio::begin() {
     _wasHolding = false;
 
     if (!_bufferWords) {
-        _bufferWords = 16;
+        _bufferWords = 64;
     }
 
     setPWMFrequency(_freq);
