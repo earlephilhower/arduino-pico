@@ -82,6 +82,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Sea-Picro
 * Seeed Indicator RP2040
 * Seeed XIAO RP2040
+* Seeed XIAO RP2350
 * Silicognition RP2040-Shim
 * Solder Party RP2040 Stamp
 * Solder Party RP2350 Stamp
