@@ -18,6 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <hardware/flash.h>
+
 #ifdef PICO_RP2350
 #include <hardware/structs/qmi.h>
 #endif
