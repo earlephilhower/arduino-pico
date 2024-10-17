@@ -97,4 +97,5 @@ protected:
 
 using ArduinoWiznet5500lwIP = ArduinoEthernet<Wiznet5500>;
 using ArduinoWiznet5100lwIP = ArduinoEthernet<Wiznet5100>;
+using ArduinoWiznet55rp20lwIP = ArduinoEthernet<Wiznet55rp20>;
 using ArduinoENC28J60lwIP   = ArduinoEthernet<ENC28J60>;
