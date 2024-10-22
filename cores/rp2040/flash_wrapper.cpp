@@ -24,7 +24,7 @@
 #include <hardware/structs/qmi.h>
 #endif
 
-#if defined(RP2350_PSRAM_CS)
+#if defined(PICO_RP2350) && defined(RP2350_PSRAM_CS)
 static volatile uint32_t __wastedsum = 0;
 static void __no_inline_not_in_flash_func(flushcache)() {
     //for (volatile uint8_t* cache = (volatile uint8_t*)0x18000001; cache < (volatile uint8_t*)(0x18000001 + 2048 * 8); cache += 8) {
@@ -36,11 +36,12 @@ static void __no_inline_not_in_flash_func(flushcache)() {
     }
     __wastedsum += sum;
 }
-#else
-static uint32_t flushcache() {
-    return 0;
+#elif defined(PICO_RP2350)
+static void __no_inline_not_in_flash_func(flushcache)() {
+    // Null
 }
 #endif
+
 
 extern "C" {
     extern void __real_flash_range_erase(uint32_t flash_offs, size_t count);
