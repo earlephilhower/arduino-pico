@@ -465,7 +465,6 @@ public:
         if (_opened && _fd) {
             lfs_file_close(_fs->getFS(), _getFD());
             _opened = false;
-            DEBUGV("lfs_file_close: fd=%p\n", _getFD());
             if (_timeCallback && (_flags & LFS_O_WRONLY)) {
                 // If the file opened with O_CREAT, write the creation time attribute
                 if (_creation) {
