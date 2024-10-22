@@ -31,7 +31,7 @@ static void __no_inline_not_in_flash_func(flushcache)() {
     //    *cache = 0;
     //}
     uint32_t sum = 0; // Ignored, just to ensure not optimized out
-    for (volatile uint32_t *flash = (volatile uint32_t *)0x11000000; flash < (volatile uint32_t *)(0x11000000 + 48*1024*4); flash++) {
+    for (volatile uint32_t *flash = (volatile uint32_t *)0x11000000; flash < (volatile uint32_t *)(0x11000000 + 48 * 1024 * 4); flash++) {
         sum += *flash;
     }
     __wastedsum += sum;
