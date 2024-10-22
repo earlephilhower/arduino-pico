@@ -25,16 +25,13 @@
 #endif
 
 #if defined(PICO_RP2350) && defined(RP2350_PSRAM_CS)
-static volatile uint32_t __wastedsum = 0;
 static void __no_inline_not_in_flash_func(flushcache)() {
-    //for (volatile uint8_t* cache = (volatile uint8_t*)0x18000001; cache < (volatile uint8_t*)(0x18000001 + 2048 * 8); cache += 8) {
-    //    *cache = 0;
-    //}
-    uint32_t sum = 0; // Ignored, just to ensure not optimized out
-    for (volatile uint32_t *flash = (volatile uint32_t *)0x11000000; flash < (volatile uint32_t *)(0x11000000 + 48 * 1024 * 4); flash++) {
-        sum += *flash;
+    for (volatile uint8_t* cache = (volatile uint8_t*)0x18000001; cache < (volatile uint8_t*)(0x18000001 + 2048 * 8); cache += 8) {
+        *cache = 0;
+        __compiler_memory_barrier();
+        *(cache - 1) = 0;
+        __compiler_memory_barrier();
     }
-    __wastedsum += sum;
 }
 #elif defined(PICO_RP2350)
 static void __no_inline_not_in_flash_func(flushcache)() {
