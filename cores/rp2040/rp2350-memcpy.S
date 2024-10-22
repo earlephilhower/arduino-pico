@@ -25,7 +25,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#if defined(PICO_RP2350)
+#if defined(PICO_RP2350) && defined(__arm__)
 	/* Prototype: void *memcpy (void *dst, const void *src, size_t count).  */
         /* Use the version of memcpy implemented using LDRD and STRD.
            This version is tuned for Cortex-A15.
