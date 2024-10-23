@@ -48,9 +48,9 @@ uint8_t Wiznet55rp20::wizchip_read(uint8_t block, uint16_t address) {
 
     block |= AccessModeRead;
 
-	spi_data[0] = (address & 0x00FF00) >> 8;
-	spi_data[1] = (address & 0x0000FF) >> 0;
-	spi_data[2] = block;
+    spi_data[0] = (address & 0x00FF00) >> 8;
+    spi_data[1] = (address & 0x0000FF) >> 0;
+    spi_data[2] = block;
     (*wiznet_pio_spi_handle)->write_buffer(spi_data, 3);
     ret = (*wiznet_pio_spi_handle)->read_byte();
 
@@ -70,9 +70,9 @@ void Wiznet55rp20::wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pB
 
     block |= AccessModeRead;
 
-	spi_data[0] = (address & 0x00FF00) >> 8;
-	spi_data[1] = (address & 0x0000FF) >> 0;
-	spi_data[2] = block;
+    spi_data[0] = (address & 0x00FF00) >> 8;
+    spi_data[1] = (address & 0x0000FF) >> 0;
+    spi_data[2] = block;
     (*wiznet_pio_spi_handle)->write_buffer(spi_data, 3);
     (*wiznet_pio_spi_handle)->read_buffer(pBuf, len);
 
@@ -87,8 +87,8 @@ void Wiznet55rp20::wizchip_write(uint8_t block, uint16_t address, uint8_t wb) {
     block |= AccessModeWrite;
 
     spi_data[0] = (address & 0x00FF00) >> 8;
-	spi_data[1] = (address & 0x0000FF) >> 0;
-	spi_data[2] = block;
+    spi_data[1] = (address & 0x0000FF) >> 0;
+    spi_data[2] = block;
     spi_data[3] = wb;
     (*wiznet_pio_spi_handle)->write_buffer(spi_data, 4);
 
@@ -101,7 +101,7 @@ void Wiznet55rp20::wizchip_write_word(uint8_t block, uint16_t address, uint16_t 
 }
 
 void Wiznet55rp20::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_t* pBuf,
-                                   uint16_t len) {
+                                     uint16_t len) {
     uint16_t i;
     uint8_t spi_data[3];
 
@@ -110,10 +110,10 @@ void Wiznet55rp20::wizchip_write_buf(uint8_t block, uint16_t address, const uint
     block |= AccessModeWrite;
 
     spi_data[0] = (address & 0x00FF00) >> 8;
-	spi_data[1] = (address & 0x0000FF);
-	spi_data[2] = block;
-	(*wiznet_pio_spi_handle)->write_buffer(spi_data, 3);
-	(*wiznet_pio_spi_handle)->write_buffer(pBuf, len);
+    spi_data[1] = (address & 0x0000FF);
+    spi_data[2] = block;
+    (*wiznet_pio_spi_handle)->write_buffer(spi_data, 3);
+    (*wiznet_pio_spi_handle)->write_buffer(pBuf, len);
 
     wizchip_cs_deselect();
 }
@@ -257,8 +257,9 @@ bool Wiznet55rp20::begin(const uint8_t* mac_address, netif *net) {
     wiznet_pio_spi_config.data_out_pin = WIZNET_PIO_SPI_MOSI_PIN;
     wiznet_pio_spi_config.clock_pin = WIZNET_PIO_SPI_SCK_PIN;
 
-    if (wiznet_pio_spi_handle != NULL)
+    if (wiznet_pio_spi_handle != NULL) {
         wiznet_pio_spi_close(wiznet_pio_spi_handle);
+    }
     wiznet_pio_spi_handle = wiznet_pio_spi_open(&wiznet_pio_spi_config);
     (*wiznet_pio_spi_handle)->set_active(wiznet_pio_spi_handle);
 
@@ -267,13 +268,13 @@ bool Wiznet55rp20::begin(const uint8_t* mac_address, netif *net) {
 
     pinMode(WIZNET_PIO_SPI_CS_PIN, OUTPUT);
     wizchip_cs_deselect();
-    
+
     wizchip_sw_reset();
 
     // Use the full 16Kb of RAM for Socket 0
     setSn_RXBUF_SIZE(16);
     setSn_TXBUF_SIZE(16);
-    
+
     // Set our local MAC address
     setSHAR(_mac_address);
 

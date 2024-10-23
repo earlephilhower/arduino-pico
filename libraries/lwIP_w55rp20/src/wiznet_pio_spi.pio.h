@@ -20,17 +20,17 @@
 #define wiznet_pio_spi_write_read_offset_read_end 9u
 
 static const uint16_t wiznet_pio_spi_write_read_program_instructions[] = {
-            //     .wrap_target
-    0x6001, //  0: out    pins, 1         side 0     
-    0x1040, //  1: jmp    x--, 0          side 1     
-    0xe000, //  2: set    pins, 0         side 0     
-    0xe080, //  3: set    pindirs, 0      side 0     
-    0xf026, //  4: set    x, 6            side 1     
-    0x4001, //  5: in     pins, 1         side 0     
-    0x1045, //  6: jmp    x--, 5          side 1     
-    0x4001, //  7: in     pins, 1         side 0     
-    0x0084, //  8: jmp    y--, 4          side 0     
-            //     .wrap
+    //     .wrap_target
+    0x6001, //  0: out    pins, 1         side 0
+    0x1040, //  1: jmp    x--, 0          side 1
+    0xe000, //  2: set    pins, 0         side 0
+    0xe080, //  3: set    pindirs, 0      side 0
+    0xf026, //  4: set    x, 6            side 1
+    0x4001, //  5: in     pins, 1         side 0
+    0x1045, //  6: jmp    x--, 5          side 1
+    0x4001, //  7: in     pins, 1         side 0
+    0x0084, //  8: jmp    y--, 4          side 0
+    //     .wrap
 };
 
 #if !PICO_NO_HARDWARE

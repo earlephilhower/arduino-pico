@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2024, WIZnet Co., Ltd.
- * Copyright (c) 2023 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
+    Copyright (c) 2024, WIZnet Co., Ltd.
+    Copyright (c) 2023 Raspberry Pi (Trading) Ltd.
+
+    SPDX-License-Identifier: BSD-3-Clause
+*/
 
 #include <stdio.h>
 #include <string.h>
@@ -76,7 +76,7 @@ static void wiznet_pio_spi_gpio_setup(wiznet_pio_spi_state_t *state) {
 
 wiznet_pio_spi_handle_t wiznet_pio_spi_open(const wiznet_pio_spi_config_t *wiznet_pio_spi_config) {
     wiznet_pio_spi_state_t *state;
-    for(int i = 0; i < count_of(wiznet_pio_spi_state); i++) {
+    for (int i = 0; i < count_of(wiznet_pio_spi_state); i++) {
         if (!wiznet_pio_spi_state[i].funcs) {
             state = &wiznet_pio_spi_state[i];
             break;
@@ -119,11 +119,11 @@ wiznet_pio_spi_handle_t wiznet_pio_spi_open(const wiznet_pio_spi_config_t *wizne
     hw_write_masked(&pads_bank0_hw->io[state->spi_config->clock_pin],
                     (uint)PADS_DRIVE_STRENGTH << PADS_BANK0_GPIO0_DRIVE_LSB,
                     PADS_BANK0_GPIO0_DRIVE_BITS
-    );
+                   );
     hw_write_masked(&pads_bank0_hw->io[state->spi_config->clock_pin],
                     (uint)1 << PADS_BANK0_GPIO0_SLEWFAST_LSB,
                     PADS_BANK0_GPIO0_SLEWFAST_BITS
-    );
+                   );
 
     sm_config_set_out_pins(&sm_config, state->spi_config->data_out_pin, 1);
     sm_config_set_in_pins(&sm_config, state->spi_config->data_in_pin);
@@ -158,8 +158,9 @@ void wiznet_pio_spi_close(wiznet_pio_spi_handle_t handle) {
     wiznet_pio_spi_state_t *state = (wiznet_pio_spi_state_t *)handle;
     if (state) {
         if (state->pio_sm >= 0) {
-            if (state->pio_offset != -1)
+            if (state->pio_offset != -1) {
                 pio_remove_program(state->pio, &WIZNET_PIO_SPI_PROGRAM_FUNC, state->pio_offset);
+            }
 
             pio_sm_unclaim(state->pio, state->pio_sm);
         }
@@ -220,7 +221,7 @@ bool wiznet_pio_spi_transfer(const uint8_t *tx, size_t tx_length, uint8_t *rx, s
         assert(tx && tx_length && rx_length);
 
         pio_sm_set_enabled(state->pio, state->pio_sm, false); // disable sm
-        pio_sm_set_wrap(state->pio, state->pio_sm, state->pio_offset + WIZNET_PIO_SPI_OFFSET_WRITE_BITS, state->pio_offset + WIZNET_PIO_SPI_OFFSET_READ_END - 1); 
+        pio_sm_set_wrap(state->pio, state->pio_sm, state->pio_offset + WIZNET_PIO_SPI_OFFSET_WRITE_BITS, state->pio_offset + WIZNET_PIO_SPI_OFFSET_READ_END - 1);
         pio_sm_clear_fifos(state->pio, state->pio_sm); // clear fifos from previous run
         pio_sm_set_pindirs_with_mask(state->pio, state->pio_sm, 1u << state->spi_config->data_out_pin, 1u << state->spi_config->data_out_pin);
         pio_sm_restart(state->pio, state->pio_sm);
@@ -294,7 +295,7 @@ bool wiznet_pio_spi_transfer(const uint8_t *tx, size_t tx_length, uint8_t *rx, s
 
 // To read a byte we must first have been asked to write a 3 byte spi header
 static uint8_t wiznet_pio_spi_read_byte(void) {
-    assert(active_state);    
+    assert(active_state);
     assert(active_state->spi_header_count == WIZNET_PIO_SPI_HEADER_LEN);
     uint8_t ret;
     if (!wiznet_pio_spi_transfer(active_state->spi_header, active_state->spi_header_count, &ret, 1)) {
