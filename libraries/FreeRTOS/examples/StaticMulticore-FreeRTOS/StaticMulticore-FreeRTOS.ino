@@ -35,6 +35,8 @@ StackType_t xStack_B[ STACK_SIZE ];
 SemaphoreHandle_t xSemaphore = NULL;
 StaticSemaphore_t xMutexBuffer;
 
+TaskHandle_t ledOnTask, ledOffTask;
+
 void setup() {
   SERIAL_PORT.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -44,13 +46,22 @@ void setup() {
     the xMutexBuffer variable. */
   xSemaphore = xSemaphoreCreateMutexStatic( &xMutexBuffer );
 
-  xTaskCreateStatic(led_ON, "led_ON", STACK_SIZE, NULL, configMAX_PRIORITIES - 1, xStack_A, &xTaskBuffer_A);
-  xTaskCreateStatic(led_OFF, "led_OFF", STACK_SIZE, NULL, configMAX_PRIORITIES - 1, xStack_B, &xTaskBuffer_B);
-}
+  ledOnTask = xTaskCreateStatic(led_ON, "led_ON", STACK_SIZE, NULL, configMAX_PRIORITIES - 1, xStack_A, &xTaskBuffer_A);
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+  // The PicoW WiFi chip controls the LED, and only core 0 can make calls to it safely
+  vTaskCoreAffinitySet(ledOnTask, 1 << 0);
+#endif
+  ledOffTask = xTaskCreateStatic(led_OFF, "led_OFF", STACK_SIZE, NULL, configMAX_PRIORITIES - 1, xStack_B, &xTaskBuffer_B);
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+  // The PicoW WiFi chip controls the LED, and only core 0 can make calls to it safely
+  vTaskCoreAffinitySet(ledOffTask, 1 << 0);
+#endif
+  }
 
 void led_ON(void *pvParameters)
 {
   (void) pvParameters;
+  delay(100);
   while (1)
   {
     xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );
@@ -65,6 +76,7 @@ void led_ON(void *pvParameters)
 void led_OFF(void *pvParameters)
 {
   (void) pvParameters;
+  delay(100);
   while (1)
   {
     xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );

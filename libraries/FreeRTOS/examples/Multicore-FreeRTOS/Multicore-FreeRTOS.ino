@@ -38,6 +38,7 @@ void ps() {
 
 void blink(void *param) {
   (void) param;
+  delay(500);
   pinMode(LED_BUILTIN, OUTPUT);
   while (true) {
     digitalWrite(LED_BUILTIN, LOW);
@@ -49,12 +50,17 @@ void blink(void *param) {
 
 
 void setup() {
+  TaskHandle_t blinkTask;
   Serial.begin(115200);
-  xTaskCreate(blink, "BLINK", 128, nullptr, 1, nullptr);
+  xTaskCreate(blink, "BLINK", 256, nullptr, 1, &blinkTask);
+#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+  // The PicoW WiFi chip controls the LED, and only core 0 can make calls to it safely
+  vTaskCoreAffinitySet(blinkTask, 1 << 0);
+#endif
   delay(5000);
 }
 
-volatile int val= 0;
+volatile int val = 0;
 void loop() {
   Serial.printf("C0: Blue leader standing by...\n");
   ps();
