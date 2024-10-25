@@ -87,15 +87,21 @@ static std::map<pin_size_t, CBInfo> _map;
 
 void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     (void) events;
+
     // Only need to lock around the std::map check, not the whole IRQ callback
-    CoreMutex m(&_irqMutex);
-    if (m) {
-        auto irq = _map.find(gpio);
-        if (irq != _map.end()) {
-            auto cb = irq->second;
-            cb.callback();
+    CBInfo *cb;
+    {
+        CoreMutex m(&_irqMutex);
+        if (m) {
+            auto irq = _map.find(gpio);
+            if (irq == _map.end()) return;
+            cb = &irq->second;
+        }
+        else {
+            return;
         }
     }
+    cb->callback();
 }
 
 // To be called when appropriately protected w/IRQ and mutex protects
