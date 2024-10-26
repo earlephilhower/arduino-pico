@@ -94,10 +94,11 @@ void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
         CoreMutex m(&_irqMutex);
         if (m) {
             auto irq = _map.find(gpio);
-            if (irq == _map.end()) return;
+            if (irq == _map.end()) {
+                return;
+            }
             cb = &irq->second;
-        }
-        else {
+        } else {
             return;
         }
     }
