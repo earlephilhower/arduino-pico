@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <sdkoverride/bluetooth.h>
+#include <bluetooth.h>
 #include <_needsbt.h>
 #include <Arduino.h>
 #include <functional>
@@ -35,8 +35,8 @@
 #define HID_REPORT_TYPE_OUTPUT HID_REPORT_TYPE_OUTPUT_BT
 #define HID_REPORT_TYPE_FEATURE HID_REPORT_TYPE_FEATURE_BT
 #define hid_report_type_t hid_report_type_t_bt
-#include <sdkoverride/hids_device.h>
-#include <sdkoverride/att_db.h>
+#include <ble/gatt-service/hids_device.h>
+#include <ble/att_db.h>
 #include <btstack.h>
 #undef hid_report_type_t
 #undef HID_REPORT_TYPE_FEATURE
