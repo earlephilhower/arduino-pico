@@ -26,11 +26,11 @@
 
 #if defined(PICO_RP2350) && defined(RP2350_PSRAM_CS)
 static void __no_inline_not_in_flash_func(flushcache)() {
-    for (volatile uint8_t* cache = (volatile uint8_t*)0x18000001; cache < (volatile uint8_t*)(0x18000001 + 2048 * 8); cache += 8) {
-        *cache = 0;
-        __compiler_memory_barrier();
-        *(cache - 1) = 0;
-        __compiler_memory_barrier();
+    // From https://forums.raspberrypi.com/viewtopic.php?t=378249#p2263677
+    // Perform clean-by-set/way on all lines
+    for (uint32_t i = 0; i < 2048; ++i) {
+        // Use the upper 16k of the maintenance space (0x1bffc000 through 0x1bffffff):
+        *(volatile uint8_t*)(XIP_SRAM_BASE + (XIP_MAINTENANCE_BASE - XIP_BASE) + i * 8u + 0x1u) = 0;
     }
 }
 #elif defined(PICO_RP2350)
