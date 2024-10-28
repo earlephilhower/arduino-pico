@@ -63,7 +63,6 @@ uint16_t Wiznet55rp20::wizchip_read_word(uint8_t block, uint16_t address) {
 }
 
 void Wiznet55rp20::wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf, uint16_t len) {
-    uint16_t i;
     uint8_t spi_data[3];
 
     wizchip_cs_select();
@@ -102,7 +101,6 @@ void Wiznet55rp20::wizchip_write_word(uint8_t block, uint16_t address, uint16_t 
 
 void Wiznet55rp20::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_t* pBuf,
                                      uint16_t len) {
-    uint16_t i;
     uint8_t spi_data[3];
 
     wizchip_cs_select();

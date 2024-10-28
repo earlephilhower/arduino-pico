@@ -76,7 +76,7 @@ static void wiznet_pio_spi_gpio_setup(wiznet_pio_spi_state_t *state) {
 
 wiznet_pio_spi_handle_t wiznet_pio_spi_open(const wiznet_pio_spi_config_t *wiznet_pio_spi_config) {
     wiznet_pio_spi_state_t *state;
-    for (int i = 0; i < count_of(wiznet_pio_spi_state); i++) {
+    for (unsigned int i = 0; i < count_of(wiznet_pio_spi_state); i++) {
         if (!wiznet_pio_spi_state[i].funcs) {
             state = &wiznet_pio_spi_state[i];
             break;
