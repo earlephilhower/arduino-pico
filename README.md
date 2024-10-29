@@ -103,6 +103,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Waveshare RP2040 PiZero
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5500-EVB-Pico
+* WIZnet W55RP20-EVB-Pico
 * WIZnet WizFi360-EVB-Pico
 * Generic RP2040 (configurable flash, I/O pins)
 * Generic RP2350 (configurable flash, I/O pins)
