@@ -327,10 +327,16 @@
                      "name": "WIZnet W5100S-EVB-Pico"
                   },
                   {
+                     "name": "WIZnet W5100S-EVB-Pico2"
+                  },
+                  {
                      "name": "WIZnet WizFi360-EVB-Pico"
                   },
                   {
                      "name": "WIZnet W5500-EVB-Pico"
+                  },
+                  {
+                     "name": "WIZnet W5500-EVB-Pico2"
                   },
                   {
                      "name": "WIZnet W55RP20-EVB-Pico"

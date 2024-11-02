@@ -8,14 +8,21 @@
 const char* host = "djxmmx.net";
 const uint16_t port = 17;
 
+#if defined(ARDUINO_WIZNET_5500_EVB_PICO) || defined(ARDUINO_WIZNET_5500_EVB_PICO2)
+// To use Interrupt-driven mode, pass in an SPI object and an IRQ pin like so:
+Wiznet5500lwIP eth(17, SPI, 21);
+#else
 Wiznet5500lwIP eth(1 /* chip select */);
+#endif
 
 void setup() {
+#if !defined(ARDUINO_WIZNET_5500_EVB_PICO) && !defined(ARDUINO_WIZNET_5500_EVB_PICO2)
   // Set up SPI pinout to match your HW
   SPI.setRX(0);
   SPI.setCS(1);
   SPI.setSCK(2);
   SPI.setTX(3);
+#endif
 
   Serial.begin(115200);
   delay(5000);
