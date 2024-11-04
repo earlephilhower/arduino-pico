@@ -332,4 +332,5 @@ add_custom_command(TARGET pico-${cpu} POST_BUILD
     COMMAND sed 's/include.*pico-sdk/include \"..\\/..\\/pico-sdk/' ./generated/pico_base/pico/config_autogen.h > ../../../include/${cpu}/pico_base/pico/config_autogen.h
     COMMAND cp ../tusb_config.h ../../../include/${cpu}/.
     COMMAND cp ../btstack_config.h ../../../include/${cpu}/.
+    COMMAND cp ../lwipopts.h ../../../include/.
 )
