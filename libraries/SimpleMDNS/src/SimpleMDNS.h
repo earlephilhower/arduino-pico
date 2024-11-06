@@ -44,3 +44,8 @@ private:
 };
 
 extern SimpleMDNS MDNS;
+
+#define __SIMPLEMDNS_H 1
+#ifdef __LEAMDNS_H
+#error SimpleMDNS and LeaMDNS both included.  Only one allowed at a time.
+#endif
