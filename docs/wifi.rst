@@ -44,7 +44,7 @@ Please note that WiFi on the Pico W is a work-in-progress and there are some imp
 
   * FreeRTOS is supported only on core 0 and from within ``setup`` and ``loop``, not tasks, due to the requirement for a very different LWIP implementation.  PRs always appreciated!
 
-  * LEAmDNS (``MDNS``) is not supported in FreeRTOS due to internal IRQ-time memory allocations.
+  * LEAmDNS (``MDNS``) is not supported in FreeRTOS due to internal IRQ-time memory allocations.  Instead, use the SimpleMDNS library ( ``#include <SimpleMDNS.h>`` ) which has no such allocations.
 
 The WiFi library borrows much work from the `ESP8266 Arduino Core <https://github.com/esp8266/Arduino>`__ , especially the ``WiFiClient`` and ``WiFiServer`` classes.
 

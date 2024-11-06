@@ -229,3 +229,8 @@ void lwipPollingPeriod(int ms) {
         _pollingPeriod = ms;
     }
 }
+
+std::function<void(struct netif *)>  _scb;
+void __setStateChangeCallback(std::function<void(struct netif *)> s) {
+    _scb = s;
+}

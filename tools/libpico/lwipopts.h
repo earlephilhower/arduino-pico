@@ -30,7 +30,7 @@ extern unsigned long __lwip_rand(void);
 #define MEMP_NUM_TCP_SEG              (32)
 #define MEMP_NUM_ARP_QUEUE            (10)
 #define PBUF_POOL_SIZE                (__LWIP_MEMMULT > 1 ? 32 : 24)
-#define LWIP_ARP                      2
+#define LWIP_ARP                      5
 #define LWIP_ETHERNET                 1
 #define LWIP_ICMP                     1
 #define LWIP_RAW                      1
@@ -41,6 +41,7 @@ extern unsigned long __lwip_rand(void);
 #define LWIP_NETIF_STATUS_CALLBACK    1
 #define LWIP_NETIF_LINK_CALLBACK      1
 #define LWIP_NETIF_HOSTNAME           1
+#define LWIP_NUM_NETIF_CLIENT_DATA    5
 #define LWIP_NETCONN                  0
 #define LWIP_STATS                    0
 #define LWIP_STATS_DISPLAY            0
@@ -61,6 +62,7 @@ extern unsigned long __lwip_rand(void);
 #define LWIP_DHCP_DOES_ACD_CHECK      0
 #define LWIP_IGMP                     1
 #define LWIP_MDNS_RESPONDER           1
+#define MDNS_MAX_SERVICES             4
 
 // See #1285
 #define MEMP_NUM_UDP_PCB              (__LWIP_MEMMULT * 7)

@@ -232,6 +232,7 @@ set(picow_link_libraries
     pico_lwip
     pico_lwip_nosys
     pico_lwip_sntp
+    pico_lwip_mdns
     pico_stdlib
 )
 

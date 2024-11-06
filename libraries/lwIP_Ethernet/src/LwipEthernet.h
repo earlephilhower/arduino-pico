@@ -44,3 +44,6 @@ int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms = 5000)
 
 // Set the LWIP polling time (default 50ms).  Lower polling times == lower latency but higher CPU usage
 void lwipPollingPeriod(int ms);
+
+// Sets the global netif state change callback
+void __setStateChangeCallback(std::function<void(struct netif *)> s);
