@@ -8,7 +8,7 @@ Unlike LEAmDNS, this library only supports very simple configurations.
 They should be sufficient for OTA and name resolution and simple web
 servers, but for more complicated needs please use LEAmDNS.
 
-The benefit of this simplicity is that is is low code and has no runtime
+The benefit of this simplicity is that it is low code and has no runtime
 memory allocations.  This means it can be run under FreeRTOS (which LEAmDNS
 does not presently support).
 
