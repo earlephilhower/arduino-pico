@@ -1348,3 +1348,8 @@ protected:
 }  // namespace esp8266
 
 #include <ESP8266mDNS.h>
+
+#define __LEAMDNS_H 1
+#ifdef __SIMPLEMDNS_H
+#error SimpleMDNS and LeaMDNS both included.  Only one allowed at a time.
+#endif

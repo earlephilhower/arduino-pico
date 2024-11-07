@@ -5,7 +5,7 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
-#include <LEAmDNS.h>
+#include <SimpleMDNS.h>
 #include <HTTPUpdateServer.h>
 
 #ifndef STASSID

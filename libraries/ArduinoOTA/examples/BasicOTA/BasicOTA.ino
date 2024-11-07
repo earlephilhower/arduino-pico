@@ -1,5 +1,5 @@
 #include <WiFi.h>
-#include <LEAmDNS.h>
+#include <SimpleMDNS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 

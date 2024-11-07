@@ -28,10 +28,7 @@
 
 #include <lwip/udp.h>
 #include <include/UdpContext.h>
-
-#if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_MDNS)
-#include <LEAmDNS.h>
-#endif
+#include <SimpleMDNS.h>
 
 #ifdef DEBUG_RP2040_CORE
 #ifdef DEBUG_RP2040_PORT

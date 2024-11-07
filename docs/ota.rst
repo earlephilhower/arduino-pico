@@ -235,7 +235,7 @@ Requirements
 Implementation Overview
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Updates with a web browser are implemented using ``HTTPUpdateServer`` class together with ``WebServer`` and ``LEAmDNS`` classes. The following code is required to get it work:
+Updates with a web browser are implemented using ``HTTPUpdateServer`` class together with ``WebServer`` and ``LEAmDNS`` or ``SimpleMDNS``  classes. The following code is required to get it work:
 
 setup()
 
