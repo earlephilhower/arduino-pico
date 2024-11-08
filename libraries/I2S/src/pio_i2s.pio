@@ -162,13 +162,13 @@ right1:
 left1:
     in pins, 1       side 0b01
     jmp x--, left1   side 0b00
-    in pins, 1       side 0b11 ; Last bit of left has WCLK change per I2S spec
-
+    in pins, 1       side 0b01 ; 2584 LRCK stays low until BCLK goes low
+                               ; Last bit of left has WCLK change per I2S spec
     mov x, y         side 0b10
 right1:
     in pins, 1       side 0b11
     jmp x--, right1  side 0b10
-    in pins, 1       side 0b01 ; Last bit of right also has WCLK change
+    in pins, 1       side 0b11 ; 2584 LRCK stays high until BCLK goes low
     ; Loop back to beginning...
 
 
