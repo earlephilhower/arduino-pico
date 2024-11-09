@@ -286,11 +286,11 @@ static const uint16_t pio_i2s_in_program_instructions[] = {
     0xa022, //  0: mov    x, y            side 0
     0x4801, //  1: in     pins, 1         side 1
     0x0041, //  2: jmp    x--, 1          side 0
-    0x5801, //  3: in     pins, 1         side 3
+    0x4801, //  3: in     pins, 1         side 1
     0xb022, //  4: mov    x, y            side 2
     0x5801, //  5: in     pins, 1         side 3
     0x1045, //  6: jmp    x--, 5          side 2
-    0x4801, //  7: in     pins, 1         side 1
+    0x5801, //  7: in     pins, 1         side 3
     //     .wrap
 };
 
@@ -326,11 +326,11 @@ static const uint16_t pio_i2s_in_swap_program_instructions[] = {
     0xa022, //  0: mov    x, y            side 0
     0x5001, //  1: in     pins, 1         side 2
     0x0041, //  2: jmp    x--, 1          side 0
-    0x5801, //  3: in     pins, 1         side 3
+    0x5001, //  3: in     pins, 1         side 2
     0xa822, //  4: mov    x, y            side 1
     0x5801, //  5: in     pins, 1         side 3
     0x0845, //  6: jmp    x--, 5          side 1
-    0x5001, //  7: in     pins, 1         side 2
+    0x5801, //  7: in     pins, 1         side 3
     //     .wrap
 };
 
