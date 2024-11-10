@@ -115,7 +115,6 @@ if chip == "rp2040":
             "ARM_MATH_CM0_PLUS",
             "TARGET_RP2040",
             ("PICO_RP2040", "1"),
-            ("CYW43_PIO_CLOCK_DIV_DYNAMIC", "1")
             # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
             # so it's the original value for the full flash.
             ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))

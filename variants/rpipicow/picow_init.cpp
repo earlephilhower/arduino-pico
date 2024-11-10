@@ -19,7 +19,9 @@
 */
 
 #include <pico/cyw43_arch.h>
+#include <pico/cyw43_driver.h>
 #include <pico/lwip_nosys.h>
+#include "hardware/clocks.h"
 #include "hardware/resets.h"
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
@@ -62,6 +64,11 @@ bool __isPicoW = true;
 extern "C" void initVariant() {
     __isPicoW = CheckPicoW();
     if (__isPicoW) {
+        // Fix for overclocked CPU: SPI communication breaks down with default "div by 2" speed
+        // So, divide clock by 4 for anything including and above 250MHz CPU frequency.
+        if (clock_get_hz(clk_sys) >= 250000000) {
+            cyw43_set_pio_clock_divisor(4, 0); // div by 4.0
+        }
         cyw43_arch_init_with_country(WIFICC);
     }
 }
