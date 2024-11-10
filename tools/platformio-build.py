@@ -115,6 +115,7 @@ if chip == "rp2040":
             "ARM_MATH_CM0_PLUS",
             "TARGET_RP2040",
             ("PICO_RP2040", "1"),
+            ("CYW43_PIO_CLOCK_DIV_DYNAMIC", "1")
             # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
             # so it's the original value for the full flash.
             ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
@@ -363,6 +364,7 @@ def configure_network_flags(cpp_defines):
     env.Append(CPPDEFINES=[
         ("PICO_CYW43_ARCH_THREADSAFE_BACKGROUND", 1),
         ("CYW43_LWIP", 1),
+        ("CYW43_PIO_CLOCK_DIV_DYNAMIC", 1),
         ("LWIP_IPV4", 1),
         ("LWIP_IGMP", 1),
         ("LWIP_CHECKSUM_CTRL_PER_NETIF", 1)
