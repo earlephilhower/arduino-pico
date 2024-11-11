@@ -24,9 +24,9 @@
 #include <LwipEthernet.h>
 #include <lwip/apps/mdns.h>
 
-void SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
+bool SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
     if (_running) {
-        return;
+        return false;
     }
     mdns_resp_init();
     struct netif *n = netif_list;
@@ -37,6 +37,8 @@ void SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
     __setStateChangeCallback(_statusCB);
     _hostname = strdup(hostname);
     _running = true;
+    
+    return true;
 }
 
 void SimpleMDNS::enableArduino(unsigned int port, bool passwd) {

@@ -25,7 +25,7 @@
 class SimpleMDNS {
 
 public:
-    void begin(const char *hostname, unsigned int ttl = 60);
+    bool begin(const char *hostname, unsigned int ttl = 60);
     void enableArduino(unsigned int port, bool passwd = false);
     void addService(const char *service, const char *proto, unsigned int port);
 
