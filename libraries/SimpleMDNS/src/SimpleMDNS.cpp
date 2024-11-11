@@ -37,7 +37,7 @@ bool SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
     __setStateChangeCallback(_statusCB);
     _hostname = strdup(hostname);
     _running = true;
-    
+
     return true;
 }
 
