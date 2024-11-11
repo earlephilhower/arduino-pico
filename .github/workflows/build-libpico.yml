@@ -23,12 +23,17 @@ jobs:
         - name: Install dependencies
           run: |
             sudo apt update
-            sudo apt install cmake make build-essential wget gcc-arm-none-eabi
-            # RISC-V toolchain
-            wget -O "$GITHUB_WORKSPACE/riscv32.tar.gz" "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/4.0.1/x86_64-linux-gnu.riscv32-unknown-elf-8ec9d6f.240929.tar.gz"
-            tar xf "$GITHUB_WORKSPACE/riscv32.tar.gz"
-            echo "$GITHUB_WORKSPACE/riscv32-unknown-elf/bin" >> "$GITHUB_PATH"
-            # ARM toolchain taken from Ubuntu repository
+            sudo apt install cmake make build-essential wget
+            # Automatically get correct toolchain
+            cd tools && python3 get.py && cd ..
+            # add to PATH
+            echo "$GITHUB_WORKSPACE/system/riscv32-unknown-elf/bin" >> "$GITHUB_PATH"
+            echo "$GITHUB_WORKSPACE/system/arm-none-eabi/bin" >> "$GITHUB_PATH"
+        - name: Patch Pico-SDK (Fix Assembly for newer GCC)
+          run: |
+            cd pico-sdk
+            wget https://patch-diff.githubusercontent.com/raw/raspberrypi/pico-sdk/pull/2000.patch
+            patch -p1 < 2000.patch
         - name: Build libpico
           run: |
             cd tools/libpico
