@@ -630,6 +630,7 @@ MakeBoard("sparkfun_micromodrp2040", "rp2040", "SparkFun", "MicroMod RP2040", "0
 MakeBoard("sparkfun_promicrorp2040", "rp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("sparkfun_promicrorp2350", "rp2350", "SparkFun", "ProMicro RP2350", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2350", 16, 8, "none")
 MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("sparkfun_thingplusrp2350", "rp2350", "SparkFun", "Thing Plus RP2350", "0x1b4f", "0x0038", 250, "SPARKFUN_THINGPLUS_RP2350", 16, 8, "none")
 
 # Upesy
 MakeBoard("upesy_rp2040_devkit", "rp2040", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, 0, "boot2_w25q080_2_padded_checksum")
