@@ -18,6 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifdef PICO_RP2040
+
 #include <Arduino.h>
 #include <hardware/structs/psm.h>
 
@@ -31,3 +33,5 @@ void RP2040::enableDoubleResetBootloader() {
         boot_double_tap_check();
     }
 }
+
+#endif

@@ -95,8 +95,8 @@ doing any WiFi calls.
 Bootloader
 ----------
 
-void rp2040.enableDoubleResetBootloader()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void rp2040.enableDoubleResetBootloader()  (Pico/RP2040 only)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Add a call anywhere in the sketch to ``rp2040.enableDoubleResetBootloader()`` and
 the core will check for a double-tap on reset, and if found will start the USB
 bootloader.

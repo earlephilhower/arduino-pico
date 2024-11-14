@@ -351,7 +351,9 @@ public:
         }
     }
 
+#ifdef PICO_RP2040
     static void enableDoubleResetBootloader();
+#endif
 
     void wdt_begin(uint32_t delay_ms) {
         watchdog_enable(delay_ms, 1);
