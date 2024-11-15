@@ -47,12 +47,12 @@ void setup() {
   xSemaphore = xSemaphoreCreateMutexStatic( &xMutexBuffer );
 
   ledOnTask = xTaskCreateStatic(led_ON, "led_ON", STACK_SIZE, NULL, configMAX_PRIORITIES - 1, xStack_A, &xTaskBuffer_A);
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
   // The PicoW WiFi chip controls the LED, and only core 0 can make calls to it safely
   vTaskCoreAffinitySet(ledOnTask, 1 << 0);
 #endif
   ledOffTask = xTaskCreateStatic(led_OFF, "led_OFF", STACK_SIZE, NULL, configMAX_PRIORITIES - 1, xStack_B, &xTaskBuffer_B);
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
   // The PicoW WiFi chip controls the LED, and only core 0 can make calls to it safely
   vTaskCoreAffinitySet(ledOffTask, 1 << 0);
 #endif

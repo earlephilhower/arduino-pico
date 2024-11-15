@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cyw43_wrappers.h>
+
 // LEDs
 #define PIN_LED        (32u)
 

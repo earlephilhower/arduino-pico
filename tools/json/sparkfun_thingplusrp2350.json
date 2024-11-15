@@ -9,7 +9,7 @@
         },
         "core": "earlephilhower",
         "cpu": "cortex-m33",
-        "extra_flags": "-DARDUINO_SPARKFUN_THINGPLUS_RP2350 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250 ",
+        "extra_flags": "-DARDUINO_SPARKFUN_THINGPLUS_RP2350 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250  -DPICO_CYW43_SUPPORTED=1",
         "f_cpu": "150000000L",
         "hwids": [
             [

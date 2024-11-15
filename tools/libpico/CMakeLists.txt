@@ -3,20 +3,18 @@ cmake_minimum_required(VERSION 3.12)
 set(cpu $ENV{CPU})
 message("Building for CPU ${cpu}")
 
+set(PICO_CYW43_SUPPORTED 1)
 if (${cpu} MATCHES "rp2040")
     # Enable PicoW driver support.  Compatible with standard Pico
     set(PICO_BOARD pico_w)
     set(PICO_PLATFORM rp2040)
-    set(PICO_CYW43_SUPPORTED 1)
 elseif(${cpu} MATCHES "rp2350$")
     set(PICO_BOARD solderparty_rp2350_stamp_xl)  # Pico2 sets to RP2350A which disables all code for RP2350B
     set(PICO_PLATFORM rp2350)
-    set(PICO_CYW43_SUPPORTED 0)
 elseif(${cpu} MATCHES "rp2350-riscv$")
     message(INFO "Building RISCV")
     set(PICO_BOARD solderparty_rp2350_stamp_xl)  # Pico2 sets to RP2350A which disables all code for RP2350B
     set(PICO_PLATFORM rp2350-riscv)
-    set(PICO_CYW43_SUPPORTED 0)
 else()
     message(FATAL_ERROR "Unknown CPU, '${cpu}'")
 endif()
@@ -50,13 +48,10 @@ if (${cpu} MATCHES "rp2040")
         PICO_RP2040_B0_SUPPORTED=1
         PICO_RP2040_B1_SUPPORTED=1
         PICO_RP2040_B2_SUPPORTED=1
-        PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1
-        CYW43_WARN=//
         PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64
         PICO_FLOAT_SUPPORT_ROM_V1=1
         PICO_DOUBLE_SUPPORT_ROM_V1=1
-        PICO_RP2040=1
-        PICO_CYW43_SUPPORTED=1)
+        PICO_RP2040=1)
 elseif (${cpu} MATCHES "rp2350")
     set(xcd
         CFG_TUSB_DEBUG=0
@@ -110,6 +105,15 @@ elseif (${cpu} MATCHES "rp2350")
         PICO_RP2040_USB_DEVICE_UFRAME_FIX=1
         PICO_RP2350=1
         PICO_USE_BLOCKED_RAM=0
+
+        CYW43_PIN_WL_DYNAMIC=1
+        CYW43_DEFAULT_PIN_WL_REG_ON=23u
+        CYW43_DEFAULT_PIN_WL_DATA_OUT=24u
+        CYW43_DEFAULT_PIN_WL_DATA_IN=24u
+        CYW43_DEFAULT_PIN_WL_HOST_WAKE=24u
+        CYW43_DEFAULT_PIN_WL_CLOCK=29u
+        CYW43_DEFAULT_PIN_WL_CS=25u
+
         ${xcda})
 endif()
 
@@ -130,10 +134,13 @@ target_compile_definitions(common-${cpu} INTERFACE
     LWIP_UDP=1
     LWIP_IGMP=1
     LWIP_CHECKSUM_CTRL_PER_NETIF=1
+    PICO_CYW43_SUPPORTED=1
+    PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1
+    CYW43_WARN=//
+    CYW43_PIO_CLOCK_DIV_DYNAMIC=1
     ${xcd}
     ${ppp}
 )
-
 
 target_compile_options(common-${cpu} INTERFACE
     -fno-exceptions
@@ -219,16 +226,16 @@ target_compile_definitions(ipv4-big-${cpu} PUBLIC
     LWIP_IPV6=0
 )
 
-if (${cpu} MATCHES "rp2040")
-    set(xll pico_cyw43_driver cyw43_driver cyw43_driver_picow pico_cyw43_driver pico_cyw43_arch pico_cyw43_arch_threadsafe_background)
-elseif(${cpu} MATCHES "rp2350")
-    set(xll)
-endif()
 set(picow_link_libraries
     common-${cpu}
+    cyw43_driver
+    cyw43_driver_picow
     pico_async_context
     pico_async_context_threadsafe_background
-    ${xll}
+    pico_cyw43_driver
+    pico_cyw43_driver
+    pico_cyw43_arch
+    pico_cyw43_arch_threadsafe_background
     pico_lwip
     pico_lwip_nosys
     pico_lwip_sntp
@@ -263,64 +270,57 @@ target_link_libraries(ipv4-ipv6-big-${cpu}
     ${picow_link_libraries}
 )
 
-if(${cpu} MATCHES "rp2040")
-    add_library(ipv4-bt-${cpu} STATIC)
-    target_compile_definitions(ipv4-bt-${cpu} PUBLIC
-        LWIP_IPV6=0
-    )
+add_library(ipv4-bt-${cpu} STATIC)
+target_compile_definitions(ipv4-bt-${cpu} PUBLIC
+    LWIP_IPV6=0
+)
 
-    add_library(ipv4-bt-big-${cpu} STATIC)
-    target_compile_definitions(ipv4-bt-${cpu} PUBLIC
-        __LWIP_MEMMULT=2
-        LWIP_IPV6=0
-    )
+add_library(ipv4-bt-big-${cpu} STATIC)
+target_compile_definitions(ipv4-bt-${cpu} PUBLIC
+    __LWIP_MEMMULT=2
+    LWIP_IPV6=0
+)
 
-    set(picow_bt_link_libraries
-        pico_btstack_cyw43
-        pico_btstack_ble
-        pico_btstack_classic
-        pico_btstack_sbc_encoder
-        pico_btstack_sbc_decoder
-    )
+set(picow_bt_link_libraries
+    pico_btstack_cyw43
+    pico_btstack_ble
+    pico_btstack_classic
+    pico_btstack_sbc_encoder
+    pico_btstack_sbc_decoder
+)
 
-    target_link_libraries(ipv4-bt-${cpu}
-        ${picow_link_libraries}
-        ${picow_bt_link_libraries}
-    )
+target_link_libraries(ipv4-bt-${cpu}
+    ${picow_link_libraries}
+    ${picow_bt_link_libraries}
+)
 
-    target_link_libraries(ipv4-bt-big-${cpu}
-        ${picow_link_libraries}
-        ${picow_bt_link_libraries}
-    )
+target_link_libraries(ipv4-bt-big-${cpu}
+    ${picow_link_libraries}
+    ${picow_bt_link_libraries}
+)
 
-    add_library(ipv4-ipv6-bt-${cpu} STATIC)
-    target_compile_definitions(ipv4-ipv6-bt-${cpu} PUBLIC
-        LWIP_IPV6=1
-    )
+add_library(ipv4-ipv6-bt-${cpu} STATIC)
+target_compile_definitions(ipv4-ipv6-bt-${cpu} PUBLIC
+    LWIP_IPV6=1
+)
 
-    add_library(ipv4-ipv6-bt-big-${cpu} STATIC)
-    target_compile_definitions(ipv4-ipv6-bt-big-${cpu} PUBLIC
-        __LWIP_MEMMULT=2
-        LWIP_IPV6=1
-    )
+add_library(ipv4-ipv6-bt-big-${cpu} STATIC)
+target_compile_definitions(ipv4-ipv6-bt-big-${cpu} PUBLIC
+    __LWIP_MEMMULT=2
+    LWIP_IPV6=1
+)
 
-    target_link_libraries(ipv4-ipv6-bt-${cpu}
-        ${picow_link_libraries}
-        ${picow_bt_link_libraries}
-    )
+target_link_libraries(ipv4-ipv6-bt-${cpu}
+    ${picow_link_libraries}
+    ${picow_bt_link_libraries}
+)
 
-    target_link_libraries(ipv4-ipv6-bt-big-${cpu}
-        ${picow_link_libraries}
-        ${picow_bt_link_libraries}
-    )
-endif()
+target_link_libraries(ipv4-ipv6-bt-big-${cpu}
+    ${picow_link_libraries}
+    ${picow_bt_link_libraries}
+)
 
-if(${cpu} MATCHES "rp2040")
-    set(tx ipv4-bt ipv4-ipv6-bt ipv4-bt-big ipv4-ipv6-bt-big)
-elseif(${cpu} MATCHES "rp2350")
-    set(tx)
-endif()
-foreach(tgt pico ipv4 ipv4-ipv6 ipv4-big ipv4-ipv6-big ${tx})
+foreach(tgt pico ipv4 ipv4-ipv6 ipv4-big ipv4-ipv6-big ipv4-bt ipv4-ipv6-bt ipv4-bt-big ipv4-ipv6-bt-big)
     add_custom_command(TARGET ${tgt}-${cpu} POST_BUILD
         COMMAND ar d lib${tgt}-${cpu}.a stdio.c.obj stdio_uart.c.obj stdio_usb.c.obj stdio_usb_descriptors.c.obj pico_malloc.c.obj newlib_interface.c.obj
         COMMAND ar d lib${tgt}-${cpu}.a btstack_flash_bank.c.obj  # Need to override with our own implementation
