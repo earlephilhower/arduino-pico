@@ -22,7 +22,7 @@ public:
      */
     void dormantUntilGPIO(pin_size_t wakeup_gpio, PinStatus wakeup_type);
     /**
-     * Put the chpi in "DORMANT" for a specified amount of time.
+     * Put the chip in "DORMANT" for a specified amount of time.
      * Note that this does not work on RP2040 chips, unless you connect a 32.768kHz
      * oscillator to specific pins. (TODO exact documentation)
      */
