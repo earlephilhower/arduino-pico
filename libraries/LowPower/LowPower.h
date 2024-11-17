@@ -10,7 +10,7 @@
 class LowPowerClass {
 public:
     /**
-     * Set the oscillator type that is shutdown during sleep and reenabled after.
+     * Set the oscillator type that is shutdown during sleep and re-enabled after.
      * The default is "crystal oscillator" (DORMANT_SOURCE_XOSC).
      */
     void setOscillatorType(dormant_source_t oscillator);
