@@ -18,7 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-extern "C" void init_cyw43_wifi();
+#include <cyw43_wrappers.h>
 
 extern "C" void initVariant() {
     init_cyw43_wifi();

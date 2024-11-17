@@ -3,7 +3,7 @@
 #include <cyw43_wrappers.h>
 
 // LEDs
-#define PIN_LED        (32u)
+#define PIN_LED        (64u)
 
 #define PIN_NEOPIXEL   (14)
 #define NUM_NEOPIXEL   (1)

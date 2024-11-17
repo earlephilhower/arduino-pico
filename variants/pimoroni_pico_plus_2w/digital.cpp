@@ -18,43 +18,16 @@
 */
 
 #include "Arduino.h"
-#include <pico/cyw43_arch.h>
-
-extern "C" void __pinMode(pin_size_t pin, PinMode mode);
-extern "C" void __digitalWrite(pin_size_t pin, PinStatus val);
-extern "C" PinStatus __digitalRead(pin_size_t pin);
-
-extern bool  __isPicoW;
+#include <cyw43_wrappers.h>
 
 extern "C" void pinMode(pin_size_t pin, PinMode mode) {
-    if (!__isPicoW && (pin == PIN_LED)) {
-        pin = 25;  // Silently swap in the Pico's LED
-    }
-    if (pin < 32) {
-        __pinMode(pin, mode);
-    } else {
-        // TBD - There is no GPIO direction control in the driver
-    }
+    cyw43_pinMode(pin, mode);
 }
 
 extern "C" void digitalWrite(pin_size_t pin, PinStatus val) {
-    if (!__isPicoW && (pin == PIN_LED)) {
-        pin = 25;  // Silently swap in the Pico's LED
-    }
-    if (pin < 32) {
-        __digitalWrite(pin, val);
-    } else {
-        cyw43_arch_gpio_put(pin - 32, val == HIGH ? 1 : 0);
-    }
+    cyw43_digitalWrite(pin, val);
 }
 
 extern "C" PinStatus digitalRead(pin_size_t pin) {
-    if (!__isPicoW && (pin == PIN_LED)) {
-        pin = 25;  // Silently swap in the Pico's LED
-    }
-    if (pin < 32) {
-        return __digitalRead(pin);
-    } else {
-        return cyw43_arch_gpio_get(pin - 32) ? HIGH : LOW;
-    }
+    return cyw43_digitalRead(pin);
 }

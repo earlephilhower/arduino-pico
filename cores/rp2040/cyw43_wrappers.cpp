@@ -166,4 +166,41 @@ extern "C" void __unlockBluetooth() {
     async_context_release_lock(cyw43_arch_async_context());
 }
 
+extern "C" void __pinMode(pin_size_t pin, PinMode mode);
+extern "C" void __digitalWrite(pin_size_t pin, PinStatus val);
+extern "C" PinStatus __digitalRead(pin_size_t pin);
+
+extern "C" void cyw43_pinMode(pin_size_t pin, PinMode mode) {
+    if (!__isPicoW && (pin == PIN_LED)) {
+        pin = 25;  // Silently swap in the Pico's LED
+    }
+    if (pin < 64) {
+        __pinMode(pin, mode);
+    } else {
+        // TBD - There is no GPIO direction control in the driver
+    }
+}
+
+extern "C" void cyw43_digitalWrite(pin_size_t pin, PinStatus val) {
+    if (!__isPicoW && (pin == PIN_LED)) {
+        pin = 25;  // Silently swap in the Pico's LED
+    }
+    if (pin < 64) {
+        __digitalWrite(pin, val);
+    } else {
+        cyw43_arch_gpio_put(pin - 64, val == HIGH ? 1 : 0);
+    }
+}
+
+extern "C" PinStatus cyw43_digitalRead(pin_size_t pin) {
+    if (!__isPicoW && (pin == PIN_LED)) {
+        pin = 25;  // Silently swap in the Pico's LED
+    }
+    if (pin < 64) {
+        return __digitalRead(pin);
+    } else {
+        return cyw43_arch_gpio_get(pin - 64) ? HIGH : LOW;
+    }
+}
+
 #endif

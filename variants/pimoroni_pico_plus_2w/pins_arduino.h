@@ -15,7 +15,7 @@
 #define ADC_RESOLUTION      (12u)
 
 // LED_BUILTIN
-#define PIN_LED             (25u)
+#define PIN_LED             (64u)
 #define LED_BUILTIN         PIN_LED
 
 // Serial
