@@ -20,6 +20,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <pico/cyw43_driver.h>
 
 extern bool __isPicoW;
 extern "C" {

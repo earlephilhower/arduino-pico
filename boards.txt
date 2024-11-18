@@ -286,7 +286,7 @@ rpipicow.build.ldscript=memmap_default.ld
 rpipicow.build.boot2=boot2_w25q080_2_padded_checksum
 rpipicow.build.usb_manufacturer="Raspberry Pi"
 rpipicow.build.usb_product="Pico W"
-rpipicow.build.extra_flags=-DPICO_CYW43_SUPPORTED=1
+rpipicow.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
 rpipicow.menu.flash.2097152_0=2MB (no FS)
 rpipicow.menu.flash.2097152_0.upload.maximum_size=2093056
 rpipicow.menu.flash.2097152_0.build.flash_total=2097152
@@ -20522,7 +20522,7 @@ pimoroni_pico_plus_2w.build.boot2=none
 pimoroni_pico_plus_2w.build.usb_manufacturer="Pimoroni"
 pimoroni_pico_plus_2w.build.usb_product="PicoPlus2W"
 pimoroni_pico_plus_2w.build.psram_length=0x800000
-pimoroni_pico_plus_2w.build.extra_flags=-DPICO_CYW43_SUPPORTED=1
+pimoroni_pico_plus_2w.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
 pimoroni_pico_plus_2w.menu.flash.16777216_0=16MB (no FS)
 pimoroni_pico_plus_2w.menu.flash.16777216_0.upload.maximum_size=16769024
 pimoroni_pico_plus_2w.menu.flash.16777216_0.build.flash_total=16777216
@@ -25416,7 +25416,7 @@ sparkfun_thingplusrp2350.build.boot2=none
 sparkfun_thingplusrp2350.build.usb_manufacturer="SparkFun"
 sparkfun_thingplusrp2350.build.usb_product="Thing Plus RP2350"
 sparkfun_thingplusrp2350.build.psram_length=0x800000
-sparkfun_thingplusrp2350.build.extra_flags=-DPICO_CYW43_SUPPORTED=1
+sparkfun_thingplusrp2350.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
 sparkfun_thingplusrp2350.menu.flash.16777216_0=16MB (no FS)
 sparkfun_thingplusrp2350.menu.flash.16777216_0.upload.maximum_size=16769024
 sparkfun_thingplusrp2350.menu.flash.16777216_0.build.flash_total=16777216
