@@ -117,16 +117,9 @@ elseif (${cpu} MATCHES "rp2350")
         ${xcda})
 endif()
 
-if (${cpu} MATCHES "rp2040")
-    set(ppp PICO_PLATFORM=rp2040)
-elseif(${cpu} MATCHES "rp2350$")
-    set(ppp PICO_PLATFORM=rp2350)
-elseif(${cpu} MATCHES "rp2350-riscv$")
-    set(ppp PICO_PLATFORM=rp2350-riscv)
-endif()
-
 # Use a longer XOSC startup time, to accommodate Adafruit and other boards that may need it.
 target_compile_definitions(common-${cpu} INTERFACE
+    PICO_PLATFORM=${PICO_PLATFORM}
     PICO_PRINTF_ALWAYS_INCLUDED=1
     PICO_FLASH_SIZE_BYTES=16777216
     PICO_NO_BINARY_INFO=1
@@ -139,7 +132,6 @@ target_compile_definitions(common-${cpu} INTERFACE
     CYW43_WARN=//
     CYW43_PIO_CLOCK_DIV_DYNAMIC=1
     ${xcd}
-    ${ppp}
 )
 
 target_compile_options(common-${cpu} INTERFACE
@@ -154,12 +146,6 @@ add_library(pico-${cpu} STATIC)
 target_compile_definitions(pico-${cpu} PUBLIC
     LWIP_IPV6=0
 )
-if (${cpu} MATCHES "rp2040")
-    set(xll1)
-elseif(${cpu} MATCHES "rp2350")
-    set(xll1
-        pico_sha256)
-endif()
 
 target_link_libraries(pico-${cpu}
     common-${cpu}
@@ -210,10 +196,14 @@ target_link_libraries(pico-${cpu}
     pico_stdlib
     pico_unique_id
     pico_util
-    ${xll1}
     tinyusb
     tinyusb_device_unmarked
 )
+if (${cpu} MATCHES "rp2350")
+    # RP2350-only peripheral
+    target_link_libraries(pico-${cpu}
+        pico_sha256)
+endif()
 
 add_library(ipv4-${cpu} STATIC)
 target_compile_definitions(ipv4-${cpu} PUBLIC
