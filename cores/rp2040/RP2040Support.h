@@ -465,7 +465,7 @@ public:
     }
 
     bool isPicoW() {
-#if !defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if !defined(PICO_CYW43_SUPPORTED)
         return false;
 #else
         extern bool __isPicoW;

@@ -22,7 +22,7 @@
 #include <lwip/timeouts.h>
 #include <lwip/dns.h>
 #include <pico/mutex.h>
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
 #include <pico/cyw43_arch.h>
 #endif
 #include <pico/async_context_threadsafe_background.h>
@@ -41,7 +41,7 @@ static async_context_t *_context = nullptr;
 static std::map<int, std::function<void(void)>> _handlePacketList;
 
 void ethernet_arch_lwip_begin() {
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
         cyw43_arch_lwip_begin();
         return;
@@ -51,7 +51,7 @@ void ethernet_arch_lwip_begin() {
 }
 
 void ethernet_arch_lwip_end() {
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
         cyw43_arch_lwip_end();
         return;
@@ -187,7 +187,7 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
     }
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
     if (!rp2040.isPicoW()) {
         sys_check_timeouts();
     }
@@ -207,7 +207,7 @@ void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
         _context = cyw43_arch_async_context();
     } else {

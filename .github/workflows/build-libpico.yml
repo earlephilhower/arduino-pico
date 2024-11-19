@@ -29,12 +29,6 @@ jobs:
             # add to PATH
             echo "$GITHUB_WORKSPACE/system/riscv32-unknown-elf/bin" >> "$GITHUB_PATH"
             echo "$GITHUB_WORKSPACE/system/arm-none-eabi/bin" >> "$GITHUB_PATH"
-        # Needed until we switch to Pico-SDK 2.0.1.
-        - name: Patch Pico-SDK (Fix Assembly for newer GCC)
-          run: |
-            cd pico-sdk
-            wget https://patch-diff.githubusercontent.com/raw/raspberrypi/pico-sdk/pull/2000.patch
-            patch -p1 < 2000.patch
         - name: Build libpico
           run: |
             cd tools/libpico

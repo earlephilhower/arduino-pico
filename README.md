@@ -72,6 +72,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * nullbits Bit-C PRO
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
+* Pimoroni Pico Plus 2W
 * Pimoroni Plasma2040
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350

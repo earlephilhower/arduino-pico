@@ -6,6 +6,7 @@ set -x
 export PICO_SDK_PATH="$(cd ../../pico-sdk/; pwd)"
 export PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
 export PATH="$(cd ../../system/riscv32-unknown-elf/bin; pwd):$PATH"
+export PATH="$(cd ../../system/picotool; pwd):$PATH"
 
 rm -rf build-rp2040
 mkdir build-rp2040
