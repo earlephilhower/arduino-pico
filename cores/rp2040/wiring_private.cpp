@@ -22,7 +22,6 @@
 #include <CoreMutex.h>
 #include <hardware/gpio.h>
 #include <hardware/sync.h>
-#include <map>
 #include "_freertos.h"
 
 
@@ -59,58 +58,34 @@ extern "C" void noInterrupts() {
     }
 }
 
+auto_init_mutex(_irqMutex);
+static uint64_t _gpioIrqEnabled = 0; // Sized to work with RP2350B, 48 GPIOs
+static uint64_t _gpioIrqUseParam;
+void *_gpioIrqCB[__GPIOCNT];
+void *_gpioIrqCBParam[__GPIOCNT];
+
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
 // dispatch to the real callback manually
-auto_init_mutex(_irqMutex);
-class CBInfo {
-public:
-    CBInfo(voidFuncPtr cb) : _cb(cb), _useParam(false), _param(nullptr) { };
-    CBInfo(voidFuncPtrParam cbParam, void *param) : _cbParam(cbParam), _useParam(true), _param(param) { };
-    void callback() {
-        if (_useParam && _cbParam) {
-            _cbParam(_param);
-        } else if (_cb) {
-            _cb();
-        }
-    }
-private:
-    union {
-        voidFuncPtr _cb;
-        voidFuncPtrParam _cbParam;
-    };
-    bool _useParam;
-    void *_param;
-};
-
-
-static std::map<pin_size_t, CBInfo> _map;
-
 void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     (void) events;
-
-    // Only need to lock around the std::map check, not the whole IRQ callback
-    CBInfo *cb;
-    {
-        CoreMutex m(&_irqMutex);
-        if (m) {
-            auto irq = _map.find(gpio);
-            if (irq == _map.end()) {
-                return;
-            }
-            cb = &irq->second;
+    uint64_t mask = 1LL << gpio;
+    if (_gpioIrqEnabled & mask) {
+        if (_gpioIrqUseParam & mask) {
+            voidFuncPtr cb = (voidFuncPtr)_gpioIrqCB[gpio];
+            cb();
         } else {
-            return;
+            voidFuncPtrParam cb = (voidFuncPtrParam)_gpioIrqCB[gpio];
+            cb(_gpioIrqCBParam[gpio]);
         }
     }
-    cb->callback();
 }
 
 // To be called when appropriately protected w/IRQ and mutex protects
 static void _detachInterruptInternal(pin_size_t pin) {
-    auto irq = _map.find(pin);
-    if (irq != _map.end()) {
+    uint64_t mask = 1LL << pin;
+    if (_gpioIrqEnabled & mask) {
         gpio_set_irq_enabled(pin, 0x0f /* all */, false);
-        _map.erase(pin);
+        _gpioIrqEnabled &= ~mask;
     }
 }
 
@@ -119,7 +94,7 @@ extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus 
     if (!m) {
         return;
     }
-
+    uint64_t mask = 1LL << pin;
     uint32_t events;
     switch (mode) {
     case LOW:     events = 1; break;
@@ -131,8 +106,9 @@ extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus 
     }
     noInterrupts();
     _detachInterruptInternal(pin);
-    CBInfo cb(callback);
-    _map.insert({pin, cb});
+    _gpioIrqEnabled |= mask;
+    _gpioIrqUseParam &= ~mask; // No parameter
+    _gpioIrqCB[pin] = (void *)callback;
     gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
     interrupts();
 }
@@ -142,7 +118,7 @@ void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus m
     if (!m) {
         return;
     }
-
+    uint64_t mask = 1LL << pin;
     uint32_t events;
     switch (mode) {
     case LOW:     events = 1; break;
@@ -154,8 +130,10 @@ void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus m
     }
     noInterrupts();
     _detachInterruptInternal(pin);
-    CBInfo cb(callback, param);
-    _map.insert({pin, cb});
+    _gpioIrqEnabled |= mask;
+    _gpioIrqUseParam &= ~mask; // No parameter
+    _gpioIrqCB[pin] = (void *)callback;
+    _gpioIrqCBParam[pin] = param;
     gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
     interrupts();
 }
