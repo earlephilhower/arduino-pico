@@ -76,10 +76,13 @@ extern "C" void *pcalloc(size_t count, size_t size) {
 #else
 // No PSRAM, always fail
 extern "C" void *pmalloc(size_t size) {
+    (void) size;
     return nullptr;
 }
 
 extern "C" void *pcalloc(size_t count, size_t size) {
+    (void) count;
+    (void) size;
     return nullptr;
 }
 #endif
