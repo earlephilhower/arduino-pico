@@ -19,6 +19,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * 0xCB Helios
 * Adafruit Feather RP2040
 * Adafruit Feather RP2040 SCORPIO
+* Adafruit Floppsy RP2040
 * Adafruit ItsyBitsy RP2040
 * Adafruit KB2040
 * Adafruit Macropad RP2040
