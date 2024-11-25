@@ -200,8 +200,9 @@ target_link_libraries(pico-${cpu}
     tinyusb_device_unmarked
 )
 if (${cpu} MATCHES "rp2350")
-    # RP2350-only peripheral
+    # RP2350-only peripherals
     target_link_libraries(pico-${cpu}
+        hardware_xip_cache
         pico_sha256)
 endif()
 
@@ -222,7 +223,6 @@ set(picow_link_libraries
     cyw43_driver_picow
     pico_async_context
     pico_async_context_threadsafe_background
-    pico_cyw43_driver
     pico_cyw43_driver
     pico_cyw43_arch
     pico_cyw43_arch_threadsafe_background

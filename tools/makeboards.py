@@ -478,6 +478,7 @@ BuildGlobalMenuList()
 MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("rpipico2", "rp2350", "Raspberry Pi", "Pico 2", "0x2e8a", "0x000f", 250, "RASPBERRY_PI_PICO_2", 4, 0, "none")
+MakeBoard("rpipico2w", "rp2350", "Raspberry Pi", "Pico 2W", "0x2e8a", "0xf00f", 250, "RASPBERRY_PI_PICO_2W", 4, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 
 # 0xCB
 MakeBoard("0xcb_helios", "rp2040", "0xCB", "Helios", "0x1209", "0xCB74", 500, "0XCB_HELIOS", 16, 0, "boot2_w25q128jvxq_4_padded_checksum")

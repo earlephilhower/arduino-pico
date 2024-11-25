@@ -67,8 +67,3 @@
 -Wl,--wrap=cyw43_tcpip_link_status
 -Wl,--wrap=cyw43_cb_tcpip_init
 -Wl,--wrap=cyw43_cb_tcpip_deinit
-
--Wl,--wrap=flash_range_erase
--Wl,--wrap=flash_range_program
--Wl,--wrap=flash_get_unique_id
--Wl,--wrap=flash_do_cmd

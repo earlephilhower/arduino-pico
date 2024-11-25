@@ -16,6 +16,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
 * Raspberry Pi Pico 2
+* Raspberry Pi Pico 2W
 * 0xCB Helios
 * Adafruit Feather RP2040
 * Adafruit Feather RP2040 SCORPIO
