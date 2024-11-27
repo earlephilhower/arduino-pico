@@ -7,7 +7,7 @@
 
 
 // LEDs
-#define PIN_LED        (25u)
+#define PIN_LED        (64u)
 
 // Serial
 #define PIN_SERIAL1_TX (0u)
