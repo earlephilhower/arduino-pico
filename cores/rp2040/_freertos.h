@@ -30,7 +30,9 @@ extern bool __isFreeRTOS;
 // FreeRTOS has been set up
 extern volatile bool __freeRTOSinitted;
 
+#ifdef __cplusplus
 extern "C" {
+#endif // __cplusplus
     struct QueueDefinition; /* Using old naming convention so as not to break kernel aware debuggers. */
     typedef struct QueueDefinition   * QueueHandle_t;
     typedef QueueHandle_t SemaphoreHandle_t;
@@ -57,5 +59,7 @@ extern "C" {
 
     extern void __freertos_task_exit_critical() __attribute__((weak));
     extern void __freertos_task_enter_critical() __attribute__((weak));
+#ifdef __cplusplus
 }
 extern SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive = false);
+#endif // __cplusplus

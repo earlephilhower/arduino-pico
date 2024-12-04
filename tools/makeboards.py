@@ -93,6 +93,12 @@ def BuildOptimize(name):
         print("%s.menu.opt.%s=%s (%s)%s" % (name, l[0], l[1], l[2], l[3]))
         print("%s.menu.opt.%s.build.flags.optimize=%s" % (name, l[0], l[2]))
 
+def BuildProfile(name):
+    print("%s.menu.profile.Disabled=Disabled" % (name))
+    print("%s.menu.profile.Disabled.build.flags.profile=-pg -D__PROFILE" % (name))
+    print("%s.menu.profile.Enabled=Enabled" % (name))
+    print("%s.menu.profile.Enabled.build.flags.profile=" % (name))
+
 def BuildRTTI(name):
     print("%s.menu.rtti.Disabled=Disabled" % (name))
     print("%s.menu.rtti.Disabled.build.flags.rtti=-fno-rtti" % (name))
@@ -282,6 +288,7 @@ def BuildGlobalMenuList():
     print("menu.freq=CPU Speed")
     print("menu.arch=CPU Architecture")
     print("menu.opt=Optimize")
+    print("menu.profile=Profiling")
     print("menu.rtti=RTTI")
     print("menu.stackprotect=Stack Protector")
     print("menu.exceptions=C++ Exceptions")
@@ -353,6 +360,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
+    BuildProfile(name)
     BuildRTTI(name)
     BuildStackProtect(name)
     BuildExceptions(name)

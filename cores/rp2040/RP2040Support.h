@@ -181,7 +181,7 @@ public:
     void begin() {
         _epoch = 0;
 #if !defined(__riscv)
-        if (!__isFreeRTOS) {
+        if (0 && !__isFreeRTOS) {
             // Enable SYSTICK exception
             exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
             systick_hw->csr = 0x7;
@@ -218,7 +218,7 @@ public:
     volatile uint64_t _epoch = 0;
     inline uint32_t getCycleCount() {
 #if !defined(__riscv)
-        if (!__isFreeRTOS) {
+        if (0 && !__isFreeRTOS) {
             uint32_t epoch;
             uint32_t ctr;
             do {
@@ -236,7 +236,7 @@ public:
 
     inline uint64_t getCycleCount64() {
 #if !defined(__riscv)
-        if (!__isFreeRTOS) {
+        if (0 && !__isFreeRTOS) {
             uint64_t epoch;
             uint64_t ctr;
             do {
