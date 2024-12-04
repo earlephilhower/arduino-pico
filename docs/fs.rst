@@ -135,6 +135,25 @@ directory into a new LittleFS flash file system.
 -  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
 -  Enter ``[Ctrl]`` + ``[Shift]`` + ``[P]`` to bring up the command palette, then select/type ``Upload LittleFS to Pico/ESP8266``
 
+Downloading Files from a LittleFS System
+----------------------------------------
+
+Using ``gdb`` it is possible to dump the flash data making up the filesystem and then extract
+it using the ``mklittlefs`` tool.  A working ``OpenOCD`` setup, DebugProbe, and ``gdb`` are required.
+To download the raw filesystem, from within ``GDB`` run:
+
+.. code::
+    ^C (break)
+    (gdb) dump binary memory littlefs.bin &_FS_start &_FS_end
+It may take a few seconds as ``GDB`` reads out the flash to the file.  Once the raw file is downloaded it can be extracted using the ``mklittlefs`` tool from the BASH/Powershell/command line
+
+.. code::
+    $ <path-to-mklittlefs>/mklittlefs -u output-dir littlefs.bin
+     Directory <output-dir> does not exists. Try to create it.
+     gmon.out    > <output-dir>/gmon.out    size: 24518 Bytes
+     gmon.bak    > <output-dir>/gmon.bak    size: 1 Bytes
+The defaults built into ``mklittlefs`` should be appropriate for normal LittleFS filesystems built on the device or using the upload tool.
+
 SD Library Information
 ----------------------
 The included ``SD`` library is the Arduino standard one.  Please refer to
