@@ -180,8 +180,8 @@ public:
 
     void begin() {
         _epoch = 0;
-#if !defined(__riscv)
-        if (0 && !__isFreeRTOS) {
+#if !defined(__riscv) && !defined(__PROFILE)
+        if (!__isFreeRTOS) {
             // Enable SYSTICK exception
             exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
             systick_hw->csr = 0x7;
@@ -217,8 +217,8 @@ public:
     // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
     volatile uint64_t _epoch = 0;
     inline uint32_t getCycleCount() {
-#if !defined(__riscv)
-        if (0 && !__isFreeRTOS) {
+#if !defined(__riscv) && !defined(__PROFILE)
+        if (!__isFreeRTOS) {
             uint32_t epoch;
             uint32_t ctr;
             do {
@@ -235,8 +235,8 @@ public:
     }
 
     inline uint64_t getCycleCount64() {
-#if !defined(__riscv)
-        if (0 && !__isFreeRTOS) {
+#if !defined(__riscv) && !defined(__PROFILE)
+        if (!__isFreeRTOS) {
             uint64_t epoch;
             uint64_t ctr;
             do {
