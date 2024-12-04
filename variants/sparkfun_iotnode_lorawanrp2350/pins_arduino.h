@@ -24,6 +24,14 @@
 #define PIN_SPI1_SCK (31u)
 #define PIN_SPI1_SS (31u) // not pinned out
 
+// The board uses SPI1 for uSD card, make that the default
+#ifndef __SPI0_DEVICE
+#define __SPI0_DEVICE spi1
+#endif
+#ifndef __SPI1_DEVICE
+#define __SPI1_DEVICE spi0
+#endif
+
 // Wire
 #define PIN_WIRE0_SDA (20u)
 #define PIN_WIRE0_SCL (21u)
