@@ -193,7 +193,7 @@ public:
             _ccountPgm->prepare(&_pio, &_sm, &off);
             ccount_program_init(_pio, _sm, off);
             pio_sm_set_enabled(_pio, _sm, true);
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
     }
@@ -229,7 +229,7 @@ public:
         } else {
 #endif
             return ccount_read(_pio, _sm);
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
     }
@@ -247,7 +247,7 @@ public:
         } else {
 #endif
             return ccount_read(_pio, _sm);
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
     }
