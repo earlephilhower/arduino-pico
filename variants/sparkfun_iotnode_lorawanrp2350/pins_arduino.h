@@ -1,7 +1,5 @@
 #pragma once
 
-// Taken from schematic at https://cdn.sparkfun.com/assets/e/2/7/6/b/ProMicroRP2040_Graphical_Datasheet.pdf
-
 // LEDs
 #define PIN_LED (25u)
 
