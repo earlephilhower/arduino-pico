@@ -58,7 +58,13 @@
     fraction of text space to allocate for histogram counters here, 1/2
 */
 #ifndef HISTFRACTION
-#define HISTFRACTION    8
+
+#ifdef PICO_RP2350
+#define HISTFRACTION    4 // Every 8 bytes of .text
+#else
+#define HISTFRACTION    8 // Every 16 bytes of .text
+#endif
+
 #endif
 
 /*
