@@ -53,4 +53,4 @@ a debug dump is all that's needed:
     File f = SemiFS.open("debug.dmp", "w");
     f.write(buffer, size);
     f.close();
-    SerialSemi.printf("Debug dump nopw available on host.\n");
+    SerialSemi.printf("Debug dump now available on host.\n");
