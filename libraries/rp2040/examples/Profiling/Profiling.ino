@@ -52,7 +52,7 @@
 
 #ifndef __PROFILE
 void setup() {
-    Serial.printf("Enable profiling to run this example.\n");
+  Serial.printf("Enable profiling to run this example.\n");
 }
 
 void loop() {
