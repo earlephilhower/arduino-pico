@@ -50,6 +50,15 @@
 //                 1.74    0.00 3500000/3500020     rand [1]
 // ...
 
+#ifndef __PROFILE
+void setup() {
+    Serial.printf("Enable profiling to run this example.\n");
+}
+
+void loop() {
+}
+#else
+
 #ifdef __riscv
 void setup() {
   // No semihosting for RISCV yet
@@ -91,3 +100,5 @@ void loop() {
 }
 
 #endif
+
+#endif // !__PROFILE
