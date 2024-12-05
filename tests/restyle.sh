@@ -17,7 +17,8 @@ for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleF
            ./libraries/SPISlave ./libraries/lwIP_ESPHost ./libraries/FatFS\
            ./libraries/FatFSUSB ./libraries/BluetoothAudio ./libraries/BluetoothHCI \
            ./libraries/BluetoothHIDMaster ./libraries/NetBIOS ./libraries/Ticker \
-           ./libraries/VFS ./libraries/rp2350 ./libraries/SimpleMDNS; do
+           ./libraries/VFS ./libraries/rp2350 ./libraries/SimpleMDNS \
+           ./libraries/Semihosting; do
     find $dir -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" \) -a  \! -path '*api*' -exec astyle --suffix=none --options=./tests/astyle_core.conf \{\} \;
     find $dir -type f -name "*.ino" -exec astyle --suffix=none --options=./tests/astyle_examples.conf \{\} \;
 done

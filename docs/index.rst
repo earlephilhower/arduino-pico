@@ -43,6 +43,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    File Systems (SD, SDFS, LittleFS) <fs>
    USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
+   Semihosting <semihosting>
 
    RP2350 Specific Notes <rp2350>
    RP2350 PSRAM <psram>
