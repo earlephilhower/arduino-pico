@@ -11,7 +11,9 @@ per second.  When an application is complete, the recorded date can be dumped to
 s histogram of PCs and tally of function caller/callees can take a significant amount of RAM, from 100KB
 to 10000KB depending on the size of the application.  As such, while the RP2040 **may** be able to
 profile small applications, this is only really recommended on the RP2350 with external PSRAM.  The
-profiler will automatically use PSRAM when available.
+profiler will automatically use PSRAM when available.  Call ``rp2040.getProfileMemoryUsage()`` to get the
+memory allocated at runtime.
+
 
 Profiling also adds processing overhead in terms of the periodic sampling and the function preambles.
 In most cases there is no reason to enable (and many reasons to disable) profiling when an application

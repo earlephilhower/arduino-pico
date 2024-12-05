@@ -322,6 +322,8 @@ static int	s_scale;
 
 static void moncontrol(int mode);
 
+int __profileMemSize = 0;
+
 void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
     register size_t o;
     char *cp;
@@ -343,16 +345,16 @@ void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
         p->tolimit = MAXARCS;
     }
     p->tossize = p->tolimit * sizeof(struct tostruct);
-
+    __profileMemSize = p->kcountsize + p->fromssize + p->tossize;
 #ifdef RP2350_PSRAM_CS
-    cp = pmalloc(p->kcountsize + p->fromssize + p->tossize);
+    cp = pmalloc(__profileMemSize);
     if (cp == (char *)0) {
         ERR("monstartup: out of memory\n");
         already_setup = 0;
         return;
     }
 #else
-    cp = malloc(p->kcountsize + p->fromssize + p->tossize);
+    cp = malloc(__profileMemSize);
     if (cp == (char *)0) {
         ERR("monstartup: out of memory\n");
         return;

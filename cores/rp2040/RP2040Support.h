@@ -489,6 +489,11 @@ public:
         __profileFile = f;
         _writeProfile(__writeProfileCB);
     }
+
+    size_t getProfileMemoryUsage() {
+        extern int __profileMemSize;
+        return (size_t) __profileMemSize;
+    }
 #endif
 
 
