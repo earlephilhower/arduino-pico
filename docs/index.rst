@@ -44,6 +44,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
    Semihosting <semihosting>
+   Profiling (GPROF) <profiling>
 
    RP2350 Specific Notes <rp2350>
    RP2350 PSRAM <psram>

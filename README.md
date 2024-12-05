@@ -137,6 +137,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * printf (i.e. debug) output over USB serial
 * Transparent use of PSRAM globals and heap (RP2350 only)
 * ARM or RISC-V (Hazard3) support for the RP2350
+* Semihosted serial and file system access
+* GPROF profiling support
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos
