@@ -45,75 +45,56 @@
 #define GMON_HZ 10000
 #endif
 
-/*
-    fraction of text space to allocate for histogram counters here, 1/2
-*/
+// Fraction of text space to allocate for histogram counters here, 1/2
 #ifndef HISTFRACTION
-
 #ifdef PICO_RP2350
 #define HISTFRACTION    4 // Every 8 bytes of .text
 #else
 #define HISTFRACTION    8 // Every 16 bytes of .text
 #endif
-
 #endif
 
-/*
-    Fraction of text space to allocate for from hash buckets.
-    The value of HASHFRACTION is based on the minimum number of bytes
-    of separation between two subroutine call points in the object code.
-    Given MIN_SUBR_SEPARATION bytes of separation the value of
-    HASHFRACTION is calculated as:
-
-        HASHFRACTION = MIN_SUBR_SEPARATION / (2 * sizeof(short) - 1);
-
-    For example, on the VAX, the shortest two call sequence is:
-
-        calls   $0,(r0)
-        calls   $0,(r0)
-
-    which is separated by only three bytes, thus HASHFRACTION is
-    calculated as:
-
-        HASHFRACTION = 3 / (2 * 2 - 1) = 1
-
-    Note that the division above rounds down, thus if MIN_SUBR_FRACTION
-    is less than three, this algorithm will not work!
-
-    In practice, however, call instructions are rarely at a minimal
-    distance.  Hence, we will define HASHFRACTION to be 2 across all
-    architectures.  This saves a reasonable amount of space for
-    profiling data structures without (in practice) sacrificing
-    any granularity.
-*/
+// Fraction of text space to allocate for from hash buckets.
+// The value of HASHFRACTION is based on the minimum number of bytes
+// of separation between two subroutine call points in the object code.
+// Given MIN_SUBR_SEPARATION bytes of separation the value of
+// HASHFRACTION is calculated as:
+//
+//     HASHFRACTION = MIN_SUBR_SEPARATION / (2 * sizeof(short) - 1);
+//
+// For example, on the VAX, the shortest two call sequence is:
+//
+//     calls   $0,(r0)
+//     calls   $0,(r0)
+//
+// which is separated by only three bytes, thus HASHFRACTION is
+// calculated as:
+//
+//     HASHFRACTION = 3 / (2 * 2 - 1) = 1
+//
+// Note that the division above rounds down, thus if MIN_SUBR_FRACTION
+// is less than three, this algorithm will not work!
+//
+// In practice, however, call instructions are rarely at a minimal
+// distance.  Hence, we will define HASHFRACTION to be 2 across all
+// architectures.  This saves a reasonable amount of space for
+// profiling data structures without (in practice) sacrificing
+// any granularity.
 #ifndef HASHFRACTION
 #define HASHFRACTION    2
 #endif
 
-/*
-    percent of text space to allocate for tostructs with a minimum.
-*/
+// Percent of text space to allocate for tostructs with a minimum.
 #ifndef ARCDENSITY
-#define ARCDENSITY      2 /* this is in percentage, relative to text size! */
+#define ARCDENSITY      2 // This is in percentage, relative to text size!
 #endif
 #define MINARCS          50
 #define MAXARCS          ((1 << (8 * sizeof(HISTCOUNTER))) - 2)
 
-/*
-    Possible states of profiling.
-*/
-#define GMON_PROF_ON      0
-#define GMON_PROF_BUSY  1
-#define GMON_PROF_ERROR 2
-#define GMON_PROF_OFF     3
 
 
-/*
-    histogram counters are unsigned shorts (according to the kernel).
-*/
-#define HISTCOUNTER unsigned short
-
-void _monInit(void); /* initialization routine */
+// Histogram counters are unsigned shorts (according to the kernel)
+typedef uint16_t HISTCOUNTER; //#define HISTCOUNTER unsigned short
 
 // In the original profiler code selfpc and count are full 32 bits each
 // so the structure actually comes to 12 bytes due to padding (with 2
@@ -122,77 +103,58 @@ void _monInit(void); /* initialization routine */
 // window, anyway) and the counts to 16M (saturating). This saves 4 bytes
 // (33%) per entry at the cost of some logic to expand/pack it.
 struct tostruct {
-    uint8_t selfpc[3]; /* callee address/program counter. The caller address is in froms[] array which points to tos[] array */
-    uint8_t count[3];  /* how many times it has been called */
-    uint16_t link;      /* link to next entry in hash table. For tos[0] this points to the last used entry */
+    uint8_t selfpc[3]; // Callee address/program counter. The caller address is in froms[] array which points to tos[] array
+    uint8_t count[3];  // How many times it has been called
+    uint16_t link;     // Link to next entry in hash table. For tos[0] this points to the last used entry
 };
-#define SETSELFPC(x, d) do { (x)->selfpc[0] = d & 0xff; (x)->selfpc[1] = (d >> 8) & 0xff; (x)->selfpc[2] = (d >> 16) & 0xff; } while (0)
-#define SETCOUNT(x, d) do { (x)->count[0] = d & 0xff; (x)->count[1] = (d >> 8) & 0xff; (x)->count[2] = (d >> 16) & 0xff; } while (0)
-#define GETSELFPC(x) (0x10000000 | ((uint32_t)(x)->selfpc[0]) | (((uint32_t)(x)->selfpc[1]) << 8) | (((uint32_t)(x)->selfpc[2]) << 16))
-#define GETCOUNT(x) (((uint32_t)(x)->count[0]) | (((uint32_t)(x)->count[1]) << 8) | (((uint32_t)(x)->count[2]) << 16))
 
 
-/*
-    general rounding functions.
-*/
-#define ROUNDDOWN(x,y)  (((x)/(y))*(y))
-#define ROUNDUP(x,y)    ((((x)+(y)-1)/(y))*(y))
+typedef enum { PROFILE_NOT_INIT = 0, PROFILE_ON, PROFILE_OFF } PROFILE_State;
+struct profinfo {
+    PROFILE_State state;  // Profiling state
+    uint16_t *counter;    // Profiling counters
+    size_t lowpc, highpc; // Range to be profiled
+    uint32_t scale;       // Scale value of bins
+};
+// Global profinfo for profil() call
+static struct profinfo prof = { PROFILE_NOT_INIT, 0, 0, 0, 0 };
 
-/*
-    The profiling data structures are housed in this structure.
-*/
+
+// Possible states of profiling
+typedef enum { GMON_PROF_ON = 0, GMON_PROF_BUSY, GMON_PROF_ERROR, GMON_PROF_OFF } GMON_State;
+
+// The profiling data structures are housed in this structure.
 struct gmonparam {
     int   state;
-    uint16_t   *kcount;   /* histogram PC sample array */
-    size_t    kcountsize; /* size of kcount[] array in bytes */
-    uint16_t   *froms;    /* array of hashed 'from' addresses. The 16bit value is an index into the tos[] array */
-    size_t    fromssize;  /* size of froms[] array in bytes */
-    struct tostruct *tos; /* to struct, contains histogram counter */
-    size_t    tossize;    /* size of tos[] array in bytes */
+    uint16_t   *kcount;   // Histogram PC sample array
+    size_t    kcountsize; // Size of kcount[] array in bytes
+    uint16_t   *froms;    // Array of hashed 'from' addresses. The 16bit value is an index into the tos[] array
+    size_t    fromssize;  // Size of froms[] array in bytes
+    struct tostruct *tos; // to struct, contains histogram counter
+    size_t    tossize;    // Size of tos[] array in bytes
     long      tolimit;
-    size_t    lowpc;      /* low program counter of area */
-    size_t    highpc;     /* high program counter */
-    size_t    textsize;   /* code size */
+    size_t    lowpc;      // Low program counter of area
+    size_t    highpc;     // High program counter
+    size_t    textsize;   // Code size
 };
-
-typedef enum {
-    PROFILE_NOT_INIT = 0,
-    PROFILE_ON,
-    PROFILE_OFF
-} PROFILE_State;
-
-struct profinfo {
-    PROFILE_State state; /* profiling state */
-    uint16_t *counter;     /* profiling counters */
-    size_t lowpc, highpc;   /* range to be profiled */
-    uint32_t scale;      /* scale value of bins */
-};
-
-
-/* global profinfo for profil() call */
-static struct profinfo prof = {
-    PROFILE_NOT_INIT, 0, 0, 0, 0
-};
-
 static struct gmonparam _gmonparam = { GMON_PROF_OFF, NULL, 0, NULL, 0, NULL, 0, 0L, 0, 0, 0};
-static bool   already_setup = false; /* flag to indicate if we need to init */
-static bool   _perf_in_setup = false; // Are we currently trying to initialize? (avoid infinite recursion)
+
+
+static bool already_setup = false;  // Flag to indicate if we need to init
+static bool _perf_in_setup = false; // Are we currently trying to initialize? (avoid infinite recursion)
+int __profileMemSize = 0;           // Memory allocated by the profiler to store tables
+
 static int    s_scale = 0;
 #define SCALE_1_TO_1 0x10000L
-int __profileMemSize = 0; // Memory allocated by the profiler to store tables
 
 
 // Convert an addr to an index
-static inline size_t profidx(size_t pc, size_t base, size_t scale) {
+static inline __attribute__((always_inline)) size_t profidx(size_t pc, size_t base, size_t scale) {
     size_t i = (pc - base) / 2;
-    if (sizeof(unsigned long long int) > sizeof(size_t)) {
-        return (unsigned long long int) i * scale / 65536;
-    } else {
-        return i / 65536 * scale + i % 65536 * scale / 65536;
-    }
+    return (unsigned long long int) i * scale / 65536;
 }
 
-/* Sample the current program counter */
+// Sample the current program counter periodically
 #if defined(__riscv)
 // TODO - systick-like handler
 #else
@@ -201,7 +163,7 @@ static void __no_inline_not_in_flash_func(_SystickHandler)(void) {
     extern volatile bool __otherCoreIdled;
 
     if (!__otherCoreIdled && (prof.state == PROFILE_ON)) {
-        pc = ((uint32_t*)(__builtin_frame_address(0)))[14]; /* get SP and use it to get the return address from stack */
+        pc = ((uint32_t*)(__builtin_frame_address(0)))[14];  // Get SP and use it to get the return address from stack
         if ((pc >= prof.lowpc) && (pc < prof.highpc)) {
             idx = profidx(pc, prof.lowpc, prof.scale);
             prof.counter[idx]++;
@@ -210,78 +172,65 @@ static void __no_inline_not_in_flash_func(_SystickHandler)(void) {
 }
 #endif
 
-/* Stop profiling to the profiling buffer pointed to by p. */
-static int __no_inline_not_in_flash_func(profile_off)(struct profinfo *p) {
-    p->state = PROFILE_OFF;
-    return 0;
-}
-
-/* Create a timer thread and pass it a pointer P to the profiling buffer. */
-static int __no_inline_not_in_flash_func(profile_on)(struct profinfo *p) {
-    p->state = PROFILE_ON;
-    return 0; /* ok */
-}
-
 // Convert an index into an address
-static inline size_t profaddr(size_t idx, size_t base, size_t scale) {
+static inline __attribute__((always_inline)) size_t profaddr(size_t idx, size_t base, size_t scale) {
     return base + ((((unsigned long long)(idx) << 16) / (unsigned long long)(scale)) << 1);
 }
 
-/*
-    start or stop profiling
-
-    profiling goes into the SAMPLES buffer of size SIZE (which is treated
-    as an array of uint16_ts of size size/2)
-
-    each bin represents a range of pc addresses from OFFSET.  The number
-    of pc addresses in a bin depends on SCALE.  (A scale of 65536 maps
-    each bin to two addresses, A scale of 32768 maps each bin to 4 addresses,
-    a scale of 1 maps each bin to 128k address).  Scale may be 1 - 65536,
-    or zero to turn off profiling
-*/
-static int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples, size_t size, size_t offset, uint32_t scale) {
+// Start or stop profiling
+// Profiling goes into the SAMPLES buffer of size SIZE (which is treated as an array of uint16_ts of size size/2).
+// Each bin represents a range of pc addresses from OFFSET.  The number of pc addresses in a bin depends on SCALE.
+// (A scale of 65536 maps each bin to two addresses, A scale of 32768 maps each bin to 4 addresses, a scale of
+// 1 maps each bin to 128k address).  Scale may be 1 - 65536, or zero to turn off profiling
+static int __no_inline_not_in_flash_func(profile_ctl)(char *samples, size_t size, size_t offset, uint32_t scale) {
     size_t maxbin;
 
     if (scale > 65536) {
         return -1;
     }
-    profile_off(p);
+    prof.state = PROFILE_OFF;
     if (scale) {
-        memset(samples, 0, size);
-        memset(p, 0, sizeof * p);
+        bzero(samples, size);
+        bzero(&prof, sizeof(prof));
         maxbin = size >> 1;
         prof.counter = (uint16_t*)samples;
         prof.lowpc = offset;
         prof.highpc = profaddr(maxbin, offset, scale);
         prof.scale = scale;
-        return profile_on(p);
+        prof.state = PROFILE_ON;
     }
     return 0;
 }
 
-/*  Equivalent to unix profil()
-    Every SLEEPTIME interval, the user's program counter (PC) is examined:
-    offset is subtracted and the result is multiplied by scale.
-    The word pointed to by this address is incremented. */
-static int __no_inline_not_in_flash_func(profil)(char *samples, size_t size, size_t offset, uint32_t scale) {
-    return profile_ctl(&prof, samples, size, offset, scale);
+// Control profiling. Profiling is what mcount checks to see if all the data structures are ready.
+static void __no_inline_not_in_flash_func(moncontrol)(int mode) {
+    if (mode) { // Start
+        profile_ctl((char *)_gmonparam.kcount, _gmonparam.kcountsize, _gmonparam.lowpc, s_scale);
+        _gmonparam.state = GMON_PROF_ON;
+    } else { // Stop
+        profile_ctl((char *)NULL, 0, 0, 0);
+        _gmonparam.state = GMON_PROF_OFF;
+    }
 }
 
+// General rounding functions
+static inline __attribute__((always_inline)) size_t rounddown(size_t x, size_t y) {
+    return (x / y) * y;
+}
 
-static void moncontrol(int mode);
+static inline __attribute__((always_inline)) size_t roundup(size_t x, size_t y) {
+    return ((x + y - 1) / y) * y;
+}
 
-
+// Allocate memory and set boundaries before any sampling is performed
 void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
     register size_t o;
     char *cp;
     struct gmonparam *p = &_gmonparam;
 
-    /*
-        round lowpc and highpc to multiples of the density we're using
-        so the rest of the scaling (here and in gprof) stays in ints.
-    */
-    p->lowpc = ROUNDDOWN(lowpc, HISTFRACTION * sizeof(HISTCOUNTER));
-    p->highpc = ROUNDUP(highpc, HISTFRACTION * sizeof(HISTCOUNTER));
+    // Round lowpc and highpc to multiples of the density we're using so the rest of the scaling (here and in gprof) stays in ints.
+    p->lowpc = rounddown(lowpc, HISTFRACTION * sizeof(HISTCOUNTER));
+    p->highpc = roundup(highpc, HISTFRACTION * sizeof(HISTCOUNTER));
     p->textsize = p->highpc - p->lowpc;
     p->kcountsize = p->textsize / HISTFRACTION;
     p->fromssize = p->textsize / HASHFRACTION;
@@ -304,7 +253,7 @@ void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
         return;
     }
 
-    /* zero out cp as value will be added there */
+    // Zero out cp as value will be added there
     bzero(cp, p->kcountsize + p->fromssize + p->tossize);
 
     p->tos = (struct tostruct *)cp;
@@ -321,29 +270,29 @@ void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
     } else {
         s_scale = SCALE_1_TO_1;
     }
-    moncontrol(1); /* start */
+    moncontrol(1); // Start
 }
 
-
-/*
-    Control profiling
- 	profiling is what mcount checks to see if
- 	all the data structures are ready.
-*/
-static void __no_inline_not_in_flash_func(moncontrol)(int mode) {
-    struct gmonparam *p = &_gmonparam;
-
-    if (mode) {
-        /* start */
-        profil((char *)p->kcount, p->kcountsize, p->lowpc, s_scale);
-        p->state = GMON_PROF_ON;
-    } else {
-        /* stop */
-        profil((char *)0, 0, 0, 0);
-        p->state = GMON_PROF_OFF;
-    }
+// Accessors for the selfpc and count fields
+static inline __attribute__((always_inline)) void setselfpc(struct tostruct *x, size_t d) {
+    x->selfpc[0] = d & 0xff;
+    x->selfpc[1] = (d >> 8) & 0xff;
+    x->selfpc[2] = (d >> 16) & 0xff;
 }
 
+static inline __attribute__((always_inline))void setcount(struct tostruct *x, size_t d) {
+    x->count[0] = d & 0xff;
+    x->count[1] = (d >> 8) & 0xff;
+    x->count[2] = (d >> 16) & 0xff;
+}
+
+static inline __attribute__((always_inline)) uint32_t getselfpc(const struct tostruct *x) {
+    return 0x10000000 | ((uint32_t)x->selfpc[0]) | (((uint32_t)x->selfpc[1]) << 8) | (((uint32_t)x->selfpc[2]) << 16);
+}
+
+static inline __attribute__((always_inline)) uint32_t getcount(const struct tostruct *x) {
+    return ((uint32_t)x->count[0]) | (((uint32_t)x->count[1]) << 8) | (((uint32_t)x->count[2]) << 16);
+}
 
 // Called by the GCC function shim (gprof_shim.S) on function entry to record an arc hit
 void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint32_t *selfpc) {
@@ -359,99 +308,72 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
 
     if (!already_setup) {
         extern char __flash_binary_start; // Start of flash
-        extern char __etext; /* end of text/code symbol, defined by linker */
+        extern char __etext;              // End of .text
         already_setup = true;
         _perf_in_setup = true;
         monstartup((uint32_t)&__flash_binary_start, (uint32_t)&__etext);
         _perf_in_setup = false;
     }
-    /*
-     	check that we are profiling
-     	and that we aren't recursively invoked.
-    */
+    // Check that we are profiling and that we aren't recursively invoked.
     if (p->state != GMON_PROF_ON) {
-        goto out;
+        return;
     }
     p->state++;
-    /*
-     	check that frompcindex is a reasonable pc value.
-     	for example:	signal catchers get called from the stack,
-     			not from text space.  too bad.
-    */
+    // Check that frompcindex is a reasonable pc value.
     frompcindex = (uint32_t*)((long)frompcindex - (long)p->lowpc);
     if ((unsigned long)frompcindex > p->textsize) {
         goto done;
     }
     frompcindex = (uint32_t*)&p->froms[((long)frompcindex) / (HASHFRACTION * sizeof(*p->froms))];
-    toindex = *((uint16_t*)frompcindex); /* get froms[] value */
+    toindex = *((uint16_t*)frompcindex); // Get froms[] value
     if (toindex == 0) {
-        /*
-        	first time traversing this arc
-        */
-        toindex = ++p->tos[0].link; /* the link of tos[0] points to the last used record in the array */
-        if (toindex >= p->tolimit) { /* more tos[] entries than we can handle! */
+        // First time traversing this arc
+        toindex = ++p->tos[0].link;  // The link of tos[0] points to the last used record in the array
+        if (toindex >= p->tolimit) { // More tos[] entries than we can handle!
             goto overflow;
         }
-        *((uint16_t*)frompcindex) = (uint16_t)toindex; /* store new 'to' value into froms[] */
+        *((uint16_t*)frompcindex) = (uint16_t)toindex; // Store new 'to' value into froms[]
         top = &p->tos[toindex];
-        SETSELFPC(top, (uint32_t)selfpc);
-        SETCOUNT(top, 1);
+        setselfpc(top, (uint32_t)selfpc);
+        setcount(top, 1);
         top->link = 0;
         goto done;
     }
     top = &p->tos[toindex];
-    if (GETSELFPC(top)/*->selfpc*/ == (size_t)selfpc) {
-        /*
-         	arc at front of chain; usual case.
-        */
-        uint32_t cnt = GETCOUNT(top) + 1;
+    if (getselfpc(top) == (size_t)selfpc) {
+        // Arc at front of chain; usual case.
+        uint32_t cnt = getcount(top) + 1;
         if (cnt >= 1 << 24) {
             cnt = (1 << 24) - 1;
         }
-        SETCOUNT(top, cnt);
+        setcount(top, cnt);
         goto done;
     }
-    /*
-     	have to go looking down chain for it.
-     	top points to what we are looking at,
-     	prevtop points to previous top.
-     	we know it is not at the head of the chain.
-    */
+    // Have to go looking down chain for it. top points to what we are looking at, prevtop points to previous top. We know it is not at the head of the chain.
     for (; /* goto done */;) {
         if (top->link == 0) {
-            /*
-             	top is end of the chain and none of the chain
-             	had top->selfpc == selfpc.
-             	so we allocate a new tostruct
-             	and link it to the head of the chain.
-            */
+            // top is end of the chain and none of the chain had top->selfpc == selfpc, so we allocate a new tostruct and link it to the head of the chain.
             toindex = ++p->tos[0].link;
             if (toindex >= p->tolimit) {
                 goto overflow;
             }
             top = &p->tos[toindex];
-            SETSELFPC(top, (uint32_t)selfpc);
-            SETCOUNT(top, 1);
+            setselfpc(top, (uint32_t)selfpc);
+            setcount(top, 1);
             top->link = *((uint16_t*)frompcindex);
             *(uint16_t*)frompcindex = (uint16_t)toindex;
             goto done;
         }
-        /*
-         	otherwise, check the next arc on the chain.
-        */
+        // Otherwise, check the next arc on the chain.
         prevtop = top;
         top = &p->tos[top->link];
-        if (GETSELFPC(top) == (size_t)selfpc) {
-            /*
-             	there it is.
-             	increment its count
-             	move it to the head of the chain.
-            */
-            uint32_t cnt = GETCOUNT(top) + 1;
+        if (getselfpc(top) == (size_t)selfpc) {
+            // Increment its count, move it to the head of the chain.
+            uint32_t cnt = getcount(top) + 1;
             if (cnt >= 1 << 24) {
                 cnt = (1 << 24) - 1;
             }
-            SETCOUNT(top, cnt);
+            setcount(top, cnt);
             toindex = prevtop->link;
             prevtop->link = top->link;
             top->link = *((uint16_t*)frompcindex);
@@ -461,26 +383,19 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
     }
 done:
     p->state--;
-    /* and fall through */
-out:
-    return;		/* normal return restores saved registers */
-overflow:
-    p->state++; /* halt further profiling */
-    // TOS OOM Overflow
-    goto out;
-}
+    return;
 
-void __no_inline_not_in_flash_func(_monInit)(void) {
-    _gmonparam.state = GMON_PROF_OFF;
-    already_setup = false;
+overflow:
+    p->state++; // Halt further profiling
+    return;
 }
 
 
 // Write out the GMON.OUT file using internal state
 void _writeProfile(int (*writeCB)(const void *data, int len)) {
     struct gmonhdr {  // GMON.OUT header
-        size_t  lpc;  // base pc address of sample buffer
-        size_t  hpc;  // max pc address of sampled buffer
+        size_t lpc;   // base pc address of sample buffer
+        size_t hpc;   // max pc address of sampled buffer
         int ncnt;     // size of sample buffer (plus this header)
         int version;  // version number
         int profrate; // profiling clock rate
@@ -521,8 +436,8 @@ void _writeProfile(int (*writeCB)(const void *data, int len)) {
         frompc += fromindex * HASHFRACTION * sizeof(*p->froms);
         for (toindex = p->froms[fromindex]; toindex != 0; toindex = p->tos[toindex].link) {
             rawarc.raw_frompc = frompc;
-            rawarc.raw_selfpc = GETSELFPC(&p->tos[toindex]);
-            rawarc.raw_count = GETCOUNT(&p->tos[toindex]);
+            rawarc.raw_selfpc = getselfpc(&p->tos[toindex]);
+            rawarc.raw_count = getcount(&p->tos[toindex]);
             // Buffer up writes because Semihosting is really slow per write call
             rawarcbuff[rawarcbuffptr++] = rawarc;
             if (rawarcbuffptr == BS) {
