@@ -63,6 +63,7 @@ rpipico.build.usbvid=-DUSBD_VID=0x2e8a
 rpipico.build.usbpid=-DUSBD_PID=0x000a
 rpipico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipico.build.board=RASPBERRY_PI_PICO
+rpipico.build.mcu=cortex-m0plus
 rpipico.build.chip=rp2040
 rpipico.build.toolchain=arm-none-eabi
 rpipico.build.toolchainpkg=pqt-gcc
@@ -270,6 +271,7 @@ rpipicow.build.usbvid=-DUSBD_VID=0x2e8a
 rpipicow.build.usbpid=-DUSBD_PID=0xf00a
 rpipicow.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 rpipicow.build.board=RASPBERRY_PI_PICO_W
+rpipicow.build.mcu=cortex-m0plus
 rpipicow.build.chip=rp2040
 rpipicow.build.toolchain=arm-none-eabi
 rpipicow.build.toolchainpkg=pqt-gcc
@@ -620,6 +622,7 @@ rpipico2.build.boot2=none
 rpipico2.build.usb_manufacturer="Raspberry Pi"
 rpipico2.build.usb_product="Pico 2"
 rpipico2.build.psram_length=0x000000
+rpipico2.build.mcu=cortex-m33
 rpipico2.menu.flash.4194304_0=4MB (no FS)
 rpipico2.menu.flash.4194304_0.upload.maximum_size=4186112
 rpipico2.menu.flash.4194304_0.build.flash_total=4194304
@@ -849,6 +852,7 @@ rpipico2w.build.boot2=none
 rpipico2w.build.usb_manufacturer="Raspberry Pi"
 rpipico2w.build.usb_product="Pico 2W"
 rpipico2w.build.psram_length=0x000000
+rpipico2w.build.mcu=cortex-m33
 rpipico2w.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
 rpipico2w.menu.flash.4194304_0=4MB (no FS)
 rpipico2w.menu.flash.4194304_0.upload.maximum_size=4186112
@@ -1061,6 +1065,7 @@ rpipico2w.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cm
 0xcb_helios.build.usbpid=-DUSBD_PID=0xcb74
 0xcb_helios.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 0xcb_helios.build.board=0XCB_HELIOS
+0xcb_helios.build.mcu=cortex-m0plus
 0xcb_helios.build.chip=rp2040
 0xcb_helios.build.toolchain=arm-none-eabi
 0xcb_helios.build.toolchainpkg=pqt-gcc
@@ -1374,6 +1379,7 @@ adafruit_feather.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather.build.usbpid=-DUSBD_PID=0x80f1
 adafruit_feather.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather.build.board=ADAFRUIT_FEATHER_RP2040
+adafruit_feather.build.mcu=cortex-m0plus
 adafruit_feather.build.chip=rp2040
 adafruit_feather.build.toolchain=arm-none-eabi
 adafruit_feather.build.toolchainpkg=pqt-gcc
@@ -1623,6 +1629,7 @@ adafruit_feather_scorpio.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_scorpio.build.usbpid=-DUSBD_PID=0x8121
 adafruit_feather_scorpio.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_scorpio.build.board=ADAFRUIT_FEATHER_RP2040_SCORPIO
+adafruit_feather_scorpio.build.mcu=cortex-m0plus
 adafruit_feather_scorpio.build.chip=rp2040
 adafruit_feather_scorpio.build.toolchain=arm-none-eabi
 adafruit_feather_scorpio.build.toolchainpkg=pqt-gcc
@@ -1876,6 +1883,7 @@ adafruit_feather_dvi.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_dvi.build.usbpid=-DUSBD_PID=0x8127
 adafruit_feather_dvi.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_dvi.build.board=ADAFRUIT_FEATHER_RP2040_DVI
+adafruit_feather_dvi.build.mcu=cortex-m0plus
 adafruit_feather_dvi.build.chip=rp2040
 adafruit_feather_dvi.build.toolchain=arm-none-eabi
 adafruit_feather_dvi.build.toolchainpkg=pqt-gcc
@@ -2129,6 +2137,7 @@ adafruit_feather_adalogger.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_adalogger.build.usbpid=-DUSBD_PID=0x815d
 adafruit_feather_adalogger.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_adalogger.build.board=ADAFRUIT_FEATHER_RP2040_ADALOGGER
+adafruit_feather_adalogger.build.mcu=cortex-m0plus
 adafruit_feather_adalogger.build.chip=rp2040
 adafruit_feather_adalogger.build.toolchain=arm-none-eabi
 adafruit_feather_adalogger.build.toolchainpkg=pqt-gcc
@@ -2382,6 +2391,7 @@ adafruit_feather_rfm.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_rfm.build.usbpid=-DUSBD_PID=0x812d
 adafruit_feather_rfm.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_rfm.build.board=ADAFRUIT_FEATHER_RP2040_RFM
+adafruit_feather_rfm.build.mcu=cortex-m0plus
 adafruit_feather_rfm.build.chip=rp2040
 adafruit_feather_rfm.build.toolchain=arm-none-eabi
 adafruit_feather_rfm.build.toolchainpkg=pqt-gcc
@@ -2635,6 +2645,7 @@ adafruit_feather_thinkink.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_thinkink.build.usbpid=-DUSBD_PID=0x812b
 adafruit_feather_thinkink.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_thinkink.build.board=ADAFRUIT_FEATHER_RP2040_THINKINK
+adafruit_feather_thinkink.build.mcu=cortex-m0plus
 adafruit_feather_thinkink.build.chip=rp2040
 adafruit_feather_thinkink.build.toolchain=arm-none-eabi
 adafruit_feather_thinkink.build.toolchainpkg=pqt-gcc
@@ -2888,6 +2899,7 @@ adafruit_feather_usb_host.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_usb_host.build.usbpid=-DUSBD_PID=0x8129
 adafruit_feather_usb_host.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_usb_host.build.board=ADAFRUIT_FEATHER_RP2040_USB_HOST
+adafruit_feather_usb_host.build.mcu=cortex-m0plus
 adafruit_feather_usb_host.build.chip=rp2040
 adafruit_feather_usb_host.build.toolchain=arm-none-eabi
 adafruit_feather_usb_host.build.toolchainpkg=pqt-gcc
@@ -3141,6 +3153,7 @@ adafruit_feather_can.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_can.build.usbpid=-DUSBD_PID=0x812f
 adafruit_feather_can.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_can.build.board=ADAFRUIT_FEATHER_RP2040_CAN
+adafruit_feather_can.build.mcu=cortex-m0plus
 adafruit_feather_can.build.chip=rp2040
 adafruit_feather_can.build.toolchain=arm-none-eabi
 adafruit_feather_can.build.toolchainpkg=pqt-gcc
@@ -3394,6 +3407,7 @@ adafruit_feather_prop_maker.build.usbvid=-DUSBD_VID=0x239a
 adafruit_feather_prop_maker.build.usbpid=-DUSBD_PID=0x8131
 adafruit_feather_prop_maker.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_feather_prop_maker.build.board=ADAFRUIT_FEATHER_RP2040_PROP_MAKER
+adafruit_feather_prop_maker.build.mcu=cortex-m0plus
 adafruit_feather_prop_maker.build.chip=rp2040
 adafruit_feather_prop_maker.build.toolchain=arm-none-eabi
 adafruit_feather_prop_maker.build.toolchainpkg=pqt-gcc
@@ -3655,6 +3669,7 @@ adafruit_itsybitsy.build.usbvid=-DUSBD_VID=0x239a
 adafruit_itsybitsy.build.usbpid=-DUSBD_PID=0x80fd
 adafruit_itsybitsy.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_itsybitsy.build.board=ADAFRUIT_ITSYBITSY_RP2040
+adafruit_itsybitsy.build.mcu=cortex-m0plus
 adafruit_itsybitsy.build.chip=rp2040
 adafruit_itsybitsy.build.toolchain=arm-none-eabi
 adafruit_itsybitsy.build.toolchainpkg=pqt-gcc
@@ -3908,6 +3923,7 @@ adafruit_metro.build.usbvid=-DUSBD_VID=0x239a
 adafruit_metro.build.usbpid=-DUSBD_PID=0x813d
 adafruit_metro.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_metro.build.board=ADAFRUIT_METRO_RP2040
+adafruit_metro.build.mcu=cortex-m0plus
 adafruit_metro.build.chip=rp2040
 adafruit_metro.build.toolchain=arm-none-eabi
 adafruit_metro.build.toolchainpkg=pqt-gcc
@@ -4225,6 +4241,7 @@ adafruit_qtpy.build.usbvid=-DUSBD_VID=0x239a
 adafruit_qtpy.build.usbpid=-DUSBD_PID=0x80f7
 adafruit_qtpy.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_qtpy.build.board=ADAFRUIT_QTPY_RP2040
+adafruit_qtpy.build.mcu=cortex-m0plus
 adafruit_qtpy.build.chip=rp2040
 adafruit_qtpy.build.toolchain=arm-none-eabi
 adafruit_qtpy.build.toolchainpkg=pqt-gcc
@@ -4486,6 +4503,7 @@ adafruit_stemmafriend.build.usbvid=-DUSBD_VID=0x239a
 adafruit_stemmafriend.build.usbpid=-DUSBD_PID=0x80e3
 adafruit_stemmafriend.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_stemmafriend.build.board=ADAFRUIT_STEMMAFRIEND_RP2040
+adafruit_stemmafriend.build.mcu=cortex-m0plus
 adafruit_stemmafriend.build.chip=rp2040
 adafruit_stemmafriend.build.toolchain=arm-none-eabi
 adafruit_stemmafriend.build.toolchainpkg=pqt-gcc
@@ -4739,6 +4757,7 @@ adafruit_trinkeyrp2040qt.build.usbvid=-DUSBD_VID=0x239a
 adafruit_trinkeyrp2040qt.build.usbpid=-DUSBD_PID=0x8109
 adafruit_trinkeyrp2040qt.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_trinkeyrp2040qt.build.board=ADAFRUIT_TRINKEYQT_RP2040
+adafruit_trinkeyrp2040qt.build.mcu=cortex-m0plus
 adafruit_trinkeyrp2040qt.build.chip=rp2040
 adafruit_trinkeyrp2040qt.build.toolchain=arm-none-eabi
 adafruit_trinkeyrp2040qt.build.toolchainpkg=pqt-gcc
@@ -4992,6 +5011,7 @@ adafruit_macropad2040.build.usbvid=-DUSBD_VID=0x239a
 adafruit_macropad2040.build.usbpid=-DUSBD_PID=0x8107
 adafruit_macropad2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_macropad2040.build.board=ADAFRUIT_MACROPAD_RP2040
+adafruit_macropad2040.build.mcu=cortex-m0plus
 adafruit_macropad2040.build.chip=rp2040
 adafruit_macropad2040.build.toolchain=arm-none-eabi
 adafruit_macropad2040.build.toolchainpkg=pqt-gcc
@@ -5245,6 +5265,7 @@ adafruit_kb2040.build.usbvid=-DUSBD_VID=0x239a
 adafruit_kb2040.build.usbpid=-DUSBD_PID=0x8105
 adafruit_kb2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_kb2040.build.board=ADAFRUIT_KB2040_RP2040
+adafruit_kb2040.build.mcu=cortex-m0plus
 adafruit_kb2040.build.chip=rp2040
 adafruit_kb2040.build.toolchain=arm-none-eabi
 adafruit_kb2040.build.toolchainpkg=pqt-gcc
@@ -5512,6 +5533,7 @@ adafruit_feather_rp2350_hstx.build.boot2=none
 adafruit_feather_rp2350_hstx.build.usb_manufacturer="Adafruit"
 adafruit_feather_rp2350_hstx.build.usb_product="Feather RP2350 HSTX"
 adafruit_feather_rp2350_hstx.build.psram_length=0x000000
+adafruit_feather_rp2350_hstx.build.mcu=cortex-m33
 adafruit_feather_rp2350_hstx.menu.flash.8388608_0=8MB (no FS)
 adafruit_feather_rp2350_hstx.menu.flash.8388608_0.upload.maximum_size=8380416
 adafruit_feather_rp2350_hstx.menu.flash.8388608_0.build.flash_total=8388608
@@ -5763,6 +5785,7 @@ adafruit_floppsy.build.usbvid=-DUSBD_VID=0x239a
 adafruit_floppsy.build.usbpid=-DUSBD_PID=0x8151
 adafruit_floppsy.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 adafruit_floppsy.build.board=ADAFRUIT_FLOPPSY_RP2040
+adafruit_floppsy.build.mcu=cortex-m0plus
 adafruit_floppsy.build.chip=rp2040
 adafruit_floppsy.build.toolchain=arm-none-eabi
 adafruit_floppsy.build.toolchainpkg=pqt-gcc
@@ -6068,6 +6091,7 @@ amken_bunny.build.usbvid=-DUSBD_VID=0x2770
 amken_bunny.build.usbpid=-DUSBD_PID=0x7303
 amken_bunny.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 amken_bunny.build.board=AMKEN_BB
+amken_bunny.build.mcu=cortex-m0plus
 amken_bunny.build.chip=rp2040
 amken_bunny.build.toolchain=arm-none-eabi
 amken_bunny.build.toolchainpkg=pqt-gcc
@@ -7154,6 +7178,7 @@ amken_revelop.build.usbvid=-DUSBD_VID=0x2770
 amken_revelop.build.usbpid=-DUSBD_PID=0x7304
 amken_revelop.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 amken_revelop.build.board=AMKEN_REVELOP
+amken_revelop.build.mcu=cortex-m0plus
 amken_revelop.build.chip=rp2040
 amken_revelop.build.toolchain=arm-none-eabi
 amken_revelop.build.toolchainpkg=pqt-gcc
@@ -7568,6 +7593,7 @@ amken_revelop_plus.build.usbvid=-DUSBD_VID=0x2770
 amken_revelop_plus.build.usbpid=-DUSBD_PID=0x7305
 amken_revelop_plus.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 amken_revelop_plus.build.board=AMKEN_REVELOP_PLUS
+amken_revelop_plus.build.mcu=cortex-m0plus
 amken_revelop_plus.build.chip=rp2040
 amken_revelop_plus.build.toolchain=arm-none-eabi
 amken_revelop_plus.build.toolchainpkg=pqt-gcc
@@ -7982,6 +8008,7 @@ amken_revelop_es.build.usbvid=-DUSBD_VID=0x2770
 amken_revelop_es.build.usbpid=-DUSBD_PID=0x7306
 amken_revelop_es.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 amken_revelop_es.build.board=AMKEN_ES
+amken_revelop_es.build.mcu=cortex-m0plus
 amken_revelop_es.build.chip=rp2040
 amken_revelop_es.build.toolchain=arm-none-eabi
 amken_revelop_es.build.toolchainpkg=pqt-gcc
@@ -8296,6 +8323,7 @@ jumperless_v1.build.usbvid=-DUSBD_VID=0x1d50
 jumperless_v1.build.usbpid=-DUSBD_PID=0xacab
 jumperless_v1.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 jumperless_v1.build.board=JUMPERLESS
+jumperless_v1.build.mcu=cortex-m0plus
 jumperless_v1.build.chip=rp2040
 jumperless_v1.build.toolchain=arm-none-eabi
 jumperless_v1.build.toolchainpkg=pqt-gcc
@@ -8624,6 +8652,7 @@ jumperless_v5.build.boot2=none
 jumperless_v5.build.usb_manufacturer="Architeuthis Flux"
 jumperless_v5.build.usb_product="Jumperless V5"
 jumperless_v5.build.psram_length=0x000000
+jumperless_v5.build.mcu=cortex-m33
 jumperless_v5.build.extra_flags=
 jumperless_v5.menu.flash.16777216_0=16MB (no FS)
 jumperless_v5.menu.flash.16777216_0.upload.maximum_size=16769024
@@ -8932,6 +8961,7 @@ arduino_nano_connect.build.usbvid=-DUSBD_VID=0x2341
 arduino_nano_connect.build.usbpid=-DUSBD_PID=0x005e
 arduino_nano_connect.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 arduino_nano_connect.build.board=NANO_RP2040_CONNECT
+arduino_nano_connect.build.mcu=cortex-m0plus
 arduino_nano_connect.build.chip=rp2040
 arduino_nano_connect.build.toolchain=arm-none-eabi
 arduino_nano_connect.build.toolchainpkg=pqt-gcc
@@ -9261,6 +9291,7 @@ artronshop_rp2_nano.build.usbvid=-DUSBD_VID=0x2e8a
 artronshop_rp2_nano.build.usbpid=-DUSBD_PID=0x000a
 artronshop_rp2_nano.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 artronshop_rp2_nano.build.board=ARTRONSHOP_RP2_NANO
+artronshop_rp2_nano.build.mcu=cortex-m0plus
 artronshop_rp2_nano.build.chip=rp2040
 artronshop_rp2_nano.build.toolchain=arm-none-eabi
 artronshop_rp2_nano.build.toolchainpkg=pqt-gcc
@@ -9492,6 +9523,7 @@ breadstick_raspberry.build.usbvid=-DUSBD_VID=0x2e8a
 breadstick_raspberry.build.usbpid=-DUSBD_PID=0x105e
 breadstick_raspberry.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 breadstick_raspberry.build.board=Breadstick_Raspberry
+breadstick_raspberry.build.mcu=cortex-m0plus
 breadstick_raspberry.build.chip=rp2040
 breadstick_raspberry.build.toolchain=arm-none-eabi
 breadstick_raspberry.build.toolchainpkg=pqt-gcc
@@ -9821,6 +9853,7 @@ bridgetek_idm2040_7a.build.usbvid=-DUSBD_VID=0x2e8a
 bridgetek_idm2040_7a.build.usbpid=-DUSBD_PID=0x1041
 bridgetek_idm2040_7a.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 bridgetek_idm2040_7a.build.board=BRIDGETEK_IDM2040_7A
+bridgetek_idm2040_7a.build.mcu=cortex-m0plus
 bridgetek_idm2040_7a.build.chip=rp2040
 bridgetek_idm2040_7a.build.toolchain=arm-none-eabi
 bridgetek_idm2040_7a.build.toolchainpkg=pqt-gcc
@@ -10071,6 +10104,7 @@ bridgetek_idm2040_43a.build.usbvid=-DUSBD_VID=0x2e8b
 bridgetek_idm2040_43a.build.usbpid=-DUSBD_PID=0xf00a
 bridgetek_idm2040_43a.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 bridgetek_idm2040_43a.build.board=BRIDGETEK_IDM2040_43A
+bridgetek_idm2040_43a.build.mcu=cortex-m0plus
 bridgetek_idm2040_43a.build.chip=rp2040
 bridgetek_idm2040_43a.build.toolchain=arm-none-eabi
 bridgetek_idm2040_43a.build.toolchainpkg=pqt-gcc
@@ -10359,6 +10393,7 @@ cytron_iriv_io_controller.build.boot2=none
 cytron_iriv_io_controller.build.usb_manufacturer="Cytron"
 cytron_iriv_io_controller.build.usb_product="IRIV IO Controller"
 cytron_iriv_io_controller.build.psram_length=0x000000
+cytron_iriv_io_controller.build.mcu=cortex-m33
 cytron_iriv_io_controller.menu.flash.2097152_0=2MB (no FS)
 cytron_iriv_io_controller.menu.flash.2097152_0.upload.maximum_size=2088960
 cytron_iriv_io_controller.menu.flash.2097152_0.build.flash_total=2097152
@@ -10584,6 +10619,7 @@ cytron_maker_nano_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
 cytron_maker_nano_rp2040.build.usbpid=-DUSBD_PID=0x100f
 cytron_maker_nano_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_nano_rp2040.build.board=CYTRON_MAKER_NANO_RP2040
+cytron_maker_nano_rp2040.build.mcu=cortex-m0plus
 cytron_maker_nano_rp2040.build.chip=rp2040
 cytron_maker_nano_rp2040.build.toolchain=arm-none-eabi
 cytron_maker_nano_rp2040.build.toolchainpkg=pqt-gcc
@@ -10815,6 +10851,7 @@ cytron_maker_pi_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
 cytron_maker_pi_rp2040.build.usbpid=-DUSBD_PID=0x1000
 cytron_maker_pi_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_pi_rp2040.build.board=CYTRON_MAKER_PI_RP2040
+cytron_maker_pi_rp2040.build.mcu=cortex-m0plus
 cytron_maker_pi_rp2040.build.chip=rp2040
 cytron_maker_pi_rp2040.build.toolchain=arm-none-eabi
 cytron_maker_pi_rp2040.build.toolchainpkg=pqt-gcc
@@ -11046,6 +11083,7 @@ cytron_maker_uno_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
 cytron_maker_uno_rp2040.build.usbpid=-DUSBD_PID=0x1071
 cytron_maker_uno_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 cytron_maker_uno_rp2040.build.board=CYTRON_MAKER_UNO_RP2040
+cytron_maker_uno_rp2040.build.mcu=cortex-m0plus
 cytron_maker_uno_rp2040.build.chip=rp2040
 cytron_maker_uno_rp2040.build.toolchain=arm-none-eabi
 cytron_maker_uno_rp2040.build.toolchainpkg=pqt-gcc
@@ -11291,6 +11329,7 @@ cytron_motion_2350_pro.build.boot2=none
 cytron_motion_2350_pro.build.usb_manufacturer="Cytron"
 cytron_motion_2350_pro.build.usb_product="Motion 2350 Pro"
 cytron_motion_2350_pro.build.psram_length=0x000000
+cytron_motion_2350_pro.build.mcu=cortex-m33
 cytron_motion_2350_pro.menu.flash.2097152_0=2MB (no FS)
 cytron_motion_2350_pro.menu.flash.2097152_0.upload.maximum_size=2088960
 cytron_motion_2350_pro.menu.flash.2097152_0.build.flash_total=2097152
@@ -11516,6 +11555,7 @@ datanoisetv_picoadk.build.usbvid=-DUSBD_VID=0x2e8a
 datanoisetv_picoadk.build.usbpid=-DUSBD_PID=0x000a
 datanoisetv_picoadk.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 datanoisetv_picoadk.build.board=DATANOISETV_PICOADK
+datanoisetv_picoadk.build.mcu=cortex-m0plus
 datanoisetv_picoadk.build.chip=rp2040
 datanoisetv_picoadk.build.toolchain=arm-none-eabi
 datanoisetv_picoadk.build.toolchainpkg=pqt-gcc
@@ -11761,6 +11801,7 @@ datanoisetv_picoadk_v2.build.boot2=none
 datanoisetv_picoadk_v2.build.usb_manufacturer="DatanoiseTV"
 datanoisetv_picoadk_v2.build.usb_product="PicoADK v2"
 datanoisetv_picoadk_v2.build.psram_length=0x000000
+datanoisetv_picoadk_v2.build.mcu=cortex-m33
 datanoisetv_picoadk_v2.menu.flash.4194304_0=4MB (no FS)
 datanoisetv_picoadk_v2.menu.flash.4194304_0.upload.maximum_size=4186112
 datanoisetv_picoadk_v2.menu.flash.4194304_0.build.flash_total=4194304
@@ -11988,6 +12029,7 @@ degz_suibo.build.usbvid=-DUSBD_VID=0x2e8a
 degz_suibo.build.usbpid=-DUSBD_PID=0xf00a
 degz_suibo.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 degz_suibo.build.board=DEGZ_SUIBO_RP2040
+degz_suibo.build.mcu=cortex-m0plus
 degz_suibo.build.chip=rp2040
 degz_suibo.build.toolchain=arm-none-eabi
 degz_suibo.build.toolchainpkg=pqt-gcc
@@ -12317,6 +12359,7 @@ flyboard2040_core.build.usbvid=-DUSBD_VID=0x2e8a
 flyboard2040_core.build.usbpid=-DUSBD_PID=0x008a
 flyboard2040_core.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 flyboard2040_core.build.board=FLYBOARD2040_CORE
+flyboard2040_core.build.mcu=cortex-m0plus
 flyboard2040_core.build.chip=rp2040
 flyboard2040_core.build.toolchain=arm-none-eabi
 flyboard2040_core.build.toolchainpkg=pqt-gcc
@@ -12546,6 +12589,7 @@ dfrobot_beetle_rp2040.build.usbvid=-DUSBD_VID=0x3343
 dfrobot_beetle_rp2040.build.usbpid=-DUSBD_PID=0x4253
 dfrobot_beetle_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 dfrobot_beetle_rp2040.build.board=DFROBOT_BEETLE_RP2040
+dfrobot_beetle_rp2040.build.mcu=cortex-m0plus
 dfrobot_beetle_rp2040.build.chip=rp2040
 dfrobot_beetle_rp2040.build.toolchain=arm-none-eabi
 dfrobot_beetle_rp2040.build.toolchainpkg=pqt-gcc
@@ -12777,6 +12821,7 @@ DudesCab.build.usbvid=-DUSBD_VID=0x2e8a
 DudesCab.build.usbpid=-DUSBD_PID=0x106f
 DudesCab.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 DudesCab.build.board=RASPBERRY_PI_PICO
+DudesCab.build.mcu=cortex-m0plus
 DudesCab.build.chip=rp2040
 DudesCab.build.toolchain=arm-none-eabi
 DudesCab.build.toolchainpkg=pqt-gcc
@@ -13022,6 +13067,7 @@ electroniccats_huntercat_nfc.build.usbvid=-DUSBD_VID=0x2E8A
 electroniccats_huntercat_nfc.build.usbpid=-DUSBD_PID=0x1037
 electroniccats_huntercat_nfc.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 electroniccats_huntercat_nfc.build.board=ELECTRONICCATS_HUNTERCAT_NFC
+electroniccats_huntercat_nfc.build.mcu=cortex-m0plus
 electroniccats_huntercat_nfc.build.chip=rp2040
 electroniccats_huntercat_nfc.build.toolchain=arm-none-eabi
 electroniccats_huntercat_nfc.build.toolchainpkg=pqt-gcc
@@ -13229,6 +13275,7 @@ evn_alpha.build.usbvid=-DUSBD_VID=0x2e8a
 evn_alpha.build.usbpid=-DUSBD_PID=0xf00a
 evn_alpha.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 evn_alpha.build.board=EVN_ALPHA
+evn_alpha.build.mcu=cortex-m0plus
 evn_alpha.build.chip=rp2040
 evn_alpha.build.toolchain=arm-none-eabi
 evn_alpha.build.toolchainpkg=pqt-gcc
@@ -13534,6 +13581,7 @@ extelec_rc2040.build.usbvid=-DUSBD_VID=0x2e8a
 extelec_rc2040.build.usbpid=-DUSBD_PID=0xee20
 extelec_rc2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 extelec_rc2040.build.board=EXTREMEELEXTRONICS_RC2040
+extelec_rc2040.build.mcu=cortex-m0plus
 extelec_rc2040.build.chip=rp2040
 extelec_rc2040.build.toolchain=arm-none-eabi
 extelec_rc2040.build.toolchainpkg=pqt-gcc
@@ -13765,6 +13813,7 @@ groundstudio_marble_pico.build.usbvid=-DUSBD_VID=0x2e8a
 groundstudio_marble_pico.build.usbpid=-DUSBD_PID=0x0003
 groundstudio_marble_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 groundstudio_marble_pico.build.board=MARBLE_PICO
+groundstudio_marble_pico.build.mcu=cortex-m0plus
 groundstudio_marble_pico.build.chip=rp2040
 groundstudio_marble_pico.build.toolchain=arm-none-eabi
 groundstudio_marble_pico.build.toolchainpkg=pqt-gcc
@@ -14038,6 +14087,7 @@ challenger_2040_lte.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_lte.build.usbpid=-DUSBD_PID=0x100b
 challenger_2040_lte.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_lte.build.board=CHALLENGER_2040_LTE_RP2040
+challenger_2040_lte.build.mcu=cortex-m0plus
 challenger_2040_lte.build.chip=rp2040
 challenger_2040_lte.build.toolchain=arm-none-eabi
 challenger_2040_lte.build.toolchainpkg=pqt-gcc
@@ -14311,6 +14361,7 @@ challenger_2040_lora.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_lora.build.usbpid=-DUSBD_PID=0x1023
 challenger_2040_lora.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_lora.build.board=CHALLENGER_2040_LORA_RP2040
+challenger_2040_lora.build.mcu=cortex-m0plus
 challenger_2040_lora.build.chip=rp2040
 challenger_2040_lora.build.toolchain=arm-none-eabi
 challenger_2040_lora.build.toolchainpkg=pqt-gcc
@@ -14584,6 +14635,7 @@ challenger_2040_subghz.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_subghz.build.usbpid=-DUSBD_PID=0x1032
 challenger_2040_subghz.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_subghz.build.board=CHALLENGER_2040_SUBGHZ_RP2040
+challenger_2040_subghz.build.mcu=cortex-m0plus
 challenger_2040_subghz.build.chip=rp2040
 challenger_2040_subghz.build.toolchain=arm-none-eabi
 challenger_2040_subghz.build.toolchainpkg=pqt-gcc
@@ -14857,6 +14909,7 @@ challenger_2040_wifi.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_wifi.build.usbpid=-DUSBD_PID=0x1006
 challenger_2040_wifi.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_wifi.build.board=CHALLENGER_2040_WIFI_RP2040
+challenger_2040_wifi.build.mcu=cortex-m0plus
 challenger_2040_wifi.build.chip=rp2040
 challenger_2040_wifi.build.toolchain=arm-none-eabi
 challenger_2040_wifi.build.toolchainpkg=pqt-gcc
@@ -15131,6 +15184,7 @@ challenger_2040_wifi_ble.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_wifi_ble.build.usbpid=-DUSBD_PID=0x102c
 challenger_2040_wifi_ble.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi_ble.build.board=CHALLENGER_2040_WIFI_BLE_RP2040
+challenger_2040_wifi_ble.build.mcu=cortex-m0plus
 challenger_2040_wifi_ble.build.chip=rp2040
 challenger_2040_wifi_ble.build.toolchain=arm-none-eabi
 challenger_2040_wifi_ble.build.toolchainpkg=pqt-gcc
@@ -15505,6 +15559,7 @@ challenger_2040_wifi6_ble.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_wifi6_ble.build.usbpid=-DUSBD_PID=0x105f
 challenger_2040_wifi6_ble.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_wifi6_ble.build.board=CHALLENGER_2040_WIFI6_BLE_RP2040
+challenger_2040_wifi6_ble.build.mcu=cortex-m0plus
 challenger_2040_wifi6_ble.build.chip=rp2040
 challenger_2040_wifi6_ble.build.toolchain=arm-none-eabi
 challenger_2040_wifi6_ble.build.toolchainpkg=pqt-gcc
@@ -15779,6 +15834,7 @@ challenger_nb_2040_wifi.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_nb_2040_wifi.build.usbpid=-DUSBD_PID=0x100d
 challenger_nb_2040_wifi.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_nb_2040_wifi.build.board=CHALLENGER_NB_2040_WIFI_RP2040
+challenger_nb_2040_wifi.build.mcu=cortex-m0plus
 challenger_nb_2040_wifi.build.chip=rp2040
 challenger_nb_2040_wifi.build.toolchain=arm-none-eabi
 challenger_nb_2040_wifi.build.toolchainpkg=pqt-gcc
@@ -16053,6 +16109,7 @@ challenger_2040_sdrtc.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_sdrtc.build.usbpid=-DUSBD_PID=0x102d
 challenger_2040_sdrtc.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_sdrtc.build.board=CHALLENGER_2040_SDRTC_RP2040
+challenger_2040_sdrtc.build.mcu=cortex-m0plus
 challenger_2040_sdrtc.build.chip=rp2040
 challenger_2040_sdrtc.build.toolchain=arm-none-eabi
 challenger_2040_sdrtc.build.toolchainpkg=pqt-gcc
@@ -16326,6 +16383,7 @@ challenger_2040_nfc.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_nfc.build.usbpid=-DUSBD_PID=0x1036
 challenger_2040_nfc.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 challenger_2040_nfc.build.board=CHALLENGER_2040_NFC_RP2040
+challenger_2040_nfc.build.mcu=cortex-m0plus
 challenger_2040_nfc.build.chip=rp2040
 challenger_2040_nfc.build.toolchain=arm-none-eabi
 challenger_2040_nfc.build.toolchainpkg=pqt-gcc
@@ -16599,6 +16657,7 @@ challenger_2040_uwb.build.usbvid=-DUSBD_VID=0x2e8a
 challenger_2040_uwb.build.usbpid=-DUSBD_PID=0x1052
 challenger_2040_uwb.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 challenger_2040_uwb.build.board=CHALLENGER_2040_UWB_RP2040
+challenger_2040_uwb.build.mcu=cortex-m0plus
 challenger_2040_uwb.build.chip=rp2040
 challenger_2040_uwb.build.toolchain=arm-none-eabi
 challenger_2040_uwb.build.toolchainpkg=pqt-gcc
@@ -16872,6 +16931,7 @@ connectivity_2040_lte_wifi_ble.build.usbvid=-DUSBD_VID=0x2e8a
 connectivity_2040_lte_wifi_ble.build.usbpid=-DUSBD_PID=0x107b
 connectivity_2040_lte_wifi_ble.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 connectivity_2040_lte_wifi_ble.build.board=CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040
+connectivity_2040_lte_wifi_ble.build.mcu=cortex-m0plus
 connectivity_2040_lte_wifi_ble.build.chip=rp2040
 connectivity_2040_lte_wifi_ble.build.toolchain=arm-none-eabi
 connectivity_2040_lte_wifi_ble.build.toolchainpkg=pqt-gcc
@@ -17146,6 +17206,7 @@ ilabs_rpico32.build.usbvid=-DUSBD_VID=0x2e8a
 ilabs_rpico32.build.usbpid=-DUSBD_PID=0x1010
 ilabs_rpico32.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 ilabs_rpico32.build.board=ILABS_2040_RPICO32_RP2040
+ilabs_rpico32.build.mcu=cortex-m0plus
 ilabs_rpico32.build.chip=rp2040
 ilabs_rpico32.build.toolchain=arm-none-eabi
 ilabs_rpico32.build.toolchainpkg=pqt-gcc
@@ -17434,6 +17495,7 @@ challenger_2350_wifi6_ble5.build.boot2=none
 challenger_2350_wifi6_ble5.build.usb_manufacturer="iLabs"
 challenger_2350_wifi6_ble5.build.usb_product="Challenger 2350 WiFi/BLE"
 challenger_2350_wifi6_ble5.build.psram_length=0x800000
+challenger_2350_wifi6_ble5.build.mcu=cortex-m33
 challenger_2350_wifi6_ble5.menu.espwifitype.esp_at=ESP AT
 challenger_2350_wifi6_ble5.menu.espwifitype.esp_at.build.espwifitype=-DWIFIESPAT2
 challenger_2350_wifi6_ble5.menu.espwifitype.esp_hosted=ESP Hosted
@@ -17816,6 +17878,7 @@ challenger_2350_bconnect.build.boot2=none
 challenger_2350_bconnect.build.usb_manufacturer="iLabs"
 challenger_2350_bconnect.build.usb_product="Challenger 2350 BConnect"
 challenger_2350_bconnect.build.psram_length=0x800000
+challenger_2350_bconnect.build.mcu=cortex-m33
 challenger_2350_bconnect.menu.flash.8388608_0=8MB (no FS)
 challenger_2350_bconnect.menu.flash.8388608_0.upload.maximum_size=8380416
 challenger_2350_bconnect.menu.flash.8388608_0.build.flash_total=8388608
@@ -18083,6 +18146,7 @@ melopero_cookie_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
 melopero_cookie_rp2040.build.usbpid=-DUSBD_PID=0x1011
 melopero_cookie_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_cookie_rp2040.build.board=MELOPERO_COOKIE_RP2040
+melopero_cookie_rp2040.build.mcu=cortex-m0plus
 melopero_cookie_rp2040.build.chip=rp2040
 melopero_cookie_rp2040.build.toolchain=arm-none-eabi
 melopero_cookie_rp2040.build.toolchainpkg=pqt-gcc
@@ -18356,6 +18420,7 @@ melopero_shake_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
 melopero_shake_rp2040.build.usbpid=-DUSBD_PID=0x1005
 melopero_shake_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 melopero_shake_rp2040.build.board=MELOPERO_SHAKE_RP2040
+melopero_shake_rp2040.build.mcu=cortex-m0plus
 melopero_shake_rp2040.build.chip=rp2040
 melopero_shake_rp2040.build.toolchain=arm-none-eabi
 melopero_shake_rp2040.build.toolchainpkg=pqt-gcc
@@ -18685,6 +18750,7 @@ akana_r1.build.usbvid=-DUSBD_VID=0x2e8a
 akana_r1.build.usbpid=-DUSBD_PID=0x3001
 akana_r1.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 akana_r1.build.board=METEHOCA_AKANA_R1
+akana_r1.build.mcu=cortex-m0plus
 akana_r1.build.chip=rp2040
 akana_r1.build.toolchain=arm-none-eabi
 akana_r1.build.toolchainpkg=pqt-gcc
@@ -18965,6 +19031,7 @@ nekosystems_bl2040_mini.build.usbvid=-DUSBD_VID=0x2e8a
 nekosystems_bl2040_mini.build.usbpid=-DUSBD_PID=0x000a
 nekosystems_bl2040_mini.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 nekosystems_bl2040_mini.build.board=NEKOSYSTEMS_BL2040_MINI
+nekosystems_bl2040_mini.build.mcu=cortex-m0plus
 nekosystems_bl2040_mini.build.chip=rp2040
 nekosystems_bl2040_mini.build.toolchain=arm-none-eabi
 nekosystems_bl2040_mini.build.toolchainpkg=pqt-gcc
@@ -19210,6 +19277,7 @@ newsan_archi.build.usbvid=-DUSBD_VID=0x2E8A
 newsan_archi.build.usbpid=-DUSBD_PID=0x1043
 newsan_archi.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 newsan_archi.build.board=NEWSAN_ARCHI
+newsan_archi.build.mcu=cortex-m0plus
 newsan_archi.build.chip=rp2040
 newsan_archi.build.toolchain=arm-none-eabi
 newsan_archi.build.toolchainpkg=pqt-gcc
@@ -19439,6 +19507,7 @@ nullbits_bit_c_pro.build.usbvid=-DUSBD_VID=0x2e8a
 nullbits_bit_c_pro.build.usbpid=-DUSBD_PID=0x6e61
 nullbits_bit_c_pro.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 nullbits_bit_c_pro.build.board=NULLBITS_BIT_C_PRO
+nullbits_bit_c_pro.build.mcu=cortex-m0plus
 nullbits_bit_c_pro.build.chip=rp2040
 nullbits_bit_c_pro.build.toolchain=arm-none-eabi
 nullbits_bit_c_pro.build.toolchainpkg=pqt-gcc
@@ -19684,6 +19753,7 @@ olimex_rp2040pico30_2mb.build.usbvid=-DUSBD_VID=0x15ba
 olimex_rp2040pico30_2mb.build.usbpid=-DUSBD_PID=0x0026
 olimex_rp2040pico30_2mb.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 olimex_rp2040pico30_2mb.build.board=OLIMEX_RP2040_PICO30_2MB
+olimex_rp2040pico30_2mb.build.mcu=cortex-m0plus
 olimex_rp2040pico30_2mb.build.chip=rp2040
 olimex_rp2040pico30_2mb.build.toolchain=arm-none-eabi
 olimex_rp2040pico30_2mb.build.toolchainpkg=pqt-gcc
@@ -19915,6 +19985,7 @@ olimex_rp2040pico30_16mb.build.usbvid=-DUSBD_VID=0x15ba
 olimex_rp2040pico30_16mb.build.usbpid=-DUSBD_PID=0x0026
 olimex_rp2040pico30_16mb.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 olimex_rp2040pico30_16mb.build.board=OLIMEX_RP2040_PICO30_16MB
+olimex_rp2040pico30_16mb.build.mcu=cortex-m0plus
 olimex_rp2040pico30_16mb.build.chip=rp2040
 olimex_rp2040pico30_16mb.build.toolchain=arm-none-eabi
 olimex_rp2040pico30_16mb.build.toolchainpkg=pqt-gcc
@@ -20244,6 +20315,7 @@ pimoroni_pga2040.build.usbvid=-DUSBD_VID=0x2e8a
 pimoroni_pga2040.build.usbpid=-DUSBD_PID=0x1008
 pimoroni_pga2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 pimoroni_pga2040.build.board=PIMORONI_PGA2040
+pimoroni_pga2040.build.mcu=cortex-m0plus
 pimoroni_pga2040.build.chip=rp2040
 pimoroni_pga2040.build.toolchain=arm-none-eabi
 pimoroni_pga2040.build.toolchainpkg=pqt-gcc
@@ -20531,6 +20603,7 @@ pimoroni_pga2350.build.boot2=none
 pimoroni_pga2350.build.usb_manufacturer="Pimoroni"
 pimoroni_pga2350.build.usb_product="PGA2350"
 pimoroni_pga2350.build.psram_length=0x800000
+pimoroni_pga2350.build.mcu=cortex-m33
 pimoroni_pga2350.menu.flash.16777216_0=16MB (no FS)
 pimoroni_pga2350.menu.flash.16777216_0.upload.maximum_size=16769024
 pimoroni_pga2350.menu.flash.16777216_0.build.flash_total=16777216
@@ -20868,6 +20941,7 @@ pimoroni_pico_plus_2.build.boot2=none
 pimoroni_pico_plus_2.build.usb_manufacturer="Pimoroni"
 pimoroni_pico_plus_2.build.usb_product="PicoPlus2"
 pimoroni_pico_plus_2.build.psram_length=0x800000
+pimoroni_pico_plus_2.build.mcu=cortex-m33
 pimoroni_pico_plus_2.menu.flash.16777216_0=16MB (no FS)
 pimoroni_pico_plus_2.menu.flash.16777216_0.upload.maximum_size=16769024
 pimoroni_pico_plus_2.menu.flash.16777216_0.build.flash_total=16777216
@@ -21205,6 +21279,7 @@ pimoroni_pico_plus_2w.build.boot2=none
 pimoroni_pico_plus_2w.build.usb_manufacturer="Pimoroni"
 pimoroni_pico_plus_2w.build.usb_product="PicoPlus2W"
 pimoroni_pico_plus_2w.build.psram_length=0x800000
+pimoroni_pico_plus_2w.build.mcu=cortex-m33
 pimoroni_pico_plus_2w.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
 pimoroni_pico_plus_2w.menu.flash.16777216_0=16MB (no FS)
 pimoroni_pico_plus_2w.menu.flash.16777216_0.upload.maximum_size=16769024
@@ -21633,6 +21708,7 @@ pimoroni_plasma2040.build.usbvid=-DUSBD_VID=0x2e8a
 pimoroni_plasma2040.build.usbpid=-DUSBD_PID=0x100a
 pimoroni_plasma2040.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 pimoroni_plasma2040.build.board=PIMORONI_PLASMA2040
+pimoroni_plasma2040.build.mcu=cortex-m0plus
 pimoroni_plasma2040.build.chip=rp2040
 pimoroni_plasma2040.build.toolchain=arm-none-eabi
 pimoroni_plasma2040.build.toolchainpkg=pqt-gcc
@@ -21864,6 +21940,7 @@ pimoroni_tiny2040.build.usbvid=-DUSBD_VID=0x2e8a
 pimoroni_tiny2040.build.usbpid=-DUSBD_PID=0x100a
 pimoroni_tiny2040.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 pimoroni_tiny2040.build.board=PIMORONI_TINY2040
+pimoroni_tiny2040.build.mcu=cortex-m0plus
 pimoroni_tiny2040.build.chip=rp2040
 pimoroni_tiny2040.build.toolchain=arm-none-eabi
 pimoroni_tiny2040.build.toolchainpkg=pqt-gcc
@@ -22137,6 +22214,7 @@ pimoroni_tiny2350.build.boot2=none
 pimoroni_tiny2350.build.usb_manufacturer="Pimoroni"
 pimoroni_tiny2350.build.usb_product="Tiny2350"
 pimoroni_tiny2350.build.psram_length=0x000000
+pimoroni_tiny2350.build.mcu=cortex-m33
 pimoroni_tiny2350.menu.flash.4194304_0=4MB (no FS)
 pimoroni_tiny2350.menu.flash.4194304_0.upload.maximum_size=4186112
 pimoroni_tiny2350.menu.flash.4194304_0.build.flash_total=4194304
@@ -22352,6 +22430,7 @@ pintronix_pinmax.build.usbvid=-DUSBD_VID=0x2e8a
 pintronix_pinmax.build.usbpid=-DUSBD_PID=0x9101
 pintronix_pinmax.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 pintronix_pinmax.build.board=PINTRONIX_PINMAX
+pintronix_pinmax.build.mcu=cortex-m0plus
 pintronix_pinmax.build.chip=rp2040
 pintronix_pinmax.build.toolchain=arm-none-eabi
 pintronix_pinmax.build.toolchainpkg=pqt-gcc
@@ -22597,6 +22676,7 @@ rakwireless_rak11300.build.usbvid=-DUSBD_VID=0x2e8a
 rakwireless_rak11300.build.usbpid=-DUSBD_PID=0x00c0
 rakwireless_rak11300.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 rakwireless_rak11300.build.board=RAKWIRELESS_RAK11300
+rakwireless_rak11300.build.mcu=cortex-m0plus
 rakwireless_rak11300.build.chip=rp2040
 rakwireless_rak11300.build.toolchain=arm-none-eabi
 rakwireless_rak11300.build.toolchainpkg=pqt-gcc
@@ -22812,6 +22892,7 @@ redscorp_rp2040_eins.build.usbvid=-DUSBD_VID=0x2341
 redscorp_rp2040_eins.build.usbpid=-DUSBD_PID=0x005f
 redscorp_rp2040_eins.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 redscorp_rp2040_eins.build.board=REDSCORP_RP2040_EINS
+redscorp_rp2040_eins.build.mcu=cortex-m0plus
 redscorp_rp2040_eins.build.chip=rp2040
 redscorp_rp2040_eins.build.toolchain=arm-none-eabi
 redscorp_rp2040_eins.build.toolchainpkg=pqt-gcc
@@ -23125,6 +23206,7 @@ redscorp_rp2040_promini.build.usbvid=-DUSBD_VID=0x2341
 redscorp_rp2040_promini.build.usbpid=-DUSBD_PID=0x005f
 redscorp_rp2040_promini.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 redscorp_rp2040_promini.build.board=REDSCORP_RP2040_PROMINI
+redscorp_rp2040_promini.build.mcu=cortex-m0plus
 redscorp_rp2040_promini.build.chip=rp2040
 redscorp_rp2040_promini.build.toolchain=arm-none-eabi
 redscorp_rp2040_promini.build.toolchainpkg=pqt-gcc
@@ -23430,6 +23512,7 @@ sea_picro.build.usbvid=-DUSBD_VID=0x2e8a
 sea_picro.build.usbpid=-DUSBD_PID=0xf00a
 sea_picro.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 sea_picro.build.board=SEA_PICRO
+sea_picro.build.mcu=cortex-m0plus
 sea_picro.build.chip=rp2040
 sea_picro.build.toolchain=arm-none-eabi
 sea_picro.build.toolchainpkg=pqt-gcc
@@ -23675,6 +23758,7 @@ silicognition_rp2040_shim.build.usbvid=-DUSBD_VID=0x1209
 silicognition_rp2040_shim.build.usbpid=-DUSBD_PID=0xf502
 silicognition_rp2040_shim.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 silicognition_rp2040_shim.build.board=SILICOGNITION_RP2040_SHIM
+silicognition_rp2040_shim.build.mcu=cortex-m0plus
 silicognition_rp2040_shim.build.chip=rp2040
 silicognition_rp2040_shim.build.toolchain=arm-none-eabi
 silicognition_rp2040_shim.build.toolchainpkg=pqt-gcc
@@ -23896,6 +23980,7 @@ solderparty_rp2040_stamp.build.usbvid=-DUSBD_VID=0x1209
 solderparty_rp2040_stamp.build.usbpid=-DUSBD_PID=0xa182
 solderparty_rp2040_stamp.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 solderparty_rp2040_stamp.build.board=SOLDERPARTY_RP2040_STAMP
+solderparty_rp2040_stamp.build.mcu=cortex-m0plus
 solderparty_rp2040_stamp.build.chip=rp2040
 solderparty_rp2040_stamp.build.toolchain=arm-none-eabi
 solderparty_rp2040_stamp.build.toolchainpkg=pqt-gcc
@@ -24159,6 +24244,7 @@ solderparty_rp2350_stamp.build.boot2=none
 solderparty_rp2350_stamp.build.usb_manufacturer="Solder Party"
 solderparty_rp2350_stamp.build.usb_product="RP2350 Stamp"
 solderparty_rp2350_stamp.build.psram_length=0x000000
+solderparty_rp2350_stamp.build.mcu=cortex-m33
 solderparty_rp2350_stamp.menu.flash.16777216_0=16MB (no FS)
 solderparty_rp2350_stamp.menu.flash.16777216_0.upload.maximum_size=16769024
 solderparty_rp2350_stamp.menu.flash.16777216_0.build.flash_total=16777216
@@ -24472,6 +24558,7 @@ solderparty_rp2350_stamp_xl.build.boot2=none
 solderparty_rp2350_stamp_xl.build.usb_manufacturer="Solder Party"
 solderparty_rp2350_stamp_xl.build.usb_product="RP2350 Stamp XL"
 solderparty_rp2350_stamp_xl.build.psram_length=0x000000
+solderparty_rp2350_stamp_xl.build.mcu=cortex-m33
 solderparty_rp2350_stamp_xl.menu.flash.16777216_0=16MB (no FS)
 solderparty_rp2350_stamp_xl.menu.flash.16777216_0.upload.maximum_size=16769024
 solderparty_rp2350_stamp_xl.menu.flash.16777216_0.build.flash_total=16777216
@@ -24795,6 +24882,7 @@ sparkfun_micromodrp2040.build.usbvid=-DUSBD_VID=0x1b4f
 sparkfun_micromodrp2040.build.usbpid=-DUSBD_PID=0x0026
 sparkfun_micromodrp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_micromodrp2040.build.board=SPARKFUN_MICROMOD_RP2040
+sparkfun_micromodrp2040.build.mcu=cortex-m0plus
 sparkfun_micromodrp2040.build.chip=rp2040
 sparkfun_micromodrp2040.build.toolchain=arm-none-eabi
 sparkfun_micromodrp2040.build.toolchainpkg=pqt-gcc
@@ -25124,6 +25212,7 @@ sparkfun_promicrorp2040.build.usbvid=-DUSBD_VID=0x1b4f
 sparkfun_promicrorp2040.build.usbpid=-DUSBD_PID=0x0026
 sparkfun_promicrorp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_promicrorp2040.build.board=SPARKFUN_PROMICRO_RP2040
+sparkfun_promicrorp2040.build.mcu=cortex-m0plus
 sparkfun_promicrorp2040.build.chip=rp2040
 sparkfun_promicrorp2040.build.toolchain=arm-none-eabi
 sparkfun_promicrorp2040.build.toolchainpkg=pqt-gcc
@@ -25467,6 +25556,7 @@ sparkfun_promicrorp2350.build.boot2=none
 sparkfun_promicrorp2350.build.usb_manufacturer="SparkFun"
 sparkfun_promicrorp2350.build.usb_product="ProMicro RP2350"
 sparkfun_promicrorp2350.build.psram_length=0x800000
+sparkfun_promicrorp2350.build.mcu=cortex-m33
 sparkfun_promicrorp2350.menu.flash.16777216_0=16MB (no FS)
 sparkfun_promicrorp2350.menu.flash.16777216_0.upload.maximum_size=16769024
 sparkfun_promicrorp2350.menu.flash.16777216_0.build.flash_total=16777216
@@ -25790,6 +25880,7 @@ sparkfun_thingplusrp2040.build.usbvid=-DUSBD_VID=0x1b4f
 sparkfun_thingplusrp2040.build.usbpid=-DUSBD_PID=0x0026
 sparkfun_thingplusrp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 sparkfun_thingplusrp2040.build.board=SPARKFUN_THINGPLUS_RP2040
+sparkfun_thingplusrp2040.build.mcu=cortex-m0plus
 sparkfun_thingplusrp2040.build.chip=rp2040
 sparkfun_thingplusrp2040.build.toolchain=arm-none-eabi
 sparkfun_thingplusrp2040.build.toolchainpkg=pqt-gcc
@@ -26133,6 +26224,7 @@ sparkfun_thingplusrp2350.build.boot2=none
 sparkfun_thingplusrp2350.build.usb_manufacturer="SparkFun"
 sparkfun_thingplusrp2350.build.usb_product="Thing Plus RP2350"
 sparkfun_thingplusrp2350.build.psram_length=0x800000
+sparkfun_thingplusrp2350.build.mcu=cortex-m33
 sparkfun_thingplusrp2350.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
 sparkfun_thingplusrp2350.menu.flash.16777216_0=16MB (no FS)
 sparkfun_thingplusrp2350.menu.flash.16777216_0.upload.maximum_size=16769024
@@ -26561,6 +26653,7 @@ upesy_rp2040_devkit.build.usbvid=-DUSBD_VID=0x2e8a
 upesy_rp2040_devkit.build.usbpid=-DUSBD_PID=0x1007
 upesy_rp2040_devkit.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 upesy_rp2040_devkit.build.board=UPESY_RP2040_DEVKIT
+upesy_rp2040_devkit.build.mcu=cortex-m0plus
 upesy_rp2040_devkit.build.chip=rp2040
 upesy_rp2040_devkit.build.toolchain=arm-none-eabi
 upesy_rp2040_devkit.build.toolchainpkg=pqt-gcc
@@ -26792,6 +26885,7 @@ seeed_indicator_rp2040.build.usbvid=-DUSBD_VID=0x2886
 seeed_indicator_rp2040.build.usbpid=-DUSBD_PID=0x0050
 seeed_indicator_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 seeed_indicator_rp2040.build.board=SEEED_INDICATOR_RP2040
+seeed_indicator_rp2040.build.mcu=cortex-m0plus
 seeed_indicator_rp2040.build.chip=rp2040
 seeed_indicator_rp2040.build.toolchain=arm-none-eabi
 seeed_indicator_rp2040.build.toolchainpkg=pqt-gcc
@@ -27023,6 +27117,7 @@ seeed_xiao_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
 seeed_xiao_rp2040.build.usbpid=-DUSBD_PID=0x000a
 seeed_xiao_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 seeed_xiao_rp2040.build.board=SEEED_XIAO_RP2040
+seeed_xiao_rp2040.build.mcu=cortex-m0plus
 seeed_xiao_rp2040.build.chip=rp2040
 seeed_xiao_rp2040.build.toolchain=arm-none-eabi
 seeed_xiao_rp2040.build.toolchainpkg=pqt-gcc
@@ -27268,6 +27363,7 @@ seeed_xiao_rp2350.build.boot2=none
 seeed_xiao_rp2350.build.usb_manufacturer="Seeed"
 seeed_xiao_rp2350.build.usb_product="XIAO RP2350"
 seeed_xiao_rp2350.build.psram_length=0x800000
+seeed_xiao_rp2350.build.mcu=cortex-m33
 seeed_xiao_rp2350.menu.flash.16777216_0=16MB (no FS)
 seeed_xiao_rp2350.menu.flash.16777216_0.upload.maximum_size=16769024
 seeed_xiao_rp2350.menu.flash.16777216_0.build.flash_total=16777216
@@ -27575,6 +27671,7 @@ vccgnd_yd_rp2040.build.usbvid=-DUSBD_VID=0x2e8a
 vccgnd_yd_rp2040.build.usbpid=-DUSBD_PID=0x800a
 vccgnd_yd_rp2040.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 vccgnd_yd_rp2040.build.board=YD_RP2040
+vccgnd_yd_rp2040.build.mcu=cortex-m0plus
 vccgnd_yd_rp2040.build.chip=rp2040
 vccgnd_yd_rp2040.build.toolchain=arm-none-eabi
 vccgnd_yd_rp2040.build.toolchainpkg=pqt-gcc
@@ -27876,6 +27973,7 @@ viyalab_mizu.build.usbvid=-DUSBD_VID=0x2e8a
 viyalab_mizu.build.usbpid=-DUSBD_PID=0x000a
 viyalab_mizu.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 viyalab_mizu.build.board=VIYALAB_MIZU_RP2040
+viyalab_mizu.build.mcu=cortex-m0plus
 viyalab_mizu.build.chip=rp2040
 viyalab_mizu.build.toolchain=arm-none-eabi
 viyalab_mizu.build.toolchainpkg=pqt-gcc
@@ -28149,6 +28247,7 @@ waveshare_rp2040_zero.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_zero.build.usbpid=-DUSBD_PID=0x0003
 waveshare_rp2040_zero.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_zero.build.board=WAVESHARE_RP2040_ZERO
+waveshare_rp2040_zero.build.mcu=cortex-m0plus
 waveshare_rp2040_zero.build.chip=rp2040
 waveshare_rp2040_zero.build.toolchain=arm-none-eabi
 waveshare_rp2040_zero.build.toolchainpkg=pqt-gcc
@@ -28380,6 +28479,7 @@ waveshare_rp2040_one.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_one.build.usbpid=-DUSBD_PID=0x103a
 waveshare_rp2040_one.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_one.build.board=WAVESHARE_RP2040_ONE
+waveshare_rp2040_one.build.mcu=cortex-m0plus
 waveshare_rp2040_one.build.chip=rp2040
 waveshare_rp2040_one.build.toolchain=arm-none-eabi
 waveshare_rp2040_one.build.toolchainpkg=pqt-gcc
@@ -28625,6 +28725,7 @@ waveshare_rp2040_matrix.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_matrix.build.usbpid=-DUSBD_PID=0x103a
 waveshare_rp2040_matrix.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_matrix.build.board=WAVESHARE_RP2040_MATRIX
+waveshare_rp2040_matrix.build.mcu=cortex-m0plus
 waveshare_rp2040_matrix.build.chip=rp2040
 waveshare_rp2040_matrix.build.toolchain=arm-none-eabi
 waveshare_rp2040_matrix.build.toolchainpkg=pqt-gcc
@@ -28856,6 +28957,7 @@ waveshare_rp2040_pizero.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_pizero.build.usbpid=-DUSBD_PID=0x0003
 waveshare_rp2040_pizero.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_pizero.build.board=WAVESHARE_RP2040_PIZERO
+waveshare_rp2040_pizero.build.mcu=cortex-m0plus
 waveshare_rp2040_pizero.build.chip=rp2040
 waveshare_rp2040_pizero.build.toolchain=arm-none-eabi
 waveshare_rp2040_pizero.build.toolchainpkg=pqt-gcc
@@ -29185,6 +29287,7 @@ waveshare_rp2040_plus_4mb.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_plus_4mb.build.usbpid=-DUSBD_PID=0x1020
 waveshare_rp2040_plus_4mb.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_plus_4mb.build.board=WAVESHARE_RP2040_PLUS
+waveshare_rp2040_plus_4mb.build.mcu=cortex-m0plus
 waveshare_rp2040_plus_4mb.build.chip=rp2040
 waveshare_rp2040_plus_4mb.build.toolchain=arm-none-eabi
 waveshare_rp2040_plus_4mb.build.toolchainpkg=pqt-gcc
@@ -29430,6 +29533,7 @@ waveshare_rp2040_plus_16mb.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_plus_16mb.build.usbpid=-DUSBD_PID=0x1020
 waveshare_rp2040_plus_16mb.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_plus_16mb.build.board=WAVESHARE_RP2040_PLUS
+waveshare_rp2040_plus_16mb.build.mcu=cortex-m0plus
 waveshare_rp2040_plus_16mb.build.chip=rp2040
 waveshare_rp2040_plus_16mb.build.toolchain=arm-none-eabi
 waveshare_rp2040_plus_16mb.build.toolchainpkg=pqt-gcc
@@ -29759,6 +29863,7 @@ waveshare_rp2040_lcd_0_96.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_lcd_0_96.build.usbpid=-DUSBD_PID=0x1021
 waveshare_rp2040_lcd_0_96.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_lcd_0_96.build.board=WAVESHARE_RP2040_LCD_0_96
+waveshare_rp2040_lcd_0_96.build.mcu=cortex-m0plus
 waveshare_rp2040_lcd_0_96.build.chip=rp2040
 waveshare_rp2040_lcd_0_96.build.toolchain=arm-none-eabi
 waveshare_rp2040_lcd_0_96.build.toolchainpkg=pqt-gcc
@@ -29990,6 +30095,7 @@ waveshare_rp2040_lcd_1_28.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2040_lcd_1_28.build.usbpid=-DUSBD_PID=0x1039
 waveshare_rp2040_lcd_1_28.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2040_lcd_1_28.build.board=WAVESHARE_RP2040_LCD_1_28
+waveshare_rp2040_lcd_1_28.build.mcu=cortex-m0plus
 waveshare_rp2040_lcd_1_28.build.chip=rp2040
 waveshare_rp2040_lcd_1_28.build.toolchain=arm-none-eabi
 waveshare_rp2040_lcd_1_28.build.toolchainpkg=pqt-gcc
@@ -30221,6 +30327,7 @@ wiznet_5100s_evb_pico.build.usbvid=-DUSBD_VID=0x2e8a
 wiznet_5100s_evb_pico.build.usbpid=-DUSBD_PID=0x1027
 wiznet_5100s_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5100s_evb_pico.build.board=WIZNET_5100S_EVB_PICO
+wiznet_5100s_evb_pico.build.mcu=cortex-m0plus
 wiznet_5100s_evb_pico.build.chip=rp2040
 wiznet_5100s_evb_pico.build.toolchain=arm-none-eabi
 wiznet_5100s_evb_pico.build.toolchainpkg=pqt-gcc
@@ -30466,6 +30573,7 @@ wiznet_5100s_evb_pico2.build.boot2=none
 wiznet_5100s_evb_pico2.build.usb_manufacturer="WIZnet"
 wiznet_5100s_evb_pico2.build.usb_product="W5100S-EVB-Pico2"
 wiznet_5100s_evb_pico2.build.psram_length=0x000000
+wiznet_5100s_evb_pico2.build.mcu=cortex-m33
 wiznet_5100s_evb_pico2.menu.flash.2097152_0=2MB (no FS)
 wiznet_5100s_evb_pico2.menu.flash.2097152_0.upload.maximum_size=2088960
 wiznet_5100s_evb_pico2.menu.flash.2097152_0.build.flash_total=2097152
@@ -30691,6 +30799,7 @@ wiznet_wizfi360_evb_pico.build.usbvid=-DUSBD_VID=0x2e8a
 wiznet_wizfi360_evb_pico.build.usbpid=-DUSBD_PID=0x1028
 wiznet_wizfi360_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_wizfi360_evb_pico.build.board=WIZNET_WIZFI360_EVB_PICO
+wiznet_wizfi360_evb_pico.build.mcu=cortex-m0plus
 wiznet_wizfi360_evb_pico.build.chip=rp2040
 wiznet_wizfi360_evb_pico.build.toolchain=arm-none-eabi
 wiznet_wizfi360_evb_pico.build.toolchainpkg=pqt-gcc
@@ -30922,6 +31031,7 @@ wiznet_5500_evb_pico.build.usbvid=-DUSBD_VID=0x2e8a
 wiznet_5500_evb_pico.build.usbpid=-DUSBD_PID=0x1029
 wiznet_5500_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_5500_evb_pico.build.board=WIZNET_5500_EVB_PICO
+wiznet_5500_evb_pico.build.mcu=cortex-m0plus
 wiznet_5500_evb_pico.build.chip=rp2040
 wiznet_5500_evb_pico.build.toolchain=arm-none-eabi
 wiznet_5500_evb_pico.build.toolchainpkg=pqt-gcc
@@ -31167,6 +31277,7 @@ wiznet_5500_evb_pico2.build.boot2=none
 wiznet_5500_evb_pico2.build.usb_manufacturer="WIZnet"
 wiznet_5500_evb_pico2.build.usb_product="W5500-EVB-Pico2"
 wiznet_5500_evb_pico2.build.psram_length=0x000000
+wiznet_5500_evb_pico2.build.mcu=cortex-m33
 wiznet_5500_evb_pico2.menu.flash.2097152_0=2MB (no FS)
 wiznet_5500_evb_pico2.menu.flash.2097152_0.upload.maximum_size=2088960
 wiznet_5500_evb_pico2.menu.flash.2097152_0.build.flash_total=2097152
@@ -31392,6 +31503,7 @@ wiznet_55rp20_evb_pico.build.usbvid=-DUSBD_VID=0x2e8a
 wiznet_55rp20_evb_pico.build.usbpid=-DUSBD_PID=0x1029
 wiznet_55rp20_evb_pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 wiznet_55rp20_evb_pico.build.board=WIZNET_55RP20_EVB_PICO
+wiznet_55rp20_evb_pico.build.mcu=cortex-m0plus
 wiznet_55rp20_evb_pico.build.chip=rp2040
 wiznet_55rp20_evb_pico.build.toolchain=arm-none-eabi
 wiznet_55rp20_evb_pico.build.toolchainpkg=pqt-gcc
@@ -31599,6 +31711,7 @@ generic.build.usbvid=-DUSBD_VID=0x2e8a
 generic.build.usbpid=-DUSBD_PID=0xf00a
 generic.build.usbpwr=-DUSBD_MAX_POWER_MA=250
 generic.build.board=GENERIC_RP2040
+generic.build.mcu=cortex-m0plus
 generic.build.chip=rp2040
 generic.build.toolchain=arm-none-eabi
 generic.build.toolchainpkg=pqt-gcc
@@ -31911,6 +32024,7 @@ generic_rp2350.build.ldscript=memmap_default.ld
 generic_rp2350.build.boot2=none
 generic_rp2350.build.usb_manufacturer="Generic"
 generic_rp2350.build.usb_product="RP2350"
+generic_rp2350.build.mcu=cortex-m33
 generic_rp2350.menu.flash.2097152_0=2MB (no FS)
 generic_rp2350.menu.flash.2097152_0.upload.maximum_size=2088960
 generic_rp2350.menu.flash.2097152_0.build.flash_total=2097152

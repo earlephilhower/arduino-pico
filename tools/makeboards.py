@@ -238,8 +238,9 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.usbpid=-DUSBD_PID=%s" % (name, main_pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
-#    print("%s.build.mcu=cortex-m0plus" % (name))
+
     if chip == "rp2040":  # RP2350 has menu for this later on
+        print("%s.build.mcu=cortex-m0plus" % (name))        
         print("%s.build.chip=%s" % (name, chip))
         print("%s.build.toolchain=%s" % (name, chaintuple))
         print("%s.build.toolchainpkg=%s" % (name, "pqt-gcc"))
@@ -260,6 +261,8 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print('%s.build.usb_product="%s"' % (name, product_name))
     if ((chip == "rp2350") or (chip == "rp2350-riscv")) and (name != "generic_rp2350"):
         print("%s.build.psram_length=0x%d00000" % (name, psramsize))
+    if chip == "rp2350":
+        print("%s.build.mcu=cortex-m33" % (name))
     if extra != None:
         m_extra = ''
         for m_item in extra:
