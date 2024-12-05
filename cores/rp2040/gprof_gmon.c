@@ -33,23 +33,14 @@
 // apply different compile parameters to different files, we set all C++
 // files to "-pg" but leave all C files uninstrumented.
 
-
-/*
-    This file is taken from Cygwin distribution. Please keep it in sync.
-    The differences should be within __MINGW32__ guard.
-*/
-
 // Original code and organization taken from https://mcuoneclipse.com/2015/08/23/tutorial-using-gnu-profiling-gprof-with-arm-cortex-m/
 
 #include <Arduino.h>
-#include <fcntl.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
 #include <stdint.h>
 #include <string.h>
 
-// Frequency of sampling
+// Frequency of sampling PC
 #ifndef GMON_HZ
 #define GMON_HZ 10000
 #endif
@@ -116,22 +107,6 @@
 #define GMON_PROF_ERROR 2
 #define GMON_PROF_OFF     3
 
-//void _mcleanup(void); /* routine to be called to write gmon.out file */
-
-
-
-/*
-    Structure prepended to gmon.out profiling data file.
-*/
-struct gmonhdr {
-    size_t  lpc;    /* base pc address of sample buffer */
-    size_t  hpc;    /* max pc address of sampled buffer */
-    int ncnt;       /* size of sample buffer (plus this header) */
-    int version;    /* version number */
-    int profrate;   /* profiling clock rate */
-    int spare[3];   /* reserved */
-};
-#define GMONVERSION 0x00051879
 
 /*
     histogram counters are unsigned shorts (according to the kernel).
@@ -148,23 +123,14 @@ void _monInit(void); /* initialization routine */
 // (33%) per entry at the cost of some logic to expand/pack it.
 struct tostruct {
     uint8_t selfpc[3]; /* callee address/program counter. The caller address is in froms[] array which points to tos[] array */
-    uint8_t count[3];    /* how many times it has been called */
-    u_short link;   /* link to next entry in hash table. For tos[0] this points to the last used entry */
+    uint8_t count[3];  /* how many times it has been called */
+    uint16_t link;      /* link to next entry in hash table. For tos[0] this points to the last used entry */
 };
 #define SETSELFPC(x, d) do { (x)->selfpc[0] = d & 0xff; (x)->selfpc[1] = (d >> 8) & 0xff; (x)->selfpc[2] = (d >> 16) & 0xff; } while (0)
 #define SETCOUNT(x, d) do { (x)->count[0] = d & 0xff; (x)->count[1] = (d >> 8) & 0xff; (x)->count[2] = (d >> 16) & 0xff; } while (0)
 #define GETSELFPC(x) (0x10000000 | ((uint32_t)(x)->selfpc[0]) | (((uint32_t)(x)->selfpc[1]) << 8) | (((uint32_t)(x)->selfpc[2]) << 16))
 #define GETCOUNT(x) (((uint32_t)(x)->count[0]) | (((uint32_t)(x)->count[1]) << 8) | (((uint32_t)(x)->count[2]) << 16))
 
-/*
-    a raw arc, with pointers to the calling site and
-    the called site and a count.
-*/
-struct rawarc {
-    size_t  raw_frompc;
-    size_t  raw_selfpc;
-    long  raw_count;
-};
 
 /*
     general rounding functions.
@@ -177,9 +143,9 @@ struct rawarc {
 */
 struct gmonparam {
     int   state;
-    u_short   *kcount;    /* histogram PC sample array */
+    uint16_t   *kcount;    /* histogram PC sample array */
     size_t    kcountsize; /* size of kcount[] array in bytes */
-    u_short   *froms;     /* array of hashed 'from' addresses. The 16bit value is an index into the tos[] array */
+    uint16_t   *froms;     /* array of hashed 'from' addresses. The 16bit value is an index into the tos[] array */
     size_t    fromssize;  /* size of froms[] array in bytes */
     struct tostruct *tos; /* to struct, contains histogram counter */
     size_t    tossize;    /* size of tos[] array in bytes */
@@ -188,8 +154,6 @@ struct gmonparam {
     size_t    highpc;     /* high program counter */
     size_t    textsize;   /* code size */
 };
-extern struct gmonparam _gmonparam;
-
 
 typedef enum {
     PROFILE_NOT_INIT = 0,
@@ -199,9 +163,9 @@ typedef enum {
 
 struct profinfo {
     PROFILE_State state; /* profiling state */
-    u_short *counter;     /* profiling counters */
+    uint16_t *counter;     /* profiling counters */
     size_t lowpc, highpc;   /* range to be profiled */
-    u_int scale;      /* scale value of bins */
+    uint32_t scale;      /* scale value of bins */
 };
 
 
@@ -209,7 +173,6 @@ struct profinfo {
 static struct profinfo prof = {
     PROFILE_NOT_INIT, 0, 0, 0, 0
 };
-extern volatile bool __otherCoreIdled;
 
 /* convert an addr to an index */
 #define PROFIDX(pc, base, scale)  \
@@ -229,17 +192,14 @@ extern volatile bool __otherCoreIdled;
        / (unsigned long long)(scale)) << 1))
 
 
-int profile_ctl(struct profinfo *, char *, size_t, size_t, u_int);
-int profil(char *, size_t, size_t, u_int);
-
-
-/* sample the current program counter */
+/* Sample the current program counter */
 void __no_inline_not_in_flash_func(_SystickHandler)(void) {
     static size_t pc, idx; // Ensure in heap, not on stack
+    extern volatile bool __otherCoreIdled;
 
     if (!__otherCoreIdled && (prof.state == PROFILE_ON)) {
         pc = ((uint32_t*)(__builtin_frame_address(0)))[14]; /* get SP and use it to get the return address from stack */
-        if (pc >= prof.lowpc && pc < prof.highpc) {
+        if ((pc >= prof.lowpc) && (pc < prof.highpc)) {
             idx = PROFIDX(pc, prof.lowpc, prof.scale);
             prof.counter[idx]++;
         }
@@ -262,7 +222,7 @@ static int __no_inline_not_in_flash_func(profile_on)(struct profinfo *p) {
     start or stop profiling
 
     profiling goes into the SAMPLES buffer of size SIZE (which is treated
-    as an array of u_shorts of size size/2)
+    as an array of uint16_ts of size size/2)
 
     each bin represents a range of pc addresses from OFFSET.  The number
     of pc addresses in a bin depends on SCALE.  (A scale of 65536 maps
@@ -270,11 +230,10 @@ static int __no_inline_not_in_flash_func(profile_on)(struct profinfo *p) {
     a scale of 1 maps each bin to 128k address).  Scale may be 1 - 65536,
     or zero to turn off profiling
 */
-int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples, size_t size, size_t offset, u_int scale) {
+int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples, size_t size, size_t offset, uint32_t scale) {
     size_t maxbin;
 
     if (scale > 65536) {
-        //    errno = EINVAL;
         return -1;
     }
     profile_off(p);
@@ -282,7 +241,7 @@ int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples
         memset(samples, 0, size);
         memset(p, 0, sizeof * p);
         maxbin = size >> 1;
-        prof.counter = (u_short*)samples;
+        prof.counter = (uint16_t*)samples;
         prof.lowpc = offset;
         prof.highpc = PROFADDR(maxbin, offset, scale);
         prof.scale = scale;
@@ -295,13 +254,12 @@ int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples
     Every SLEEPTIME interval, the user's program counter (PC) is examined:
     offset is subtracted and the result is multiplied by scale.
     The word pointed to by this address is incremented. */
-int __no_inline_not_in_flash_func(profil)(char *samples, size_t size, size_t offset, u_int scale) {
+int __no_inline_not_in_flash_func(profil)(char *samples, size_t size, size_t offset, uint32_t scale) {
     return profile_ctl(&prof, samples, size, offset, scale);
 }
 
 
-
-#define PICO_RUNTIME_INIT_PROFILING "11011" // Towards the end, after PSRAM
+// These are referenced by RP2040Support.cpp and called by the runtime init SDK
 #if defined(__riscv)
 void runtime_init_setup_profiling() {
     // TODO - is there an equivalent?  Or do we need to build a timer IRQ here?
@@ -317,10 +275,7 @@ void runtime_init_setup_profiling() {
 #endif
 
 
-#define MINUS_ONE_P (-1)
-#define ERR(s) write(2, s, sizeof(s))
-
-struct gmonparam _gmonparam = { GMON_PROF_OFF, NULL, 0, NULL, 0, NULL, 0, 0L, 0, 0, 0};
+static struct gmonparam _gmonparam = { GMON_PROF_OFF, NULL, 0, NULL, 0, NULL, 0, 0L, 0, 0, 0};
 static char already_setup = 0; /* flag to indicate if we need to init */
 static int	s_scale;
 /* see profil(2) where this is described (incorrectly) */
@@ -354,60 +309,52 @@ void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
     __profileMemSize = p->kcountsize + p->fromssize + p->tossize;
 #ifdef RP2350_PSRAM_CS
     cp = pmalloc(__profileMemSize);
-    if (cp == (char *)0) {
-        ERR("monstartup: out of memory\n");
+#else
+    cp = malloc(__profileMemSize);
+#endif
+    if (cp == NULL) {
+        // OOM
         already_setup = 0;
         return;
     }
-#else
-    cp = malloc(__profileMemSize);
-    if (cp == (char *)0) {
-        ERR("monstartup: out of memory\n");
-        return;
-    }
-#endif
 
     /* zero out cp as value will be added there */
     bzero(cp, p->kcountsize + p->fromssize + p->tossize);
 
     p->tos = (struct tostruct *)cp;
     cp += p->tossize;
-    p->kcount = (u_short *)cp;
+    p->kcount = (uint16_t *)cp;
     cp += p->kcountsize;
-    p->froms = (u_short *)cp;
+    p->froms = (uint16_t *)cp;
 
     p->tos[0].link = 0;
 
     o = p->highpc - p->lowpc;
     if (p->kcountsize < o) {
-#ifndef notdef
         s_scale = ((float)p->kcountsize / o) * SCALE_1_TO_1;
-#else /* avoid floating point */
-        int quot = o / p->kcountsize;
-
-        if (quot >= 0x10000) {
-            s_scale = 1;
-        } else if (quot >= 0x100) {
-            s_scale = 0x10000 / quot;
-        } else if (o >= 0x800000) {
-            s_scale = 0x1000000 / (o / (p->kcountsize >> 8));
-        } else {
-            s_scale = 0x1000000 / ((o << 8) / p->kcountsize);
-        }
-#endif
     } else {
         s_scale = SCALE_1_TO_1;
     }
     moncontrol(1); /* start */
 }
 
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
 
-// Ensure matches definition in rp2040support
 typedef int (*profileWriteCB)(const void *data, int len);
 void _writeProfile(profileWriteCB writeCB) {
+    struct gmonhdr {    // GMON.OUT header
+        size_t  lpc;    /* base pc address of sample buffer */
+        size_t  hpc;    /* max pc address of sampled buffer */
+        int ncnt;       /* size of sample buffer (plus this header) */
+        int version;    /* version number */
+        int profrate;   /* profiling clock rate */
+        int spare[3];   /* reserved */
+    };
+    const unsigned int GMONVERSION = 0x00051879;
+    struct rawarc {     // Per-arc on-disk data format
+        size_t raw_frompc;
+        size_t raw_selfpc;
+        long   raw_count;
+    };
     int fromindex;
     int endfrom;
     size_t frompc;
@@ -448,6 +395,7 @@ void _writeProfile(profileWriteCB writeCB) {
             }
         }
     }
+    // Write any remaining bits
     if (rawarcbuffptr) {
         writeCB((void *)rawarcbuff, rawarcbuffptr * sizeof(struct rawarc));
     }
@@ -471,21 +419,24 @@ static void __no_inline_not_in_flash_func(moncontrol)(int mode) {
         p->state = GMON_PROF_OFF;
     }
 }
-bool _perf_in_setup = false;
+static bool _perf_in_setup = false;
 void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint32_t *selfpc) {
-    register struct tostruct	*top;
-    register struct tostruct	*prevtop;
-    register long			toindex;
+    register struct tostruct *top;
+    register struct tostruct *prevtop;
+    register long            toindex;
     struct gmonparam *p = &_gmonparam;
+
     if (_perf_in_setup) {
+        // Avoid infinite recursion
         return;
     }
 
     if (!already_setup) {
+        extern char __flash_binary_start; // Start of flash
         extern char __etext; /* end of text/code symbol, defined by linker */
         already_setup = 1;
         _perf_in_setup = true;
-        monstartup(0x10000000, (uint32_t)&__etext);
+        monstartup((uint32_t)&__flash_binary_start, (uint32_t)&__etext);
         _perf_in_setup = false;
     }
     /*
@@ -501,13 +452,12 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
      	for example:	signal catchers get called from the stack,
      			not from text space.  too bad.
     */
-    //goto out;
     frompcindex = (uint32_t*)((long)frompcindex - (long)p->lowpc);
     if ((unsigned long)frompcindex > p->textsize) {
         goto done;
     }
     frompcindex = (uint32_t*)&p->froms[((long)frompcindex) / (HASHFRACTION * sizeof(*p->froms))];
-    toindex = *((u_short*)frompcindex); /* get froms[] value */
+    toindex = *((uint16_t*)frompcindex); /* get froms[] value */
     if (toindex == 0) {
         /*
         	first time traversing this arc
@@ -516,10 +466,10 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
         if (toindex >= p->tolimit) { /* more tos[] entries than we can handle! */
             goto overflow;
         }
-        *((u_short*)frompcindex) = (u_short)toindex; /* store new 'to' value into froms[] */
+        *((uint16_t*)frompcindex) = (uint16_t)toindex; /* store new 'to' value into froms[] */
         top = &p->tos[toindex];
-        SETSELFPC(top, (uint32_t)selfpc); //top->selfpc = (size_t)selfpc;
-        SETCOUNT(top, 1); //top->count = 1;
+        SETSELFPC(top, (uint32_t)selfpc);
+        SETCOUNT(top, 1);
         top->link = 0;
         goto done;
     }
@@ -528,11 +478,11 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
         /*
          	arc at front of chain; usual case.
         */
-        uint32_t cnt = GETCOUNT(top) + 1;//->count++;
+        uint32_t cnt = GETCOUNT(top) + 1;
         if (cnt >= 1 << 24) {
-            cnt = 1 << 24;
+            cnt = (1 << 24) - 1;
         }
-        SETCOUNT(top, cnt);//top->count++;
+        SETCOUNT(top, cnt);
         goto done;
     }
     /*
@@ -555,9 +505,9 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
             }
             top = &p->tos[toindex];
             SETSELFPC(top, (uint32_t)selfpc);
-            SETCOUNT(top, 1); //->count = 1;
-            top->link = *((u_short*)frompcindex);
-            *(u_short*)frompcindex = (u_short)toindex;
+            SETCOUNT(top, 1);
+            top->link = *((uint16_t*)frompcindex);
+            *(uint16_t*)frompcindex = (uint16_t)toindex;
             goto done;
         }
         /*
@@ -565,21 +515,21 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
         */
         prevtop = top;
         top = &p->tos[top->link];
-        if (GETSELFPC(top)/*->selfpc*/ == (size_t)selfpc) {
+        if (GETSELFPC(top) == (size_t)selfpc) {
             /*
              	there it is.
              	increment its count
              	move it to the head of the chain.
             */
-            uint32_t cnt = GETCOUNT(top) + 1;//->count++;
+            uint32_t cnt = GETCOUNT(top) + 1;
             if (cnt >= 1 << 24) {
-                cnt = 1 << 24;
+                cnt = (1 << 24) - 1;
             }
             SETCOUNT(top, cnt);
             toindex = prevtop->link;
             prevtop->link = top->link;
-            top->link = *((u_short*)frompcindex);
-            *((u_short*)frompcindex) = (u_short)toindex;
+            top->link = *((uint16_t*)frompcindex);
+            *((uint16_t*)frompcindex) = (uint16_t)toindex;
             goto done;
         }
     }
@@ -590,8 +540,7 @@ out:
     return;		/* normal return restores saved registers */
 overflow:
     p->state++; /* halt further profiling */
-#define	TOLIMIT	"mcount: tos overflow\n"
-    write(2, TOLIMIT, sizeof(TOLIMIT));
+    // TOS OOM Overflow
     goto out;
 }
 

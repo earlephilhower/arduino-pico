@@ -65,6 +65,7 @@ getUsedPSRAMHeap	KEYWORD2
 getTotalPSRAMHeap	KEYWORD2
 getTotalPSRAM	KEYWORD2
 
+getProfileMemoryUsage	KEYWORD2
 writeProfiling	KEYWORD2
 
 getChipID	KEYWORD2
