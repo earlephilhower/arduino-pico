@@ -13,7 +13,7 @@ to 10000KB depending on the size of the application.  As such, while the RP2040 
 profile small applications, this is only really recommended on the RP2350 with external PSRAM.  The
 profiler will automatically use PSRAM when available.
 
-Profiling also adds procesing overhead in terms of the periodic sampling and the function preambles.
+Profiling also adds processing overhead in terms of the periodic sampling and the function preambles.
 In most cases there is no reason to enable (and many reasons to disable) profiling when an application
 is deployed to the field.
 
