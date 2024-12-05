@@ -405,6 +405,9 @@ void _writeProfile(profileWriteCB writeCB) {
     size_t frompc;
     int toindex;
     struct rawarc rawarc;
+    const int BS = 64;
+    struct rawarc rawarcbuff[BS];
+    int rawarcbuffptr = 0;
     struct gmonparam *p = &_gmonparam;
     struct gmonhdr gmonhdr, *hdr;
 
@@ -429,8 +432,16 @@ void _writeProfile(profileWriteCB writeCB) {
             rawarc.raw_frompc = frompc;
             rawarc.raw_selfpc = GETSELFPC(&p->tos[toindex]);
             rawarc.raw_count = GETCOUNT(&p->tos[toindex]);
-            writeCB((void *)&rawarc, sizeof rawarc);
+            // Buffer up writes because Semihosting is really slow per write call
+            rawarcbuff[rawarcbuffptr++] = rawarc;
+            if (rawarcbuffptr == BS) {
+                writeCB((void *)rawarcbuff, BS * sizeof(struct rawarc));
+                rawarcbuffptr = 0;
+            }
         }
+    }
+    if (rawarcbuffptr) {
+        writeCB((void *)rawarcbuff, rawarcbuffptr * sizeof(struct rawarc));
     }
 }
 
