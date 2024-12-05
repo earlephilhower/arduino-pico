@@ -143,9 +143,9 @@ struct tostruct {
 */
 struct gmonparam {
     int   state;
-    uint16_t   *kcount;    /* histogram PC sample array */
+    uint16_t   *kcount;   /* histogram PC sample array */
     size_t    kcountsize; /* size of kcount[] array in bytes */
-    uint16_t   *froms;     /* array of hashed 'from' addresses. The 16bit value is an index into the tos[] array */
+    uint16_t   *froms;    /* array of hashed 'from' addresses. The 16bit value is an index into the tos[] array */
     size_t    fromssize;  /* size of froms[] array in bytes */
     struct tostruct *tos; /* to struct, contains histogram counter */
     size_t    tossize;    /* size of tos[] array in bytes */
@@ -174,37 +174,41 @@ static struct profinfo prof = {
     PROFILE_NOT_INIT, 0, 0, 0, 0
 };
 
-/* convert an addr to an index */
-#define PROFIDX(pc, base, scale)  \
-  ({                  \
-    size_t i = (pc - base) / 2;       \
-    if (sizeof (unsigned long long int) > sizeof (size_t))    \
-      i = (unsigned long long int) i * scale / 65536;     \
-    else                \
-      i = i / 65536 * scale + i % 65536 * scale / 65536;    \
-    i;                  \
-  })
+static struct gmonparam _gmonparam = { GMON_PROF_OFF, NULL, 0, NULL, 0, NULL, 0, 0L, 0, 0, 0};
+static bool   already_setup = false; /* flag to indicate if we need to init */
+static bool   _perf_in_setup = false; // Are we currently trying to initialize? (avoid infinite recursion)
+static int    s_scale = 0;
+#define SCALE_1_TO_1 0x10000L
+int __profileMemSize = 0; // Memory allocated by the profiler to store tables
 
-/* convert an index into an address */
-#define PROFADDR(idx, base, scale)    \
-  ((base)         \
-   + ((((unsigned long long)(idx) << 16)  \
-       / (unsigned long long)(scale)) << 1))
 
+// Convert an addr to an index
+static inline size_t profidx(size_t pc, size_t base, size_t scale) {
+    size_t i = (pc - base) / 2;
+    if (sizeof(unsigned long long int) > sizeof(size_t)) {
+        return (unsigned long long int) i * scale / 65536;
+    } else {
+        return i / 65536 * scale + i % 65536 * scale / 65536;
+    }
+}
 
 /* Sample the current program counter */
-void __no_inline_not_in_flash_func(_SystickHandler)(void) {
+#if defined(__riscv)
+// TODO - systick-like handler
+#else
+static void __no_inline_not_in_flash_func(_SystickHandler)(void) {
     static size_t pc, idx; // Ensure in heap, not on stack
     extern volatile bool __otherCoreIdled;
 
     if (!__otherCoreIdled && (prof.state == PROFILE_ON)) {
         pc = ((uint32_t*)(__builtin_frame_address(0)))[14]; /* get SP and use it to get the return address from stack */
         if ((pc >= prof.lowpc) && (pc < prof.highpc)) {
-            idx = PROFIDX(pc, prof.lowpc, prof.scale);
+            idx = profidx(pc, prof.lowpc, prof.scale);
             prof.counter[idx]++;
         }
     }
 }
+#endif
 
 /* Stop profiling to the profiling buffer pointed to by p. */
 static int __no_inline_not_in_flash_func(profile_off)(struct profinfo *p) {
@@ -216,6 +220,11 @@ static int __no_inline_not_in_flash_func(profile_off)(struct profinfo *p) {
 static int __no_inline_not_in_flash_func(profile_on)(struct profinfo *p) {
     p->state = PROFILE_ON;
     return 0; /* ok */
+}
+
+// Convert an index into an address
+static inline size_t profaddr(size_t idx, size_t base, size_t scale) {
+    return base + ((((unsigned long long)(idx) << 16) / (unsigned long long)(scale)) << 1);
 }
 
 /*
@@ -230,7 +239,7 @@ static int __no_inline_not_in_flash_func(profile_on)(struct profinfo *p) {
     a scale of 1 maps each bin to 128k address).  Scale may be 1 - 65536,
     or zero to turn off profiling
 */
-int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples, size_t size, size_t offset, uint32_t scale) {
+static int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples, size_t size, size_t offset, uint32_t scale) {
     size_t maxbin;
 
     if (scale > 65536) {
@@ -243,7 +252,7 @@ int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples
         maxbin = size >> 1;
         prof.counter = (uint16_t*)samples;
         prof.lowpc = offset;
-        prof.highpc = PROFADDR(maxbin, offset, scale);
+        prof.highpc = profaddr(maxbin, offset, scale);
         prof.scale = scale;
         return profile_on(p);
     }
@@ -254,36 +263,13 @@ int __no_inline_not_in_flash_func(profile_ctl)(struct profinfo *p, char *samples
     Every SLEEPTIME interval, the user's program counter (PC) is examined:
     offset is subtracted and the result is multiplied by scale.
     The word pointed to by this address is incremented. */
-int __no_inline_not_in_flash_func(profil)(char *samples, size_t size, size_t offset, uint32_t scale) {
+static int __no_inline_not_in_flash_func(profil)(char *samples, size_t size, size_t offset, uint32_t scale) {
     return profile_ctl(&prof, samples, size, offset, scale);
 }
 
 
-// These are referenced by RP2040Support.cpp and called by the runtime init SDK
-#if defined(__riscv)
-void runtime_init_setup_profiling() {
-    // TODO - is there an equivalent?  Or do we need to build a timer IRQ here?
-}
-#else
-#include <hardware/exception.h>
-#include <hardware/structs/systick.h>
-void runtime_init_setup_profiling() {
-    exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
-    systick_hw->csr = 0x7;
-    systick_hw->rvr = (F_CPU / GMON_HZ) - 1;
-}
-#endif
-
-
-static struct gmonparam _gmonparam = { GMON_PROF_OFF, NULL, 0, NULL, 0, NULL, 0, 0L, 0, 0, 0};
-static char already_setup = 0; /* flag to indicate if we need to init */
-static int	s_scale;
-/* see profil(2) where this is described (incorrectly) */
-#define		SCALE_1_TO_1	0x10000L
-
 static void moncontrol(int mode);
 
-int __profileMemSize = 0;
 
 void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
     register size_t o;
@@ -314,7 +300,7 @@ void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
 #endif
     if (cp == NULL) {
         // OOM
-        already_setup = 0;
+        already_setup = false;
         return;
     }
 
@@ -339,68 +325,6 @@ void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
 }
 
 
-typedef int (*profileWriteCB)(const void *data, int len);
-void _writeProfile(profileWriteCB writeCB) {
-    struct gmonhdr {    // GMON.OUT header
-        size_t  lpc;    /* base pc address of sample buffer */
-        size_t  hpc;    /* max pc address of sampled buffer */
-        int ncnt;       /* size of sample buffer (plus this header) */
-        int version;    /* version number */
-        int profrate;   /* profiling clock rate */
-        int spare[3];   /* reserved */
-    };
-    const unsigned int GMONVERSION = 0x00051879;
-    struct rawarc {     // Per-arc on-disk data format
-        size_t raw_frompc;
-        size_t raw_selfpc;
-        long   raw_count;
-    };
-    int fromindex;
-    int endfrom;
-    size_t frompc;
-    int toindex;
-    struct rawarc rawarc;
-    const int BS = 64;
-    struct rawarc rawarcbuff[BS];
-    int rawarcbuffptr = 0;
-    struct gmonparam *p = &_gmonparam;
-    struct gmonhdr gmonhdr, *hdr;
-
-    moncontrol(0); /* stop */
-
-    hdr = (struct gmonhdr *)&gmonhdr;
-    hdr->lpc = p->lowpc;
-    hdr->hpc = p->highpc;
-    hdr->ncnt = p->kcountsize + sizeof(gmonhdr);
-    hdr->version = GMONVERSION;
-    hdr->profrate = GMON_HZ;
-    writeCB((void *)hdr, sizeof * hdr);
-    writeCB((void *)p->kcount, p->kcountsize);
-    endfrom = p->fromssize / sizeof(*p->froms);
-    for (fromindex = 0; fromindex < endfrom; fromindex++) {
-        if (p->froms[fromindex] == 0) {
-            continue;
-        }
-        frompc = p->lowpc;
-        frompc += fromindex * HASHFRACTION * sizeof(*p->froms);
-        for (toindex = p->froms[fromindex]; toindex != 0; toindex = p->tos[toindex].link) {
-            rawarc.raw_frompc = frompc;
-            rawarc.raw_selfpc = GETSELFPC(&p->tos[toindex]);
-            rawarc.raw_count = GETCOUNT(&p->tos[toindex]);
-            // Buffer up writes because Semihosting is really slow per write call
-            rawarcbuff[rawarcbuffptr++] = rawarc;
-            if (rawarcbuffptr == BS) {
-                writeCB((void *)rawarcbuff, BS * sizeof(struct rawarc));
-                rawarcbuffptr = 0;
-            }
-        }
-    }
-    // Write any remaining bits
-    if (rawarcbuffptr) {
-        writeCB((void *)rawarcbuff, rawarcbuffptr * sizeof(struct rawarc));
-    }
-}
-
 /*
     Control profiling
  	profiling is what mcount checks to see if
@@ -419,7 +343,9 @@ static void __no_inline_not_in_flash_func(moncontrol)(int mode) {
         p->state = GMON_PROF_OFF;
     }
 }
-static bool _perf_in_setup = false;
+
+
+// Called by the GCC function shim (gprof_shim.S) on function entry to record an arc hit
 void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint32_t *selfpc) {
     register struct tostruct *top;
     register struct tostruct *prevtop;
@@ -434,7 +360,7 @@ void __no_inline_not_in_flash_func(_mcount_internal)(uint32_t *frompcindex, uint
     if (!already_setup) {
         extern char __flash_binary_start; // Start of flash
         extern char __etext; /* end of text/code symbol, defined by linker */
-        already_setup = 1;
+        already_setup = true;
         _perf_in_setup = true;
         monstartup((uint32_t)&__flash_binary_start, (uint32_t)&__etext);
         _perf_in_setup = false;
@@ -546,5 +472,84 @@ overflow:
 
 void __no_inline_not_in_flash_func(_monInit)(void) {
     _gmonparam.state = GMON_PROF_OFF;
-    already_setup = 0;
+    already_setup = false;
 }
+
+
+// Write out the GMON.OUT file using internal state
+void _writeProfile(int (*writeCB)(const void *data, int len)) {
+    struct gmonhdr {  // GMON.OUT header
+        size_t  lpc;  // base pc address of sample buffer
+        size_t  hpc;  // max pc address of sampled buffer
+        int ncnt;     // size of sample buffer (plus this header)
+        int version;  // version number
+        int profrate; // profiling clock rate
+        int spare[3]; // reserved
+    };
+    const unsigned int GMONVERSION = 0x00051879;
+    struct rawarc {     // Per-arc on-disk data format
+        size_t raw_frompc;
+        size_t raw_selfpc;
+        long   raw_count;
+    };
+    int fromindex;
+    int endfrom;
+    size_t frompc;
+    int toindex;
+    struct rawarc rawarc;
+    const int BS = 64;
+    struct rawarc rawarcbuff[BS];
+    int rawarcbuffptr = 0;
+    struct gmonparam *p = &_gmonparam;
+    struct gmonhdr hdr;
+
+    moncontrol(0); // Stop
+
+    hdr.lpc = p->lowpc;
+    hdr.hpc = p->highpc;
+    hdr.ncnt = p->kcountsize + sizeof(hdr);
+    hdr.version = GMONVERSION;
+    hdr.profrate = GMON_HZ;
+    writeCB((void *)&hdr, sizeof(hdr));
+    writeCB((void *)p->kcount, p->kcountsize);
+    endfrom = p->fromssize / sizeof(*p->froms);
+    for (fromindex = 0; fromindex < endfrom; fromindex++) {
+        if (p->froms[fromindex] == 0) {
+            continue;
+        }
+        frompc = p->lowpc;
+        frompc += fromindex * HASHFRACTION * sizeof(*p->froms);
+        for (toindex = p->froms[fromindex]; toindex != 0; toindex = p->tos[toindex].link) {
+            rawarc.raw_frompc = frompc;
+            rawarc.raw_selfpc = GETSELFPC(&p->tos[toindex]);
+            rawarc.raw_count = GETCOUNT(&p->tos[toindex]);
+            // Buffer up writes because Semihosting is really slow per write call
+            rawarcbuff[rawarcbuffptr++] = rawarc;
+            if (rawarcbuffptr == BS) {
+                writeCB((void *)rawarcbuff, BS * sizeof(struct rawarc));
+                rawarcbuffptr = 0;
+            }
+        }
+    }
+    // Write any remaining bits
+    if (rawarcbuffptr) {
+        writeCB((void *)rawarcbuff, rawarcbuffptr * sizeof(struct rawarc));
+    }
+}
+
+
+// These are referenced by RP2040Support.cpp and called by the runtime init SDK
+// Install a periodic PC sampler at the specified frequency
+#if defined(__riscv)
+void runtime_init_setup_profiling() {
+    // TODO - is there an equivalent?  Or do we need to build a timer IRQ here?
+}
+#else
+#include <hardware/exception.h>
+#include <hardware/structs/systick.h>
+void runtime_init_setup_profiling() {
+    exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
+    systick_hw->csr = 0x7;
+    systick_hw->rvr = (F_CPU / GMON_HZ) - 1;
+}
+#endif
