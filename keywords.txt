@@ -65,6 +65,8 @@ getUsedPSRAMHeap	KEYWORD2
 getTotalPSRAMHeap	KEYWORD2
 getTotalPSRAM	KEYWORD2
 
+writeProfiling	KEYWORD2
+
 getChipID	KEYWORD2
 
 hwrand32	KEYWORD2

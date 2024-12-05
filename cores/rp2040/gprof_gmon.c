@@ -49,12 +49,17 @@
 #include <stdint.h>
 #include <string.h>
 
-
+// Frequency of sampling
+#ifndef GMON_HZ
+#define GMON_HZ 10000
+#endif
 
 /*
     fraction of text space to allocate for histogram counters here, 1/2
 */
+#ifndef HISTFRACTION
 #define HISTFRACTION    8
+#endif
 
 /*
     Fraction of text space to allocate for from hash buckets.
@@ -84,12 +89,16 @@
     profiling data structures without (in practice) sacrificing
     any granularity.
 */
+#ifndef HASHFRACTION
 #define HASHFRACTION    2
+#endif
 
 /*
     percent of text space to allocate for tostructs with a minimum.
 */
+#ifndef ARCDENSITY
 #define ARCDENSITY      2 /* this is in percentage, relative to text size! */
+#endif
 #define MINARCS          50
 #define MAXARCS          ((1 << (8 * sizeof(HISTCOUNTER))) - 2)
 
@@ -101,7 +110,7 @@
 #define GMON_PROF_ERROR 2
 #define GMON_PROF_OFF     3
 
-void _mcleanup(void); /* routine to be called to write gmon.out file */
+//void _mcleanup(void); /* routine to be called to write gmon.out file */
 
 
 
@@ -195,7 +204,6 @@ static struct profinfo prof = {
     PROFILE_NOT_INIT, 0, 0, 0, 0
 };
 extern volatile bool __otherCoreIdled;
-static int __profileHz = 0;
 
 /* convert an addr to an index */
 #define PROFIDX(pc, base, scale)  \
@@ -290,21 +298,16 @@ int __no_inline_not_in_flash_func(profil)(char *samples, size_t size, size_t off
 #define PICO_RUNTIME_INIT_PROFILING "11011" // Towards the end, after PSRAM
 #if defined(__riscv)
 void runtime_init_setup_profiling() {
-    __profileHz = 10000;
     // TODO - is there an equivalent?  Or do we need to build a timer IRQ here?
 }
 #else
 #include <hardware/exception.h>
 #include <hardware/structs/systick.h>
 void runtime_init_setup_profiling() {
-    __profileHz = 10000;
     exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
     systick_hw->csr = 0x7;
-    systick_hw->rvr = (F_CPU / __profileHz) - 1;
+    systick_hw->rvr = (F_CPU / GMON_HZ) - 1;
 }
-#endif
-#ifdef __PROFILE
-PICO_RUNTIME_INIT_FUNC_RUNTIME(runtime_init_setup_profiling, PICO_RUNTIME_INIT_PROFILING);
 #endif
 
 
@@ -393,12 +396,10 @@ void __no_inline_not_in_flash_func(monstartup)(size_t lowpc, size_t highpc) {
 #ifndef O_BINARY
 #define O_BINARY 0
 #endif
-extern int __profileHz;
 
-void _mcleanup(void) {
-    static const char gmon_out[] = "gmon.out";
-    int fd;
-    int hz;
+// Ensure matches definition in rp2040support
+typedef int (*profileWriteCB)(const void *data, int len);
+void _writeProfile(profileWriteCB writeCB) {
     int fromindex;
     int endfrom;
     size_t frompc;
@@ -406,41 +407,17 @@ void _mcleanup(void) {
     struct rawarc rawarc;
     struct gmonparam *p = &_gmonparam;
     struct gmonhdr gmonhdr, *hdr;
-    const char *proffile;
-#ifdef DEBUG
-    int log, len;
-    char dbuf[200];
-#endif
 
-    if (p->state == GMON_PROF_ERROR) {
-        ERR("_mcleanup: tos overflow\n");
-    }
-    hz = __profileHz;//PROF_HZ;
     moncontrol(0); /* stop */
-    proffile = gmon_out;
-    fd = open(proffile, O_CREAT | O_TRUNC | O_WRONLY | O_BINARY, 0666);
-    if (fd < 0) {
-        perror(proffile);
-        return;
-    }
-#ifdef DEBUG
-    log = open("gmon.log", O_CREAT | O_TRUNC | O_WRONLY, 0664);
-    if (log < 0) {
-        perror("mcount: gmon.log");
-        return;
-    }
-    len = sprintf(dbuf, "[mcleanup1] kcount 0x%x ssiz %d\n",
-                  p->kcount, p->kcountsize);
-    write(log, dbuf, len);
-#endif
+
     hdr = (struct gmonhdr *)&gmonhdr;
     hdr->lpc = p->lowpc;
     hdr->hpc = p->highpc;
     hdr->ncnt = p->kcountsize + sizeof(gmonhdr);
     hdr->version = GMONVERSION;
-    hdr->profrate = hz;
-    write(fd, (char *)hdr, sizeof * hdr);
-    write(fd, p->kcount, p->kcountsize);
+    hdr->profrate = GMON_HZ;
+    writeCB((void *)hdr, sizeof * hdr);
+    writeCB((void *)p->kcount, p->kcountsize);
     endfrom = p->fromssize / sizeof(*p->froms);
     for (fromindex = 0; fromindex < endfrom; fromindex++) {
         if (p->froms[fromindex] == 0) {
@@ -449,20 +426,12 @@ void _mcleanup(void) {
         frompc = p->lowpc;
         frompc += fromindex * HASHFRACTION * sizeof(*p->froms);
         for (toindex = p->froms[fromindex]; toindex != 0; toindex = p->tos[toindex].link) {
-#ifdef DEBUG
-            len = sprintf(dbuf,
-                          "[mcleanup2] frompc 0x%x selfpc 0x%x count %d\n",
-                          frompc, p->tos[toindex].selfpc,
-                          p->tos[toindex].count);
-            write(log, dbuf, len);
-#endif
             rawarc.raw_frompc = frompc;
             rawarc.raw_selfpc = GETSELFPC(&p->tos[toindex]);
             rawarc.raw_count = GETCOUNT(&p->tos[toindex]);
-            write(fd, &rawarc, sizeof rawarc);
+            writeCB((void *)&rawarc, sizeof rawarc);
         }
     }
-    close(fd);
 }
 
 /*

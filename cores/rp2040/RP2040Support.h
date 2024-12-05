@@ -18,6 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#pragma once
+
 #include <hardware/clocks.h>
 #include <hardware/irq.h>
 #include <hardware/pio.h>
@@ -44,6 +46,13 @@
 #include "_freertos.h"
 
 extern "C" volatile bool __otherCoreIdled;
+
+extern "C" {
+#ifdef __PROFILE
+    typedef int (*profileWriteCB)(const void *data, int len);
+    extern void _writeProfile(profileWriteCB writeCB);
+#endif
+}
 
 class _MFIFO {
 public:
@@ -472,6 +481,16 @@ public:
         return __isPicoW;
 #endif
     }
+
+#ifdef __PROFILE
+    void writeProfiling(Stream *f) {
+        extern Stream *__profileFile;
+        extern int __writeProfileCB(const void *data, int len);
+        __profileFile = f;
+        _writeProfile(__writeProfileCB);
+    }
+#endif
+
 
 
 private:
