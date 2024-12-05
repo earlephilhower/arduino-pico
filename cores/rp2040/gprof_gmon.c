@@ -27,6 +27,13 @@
     SUCH DAMAGE.
 */
 
+// This code is built as a C file because otherwise G++ would add profiling
+// code to the preamble of these functions as well, leading to an infinite
+// loop in the mcount routine.  Because the Arduino IDE can't (easily)
+// apply different compile parameters to different files, we set all C++
+// files to "-pg" but leave all C files uninstrumented.
+
+
 /*
     This file is taken from Cygwin distribution. Please keep it in sync.
     The differences should be within __MINGW32__ guard.
@@ -39,9 +46,64 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "gprof_gmon.h"
 #include <stdint.h>
 #include <string.h>
+
+
+
+/*
+    fraction of text space to allocate for histogram counters here, 1/2
+*/
+#define HISTFRACTION    8
+
+/*
+    Fraction of text space to allocate for from hash buckets.
+    The value of HASHFRACTION is based on the minimum number of bytes
+    of separation between two subroutine call points in the object code.
+    Given MIN_SUBR_SEPARATION bytes of separation the value of
+    HASHFRACTION is calculated as:
+
+        HASHFRACTION = MIN_SUBR_SEPARATION / (2 * sizeof(short) - 1);
+
+    For example, on the VAX, the shortest two call sequence is:
+
+        calls   $0,(r0)
+        calls   $0,(r0)
+
+    which is separated by only three bytes, thus HASHFRACTION is
+    calculated as:
+
+        HASHFRACTION = 3 / (2 * 2 - 1) = 1
+
+    Note that the division above rounds down, thus if MIN_SUBR_FRACTION
+    is less than three, this algorithm will not work!
+
+    In practice, however, call instructions are rarely at a minimal
+    distance.  Hence, we will define HASHFRACTION to be 2 across all
+    architectures.  This saves a reasonable amount of space for
+    profiling data structures without (in practice) sacrificing
+    any granularity.
+*/
+#define HASHFRACTION    2
+
+/*
+    percent of text space to allocate for tostructs with a minimum.
+*/
+#define ARCDENSITY      2 /* this is in percentage, relative to text size! */
+#define MINARCS          50
+#define MAXARCS          ((1 << (8 * sizeof(HISTCOUNTER))) - 2)
+
+/*
+    Possible states of profiling.
+*/
+#define GMON_PROF_ON      0
+#define GMON_PROF_BUSY  1
+#define GMON_PROF_ERROR 2
+#define GMON_PROF_OFF     3
+
+void _mcleanup(void); /* routine to be called to write gmon.out file */
+
+
 
 /*
     Structure prepended to gmon.out profiling data file.
@@ -63,9 +125,12 @@ struct gmonhdr {
 
 void _monInit(void); /* initialization routine */
 
-
-
-// Limit addressing to 16MB, counts to 16M.  Saves 4 bytes (33%) per entry
+// In the original profiler code selfpc and count are full 32 bits each
+// so the structure actually comes to 12 bytes due to padding (with 2
+// bytes wasted per entry).  We don't have that much to spare on the Picos,
+// so limit the recorded address to 16MB (which is the flash address
+// window, anyway) and the counts to 16M (saturating). This saves 4 bytes
+// (33%) per entry at the cost of some logic to expand/pack it.
 struct tostruct {
     uint8_t selfpc[3]; /* callee address/program counter. The caller address is in froms[] array which points to tos[] array */
     uint8_t count[3];    /* how many times it has been called */
@@ -222,22 +287,25 @@ int __no_inline_not_in_flash_func(profil)(char *samples, size_t size, size_t off
 
 
 
+#define PICO_RUNTIME_INIT_PROFILING "11011" // Towards the end, after PSRAM
 #if defined(__riscv)
-void installProfilerHandler(int hz) {
-    __profileHz = hz;
-
+void runtime_init_setup_profiling() {
+    __profileHz = 10000;
+    // TODO - is there an equivalent?  Or do we need to build a timer IRQ here?
 }
 #else
 #include <hardware/exception.h>
 #include <hardware/structs/systick.h>
-void installProfilerHandler(int hz) {
-    __profileHz = hz;
+void runtime_init_setup_profiling() {
+    __profileHz = 10000;
     exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
     systick_hw->csr = 0x7;
-    systick_hw->rvr = (F_CPU / hz) - 1;
+    systick_hw->rvr = (F_CPU / __profileHz) - 1;
 }
 #endif
-
+#ifdef __PROFILE
+PICO_RUNTIME_INIT_FUNC_RUNTIME(runtime_init_setup_profiling, PICO_RUNTIME_INIT_PROFILING);
+#endif
 
 
 #define MINUS_ONE_P (-1)

@@ -95,9 +95,9 @@ def BuildOptimize(name):
 
 def BuildProfile(name):
     print("%s.menu.profile.Disabled=Disabled" % (name))
-    print("%s.menu.profile.Disabled.build.flags.profile=-pg -D__PROFILE" % (name))
+    print("%s.menu.profile.Disabled.build.flags.profile=" % (name))
     print("%s.menu.profile.Enabled=Enabled" % (name))
-    print("%s.menu.profile.Enabled.build.flags.profile=" % (name))
+    print("%s.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE" % (name))
 
 def BuildRTTI(name):
     print("%s.menu.rtti.Disabled=Disabled" % (name))
