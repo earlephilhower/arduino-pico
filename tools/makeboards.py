@@ -56,6 +56,8 @@ def BuildArch(name):
     print("%s.menu.arch.arm.build.toolchainpkg=pqt-gcc" % (name))
     print("%s.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse" % (name))
     print("%s.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block" % (name))
+    print("%s.menu.arch.arm.build.mcu=cortex-m33" % (name))
+
     # RISC-V Hazard3
     print("%s.menu.arch.riscv=RISC-V" % (name))
     print("%s.menu.arch.riscv.build.chip=%s" % (name, "rp2350-riscv"))
@@ -63,6 +65,7 @@ def BuildArch(name):
     print("%s.menu.arch.riscv.build.toolchainpkg=pqt-gcc-riscv" % (name))
     print("%s.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32" % (name))
     print("%s.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block" % (name))
+    print("%s.menu.arch.riscv.build.mcu=rv32imac" % (name))
 
 def BuildPSRAM(name):
     for s in [ 0, 2, 4, 8]:
@@ -244,8 +247,9 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.usbpid=-DUSBD_PID=%s" % (name, main_pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
-#    print("%s.build.mcu=cortex-m0plus" % (name))
+
     if chip == "rp2040":  # RP2350 has menu for this later on
+        print("%s.build.mcu=cortex-m0plus" % (name))        
         print("%s.build.chip=%s" % (name, chip))
         print("%s.build.toolchain=%s" % (name, chaintuple))
         print("%s.build.toolchainpkg=%s" % (name, "pqt-gcc"))
@@ -266,6 +270,7 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print('%s.build.usb_product="%s"' % (name, product_name))
     if ((chip == "rp2350") or (chip == "rp2350-riscv")) and (name != "generic_rp2350"):
         print("%s.build.psram_length=0x%d00000" % (name, psramsize))
+
     if extra != None:
         m_extra = ''
         for m_item in extra:
