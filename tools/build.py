@@ -72,6 +72,8 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
             fqbn = fqbn.replace("rpipico", "rpipicow")
         if ('/BT' in sketch) or ('/BLE' in sketch) or ('/Bluetooth' in sketch):
             fqbn = fqbn + ",ipbtstack=ipv4btcble"
+        if '/Profiling' in sketch:
+            fqbn = fqbn + ",profile=Enabled"
     cmd += [fqbn]
     cmd += ['-built-in-libraries', ide_path + '/libraries']
     cmd += ['-ide-version=10607']

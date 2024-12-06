@@ -64,7 +64,7 @@ compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags
 compiler.S.cmd={build.toolchain}-gcc
 compiler.S.flags=-c {compiler.warning_flags} {compiler.defines} -g -x assembler-with-cpp -MMD {compiler.includes} {build.toolchainopts} -g
 compiler.cpp.cmd={build.toolchain}-g++
-compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} -std=gnu++17 -g -pipe
+compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} {build.flags.profile} -std=gnu++17 -g -pipe
 
 compiler.ar.cmd={build.toolchain}-ar
 compiler.ar.flags=rcs
@@ -98,6 +98,7 @@ build.psram_freq=
 build.eeprom_start=
 build.flags.optimize=-Os
 build.flags.rtti=-fno-rtti
+build.flags.profile=
 build.fs_start=
 build.fs_end=
 build.usbstack_flags=
