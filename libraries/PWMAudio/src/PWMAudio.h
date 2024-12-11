@@ -73,6 +73,15 @@ public:
     // Note that these callback are called from **INTERRUPT CONTEXT** and hence
     // should be in RAM, not FLASH, and should be quick to execute.
     void onTransmit(void(*)(void));
+    void onTransmit(void(*)(void *), void *data);
+
+    bool getUnderflow() {
+        if (!_running) {
+            return false;
+        } else {
+            return _arb->getOverUnderflow();
+        }
+    }
 
 private:
     pin_size_t _pin;
@@ -94,6 +103,8 @@ private:
     uint32_t _holdWord;
 
     void (*_cb)();
+    void (*_cbd)(void *);
+    void *_cbdata;
 
     AudioBufferManager *_arb;
 

@@ -110,7 +110,9 @@ public:
     // Note that these callback are called from **INTERRUPT CONTEXT** and hence
     // should be in RAM, not FLASH, and should be quick to execute.
     void onTransmit(void(*)(void));
+    void onTransmit(void(*)(void *), void *);
     void onReceive(void(*)(void));
+    void onReceive(void(*)(void *), void *);
 
 private:
     pin_size_t _pinBCLK;
@@ -142,6 +144,9 @@ private:
     int _isHolding = 0;
 
     void (*_cb)();
+    void (*_cbd)(void *);
+    void *_cbdata;
+
     void MCLKbegin();
 
     AudioBufferManager *_arb;

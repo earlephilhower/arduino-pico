@@ -112,6 +112,14 @@ void PWMAudio::onTransmit(void(*fn)(void)) {
     }
 }
 
+void PWMAudio::onTransmit(void(*fn)(void *), void *cbData) {
+    _cbd = fn;
+    _cbdata = cbData;
+    if (_running) {
+        _arb->setCallback(_cbd, _cbdata);
+    }
+}
+
 bool PWMAudio::begin() {
     if (_running) {
         return false;
@@ -155,7 +163,11 @@ bool PWMAudio::begin() {
         return false;
     }
 
-    _arb->setCallback(_cb);
+    if (_cbd) {
+        _arb->setCallback(_cbd, _cbdata);
+    } else {
+        _arb->setCallback(_cb);
+    }
 
     return true;
 }
