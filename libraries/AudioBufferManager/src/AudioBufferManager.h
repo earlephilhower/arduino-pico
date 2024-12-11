@@ -29,6 +29,7 @@ public:
     ~AudioBufferManager();
 
     void setCallback(void (*fn)());
+    void setCallback(void (*fn)(void *), void *cbData);
 
     bool begin(int dreq, volatile void *pioFIFOAddr);
 
@@ -93,7 +94,11 @@ private:
     bool _isOutput;
 
     int _channelDMA[2];
+
+    bool _useData;
     void (*_callback)();
+    void (*_callbackCB)(void *);
+    void *_callbackData;
 
     bool _overunderflow;
 
