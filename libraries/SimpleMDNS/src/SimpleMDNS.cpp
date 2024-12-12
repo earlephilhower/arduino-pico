@@ -42,7 +42,7 @@ bool SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
 }
 
 void SimpleMDNS::enableArduino(unsigned int port, bool passwd) {
-    if (!_running) {
+    if (!_running || _arduinoAdded) {
         return;
     }
     struct netif *n = netif_list;
@@ -50,20 +50,28 @@ void SimpleMDNS::enableArduino(unsigned int port, bool passwd) {
         mdns_resp_add_service(n, _hostname, "_arduino", DNSSD_PROTO_TCP, port, _arduinoGetTxt, (void *)passwd);
         n = n->next;
     }
+    _arduinoAdded = true;
 }
 
-void SimpleMDNS::addService(const char *service, const char *proto, unsigned int port) {
+hMDNSService SimpleMDNS::addService(const char *service, const char *proto, unsigned int port) {
     if (!_running) {
-        return;
+        return nullptr;
+    }
+    if (_svcMap.find(service) != _svcMap.end()) {
+        // Duplicates = error
+        return nullptr;
     }
     char s[128];
     snprintf(s, sizeof(s), "_%s", service);
     s[sizeof(s) - 1] = 0;
+    SimpleMDNSService *svc = new SimpleMDNSService();
+    _svcMap.insert({strdup(service), svc});
     struct netif *n = netif_list;
     while (n) {
-        mdns_resp_add_service(n, _hostname, s, !strcasecmp("tcp", proto) ? DNSSD_PROTO_TCP : DNSSD_PROTO_UDP, port, _nullGetTxt, nullptr);
+        mdns_resp_add_service(n, _hostname, s, !strcasecmp("tcp", proto) ? DNSSD_PROTO_TCP : DNSSD_PROTO_UDP, port, SimpleMDNSService::callback, (void *)svc);
         n = n->next;
     }
+    return (hMDNSService*) service;
 }
 
 void SimpleMDNS::update() {
@@ -89,9 +97,64 @@ void SimpleMDNS::_arduinoGetTxt(struct mdns_service *service, void *txt_userdata
     _addServiceTxt(service, (bool)txt_userdata ? "auth_upload=yes" : "auth_upload=no");
 }
 
-void SimpleMDNS::_nullGetTxt(struct mdns_service *service, void *txt_userdata) {
-    /* nop */
+
+SimpleMDNSService::SimpleMDNSService() {
 }
+
+void SimpleMDNSService::callback(struct mdns_service *service, void *txt_userdata) {
+    SimpleMDNSService *obj = (SimpleMDNSService *)txt_userdata;
+    for (auto s : obj->txt) {
+        mdns_resp_add_service_txtitem(service, s, strlen(s));
+    }
+}
+
+hMDNSTxt SimpleMDNSService::add(const char *key, const char *value) {
+    char s[128];
+    snprintf(s, sizeof(s), "%s=%s", key, value);
+    s[sizeof(s) - 1] = 0;
+    char *copy = strdup(s);
+    txt.push_back(copy);
+    return (void *)copy; // Do not use...
+};
+
+// Add a (static) MDNS TXT item ('key' = 'value') to the service
+hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, const char* p_pcValue) {
+    const char *s = (const char *)p_hService;
+    auto o = _svcMap.find(s);
+    if (o != _svcMap.end()) {
+        return o->second->add(p_pcKey, p_pcValue);
+    }
+    return nullptr;
+}
+
+hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, uint32_t p_u32Value) {
+    char s[16];
+    sprintf(s, "%lu", p_u32Value);
+    return addServiceTxt(p_hService, p_pcKey, s);
+}
+
+hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, uint16_t p_u16Value) {
+    return addServiceTxt(p_hService, p_pcKey, (uint32_t)p_u16Value);
+}
+
+hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, uint8_t p_u8Value) {
+    return addServiceTxt(p_hService, p_pcKey, (uint32_t)p_u8Value);
+}
+
+hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int32_t p_i32Value) {
+    char s[16];
+    sprintf(s, "%ld", p_i32Value);
+    return addServiceTxt(p_hService, p_pcKey, s);
+}
+
+hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int16_t p_i16Value) {
+    return addServiceTxt(p_hService, p_pcKey, (int32_t)p_i16Value);
+}
+
+hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int8_t p_i8Value) {
+    return addServiceTxt(p_hService, p_pcKey, (int32_t)p_i8Value);
+}
+
 
 const char *SimpleMDNS::_hostname = nullptr;
 

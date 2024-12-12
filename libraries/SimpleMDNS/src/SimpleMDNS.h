@@ -21,13 +21,44 @@
 
 #pragma once
 #include <Arduino.h>
+#include <string>
+#include <map>
+#include <vector>
+
+typedef void* hMDNSTxt; // Unusable in SimpleMDNS, for signature compatibility only
+
+class SimpleMDNSService {
+public:
+    SimpleMDNSService();
+    static void callback(struct mdns_service *service, void *txt_userdata);
+    hMDNSTxt add(const char *key, const char *val);
+private:
+    std::vector<const char *> txt;
+};
+
+// hMDNSService (opaque handle to access the service)
+typedef const void* hMDNSService;
 
 class SimpleMDNS {
 
 public:
     bool begin(const char *hostname, unsigned int ttl = 60);
     void enableArduino(unsigned int port, bool passwd = false);
-    void addService(const char *service, const char *proto, unsigned int port);
+
+    hMDNSService addService(const char *service, const char *proto, unsigned int port);
+    hMDNSService addService(const char *name, const char *service, const char *proto, unsigned int port) {
+        (void) name; // Ignored
+        return addService(service, proto, port);
+    }
+
+    // Add a (static) MDNS TXT item ('key' = 'value') to the service
+    hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, const char* p_pcValue);
+    hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, uint32_t p_u32Value);
+    hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, uint16_t p_u16Value);
+    hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, uint8_t p_u8Value);
+    hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int32_t p_i32Value);
+    hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int16_t p_i16Value);
+    hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int8_t p_i8Value);
 
     // No-ops here
     void end();
@@ -37,10 +68,11 @@ private:
     static void _statusCB(struct netif *netif);
     static void _addServiceTxt(struct mdns_service *service, const char *str);
     static void _arduinoGetTxt(struct mdns_service *service, void *txt_userdata);
-    static void _nullGetTxt(struct mdns_service *service, void *txt_userdata);
 
     bool _running = false;
     static const char *_hostname;
+    std::map<std::string, SimpleMDNSService*> _svcMap;
+    bool _arduinoAdded = false;
 };
 
 extern SimpleMDNS MDNS;
