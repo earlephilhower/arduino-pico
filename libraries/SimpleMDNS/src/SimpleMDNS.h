@@ -25,7 +25,7 @@
 #include <map>
 #include <vector>
 
-typedef void* hMDNSTxt; // Unusable in SimpleMDNS, for signature compatibilty only
+typedef void* hMDNSTxt; // Unusable in SimpleMDNS, for signature compatibility only
 
 class SimpleMDNSService {
 public:

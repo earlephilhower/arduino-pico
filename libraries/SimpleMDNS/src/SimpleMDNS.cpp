@@ -143,11 +143,11 @@ hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_
 }
 
 hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int16_t p_i16Value) {
-        return addServiceTxt(p_hService, p_pcKey, (int32_t)p_i16Value);
+    return addServiceTxt(p_hService, p_pcKey, (int32_t)p_i16Value);
 }
 
 hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int8_t p_i8Value) {
-        return addServiceTxt(p_hService, p_pcKey, (int32_t)p_i8Value);
+    return addServiceTxt(p_hService, p_pcKey, (int32_t)p_i8Value);
 }
 
 
