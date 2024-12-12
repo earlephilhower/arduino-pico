@@ -72,6 +72,7 @@ private:
     bool _running = false;
     static const char *_hostname;
     std::map<std::string, SimpleMDNSService*> _svcMap;
+    bool _arduinoAdded = false;
 };
 
 extern SimpleMDNS MDNS;

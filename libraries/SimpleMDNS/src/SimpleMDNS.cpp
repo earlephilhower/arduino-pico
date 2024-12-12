@@ -42,7 +42,7 @@ bool SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
 }
 
 void SimpleMDNS::enableArduino(unsigned int port, bool passwd) {
-    if (!_running) {
+    if (!_running || _arduinoAdded) {
         return;
     }
     struct netif *n = netif_list;
@@ -50,10 +50,15 @@ void SimpleMDNS::enableArduino(unsigned int port, bool passwd) {
         mdns_resp_add_service(n, _hostname, "_arduino", DNSSD_PROTO_TCP, port, _arduinoGetTxt, (void *)passwd);
         n = n->next;
     }
+    _arduinoAdded = true;
 }
 
 hMDNSService SimpleMDNS::addService(const char *service, const char *proto, unsigned int port) {
     if (!_running) {
+        return nullptr;
+    }
+    if (_svcMap.find(service) != _svcMap.end()) {
+        // Duplicates = error
         return nullptr;
     }
     char s[128];
