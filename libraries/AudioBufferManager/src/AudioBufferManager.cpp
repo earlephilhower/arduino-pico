@@ -113,8 +113,6 @@ void AudioBufferManager::setCallback(void (*fn)(void *), void *cbData) {
 }
 
 bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
-    _running = true;
-
     // Get ping and pong DMA channels
     for (auto i = 0; i < 2; i++) {
         _channelDMA[i] = dma_claim_unused_channel(false);
@@ -125,6 +123,8 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
             return false;
         }
     }
+
+    _running = true;
 
     // Need to know both channels to set up ping-pong, so do in 2 stages
     for (auto i = 0; i < 2; i++) {
