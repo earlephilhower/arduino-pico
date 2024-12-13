@@ -95,13 +95,17 @@ bool PWMAudio::setPWMFrequency(int newFreq) {
 }
 
 bool PWMAudio::setFrequency(int frequency) {
+    if (frequency == _sampleRate) {
+        return true; // We're already at the right speed
+    }
     if (_pacer < 0) {
         return false;
     }
     uint16_t _pacer_D, _pacer_N;
-    /*Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values*/
+    // Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values
     find_pacer_fraction(frequency, &_pacer_D, &_pacer_N);
     dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D);
+    _sampleRate = frequency;
     return true;
 }
 
@@ -140,15 +144,15 @@ bool PWMAudio::begin() {
 
     setPWMFrequency(_freq);
 
-    /*Calculate and set the DMA pacer timer. This timer will pull data on a fixed sample rate. So the actual PWM frequency can be higher or lower.*/
+    // Calculate and set the DMA pacer timer. This timer will pull data on a fixed sample rate. So the actual PWM frequency can be higher or lower.
     _pacer = dma_claim_unused_timer(false);
-    /*When no unused timer is found, return*/
+    // When no unused timer is found, return
     if (_pacer < 0) {
         return false;
     }
     uint16_t _pacer_D = 0;
     uint16_t _pacer_N = 0;
-    /*Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values*/
+    // Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values
     find_pacer_fraction(_sampleRate, &_pacer_D, &_pacer_N);
     dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D);
     int _pacer_dreq = dma_get_timer_dreq(_pacer);
