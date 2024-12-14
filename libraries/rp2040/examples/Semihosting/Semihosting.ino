@@ -21,7 +21,7 @@ void loop() {
 }
 #else
 
-#include <Semihosting.h>
+#include <SemiFS.h> // For SemiFS.open()
 
 int c = 0;
 

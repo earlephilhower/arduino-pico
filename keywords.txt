@@ -86,6 +86,9 @@ digitalReadFast	KEYWORD2
 
 enableDoubleResetBootloader	KEYWORD2
 
+SerialSemi	KEYWORD2
+SemiFS	KEYWORD2
+
 openDir	KEYWORD2
 next	KEYWORD2
 getLastWrite	KEYWORD2

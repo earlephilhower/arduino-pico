@@ -20,8 +20,8 @@
 #pragma once
 
 #include "Semihosting.h"
-#include <FS.h>
-#include <FSImpl.h>
+#include "FS.h"
+#include "FSImpl.h"
 
 using namespace fs;
 
@@ -57,7 +57,7 @@ public:
             a[0] = _fd;
             a[1] = (uint32_t)buf;
             a[2] = size;
-            return 0 == Semihost(SYS_WRITE, a) ? size : -1;
+            return 0 == Semihost(SEMIHOST_SYS_WRITE, a) ? size : -1;
         }
         return -1; // some kind of error
     }
@@ -68,7 +68,7 @@ public:
             a[0] = _fd;
             a[1] = (uint32_t)buf;
             a[2] = size;
-            int ret = Semihost(SYS_READ, a);
+            int ret = Semihost(SEMIHOST_SYS_READ, a);
             if (ret == 0) {
                 return size;
             } else if (ret == (int)size) {
@@ -92,7 +92,7 @@ public:
         uint32_t a[2];
         a[0] = _fd;
         a[1] = pos;
-        return !Semihost(SYS_SEEK, a);
+        return !Semihost(SEMIHOST_SYS_SEEK, a);
     }
 
     size_t position() const override {
@@ -105,7 +105,7 @@ public:
         }
         uint32_t a;
         a = _fd;
-        int ret = Semihost(SYS_FLEN, &a);
+        int ret = Semihost(SEMIHOST_SYS_FLEN, &a);
         if (ret < 0) {
             return 0;
         }
@@ -119,7 +119,7 @@ public:
     void close() override {
         if (_opened) {
             uint32_t a = _fd;
-            Semihost(SYS_CLOSE, &a);
+            Semihost(SEMIHOST_SYS_CLOSE, &a);
             _opened = false;
         }
     }
@@ -202,7 +202,7 @@ public:
         a[0] = (uint32_t)path;
         a[1] = mode;
         a[2] = strlen(path);
-        int handle = Semihost(SYS_OPEN, a);
+        int handle = Semihost(SEMIHOST_SYS_OPEN, a);
         if (handle < 0) {
             return FileImplPtr();
         }
@@ -225,7 +225,7 @@ public:
         a[1] = strlen(pathFrom);
         a[2] = (uint32_t)pathTo;
         a[3] = strlen(pathTo);
-        return !Semihost(SYS_RENAME, a);
+        return !Semihost(SEMIHOST_SYS_RENAME, a);
     }
 
     bool info(FSInfo& info) override {
@@ -237,7 +237,7 @@ public:
         uint32_t a[2];
         a[0] = (uint32_t)path;
         a[1] = strlen(path);
-        return !Semihost(SYS_REMOVE, a);
+        return !Semihost(SEMIHOST_SYS_REMOVE, a);
     }
 
     bool mkdir(const char* path) override {
@@ -258,15 +258,15 @@ public:
         a[0] = (uint32_t)path;
         a[1] = 0; // READ
         a[2] = strlen(path);
-        int fn = Semihost(SYS_OPEN, a);
+        int fn = Semihost(SEMIHOST_SYS_OPEN, a);
         if (fn < 0) {
             return false;
         }
         bzero(st, sizeof(*st));
         a[0] = fn;
-        st->size = Semihost(SYS_FLEN, a);
+        st->size = Semihost(SEMIHOST_SYS_FLEN, a);
         a[0] = fn;
-        Semihost(SYS_CLOSE, a);
+        Semihost(SEMIHOST_SYS_CLOSE, a);
         return true;
     }
 

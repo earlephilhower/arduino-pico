@@ -27,7 +27,7 @@ def BuildFlashMenu(name, chip, flashsize, fssizelist):
 def BuildDebugPort(name):
     print("%s.menu.dbgport.Disabled=Disabled" % (name))
     print("%s.menu.dbgport.Disabled.build.debug_port=" % (name))
-    for p in ["Serial", "Serial1", "Serial2"]:
+    for p in ["Serial", "Serial1", "Serial2", "SerialSemi"]:
         print("%s.menu.dbgport.%s=%s" % (name, p, p))
         print("%s.menu.dbgport.%s.build.debug_port=-DDEBUG_RP2040_PORT=%s" % (name, p, p))
 
