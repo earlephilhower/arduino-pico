@@ -193,6 +193,8 @@ rpipico.menu.dbgport.Serial1=Serial1
 rpipico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 rpipico.menu.dbgport.Serial2=Serial2
 rpipico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+rpipico.menu.dbgport.SerialSemi=SerialSemi
+rpipico.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 rpipico.menu.dbglvl.None=None
 rpipico.menu.dbglvl.None.build.debug_level=
 rpipico.menu.dbglvl.Core=Core
@@ -406,6 +408,8 @@ rpipicow.menu.dbgport.Serial1=Serial1
 rpipicow.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 rpipicow.menu.dbgport.Serial2=Serial2
 rpipicow.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+rpipicow.menu.dbgport.SerialSemi=SerialSemi
+rpipicow.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 rpipicow.menu.dbglvl.None=None
 rpipicow.menu.dbglvl.None.build.debug_level=
 rpipicow.menu.dbglvl.Core=Core
@@ -769,6 +773,8 @@ rpipico2.menu.dbgport.Serial1=Serial1
 rpipico2.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 rpipico2.menu.dbgport.Serial2=Serial2
 rpipico2.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+rpipico2.menu.dbgport.SerialSemi=SerialSemi
+rpipico2.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 rpipico2.menu.dbglvl.None=None
 rpipico2.menu.dbglvl.None.build.debug_level=
 rpipico2.menu.dbglvl.Core=Core
@@ -1005,6 +1011,8 @@ rpipico2w.menu.dbgport.Serial1=Serial1
 rpipico2w.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 rpipico2w.menu.dbgport.Serial2=Serial2
 rpipico2w.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+rpipico2w.menu.dbgport.SerialSemi=SerialSemi
+rpipico2w.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 rpipico2w.menu.dbglvl.None=None
 rpipico2w.menu.dbglvl.None.build.debug_level=
 rpipico2w.menu.dbglvl.Core=Core
@@ -1311,6 +1319,8 @@ rpipico2w.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cm
 0xcb_helios.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 0xcb_helios.menu.dbgport.Serial2=Serial2
 0xcb_helios.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+0xcb_helios.menu.dbgport.SerialSemi=SerialSemi
+0xcb_helios.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 0xcb_helios.menu.dbglvl.None=None
 0xcb_helios.menu.dbglvl.None.build.debug_level=
 0xcb_helios.menu.dbglvl.Core=Core
@@ -1573,6 +1583,8 @@ adafruit_feather.menu.dbgport.Serial1=Serial1
 adafruit_feather.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather.menu.dbgport.Serial2=Serial2
 adafruit_feather.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather.menu.dbglvl.None=None
 adafruit_feather.menu.dbglvl.None.build.debug_level=
 adafruit_feather.menu.dbglvl.Core=Core
@@ -1827,6 +1839,8 @@ adafruit_feather_scorpio.menu.dbgport.Serial1=Serial1
 adafruit_feather_scorpio.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_scorpio.menu.dbgport.Serial2=Serial2
 adafruit_feather_scorpio.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_scorpio.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_scorpio.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_scorpio.menu.dbglvl.None=None
 adafruit_feather_scorpio.menu.dbglvl.None.build.debug_level=
 adafruit_feather_scorpio.menu.dbglvl.Core=Core
@@ -2085,6 +2099,8 @@ adafruit_feather_dvi.menu.dbgport.Serial1=Serial1
 adafruit_feather_dvi.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_dvi.menu.dbgport.Serial2=Serial2
 adafruit_feather_dvi.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_dvi.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_dvi.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_dvi.menu.dbglvl.None=None
 adafruit_feather_dvi.menu.dbglvl.None.build.debug_level=
 adafruit_feather_dvi.menu.dbglvl.Core=Core
@@ -2343,6 +2359,8 @@ adafruit_feather_adalogger.menu.dbgport.Serial1=Serial1
 adafruit_feather_adalogger.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_adalogger.menu.dbgport.Serial2=Serial2
 adafruit_feather_adalogger.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_adalogger.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_adalogger.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_adalogger.menu.dbglvl.None=None
 adafruit_feather_adalogger.menu.dbglvl.None.build.debug_level=
 adafruit_feather_adalogger.menu.dbglvl.Core=Core
@@ -2601,6 +2619,8 @@ adafruit_feather_rfm.menu.dbgport.Serial1=Serial1
 adafruit_feather_rfm.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_rfm.menu.dbgport.Serial2=Serial2
 adafruit_feather_rfm.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_rfm.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_rfm.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_rfm.menu.dbglvl.None=None
 adafruit_feather_rfm.menu.dbglvl.None.build.debug_level=
 adafruit_feather_rfm.menu.dbglvl.Core=Core
@@ -2859,6 +2879,8 @@ adafruit_feather_thinkink.menu.dbgport.Serial1=Serial1
 adafruit_feather_thinkink.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_thinkink.menu.dbgport.Serial2=Serial2
 adafruit_feather_thinkink.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_thinkink.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_thinkink.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_thinkink.menu.dbglvl.None=None
 adafruit_feather_thinkink.menu.dbglvl.None.build.debug_level=
 adafruit_feather_thinkink.menu.dbglvl.Core=Core
@@ -3117,6 +3139,8 @@ adafruit_feather_usb_host.menu.dbgport.Serial1=Serial1
 adafruit_feather_usb_host.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_usb_host.menu.dbgport.Serial2=Serial2
 adafruit_feather_usb_host.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_usb_host.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_usb_host.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_usb_host.menu.dbglvl.None=None
 adafruit_feather_usb_host.menu.dbglvl.None.build.debug_level=
 adafruit_feather_usb_host.menu.dbglvl.Core=Core
@@ -3375,6 +3399,8 @@ adafruit_feather_can.menu.dbgport.Serial1=Serial1
 adafruit_feather_can.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_can.menu.dbgport.Serial2=Serial2
 adafruit_feather_can.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_can.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_can.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_can.menu.dbglvl.None=None
 adafruit_feather_can.menu.dbglvl.None.build.debug_level=
 adafruit_feather_can.menu.dbglvl.Core=Core
@@ -3633,6 +3659,8 @@ adafruit_feather_prop_maker.menu.dbgport.Serial1=Serial1
 adafruit_feather_prop_maker.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_prop_maker.menu.dbgport.Serial2=Serial2
 adafruit_feather_prop_maker.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_prop_maker.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_prop_maker.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_prop_maker.menu.dbglvl.None=None
 adafruit_feather_prop_maker.menu.dbglvl.None.build.debug_level=
 adafruit_feather_prop_maker.menu.dbglvl.Core=Core
@@ -3899,6 +3927,8 @@ adafruit_itsybitsy.menu.dbgport.Serial1=Serial1
 adafruit_itsybitsy.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_itsybitsy.menu.dbgport.Serial2=Serial2
 adafruit_itsybitsy.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_itsybitsy.menu.dbgport.SerialSemi=SerialSemi
+adafruit_itsybitsy.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_itsybitsy.menu.dbglvl.None=None
 adafruit_itsybitsy.menu.dbglvl.None.build.debug_level=
 adafruit_itsybitsy.menu.dbglvl.Core=Core
@@ -4213,6 +4243,8 @@ adafruit_metro.menu.dbgport.Serial1=Serial1
 adafruit_metro.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_metro.menu.dbgport.Serial2=Serial2
 adafruit_metro.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_metro.menu.dbgport.SerialSemi=SerialSemi
+adafruit_metro.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_metro.menu.dbglvl.None=None
 adafruit_metro.menu.dbglvl.None.build.debug_level=
 adafruit_metro.menu.dbglvl.Core=Core
@@ -4479,6 +4511,8 @@ adafruit_qtpy.menu.dbgport.Serial1=Serial1
 adafruit_qtpy.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_qtpy.menu.dbgport.Serial2=Serial2
 adafruit_qtpy.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_qtpy.menu.dbgport.SerialSemi=SerialSemi
+adafruit_qtpy.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_qtpy.menu.dbglvl.None=None
 adafruit_qtpy.menu.dbglvl.None.build.debug_level=
 adafruit_qtpy.menu.dbglvl.Core=Core
@@ -4745,6 +4779,8 @@ adafruit_stemmafriend.menu.dbgport.Serial1=Serial1
 adafruit_stemmafriend.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_stemmafriend.menu.dbgport.Serial2=Serial2
 adafruit_stemmafriend.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_stemmafriend.menu.dbgport.SerialSemi=SerialSemi
+adafruit_stemmafriend.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_stemmafriend.menu.dbglvl.None=None
 adafruit_stemmafriend.menu.dbglvl.None.build.debug_level=
 adafruit_stemmafriend.menu.dbglvl.Core=Core
@@ -5003,6 +5039,8 @@ adafruit_trinkeyrp2040qt.menu.dbgport.Serial1=Serial1
 adafruit_trinkeyrp2040qt.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_trinkeyrp2040qt.menu.dbgport.Serial2=Serial2
 adafruit_trinkeyrp2040qt.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_trinkeyrp2040qt.menu.dbgport.SerialSemi=SerialSemi
+adafruit_trinkeyrp2040qt.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_trinkeyrp2040qt.menu.dbglvl.None=None
 adafruit_trinkeyrp2040qt.menu.dbglvl.None.build.debug_level=
 adafruit_trinkeyrp2040qt.menu.dbglvl.Core=Core
@@ -5261,6 +5299,8 @@ adafruit_macropad2040.menu.dbgport.Serial1=Serial1
 adafruit_macropad2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_macropad2040.menu.dbgport.Serial2=Serial2
 adafruit_macropad2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_macropad2040.menu.dbgport.SerialSemi=SerialSemi
+adafruit_macropad2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_macropad2040.menu.dbglvl.None=None
 adafruit_macropad2040.menu.dbglvl.None.build.debug_level=
 adafruit_macropad2040.menu.dbglvl.Core=Core
@@ -5519,6 +5559,8 @@ adafruit_kb2040.menu.dbgport.Serial1=Serial1
 adafruit_kb2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_kb2040.menu.dbgport.Serial2=Serial2
 adafruit_kb2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_kb2040.menu.dbgport.SerialSemi=SerialSemi
+adafruit_kb2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_kb2040.menu.dbglvl.None=None
 adafruit_kb2040.menu.dbglvl.None.build.debug_level=
 adafruit_kb2040.menu.dbglvl.Core=Core
@@ -5794,6 +5836,8 @@ adafruit_feather_rp2350_hstx.menu.dbgport.Serial1=Serial1
 adafruit_feather_rp2350_hstx.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_feather_rp2350_hstx.menu.dbgport.Serial2=Serial2
 adafruit_feather_rp2350_hstx.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_feather_rp2350_hstx.menu.dbgport.SerialSemi=SerialSemi
+adafruit_feather_rp2350_hstx.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_feather_rp2350_hstx.menu.dbglvl.None=None
 adafruit_feather_rp2350_hstx.menu.dbglvl.None.build.debug_level=
 adafruit_feather_rp2350_hstx.menu.dbglvl.Core=Core
@@ -6104,6 +6148,8 @@ adafruit_floppsy.menu.dbgport.Serial1=Serial1
 adafruit_floppsy.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 adafruit_floppsy.menu.dbgport.Serial2=Serial2
 adafruit_floppsy.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+adafruit_floppsy.menu.dbgport.SerialSemi=SerialSemi
+adafruit_floppsy.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 adafruit_floppsy.menu.dbglvl.None=None
 adafruit_floppsy.menu.dbglvl.None.build.debug_level=
 adafruit_floppsy.menu.dbglvl.Core=Core
@@ -7199,6 +7245,8 @@ amken_bunny.menu.dbgport.Serial1=Serial1
 amken_bunny.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 amken_bunny.menu.dbgport.Serial2=Serial2
 amken_bunny.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+amken_bunny.menu.dbgport.SerialSemi=SerialSemi
+amken_bunny.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 amken_bunny.menu.dbglvl.None=None
 amken_bunny.menu.dbglvl.None.build.debug_level=
 amken_bunny.menu.dbglvl.Core=Core
@@ -7618,6 +7666,8 @@ amken_revelop.menu.dbgport.Serial1=Serial1
 amken_revelop.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 amken_revelop.menu.dbgport.Serial2=Serial2
 amken_revelop.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+amken_revelop.menu.dbgport.SerialSemi=SerialSemi
+amken_revelop.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 amken_revelop.menu.dbglvl.None=None
 amken_revelop.menu.dbglvl.None.build.debug_level=
 amken_revelop.menu.dbglvl.Core=Core
@@ -8037,6 +8087,8 @@ amken_revelop_plus.menu.dbgport.Serial1=Serial1
 amken_revelop_plus.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 amken_revelop_plus.menu.dbgport.Serial2=Serial2
 amken_revelop_plus.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+amken_revelop_plus.menu.dbgport.SerialSemi=SerialSemi
+amken_revelop_plus.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 amken_revelop_plus.menu.dbglvl.None=None
 amken_revelop_plus.menu.dbglvl.None.build.debug_level=
 amken_revelop_plus.menu.dbglvl.Core=Core
@@ -8344,6 +8396,8 @@ amken_revelop_es.menu.dbgport.Serial1=Serial1
 amken_revelop_es.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 amken_revelop_es.menu.dbgport.Serial2=Serial2
 amken_revelop_es.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+amken_revelop_es.menu.dbgport.SerialSemi=SerialSemi
+amken_revelop_es.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 amken_revelop_es.menu.dbglvl.None=None
 amken_revelop_es.menu.dbglvl.None.build.debug_level=
 amken_revelop_es.menu.dbglvl.Core=Core
@@ -8663,6 +8717,8 @@ jumperless_v1.menu.dbgport.Serial1=Serial1
 jumperless_v1.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 jumperless_v1.menu.dbgport.Serial2=Serial2
 jumperless_v1.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+jumperless_v1.menu.dbgport.SerialSemi=SerialSemi
+jumperless_v1.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 jumperless_v1.menu.dbglvl.None=None
 jumperless_v1.menu.dbglvl.None.build.debug_level=
 jumperless_v1.menu.dbglvl.Core=Core
@@ -8991,6 +9047,8 @@ jumperless_v5.menu.dbgport.Serial1=Serial1
 jumperless_v5.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 jumperless_v5.menu.dbgport.Serial2=Serial2
 jumperless_v5.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+jumperless_v5.menu.dbgport.SerialSemi=SerialSemi
+jumperless_v5.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 jumperless_v5.menu.dbglvl.None=None
 jumperless_v5.menu.dbglvl.None.build.debug_level=
 jumperless_v5.menu.dbglvl.Core=Core
@@ -9309,6 +9367,8 @@ arduino_nano_connect.menu.dbgport.Serial1=Serial1
 arduino_nano_connect.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 arduino_nano_connect.menu.dbgport.Serial2=Serial2
 arduino_nano_connect.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+arduino_nano_connect.menu.dbgport.SerialSemi=SerialSemi
+arduino_nano_connect.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 arduino_nano_connect.menu.dbglvl.None=None
 arduino_nano_connect.menu.dbglvl.None.build.debug_level=
 arduino_nano_connect.menu.dbglvl.Core=Core
@@ -9545,6 +9605,8 @@ artronshop_rp2_nano.menu.dbgport.Serial1=Serial1
 artronshop_rp2_nano.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 artronshop_rp2_nano.menu.dbgport.Serial2=Serial2
 artronshop_rp2_nano.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+artronshop_rp2_nano.menu.dbgport.SerialSemi=SerialSemi
+artronshop_rp2_nano.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 artronshop_rp2_nano.menu.dbglvl.None=None
 artronshop_rp2_nano.menu.dbglvl.None.build.debug_level=
 artronshop_rp2_nano.menu.dbglvl.Core=Core
@@ -9879,6 +9941,8 @@ breadstick_raspberry.menu.dbgport.Serial1=Serial1
 breadstick_raspberry.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 breadstick_raspberry.menu.dbgport.Serial2=Serial2
 breadstick_raspberry.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+breadstick_raspberry.menu.dbgport.SerialSemi=SerialSemi
+breadstick_raspberry.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 breadstick_raspberry.menu.dbglvl.None=None
 breadstick_raspberry.menu.dbglvl.None.build.debug_level=
 breadstick_raspberry.menu.dbglvl.Core=Core
@@ -10158,6 +10222,8 @@ bridgetek_idm2040_7a.menu.dbgport.Serial1=Serial1
 bridgetek_idm2040_7a.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 bridgetek_idm2040_7a.menu.dbgport.Serial2=Serial2
 bridgetek_idm2040_7a.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+bridgetek_idm2040_7a.menu.dbgport.SerialSemi=SerialSemi
+bridgetek_idm2040_7a.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 bridgetek_idm2040_7a.menu.dbglvl.None=None
 bridgetek_idm2040_7a.menu.dbglvl.None.build.debug_level=
 bridgetek_idm2040_7a.menu.dbglvl.Core=Core
@@ -10413,6 +10479,8 @@ bridgetek_idm2040_43a.menu.dbgport.Serial1=Serial1
 bridgetek_idm2040_43a.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 bridgetek_idm2040_43a.menu.dbgport.Serial2=Serial2
 bridgetek_idm2040_43a.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+bridgetek_idm2040_43a.menu.dbgport.SerialSemi=SerialSemi
+bridgetek_idm2040_43a.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 bridgetek_idm2040_43a.menu.dbglvl.None=None
 bridgetek_idm2040_43a.menu.dbglvl.None.build.debug_level=
 bridgetek_idm2040_43a.menu.dbglvl.Core=Core
@@ -10658,6 +10726,8 @@ cytron_iriv_io_controller.menu.dbgport.Serial1=Serial1
 cytron_iriv_io_controller.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 cytron_iriv_io_controller.menu.dbgport.Serial2=Serial2
 cytron_iriv_io_controller.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+cytron_iriv_io_controller.menu.dbgport.SerialSemi=SerialSemi
+cytron_iriv_io_controller.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 cytron_iriv_io_controller.menu.dbglvl.None=None
 cytron_iriv_io_controller.menu.dbglvl.None.build.debug_level=
 cytron_iriv_io_controller.menu.dbglvl.Core=Core
@@ -10894,6 +10964,8 @@ cytron_maker_nano_rp2040.menu.dbgport.Serial1=Serial1
 cytron_maker_nano_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 cytron_maker_nano_rp2040.menu.dbgport.Serial2=Serial2
 cytron_maker_nano_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+cytron_maker_nano_rp2040.menu.dbgport.SerialSemi=SerialSemi
+cytron_maker_nano_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 cytron_maker_nano_rp2040.menu.dbglvl.None=None
 cytron_maker_nano_rp2040.menu.dbglvl.None.build.debug_level=
 cytron_maker_nano_rp2040.menu.dbglvl.Core=Core
@@ -11130,6 +11202,8 @@ cytron_maker_pi_rp2040.menu.dbgport.Serial1=Serial1
 cytron_maker_pi_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 cytron_maker_pi_rp2040.menu.dbgport.Serial2=Serial2
 cytron_maker_pi_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+cytron_maker_pi_rp2040.menu.dbgport.SerialSemi=SerialSemi
+cytron_maker_pi_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 cytron_maker_pi_rp2040.menu.dbglvl.None=None
 cytron_maker_pi_rp2040.menu.dbglvl.None.build.debug_level=
 cytron_maker_pi_rp2040.menu.dbglvl.Core=Core
@@ -11366,6 +11440,8 @@ cytron_maker_uno_rp2040.menu.dbgport.Serial1=Serial1
 cytron_maker_uno_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 cytron_maker_uno_rp2040.menu.dbgport.Serial2=Serial2
 cytron_maker_uno_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+cytron_maker_uno_rp2040.menu.dbgport.SerialSemi=SerialSemi
+cytron_maker_uno_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 cytron_maker_uno_rp2040.menu.dbglvl.None=None
 cytron_maker_uno_rp2040.menu.dbglvl.None.build.debug_level=
 cytron_maker_uno_rp2040.menu.dbglvl.Core=Core
@@ -11611,6 +11687,8 @@ cytron_motion_2350_pro.menu.dbgport.Serial1=Serial1
 cytron_motion_2350_pro.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 cytron_motion_2350_pro.menu.dbgport.Serial2=Serial2
 cytron_motion_2350_pro.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+cytron_motion_2350_pro.menu.dbgport.SerialSemi=SerialSemi
+cytron_motion_2350_pro.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 cytron_motion_2350_pro.menu.dbglvl.None=None
 cytron_motion_2350_pro.menu.dbglvl.None.build.debug_level=
 cytron_motion_2350_pro.menu.dbglvl.Core=Core
@@ -11847,6 +11925,8 @@ datanoisetv_picoadk.menu.dbgport.Serial1=Serial1
 datanoisetv_picoadk.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 datanoisetv_picoadk.menu.dbgport.Serial2=Serial2
 datanoisetv_picoadk.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+datanoisetv_picoadk.menu.dbgport.SerialSemi=SerialSemi
+datanoisetv_picoadk.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 datanoisetv_picoadk.menu.dbglvl.None=None
 datanoisetv_picoadk.menu.dbglvl.None.build.debug_level=
 datanoisetv_picoadk.menu.dbglvl.Core=Core
@@ -12118,6 +12198,8 @@ datanoisetv_picoadk_v2.menu.dbgport.Serial1=Serial1
 datanoisetv_picoadk_v2.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 datanoisetv_picoadk_v2.menu.dbgport.Serial2=Serial2
 datanoisetv_picoadk_v2.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+datanoisetv_picoadk_v2.menu.dbgport.SerialSemi=SerialSemi
+datanoisetv_picoadk_v2.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 datanoisetv_picoadk_v2.menu.dbglvl.None=None
 datanoisetv_picoadk_v2.menu.dbglvl.None.build.debug_level=
 datanoisetv_picoadk_v2.menu.dbglvl.Core=Core
@@ -12428,6 +12510,8 @@ degz_suibo.menu.dbgport.Serial1=Serial1
 degz_suibo.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 degz_suibo.menu.dbgport.Serial2=Serial2
 degz_suibo.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+degz_suibo.menu.dbgport.SerialSemi=SerialSemi
+degz_suibo.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 degz_suibo.menu.dbglvl.None=None
 degz_suibo.menu.dbglvl.None.build.debug_level=
 degz_suibo.menu.dbglvl.Core=Core
@@ -12678,6 +12762,8 @@ flyboard2040_core.menu.dbgport.Serial1=Serial1
 flyboard2040_core.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 flyboard2040_core.menu.dbgport.Serial2=Serial2
 flyboard2040_core.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+flyboard2040_core.menu.dbgport.SerialSemi=SerialSemi
+flyboard2040_core.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 flyboard2040_core.menu.dbglvl.None=None
 flyboard2040_core.menu.dbglvl.None.build.debug_level=
 flyboard2040_core.menu.dbglvl.Core=Core
@@ -12898,6 +12984,8 @@ dfrobot_beetle_rp2040.menu.dbgport.Serial1=Serial1
 dfrobot_beetle_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 dfrobot_beetle_rp2040.menu.dbgport.Serial2=Serial2
 dfrobot_beetle_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+dfrobot_beetle_rp2040.menu.dbgport.SerialSemi=SerialSemi
+dfrobot_beetle_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 dfrobot_beetle_rp2040.menu.dbglvl.None=None
 dfrobot_beetle_rp2040.menu.dbglvl.None.build.debug_level=
 dfrobot_beetle_rp2040.menu.dbglvl.Core=Core
@@ -13148,6 +13236,8 @@ DudesCab.menu.dbgport.Serial1=Serial1
 DudesCab.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 DudesCab.menu.dbgport.Serial2=Serial2
 DudesCab.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+DudesCab.menu.dbgport.SerialSemi=SerialSemi
+DudesCab.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 DudesCab.menu.dbglvl.None=None
 DudesCab.menu.dbglvl.None.build.debug_level=
 DudesCab.menu.dbglvl.Core=Core
@@ -13384,6 +13474,8 @@ electroniccats_huntercat_nfc.menu.dbgport.Serial1=Serial1
 electroniccats_huntercat_nfc.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 electroniccats_huntercat_nfc.menu.dbgport.Serial2=Serial2
 electroniccats_huntercat_nfc.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+electroniccats_huntercat_nfc.menu.dbgport.SerialSemi=SerialSemi
+electroniccats_huntercat_nfc.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 electroniccats_huntercat_nfc.menu.dbglvl.None=None
 electroniccats_huntercat_nfc.menu.dbglvl.None.build.debug_level=
 electroniccats_huntercat_nfc.menu.dbglvl.Core=Core
@@ -13694,6 +13786,8 @@ evn_alpha.menu.dbgport.Serial1=Serial1
 evn_alpha.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 evn_alpha.menu.dbgport.Serial2=Serial2
 evn_alpha.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+evn_alpha.menu.dbgport.SerialSemi=SerialSemi
+evn_alpha.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 evn_alpha.menu.dbglvl.None=None
 evn_alpha.menu.dbglvl.None.build.debug_level=
 evn_alpha.menu.dbglvl.Core=Core
@@ -13906,6 +14000,8 @@ extelec_rc2040.menu.dbgport.Serial1=Serial1
 extelec_rc2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 extelec_rc2040.menu.dbgport.Serial2=Serial2
 extelec_rc2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+extelec_rc2040.menu.dbgport.SerialSemi=SerialSemi
+extelec_rc2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 extelec_rc2040.menu.dbglvl.None=None
 extelec_rc2040.menu.dbglvl.None.build.debug_level=
 extelec_rc2040.menu.dbglvl.Core=Core
@@ -14184,6 +14280,8 @@ groundstudio_marble_pico.menu.dbgport.Serial1=Serial1
 groundstudio_marble_pico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 groundstudio_marble_pico.menu.dbgport.Serial2=Serial2
 groundstudio_marble_pico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+groundstudio_marble_pico.menu.dbgport.SerialSemi=SerialSemi
+groundstudio_marble_pico.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 groundstudio_marble_pico.menu.dbglvl.None=None
 groundstudio_marble_pico.menu.dbglvl.None.build.debug_level=
 groundstudio_marble_pico.menu.dbglvl.Core=Core
@@ -14462,6 +14560,8 @@ challenger_2040_lte.menu.dbgport.Serial1=Serial1
 challenger_2040_lte.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_lte.menu.dbgport.Serial2=Serial2
 challenger_2040_lte.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_lte.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_lte.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_lte.menu.dbglvl.None=None
 challenger_2040_lte.menu.dbglvl.None.build.debug_level=
 challenger_2040_lte.menu.dbglvl.Core=Core
@@ -14740,6 +14840,8 @@ challenger_2040_lora.menu.dbgport.Serial1=Serial1
 challenger_2040_lora.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_lora.menu.dbgport.Serial2=Serial2
 challenger_2040_lora.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_lora.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_lora.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_lora.menu.dbglvl.None=None
 challenger_2040_lora.menu.dbglvl.None.build.debug_level=
 challenger_2040_lora.menu.dbglvl.Core=Core
@@ -15018,6 +15120,8 @@ challenger_2040_subghz.menu.dbgport.Serial1=Serial1
 challenger_2040_subghz.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_subghz.menu.dbgport.Serial2=Serial2
 challenger_2040_subghz.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_subghz.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_subghz.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_subghz.menu.dbglvl.None=None
 challenger_2040_subghz.menu.dbglvl.None.build.debug_level=
 challenger_2040_subghz.menu.dbglvl.Core=Core
@@ -15297,6 +15401,8 @@ challenger_2040_wifi.menu.dbgport.Serial1=Serial1
 challenger_2040_wifi.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_wifi.menu.dbgport.Serial2=Serial2
 challenger_2040_wifi.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_wifi.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_wifi.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_wifi.menu.dbglvl.None=None
 challenger_2040_wifi.menu.dbglvl.None.build.debug_level=
 challenger_2040_wifi.menu.dbglvl.Core=Core
@@ -15676,6 +15782,8 @@ challenger_2040_wifi_ble.menu.dbgport.Serial1=Serial1
 challenger_2040_wifi_ble.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_wifi_ble.menu.dbgport.Serial2=Serial2
 challenger_2040_wifi_ble.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_wifi_ble.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_wifi_ble.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_wifi_ble.menu.dbglvl.None=None
 challenger_2040_wifi_ble.menu.dbglvl.None.build.debug_level=
 challenger_2040_wifi_ble.menu.dbglvl.Core=Core
@@ -15955,6 +16063,8 @@ challenger_2040_wifi6_ble.menu.dbgport.Serial1=Serial1
 challenger_2040_wifi6_ble.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_wifi6_ble.menu.dbgport.Serial2=Serial2
 challenger_2040_wifi6_ble.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_wifi6_ble.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_wifi6_ble.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_wifi6_ble.menu.dbglvl.None=None
 challenger_2040_wifi6_ble.menu.dbglvl.None.build.debug_level=
 challenger_2040_wifi6_ble.menu.dbglvl.Core=Core
@@ -16234,6 +16344,8 @@ challenger_nb_2040_wifi.menu.dbgport.Serial1=Serial1
 challenger_nb_2040_wifi.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_nb_2040_wifi.menu.dbgport.Serial2=Serial2
 challenger_nb_2040_wifi.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_nb_2040_wifi.menu.dbgport.SerialSemi=SerialSemi
+challenger_nb_2040_wifi.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_nb_2040_wifi.menu.dbglvl.None=None
 challenger_nb_2040_wifi.menu.dbglvl.None.build.debug_level=
 challenger_nb_2040_wifi.menu.dbglvl.Core=Core
@@ -16512,6 +16624,8 @@ challenger_2040_sdrtc.menu.dbgport.Serial1=Serial1
 challenger_2040_sdrtc.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_sdrtc.menu.dbgport.Serial2=Serial2
 challenger_2040_sdrtc.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_sdrtc.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_sdrtc.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_sdrtc.menu.dbglvl.None=None
 challenger_2040_sdrtc.menu.dbglvl.None.build.debug_level=
 challenger_2040_sdrtc.menu.dbglvl.Core=Core
@@ -16790,6 +16904,8 @@ challenger_2040_nfc.menu.dbgport.Serial1=Serial1
 challenger_2040_nfc.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_nfc.menu.dbgport.Serial2=Serial2
 challenger_2040_nfc.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_nfc.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_nfc.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_nfc.menu.dbglvl.None=None
 challenger_2040_nfc.menu.dbglvl.None.build.debug_level=
 challenger_2040_nfc.menu.dbglvl.Core=Core
@@ -17068,6 +17184,8 @@ challenger_2040_uwb.menu.dbgport.Serial1=Serial1
 challenger_2040_uwb.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2040_uwb.menu.dbgport.Serial2=Serial2
 challenger_2040_uwb.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2040_uwb.menu.dbgport.SerialSemi=SerialSemi
+challenger_2040_uwb.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2040_uwb.menu.dbglvl.None=None
 challenger_2040_uwb.menu.dbglvl.None.build.debug_level=
 challenger_2040_uwb.menu.dbglvl.Core=Core
@@ -17347,6 +17465,8 @@ connectivity_2040_lte_wifi_ble.menu.dbgport.Serial1=Serial1
 connectivity_2040_lte_wifi_ble.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 connectivity_2040_lte_wifi_ble.menu.dbgport.Serial2=Serial2
 connectivity_2040_lte_wifi_ble.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+connectivity_2040_lte_wifi_ble.menu.dbgport.SerialSemi=SerialSemi
+connectivity_2040_lte_wifi_ble.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 connectivity_2040_lte_wifi_ble.menu.dbglvl.None=None
 connectivity_2040_lte_wifi_ble.menu.dbglvl.None.build.debug_level=
 connectivity_2040_lte_wifi_ble.menu.dbglvl.Core=Core
@@ -17626,6 +17746,8 @@ ilabs_rpico32.menu.dbgport.Serial1=Serial1
 ilabs_rpico32.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 ilabs_rpico32.menu.dbgport.Serial2=Serial2
 ilabs_rpico32.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+ilabs_rpico32.menu.dbgport.SerialSemi=SerialSemi
+ilabs_rpico32.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 ilabs_rpico32.menu.dbglvl.None=None
 ilabs_rpico32.menu.dbglvl.None.build.debug_level=
 ilabs_rpico32.menu.dbglvl.Core=Core
@@ -18014,6 +18136,8 @@ challenger_2350_wifi6_ble5.menu.dbgport.Serial1=Serial1
 challenger_2350_wifi6_ble5.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2350_wifi6_ble5.menu.dbgport.Serial2=Serial2
 challenger_2350_wifi6_ble5.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2350_wifi6_ble5.menu.dbgport.SerialSemi=SerialSemi
+challenger_2350_wifi6_ble5.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2350_wifi6_ble5.menu.dbglvl.None=None
 challenger_2350_wifi6_ble5.menu.dbglvl.None.build.debug_level=
 challenger_2350_wifi6_ble5.menu.dbglvl.Core=Core
@@ -18301,6 +18425,8 @@ challenger_2350_bconnect.menu.dbgport.Serial1=Serial1
 challenger_2350_bconnect.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 challenger_2350_bconnect.menu.dbgport.Serial2=Serial2
 challenger_2350_bconnect.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2350_bconnect.menu.dbgport.SerialSemi=SerialSemi
+challenger_2350_bconnect.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 challenger_2350_bconnect.menu.dbglvl.None=None
 challenger_2350_bconnect.menu.dbglvl.None.build.debug_level=
 challenger_2350_bconnect.menu.dbglvl.Core=Core
@@ -18579,6 +18705,8 @@ melopero_cookie_rp2040.menu.dbgport.Serial1=Serial1
 melopero_cookie_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 melopero_cookie_rp2040.menu.dbgport.Serial2=Serial2
 melopero_cookie_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+melopero_cookie_rp2040.menu.dbgport.SerialSemi=SerialSemi
+melopero_cookie_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 melopero_cookie_rp2040.menu.dbglvl.None=None
 melopero_cookie_rp2040.menu.dbglvl.None.build.debug_level=
 melopero_cookie_rp2040.menu.dbglvl.Core=Core
@@ -18913,6 +19041,8 @@ melopero_shake_rp2040.menu.dbgport.Serial1=Serial1
 melopero_shake_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 melopero_shake_rp2040.menu.dbgport.Serial2=Serial2
 melopero_shake_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+melopero_shake_rp2040.menu.dbgport.SerialSemi=SerialSemi
+melopero_shake_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 melopero_shake_rp2040.menu.dbglvl.None=None
 melopero_shake_rp2040.menu.dbglvl.None.build.debug_level=
 melopero_shake_rp2040.menu.dbglvl.Core=Core
@@ -19198,6 +19328,8 @@ akana_r1.menu.dbgport.Serial1=Serial1
 akana_r1.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 akana_r1.menu.dbgport.Serial2=Serial2
 akana_r1.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+akana_r1.menu.dbgport.SerialSemi=SerialSemi
+akana_r1.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 akana_r1.menu.dbglvl.None=None
 akana_r1.menu.dbglvl.None.build.debug_level=
 akana_r1.menu.dbglvl.Core=Core
@@ -19448,6 +19580,8 @@ nekosystems_bl2040_mini.menu.dbgport.Serial1=Serial1
 nekosystems_bl2040_mini.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 nekosystems_bl2040_mini.menu.dbgport.Serial2=Serial2
 nekosystems_bl2040_mini.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+nekosystems_bl2040_mini.menu.dbgport.SerialSemi=SerialSemi
+nekosystems_bl2040_mini.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 nekosystems_bl2040_mini.menu.dbglvl.None=None
 nekosystems_bl2040_mini.menu.dbglvl.None.build.debug_level=
 nekosystems_bl2040_mini.menu.dbglvl.Core=Core
@@ -19698,6 +19832,8 @@ newsan_archi.menu.dbgport.Serial1=Serial1
 newsan_archi.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 newsan_archi.menu.dbgport.Serial2=Serial2
 newsan_archi.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+newsan_archi.menu.dbgport.SerialSemi=SerialSemi
+newsan_archi.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 newsan_archi.menu.dbglvl.None=None
 newsan_archi.menu.dbglvl.None.build.debug_level=
 newsan_archi.menu.dbglvl.Core=Core
@@ -19932,6 +20068,8 @@ nullbits_bit_c_pro.menu.dbgport.Serial1=Serial1
 nullbits_bit_c_pro.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 nullbits_bit_c_pro.menu.dbgport.Serial2=Serial2
 nullbits_bit_c_pro.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+nullbits_bit_c_pro.menu.dbgport.SerialSemi=SerialSemi
+nullbits_bit_c_pro.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 nullbits_bit_c_pro.menu.dbglvl.None=None
 nullbits_bit_c_pro.menu.dbglvl.None.build.debug_level=
 nullbits_bit_c_pro.menu.dbglvl.Core=Core
@@ -20168,6 +20306,8 @@ olimex_rp2040pico30_2mb.menu.dbgport.Serial1=Serial1
 olimex_rp2040pico30_2mb.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 olimex_rp2040pico30_2mb.menu.dbgport.Serial2=Serial2
 olimex_rp2040pico30_2mb.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+olimex_rp2040pico30_2mb.menu.dbgport.SerialSemi=SerialSemi
+olimex_rp2040pico30_2mb.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 olimex_rp2040pico30_2mb.menu.dbglvl.None=None
 olimex_rp2040pico30_2mb.menu.dbglvl.None.build.debug_level=
 olimex_rp2040pico30_2mb.menu.dbglvl.Core=Core
@@ -20502,6 +20642,8 @@ olimex_rp2040pico30_16mb.menu.dbgport.Serial1=Serial1
 olimex_rp2040pico30_16mb.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 olimex_rp2040pico30_16mb.menu.dbgport.Serial2=Serial2
 olimex_rp2040pico30_16mb.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+olimex_rp2040pico30_16mb.menu.dbgport.SerialSemi=SerialSemi
+olimex_rp2040pico30_16mb.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 olimex_rp2040pico30_16mb.menu.dbglvl.None=None
 olimex_rp2040pico30_16mb.menu.dbglvl.None.build.debug_level=
 olimex_rp2040pico30_16mb.menu.dbglvl.Core=Core
@@ -20780,6 +20922,8 @@ pimoroni_pga2040.menu.dbgport.Serial1=Serial1
 pimoroni_pga2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pimoroni_pga2040.menu.dbgport.Serial2=Serial2
 pimoroni_pga2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_pga2040.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_pga2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pimoroni_pga2040.menu.dbglvl.None=None
 pimoroni_pga2040.menu.dbglvl.None.build.debug_level=
 pimoroni_pga2040.menu.dbglvl.Core=Core
@@ -21123,6 +21267,8 @@ pimoroni_pga2350.menu.dbgport.Serial1=Serial1
 pimoroni_pga2350.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pimoroni_pga2350.menu.dbgport.Serial2=Serial2
 pimoroni_pga2350.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_pga2350.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_pga2350.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pimoroni_pga2350.menu.dbglvl.None=None
 pimoroni_pga2350.menu.dbglvl.None.build.debug_level=
 pimoroni_pga2350.menu.dbglvl.Core=Core
@@ -21466,6 +21612,8 @@ pimoroni_pico_plus_2.menu.dbgport.Serial1=Serial1
 pimoroni_pico_plus_2.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pimoroni_pico_plus_2.menu.dbgport.Serial2=Serial2
 pimoroni_pico_plus_2.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_pico_plus_2.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_pico_plus_2.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pimoroni_pico_plus_2.menu.dbglvl.None=None
 pimoroni_pico_plus_2.menu.dbglvl.None.build.debug_level=
 pimoroni_pico_plus_2.menu.dbglvl.Core=Core
@@ -21810,6 +21958,8 @@ pimoroni_pico_plus_2w.menu.dbgport.Serial1=Serial1
 pimoroni_pico_plus_2w.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pimoroni_pico_plus_2w.menu.dbgport.Serial2=Serial2
 pimoroni_pico_plus_2w.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_pico_plus_2w.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_pico_plus_2w.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pimoroni_pico_plus_2w.menu.dbglvl.None=None
 pimoroni_pico_plus_2w.menu.dbglvl.None.build.debug_level=
 pimoroni_pico_plus_2w.menu.dbglvl.Core=Core
@@ -22150,6 +22300,8 @@ pimoroni_plasma2040.menu.dbgport.Serial1=Serial1
 pimoroni_plasma2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pimoroni_plasma2040.menu.dbgport.Serial2=Serial2
 pimoroni_plasma2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_plasma2040.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_plasma2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pimoroni_plasma2040.menu.dbglvl.None=None
 pimoroni_plasma2040.menu.dbglvl.None.build.debug_level=
 pimoroni_plasma2040.menu.dbglvl.Core=Core
@@ -22414,6 +22566,8 @@ pimoroni_tiny2040.menu.dbgport.Serial1=Serial1
 pimoroni_tiny2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pimoroni_tiny2040.menu.dbgport.Serial2=Serial2
 pimoroni_tiny2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_tiny2040.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_tiny2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pimoroni_tiny2040.menu.dbglvl.None=None
 pimoroni_tiny2040.menu.dbglvl.None.build.debug_level=
 pimoroni_tiny2040.menu.dbglvl.Core=Core
@@ -22673,6 +22827,8 @@ pimoroni_tiny2350.menu.dbgport.Serial1=Serial1
 pimoroni_tiny2350.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pimoroni_tiny2350.menu.dbgport.Serial2=Serial2
 pimoroni_tiny2350.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_tiny2350.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_tiny2350.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pimoroni_tiny2350.menu.dbglvl.None=None
 pimoroni_tiny2350.menu.dbglvl.None.build.debug_level=
 pimoroni_tiny2350.menu.dbglvl.Core=Core
@@ -22899,6 +23055,8 @@ pintronix_pinmax.menu.dbgport.Serial1=Serial1
 pintronix_pinmax.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 pintronix_pinmax.menu.dbgport.Serial2=Serial2
 pintronix_pinmax.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pintronix_pinmax.menu.dbgport.SerialSemi=SerialSemi
+pintronix_pinmax.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 pintronix_pinmax.menu.dbglvl.None=None
 pintronix_pinmax.menu.dbglvl.None.build.debug_level=
 pintronix_pinmax.menu.dbglvl.Core=Core
@@ -23135,6 +23293,8 @@ rakwireless_rak11300.menu.dbgport.Serial1=Serial1
 rakwireless_rak11300.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 rakwireless_rak11300.menu.dbgport.Serial2=Serial2
 rakwireless_rak11300.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+rakwireless_rak11300.menu.dbgport.SerialSemi=SerialSemi
+rakwireless_rak11300.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 rakwireless_rak11300.menu.dbglvl.None=None
 rakwireless_rak11300.menu.dbglvl.None.build.debug_level=
 rakwireless_rak11300.menu.dbglvl.Core=Core
@@ -23453,6 +23613,8 @@ redscorp_rp2040_eins.menu.dbgport.Serial1=Serial1
 redscorp_rp2040_eins.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 redscorp_rp2040_eins.menu.dbgport.Serial2=Serial2
 redscorp_rp2040_eins.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+redscorp_rp2040_eins.menu.dbgport.SerialSemi=SerialSemi
+redscorp_rp2040_eins.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 redscorp_rp2040_eins.menu.dbglvl.None=None
 redscorp_rp2040_eins.menu.dbglvl.None.build.debug_level=
 redscorp_rp2040_eins.menu.dbglvl.Core=Core
@@ -23771,6 +23933,8 @@ redscorp_rp2040_promini.menu.dbgport.Serial1=Serial1
 redscorp_rp2040_promini.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 redscorp_rp2040_promini.menu.dbgport.Serial2=Serial2
 redscorp_rp2040_promini.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+redscorp_rp2040_promini.menu.dbgport.SerialSemi=SerialSemi
+redscorp_rp2040_promini.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 redscorp_rp2040_promini.menu.dbglvl.None=None
 redscorp_rp2040_promini.menu.dbglvl.None.build.debug_level=
 redscorp_rp2040_promini.menu.dbglvl.Core=Core
@@ -24025,6 +24189,8 @@ sea_picro.menu.dbgport.Serial1=Serial1
 sea_picro.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 sea_picro.menu.dbgport.Serial2=Serial2
 sea_picro.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+sea_picro.menu.dbgport.SerialSemi=SerialSemi
+sea_picro.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 sea_picro.menu.dbglvl.None=None
 sea_picro.menu.dbglvl.None.build.debug_level=
 sea_picro.menu.dbglvl.Core=Core
@@ -24247,6 +24413,8 @@ silicognition_rp2040_shim.menu.dbgport.Serial1=Serial1
 silicognition_rp2040_shim.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 silicognition_rp2040_shim.menu.dbgport.Serial2=Serial2
 silicognition_rp2040_shim.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+silicognition_rp2040_shim.menu.dbgport.SerialSemi=SerialSemi
+silicognition_rp2040_shim.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 silicognition_rp2040_shim.menu.dbglvl.None=None
 silicognition_rp2040_shim.menu.dbglvl.None.build.debug_level=
 silicognition_rp2040_shim.menu.dbglvl.Core=Core
@@ -24501,6 +24669,8 @@ solderparty_rp2040_stamp.menu.dbgport.Serial1=Serial1
 solderparty_rp2040_stamp.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 solderparty_rp2040_stamp.menu.dbgport.Serial2=Serial2
 solderparty_rp2040_stamp.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+solderparty_rp2040_stamp.menu.dbgport.SerialSemi=SerialSemi
+solderparty_rp2040_stamp.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 solderparty_rp2040_stamp.menu.dbglvl.None=None
 solderparty_rp2040_stamp.menu.dbglvl.None.build.debug_level=
 solderparty_rp2040_stamp.menu.dbglvl.Core=Core
@@ -24820,6 +24990,8 @@ solderparty_rp2350_stamp.menu.dbgport.Serial1=Serial1
 solderparty_rp2350_stamp.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 solderparty_rp2350_stamp.menu.dbgport.Serial2=Serial2
 solderparty_rp2350_stamp.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+solderparty_rp2350_stamp.menu.dbgport.SerialSemi=SerialSemi
+solderparty_rp2350_stamp.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 solderparty_rp2350_stamp.menu.dbglvl.None=None
 solderparty_rp2350_stamp.menu.dbglvl.None.build.debug_level=
 solderparty_rp2350_stamp.menu.dbglvl.Core=Core
@@ -25139,6 +25311,8 @@ solderparty_rp2350_stamp_xl.menu.dbgport.Serial1=Serial1
 solderparty_rp2350_stamp_xl.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 solderparty_rp2350_stamp_xl.menu.dbgport.Serial2=Serial2
 solderparty_rp2350_stamp_xl.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+solderparty_rp2350_stamp_xl.menu.dbgport.SerialSemi=SerialSemi
+solderparty_rp2350_stamp_xl.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 solderparty_rp2350_stamp_xl.menu.dbglvl.None=None
 solderparty_rp2350_stamp_xl.menu.dbglvl.None.build.debug_level=
 solderparty_rp2350_stamp_xl.menu.dbglvl.Core=Core
@@ -25473,6 +25647,8 @@ sparkfun_micromodrp2040.menu.dbgport.Serial1=Serial1
 sparkfun_micromodrp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 sparkfun_micromodrp2040.menu.dbgport.Serial2=Serial2
 sparkfun_micromodrp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+sparkfun_micromodrp2040.menu.dbgport.SerialSemi=SerialSemi
+sparkfun_micromodrp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 sparkfun_micromodrp2040.menu.dbglvl.None=None
 sparkfun_micromodrp2040.menu.dbglvl.None.build.debug_level=
 sparkfun_micromodrp2040.menu.dbglvl.Core=Core
@@ -25807,6 +25983,8 @@ sparkfun_promicrorp2040.menu.dbgport.Serial1=Serial1
 sparkfun_promicrorp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 sparkfun_promicrorp2040.menu.dbgport.Serial2=Serial2
 sparkfun_promicrorp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+sparkfun_promicrorp2040.menu.dbgport.SerialSemi=SerialSemi
+sparkfun_promicrorp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 sparkfun_promicrorp2040.menu.dbglvl.None=None
 sparkfun_promicrorp2040.menu.dbglvl.None.build.debug_level=
 sparkfun_promicrorp2040.menu.dbglvl.Core=Core
@@ -26150,6 +26328,8 @@ sparkfun_promicrorp2350.menu.dbgport.Serial1=Serial1
 sparkfun_promicrorp2350.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 sparkfun_promicrorp2350.menu.dbgport.Serial2=Serial2
 sparkfun_promicrorp2350.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+sparkfun_promicrorp2350.menu.dbgport.SerialSemi=SerialSemi
+sparkfun_promicrorp2350.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 sparkfun_promicrorp2350.menu.dbglvl.None=None
 sparkfun_promicrorp2350.menu.dbglvl.None.build.debug_level=
 sparkfun_promicrorp2350.menu.dbglvl.Core=Core
@@ -26484,6 +26664,8 @@ sparkfun_thingplusrp2040.menu.dbgport.Serial1=Serial1
 sparkfun_thingplusrp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 sparkfun_thingplusrp2040.menu.dbgport.Serial2=Serial2
 sparkfun_thingplusrp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+sparkfun_thingplusrp2040.menu.dbgport.SerialSemi=SerialSemi
+sparkfun_thingplusrp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 sparkfun_thingplusrp2040.menu.dbglvl.None=None
 sparkfun_thingplusrp2040.menu.dbglvl.None.build.debug_level=
 sparkfun_thingplusrp2040.menu.dbglvl.Core=Core
@@ -26828,6 +27010,8 @@ sparkfun_thingplusrp2350.menu.dbgport.Serial1=Serial1
 sparkfun_thingplusrp2350.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 sparkfun_thingplusrp2350.menu.dbgport.Serial2=Serial2
 sparkfun_thingplusrp2350.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+sparkfun_thingplusrp2350.menu.dbgport.SerialSemi=SerialSemi
+sparkfun_thingplusrp2350.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 sparkfun_thingplusrp2350.menu.dbglvl.None=None
 sparkfun_thingplusrp2350.menu.dbglvl.None.build.debug_level=
 sparkfun_thingplusrp2350.menu.dbglvl.Core=Core
@@ -27168,6 +27352,8 @@ upesy_rp2040_devkit.menu.dbgport.Serial1=Serial1
 upesy_rp2040_devkit.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 upesy_rp2040_devkit.menu.dbgport.Serial2=Serial2
 upesy_rp2040_devkit.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+upesy_rp2040_devkit.menu.dbgport.SerialSemi=SerialSemi
+upesy_rp2040_devkit.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 upesy_rp2040_devkit.menu.dbglvl.None=None
 upesy_rp2040_devkit.menu.dbglvl.None.build.debug_level=
 upesy_rp2040_devkit.menu.dbglvl.Core=Core
@@ -27404,6 +27590,8 @@ seeed_indicator_rp2040.menu.dbgport.Serial1=Serial1
 seeed_indicator_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 seeed_indicator_rp2040.menu.dbgport.Serial2=Serial2
 seeed_indicator_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+seeed_indicator_rp2040.menu.dbgport.SerialSemi=SerialSemi
+seeed_indicator_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 seeed_indicator_rp2040.menu.dbglvl.None=None
 seeed_indicator_rp2040.menu.dbglvl.None.build.debug_level=
 seeed_indicator_rp2040.menu.dbglvl.Core=Core
@@ -27640,6 +27828,8 @@ seeed_xiao_rp2040.menu.dbgport.Serial1=Serial1
 seeed_xiao_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 seeed_xiao_rp2040.menu.dbgport.Serial2=Serial2
 seeed_xiao_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+seeed_xiao_rp2040.menu.dbgport.SerialSemi=SerialSemi
+seeed_xiao_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 seeed_xiao_rp2040.menu.dbglvl.None=None
 seeed_xiao_rp2040.menu.dbglvl.None.build.debug_level=
 seeed_xiao_rp2040.menu.dbglvl.Core=Core
@@ -27983,6 +28173,8 @@ seeed_xiao_rp2350.menu.dbgport.Serial1=Serial1
 seeed_xiao_rp2350.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 seeed_xiao_rp2350.menu.dbgport.Serial2=Serial2
 seeed_xiao_rp2350.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+seeed_xiao_rp2350.menu.dbgport.SerialSemi=SerialSemi
+seeed_xiao_rp2350.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 seeed_xiao_rp2350.menu.dbglvl.None=None
 seeed_xiao_rp2350.menu.dbglvl.None.build.debug_level=
 seeed_xiao_rp2350.menu.dbglvl.Core=Core
@@ -28273,6 +28465,8 @@ vccgnd_yd_rp2040.menu.dbgport.Serial1=Serial1
 vccgnd_yd_rp2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 vccgnd_yd_rp2040.menu.dbgport.Serial2=Serial2
 vccgnd_yd_rp2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+vccgnd_yd_rp2040.menu.dbgport.SerialSemi=SerialSemi
+vccgnd_yd_rp2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 vccgnd_yd_rp2040.menu.dbglvl.None=None
 vccgnd_yd_rp2040.menu.dbglvl.None.build.debug_level=
 vccgnd_yd_rp2040.menu.dbglvl.Core=Core
@@ -28551,6 +28745,8 @@ viyalab_mizu.menu.dbgport.Serial1=Serial1
 viyalab_mizu.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 viyalab_mizu.menu.dbgport.Serial2=Serial2
 viyalab_mizu.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+viyalab_mizu.menu.dbgport.SerialSemi=SerialSemi
+viyalab_mizu.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 viyalab_mizu.menu.dbglvl.None=None
 viyalab_mizu.menu.dbglvl.None.build.debug_level=
 viyalab_mizu.menu.dbglvl.Core=Core
@@ -28787,6 +28983,8 @@ waveshare_rp2040_zero.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_zero.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_zero.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_zero.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_zero.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_zero.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_zero.menu.dbglvl.None=None
 waveshare_rp2040_zero.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_zero.menu.dbglvl.Core=Core
@@ -29037,6 +29235,8 @@ waveshare_rp2040_one.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_one.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_one.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_one.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_one.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_one.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_one.menu.dbglvl.None=None
 waveshare_rp2040_one.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_one.menu.dbglvl.Core=Core
@@ -29273,6 +29473,8 @@ waveshare_rp2040_matrix.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_matrix.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_matrix.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_matrix.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_matrix.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_matrix.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_matrix.menu.dbglvl.None=None
 waveshare_rp2040_matrix.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_matrix.menu.dbglvl.Core=Core
@@ -29607,6 +29809,8 @@ waveshare_rp2040_pizero.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_pizero.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_pizero.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_pizero.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_pizero.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_pizero.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_pizero.menu.dbglvl.None=None
 waveshare_rp2040_pizero.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_pizero.menu.dbglvl.Core=Core
@@ -29857,6 +30061,8 @@ waveshare_rp2040_plus_4mb.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_plus_4mb.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_plus_4mb.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_plus_4mb.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_plus_4mb.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_plus_4mb.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_plus_4mb.menu.dbglvl.None=None
 waveshare_rp2040_plus_4mb.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_plus_4mb.menu.dbglvl.Core=Core
@@ -30191,6 +30397,8 @@ waveshare_rp2040_plus_16mb.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_plus_16mb.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_plus_16mb.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_plus_16mb.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_plus_16mb.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_plus_16mb.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_plus_16mb.menu.dbglvl.None=None
 waveshare_rp2040_plus_16mb.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_plus_16mb.menu.dbglvl.Core=Core
@@ -30427,6 +30635,8 @@ waveshare_rp2040_lcd_0_96.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_lcd_0_96.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_lcd_0_96.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_lcd_0_96.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_lcd_0_96.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_lcd_0_96.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_lcd_0_96.menu.dbglvl.None=None
 waveshare_rp2040_lcd_0_96.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_lcd_0_96.menu.dbglvl.Core=Core
@@ -30663,6 +30873,8 @@ waveshare_rp2040_lcd_1_28.menu.dbgport.Serial1=Serial1
 waveshare_rp2040_lcd_1_28.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 waveshare_rp2040_lcd_1_28.menu.dbgport.Serial2=Serial2
 waveshare_rp2040_lcd_1_28.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_lcd_1_28.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_lcd_1_28.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 waveshare_rp2040_lcd_1_28.menu.dbglvl.None=None
 waveshare_rp2040_lcd_1_28.menu.dbglvl.None.build.debug_level=
 waveshare_rp2040_lcd_1_28.menu.dbglvl.Core=Core
@@ -30899,6 +31111,8 @@ wiznet_5100s_evb_pico.menu.dbgport.Serial1=Serial1
 wiznet_5100s_evb_pico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 wiznet_5100s_evb_pico.menu.dbgport.Serial2=Serial2
 wiznet_5100s_evb_pico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+wiznet_5100s_evb_pico.menu.dbgport.SerialSemi=SerialSemi
+wiznet_5100s_evb_pico.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 wiznet_5100s_evb_pico.menu.dbglvl.None=None
 wiznet_5100s_evb_pico.menu.dbglvl.None.build.debug_level=
 wiznet_5100s_evb_pico.menu.dbglvl.Core=Core
@@ -31144,6 +31358,8 @@ wiznet_5100s_evb_pico2.menu.dbgport.Serial1=Serial1
 wiznet_5100s_evb_pico2.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 wiznet_5100s_evb_pico2.menu.dbgport.Serial2=Serial2
 wiznet_5100s_evb_pico2.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+wiznet_5100s_evb_pico2.menu.dbgport.SerialSemi=SerialSemi
+wiznet_5100s_evb_pico2.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 wiznet_5100s_evb_pico2.menu.dbglvl.None=None
 wiznet_5100s_evb_pico2.menu.dbglvl.None.build.debug_level=
 wiznet_5100s_evb_pico2.menu.dbglvl.Core=Core
@@ -31380,6 +31596,8 @@ wiznet_wizfi360_evb_pico.menu.dbgport.Serial1=Serial1
 wiznet_wizfi360_evb_pico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 wiznet_wizfi360_evb_pico.menu.dbgport.Serial2=Serial2
 wiznet_wizfi360_evb_pico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+wiznet_wizfi360_evb_pico.menu.dbgport.SerialSemi=SerialSemi
+wiznet_wizfi360_evb_pico.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 wiznet_wizfi360_evb_pico.menu.dbglvl.None=None
 wiznet_wizfi360_evb_pico.menu.dbglvl.None.build.debug_level=
 wiznet_wizfi360_evb_pico.menu.dbglvl.Core=Core
@@ -31616,6 +31834,8 @@ wiznet_5500_evb_pico.menu.dbgport.Serial1=Serial1
 wiznet_5500_evb_pico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 wiznet_5500_evb_pico.menu.dbgport.Serial2=Serial2
 wiznet_5500_evb_pico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+wiznet_5500_evb_pico.menu.dbgport.SerialSemi=SerialSemi
+wiznet_5500_evb_pico.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 wiznet_5500_evb_pico.menu.dbglvl.None=None
 wiznet_5500_evb_pico.menu.dbglvl.None.build.debug_level=
 wiznet_5500_evb_pico.menu.dbglvl.Core=Core
@@ -31861,6 +32081,8 @@ wiznet_5500_evb_pico2.menu.dbgport.Serial1=Serial1
 wiznet_5500_evb_pico2.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 wiznet_5500_evb_pico2.menu.dbgport.Serial2=Serial2
 wiznet_5500_evb_pico2.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+wiznet_5500_evb_pico2.menu.dbgport.SerialSemi=SerialSemi
+wiznet_5500_evb_pico2.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 wiznet_5500_evb_pico2.menu.dbglvl.None=None
 wiznet_5500_evb_pico2.menu.dbglvl.None.build.debug_level=
 wiznet_5500_evb_pico2.menu.dbglvl.Core=Core
@@ -32097,6 +32319,8 @@ wiznet_55rp20_evb_pico.menu.dbgport.Serial1=Serial1
 wiznet_55rp20_evb_pico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 wiznet_55rp20_evb_pico.menu.dbgport.Serial2=Serial2
 wiznet_55rp20_evb_pico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+wiznet_55rp20_evb_pico.menu.dbgport.SerialSemi=SerialSemi
+wiznet_55rp20_evb_pico.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 wiznet_55rp20_evb_pico.menu.dbglvl.None=None
 wiznet_55rp20_evb_pico.menu.dbglvl.None.build.debug_level=
 wiznet_55rp20_evb_pico.menu.dbglvl.Core=Core
@@ -32379,6 +32603,8 @@ generic.menu.dbgport.Serial1=Serial1
 generic.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 generic.menu.dbgport.Serial2=Serial2
 generic.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+generic.menu.dbgport.SerialSemi=SerialSemi
+generic.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 generic.menu.dbglvl.None=None
 generic.menu.dbglvl.None.build.debug_level=
 generic.menu.dbglvl.Core=Core
@@ -32805,6 +33031,8 @@ generic_rp2350.menu.dbgport.Serial1=Serial1
 generic_rp2350.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 generic_rp2350.menu.dbgport.Serial2=Serial2
 generic_rp2350.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+generic_rp2350.menu.dbgport.SerialSemi=SerialSemi
+generic_rp2350.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 generic_rp2350.menu.dbglvl.None=None
 generic_rp2350.menu.dbglvl.None.build.debug_level=
 generic_rp2350.menu.dbglvl.Core=Core

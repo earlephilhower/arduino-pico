@@ -21,7 +21,7 @@
 
 #include "Semihosting.h"
 
-#include <Arduino.h>
+#include "Arduino.h"
 #include "api/HardwareSerial.h"
 
 class SerialSemiClass : public HardwareSerial {
@@ -61,7 +61,7 @@ public:
             _peeked = false;
             return _peekedChar;
         }
-        return Semihost(SYS_READC, nullptr);
+        return Semihost(SEMIHOST_SYS_READC, nullptr);
     }
 
     virtual int available() override {
@@ -80,7 +80,7 @@ public:
 
     virtual size_t write(uint8_t c) override {
         int32_t param = c;
-        Semihost(SYS_WRITEC, &param);
+        Semihost(SEMIHOST_SYS_WRITEC, &param);
         return 1;
     }
 

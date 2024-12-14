@@ -126,6 +126,7 @@ extern const String emptyString;
 #endif
 
 #include "SerialUART.h"
+#include "SerialSemi.h"
 #include "RP2040Support.h"
 #include "SerialPIO.h"
 #include "Bootsel.h"

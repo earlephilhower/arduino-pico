@@ -40,6 +40,9 @@ Simply include ``<Semihosting.h>`` in your application and use ``SerialSemi`` as
 * Baud rate, bit width, etc. are all ignored
 * Input is limited because ``read`` may hang indefinitely in the host and ``available`` is not part of the spec
 
+``SerialSemi`` can also be selected as the debug output port in the IDE, in which case ``::printf`` will write
+to the debugger directly.
+
 SemiFS - Host filesystem access through Semihosting
 ---------------------------------------------------
 
