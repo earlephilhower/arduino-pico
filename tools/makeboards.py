@@ -567,7 +567,7 @@ MakeBoard("DudesCab", "rp2040", "L'atelier d'Arnoz", "DudesCab", "0x2e8a", "0x10
 MakeBoard("electroniccats_huntercat_nfc", "rp2040", "ElectronicCats", "HunterCat NFC RP2040", "0x2E8A", "0x1037", 500, "ELECTRONICCATS_HUNTERCAT_NFC", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # EVN
-MakeBoard("evn_alpha", "rp2040", "EVN", "Alpha", "0x2e8a", "0xf00a", 500, "EVN_ALPHA", 16, 0, "boot2_generic_03h_2_padded_checksum", board_url="https://coresg.tech/evn")
+MakeBoard("evn_alpha", "rp2040", "EVN", "Alpha", "0x2e8a", "0xf00a", 500, "EVN_ALPHA", 16, 0, "boot2_generic_03h_4_padded_checksum", board_url="https://coresg.tech/evn")
 
 # ExtremeElectronics
 MakeBoard("extelec_rc2040", "rp2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, 0, "boot2_w25q080_2_padded_checksum")
