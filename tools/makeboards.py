@@ -27,7 +27,7 @@ def BuildFlashMenu(name, chip, flashsize, fssizelist):
 def BuildDebugPort(name):
     print("%s.menu.dbgport.Disabled=Disabled" % (name))
     print("%s.menu.dbgport.Disabled.build.debug_port=" % (name))
-    for p in ["Serial", "Serial1", "Serial2", "SerialSemi"]:
+    for p in ["Serial", "Serial1", "Serial2"]:
         print("%s.menu.dbgport.%s=%s" % (name, p, p))
         print("%s.menu.dbgport.%s.build.debug_port=-DDEBUG_RP2040_PORT=%s" % (name, p, p))
 
@@ -56,8 +56,6 @@ def BuildArch(name):
     print("%s.menu.arch.arm.build.toolchainpkg=pqt-gcc" % (name))
     print("%s.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse" % (name))
     print("%s.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block" % (name))
-    print("%s.menu.arch.arm.build.mcu=cortex-m33" % (name))
-
     # RISC-V Hazard3
     print("%s.menu.arch.riscv=RISC-V" % (name))
     print("%s.menu.arch.riscv.build.chip=%s" % (name, "rp2350-riscv"))
@@ -65,7 +63,6 @@ def BuildArch(name):
     print("%s.menu.arch.riscv.build.toolchainpkg=pqt-gcc-riscv" % (name))
     print("%s.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32" % (name))
     print("%s.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block" % (name))
-    print("%s.menu.arch.riscv.build.mcu=rv32imac" % (name))
 
 def BuildPSRAM(name):
     for s in [ 0, 2, 4, 8]:
@@ -91,16 +88,9 @@ def BuildRP2350Variant(name):
 
 def BuildOptimize(name):
     for l in [ ("Small", "Small", "-Os", " (standard)"), ("Optimize", "Optimize", "-O", ""), ("Optimize2", "Optimize More", "-O2", ""),
-               ("Optimize3", "Optimize Even More", "-O3", ""), ("Fast", "Fast", "-Ofast", " (maybe slower)"), ("Debug", "Debug", "-Og", ""),
-               ("Disabled", "Disabled", "-O0", "") ]:
+               ("Optimize3", "Optimize Even More", "-O3", ""), ("Fast", "Fast", "-Ofast", " (maybe slower)"), ("Debug", "Debug", "-Og", "") ]:
         print("%s.menu.opt.%s=%s (%s)%s" % (name, l[0], l[1], l[2], l[3]))
         print("%s.menu.opt.%s.build.flags.optimize=%s" % (name, l[0], l[2]))
-
-def BuildProfile(name):
-    print("%s.menu.profile.Disabled=Disabled" % (name))
-    print("%s.menu.profile.Disabled.build.flags.profile=" % (name))
-    print("%s.menu.profile.Enabled=Enabled" % (name))
-    print("%s.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE" % (name))
 
 def BuildRTTI(name):
     print("%s.menu.rtti.Disabled=Disabled" % (name))
@@ -247,9 +237,8 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print("%s.build.usbpid=-DUSBD_PID=%s" % (name, main_pid))
     print("%s.build.usbpwr=-DUSBD_MAX_POWER_MA=%s" % (name, pwr))
     print("%s.build.board=%s" % (name, boarddefine))
-
+#    print("%s.build.mcu=cortex-m0plus" % (name))
     if chip == "rp2040":  # RP2350 has menu for this later on
-        print("%s.build.mcu=cortex-m0plus" % (name))        
         print("%s.build.chip=%s" % (name, chip))
         print("%s.build.toolchain=%s" % (name, chaintuple))
         print("%s.build.toolchainpkg=%s" % (name, "pqt-gcc"))
@@ -270,7 +259,6 @@ def BuildHeader(name, chip, chaintuple, chipoptions, vendor_name, product_name, 
     print('%s.build.usb_product="%s"' % (name, product_name))
     if ((chip == "rp2350") or (chip == "rp2350-riscv")) and (name != "generic_rp2350"):
         print("%s.build.psram_length=0x%d00000" % (name, psramsize))
-
     if extra != None:
         m_extra = ''
         for m_item in extra:
@@ -293,7 +281,6 @@ def BuildGlobalMenuList():
     print("menu.freq=CPU Speed")
     print("menu.arch=CPU Architecture")
     print("menu.opt=Optimize")
-    print("menu.profile=Profiling")
     print("menu.rtti=RTTI")
     print("menu.stackprotect=Stack Protector")
     print("menu.exceptions=C++ Exceptions")
@@ -365,7 +352,6 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     else:
         BuildFreq(name, 133)
     BuildOptimize(name)
-    BuildProfile(name)
     BuildRTTI(name)
     BuildStackProtect(name)
     BuildExceptions(name)
@@ -683,6 +669,9 @@ MakeBoard("wiznet_55rp20_evb_pico", "rp2040", "WIZnet", "W55RP20-EVB-Pico", "0x2
 # Generic
 MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("generic_rp2350", "rp2350", "Generic", "RP2350", "0x2e8a", "0xf00f", 250, "GENERIC_RP2350", 16, 8, "none")
+
+# MyMakers
+MakeBoard("MyRP_bot", "rp2040", "MyMakers", "RP2040", "0x2e8a", "0x000a", 250, "MyRP_2040", 2, 0, "boot2_generic_03h_4_padded_checksum")
 
 sys.stdout.close()
 with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w', newline='\n') as f:
