@@ -358,6 +358,9 @@
                   },
                   {
                      "name": "Generic RP2350"
+                  },
+                  {
+                     "name": "MyMakers RP2040"
                   }
                ],
                "toolsDependencies": [
