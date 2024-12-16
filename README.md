@@ -113,6 +113,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet WizFi360-EVB-Pico
 * Generic RP2040 (configurable flash, I/O pins)
 * Generic RP2350 (configurable flash, I/O pins)
+* MyMakers RP2040
 
 # Features
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
