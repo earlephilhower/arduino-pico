@@ -684,6 +684,9 @@ MakeBoard("wiznet_55rp20_evb_pico", "rp2040", "WIZnet", "W55RP20-EVB-Pico", "0x2
 MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("generic_rp2350", "rp2350", "Generic", "RP2350", "0x2e8a", "0xf00f", 250, "GENERIC_RP2350", 16, 8, "none")
 
+# MyMakers
+MakeBoard("MyRP_bot", "rp2040", "MyMakers", "RP2040", "0x2e8a", "0x000a", 250, "MyRP_2040", 2, 0, "boot2_generic_03h_4_padded_checksum")
+
 sys.stdout.close()
 with open(os.path.abspath(os.path.dirname(__file__)) + '/../package/package_pico_index.template.json', 'w', newline='\n') as f:
     f.write(json.dumps(pkgjson, indent=3))
