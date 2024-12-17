@@ -517,7 +517,7 @@ MakeBoard("adafruit_kb2040", "rp2040", "Adafruit", "KB2040", "0x239a", "0x8105",
 MakeBoard("adafruit_feather_rp2350_hstx", "rp2350", "Adafruit", "Feather RP2350 HSTX", "0x239a", "0x814f", 250, "ADAFRUIT_FEATHER_RP2350_HSTX", 8, 0, "none")
 MakeBoard("adafruit_floppsy", "rp2040", "Adafruit", "Floppsy", "0x239a", "0x8151", 250, "ADAFRUIT_FLOPPSY_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 
-#Amken
+# Amken
 MakeBoard("amken_bunny", "rp2040","Amken","BunnyBoard","0x2770",["0x7303"],250,"AMKEN_BB",128,0,"boot2_w25q128jvxq_4_padded_checksum","","https://www.amken3d.com")
 MakeBoard("amken_revelop", "rp2040","Amken","Revelop","0x2770",["0x7304"],250,"AMKEN_REVELOP",32,0,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
 MakeBoard("amken_revelop_plus", "rp2040","Amken","Revelop Plus","0x2770",["0x7305"],250,"AMKEN_REVELOP_PLUS",32,0,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
@@ -598,6 +598,9 @@ MakeBoard("melopero_shake_rp2040", "rp2040", "Melopero", "Shake RP2040", "0x2e8a
 # Mete Hoca
 MakeBoard("akana_r1", "rp2040", "METE HOCA", "Akana R1", "0x2e8a", "0x3001", 500, "METEHOCA_AKANA_R1", 16, 0, "boot2_generic_03h_4_padded_checksum", board_url="https://www.metehoca.com/")
 
+# MyMakers
+MakeBoard("MyRP_bot", "rp2040", "MyMakers", "RP2040", "0x2e8a", "0x000a", 250, "MyRP_2040", 2, 0, "boot2_generic_03h_4_padded_checksum")
+
 # Neko Systems
 MakeBoard("nekosystems_bl2040_mini", "rp2040", "Neko Systems", "BL2040 Mini", "0x2e8a", "0x000a", 500, "NEKOSYSTEMS_BL2040_MINI", 4, 0, "boot2_generic_03h_2_padded_checksum")
 
@@ -610,9 +613,6 @@ MakeBoard("nullbits_bit_c_pro", "rp2040", "nullbits", "Bit-C PRO", "0x2e8a", "0x
 # Olimex
 MakeBoard("olimex_rp2040pico30_2mb", "rp2040", "Olimex", "RP2040-Pico30 2MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_2MB", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("olimex_rp2040pico30_16mb", "rp2040", "Olimex", "RP2040-Pico30 16MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_16MB", 16, 0, "boot2_w25q080_2_padded_checksum")
-
-# MyMakers
-MakeBoard("MyRP_bot", "rp2040", "MyMakers", "RP2040", "0x2e8a", "0x000a", 250, "MyRP_2040", 2, 0, "boot2_generic_03h_4_padded_checksum")
 
 # Pimoroni
 MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, 0, "boot2_w25q64jv_4_padded_checksum")
@@ -651,13 +651,13 @@ MakeBoard("sparkfun_promicrorp2350", "rp2350", "SparkFun", "ProMicro RP2350", "0
 MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_thingplusrp2350", "rp2350", "SparkFun", "Thing Plus RP2350", "0x1b4f", "0x0038", 250, "SPARKFUN_THINGPLUS_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 
-# Upesy
-MakeBoard("upesy_rp2040_devkit", "rp2040", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, 0, "boot2_w25q080_2_padded_checksum")
-
 # Seeed
 MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("seeed_xiao_rp2040", "rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("seeed_xiao_rp2350", "rp2350", "Seeed", "XIAO RP2350", "0x2886", "0x0058", 250, "SEEED_XIAO_RP2350", 16, 8, "none", None, "https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html")
+
+# Upesy
+MakeBoard("upesy_rp2040_devkit", "rp2040", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # VCC-GND YD-2040 - Use generic SPI/4 because boards seem to come with varied flash modules but same name
 MakeBoard('vccgnd_yd_rp2040', "rp2040", "VCC-GND", "YD RP2040", "0x2e8a", "0x800a", 500, "YD_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
