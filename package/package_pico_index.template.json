@@ -231,6 +231,9 @@
                      "name": "Olimex RP2040-Pico30 16MB"
                   },
                   {
+                     "name": "MyMakers RP2040"
+                  },
+                  {
                      "name": "Pimoroni PGA2040"
                   },
                   {
@@ -358,9 +361,6 @@
                   },
                   {
                      "name": "Generic RP2350"
-                  },
-                  {
-                     "name": "MyMakers RP2040"
                   }
                ],
                "toolsDependencies": [
