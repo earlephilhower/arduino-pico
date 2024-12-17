@@ -1,15 +1,11 @@
 IDE Menus
 =========
 
-Model
+Board
 -----
-Use the boards menu to select your model of RP2040 board.  There will be two
-options:  `Boardname` and `Boardname (Picoprobe)`.  If you want to use a
-Picoprobe to upload your sketches and not the default automatic UF2 upload,
-use the `(Picoprobe)` option, otherwise use the normal name.  No functional
-or code changes are done because of this.
+Use the boards menu to select your model of RP2040 board.  
 
-There is also a `Generic` board which allows you to individually select
+There is also a `Generic RP2040` board which allows you to individually select
 things such as flash size or boot2 flash type.  Use this if your board isn't
 yet fully supported and isn't working with the normal `Raspberry Pi Pico`
 option.

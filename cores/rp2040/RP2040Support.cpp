@@ -19,6 +19,10 @@
 */
 
 #include <Arduino.h>
+#include <pico/runtime.h>
+
+#ifdef PICO_RP2040
+
 #include <hardware/structs/psm.h>
 
 extern "C" void boot_double_tap_check();
@@ -31,3 +35,19 @@ void RP2040::enableDoubleResetBootloader() {
         boot_double_tap_check();
     }
 }
+
+#endif
+
+#ifdef __PROFILE
+Stream *__profileFile;
+int __writeProfileCB(const void *data, int len) {
+    return __profileFile->write((const char *)data, len);
+}
+
+#ifdef __PROFILE
+extern "C" void runtime_init_setup_profiling();
+#define PICO_RUNTIME_INIT_PROFILING "11011" // Towards the end, after PSRAM
+PICO_RUNTIME_INIT_FUNC_RUNTIME(runtime_init_setup_profiling, PICO_RUNTIME_INIT_PROFILING);
+#endif
+
+#endif

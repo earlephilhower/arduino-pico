@@ -24,8 +24,8 @@
 #include <lwip/def.h>
 #include <Arduino.h>
 
-#ifdef DEBUG_ESP_PORT
-#define CONSOLE DEBUG_ESP_PORT
+#ifdef DEBUG_RP2040_PORT
+#define CONSOLE DEBUG_RP2040_PORT
 #else
 #define CONSOLE Serial
 #endif

@@ -2,7 +2,7 @@
 
 cache_dir=$(mktemp -d)
 
-source "$TRAVIS_BUILD_DIR"/tests/common.sh
+source "$GITHUB_WORKSPACE"/tests/common.sh
 
 install_arduino nodebug
 
@@ -25,6 +25,7 @@ function skip_ino()
 /midi_pizza_box_dj/
 /msc_esp32_file_browser/
 /DualRole/
+/Host/
 EOL
         echo $ino | grep -q -F "$skiplist"
         echo $(( 1 - $? ))

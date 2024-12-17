@@ -31,7 +31,7 @@ class WiFiClientSecure;
 class WiFiServerSecure : public WiFiServer {
 public:
     WiFiServerSecure(IPAddress addr, uint16_t port);
-    WiFiServerSecure(uint16_t port);
+    WiFiServerSecure(uint16_t port = 22);
     WiFiServerSecure(const WiFiServerSecure &rhs);
     virtual ~WiFiServerSecure();
 
@@ -65,7 +65,7 @@ public:
 
     // If awaiting connection available and authenticated (i.e. client cert), return it.
     WiFiClientSecure accept(); // https://www.arduino.cc/en/Reference/EthernetServerAccept
-    WiFiClientSecure available(uint8_t* status = nullptr);
+    WiFiClientSecure available(uint8_t* status = nullptr) __attribute__((deprecated("Use accept().")));
 
     WiFiServerSecure& operator=(const WiFiServerSecure&) = default;
 

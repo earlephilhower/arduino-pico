@@ -45,6 +45,7 @@
 // Interfaces for the main core to use FreeRTOS mutexes
 extern "C" {
     extern volatile bool __otherCoreIdled;
+    static UBaseType_t __savedIrqs[configNUMBER_OF_CORES];
 
     SemaphoreHandle_t __freertos_mutex_create() {
         return xSemaphoreCreateMutex();
@@ -90,6 +91,22 @@ extern "C" {
 
     bool __freertos_check_if_in_isr() {
         return portCHECK_IF_IN_ISR();
+    }
+
+    void __freertos_task_exit_critical() {
+        if (portGET_CRITICAL_NESTING_COUNT() == 1U && portCHECK_IF_IN_ISR()) {
+            taskEXIT_CRITICAL_FROM_ISR(__savedIrqs[portGET_CORE_ID()]);
+        } else {
+            taskEXIT_CRITICAL();
+        }
+    }
+
+    void __freertos_task_enter_critical() {
+        if (portGET_CRITICAL_NESTING_COUNT() == 0U && portCHECK_IF_IN_ISR()) {
+            __savedIrqs[portGET_CORE_ID()] = taskENTER_CRITICAL_FROM_ISR();
+        } else {
+            taskENTER_CRITICAL();
+        }
     }
 }
 
@@ -258,7 +275,7 @@ void vApplicationIdleHook(void) {
 #endif /* configUSE_IDLE_HOOK == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_MINIMAL_IDLE_HOOK == 1 )
+//#if ( configUSE_MINIMAL_IDLE_HOOK == 1 )
 /*
     Call the user defined minimalIdle() function from within the idle task.
     This allows the application designer to add background functionality
@@ -267,17 +284,17 @@ void vApplicationIdleHook(void) {
     NOTE: vApplicationMinimalIdleHook() MUST NOT, UNDER ANY CIRCUMSTANCES, CALL A FUNCTION THAT MIGHT BLOCK.
 
 */
-void minimalIdle(void) __attribute__((weak));
-void minimalIdle() {} //Empty minimalIdle function
+void passiveIdle(void) __attribute__((weak));
+void passiveIdle() {} //Empty minimalIdle function
 
 extern "C"
-void vApplicationMinimalIdleHook(void) __attribute__((weak));
+//void vApplicationPassiveIdleHook(void) __attribute__((weak));
 
-void vApplicationMinimalIdleHook(void) {
-    minimalIdle();
+void vApplicationPassiveIdleHook(void) {
+    passiveIdle();
 }
 
-#endif /* configUSE_MINIMAL_IDLE_HOOK == 1 */
+//#endif /* configUSE_MINIMAL_IDLE_HOOK == 1 */
 /*-----------------------------------------------------------*/
 
 #if ( configUSE_TICK_HOOK == 1 )
@@ -393,6 +410,22 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask __attribute__((unused)),
 
 #endif /* configCHECK_FOR_STACK_OVERFLOW >= 1 */
 /*-----------------------------------------------------------*/
+
+
+
+extern "C" void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
+        StackType_t ** ppxIdleTaskStackBuffer,
+        configSTACK_DEPTH_TYPE * puxIdleTaskStackSize,
+        BaseType_t xPassiveIdleTaskIndex) {
+    static StaticTask_t xIdleTaskTCBs[ configNUMBER_OF_CORES ];
+    static StackType_t uxIdleTaskStacks[ configNUMBER_OF_CORES ][ configMINIMAL_STACK_SIZE ];
+
+    *ppxIdleTaskTCBBuffer = &(xIdleTaskTCBs[ xPassiveIdleTaskIndex ]);
+    *ppxIdleTaskStackBuffer = &(uxIdleTaskStacks[ xPassiveIdleTaskIndex ][ 0 ]);
+    *puxIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+}
+
+
 
 #if ( configSUPPORT_STATIC_ALLOCATION >= 1 )
 

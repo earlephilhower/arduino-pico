@@ -43,6 +43,10 @@ public:
     virtual size_t write(const uint8_t *p, size_t len) override;
     using Print::write;
     operator bool() override;
+    bool dtr();
+    bool rts();
+
+    void ignoreFlowControl(bool ignore = true);
 
     // ESP8266 compat
     void setDebugOutput(bool unused) {
@@ -51,6 +55,7 @@ public:
 
 private:
     bool _running = false;
+    bool _ignoreFlowControl = false;
 };
 
 extern SerialUSB Serial;

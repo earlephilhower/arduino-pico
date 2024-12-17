@@ -20,53 +20,30 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#pragma once
 
-//#include <ESP8266WiFi.h>  // tcp API
-//#include <debug.h>
 #include <Arduino.h>
+#include <functional>
 
-#include <lwIP_CYW43.h>
-//#include <W5100lwIP.h>
-//#include <W5500lwIP.h>
-//#include <ENC28J60lwIP.h>
+void ethernet_arch_lwip_begin() __attribute__((weak));
+void ethernet_arch_lwip_end() __attribute__((weak));
+void ethernet_arch_lwip_gpio_mask() __attribute__((weak));
+void ethernet_arch_lwip_gpio_unmask() __attribute__((weak));
 
-// One of them is to be declared in the main sketch
-// and passed to ethInitDHCP() or ethInitStatic():
-// Wiznet5500lwIP eth(CSPIN);
-// Wiznet5100lwIP eth(CSPIN);
-// ENC28J60lwIP eth(CSPIN);
+void __addEthernetGPIO(int pin);
+void __removeEthernetGPIO(int pin);
 
-void SPI4EthInit();
+// Internal Ethernet helper functions
+void __startEthernetContext();
 
-template<class EthImpl>
-bool ethInitDHCP(EthImpl& eth) {
-    SPI4EthInit();
+int __addEthernetPacketHandler(std::function<void(void)> _packetHandler);
+void __removeEthernetPacketHandler(int id);
 
-    if (!eth.begin()) {
-        // hardware not responding
-        //        DEBUGV("ethInitDHCP: hardware not responding\n");
-        return false;
-    }
+// Used by WiFiClient to get DNS lookup
+int hostByName(const char *aHostname, IPAddress &aResult, int timeout_ms = 5000);
 
-    return true;
-}
+// Set the LWIP polling time (default 50ms).  Lower polling times == lower latency but higher CPU usage
+void lwipPollingPeriod(int ms);
 
-template<class EthImpl>
-bool ethInitStatic(EthImpl& eth, IPAddress IP, IPAddress gateway, IPAddress netmask, IPAddress dns1,
-                   IPAddress dns2 = IPADDR_NONE) {
-    SPI4EthInit();
-
-    if (!eth.config(IP, gateway, netmask, dns1, dns2)) {
-        // invalid arguments
-        //        DEBUGV("ethInitStatic: invalid arguments\n");
-        return false;
-    }
-
-    if (!eth.begin()) {
-        // hardware not responding
-        //        DEBUGV("ethInitStatic: hardware not responding\n");
-        return false;
-    }
-
-    return true;
-}
+// Sets the global netif state change callback
+void __setStateChangeCallback(std::function<void(struct netif *)> s);

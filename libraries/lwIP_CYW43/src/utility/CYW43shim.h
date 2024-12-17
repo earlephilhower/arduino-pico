@@ -66,8 +66,33 @@ public:
     */
     uint16_t readFrame(uint8_t* buffer, uint16_t bufsize);
 
+    // -------------  Dummy handler, actually run in the SDK async context  -------------
+    void handlePackets() {
+    }
+
+    // ------------- Dummy handler for linkage, but never called at runtime -------------
+    uint16_t readFrameSize() {
+        return 0;
+    }
+
+    // ------------- Dummy handler for linkage, but never called at runtime -------------
+    void discardFrame(uint16_t ign) {
+        (void) ign;
+    }
+
+    // ------------- Dummy handler for linkage, but never called at runtime -------------
+    uint16_t readFrameData(uint8_t *ign1, uint16_t ign2) {
+        (void) ign1;
+        (void) ign2;
+        return 0;
+    }
+
     bool interruptIsPossible() {
         return true;
+    }
+
+    PinStatus interruptMode() {
+        return LOW;
     }
 
     void setSSID(const char *p) {
@@ -92,6 +117,10 @@ public:
 
     void setTimeout(int timeout) {
         _timeout = timeout;
+    }
+
+    constexpr bool needsSPI() const {
+        return false;
     }
 
     // LWIP netif for the IRQ packet processing

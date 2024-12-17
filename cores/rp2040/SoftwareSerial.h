@@ -30,10 +30,6 @@ public:
     }
 
     ~SoftwareSerial() {
-        if (_invert) {
-            gpio_set_outover(_tx, 0);
-            gpio_set_outover(_rx, 0);
-        }
     }
 
     virtual void begin(unsigned long baud = 115200) override {
@@ -41,11 +37,9 @@ public:
     };
 
     void begin(unsigned long baud, uint16_t config) override {
+        setInvertTX(_invert);
+        setInvertRX(_invert);
         SerialPIO::begin(baud, config);
-        if (_invert) {
-            gpio_set_outover(_tx, GPIO_OVERRIDE_INVERT);
-            gpio_set_inover(_rx, GPIO_OVERRIDE_INVERT);
-        }
     }
 
     void listen() { /* noop */ }

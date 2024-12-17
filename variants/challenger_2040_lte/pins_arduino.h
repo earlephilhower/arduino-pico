@@ -24,7 +24,7 @@
 #define SARA_SERIAL_PORT    Serial2
 
 // SPI
-#define PIN_SPI0_MISO       (24u)
+#define PIN_SPI0_MISO       (20u)
 #define PIN_SPI0_MOSI       (23u)
 #define PIN_SPI0_SCK        (22u)
 #define PIN_SPI0_SS         (21u)

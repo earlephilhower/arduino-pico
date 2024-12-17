@@ -18,6 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <Arduino.h>
 #include <pico/mutex.h>
 #include <lwip/pbuf.h>
 #include <lwip/udp.h>
@@ -26,19 +27,72 @@
 #include <lwip/raw.h>
 #include <lwip/timeouts.h>
 #include <pico/cyw43_arch.h>
+#include <pico/mutex.h>
+#include <sys/lock.h>
+#include "_xoshiro.h"
+
+extern void ethernet_arch_lwip_begin() __attribute__((weak));
+extern void ethernet_arch_lwip_end() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_mask() __attribute__((weak));
+extern void ethernet_arch_lwip_gpio_unmask() __attribute__((weak));
+
+auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 
 class LWIPMutex {
 public:
     LWIPMutex() {
-        cyw43_arch_lwip_begin();
+        if (ethernet_arch_lwip_gpio_mask)  {
+            ethernet_arch_lwip_gpio_mask();
+        }
+#if defined(PICO_CYW43_SUPPORTED)
+        if (rp2040.isPicoW()) {
+            cyw43_arch_lwip_begin();
+            return;
+        }
+#endif
+        if (ethernet_arch_lwip_begin) {
+            ethernet_arch_lwip_begin();
+        } else {
+            recursive_mutex_enter_blocking(&__lwipMutex);
+        }
     }
 
     ~LWIPMutex() {
-        cyw43_arch_lwip_end();
+#if defined(PICO_CYW43_SUPPORTED)
+        if (rp2040.isPicoW()) {
+            cyw43_arch_lwip_end();
+        } else {
+#endif
+            if (ethernet_arch_lwip_end) {
+                ethernet_arch_lwip_end();
+            } else {
+                recursive_mutex_exit(&__lwipMutex);
+            }
+#if defined(PICO_CYW43_SUPPORTED)
+        }
+#endif
+        if (ethernet_arch_lwip_gpio_unmask) {
+            ethernet_arch_lwip_gpio_unmask();
+        }
     }
 };
 
 extern "C" {
+
+    static XoshiroCpp::Xoshiro256PlusPlus *_lwip_rng = nullptr;
+    // Random number generator for LWIP
+    unsigned long __lwip_rand() {
+        return (unsigned long)(*_lwip_rng)();
+    }
+
+    // Avoid calling lwip_init multiple times
+    extern void __real_lwip_init();
+    void __wrap_lwip_init() {
+        if (!_lwip_rng) {
+            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros() * rp2040.getCycleCount());
+            __real_lwip_init();
+        }
+    }
 
     extern u8_t __real_pbuf_header(struct pbuf *p, s16_t header_size);
     u8_t __wrap_pbuf_header(struct pbuf *p, s16_t header_size) {
@@ -193,19 +247,19 @@ extern "C" {
     extern void __real_tcp_setprio(struct tcp_pcb *pcb, u8_t prio);
     void __wrap_tcp_setprio(struct tcp_pcb *pcb, u8_t prio) {
         LWIPMutex m;
-        return __real_tcp_setprio(pcb, prio);
+        __real_tcp_setprio(pcb, prio);
     }
 
     extern void __real_tcp_backlog_delayed(struct tcp_pcb* pcb);
     void __wrap_tcp_backlog_delayed(struct tcp_pcb* pcb) {
         LWIPMutex m;
-        return __real_tcp_backlog_delayed(pcb);
+        __real_tcp_backlog_delayed(pcb);
     }
 
     extern void __real_tcp_backlog_accepted(struct tcp_pcb* pcb);
     void __wrap_tcp_backlog_accepted(struct tcp_pcb* pcb) {
         LWIPMutex m;
-        return __real_tcp_backlog_accepted(pcb);
+        __real_tcp_backlog_accepted(pcb);
     }
     extern struct udp_pcb *__real_udp_new(void);
     struct udp_pcb *__wrap_udp_new(void) {
@@ -302,6 +356,18 @@ extern "C" {
     void __wrap_raw_remove(struct raw_pcb *pcb) {
         LWIPMutex m;
         __real_raw_remove(pcb);
+    }
+
+    extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
+    struct netif *__wrap_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input) {
+        LWIPMutex m;
+        return __real_netif_add(netif, ipaddr, netmask, gw, state, init, input);
+    }
+
+    extern void __real_netif_remove(struct netif *netif);
+    void __wrap_netif_remove(struct netif *netif) {
+        LWIPMutex m;
+        __real_netif_remove(netif);
     }
 
 }; // extern "C"

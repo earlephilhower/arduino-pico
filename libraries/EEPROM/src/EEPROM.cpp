@@ -118,12 +118,17 @@ bool EEPROMClass::commit() {
         return false;
     }
 
-    noInterrupts();
+    if (!__isFreeRTOS) {
+        noInterrupts();
+    }
     rp2040.idleOtherCore();
     flash_range_erase((intptr_t)_sector - (intptr_t)XIP_BASE, 4096);
     flash_range_program((intptr_t)_sector - (intptr_t)XIP_BASE, _data, _size);
     rp2040.resumeOtherCore();
-    interrupts();
+    if (!__isFreeRTOS) {
+        interrupts();
+    }
+    _dirty = false;
 
     return true;
 }

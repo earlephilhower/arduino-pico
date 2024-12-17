@@ -40,7 +40,7 @@ Joystick_::Joystick_(void) {
 void Joystick_::send_now(void) {
     CoreMutex m(&__usb_mutex);
     tud_task();
-    if (tud_hid_ready()) {
+    if (__USBHIDReady()) {
         tud_hid_n_report(0, __USBGetJoystickReportID(), &data, sizeof(data));
     }
     tud_task();

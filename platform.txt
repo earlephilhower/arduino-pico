@@ -1,6 +1,6 @@
 # Copyright (c) 2021 Earle F. Philhower, III
 #
-# Raspberry Pi RP2040 Core platform file
+# Raspberry Pi RP2040/R2350 Core platform file
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -19,56 +19,64 @@
 # For more info:
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
-name=Raspberry Pi RP2040 Boards
-version=3.3.0
+name=Raspberry Pi RP2040/RP2350 Boards
+version=4.3.1
+
+# Required discoveries and monitors
+# ---------------------------------
+pluggable_discovery.required.0=builtin:serial-discovery
+pluggable_discovery.required.1=builtin:mdns-discovery
+pluggable_monitor.required.serial=builtin:serial-monitor
 
 runtime.tools.pqt-gcc.path={runtime.platform.path}/system/arm-none-eabi
+runtime.tools.pqt-gcc-riscv.path={runtime.platform.path}/system/riscv32-unknown-elf
 runtime.tools.pqt-python3.path={runtime.platform.path}/system/python3
 runtime.tools.pqt-mklittlefs.path={runtime.platform.path}/system/mklittlefs
 runtime.tools.pqt-pioasm.path={runtime.platform.path}/system/pioasm
 runtime.tools.pqt-elf2uf2.path={runtime.platform.path}/system/elf2uf2
 runtime.tools.pqt-openocd.path={runtime.platform.path}/system/openocd
 runtime.tools.pqt-picotool.path={runtime.platform.path}/system/picotool
-compiler.path={runtime.tools.pqt-gcc.path}/bin/
+compiler.path={runtime.tools.{build.toolchainpkg}.path}/bin/
 
 compiler.libraries.ldflags=
 
 # Compile variables
 # -----------------
 
-compiler.warning_flags=-Werror=return-type
-compiler.warning_flags.none=-Werror=return-type
-compiler.warning_flags.default=-Werror=return-type
-compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers
-compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers
+compiler.warning_flags=-Werror=return-type -Wno-psabi
+compiler.warning_flags.none=-Werror=return-type -Wno-psabi
+compiler.warning_flags.default=-Werror=return-type -Wno-psabi
+compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi
+compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi -Wno-unused-parameter -Wno-missing-field-initializers
 
-compiler.netdefines=-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1 -DCYW43_LWIP=1 {build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
-compiler.defines={build.led} {build.usbstack_flags} -DCFG_TUSB_MCU=OPT_MCU_RP2040 {build.usbpid} {build.usbvid} {build.usbpwr} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} -DARDUINO_VARIANT="{build.variant}" -DTARGET_RP2040 -DPICO_FLASH_SIZE_BYTES={build.flash_total}
-compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/platform_inc.txt" "-I{runtime.platform.path}/include"
-compiler.flags=-march=armv6-m -mcpu=cortex-m0plus -mthumb -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.flags.cmsis} {build.picodebugflags}
-compiler.wrap="@{runtime.platform.path}/lib/platform_wrap.txt"
-compiler.libbearssl="{runtime.platform.path}/lib/libbearssl.a"
+compiler.netdefines={build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
+compiler.psramdefines={build.psram_cs} {build.psram_freq}
+compiler.defines={build.led} {build.usbstack_flags} {build.usbpid} {build.usbvid} {build.usbpwr} {compiler.psramdefines} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} {build.variantdefines} -DARDUINO_VARIANT="{build.variant}" -DPICO_FLASH_SIZE_BYTES={build.flash_total} "@{runtime.platform.path}/lib/{build.chip}/platform_def.txt"
+compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/{build.chip}/platform_inc.txt" "@{runtime.platform.path}/lib/core_inc.txt" "-I{runtime.platform.path}/include"
+compiler.flags={build.toolchainopts} -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.picodebugflags}
+compiler.wrap="@{runtime.platform.path}/lib/{build.chip}/platform_wrap.txt" "@{runtime.platform.path}/lib/core_wrap.txt"
+compiler.libbearssl="{runtime.platform.path}/lib/{build.chip}/libbearssl.a"
 
-compiler.c.cmd=arm-none-eabi-gcc
+compiler.c.cmd={build.toolchain}-gcc
 compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} -std=gnu17 -g -pipe
-compiler.c.elf.cmd=arm-none-eabi-g++
+compiler.c.elf.cmd={build.toolchain}-g++
 compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize} -u _printf_float -u _scanf_float
-compiler.S.cmd=arm-none-eabi-gcc
-compiler.S.flags=-c {compiler.warning_flags} -g -x assembler-with-cpp -MMD {compiler.includes} -g {build.flags.cmsis}
-compiler.cpp.cmd=arm-none-eabi-g++
-compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} -std=gnu++17 -g -pipe
+compiler.S.cmd={build.toolchain}-gcc
+compiler.S.flags=-c {compiler.warning_flags} {compiler.defines} -g -x assembler-with-cpp -MMD {compiler.includes} {build.toolchainopts} -g
+compiler.cpp.cmd={build.toolchain}-g++
+compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} {build.flags.profile} -std=gnu++17 -g -pipe
 
-compiler.ar.cmd=arm-none-eabi-ar
+compiler.ar.cmd={build.toolchain}-ar
 compiler.ar.flags=rcs
-compiler.objcopy.cmd=arm-none-eabi-objcopy
+compiler.objcopy.cmd={build.toolchain}-objcopy
 compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
 compiler.elf2hex.bin.flags=-O binary
 compiler.elf2hex.hex.flags=-O ihex -R .eeprom
-compiler.elf2hex.cmd=arm-none-eabi-objcopy
-compiler.ldflags={compiler.wrap} -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common
-compiler.size.cmd=arm-none-eabi-size
+compiler.elf2hex.cmd={build.toolchain}-objcopy
+compiler.ldflags={compiler.wrap} -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--undefined=runtime_init_install_ram_vector_table -Wl,--undefined=__pre_init_runtime_init_clocks -Wl,--undefined=__pre_init_runtime_init_bootrom_reset -Wl,--undefined=__pre_init_runtime_init_early_resets -Wl,--undefined=__pre_init_runtime_init_usb_power_down -Wl,--undefined=__pre_init_runtime_init_clocks -Wl,--undefined=__pre_init_runtime_init_post_clock_resets -Wl,--undefined=__pre_init_runtime_init_spin_locks_reset -Wl,--undefined=__pre_init_runtime_init_boot_locks_reset -Wl,--undefined=__pre_init_runtime_init_bootrom_locking_enable -Wl,--undefined=__pre_init_runtime_init_mutex -Wl,--undefined=__pre_init_runtime_init_default_alarm_pool -Wl,--undefined=__pre_init_first_per_core_initializer -Wl,--undefined=__pre_init_runtime_init_per_core_bootrom_reset -Wl,--undefined=__pre_init_runtime_init_per_core_h3_irq_registers -Wl,--undefined=__pre_init_runtime_init_per_core_irq_priorities
+compiler.size.cmd={build.toolchain}-size
 compiler.define=-DARDUINO=
-compiler.readelf.cmd=arm-none-eabi-readelf
+compiler.readelf.cmd={build.toolchain}-readelf
 
 # this can be overridden in boards.txt
 build.extra_flags=
@@ -84,25 +92,30 @@ compiler.elf2hex.extra_flags=
 # Board configuration, set in boards.txt.  Present here to ensure substitution works
 build.flash_total=
 build.flash_length=
+build.psram_length=0
+build.psram_cs=
+build.psram_freq=
 build.eeprom_start=
 build.flags.optimize=-Os
 build.flags.rtti=-fno-rtti
+build.flags.profile=
 build.fs_start=
 build.fs_end=
 build.usbstack_flags=
-build.flags.cmsis=-DARM_MATH_CM0_FAMILY -DARM_MATH_CM0_PLUS
 build.flags.libstdcpp=-lstdc++
 build.flags.exceptions=-fno-exceptions
 build.flags.stackprotect=
 build.libpico=libpico.a
-build.libpicow=libpicow-noipv6-nobtc-noble.a
+build.libpicow=libipv4.a
 build.boot2=boot2_generic_03h_4_padded_checksum
 build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
 build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
-build.debugscript=picoprobe.tcl
+build.espwifitype=
+build.debugscript=picoprobe_cmsis_dap.tcl
 build.picodebugflags=
+build.variantdefines=
 
-# Allow Pico boards do be auto-discovered by the IDE
+# Allow Pico boards to be auto-discovered by the IDE
 #discovery.rp2040.pattern={runtime.tools.pqt-python3.path}/python3 -I "{runtime.platform.path}/tools/pluggable_discovery.py"
 discovery.rp2040.pattern={runtime.platform.path}/system/python3/python3 -I "{runtime.platform.path}/tools/pluggable_discovery.py"
 #pluggable_discovery.rp2040.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/pluggable_discovery.py"
@@ -116,10 +129,10 @@ pluggable_discovery.rp2040.pattern="{runtime.platform.path}/system/python3/pytho
 recipe.hooks.sketch.prebuild.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/signing.py" --mode header --publickey "{build.source.path}/public.key" --out "{build.path}/core/Updater_Signing.h"
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {includes} "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} -DF_CPU={build.f_cpu} {build.espwifitype} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -I "{build.path}/core" {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {build.wificc} {includes} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -I "{build.path}/core" {compiler.cpp.flags} -DF_CPU={build.f_cpu} {build.espwifitype} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {build.flags.optimize} {build.wificc} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile S files
 recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DBOARD_NAME="{build.board}" -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {build.debug_port} {build.debug_level} {includes} "{source_file}" -o "{object_file}"
@@ -130,16 +143,16 @@ archive_file_path={build.path}/{archive_file}
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 
 ## Generate the linker map with specific flash sizes/locations
-recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/simplesub.py" --input "{runtime.platform.path}/lib/memmap_default.ld" --out "{build.path}/memmap_default.ld" --sub __FLASH_LENGTH__ {build.flash_length} --sub __EEPROM_START__ {build.eeprom_start} --sub __FS_START__ {build.fs_start} --sub __FS_END__ {build.fs_end} --sub __RAM_LENGTH__ {build.ram_length}
+recipe.hooks.linking.prelink.1.pattern="{runtime.tools.pqt-python3.path}/python3" -I "{runtime.platform.path}/tools/simplesub.py" --input "{runtime.platform.path}/lib/{build.chip}/memmap_default.ld" --out "{build.path}/memmap_default.ld" --sub __FLASH_LENGTH__ {build.flash_length} --sub __EEPROM_START__ {build.eeprom_start} --sub __FS_START__ {build.fs_start} --sub __FS_END__ {build.fs_end} --sub __RAM_LENGTH__ {build.ram_length} --sub __PSRAM_LENGTH__ {build.psram_length}
 
 ## Compile the boot stage 2 blob
-recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/rp2040/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
+recipe.hooks.linking.prelink.2.pattern="{compiler.path}{compiler.S.cmd}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} -c "{runtime.platform.path}/boot2/{build.chip}/{build.boot2}.S" "-I{runtime.platform.path}/pico-sdk/src/{build.chip}/hardware_regs/include/" "-I{runtime.platform.path}/pico-sdk/src/common/pico_binary_info/include" -o "{build.path}/boot2.o"
 
 ## Combine gc-sections, archives, and objects
-recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.ldflags} "-Wl,--script={build.path}/memmap_default.ld" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.elf" -Wl,--start-group {object_files} "{build.path}/{archive_file}" "{build.path}/boot2.o" "{runtime.platform.path}/lib/ota.o" {compiler.libraries.ldflags} "{runtime.platform.path}/lib/{build.libpico}" "{runtime.platform.path}/lib/{build.libpicow}"  {compiler.libbearssl} -lm -lc {build.flags.libstdcpp} -lc -Wl,--end-group
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" {compiler.c.elf.flags} {compiler.c.elf.extra_flags} {compiler.ldflags} "-Wl,--script={build.path}/memmap_default.ld" "-Wl,-Map,{build.path}/{build.project_name}.map" -o "{build.path}/{build.project_name}.elf" -Wl,--no-warn-rwx-segments -Wl,--start-group {object_files} "{build.path}/{archive_file}" "{build.path}/boot2.o" "{runtime.platform.path}/lib/{build.chip}/ota.o" {compiler.libraries.ldflags} "{runtime.platform.path}/lib/{build.chip}/{build.libpico}" "{runtime.platform.path}/lib/{build.chip}/{build.libpicow}"  {compiler.libbearssl} -lm -lc {build.flags.libstdcpp} -lc -Wl,--end-group
 
 ## Create output (UF2 file)
-recipe.objcopy.uf2.pattern="{runtime.tools.pqt-elf2uf2.path}/elf2uf2" "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2"
+recipe.objcopy.uf2.pattern="{runtime.tools.pqt-picotool.path}/picotool" uf2 convert "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2" {build.uf2family}
 
 ## Create output BIN (for OTA)
 recipe.objcopy.bin.1.pattern="{compiler.path}/{compiler.objcopy.cmd}" -Obinary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
@@ -162,11 +175,11 @@ recipe.size.regex.data=^(?:\.data|\.bss|\.ram_vector_table|\.uninitialized_ram|\
 debug.executable={build.path}/{build.project_name}.elf
 debug.toolchain=gcc
 debug.toolchain.path={runtime.tools.pqt-gcc.path}/bin/
-debug.toolchain.prefix=arm-none-eabi-
+debug.toolchain.prefix={build.toolchain}-
 debug.server=openocd
 debug.server.openocd.path={runtime.tools.pqt-openocd.path}/bin/openocd
 debug.server.openocd.scripts_dir={runtime.tools.pqt-openocd.path}/share/openocd/scripts/
-debug.server.openocd.script={runtime.platform.path}/lib/{build.debugscript}
+debug.server.openocd.script={runtime.platform.path}/lib/{build.chip}/{build.debugscript}
 
 
 
@@ -196,25 +209,11 @@ tools.picotool.cmd={runtime.platform.path}/system/picotool
 tools.picotool.upload.protocol=picotool
 tools.picotool.upload.params.verbose=
 tools.picotool.upload.params.quiet=
-tools.picotool.upload.pattern="{cmd}/picotool" load "{build.path}/{build.project_name}.uf2" -f
-
-#tools.picoprobe.cmd={runtime.tools.pqt-openocd.path}
-tools.picoprobe.cmd={runtime.platform.path}/system/openocd
-tools.picoprobe.upload.protocol=picoprobe
-tools.picoprobe.upload.params.verbose=
-tools.picoprobe.upload.params.quiet=
-tools.picoprobe.upload.pattern="{cmd}/bin/openocd" -f "interface/picoprobe.cfg" -f "target/rp2040.cfg" -s "{cmd}/share/openocd/scripts" -c "program {{build.path}/{build.project_name}.elf} verify reset exit"
+tools.picotool.upload.pattern="{cmd}/picotool" load "{build.path}/{build.project_name}.uf2" -f -x
 
 #tools.picoprobe_cmsis_dap.cmd={runtime.tools.pqt-openocd.path}
 tools.picoprobe_cmsis_dap.cmd={runtime.platform.path}/system/openocd
 tools.picoprobe_cmsis_dap.upload.protocol=picoprobe_cmsis_dap
 tools.picoprobe_cmsis_dap.upload.params.verbose=
 tools.picoprobe_cmsis_dap.upload.params.quiet=
-tools.picoprobe_cmsis_dap.upload.pattern="{cmd}/bin/openocd" -f "interface/cmsis-dap.cfg" -f "target/rp2040.cfg" -s "{cmd}/share/openocd/scripts" -c "adapter speed 5000" -c "program {{build.path}/{build.project_name}.elf} verify reset exit"
-
-#tools.picodebug.cmd={runtime.tools.pqt-openocd.path}
-tools.picodebug.cmd={runtime.platform.path}/system/openocd
-tools.picodebug.upload.protocol=pico-debug
-tools.picodebug.upload.params.verbose=
-tools.picodebug.upload.params.quiet=
-tools.picodebug.upload.pattern="{cmd}/bin/openocd" -f "board/pico-debug.cfg" -s "{cmd}/share/openocd/scripts" -c "program {{build.path}/{build.project_name}.elf} verify reset exit"
+tools.picoprobe_cmsis_dap.upload.pattern="{cmd}/bin/openocd" -f "interface/cmsis-dap.cfg" -f "target/{build.chip}.cfg" -s "{cmd}/share/openocd/scripts" -c "init; adapter speed 5000; program {{build.path}/{build.project_name}.elf} verify; reset; exit"

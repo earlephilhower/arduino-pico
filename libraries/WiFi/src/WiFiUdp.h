@@ -115,4 +115,5 @@ public:
 
 private:
     bool _multicast;
+    bool _dirty;
 };

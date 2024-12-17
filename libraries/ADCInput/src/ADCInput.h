@@ -26,12 +26,12 @@
 
 class ADCInput : public Stream {
 public:
-    ADCInput(pin_size_t pin0, pin_size_t pin1 = 255, pin_size_t pin2 = 255, pin_size_t pin3 = 255);
+    ADCInput(pin_size_t pin0, pin_size_t pin1 = 255, pin_size_t pin2 = 255, pin_size_t pin3 = 255, pin_size_t pin4 = 255, pin_size_t pin5 = 255, pin_size_t pin6 = 255, pin_size_t pin7 = 255);
     virtual ~ADCInput();
 
     bool setBuffers(size_t buffers, size_t bufferWords);
     bool setFrequency(int newFreq);
-    bool setPins(pin_size_t pin0, pin_size_t pin1 = 255, pin_size_t pin2 = 255, pin_size_t pin3 = 255);
+    bool setPins(pin_size_t pin0, pin_size_t pin1 = 255, pin_size_t pin2 = 255, pin_size_t pin3 = 255, pin_size_t pin4 = 255, pin_size_t pin5 = 255, pin_size_t pin6 = 255, pin_size_t pin7 = 255);
 
     bool begin(long sampleRate) {
         setFrequency(sampleRate);

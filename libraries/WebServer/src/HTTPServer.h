@@ -31,6 +31,7 @@
 enum HTTPUploadStatus { UPLOAD_FILE_START, UPLOAD_FILE_WRITE, UPLOAD_FILE_END,
                         UPLOAD_FILE_ABORTED
                       };
+enum HTTPRawStatus { RAW_START, RAW_WRITE, RAW_END, RAW_ABORTED };
 enum HTTPClientStatus { HC_NONE, HC_WAIT_READ, HC_WAIT_CLOSE };
 enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 
@@ -40,11 +41,15 @@ enum HTTPAuthMethod { BASIC_AUTH, DIGEST_AUTH };
 #define HTTP_UPLOAD_BUFLEN 1436
 #endif
 
+#ifndef HTTP_RAW_BUFLEN
+#define HTTP_RAW_BUFLEN 1436
+#endif
+
 #define HTTP_MAX_DATA_WAIT 5000 //ms to wait for the client to send the request
 #define HTTP_MAX_DATA_AVAILABLE_WAIT 30 //ms to wait for the client to send the request when there is another client with data available
 #define HTTP_MAX_POST_WAIT 5000 //ms to wait for POST data to arrive
 #define HTTP_MAX_SEND_WAIT 5000 //ms to wait for data chunk to be ACKed
-#define HTTP_MAX_CLOSE_WAIT 2000 //ms to wait for the client to close the connection
+#define HTTP_MAX_CLOSE_WAIT 5000 //ms to wait for the client to close the connection
 
 #define CONTENT_LENGTH_UNKNOWN ((size_t) -1)
 #define CONTENT_LENGTH_NOT_SET ((size_t) -2)
@@ -63,6 +68,16 @@ typedef struct {
     uint8_t buf[HTTP_UPLOAD_BUFLEN];
 } HTTPUpload;
 
+
+typedef struct {
+    HTTPRawStatus status;
+    size_t  totalSize;   // content size
+    size_t  currentSize; // size of data currently in buf
+    uint8_t buf[HTTP_RAW_BUFLEN];
+    void    *data;       // additional data
+} HTTPRaw;
+
+
 #include "detail/RequestHandler.h"
 
 namespace fs {
@@ -80,10 +95,16 @@ public:
     void requestAuthentication(HTTPAuthMethod mode = BASIC_AUTH, const char* realm = nullptr, const String& authFailMsg = String(""));
 
     typedef std::function<void(void)> THandlerFunction;
-    void on(const Uri &uri, THandlerFunction fn);
-    void on(const Uri &uri, HTTPMethod method, THandlerFunction fn);
-    void on(const Uri &uri, HTTPMethod method, THandlerFunction fn, THandlerFunction ufn); //ufn handles file uploads
+    typedef std::function<bool(HTTPServer &server)> FilterFunction;
+    RequestHandler& on(const Uri &uri, THandlerFunction fn);
+    RequestHandler& on(const Uri &uri, HTTPMethod method, THandlerFunction fn);
+    RequestHandler& on(const Uri &uri, HTTPMethod method, THandlerFunction fn, THandlerFunction ufn);  //ufn handles file uploads
+    bool removeRoute(const char *uri);
+    bool removeRoute(const char *uri, HTTPMethod method);
+    bool removeRoute(const String &uri);
+    bool removeRoute(const String &uri, HTTPMethod method);
     void addHandler(RequestHandler* handler);
+    bool removeHandler(RequestHandler *handler);
     void serveStatic(const char* uri, fs::FS& fs, const char* path, const char* cache_header = nullptr);
     void onNotFound(THandlerFunction fn);  //called when handler is not assigned
     void onFileUpload(THandlerFunction ufn); //handle file uploads
@@ -94,8 +115,14 @@ public:
     HTTPMethod method() {
         return _currentMethod;
     }
+    WiFiClient& client() {
+        return *_currentClient;
+    }
     HTTPUpload& upload() {
         return *_currentUpload;
+    }
+    HTTPRaw& raw() {
+        return *_currentRaw;
     }
 
     String pathArg(unsigned int i); // get request path argument by number
@@ -146,9 +173,9 @@ public:
         send(code, content_type, (const char *)content, contentLength);
     }
 
-    void enableDelay(boolean value);
-    void enableCORS(boolean value = true);
-    void enableCrossOrigin(boolean value = true);
+    void enableDelay(bool value);
+    void enableCORS(bool value = true);
+    void enableCrossOrigin(bool value = true);
 
     void setContentLength(const size_t contentLength);
     void sendHeader(const String& name, const String& value, bool first = false);
@@ -212,6 +239,7 @@ protected:
         return _currentClient->write(b, l);
     }
     void _addRequestHandler(RequestHandler* handler);
+    bool _removeRequestHandler(RequestHandler *handler);
     void _handleRequest();
     void _finalizeResponse();
     ClientFuture _parseRequest(WiFiClient* client);
@@ -235,7 +263,7 @@ protected:
         String value;
     };
 
-    boolean     _corsEnabled;
+    bool        _corsEnabled;
 
     WiFiClient  *_currentClient;
     HTTPMethod  _currentMethod;
@@ -243,7 +271,7 @@ protected:
     uint8_t     _currentVersion;
     HTTPClientStatus _currentStatus;
     unsigned long _statusChange;
-    boolean     _nullDelay;
+    bool        _nullDelay;
 
     RequestHandler*  _currentHandler;
     RequestHandler*  _firstHandler;
@@ -257,6 +285,7 @@ protected:
     RequestArgument* _postArgs;
 
     std::unique_ptr<HTTPUpload> _currentUpload;
+    std::unique_ptr<HTTPRaw>    _currentRaw;
 
     int              _headerKeysCount;
     RequestArgument* _currentHeaders;

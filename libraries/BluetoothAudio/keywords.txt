@@ -1,0 +1,59 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BluetoothAudio	KEYWORD1
+A2DPSource	KEYWORD1
+BluetoothAudioConsumer	KEYWORD1
+BluetoothAudioConsumerI2S	KEYWORD1
+BluetoothAudioConsumerPWM	KEYWORD1
+A2DPSink	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+scan	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
+
+setConsumer	KEYWORD2
+setFrequency	KEYWORD2
+setName	KEYWORD2
+setsetBufferSize	KEYWORD2
+getUnderflow	KEYWORD2
+getSinkAddress	KEYWORD2
+scan	KEYWORD2
+connect	KEYWORD2
+connected	KEYWORD2
+disconnect	KEYWORD2
+clearPairing	KEYWORD2
+connect	KEYWORD2
+
+play	KEYWORD2
+stop	KEYWORD2
+pause	KEYWORD2
+fastForward	KEYWORD2
+rewind	KEYWORD2
+forward	KEYWORD2
+backward	KEYWORD2
+volumeUp	KEYWORD2
+volumeDown	KEYWORD2
+mute	KEYWORD2
+
+onTransmit	KEYWORD2
+onAVRCP	KEYWORD2
+onBattery	KEYWORD2
+onVolume	KEYWORD2
+onConnect	KEYWORD2
+onPlaybackStatus	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+STOPPED	LITERAL
+PLAYING	LITERAL
+PAUSED	LITERAL

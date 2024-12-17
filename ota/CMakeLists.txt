@@ -1,5 +1,34 @@
 cmake_minimum_required(VERSION 3.12)
 
+set(cpu $ENV{CPU})
+message("Building for CPU ${cpu}")
+
+if (${cpu} MATCHES "rp2040")
+    set(PICO_BOARD pico)
+    set(PICO_PLATFORM rp2040)
+    set(PICO_CYW43_SUPPORTED 0)
+    set(OBJARCH armv6-m)
+    set(WRAP -Wl,--wrap=clocks_init)
+    set(TUPLE arm-none-eabi)
+elseif(${cpu} MATCHES "rp2350$")
+    set(PICO_BOARD pico2)
+    set(PICO_PLATFORM rp2350)
+    set(PICO_CYW43_SUPPORTED 0)
+    set(OBJARCH armv8-m)
+    set(WRAP )
+    set(TUPLE arm-none-eabi)
+elseif(${cpu} MATCHES "rp2350-riscv$")
+    set(PICO_BOARD pico2)
+    set(PICO_PLATFORM rp2350-riscv)
+    set(PICO_CYW43_SUPPORTED 0)
+    set(OBJARCH rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb)
+    set(WRAP )
+    set(TUPLE riscv32-unknown-elf)
+else()
+    message(FATAL_ERROR "Unknown CPU, '${cpu}'")
+endif()
+
+
 include(pico_sdk_import.cmake)
 
 project(pico_lib C CXX ASM)
@@ -7,7 +36,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-set(PICO_BOARD pico)
 set(PICO_COPY_TO_RAM 1)
 
 # Initialize the SDK
@@ -56,7 +84,7 @@ target_compile_options(ota PUBLIC
 )
 
 target_link_options(ota PUBLIC
-        -Wl,--wrap=clocks_init
+        ${WRAP}
         -Wl,--wrap=exit
         -Wl,--wrap=atexit
         -Wl,--wrap=panic_unsupported
@@ -66,7 +94,7 @@ target_link_options(ota PUBLIC
 )
 
 set_target_properties(ota PROPERTIES PICO_TARGET_LINKER_SCRIPT
-    ${CMAKE_SOURCE_DIR}/memmap_ota.ld)
+    ${CMAKE_SOURCE_DIR}/memmap_ota_${cpu}.ld)
 
 target_link_libraries(ota
         pico_platform
@@ -82,7 +110,7 @@ target_link_libraries(ota
 )
 
 add_custom_command(TARGET ota POST_BUILD
-        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-ld -r -A armv6-m  -b binary -o ota.o ota.bin
-        COMMAND ../../system/arm-none-eabi/bin/arm-none-eabi-objcopy --rename-section .data=.OTA ota.o ../../lib/ota.o
-        COMMAND cp ../ota_command.h ../../include/pico_base/pico/.
+        COMMAND ../../system/${TUPLE}/bin/${TUPLE}-ld -r -A ${OBJARCH} -b binary -o ota.o ota.bin
+        COMMAND ../../system/${TUPLE}/bin/${TUPLE}-objcopy --rename-section .data=.OTA ota.o ../../lib/${cpu}/ota.o
+        COMMAND cp ../ota_command.h ../../include/${cpu}/pico_base/pico/.
 )

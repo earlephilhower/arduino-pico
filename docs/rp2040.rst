@@ -57,6 +57,11 @@ void rp2040.wdt_reset()
 ~~~~~~~~~~~~~~~~~~~~~~~
 Reloads the watchdog's counter with the amount of time set by wdt_begin.
 
+RP2040::resetReason_t rp2040.getResetReason()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Returns the reason for the last reset, defined in enum ``RP2040::resetReason_t``.
+See example ```ResetReason``` for some details.
+
 
 Memory Information
 ------------------
@@ -81,8 +86,8 @@ overhead).
 Hardware Identification
 -----------------------
 
-bool isPicoW()
-~~~~~~~~~~~~~~
+bool rp2040.isPicoW()
+~~~~~~~~~~~~~~~~~~~~~
 Returns the core's best guess if this code is running on a Raspberry Pi Pico W.
 This would let you, possibly, use the same UF2 for Pico and PicoW by simply not
 doing any WiFi calls.
@@ -90,8 +95,8 @@ doing any WiFi calls.
 Bootloader
 ----------
 
-void rp2040.enableDoubleResetBootloader()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void rp2040.enableDoubleResetBootloader()  (Pico/RP2040 only)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Add a call anywhere in the sketch to ``rp2040.enableDoubleResetBootloader()`` and
 the core will check for a double-tap on reset, and if found will start the USB
 bootloader.
@@ -99,3 +104,13 @@ bootloader.
 void rp2040.rebootToBootloader()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Will reboot the RP2040 into USB UF2 upload mode.
+
+DMA-based MEMCPY
+----------------
+The onboard DMA engines can copy 4-byte aligned quantities faster than the CPU.
+
+void \*rp2040.memcpyDMA(void \*dest, const void \*src, size_t count);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Uses a DMA engine to transfer data from src to dest in 4-byte chunks without CPU
+intervention.  If any arguments are not 4-byte aligned, or if the count is not a
+multiple of 4, then it will fall back to CPU-managed memcpy.

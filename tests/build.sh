@@ -2,7 +2,7 @@
 
 cache_dir=$(mktemp -d)
 
-source "$TRAVIS_BUILD_DIR"/tests/common.sh
+source "$GITHUB_WORKSPACE"/tests/common.sh
 
 if [ -z "$BUILD_PARITY" ]; then
     mod=1
@@ -14,6 +14,8 @@ elif [ "$BUILD_PARITY" = "odd" ]; then
     mod=2
     rem=1
 fi
+
+export PICO_BOARD=rp2040
 
 install_arduino nodebug
 build_sketches_with_arduino "$mod" "$rem" ""

@@ -30,7 +30,6 @@
 #include <pins_arduino.h>
 #include <hardware/gpio.h> // Required for the port*Register macros
 #include "debug_internal.h"
-#include <RP2040.h> // CMSIS
 
 // Try and make the best of the old Arduino abs() macro.  When in C++, use
 // the sane std::abs() call, but for C code use their macro since stdlib abs()
@@ -38,7 +37,7 @@
 #ifdef abs
 #undef abs
 #endif // abs
-#ifdef __cplusplus
+#if defined(__cplusplus) && !defined(__riscv)
 using std::abs;
 using std::round;
 #else
@@ -59,15 +58,24 @@ extern "C" {
 void interrupts();
 void noInterrupts();
 
+// Only implemented on some RP2350 boards, not the OG Pico 2
+#ifdef RP2350_PSRAM_CS
+void *pmalloc(size_t size);
+void *pcalloc(size_t count, size_t size);
+#else
+[[deprecated("This chip does not have PSRAM, pmalloc will always fail")]] void *pmalloc(size_t size);
+[[deprecated("This chip does not have PSRAM, pcalloc will always fail")]] void *pcalloc(size_t count, size_t size);
+#endif
+
 // AVR compatibility macros...naughty and accesses the HW directly
 #define digitalPinToPort(pin)       (0)
 #define digitalPinToBitMask(pin)    (1UL << (pin))
 #define digitalPinToTimer(pin)      (0)
 #define digitalPinToInterrupt(pin)  (pin)
 #define NOT_AN_INTERRUPT            (-1)
-#define portOutputRegister(port)    ((volatile uint32_t*) sio_hw->gpio_out)
-#define portInputRegister(port)     ((volatile uint32_t*) sio_hw->gpio_in)
-#define portModeRegister(port)      ((volatile uint32_t*) sio_hw->gpio_oe)
+#define portOutputRegister(port)    ((volatile uint32_t *)&(sio_hw->gpio_out))
+#define portInputRegister(port)     ((volatile uint32_t *)&(sio_hw->gpio_in))
+#define portModeRegister(port)      ((volatile uint32_t *)&(sio_hw->gpio_oe))
 #define digitalWriteFast(pin, val)  (val ? sio_hw->gpio_set = (1 << pin) : sio_hw->gpio_clr = (1 << pin))
 #define digitalReadFast(pin)        ((1 << pin) & sio_hw->gpio_in)
 #define sei() interrupts()
@@ -118,6 +126,7 @@ extern const String emptyString;
 #endif
 
 #include "SerialUART.h"
+#include "SerialSemi.h"
 #include "RP2040Support.h"
 #include "SerialPIO.h"
 #include "Bootsel.h"
@@ -125,8 +134,8 @@ extern const String emptyString;
 // Template which will evaluate at *compile time* to a single 32b number
 // with the specified bits set.
 template <size_t N>
-constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
-    return i < N ? (1L << a[i]) | __bitset(a, i + 1) : 0;
+constexpr uint64_t __bitset(const int (&a)[N], size_t i = 0U) {
+    return i < N ? (1LL << a[i]) | __bitset(a, i + 1) : 0;
 }
 #endif
 
@@ -139,4 +148,14 @@ constexpr uint32_t __bitset(const int (&a)[N], size_t i = 0U) {
 #undef stdio_usb_init
 #define stdio_usb_init(...)  static_assert(0, "stdio_usb_init is not supported or needed. Either use Serial.printf() or set the debug port in the IDE to Serial/1/2 and use printf().  See https://github.com/earlephilhower/arduino-pico/issues/1433#issuecomment-1540354673 and https://github.com/earlephilhower/arduino-pico/issues/1433#issuecomment-1546783109")
 
+// PSRAM decorator
+#define PSRAM __attribute__((section("\".psram\"")))
 
+// General GPIO/ADC layout info
+#ifdef PICO_RP2350B
+#define __GPIOCNT 48
+#define __FIRSTANALOGGPIO 40
+#else
+#define __GPIOCNT 30
+#define __FIRSTANALOGGPIO 26
+#endif

@@ -24,7 +24,6 @@
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"
-#include <sdkoverride/tusb_absmouse.h>
 
 // Weak function override to add our descriptor to the TinyUSB list
 void __USBInstallAbsoluteMouse() { /* noop */ }

@@ -35,7 +35,7 @@
 #include <pico/usb_reset_interface.h>
 #include <hardware/watchdog.h>
 #include <pico/bootrom.h>
-#include "sdkoverride/tusb_absmouse.h"
+#include "sdkoverride/tusb_gamepad16.h"
 #include <device/usbd_pvt.h>
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't
@@ -82,6 +82,8 @@ static int __usb_task_irq;
   /* Interface */\
   9, TUSB_DESC_INTERFACE, _itfnum, 0, 0, TUSB_CLASS_VENDOR_SPECIFIC, RESET_INTERFACE_SUBCLASS, RESET_INTERFACE_PROTOCOL, _stridx,
 
+
+int usb_hid_poll_interval __attribute__((weak)) = 10;
 
 const uint8_t *tud_descriptor_device_cb(void) {
     static tusb_desc_device_t usbd_desc_device = {
@@ -157,7 +159,7 @@ void __SetupDescHIDReport() {
     //allocate memory for the HID report descriptors. We don't use them, but need the size here.
     uint8_t desc_hid_report_mouse[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_absmouse[] = { TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(1)) };
-    uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(1)) };
+    uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD16(HID_REPORT_ID(1)) };
     uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1)), TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2)) };
     int size = 0;
 
@@ -227,7 +229,7 @@ void __SetupDescHIDReport() {
                 reportid++;
                 offset += sizeof(desc_hid_report_absmouse);
             }
-            uint8_t desc_local[] = { TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(reportid)) };
+            uint8_t desc_local[] = { TUD_HID_REPORT_DESC_GAMEPAD16(HID_REPORT_ID(reportid)) };
             memcpy(__hid_report + offset, desc_local, sizeof(desc_local));
         }
     }
@@ -263,7 +265,7 @@ void __SetupUSBDescriptor() {
         uint8_t hid_itf = __USBInstallSerial ? 2 : 0;
         uint8_t hid_desc[TUD_HID_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-            TUD_HID_DESCRIPTOR(hid_itf, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 10)
+            TUD_HID_DESCRIPTOR(hid_itf, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
         };
 
         uint8_t msd_itf = interface_count - 1;
@@ -391,6 +393,18 @@ void __USBStart() {
     irq_set_enabled(__usb_task_irq, true);
 
     add_alarm_in_us(USB_TASK_INTERVAL, timer_task, nullptr, true);
+}
+
+
+bool __USBHIDReady() {
+    uint32_t start = millis();
+    const uint32_t timeout = 500;
+
+    while (((millis() - start) < timeout) && tud_ready() && !tud_hid_ready()) {
+        tud_task();
+        delayMicroseconds(1);
+    }
+    return tud_hid_ready();
 }
 
 
@@ -551,8 +565,6 @@ usbd_class_driver_t const *usbd_app_driver_get_cb(uint8_t *driver_count) {
 }
 
 #elif defined NO_USB
-
-// will ensure backward compatibility with existing code when using pico-debug
 
 #warning "NO_USB selected. No output to Serial will occur!"
 

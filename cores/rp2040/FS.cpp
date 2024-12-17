@@ -225,6 +225,21 @@ void File::setTimeCallback(time_t (*cb)(void)) {
     _timeCallback = cb;
 }
 
+bool File::stat(FSStat *st) {
+    if (!_p) {
+        return false;
+    }
+    size_t pos = position();
+    seek(0, SeekEnd);
+    st->size = position() - pos;
+    seek(pos, SeekSet);
+    st->blocksize = 0; // Not set here
+    st->ctime = getCreationTime();
+    st->atime = getLastWrite();
+    st->isDir = isDirectory();
+    return true;
+}
+
 File Dir::openFile(const char* mode) {
     if (!_impl) {
         return File();
@@ -366,13 +381,6 @@ bool FS::info(FSInfo& info) {
     return _impl->info(info);
 }
 
-bool FS::info64(FSInfo64& info) {
-    if (!_impl) {
-        return false;
-    }
-    return _impl->info64(info);
-}
-
 File FS::open(const String& path, const char* mode) {
     return open(path.c_str(), mode);
 }
@@ -460,6 +468,17 @@ bool FS::rename(const char* pathFrom, const char* pathTo) {
 
 bool FS::rename(const String& pathFrom, const String& pathTo) {
     return rename(pathFrom.c_str(), pathTo.c_str());
+}
+
+bool FS::stat(const char *path, FSStat *st) {
+    if (!_impl) {
+        return false;
+    }
+    return _impl->stat(path, st);
+}
+
+bool FS::stat(const String& path, FSStat *st) {
+    return stat(path.c_str(), st);
 }
 
 time_t FS::getCreationTime() {

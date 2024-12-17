@@ -37,3 +37,15 @@
 [submodule "libraries/http_parser/lib/http-parser"]
 	path = libraries/http-parser/lib/http-parser
 	url = https://github.com/nodejs/http-parser.git
+[submodule "libraries/FatFS/lib/SPIFTL"]
+	path = libraries/FatFS/lib/SPIFTL
+	url = https://github.com/earlephilhower/SPIFTL.git
+[submodule "libraries/AsyncUDP"]
+	path = libraries/AsyncUDP
+	url = https://github.com/earlephilhower/AsyncUDP.git
+[submodule "cores/rp2040/tlsf"]
+	path = lib/tlsf
+	url = https://github.com/earlephilhower/tlsf.git
+[submodule "libraries/ESPHost"]
+	path = libraries/ESPHost
+	url = https://github.com/Networking-for-Arduino/ESPHost.git

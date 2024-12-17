@@ -28,7 +28,17 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+// Example works with either Wired or WiFi Ethernet, define one of these values to 1, other to 0
+#define USE_WIFI 1
+#define USE_WIRED 0
+
+#if USE_WIFI
 #include <WiFi.h>
+#elif USE_WIRED
+#include <W5500lwIP.h> // Or W5100lwIP.h or ENC28J60lwIP.h
+Wiznet5500lwIP eth(1 /* chip select */); // or Wiznet5100lwIP or ENC28J60lwIP
+#endif
+
 #include <WiFiClient.h>
 #include <WebServer.h>
 #include <LEAmDNS.h>
@@ -50,27 +60,28 @@ void handleRoot() {
   static int cnt = 0;
   digitalWrite(led, 1);
   int sec = millis() / 1000;
-  int min = sec / 60;
-  int hr = min / 60;
+  int hr = sec / 3600;
+  int min = (sec / 60) % 60;
+  sec = sec % 60;
 
   StreamString temp;
   temp.reserve(500); // Preallocate a large chunk to avoid memory fragmentation
   temp.printf("<html>\
   <head>\
     <meta http-equiv='refresh' content='5'/>\
-    <title>Pico-W Demo</title>\
+    <title>" BOARD_NAME " Demo</title>\
     <style>\
       body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
     </style>\
   </head>\
   <body>\
-    <h1>Hello from the Pico W!</h1>\
+    <h1>Hello from the " BOARD_NAME "!</h1>\
     <p>Uptime: %02d:%02d:%02d</p>\
     <p>Free Memory: %d</p>\
     <p>Page Count: %d</p>\
     <img src=\"/test.svg\" />\
   </body>\
-</html>", hr, min % 60, sec % 60, rp2040.getFreeHeap(), ++cnt);
+</html>", hr, min, sec, rp2040.getFreeHeap(), ++cnt);
   server.send(200, "text/html", temp);
   digitalWrite(led, 0);
 }
@@ -117,6 +128,8 @@ void setup(void) {
   pinMode(led, OUTPUT);
   digitalWrite(led, 0);
   Serial.begin(115200);
+
+#if USE_WIFI
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("");
@@ -130,8 +143,32 @@ void setup(void) {
   Serial.println("");
   Serial.print("Connected to ");
   Serial.println(ssid);
+
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+#elif USE_WIRED
+  // Set up SPI pinout to match your HW
+  SPI.setRX(0);
+  SPI.setCS(1);
+  SPI.setSCK(2);
+  SPI.setTX(3);
+
+  // Start the Ethernet port
+  if (!eth.begin()) {
+    Serial.println("No wired Ethernet hardware detected. Check pinouts, wiring.");
+    while (1) {
+      delay(1000);
+    }
+  }
+
+  // Wait for connection
+  while (eth.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.print("IP address: ");
+  Serial.println(eth.localIP());
+#endif
 
   if (MDNS.begin("picow")) {
     Serial.println("MDNS responder started");

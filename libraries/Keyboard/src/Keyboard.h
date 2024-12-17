@@ -20,8 +20,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef KEYBOARD_h
-#define KEYBOARD_h
+#pragma once
+
+#ifdef USE_TINYUSB
+#error Keyboard is not compatible with Adafruit TinyUSB
+#endif
 
 #include <HID_Keyboard.h>
 
@@ -34,5 +37,3 @@ public:
     Keyboard_(void);
 };
 extern Keyboard_ Keyboard;
-
-#endif

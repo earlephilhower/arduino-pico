@@ -90,7 +90,7 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
             _currentClient = nullptr;
         }
 
-        _currentClient = new ClientType(_server.available());
+        _currentClient = new ClientType(_server.accept());
         if (!_currentClient) {
             if (_nullDelay) {
                 delay(1);
@@ -111,10 +111,9 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
         case HC_WAIT_READ:
             // Wait for data from client to become available
             if (_currentClient->available()) {
+                _currentClient->setTimeout(HTTP_MAX_SEND_WAIT);
                 switch (_parseRequest(_currentClient)) {
                 case CLIENT_REQUEST_CAN_CONTINUE:
-                    // Because HTTP_MAX_SEND_WAIT is expressed in milliseconds, it must be divided by 1000
-                    _currentClient->setTimeout(HTTP_MAX_SEND_WAIT / 1000);
                     _contentLength = CONTENT_LENGTH_NOT_SET;
                     _handleRequest();
                 /* fallthrough */
@@ -171,6 +170,7 @@ void WebServerTemplate<ServerType, DefaultPort>::handleClient() {
         }
         _currentStatus = HC_NONE;
         _currentUpload.reset();
+        _currentRaw.reset();
     }
 
     if (callYield) {

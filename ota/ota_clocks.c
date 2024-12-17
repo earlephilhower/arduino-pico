@@ -17,18 +17,19 @@
 #include "hardware/irq.h"
 #include "hardware/gpio.h"
 
+#ifdef PICO_RP2040
 // Clock muxing consists of two components:
 // - A glitchless mux, which can be switched freely, but whose inputs must be
 //   free-running
 // - An auxiliary (glitchy) mux, whose output glitches when switched, but has
 //   no constraints on its inputs
 // Not all clocks have both types of mux.
-static inline bool has_glitchless_mux(enum clock_index clk_index) {
+static inline bool has_glitchless_mux(clock_handle_t clk_index) {
     return clk_index == clk_sys || clk_index == clk_ref;
 }
 
 /// \tag::clock_configure[]
-bool _clock_configure(enum clock_index clk_index, uint32_t src, uint32_t auxsrc, uint32_t src_freq, uint32_t freq, uint32_t div) {
+bool _clock_configure(clock_handle_t clk_index, uint32_t src, uint32_t auxsrc, uint32_t src_freq, uint32_t freq, uint32_t div) {
     //uint32_t div;
 
     assert(src_freq >= freq);
@@ -159,6 +160,7 @@ void __wrap_clocks_init(void) {
                     48 * MHZ,
                     1 << 8);
 
+#ifdef PICO_RP2040
     // CLK RTC = PLL USB (48MHz) / 1024 = 46875Hz
     _clock_configure(clk_rtc,
                     0, // No GLMUX
@@ -166,6 +168,7 @@ void __wrap_clocks_init(void) {
                     48 * MHZ,
                     46875,
                     32 << 8);
+#endif
 
     // CLK PERI = clk_sys. Used as reference clock for Peripherals. No dividers so just select and enable
     // Normally choose clk_sys or clk_usb
@@ -176,3 +179,5 @@ void __wrap_clocks_init(void) {
                     125 * MHZ,
                     1 << 8);
 }
+
+#endif

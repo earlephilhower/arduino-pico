@@ -2,9 +2,6 @@ Bluetooth on PicoW Support
 ==========================
 
 As of the Pico-SDK version 1.5.0, the PicoW has **BETA** Bluetooth support.
-So, since this core builds off the SDK the best that can be suggested it
-that we have **ALPHA** Bluetooth support.  As such, bug reports are welcome,
-but Pull Requests fixing problems you find are seriously appreciated.
 
 Enabling Bluetooth
 ------------------
@@ -24,6 +21,11 @@ Bluetooth Low Energy (BLE) HID device using the same API as their USB versions.
 The ``SerialBT`` library implements a very simple SPP (Serial Port Profile)
 Serial-compatible port.
 
+Connect and use Bluetooth peripherals with the PicoW using the
+``BluetoothHIDMaster`` library.
+
+``BluetoothAudio`` (A2DP) is also supported, both sink and source.
+
 Writing Custom Bluetooth Applications
 -------------------------------------
 You may also write full applications using the ``BTStack`` standard callback
@@ -40,8 +42,8 @@ For many BTStack examples, you simply need call the included
 called afterwards to start processing (in the background).
 
 You will also need to acquire the BT ``async_context`` system lock before
-calling any BTStack APIs.  See the ``libraries/PicoBluetoothHID`` helper
-class for an example of how to do this.
+calling any BTStack APIs.  ``__lockBluetooth`` and ``unlockBluetooth`` are
+provided in the PicoW variant code.
 
 Note that if you need to modify the system ``btstack_config.h`` file, do so
 in the ``tools/libpico`` directory and rebuild the Pico SDK static library.

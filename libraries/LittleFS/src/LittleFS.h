@@ -29,7 +29,7 @@
 #include <FS.h>
 #include <FSImpl.h>
 
-#define LFS_NAME_MAX 32
+#define LFS_NAME_MAX 255
 #include "../lib/littlefs/lfs.h"
 
 using namespace fs;
@@ -106,27 +106,12 @@ public:
         if (!_mounted) {
             return false;
         }
-        info.maxOpenFiles = _maxOpenFds;
         info.blockSize = _blockSize;
         info.pageSize = _pageSize;
         info.maxOpenFiles = _maxOpenFds;
         info.maxPathLength = LFS_NAME_MAX;
         info.totalBytes = _size;
         info.usedBytes = _getUsedBlocks() * _blockSize;
-        return true;
-    }
-
-    virtual bool info64(FSInfo64& info64) {
-        FSInfo i;
-        if (!info(i)) {
-            return false;
-        }
-        info64.blockSize     = i.blockSize;
-        info64.pageSize      = i.pageSize;
-        info64.maxOpenFiles  = i.maxOpenFiles;
-        info64.maxPathLength = i.maxPathLength;
-        info64.totalBytes    = i.totalBytes;
-        info64.usedBytes     = i.usedBytes;
         return true;
     }
 
@@ -158,6 +143,14 @@ public:
             return false;
         }
         int rc = lfs_mkdir(&_lfs, path);
+        if ((rc == 0) && _timeCallback) {
+            time_t now = _timeCallback();
+            // Add metadata with creation time to the directory marker
+            int rc = lfs_setattr(&_lfs, path, 'c', (const void *)&now, sizeof(now));
+            if (rc < 0) {
+                DEBUGV("Unable to set creation time on '%s' to %ld\n", path, (long)now);
+            }
+        }
         return (rc == 0);
     }
 
@@ -241,6 +234,27 @@ public:
             return _tryMount();
         }
 
+        return true;
+    }
+
+    bool stat(const char *path, FSStat *st) override {
+        if (!_mounted || !path || !path[0]) {
+            return false;
+        }
+        lfs_info info;
+        if (lfs_stat(&_lfs, path, &info) < 0) {
+            return false;
+        }
+        st->size = info.size;
+        st->blocksize = _blockSize;
+        st->isDir = info.type == LFS_TYPE_DIR;
+        if (st->isDir) {
+            st->size = 0;
+        }
+        if (lfs_getattr(&_lfs, path, 'c', (void *)&st->ctime, sizeof(st->ctime)) != sizeof(st->ctime)) {
+            st->ctime = 0;
+        }
+        st->atime = st->ctime;
         return true;
     }
 
@@ -451,7 +465,6 @@ public:
         if (_opened && _fd) {
             lfs_file_close(_fs->getFS(), _getFD());
             _opened = false;
-            DEBUGV("lfs_file_close: fd=%p\n", _getFD());
             if (_timeCallback && (_flags & LFS_O_WRONLY)) {
                 // If the file opened with O_CREAT, write the creation time attribute
                 if (_creation) {

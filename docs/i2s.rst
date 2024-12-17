@@ -40,6 +40,16 @@ bool setDATA(pin_size_t pin)
 Sets the DOUT or DIN pin of the I2S device.  Any pin may be used.
 Call before ``I2S::begin()``
 
+bool setMCLK(pin_size_t pin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the MCLK pin of the I2S device and enables MCLK output.  Any pin may be used.
+Call before ``I2S::begin()``
+
+bool setMCLKmult(int mult)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the sample rate to MCLK multiplier value.  Only multiples of 64 are valid.
+Call before ``I2S::begin()``
+
 bool setBitsPerSample(int bits)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Specify how many bits per audio sample to read or write.  Note that
@@ -58,11 +68,27 @@ Sets the word clock frequency, but does not start the I2S device if not
 already running.  May be called after ``I2S::begin()`` to change the
 sample rate on-the-fly.
 
+bool setSysClk(int samplerate) 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Changes the PICO system clock to optimise for the desired samplerate. 
+The clock changes to 147.6 MHz for samplerates that are a multiple of 8 kHz, and 135.6 MHz for multiples of 11.025 kHz.
+Note that using ``setSysClk()`` may affect the timing of other sysclk-dependent functions.
+Should be called before any I2S functions and any other sysclk dependent initialisations.
+
 bool setLSBJFormat()
 ~~~~~~~~~~~~~~~~~~~~
 Enables LSB-J format for I2S output.  In this mode the MSB comes out at the
 same time as the LRCLK changes, and not the normal 1-cycle delay.  Useful for
 DAC chips like the PT8211.
+
+bool setTDMFormat()
+~~~~~~~~~~~~~~~~~~~
+Enabled TDM formatted multi-channel output.  Be sure to set the number of channels to
+the expected value (8 normally) and the bits per sample to 32.
+
+bool setTDMChannels(int channels)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the number of TDM channels between frame syncs.  Generally should be set to 8.
 
 bool swapClocks()
 ~~~~~~~~~~~~~~~~~

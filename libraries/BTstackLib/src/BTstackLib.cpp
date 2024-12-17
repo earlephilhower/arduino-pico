@@ -526,6 +526,10 @@ const gatt_client_characteristic_t * BLECharacteristic::getCharacteristic(void) 
     return &characteristic;
 }
 
+gatt_client_notification_t *BLECharacteristic::getNotifier() {
+    return &notify;
+}
+
 
 BLEService::BLEService(void) {
 }
@@ -703,6 +707,7 @@ int  BTstackManager::writeCharacteristicWithoutResponse(BLEDevice * device, BLEC
 }
 int BTstackManager::subscribeForNotifications(BLEDevice * device, BLECharacteristic * characteristic) {
     gattAction = gattActionSubscribe;
+    gatt_client_listen_for_characteristic_value_updates(characteristic->getNotifier(), gatt_client_callback,  device->getHandle(), (gatt_client_characteristic_t*) characteristic->getCharacteristic());
     return gatt_client_write_client_characteristic_configuration(gatt_client_callback, device->getHandle(), (gatt_client_characteristic_t*) characteristic->getCharacteristic(),
             GATT_CLIENT_CHARACTERISTICS_CONFIGURATION_NOTIFICATION);
 }
@@ -713,6 +718,7 @@ int BTstackManager::subscribeForIndications(BLEDevice * device, BLECharacteristi
 }
 int BTstackManager::unsubscribeFromNotifications(BLEDevice * device, BLECharacteristic * characteristic) {
     gattAction = gattActionUnsubscribe;
+    gatt_client_stop_listening_for_characteristic_value_updates(characteristic->getNotifier());
     return gatt_client_write_client_characteristic_configuration(gatt_client_callback, device->getHandle(), (gatt_client_characteristic_t*) characteristic->getCharacteristic(),
             GATT_CLIENT_CHARACTERISTICS_CONFIGURATION_NONE);
 }
@@ -808,9 +814,6 @@ void BTstackManager::setup(const char * name) {
     hci_add_event_handler(&hci_event_callback_registration);
     l2cap_init();
 
-    // setup central device db
-    le_device_db_init();
-
     sm_init();
 
     att_server_init(att_db_util_get_address(), att_read_callback, att_write_callback);
@@ -888,6 +891,9 @@ uint16_t BTstackManager::addGATTCharacteristicDynamic(UUID * uuid, uint16_t flag
 }
 void BTstackManager::setAdvData(uint16_t adv_data_len, const uint8_t * adv_data) {
     gap_advertisements_set_data(adv_data_len, (uint8_t*) adv_data);
+}
+void BTstackManager::setScanData(uint16_t scan_data_len, const uint8_t * scan_data) {
+    gap_scan_response_set_data(scan_data_len, (uint8_t*) scan_data);
 }
 void BTstackManager::startAdvertising() {
     gap_advertisements_enable(1);

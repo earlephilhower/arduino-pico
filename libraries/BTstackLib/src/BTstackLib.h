@@ -84,6 +84,7 @@ extern "C" {
 
     class BLECharacteristic {
     private:
+        gatt_client_notification_t notify;
         gatt_client_characteristic_t characteristic;
         UUID uuid;
     public:
@@ -93,6 +94,7 @@ extern "C" {
         bool matches(UUID * uuid);
         bool isValueHandle(uint16_t value_handle);
         const gatt_client_characteristic_t * getCharacteristic();
+        gatt_client_notification_t *getNotifier();
     };
 
     class BLEService {
@@ -143,6 +145,7 @@ extern "C" {
         void enableDebugLogger();
 
         void setAdvData(uint16_t size, const uint8_t * data);
+        void setScanData(uint16_t size, const uint8_t * data);
         void iBeaconConfigure(UUID * uuid, uint16_t major_id, uint16_t minor_id, uint8_t measured_power = 0xc6);
         void startAdvertising();
         void stopAdvertising();

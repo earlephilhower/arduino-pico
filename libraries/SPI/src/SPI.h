@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include <api/HardwareSPI.h>
 #include <hardware/spi.h>
+#include <map>
 
 class SPIClassRP2040 : public arduino::HardwareSPI {
 public:
@@ -38,15 +39,28 @@ public:
     // Sends one buffer and receives into another, much faster! can set rx or txbuf to nullptr
     void transfer(const void *txbuf, void *rxbuf, size_t count) override;
 
+    // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
+    // All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+    bool transferAsync(const void *send, void *recv, size_t bytes);
+    bool finishedAsync(); // Call to check if the async operations is completed and the buffer can be reused/read
+    void abortAsync(); // Cancel an outstanding async operation
+
+
     // Call before/after every complete transaction
     void beginTransaction(SPISettings settings) override;
     void endTransaction(void) override;
 
     // Assign pins, call before begin()
     bool setRX(pin_size_t pin);
+    inline bool setMISO(pin_size_t pin) {
+        return setRX(pin);
+    }
     bool setCS(pin_size_t pin);
     bool setSCK(pin_size_t pin);
     bool setTX(pin_size_t pin);
+    inline bool setMOSI(pin_size_t pin) {
+        return setTX(pin);
+    }
 
     // Call once to init/deinit SPI class, select pins, etc.
     virtual void begin() override {
@@ -60,12 +74,12 @@ public:
     void setDataMode(uint8_t uc_mode) __attribute__((deprecated));
     void setClockDivider(uint8_t uc_div) __attribute__((deprecated));
 
-    // Unimplemented
+    // List of GPIO IRQs to disable during a transaction
     virtual void usingInterrupt(int interruptNumber) override {
-        (void) interruptNumber;
+        _usingIRQs.insert({interruptNumber, 0});
     }
     virtual void notUsingInterrupt(int interruptNumber) override {
-        (void) interruptNumber;
+        _usingIRQs.erase(interruptNumber);
     }
     virtual void attachInterrupt() override { /* noop */ }
     virtual void detachInterrupt() override { /* noop */ }
@@ -83,6 +97,16 @@ private:
     bool _hwCS;
     bool _running; // SPI port active
     bool _initted; // Transaction begun
+
+    std::map<int, int> _usingIRQs;
+
+    // DMA
+    int _channelDMA;
+    int _channelSendDMA;
+    uint8_t *_dmaBuffer = nullptr;
+    int _dmaBytes;
+    uint8_t *_rxFinalBuffer;
+    uint32_t _dummy;
 };
 
 extern SPIClassRP2040 SPI;

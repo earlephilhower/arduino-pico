@@ -18,12 +18,12 @@ The following diagram shows the flash layout used in Arduino-Pico:
 
 ::
 
-    |---------------------|-------------|----|
-    ^                     ^             ^
-    Sketch                File system   EEPROM
+    |----|---------------------|-------------|----|
+    ^    ^                     ^             ^
+    OTA  Sketch                File system   EEPROM
 
-The file system size is configurable via the IDE menus, rom 64k up to 15MB
-(assuming you have an RP2040 boad with that much flash)
+The file system size is configurable via the IDE menus, from 64k up to 15MB
+(assuming you have an RP2040 board with that much flash)
 
 **Note:** to use any of file system functions in the sketch, add the
 following include to the sketch:
@@ -33,31 +33,68 @@ following include to the sketch:
     #include "LittleFS.h" // LittleFS is declared
     // #include <SDFS.h>
     // #include <SD.h>
+    // #include <FatFS.h>
 
 
 Compatible Filesystem APIs
 --------------------------
 
-LittleFS is an onboard filesystem that sets asidesome program flash for
+LittleFS is an onboard filesystem that sets aside some program flash for
 use as a filesystem without requiring any external hardware.
 
 SDFS is a filesystem for SD cards, based on [SdFat 2.0](https://github.com/earlephilhower/ESP8266SdFat).
 It supports FAT16 and FAT32 formatted cards, and requires an external
 SD card reader.
 
-SD is the Arduino supported, somewhat old and limited SD card filesystem.
+SD is the Arduino-supported, somewhat old and limited SD card filesystem.
 It is recommended to use SDFS for new applications instead of SD.
 
-All three of these filesystems can open and manipulate ``File`` and ``Dir``
+FatFS implements a wear-leveled, FTL-backed FAT filesystem in the onboard
+flash which can be easily accessed over USB as a standard memory stick
+via FatFSUSB.
+
+All of these filesystems can open and manipulate ``File`` and ``Dir``
 objects with the same code because the implement a common end-user
 filesystem API.
+
+FatFS File System Caveats and Warnings
+--------------------------------------
+
+The FAT filesystem is ubiquitous, but it is also around 50 years old and ill
+suited to SPI flash memory due to having "hot spots" like the FAT copies that
+are rewritten many times over.  SPI flash allows a high, but limited, number
+of writes before losing the ability to write safely.  Applications like
+data loggers where many writes occur could end up wearing out the SPI flash
+sector that holds the FAT **years** before coming close to the write limits of
+the data sectors.
+
+To circumvent this issue, the FatFS implementation here uses a flash translation
+layer (FTL) developed for SPI flash on embedded systems.  This allows for the
+same LBA to be written over and over by the FAT filesystem, but use different
+flash locations.  For more information see
+[SPIFTL](https://github.com/earlephilhower/SPIFTL).  In this mode the Pico
+flash appears as a normal, 512-byte sector drive to the FAT.
+
+What this means, practically, is that about 5KB of RAM per megabyte of flash
+is required for housekeeping.  Writes can also become very slow if most of the
+flash LBA range is used (i.e. if the FAT drive is 99% full) due to the need
+for garbage collection processes to move data around and preserve the flash
+lifetime.
+
+Alternatively, if an FTL is not desired or memory is tight, FatFS can use the
+raw flash directly.  In this mode sectors are 4K in size and flash is mapped
+1:1 to sectors, so things like the FAT table updates will all use the same
+physical flash bits.  For low-utilization operations this may be fine, but if
+significant writes are done (from the Pico or the PC host) this may wear out
+portions of flash very quickly , rendering it unusable.
 
 LittleFS File System Limitations
 --------------------------------
 
 The LittleFS implementation for the RP2040 supports filenames of up
-to 31 characters + terminating zero (i.e. ``char filename[32]``), and
-as many subdirectories as space permits.
+to 254 characters + terminating zero (i.e. ``char filename[255]`` or
+better ``char filename[LFS_NAME_MAX]`` ), and as many subdirectories
+as space permits.
 
 Filenames are assumed to be in the root directory if no initial "/" is
 present.
@@ -75,22 +112,47 @@ Uploading Files to the LittleFS File System
 menu item to **Tools** menu for uploading the contents of sketch data
 directory into a new LittleFS flash file system.
 
+**IDE 1.x**
+
 -  Download the tool: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
--  In your Arduino sketchbook directory, create ``tools`` directory if
-   it doesn't exist yet.
--  Unpack the tool into ``tools`` directory (the path will look like
-   ``<home_dir>/Arduino/tools/PicoLittleFS/tool/picolittlefs.jar``)
+-  In your Arduino sketchbook directory, create ``tools`` directory if it doesn't exist yet.
+-  Unpack the tool into ``tools`` directory (the path will look like ``<home_dir>/Arduino/tools/PicoLittleFS/tool/picolittlefs.jar``)
    If upgrading, overwrite the existing JAR file with the newer version.
 -  Restart Arduino IDE.
 -  Open a sketch (or create a new one and save it).
 -  Go to sketch directory (choose Sketch > Show Sketch Folder).
--  Create a directory named ``data`` and any files you want in the file
-   system there.
+-  Create a directory named ``data`` and any files you want in the file system there.
 -  Make sure you have selected a board, port, and closed Serial Monitor.
--  Double check theSerial Monitor is closed.  Uploads will fail if the Serial
-   Monitor has control of the serial port.
--  Select ``Tools > Pico LittleFS Data Upload``. This should start
-   uploading the files into the flash file system.
+-  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
+-  Select ``Tools > Pico LittleFS Data Upload``. This should start uploading the files into the flash file system.
+
+**IDE 2.x**
+
+-  Download the new tool: https://github.com/earlephilhower/arduino-littlefs-upload/releases
+-  Exit the IDE, if running
+-  Copy the VSIX file manually to (Linux/Mac) ``~/.arduinoIDE/plugins/`` (you may need to make this directory yourself beforehand) or to (Windows) ``C:\Users\<username>\.arduinoIDE\``
+-  Restart the IDE
+-  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
+-  Enter ``[Ctrl]`` + ``[Shift]`` + ``[P]`` to bring up the command palette, then select/type ``Upload LittleFS to Pico/ESP8266``
+
+Downloading Files from a LittleFS System
+----------------------------------------
+
+Using ``gdb`` it is possible to dump the flash data making up the filesystem and then extract
+it using the ``mklittlefs`` tool.  A working ``OpenOCD`` setup, DebugProbe, and ``gdb`` are required.
+To download the raw filesystem, from within ``GDB`` run:
+
+.. code::
+    ^C (break)
+    (gdb) dump binary memory littlefs.bin &_FS_start &_FS_end
+It may take a few seconds as ``GDB`` reads out the flash to the file.  Once the raw file is downloaded it can be extracted using the ``mklittlefs`` tool from the BASH/Powershell/command line
+
+.. code::
+    $ <path-to-mklittlefs>/mklittlefs -u output-dir littlefs.bin
+     Directory <output-dir> does not exists. Try to create it.
+     gmon.out    > <output-dir>/gmon.out    size: 24518 Bytes
+     gmon.bak    > <output-dir>/gmon.bak    size: 1 Bytes
+The defaults built into ``mklittlefs`` should be appropriate for normal LittleFS filesystems built on the device or using the upload tool.
 
 SD Library Information
 ----------------------
@@ -109,8 +171,50 @@ second SPI port, ``SPI1``.  Just use the following call in place of
     SD.begin(cspin, SPI1);
 
 
-File system object (LittleFS/SD/SDFS)
--------------------------------------
+Using VFS (Virtual File System) for POSIX support
+-------------------------------------------------
+The ``VFS`` library enables sketches to use standard POSIX file I/O operations using
+standard ``FILE *`` operations.  Include the ``VFS`` library in your application and
+add a call to map the ``VFS.root()`` to your filesystem.  I.e.:
+
+.. code:: cpp
+
+    #include <VFS.h>
+    #include <LittleFS.h>
+
+    void setup() {
+      LittleFS.begin();
+      VFS.root(LittleFS);
+      FILE *fp = fopen("/thisfilelivesonflash.txt", "w");
+      fprintf(fp, "Hello!\n");
+      fclose(fp);
+    }
+
+Multiple filesystems can be ``VFS.map()`` into the VFS namespace under different directory
+names.  For example, the following will make files on ``/sd`` reside on an external\
+SD card and files on ``/lfs`` live in internal flash.
+
+.. code:: cpp
+
+    #include <VFS.h>
+    #include <LittleFS.h>
+    #include <SDFS.h>
+
+    void setup() {
+      LittleFS.begin();
+      SDFS.begin();
+      VFS.map("/lfs", LittleFS);
+      VFS.map("/sd", SDFS);
+      FILE *onSD = fopen("/sd/thislivesonsd.txt", "wb");
+      ....
+    }
+
+See the examples in the ``VFS`` library for more information.
+
+
+
+File system object (LittleFS/SD/SDFS/FatFS)
+-------------------------------------------
 
 setConfig
 ~~~~~~~~~
@@ -125,14 +229,22 @@ setConfig
     c2.setCSPin(12);
     SDFS.setConfig(c2);
 
+    FatFSConfig c3;
+    c3.setUseFTL(false); // Directly access flash memory
+    c3.setDirEntries(256); // We need 256 root directory entries on a format()
+    c3.setFATCopies(1); // Only 1 FAT to save 4K of space and extra writes
+    FatFS.setConfig(c3);
+    FatFS.format(); // Format using these settings, erasing everything
+
 This method allows you to configure the parameters of a filesystem
 before mounting.  All filesystems have their own ``*Config`` (i.e.
 ``SDFSConfig`` or ``LittleFSConfig`` with their custom set of options.
 All filesystems allow explicitly enabling/disabling formatting when
 mounts fail.  If you do not call this ``setConfig`` method before
 perforing ``begin()``, you will get the filesystem's default
-behavior and configuration. By default, SPIFFS will autoformat the
-filesystem if it cannot mount it, while SDFS will not.
+behavior and configuration. By default, LittleFS and FatFS will autoformat the
+filesystem if it cannot mount it, while SDFS will not.  FatFS will also use
+the built-in FTL to support 512 byte sectors and higher write lifetime.
 
 begin
 ~~~~~
@@ -144,11 +256,10 @@ begin
 
 This method mounts file system. It must be called before any
 other FS APIs are used. Returns *true* if file system was mounted
-successfully, false otherwise.  With no options it will format SPIFFS
-if it is unable to mount it on the first try.
+successfully, false otherwise.
 
 Note that LittleFS will automatically format the filesystem
-if one is not detected.  This is configurable via ``setConfig``
+if one is not detected.  This is configurable via ``setConfig``.
 
 end
 ~~~
@@ -181,8 +292,8 @@ open
 
 Opens a file. ``path`` should be an absolute path starting with a slash
 (e.g. ``/dir/filename.txt``). ``mode`` is a string specifying access
-mode. It can be one of "r", "w", "a", "r+", "w+", "a+". Meaning of these
-modes is the same as for ``fopen`` C function.
+mode. It can be one of "r", "w", "a", "r+", "w+", "a+". The meaning of these
+modes is the same as for the ``fopen`` C function.
 
 ::
 
@@ -258,8 +369,6 @@ openDir
     or LittleFS.openDir(path)
 
 Opens a directory given its absolute path. Returns a *Dir* object.
-Please note the previous discussion on the difference in behavior between
-LittleFS and SPIFFS for this call.
 
 remove
 ~~~~~~
@@ -283,8 +392,8 @@ rename
 Renames file from ``pathFrom`` to ``pathTo``. Paths must be absolute.
 Returns *true* if file was renamed successfully.
 
-info  **DEPRECATED**
-~~~~~~~~~~~~~~~~~~~~
+info
+~~~~
 
 .. code:: cpp
 
@@ -293,9 +402,8 @@ info  **DEPRECATED**
 
 Fills `FSInfo structure <#filesystem-information-structure>`__ with
 information about the file system. Returns ``true`` if successful,
-``false`` otherwise.  Because this cannot report information about
-filesystemd greater than 4MB, don't use it in new code.  Use ``info64``
-instead which uses 64-bit fields for filesystem sizes.
+``false`` otherwise. ``ìnfo()`` has been updated to support filesystems 
+greater than 4GB and ``FSInfo64`` and ``info64()`` have been discarded.
 
 Filesystem information structure
 --------------------------------
@@ -303,8 +411,8 @@ Filesystem information structure
 .. code:: cpp
 
     struct FSInfo {
-        size_t totalBytes;
-        size_t usedBytes;
+        uint64_t totalBytes;
+        uint64_t usedBytes;
         size_t blockSize;
         size_t pageSize;
         size_t maxOpenFiles;
@@ -318,19 +426,6 @@ block size - ``pageSize`` — filesystem logical page size - ``maxOpenFiles``
 — max number of files which may be open simultaneously -
 ``maxPathLength`` — max file name length (including one byte for zero
 termination)
-
-info64
-~~~~~~
-
-.. code:: cpp
-
-    FSInfo64 fsinfo;
-    SDFS.info64(fsinfo);
-    or LittleFS.info64(fsinfo);
-
-Performs the same operation as ``info`` but allows for reporting greater than
-4GB for filesystem size/used/etc.  Should be used with the SD and SDFS
-filesystems since most SD cards today are greater than 4GB in size.
 
 setTimeCallback(time_t (\*cb)(void))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -550,8 +645,8 @@ close
 Close the file. No other operations should be performed on *File* object
 after ``close`` function was called.
 
-openNextFile  (compatibiity method, not recommended for new code)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+openNextFile  (compatibility method, not recommended for new code)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: cpp
 
@@ -562,8 +657,8 @@ openNextFile  (compatibiity method, not recommended for new code)
 Opens the next file in the directory pointed to by the File.  Only valid
 when ``File.isDirectory() == true``.
 
-rewindDirectory  (compatibiity method, not recommended for new code)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+rewindDirectory  (compatibility method, not recommended for new code)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: cpp
 

@@ -1,0 +1,14 @@
+-iwithprefixbefore/include/rp2040
+-iwithprefixbefore/include/rp2040/pico_base
+-iwithprefixbefore/pico-sdk/src/rp2040/hardware_regs/include
+-iwithprefixbefore/pico-sdk/src/rp2040/hardware_structs/include
+-iwithprefixbefore/pico-sdk/src/rp2040/pico_platform/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_btstack/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_cyw43_arch/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_cyw43_driver/include
+-iwithprefixbefore/pico-sdk/lib/cyw43-driver/src
+-iwithprefixbefore/pico-sdk/lib/btstack/src
+-iwithprefixbefore/pico-sdk/lib/btstack/3rd-party/bluedroid/decoder/include
+-iwithprefixbefore/pico-sdk/lib/btstack/3rd-party/bluedroid/encoder/include
+-iwithprefixbefore/pico-sdk/lib/btstack/platform/embedded
+-iwithprefixbefore/pico-sdk/src/rp2_common/cmsis/stub/CMSIS/Device/RP2040/Include

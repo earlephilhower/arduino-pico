@@ -5,6 +5,26 @@ function skip_ino()
 {
     local ino=$1
     local skiplist=""
+    local skiplistrp2350=""
+    if [ "$PICO_BOARD" == "rp2350" ]; then
+        read -d '' skiplistrp2350 << EOL || true
+/BTstackLib/
+/JoystickBT/
+/KeyboardBT/
+/MouseBT/
+/SerialBT/
+/ArduinoBLE/
+/JoystickBLE/
+/KeyboardBLE/
+/MouseBLE/
+/BluetoothAudio/
+/BluetoothHCI/
+/BluetoothHIDMaster/
+/HID_Bluetooth/
+/lwIP_ESPHost/
+/lwIP_WINC1500/
+EOL
+    fi
     # Add items to the following list with "\n" netween them to skip running.  No spaces, tabs, etc. allowed
     read -d '' skiplist << EOL || true
 /#attic/
@@ -24,6 +44,9 @@ function skip_ino()
 /p13_TouchSensorLamp/
 /StringComparisonOperators/
 /PDMSerialPlotter/
+/debug/
+/BackwardCompatibility/
+$skiplistrp2350
 EOL
     echo $ino | grep -q -F "$skiplist"
     echo $(( 1 - $? ))
@@ -88,7 +111,10 @@ function build_sketches()
             mv $build_dir/build.options.json.tmp $build_dir/build.options.json
             # Set the time of the cached core.a file to the future so the GIT header
             # we regen won't cause the builder to throw it out and rebuild from scratch.
-            touch -d 'now + 1 day' $cache_dir/core/*.a
+            uname -a | grep -qi darwin
+            if [ $? == 1 ]; then
+                touch -d 'now + 1 day' $cache_dir/core/*.a
+            fi
         fi
 
         # Clear out the last built sketch, map, elf, bin files, but leave the compiled
@@ -121,6 +147,12 @@ function build_sketches()
             export MSYS2_ARG_CONV_EXC="*"
             export MSYS_NO_PATHCONV=1
         fi
+        rm -f boards.local.txt
+        if [[ -f "$sketchdir/.ci.defines" ]]; then
+            (echo -n "rpipico.build.extra_flags="; cat "$sketchdir/.ci.defines") > boards.local.txt
+            echo -n "--- Additional test defines:  "
+            cat boards.local.txt
+        fi
         echo "$build_cmd $sketch"
         time ($build_cmd $sketch >build.log)
         local result=$?
@@ -148,7 +180,6 @@ function install_libraries()
     mkdir -p $HOME/Arduino/libraries
     pushd $HOME/Arduino/libraries
 
-    # install ArduinoJson library
     { test -r ArduinoJson-v6.11.0.zip || curl -sS --output ArduinoJson-v6.11.0.zip -L https://github.com/bblanchon/ArduinoJson/releases/download/v6.11.0/ArduinoJson-v6.11.0.zip; } && unzip -qo ArduinoJson-v6.11.0.zip
     { test -r Adafruit_SPIFlash-3.4.1.zip || curl -sS --output Adafruit_SPIFlash-3.4.1.zip -L https://github.com/adafruit/Adafruit_SPIFlash/archive/refs/tags/3.4.1.zip; } && unzip -qo Adafruit_SPIFlash-3.4.1.zip
     { test -r Adafruit_Seesaw-1.4.4.zip || curl -sS --output Adafruit_Seesaw-1.4.4.zip -L https://github.com/adafruit/Adafruit_Seesaw/archive/refs/tags/1.4.4.zip; } && unzip -qo Adafruit_Seesaw-1.4.4.zip
@@ -178,11 +209,6 @@ function install_ide()
         unzip -q ${core_path}/tools/dist/arduino-windows.zip
         mv arduino-${idever} arduino-distrib
     elif [ "$MACOSX" = "1" ]; then
-        # MACOS only has next-to-obsolete Python2 installed.  Install Python 3 from python.org
-        wget -q https://www.python.org/ftp/python/3.7.4/python-3.7.4-macosx10.9.pkg
-        sudo installer -pkg python-3.7.4-macosx10.9.pkg -target /
-        # Install the Python3 certificates, because SSL connections fail w/o them and of course they aren't installed by default.
-        ( cd "/Applications/Python 3.7/" && sudo "./Install Certificates.command" )
         # Hack to place arduino-builder in the same spot as sane OSes
         test -r ${core_path}/tools/dist/arduino-macos.zip || wget -q -O ${core_path}/tools/dist/arduino-macos.zip "${ideurl}-macosx.zip"
         unzip -q ${core_path}/tools/dist/arduino-macos.zip
@@ -208,7 +234,7 @@ function install_ide()
     fi
     # Set custom warnings for all builds (i.e. could add -Wextra at some point)
     echo "compiler.c.extra_flags=-Wall -Wextra -Werror -Wno-ignored-qualifiers $debug_flags" > rp2040/platform.local.txt
-    echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror -Wno-ignored-qualifiers $debug_flags" >> rp2040/platform.local.txt
+    echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror -Wno-ignored-qualifiers -Wno-overloaded-virtual $debug_flags" >> rp2040/platform.local.txt
     echo -e "\n----platform.local.txt----"
     cat rp2040/platform.local.txt
     echo -e "\n----\n"
@@ -227,9 +253,9 @@ function install_arduino()
 {
     local debug=$1
     # Install Arduino IDE and required libraries
-    cd $TRAVIS_BUILD_DIR
-    install_ide $HOME/arduino_ide $TRAVIS_BUILD_DIR $debug
-    cd $TRAVIS_BUILD_DIR
+    cd $GITHUB_WORKSPACE
+    install_ide $HOME/arduino_ide $GITHUB_WORKSPACE $debug
+    cd $GITHUB_WORKSPACE
     install_libraries
 }
 
@@ -241,7 +267,7 @@ function build_sketches_with_arduino()
 
     # Compile sketches
     build_sketches $HOME/arduino_ide $HOME/arduino_ide/examples "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
-    build_sketches $HOME/arduino_ide $TRAVIS_BUILD_DIR/libraries "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
+    build_sketches $HOME/arduino_ide $GITHUB_WORKSPACE/libraries "-l $HOME/Arduino/libraries ${build_extra}" $build_mod $build_rem
 
     # Generate size report
     cat size.log
@@ -250,11 +276,11 @@ function build_sketches_with_arduino()
 
 set -e
 
-if [ -z "$TRAVIS_BUILD_DIR" ]; then
-    echo "TRAVIS_BUILD_DIR is not set, trying to guess:"
+if [ -z "$GITHUB_WORKSPACE" ]; then
+    echo "GITHUB_WORKSPACE is not set, trying to guess:"
     pushd $(dirname $0)/../ > /dev/null
-    TRAVIS_BUILD_DIR=$PWD
+    GITHUB_WORKSPACE=$PWD
     popd > /dev/null
-    echo "TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR"
+    echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
 fi
 

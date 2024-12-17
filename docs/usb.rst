@@ -14,12 +14,27 @@ from the IDE.
 The Arduino-Pico core includes ported versions of the basic Arduino
 ``Keyboard``, ``Mouse`` and ``Joystick`` libraries.  These libraries 
 allow you to emulate a keyboard, a gamepad or mouse (or all together) 
-with the Pico in your sketches.
+with the Pico in your sketches.  These libraries only are available
+when using the built-in USB, not the Adafruit library.
 
 See the examples and Arduino Reference at
 https://www.arduino.cc/reference/en/language/functions/usb/keyboard/
 and
 https://www.arduino.cc/reference/en/language/functions/usb/mouse
+
+HID Polling Interval
+--------------------
+By default, HID devices will request to be polled every 10ms (i.e. 100x
+per second).  If you have a higher performance need, you can override
+this value by creating a global variable in your main application, set
+to the polling period:
+
+.. code::  cpp
+
+    int usb_hid_poll_interval = 1; // Set HID poll interval to 1ms (1kHz)
+    void setup() {
+        ....
+    }
 
 Adafruit TinyUSB Arduino Support
 --------------------------------

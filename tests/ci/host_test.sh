@@ -4,7 +4,7 @@
 
 set -ev
 
-cd $TRAVIS_BUILD_DIR/tests/host
+cd $GITHUB_WORKSPACE/tests/host
 
 
 make -j2 FORCE32=0 ssl

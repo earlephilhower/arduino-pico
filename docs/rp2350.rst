@@ -1,0 +1,34 @@
+RP2350 Specific Notes
+=====================
+
+The RP2350 chip (present on the Raspberry Pi Pico 2 board and many others)
+is supported by the core with some minor caveats:
+
+* PSRAM is supported via a new ``pmalloc`` call and ``PSRAM`` variable decorator.
+* Both RP2350A and RP2350B (48 GPIOs) are supported.
+
+ARM and RISC-V Modes
+~~~~~~~~~~~~~~~~~~~~
+
+Either set of cores can be used on the RP2350, ARM Cortex-M33 or RISC-V Hazard3.
+Select the desired core from the IDE menus under ``Tools->CPU Architecture``.
+As of the initial release, all libraries should work under the new RISC-V mode with
+the exception of FreeRTOS.  If not, patches are always welcome.
+
+P2350-E9 Errata ("Increased leakage current on Bank 0 GPIO when pad input is enabled")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Like all chips, the RP2350-A2 stepping has post-silicon chip errata covering certain
+bugs found after the chip was manufactured.  Probably the most (in)famous and concerning
+is RP2350-E9 which is noted as resulting in "Increased leakage current on Bank 0 GPIO
+when pad input is enabled."  At a high level, this means that in some cases when an
+input pin is being driven by a weak (high impedance) input, it may not read properly.
+
+After discussion with the community and exploration of the issue by many users, this
+core has decided not to implement any forced workarounds for this issue.  Given the
+physical nature of the problem and how no one specific solution is appropriate for
+all conditions.
+
+For more information please read the errata yourself and check the Raspberry Pi Forums
+for the latest updates.
+

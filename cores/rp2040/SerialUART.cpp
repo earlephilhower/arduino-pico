@@ -32,11 +32,21 @@ extern void serialEvent1() __attribute__((weak));
 extern void serialEvent2() __attribute__((weak));
 
 bool SerialUART::setRX(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({1, 13, 17, 29}) /* UART0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({1, 13, 17, 29, 33, 45}) /* UART0 */,
+                                    __bitset({5, 9, 21, 25, 37, 41})  /* UART1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({1, 13, 17, 29}) /* UART0 */,
                                     __bitset({5, 9, 21, 25})  /* UART1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[uart_get_index(_uart)])) {
         _rx = pin;
+        return true;
+    }
+
+    if (_rx == pin) {
         return true;
     }
 
@@ -49,11 +59,21 @@ bool SerialUART::setRX(pin_size_t pin) {
 }
 
 bool SerialUART::setTX(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({0, 12, 16, 28}) /* UART0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({0, 12, 16, 28, 32, 44}) /* UART0 */,
+                                    __bitset({4, 8, 20, 24, 36, 40})  /* UART1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({0, 12, 16, 28}) /* UART0 */,
                                     __bitset({4, 8, 20, 24})  /* UART1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[uart_get_index(_uart)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[uart_get_index(_uart)])) {
         _tx = pin;
+        return true;
+    }
+
+    if (_tx == pin) {
         return true;
     }
 
@@ -66,11 +86,21 @@ bool SerialUART::setTX(pin_size_t pin) {
 }
 
 bool SerialUART::setRTS(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({3, 15, 19}) /* UART0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({3, 15, 19, 31, 35, 47}) /* UART0 */,
+                                    __bitset({7, 11, 23, 27, 39, 43})  /* UART1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({3, 15, 19}) /* UART0 */,
                                     __bitset({7, 11, 23, 27})  /* UART1 */
                                   };
-    if ((!_running) && ((pin == UART_PIN_NOT_DEFINED) || ((1 << pin) & valid[uart_get_index(_uart)]))) {
+#endif
+    if ((!_running) && ((pin == UART_PIN_NOT_DEFINED) || ((1LL << pin) & valid[uart_get_index(_uart)]))) {
         _rts = pin;
+        return true;
+    }
+
+    if (_rts == pin) {
         return true;
     }
 
@@ -83,11 +113,21 @@ bool SerialUART::setRTS(pin_size_t pin) {
 }
 
 bool SerialUART::setCTS(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({2, 14, 18}) /* UART0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({2, 14, 18, 30, 34, 46}) /* UART0 */,
+                                    __bitset({6, 10, 22, 26, 38, 42})  /* UART1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({2, 14, 18}) /* UART0 */,
                                     __bitset({6, 10, 22, 26})  /* UART1 */
                                   };
-    if ((!_running) && ((pin == UART_PIN_NOT_DEFINED) || ((1 << pin) & valid[uart_get_index(_uart)]))) {
+#endif
+    if ((!_running) && ((pin == UART_PIN_NOT_DEFINED) || ((1LL << pin) & valid[uart_get_index(_uart)]))) {
         _cts = pin;
+        return true;
+    }
+
+    if (_cts == pin) {
         return true;
     }
 
@@ -122,6 +162,9 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size
     _cts = cts;
     mutex_init(&_mutex);
     mutex_init(&_fifoMutex);
+    _invertTX = false;
+    _invertRX = false;
+    _invertControl = false;
 }
 
 static void _uart0IRQ();
@@ -138,14 +181,18 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     _fcnTx = gpio_get_function(_tx);
     _fcnRx = gpio_get_function(_rx);
     gpio_set_function(_tx, GPIO_FUNC_UART);
+    gpio_set_outover(_tx, _invertTX ? 1 : 0);
     gpio_set_function(_rx, GPIO_FUNC_UART);
+    gpio_set_inover(_rx, _invertRX ? 1 : 0);
     if (_rts != UART_PIN_NOT_DEFINED) {
         _fcnRts = gpio_get_function(_rts);
         gpio_set_function(_rts, GPIO_FUNC_UART);
+        gpio_set_outover(_rts, _invertControl ? 1 : 0);
     }
     if (_cts != UART_PIN_NOT_DEFINED) {
         _fcnCts = gpio_get_function(_cts);
         gpio_set_function(_cts, GPIO_FUNC_UART);
+        gpio_set_inover(_cts, _invertControl ? 1 : 0);
     }
 
     uart_init(_uart, baud);
@@ -185,7 +232,7 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         break;
     }
     uart_set_format(_uart, bits, stop, parity);
-    uart_set_hw_flow(_uart, _rts != UART_PIN_NOT_DEFINED, _cts != UART_PIN_NOT_DEFINED);
+    uart_set_hw_flow(_uart, _cts != UART_PIN_NOT_DEFINED, _rts != UART_PIN_NOT_DEFINED);
     _writer = 0;
     _reader = 0;
 
@@ -230,12 +277,16 @@ void SerialUART::end() {
 
     // Restore pin functions
     gpio_set_function(_tx, _fcnTx);
+    gpio_set_outover(_tx, 0);
     gpio_set_function(_rx, _fcnRx);
+    gpio_set_inover(_rx, 0);
     if (_rts != UART_PIN_NOT_DEFINED) {
         gpio_set_function(_rts, _fcnRts);
+        gpio_set_outover(_rts, 0);
     }
     if (_cts != UART_PIN_NOT_DEFINED) {
         gpio_set_function(_cts, _fcnCts);
+        gpio_set_inover(_cts, 0);
     }
 }
 

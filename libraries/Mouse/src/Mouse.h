@@ -19,8 +19,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef MOUSE_h
-#define MOUSE_h
+#pragma once
+
+#ifdef USE_TINYUSB
+#error Mouse is not compatible with Adafruit TinyUSB
+#endif
 
 #include <HID_Mouse.h>
 
@@ -30,5 +33,3 @@ public:
     virtual void move(int x, int y, signed char wheel = 0) override;
 };
 extern Mouse_ Mouse;
-
-#endif

@@ -43,9 +43,9 @@ void setup(void) {
       if (upload.status == UPLOAD_FILE_START) {
         WiFiUDP::stopAll();
         Serial.printf("Update: %s\n", upload.filename.c_str());
-        FSInfo64 i;
+        FSInfo i;
         LittleFS.begin();
-        LittleFS.info64(i);
+        LittleFS.info(i);
         uint32_t maxSketchSpace = i.totalBytes - i.usedBytes;
         if (!Update.begin(maxSketchSpace)) {  // start with max available size
           Update.printError(Serial);

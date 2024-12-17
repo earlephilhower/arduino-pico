@@ -20,16 +20,18 @@
 */
 
 #include "MouseBT.h"
-#include <sdkoverride/tusb_absmouse.h>
+#include <HID_Bluetooth.h>
 #include <PicoBluetoothHID.h>
+
+// Weak function override to add our descriptor to the list
+void __BTInstallMouse() { /* noop */ }
 
 MouseBT_::MouseBT_(bool absolute) : HID_Mouse(absolute) {
     _running = false;
 }
 
-#define REPORT_ID 0x01
-const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
-const uint8_t desc_absmouse[] = {TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(REPORT_ID))};
+uint8_t *desc_mouseBT;
+uint16_t desc_mouseBT_length;
 
 void MouseBT_::begin(const char *localName, const char *hidName) {
     if (!localName) {
@@ -38,7 +40,10 @@ void MouseBT_::begin(const char *localName, const char *hidName) {
     if (!hidName) {
         hidName = localName;
     }
-    PicoBluetoothHID.startHID(localName, hidName, 0x2580, 33, _absolute ? desc_absmouse : desc_mouse, _absolute ? sizeof(desc_absmouse) : sizeof(desc_mouse));
+
+    __SetupHIDreportmap(__BTInstallMouse, __BTInstallKeyboard, __BTInstallJoystick, _absolute, &desc_mouseBT_length, &desc_mouseBT);
+
+    PicoBluetoothHID.startHID(localName, hidName, __BTGetCOD(), 33, desc_mouseBT, desc_mouseBT_length);
     _running = true;
 }
 
@@ -63,7 +68,7 @@ void MouseBT_::move(int x, int y, signed char wheel) {
         data.y = limit_xy(y);
         data.wheel = wheel;
         data.pan = 0;
-        PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+        PicoBluetoothHID.send(__BTGetMouseReportID(), &data, sizeof(data));
     } else {
         hid_abs_mouse_report_t data;
         data.buttons = _buttons;
@@ -71,7 +76,7 @@ void MouseBT_::move(int x, int y, signed char wheel) {
         data.y = limit_xy(y);
         data.wheel = wheel;
         data.pan = 0;
-        PicoBluetoothHID.send(REPORT_ID, &data, sizeof(data));
+        PicoBluetoothHID.send(__BTGetMouseReportID(), &data, sizeof(data));
     }
 }
 

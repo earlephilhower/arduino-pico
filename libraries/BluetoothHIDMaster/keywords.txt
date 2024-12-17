@@ -1,0 +1,45 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BluetoothHIDMaster	KEYWORD1
+HIDKeyStream	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+end	KEYWORD2
+
+scan	KEYWORD2
+scanAsyncDone	KEYWORD2
+scanAsyncResult	KEYWORD2
+
+connectKeyboard	KEYWORD2
+connectMouse	KEYWORD2
+connectJoypad	KEYWORD2
+connectAny	KEYWORD2
+
+hidConnected	KEYWORD2
+onMouseMove	KEYWORD2
+onMouseButton	KEYWORD2
+onKeyDown	KEYWORD2
+onKeyUp	KEYWORD2
+onConsumerKeyDown	KEYWORD2
+onConsumerKeyUp	KEYWORD2
+onJoypad	KEYWORD2
+
+# BTDeviceInfo
+deviceClass	KEYWORD2
+address	KEYWORD2
+addressString	KEYWORD2
+rssi	KEYWORD2
+name	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################

@@ -26,9 +26,7 @@ Arduino IDE Installation Warning
 the actual Arduino application because it has issues detecting attached Pico
 boards.  Use the "Windows ZIP" or plain "Windows" executable (EXE) download
 direct from https://arduino.cc. and allow it to install any device drivers
-it suggests.  Otherwise the Pico board may not be detected.  Also, if trying
-out the 2.0 beta Arduino please install the release 1.8 version beforehand
-to ensure needed device drivers are present.
+it suggests.  Otherwise the Pico board may not be detected.
 
 **Note for Linux Users**: If you installed the Arduino IDE using Flatpak, which 
 is common in Pop!_OS, Fedora, and Mint, among others, you may need to configure 
@@ -141,11 +139,13 @@ Uploading Filesystem Images
 ---------------------------
 The onboard flash filesystem for the Pico, LittleFS, lets you upload a filesystem image from the sketch directory for your sketch to use.  Download the needed plugin from
 
-* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+* `IDE 1.x`: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
+* `IDE 2.x`: https://github.com/earlephilhower/arduino-littlefs-upload/releases
 
 To install, follow the directions in 
 
-* https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md 
+* `IDE 1.x`: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/blob/master/README.md
+* `IDE 2.x`: https://github.com/earlephilhower/arduino-littlefs-upload/blob/main/README.md
 
 For detailed usage information, please check the repo documentation available at
 
@@ -158,12 +158,6 @@ Because the Picotool uses a custom device driver in the Pico to handle upload, w
 So for the first sketch you will need to rebuild (with the ``Upload Method->Picotool`` selected in them menus) and then manually hold down BOOTSEL and insert the Pico USB cable to enter the ROM bootloader.
 
 After the initial upload, as long as the running binary was built using the ``Picotool`` upload method, then the normal upload process should work.
-
-Under MacOS, it may be necessary to install the USB support libraries from a command terminal before the ``Picotool`` upload method can be used:
-
-.. code::
-
-        brew install libusb
 
 For Ubuntu and other Linux operating systems you may need to add the following lines to a new `udev` config file(``99-picotool.rules``) to allow normal users to access the special USB device the Pico exports:
 
@@ -190,11 +184,9 @@ The first line creates a file with the USB vendor and ID of the Picoprobe and te
 
 Once Picoprobe permissions are set up properly, then select the board "Raspberry Pi Pico (Picoprobe)" in the Tools menu and upload as normal.
 
-Uploading Sketches with pico-debug
-----------------------------------
-pico-debug differs from Picoprobe in that pico-debug is a virtual debug pod that runs side-by-side on the same RP2040 that you run your code on; so, you only need one RP2040 board instead of two.  pico-debug also differs from Picoprobe in that pico-debug is standards-based; it uses the CMSIS-DAP protocol, which means even software not specially written for the Raspberry Pi Pico can support it.  pico-debug uses OpenOCD to handle your sketch uploads, and debugging can be accomplished with CMSIS-DAP capable debuggers including GDB.
-
-Under Windows and macOS, any user should be able to access pico-debug automatically, but under Linux `udev` must be told about the device and to allow normal users access.
+Uploading Sketches with OpenOCD
+-------------------------------
+Under Windows and macOS, any user should be able to access OpenOCD automatically, but under Linux `udev` must be told about the device and to allow normal users access.
 
 To set up user-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes which use `udev`):
 
@@ -205,10 +197,8 @@ To set up user-level access to all CMSIS-DAP adapters on Ubuntu (and other OSes 
 
 The first line creates a file that recognizes all CMSIS-DAP adapters and tells UDEV to give users full access to it.  The second causes `udev` to load this new rule.  Note that you will need to unplug and re-plug in your device the first time you create this file, to allow udev to make the device node properly.
 
-Once CMSIS-DAP permissions are set up properly, then select the board "Raspberry Pi Pico (pico-debug)" in the Tools menu.
+Once CMSIS-DAP permissions are set up properly, then select the Upload Method "Picoprobe/Debugprobe (CMSIS-DAP)" in the Tools menu.
 
-When first connecting the USB port to your PC, you must copy pico-debug-gimmecache.uf2 to the Pi Pico to load pico-debug into RAM; after this, upload as normal.
-
-Debugging with Picoprobe/pico-debug, OpenOCD, and GDB
+Debugging with Picoprobe/Debugprobe, OpenOCD, and GDB
 -----------------------------------------------------
-The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.  For pico-debug, replace the raspberrypi-swd and picoprobe example OpenOCD arguments of "-f interface/raspberrypi-swd.cfg -f target/rp2040.cfg" or "-f interface/picoprobe.cfg -f target/rp2040.cfg" respectively in the Pico Getting Started manual with "-f board/pico-debug.cfg".
+The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.

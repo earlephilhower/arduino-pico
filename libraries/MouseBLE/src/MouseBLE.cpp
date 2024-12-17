@@ -20,16 +20,19 @@
 */
 
 #include "MouseBLE.h"
-#include <sdkoverride/tusb_absmouse.h>
+#include <HID_Bluetooth.h>
 #include <PicoBluetoothBLEHID.h>
+
+// Weak function override to add our descriptor to the list
+void __BLEInstallMouse() { /* noop */ }
 
 MouseBLE_::MouseBLE_(bool absolute) : HID_Mouse(absolute) {
     _running = false;
 }
 
-#define REPORT_ID 0x01
-const uint8_t desc_mouse[] = {TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID))};
-const uint8_t desc_absmouse[] = {TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(REPORT_ID))};
+uint8_t *desc_mouseBLE;
+uint16_t desc_mouseBLE_length;
+
 void MouseBLE_::begin(const char *localName, const char *hidName) {
     if (!localName) {
         localName = "PicoW BLE Mouse";
@@ -37,7 +40,10 @@ void MouseBLE_::begin(const char *localName, const char *hidName) {
     if (!hidName) {
         hidName = localName;
     }
-    PicoBluetoothBLEHID.startHID(localName, hidName, 0x03c2, _absolute ? desc_absmouse : desc_mouse, _absolute ? sizeof(desc_absmouse) : sizeof(desc_mouse));
+
+    __SetupHIDreportmap(__BLEInstallMouse, __BLEInstallKeyboard, __BLEInstallJoystick, _absolute, &desc_mouseBLE_length, &desc_mouseBLE);
+
+    PicoBluetoothBLEHID.startHID(localName, hidName, __BLEGetAppearance(), desc_mouseBLE, desc_mouseBLE_length);
     _running = true;
 }
 
@@ -61,6 +67,8 @@ void MouseBLE_::setAbsolute(bool absolute) {
 }
 
 void MouseBLE_::move(int x, int y, signed char wheel) {
+    static uint8_t report[sizeof(hid_abs_mouse_report_t) + 1];
+
     if (!_absolute) {
         hid_mouse_report_t data;
         data.buttons = _buttons;
@@ -68,7 +76,10 @@ void MouseBLE_::move(int x, int y, signed char wheel) {
         data.y = limit_xy(y);
         data.wheel = wheel;
         data.pan = 0;
-        PicoBluetoothBLEHID.send(&data, sizeof(data));
+
+        report[0] = __BLEGetMouseReportID();
+        memcpy(&report[1], (uint8_t*)&data, sizeof(data));
+        PicoBluetoothBLEHID.send(report, sizeof(data) + 1);
     } else {
         hid_abs_mouse_report_t data;
         data.buttons = _buttons;
@@ -76,7 +87,10 @@ void MouseBLE_::move(int x, int y, signed char wheel) {
         data.y = limit_xy(y);
         data.wheel = wheel;
         data.pan = 0;
-        PicoBluetoothBLEHID.send(&data, sizeof(data));
+
+        report[0] = __BLEGetMouseReportID();
+        memcpy(&report[1], (uint8_t*)&data, sizeof(data));
+        PicoBluetoothBLEHID.send(report, sizeof(data) + 1);
     }
 }
 

@@ -15,12 +15,19 @@ To instantiate only a serial transmit or receive unit, pass in
 ``SerialPIO::NOPIN`` as the ``txpin`` or ``rxpin``.
 
 For example, to make a transmit-only port on GP16
+
 .. code:: cpp
 
         SerialPIO transmitter( 16, SerialPIO::NOPIN );
 
 For detailed information about the Serial ports, see the
 Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/functions/communication/serial/>`_ .
+
+Inversion
+---------
+
+``SoftwareSerial`` and ``SerialPIO`` can both support inverted input and/or outputs via the methods
+``setInvertRX(bool invert)`` and ``setInvertTX(bool invert)``.
 
 
 SoftwareSerial Emulation
@@ -30,7 +37,6 @@ with the Arduino `Software Serial <https://docs.arduino.cc/learn/built-in-librar
 library.  Use the normal ``#include <SoftwareSerial.h>`` to include it.   The following
 differences from the Arduino standard are present:
 
-* Inverted mode is not supported
 * All ports are always listening
 * ``listen`` call is a no-op
 * ``isListening()`` always returns ``true``

@@ -92,7 +92,7 @@ public:
         return _mounted ? _fs.rename(pathFrom, pathTo) : false;
     }
 
-    bool info64(FSInfo64& info) override {
+    bool info(FSInfo& info) override {
         if (!_mounted) {
             DEBUGV("SDFS::info: FS not mounted\n");
             return false;
@@ -101,28 +101,8 @@ public:
         info.blockSize = _fs.vol()->bytesPerCluster();
         info.pageSize = 0; // TODO ?
         info.maxPathLength = 255; // TODO ?
-        info.totalBytes = _fs.vol()->clusterCount() * info.blockSize;
-        info.usedBytes = info.totalBytes - (_fs.vol()->freeClusterCount() * _fs.vol()->bytesPerCluster());
-        return true;
-    }
-
-    bool info(FSInfo& info) override {
-        FSInfo64 i;
-        if (!info64(i)) {
-            return false;
-        }
-        info.blockSize     = i.blockSize;
-        info.pageSize      = i.pageSize;
-        info.maxOpenFiles  = i.maxOpenFiles;
-        info.maxPathLength = i.maxPathLength;
-#ifdef DEBUG_ESP_PORT
-        if (i.totalBytes > std::numeric_limits<uint32_t>::max()) {
-            // This catches both total and used cases, since used must always be < total.
-            DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use info64().\n"), (long long)i.totalBytes);
-        }
-#endif
-        info.totalBytes    = (size_t)i.totalBytes;
-        info.usedBytes     = (size_t)i.usedBytes;
+        info.totalBytes = (uint64_t)_fs.vol()->clusterCount() * (uint64_t)info.blockSize;
+        info.usedBytes = info.totalBytes - ((uint64_t)_fs.vol()->freeClusterCount() * (uint64_t)_fs.vol()->bytesPerCluster());
         return true;
     }
 
@@ -168,6 +148,34 @@ public:
 
     bool format() override;
 
+    bool stat(const char *path, FSStat *st) override {
+        if (!_mounted || !path || !path[0]) {
+            return false;
+        }
+        bzero(st, sizeof(*st));
+        File32 f;
+        f = _fs.open(path, O_RDONLY);
+        if (!f) {
+            return false;
+        }
+        st->size = f.fileSize();
+        st->blocksize = clusterSize();
+        st->isDir = f.isDir();
+        if (st->isDir) {
+            st->size = 0;
+        }
+        uint16_t date;
+        uint16_t time;
+        if (f.getCreateDateTime(&date, &time)) {
+            st->ctime = FatToTimeT(date, time);
+        }
+        if (f.getAccessDate(&date)) {
+            st->atime = FatToTimeT(date, 0);
+        }
+        f.close();
+        return true;
+    }
+
     // The following are not common FS interfaces, but are needed only to
     // support the older SD.h exports
     uint8_t type() {
@@ -183,7 +191,7 @@ public:
         return _fs.vol()->clusterCount();
     }
     size_t totalBlocks() {
-        return (totalClusters() / blocksPerCluster());
+        return (totalClusters() * blocksPerCluster());
     }
     size_t clusterSize() {
         return _fs.vol()->bytesPerCluster();

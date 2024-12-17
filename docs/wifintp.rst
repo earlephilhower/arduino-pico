@@ -5,7 +5,7 @@ NTP allows the Pico to set its internal clock using the internet, and is
 required for secure connections because the certificates used have valid
 date stamps.
 
-After ``WiFi.begin()`` use ``NTP.begin(s1)`` or ``NTP,begin(s1, s2)``  to
+After ``WiFi.begin()`` use ``NTP.begin(s1)`` or ``NTP.begin(s1, s2)``  to
 use one or two NTP servers (common ones are ``pool.ntp.org`` and
 ``time.nist.gov``) .
 

@@ -26,7 +26,9 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
 
     // Must disable interrupts, as interrupt handlers may be in flash, and we
     // are about to temporarily disable flash access!
-    noInterrupts();
+    if (!__isFreeRTOS) {
+        noInterrupts();
+    }
     rp2040.idleOtherCore();
 
     // Set chip select to Hi-Z
@@ -39,7 +41,12 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
 
     // The HI GPIO registers in SIO can observe and control the 6 QSPI pins.
     // Note the button pulls the pin *low* when pressed.
-    bool button_state = !(sio_hw->gpio_hi_in & (1u << CS_PIN_INDEX));
+#if PICO_RP2040
+#define CS_BIT (1u << 1)
+#else
+#define CS_BIT SIO_GPIO_HI_IN_QSPI_CSN_BITS
+#endif
+    bool button_state = !(sio_hw->gpio_hi_in & CS_BIT);
 
     // Need to restore the state of chip select, else we are going to have a
     // bad time when we return to code in flash!
@@ -48,7 +55,9 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
                     IO_QSPI_GPIO_QSPI_SS_CTRL_OEOVER_BITS);
 
     rp2040.resumeOtherCore();
-    interrupts();
+    if (!__isFreeRTOS) {
+        interrupts();
+    }
 
     return button_state;
 }

@@ -12,4 +12,4 @@ ${org}/../restyle.sh
 git --version || true
 git submodule foreach --recursive 'git reset --hard'
 
-git diff --exit-code -- $TRAVIS_BUILD_DIR
+git diff --exit-code -- $GITHUB_WORKSPACE

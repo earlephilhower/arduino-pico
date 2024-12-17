@@ -1,5 +1,5 @@
 /*
-    SD.h - A thin shim for Arduino ESP8266 Filesystems
+    SD.h - A thin shim for Arduino RP2040 Filesystems
     Copyright (c) 2019 Earle F. Philhower, III.  All rights reserved.
 
     This library is free software; you can redistribute it and/or
@@ -31,19 +31,21 @@
 
 class SDClass {
 public:
-    boolean begin(uint8_t csPin, HardwareSPI &spi) {
+    bool begin(uint8_t csPin, HardwareSPI &spi) {
+        _spi = &spi;
         SDFS.setConfig(SDFSConfig(csPin, SPI_HALF_SPEED, spi));
-        return (boolean)SDFS.begin();
+        return SDFS.begin();
     }
-    boolean begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED, HardwareSPI &spi = SPI) {
+    bool begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED, HardwareSPI &spi = SPI) {
         SDFS.setConfig(SDFSConfig(csPin, cfg, spi));
-        return (boolean)SDFS.begin();
+        return SDFS.begin();
     }
 
     void end(bool endSPI = true) {
         SDFS.end();
-        if (endSPI) {
-            SPI.end();
+        if (endSPI && _spi) {
+            _spi->end();
+            _spi = nullptr;
         }
     }
 
@@ -63,43 +65,43 @@ public:
         return open(filename.c_str(), mode);
     }
 
-    boolean exists(const char *filepath) {
-        return (boolean)SDFS.exists(filepath);
+    bool exists(const char *filepath) {
+        return SDFS.exists(filepath);
     }
 
-    boolean exists(const String &filepath) {
-        return (boolean)SDFS.exists(filepath.c_str());
+    bool exists(const String &filepath) {
+        return SDFS.exists(filepath.c_str());
     }
 
-    boolean rename(const char* filepathfrom, const char* filepathto) {
-        return (boolean)SDFS.rename(filepathfrom, filepathto);
+    bool rename(const char* filepathfrom, const char* filepathto) {
+        return SDFS.rename(filepathfrom, filepathto);
     }
 
-    boolean rename(const String &filepathfrom, const String &filepathto) {
-        return (boolean)rename(filepathfrom.c_str(), filepathto.c_str());
+    bool rename(const String &filepathfrom, const String &filepathto) {
+        return rename(filepathfrom.c_str(), filepathto.c_str());
     }
 
-    boolean mkdir(const char *filepath) {
-        return (boolean)SDFS.mkdir(filepath);
+    bool mkdir(const char *filepath) {
+        return SDFS.mkdir(filepath);
     }
 
-    boolean mkdir(const String &filepath) {
-        return (boolean)SDFS.mkdir(filepath.c_str());
+    bool mkdir(const String &filepath) {
+        return SDFS.mkdir(filepath.c_str());
     }
 
-    boolean remove(const char *filepath) {
-        return (boolean)SDFS.remove(filepath);
+    bool remove(const char *filepath) {
+        return SDFS.remove(filepath);
     }
 
-    boolean remove(const String &filepath) {
+    bool remove(const String &filepath) {
         return remove(filepath.c_str());
     }
 
-    boolean rmdir(const char *filepath) {
-        return (boolean)SDFS.rmdir(filepath);
+    bool rmdir(const char *filepath) {
+        return SDFS.rmdir(filepath);
     }
 
-    boolean rmdir(const String &filepath) {
+    bool rmdir(const String &filepath) {
         return rmdir(filepath.c_str());
     }
 
@@ -128,7 +130,7 @@ public:
     }
 
     size_t totalBlocks() {
-        return (totalClusters() / blocksPerCluster());
+        return (totalClusters() * blocksPerCluster());
     }
 
     size_t clusterSize() {
@@ -137,9 +139,9 @@ public:
 
     size_t size() {
         uint64_t sz = size64();
-#ifdef DEBUG_ESP_PORT
+#ifdef DEBUG_RP2040_PORT
         if (sz > std::numeric_limits<uint32_t>::max()) {
-            DEBUG_ESP_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use size64().\n"), (long long)sz);
+            DEBUG_RP2040_PORT.printf_P(PSTR("WARNING: SD card size overflow (%lld >= 4GB).  Please update source to use size64().\n"), (long long)sz);
         }
 #endif
         return (size_t)sz;
@@ -204,6 +206,7 @@ private:
         return time(nullptr);
     }
 
+    HardwareSPI *_spi = nullptr;
 };
 
 

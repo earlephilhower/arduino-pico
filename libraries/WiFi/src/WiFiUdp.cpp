@@ -38,7 +38,7 @@ template<>
 WiFiUDP* SList<WiFiUDP>::_s_first = 0;
 
 /* Constructor */
-WiFiUDP::WiFiUDP() : _ctx(0), _multicast(false) {
+WiFiUDP::WiFiUDP() : _ctx(0), _multicast(false), _dirty(false) {
     WiFiUDP::_add(this);
 }
 
@@ -49,6 +49,7 @@ WiFiUDP::WiFiUDP(const WiFiUDP& other) {
     }
     WiFiUDP::_add(this);
     _multicast = other._multicast;
+    _dirty = other._dirty;
 }
 
 WiFiUDP& WiFiUDP::operator=(const WiFiUDP& rhs) {
@@ -133,7 +134,7 @@ void WiFiUDP::stop() {
 
 int WiFiUDP::beginPacket(const char *host, uint16_t port) {
     IPAddress remote_addr;
-    if (WiFi.hostByName(host, remote_addr)) {
+    if (::hostByName(host, remote_addr)) {
         return beginPacket(remote_addr, port);
     }
     return 0;
@@ -149,6 +150,7 @@ int WiFiUDP::beginPacket(IPAddress ip, uint16_t port) {
         _ctx->setMulticastInterface(IP_ADDR_ANY);
         _ctx->setMulticastTTL(255);
     }
+    _dirty = false;
     return ret;
 
 }
@@ -164,6 +166,7 @@ int WiFiUDP::beginPacketMulticast(IPAddress multicastAddress, uint16_t port,
     }
     _ctx->setMulticastInterface(interfaceAddress);
     _ctx->setMulticastTTL(ttl);
+    _dirty = false;
     return 1;
 }
 
@@ -171,6 +174,7 @@ int WiFiUDP::endPacket() {
     if (!_ctx) {
         return 0;
     }
+    _dirty = false;
 
     return (_ctx->send()) ? 1 : 0;
 }
@@ -183,7 +187,7 @@ size_t WiFiUDP::write(const uint8_t *buffer, size_t size) {
     if (!_ctx) {
         return 0;
     }
-
+    _dirty = true;
     return _ctx->append(reinterpret_cast<const char*>(buffer), size);
 }
 
@@ -224,7 +228,9 @@ int WiFiUDP::peek() {
 }
 
 void WiFiUDP::flush() {
-    endPacket();
+    if (_dirty) {
+        endPacket();
+    }
 }
 
 IPAddress WiFiUDP::remoteIP() {

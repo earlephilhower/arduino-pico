@@ -40,7 +40,7 @@ Keyboard_::Keyboard_(void) {
 void Keyboard_::sendReport(KeyReport* keys) {
     CoreMutex m(&__usb_mutex);
     tud_task();
-    if (tud_hid_ready()) {
+    if (__USBHIDReady()) {
         tud_hid_keyboard_report(__USBGetKeyboardReportID(), keys->modifiers, keys->keys);
     }
     tud_task();
@@ -49,7 +49,7 @@ void Keyboard_::sendReport(KeyReport* keys) {
 void Keyboard_::sendConsumerReport(uint16_t key) {
     CoreMutex m(&__usb_mutex);
     tud_task();
-    if (tud_hid_ready()) {
+    if (__USBHIDReady()) {
         tud_hid_report(__USBGetKeyboardReportID() + 1, &key, sizeof(key));
     }
     tud_task();

@@ -45,3 +45,31 @@ For applications where an IRQ driven serial port is not appropriate, use
 
 For detailed information about the Serial ports, see the
 Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/functions/communication/serial/>`_ .
+
+
+Inversion
+---------
+
+``Serial1`` and ``Serial2`` can both support inverted input and/or outputs via the methods
+``Serial1/2::setInvertRX(bool invert)`` and ``Serial1/2::setInvertTX(bool invert)`` and
+``Serial1/2::serInvertControl(bool invert)``.
+
+
+RP2040 Specific SerialUSB methods
+---------------------------------
+
+void Serial.ignoreFlowControl(bool ignore)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In some cases, the target application will not assert the DTR virtual line, thus preventing writing operations to succeed.
+
+For this reason, the SerialUSB::ignoreFlowControl() method disables the connection's state verification, enabling the program to write on the port, even though the data might be lost.
+
+bool Serial.dtr()
+~~~~~~~~~~~~~~~~~
+
+Returns the current state of the DTR virtual line. A USB CDC host (such as the Arduino serial monitor) typically raises the DTR pin when opening the device, and may lower it when closing the device.
+
+bool Serial.rts()
+~~~~~~~~~~~~~~~~~
+
+Returns the current state of the RTS virtual line.

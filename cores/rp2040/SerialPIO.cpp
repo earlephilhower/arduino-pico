@@ -33,6 +33,7 @@ static std::map<int, PIOProgram*> _rxMap;
 // Duplicate a program and replace the first insn with a "set x, repl"
 static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
     pio_program_t *p = new pio_program_t;
+    memcpy(p, pg, sizeof(*p));
     p->length = pg->length;
     p->origin = pg->origin;
     uint16_t *insn = (uint16_t *)malloc(p->length * 2);
@@ -46,24 +47,22 @@ static pio_program_t *pio_make_uart_prog(int repl, const pio_program_t *pg) {
     return p;
 }
 
-static PIOProgram *_getTxProgram(int bits, bool inverted) {
-    int key = inverted ? -bits : bits;
-    auto f = _txMap.find(key);
+static PIOProgram *_getTxProgram(int bits) {
+    auto f = _txMap.find(bits);
     if (f == _txMap.end()) {
-        pio_program_t * p = pio_make_uart_prog(bits, inverted ? &pio_tx_inv_program : &pio_tx_program);
-        _txMap.insert({key, new PIOProgram(p)});
-        f = _txMap.find(key);
+        pio_program_t * p = pio_make_uart_prog(bits, &pio_tx_program);
+        _txMap.insert({bits, new PIOProgram(p)});
+        f = _txMap.find(bits);
     }
     return f->second;
 }
 
-static PIOProgram *_getRxProgram(int bits, bool inverted) {
-    int key = inverted ? -bits : bits;
-    auto f = _rxMap.find(key);
+static PIOProgram *_getRxProgram(int bits) {
+    auto f = _rxMap.find(bits);
     if (f == _rxMap.end()) {
-        pio_program_t * p = pio_make_uart_prog(bits, inverted ? &pio_rx_inv_program : &pio_rx_program);
-        _rxMap.insert({key, new PIOProgram(p)});
-        f = _rxMap.find(key);
+        pio_program_t * p = pio_make_uart_prog(bits, &pio_rx_program);
+        _rxMap.insert({bits, new PIOProgram(p)});
+        f = _rxMap.find(bits);
     }
     return f->second;
 }
@@ -80,9 +79,9 @@ static int _parity(int bits, int data) {
 
 // We need to cache generated SerialPIOs so we can add data to them from
 // the shared handler
-static SerialPIO *_pioSP[2][4];
+static SerialPIO *_pioSP[3][4];
 static void __not_in_flash_func(_fifoIRQ)() {
-    for (int p = 0; p < 2; p++) {
+    for (int p = 0; p < 3; p++) {
         for (int sm = 0; sm < 4; sm++) {
             SerialPIO *s = _pioSP[p][sm];
             if (s) {
@@ -98,7 +97,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
         return;
     }
     while (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM)) {
-        uint32_t decode = _rxPIO->rxf[_rxSM] ^ (_rxInverted ? 0xffffffff : 0);
+        uint32_t decode = _rxPIO->rxf[_rxSM];
         decode >>= 33 - _rxBits;
         uint32_t val = 0;
         for (int b = 0; b < _bits + 1; b++) {
@@ -140,11 +139,28 @@ SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifoSize) {
     _fifoSize = fifoSize + 1; // Always one unused entry
     _queue = new uint8_t[_fifoSize];
     mutex_init(&_mutex);
+    _invertTX = false;
+    _invertRX = false;
 }
 
 SerialPIO::~SerialPIO() {
     end();
     delete[] _queue;
+}
+
+static int pio_irq_0(PIO p) {
+    switch (pio_get_index(p)) {
+    case 0:
+        return PIO0_IRQ_0;
+    case 1:
+        return PIO1_IRQ_0;
+#if defined(PICO_RP2350)
+    case 2:
+        return PIO2_IRQ_0;
+#endif
+    default:
+        return -1;
+    }
 }
 
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
@@ -191,9 +207,9 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
 
     if (_tx != NOPIN) {
         _txBits = _bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1/*start bit*/;
-        _txPgm = _getTxProgram(_txBits, _txInverted);
+        _txPgm = _getTxProgram(_txBits);
         int off;
-        if (!_txPgm->prepare(&_txPIO, &_txSM, &off)) {
+        if (!_txPgm->prepare(&_txPIO, &_txSM, &off, _tx, 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources\n");
             // ERROR, no free slots
             return;
@@ -211,6 +227,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         pio_sm_exec(_txPIO, _txSM, pio_encode_mov(pio_isr, pio_osr));
 
         // Start running!
+        gpio_set_outover(_tx, _invertTX);
         pio_sm_set_enabled(_txPIO, _txSM, true);
     }
     if (_rx != NOPIN) {
@@ -218,9 +235,9 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _reader = 0;
 
         _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1) - 1;
-        _rxPgm = _getRxProgram(_rxBits, _rxInverted);
+        _rxPgm = _getRxProgram(_rxBits);
         int off;
-        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off)) {
+        if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off, _rx, 1)) {
             DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources\n");
             return;
         }
@@ -245,10 +262,11 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         case 2: pio_set_irq0_source_enabled(_rxPIO, pis_sm2_rx_fifo_not_empty, true); break;
         case 3: pio_set_irq0_source_enabled(_rxPIO, pis_sm3_rx_fifo_not_empty, true); break;
         }
-        auto irqno = pio_get_index(_rxPIO) == 0 ? PIO0_IRQ_0 : PIO1_IRQ_0;
+        auto irqno = pio_irq_0(_rxPIO);
         irq_set_exclusive_handler(irqno, _fifoIRQ);
         irq_set_enabled(irqno, true);
 
+        gpio_set_inover(_rx, _invertRX);
         pio_sm_set_enabled(_rxPIO, _rxSM, true);
     }
 
@@ -262,6 +280,7 @@ void SerialPIO::end() {
     if (_tx != NOPIN) {
         pio_sm_set_enabled(_txPIO, _txSM, false);
         pio_sm_unclaim(_txPIO, _txSM);
+        gpio_set_outover(_tx, 0);
     }
     if (_rx != NOPIN) {
         pio_sm_set_enabled(_rxPIO, _rxSM, false);
@@ -274,9 +293,10 @@ void SerialPIO::end() {
             used = used || !!_pioSP[pioNum][i];
         }
         if (!used) {
-            auto irqno = pioNum == 0 ? PIO0_IRQ_0 : PIO1_IRQ_0;
+            auto irqno = pio_irq_0(_rxPIO);
             irq_set_enabled(irqno, false);
         }
+        gpio_set_inover(_rx, 0);
     }
     _running = false;
 }
@@ -348,11 +368,6 @@ void SerialPIO::flush() {
     delay((1000 * (_txBits + 1)) / _baud);
 }
 
-void SerialPIO::setInverted(bool invTx, bool invRx) {
-    _txInverted = invTx;
-    _rxInverted = invRx;
-}
-
 size_t SerialPIO::write(uint8_t c) {
     CoreMutex m(&_mutex);
     if (!_running || !m || (_tx == NOPIN)) {
@@ -371,7 +386,7 @@ size_t SerialPIO::write(uint8_t c) {
     }
     val <<= 1;  // Start bit = low
 
-    pio_sm_put_blocking(_txPIO, _txSM, _txInverted ? ~val : val);
+    pio_sm_put_blocking(_txPIO, _txSM, val);
 
     return 1;
 }

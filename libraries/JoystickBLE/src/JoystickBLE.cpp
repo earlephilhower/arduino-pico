@@ -25,18 +25,22 @@
 
 #include "JoystickBLE.h"
 #include <Arduino.h>
+#include <HID_Bluetooth.h>
 #include <PicoBluetoothBLEHID.h>
 
 //================================================================================
 //================================================================================
 //	Joystick/Gamepad
 
+// Weak function override to add our descriptor to the list
+void __BLEInstallJoystick() { /* noop */ }
+
 JoystickBLE_::JoystickBLE_(void) {
     // Member vars set in base constructor
 }
 
-#define REPORT_ID 0x01
-static const uint8_t desc_joystick[] = {TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(REPORT_ID))};
+uint8_t *desc_joystickBLE;
+uint16_t desc_joystickBLE_length;
 
 void JoystickBLE_::begin(const char *localName, const char *hidName) {
     if (!localName) {
@@ -45,7 +49,10 @@ void JoystickBLE_::begin(const char *localName, const char *hidName) {
     if (!hidName) {
         hidName = localName;
     }
-    PicoBluetoothBLEHID.startHID(localName, hidName, 0x03c4, desc_joystick, sizeof(desc_joystick));
+
+    __SetupHIDreportmap(__BLEInstallMouse, __BLEInstallKeyboard, __BLEInstallJoystick, false, &desc_joystickBLE_length, &desc_joystickBLE);
+
+    PicoBluetoothBLEHID.startHID(localName, hidName, __BLEGetAppearance(), desc_joystickBLE, desc_joystickBLE_length);
 }
 
 void JoystickBLE_::end() {
@@ -57,7 +64,13 @@ void JoystickBLE_::setBattery(int lvl) {
 }
 
 void JoystickBLE_::send_now() {
-    PicoBluetoothBLEHID.send(&data, sizeof(data));
+    //insert report ID; not part of the hid_gamepad_report_t
+    uint8_t *report = (uint8_t *)malloc(sizeof(hid_gamepad16_report_t) + 1);
+    if (report) {
+        report[0] = __BLEGetJoystickReportID();
+        memcpy(&report[1], (uint8_t*)&data, sizeof(data));
+        PicoBluetoothBLEHID.send(report, sizeof(data) + 1);
+    }
 }
 
 JoystickBLE_ JoystickBLE;

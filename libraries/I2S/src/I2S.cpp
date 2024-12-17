@@ -21,6 +21,7 @@
 #include <Arduino.h>
 #include "I2S.h"
 #include "pio_i2s.pio.h"
+#include <pico/stdlib.h>
 
 
 I2S::I2S(PinMode direction) {
@@ -30,6 +31,8 @@ I2S::I2S(PinMode direction) {
     _isOutput = direction == OUTPUT;
     _pinBCLK = 26;
     _pinDOUT = 28;
+    _pinMCLK = 25;
+    _MCLKenabled = false;
 #ifdef PIN_I2S_BCLK
     _pinBCLK = PIN_I2S_BCLK;
 #endif
@@ -48,11 +51,15 @@ I2S::I2S(PinMode direction) {
     _freq = 48000;
     _arb = nullptr;
     _cb = nullptr;
+    _cbd = nullptr;
     _buffers = 6;
     _bufferWords = 0;
     _silenceSample = 0;
     _isLSBJ = false;
+    _isTDM = false;
+    _tdmChannels = 8;
     _swapClocks = false;
+    _multMCLK = 256;
 }
 
 I2S::~I2S() {
@@ -60,15 +67,22 @@ I2S::~I2S() {
 }
 
 bool I2S::setBCLK(pin_size_t pin) {
-    if (_running || (pin > 28)) {
+    if (_running || (pin > __GPIOCNT - 1)) {
         return false;
     }
     _pinBCLK = pin;
     return true;
 }
 
+bool I2S::setMCLK(pin_size_t pin) {
+    if (_running || (pin >= __GPIOCNT)) {
+        return false;
+    }
+    _pinMCLK = pin;
+    return true;
+}
 bool I2S::setDATA(pin_size_t pin) {
-    if (_running || (pin > 29)) {
+    if (_running || (pin >= __GPIOCNT)) {
         return false;
     }
     _pinDOUT = pin;
@@ -96,10 +110,39 @@ bool I2S::setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample) 
 bool I2S::setFrequency(int newFreq) {
     _freq = newFreq;
     if (_running) {
-        float bitClk = _freq * _bps * 2.0 /* channels */ * 2.0 /* edges per clock */;
-        pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+        if (_MCLKenabled) {
+            int bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * 2.0 /* edges per clock */;
+            pio_sm_set_clkdiv_int_frac(_pio, _sm, clock_get_hz(clk_sys) / bitClk, 0);
+        } else {
+            float bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * 2.0 /* edges per clock */;
+            pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+        }
     }
     return true;
+}
+
+bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
+    if (samplerate % 11025 == 0) {
+        set_sys_clock_khz(I2SSYSCLK_44_1, false); // 147.6 unsuccessful - no I2S no USB
+        return true;
+    }
+    if (samplerate % 8000 == 0) {
+        set_sys_clock_khz(I2SSYSCLK_8, false);
+        return true;
+    }
+    return false;
+}
+
+bool I2S::setMCLKmult(int mult) {
+    if (_running) {
+        return false;
+    }
+    if ((mult % 64) == 0) {
+        _MCLKenabled = true;
+        _multMCLK = mult;
+        return true;
+    }
+    return false;
 }
 
 bool I2S::setLSBJFormat() {
@@ -107,6 +150,22 @@ bool I2S::setLSBJFormat() {
         return false;
     }
     _isLSBJ = true;
+    return true;
+}
+
+bool I2S::setTDMFormat() {
+    if (_running || !_isOutput) {
+        return false;
+    }
+    _isTDM = true;
+    return true;
+}
+
+bool I2S::setTDMChannels(int channels) {
+    if (_running || !_isOutput) {
+        return false;
+    }
+    _tdmChannels = channels;
     return true;
 }
 
@@ -127,6 +186,16 @@ void I2S::onTransmit(void(*fn)(void)) {
     }
 }
 
+void I2S::onTransmit(void(*fn)(void *), void *cbData) {
+    if (_isOutput) {
+        _cbd = fn;
+        _cbdata = cbData;
+        if (_running) {
+            _arb->setCallback(_cbd, _cbdata);
+        }
+    }
+}
+
 void I2S::onReceive(void(*fn)(void)) {
     if (!_isOutput) {
         _cb = fn;
@@ -136,24 +205,48 @@ void I2S::onReceive(void(*fn)(void)) {
     }
 }
 
+void I2S::onReceive(void(*fn)(void *), void *cbData) {
+    if (!_isOutput) {
+        _cbd = fn;
+        _cbdata = cbData;
+        if (_running) {
+            _arb->setCallback(_cbd, _cbdata);
+        }
+    }
+}
+
+void I2S::MCLKbegin() {
+    int off = 0;
+    _i2sMCLK = new PIOProgram(&pio_i2s_mclk_program);
+    _i2sMCLK->prepare(&_pioMCLK, &_smMCLK, &off, _pinMCLK, 1); // not sure how to use the same PIO
+    pio_i2s_MCLK_program_init(_pioMCLK, _smMCLK, off, _pinMCLK);
+    int mClk = _multMCLK * _freq * 2.0 /* edges per clock */;
+    pio_sm_set_clkdiv_int_frac(_pioMCLK, _smMCLK, clock_get_hz(clk_sys) / mClk, 0);
+    pio_sm_set_enabled(_pioMCLK, _smMCLK, true);
+}
+
 bool I2S::begin() {
     _running = true;
     _hasPeeked = false;
     _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
-        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program) : &pio_i2s_in_program);
+        _i2s = new PIOProgram(_isOutput ? (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program)) : &pio_i2s_in_program);
     } else {
-        _i2s = new PIOProgram(_isOutput ? (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program) : &pio_i2s_in_swap_program);
+        _i2s = new PIOProgram(_isOutput ? (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program)) : &pio_i2s_in_swap_program);
     }
-    if (!_i2s->prepare(&_pio, &_sm, &off)) {
+    int minpin = std::min((int)_pinDOUT, (int)_pinBCLK);
+    int maxpin = std::max((int)_pinDOUT, (int)_pinBCLK + 1);
+    if (!_i2s->prepare(&_pio, &_sm, &off, minpin, maxpin - minpin + 1)) {
         _running = false;
         delete _i2s;
         _i2s = nullptr;
         return false;
     }
     if (_isOutput) {
-        if (_isLSBJ) {
+        if (_isTDM) {
+            pio_tdm_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks, _tdmChannels);
+        } else if (_isLSBJ) {
             pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
         } else {
             pio_i2s_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
@@ -162,6 +255,9 @@ bool I2S::begin() {
         pio_i2s_in_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
     }
     setFrequency(_freq);
+    if (_MCLKenabled) {
+        MCLKbegin();
+    }
     if (_bps == 8) {
         uint8_t a = _silenceSample & 0xff;
         _silenceSample = (a << 24) | (a << 16) | (a << 8) | a;
@@ -181,7 +277,11 @@ bool I2S::begin() {
         _i2s = nullptr;
         return false;
     }
-    _arb->setCallback(_cb);
+    if (_cbd) {
+        _arb->setCallback(_cbd, _cbdata);
+    } else {
+        _arb->setCallback(_cb);
+    }
     pio_sm_set_enabled(_pio, _sm, true);
 
     return true;
@@ -189,6 +289,11 @@ bool I2S::begin() {
 
 void I2S::end() {
     if (_running) {
+        if (_MCLKenabled) {
+            pio_sm_set_enabled(_pioMCLK, _smMCLK, false);
+            delete _i2sMCLK;
+            _i2sMCLK = nullptr;
+        }
         pio_sm_set_enabled(_pio, _sm, false);
         _running = false;
         delete _arb;

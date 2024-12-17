@@ -30,11 +30,16 @@ public:
 
     bool setBCLK(pin_size_t pin);
     bool setDATA(pin_size_t pin);
+    bool setMCLK(pin_size_t pin);
     bool setBitsPerSample(int bps);
     bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0);
     bool setFrequency(int newFreq);
     bool setLSBJFormat();
+    bool setTDMFormat();
+    bool setTDMChannels(int channels);
     bool swapClocks();
+    bool setMCLKmult(int mult);
+    bool setSysClk(int samplerate);
 
     bool begin(long sampleRate) {
         setFrequency(sampleRate);
@@ -105,19 +110,26 @@ public:
     // Note that these callback are called from **INTERRUPT CONTEXT** and hence
     // should be in RAM, not FLASH, and should be quick to execute.
     void onTransmit(void(*)(void));
+    void onTransmit(void(*)(void *), void *);
     void onReceive(void(*)(void));
+    void onReceive(void(*)(void *), void *);
 
 private:
     pin_size_t _pinBCLK;
     pin_size_t _pinDOUT;
+    pin_size_t _pinMCLK;
     int _bps;
     int _freq;
+    int _multMCLK;
     size_t _buffers;
     size_t _bufferWords;
     int32_t _silenceSample;
     bool _isLSBJ;
+    bool _isTDM;
+    int _tdmChannels;
     bool _isOutput;
     bool _swapClocks;
+    bool _MCLKenabled;
 
     bool _running;
 
@@ -132,9 +144,17 @@ private:
     int _isHolding = 0;
 
     void (*_cb)();
+    void (*_cbd)(void *);
+    void *_cbdata;
+
+    void MCLKbegin();
 
     AudioBufferManager *_arb;
     PIOProgram *_i2s;
-    PIO _pio;
-    int _sm;
+    PIOProgram *_i2sMCLK;
+    PIO _pio, _pioMCLK;
+    int _sm, _smMCLK;
+
+    static const int I2SSYSCLK_44_1 = 135600; // 44.1, 88.2 kHz sample rates
+    static const int I2SSYSCLK_8 = 147600;  // 8k, 16, 32, 48, 96, 192 kHz
 };

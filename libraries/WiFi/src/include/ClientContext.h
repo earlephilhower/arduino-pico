@@ -37,9 +37,9 @@ bool getDefaultPrivateGlobalSyncValue();
 template <typename T>
 inline void esp_delay(const uint32_t timeout_ms, T&& blocked, const uint32_t intvl_ms) {
     const auto start_ms = millis();
+    (void) intvl_ms;
     while ((((uint32_t)millis() - start_ms) < timeout_ms) && blocked()) {
-        sys_check_timeouts();
-        delay(intvl_ms);
+        delay(1);
     }
 }
 
@@ -611,9 +611,10 @@ protected:
             _rx_buf_offset += size;
         } else if (!_rx_buf->next) {
             DEBUGV(":c0 %d, %d\r\n", size, _rx_buf->tot_len);
-            pbuf_free(_rx_buf);
+            auto head = _rx_buf;
             _rx_buf = 0;
             _rx_buf_offset = 0;
+            pbuf_free(head);
         } else {
             DEBUGV(":c %d, %d, %d\r\n", size, _rx_buf->len, _rx_buf->tot_len);
             auto head = _rx_buf;

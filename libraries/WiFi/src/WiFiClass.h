@@ -23,12 +23,20 @@
 #pragma once
 
 #include <Arduino.h>
+#if defined(PICO_CYW43_SUPPORTED)
+#include <lwIP_CYW43.h>
+#elif defined(ESPHOSTSPI)
+#include <lwIP_ESPHost.h>
+#elif defined(WINC1501_SPI)
+#include <lwIP_WINC1500.h>
+#else
+#include "utility/lwIP_nodriver.h"
+#endif
 #include "WiFi.h"
 
 #include <inttypes.h>
 #include <map>
 
-#include <cyw43.h>
 #include "dhcpserver/dhcpserver.h"
 
 #define WIFI_FIRMWARE_LATEST_VERSION PICO_SDK_VERSION_STRING
@@ -64,6 +72,12 @@ public:
         param ssid: Pointer to the SSID string.
     */
     int begin(const char* ssid);
+    /*  Start WiFi connection for OPEN networks, without blocking
+
+        param ssid: Pointer to the SSID string.
+    */
+    int beginNoBlock(const char* ssid);
+
     int beginBSSID(const char* ssid, const uint8_t *bssid);
 
     /*  Start WiFi connection with WEP encryption.
@@ -86,6 +100,15 @@ public:
         param bssid: If non-null, the BSSID associated w/the SSID to connect to
     */
     int begin(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+    /*  Start WiFi connection with passphrase, without blocking. Check for .connected() for a connection
+        the most secure supported mode will be automatically selected
+
+        param ssid: Pointer to the SSID string.
+        param passphrase: Passphrase. Valid characters in a passphrase
+              must be between ASCII 32-126 (decimal).
+        param bssid: If non-null, the BSSID associated w/the SSID to connect to
+    */
+    int beginNoBlock(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     bool connected();
     bool isConnected() {
@@ -135,7 +158,9 @@ public:
         return true;
     }
 
+#if defined(PICO_CYW43_SUPPORTED)
     uint8_t softAPgetStationNum();
+#endif
 
     IPAddress softAPIP() {
         return localIP();
@@ -146,7 +171,7 @@ public:
     }
 
     String softAPmacAddress(void) {
-        uint8_t mac[8];
+        uint8_t mac[6];
         macAddress(mac);
         char buff[32];
         sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
@@ -232,7 +257,7 @@ public:
     */
     uint8_t* macAddress(uint8_t* mac);
     String macAddress(void) {
-        uint8_t mac[8];
+        uint8_t mac[6];
         macAddress(mac);
         char buff[32];
         sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
@@ -259,6 +284,13 @@ public:
         return: gateway ip address value
     */
     IPAddress gatewayIP();
+
+    /*
+        Get the DNS ip address.
+
+        return: IPAddress DNS Server IP
+    */
+    IPAddress dnsIP(uint8_t dns_no = 0);
 
     /*
         Return the current SSID associated with the network
@@ -373,8 +405,10 @@ public:
 
     unsigned long getTime();
 
+#if defined(PICO_CYW43_SUPPORTED)
     void aggressiveLowPowerMode();
     void defaultLowPowerMode();
+#endif
     void noLowPowerMode();
 
     int ping(const char* hostname, uint8_t ttl = 128);
@@ -396,16 +430,15 @@ public:
     }
 
 private:
+    // Internal wifi begin. Returns true on success
+    bool _beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
+
     int _timeout = 15000;
     String _ssid;
     uint8_t _bssid[6];
     String _password;
     bool _wifiHWInitted = false;
     bool _apMode = false;
-
-    // WiFi Scan callback
-    std::map<uint64_t, cyw43_ev_scan_result_t> _scan;
-    static int _scanCB(void *env, const cyw43_ev_scan_result_t *result);
 
     // DHCP for AP mode
     dhcp_server_t *_dhcpServer = nullptr;

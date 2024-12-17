@@ -22,6 +22,7 @@
 */
 
 #include <Arduino.h>
+#include <hardware/dma.h>
 #include <hardware/gpio.h>
 #include <hardware/i2c.h>
 #include <hardware/irq.h>
@@ -48,11 +49,21 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
 }
 
 bool TwoWire::setSDA(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28}) /* I2C0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44}) /* I2C0 */,
+                                    __bitset({2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46})  /* I2C1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28}) /* I2C0 */,
                                     __bitset({2, 6, 10, 14, 18, 22, 26})  /* I2C1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[i2c_hw_index(_i2c)])) {
         _sda = pin;
+        return true;
+    }
+
+    if (_sda == pin) {
         return true;
     }
 
@@ -65,11 +76,21 @@ bool TwoWire::setSDA(pin_size_t pin) {
 }
 
 bool TwoWire::setSCL(pin_size_t pin) {
-    constexpr uint32_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29}) /* I2C0 */,
+#ifdef PICO_RP2350B
+    constexpr uint64_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45}) /* I2C0 */,
+                                    __bitset({3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47})  /* I2C1 */
+                                  };
+#else
+    constexpr uint64_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29}) /* I2C0 */,
                                     __bitset({3, 7, 11, 15, 19, 23, 27})  /* I2C1 */
                                   };
-    if ((!_running) && ((1 << pin) & valid[i2c_hw_index(_i2c)])) {
+#endif
+    if ((!_running) && ((1LL << pin) & valid[i2c_hw_index(_i2c)])) {
         _scl = pin;
+        return true;
+    }
+
+    if (_scl == pin) {
         return true;
     }
 
@@ -108,11 +129,27 @@ void TwoWire::begin() {
 }
 
 static void _handler0() {
+#if defined(__WIRE0_DEVICE)
+    if (__WIRE0_DEVICE == i2c0) {
+        Wire.onIRQ();
+    } else {
+        Wire1.onIRQ();
+    }
+#else
     Wire.onIRQ();
+#endif
 }
 
 static void _handler1() {
+#if defined(__WIRE1_DEVICE)
+    if (__WIRE1_DEVICE == i2c0) {
+        Wire.onIRQ();
+    } else {
+        Wire1.onIRQ();
+    }
+#else
     Wire1.onIRQ();
+#endif
 }
 
 // Slave mode
@@ -201,6 +238,8 @@ void TwoWire::onIRQ() {
 #pragma GCC pop_options
 
 void TwoWire::end() {
+    endAsync();
+
     if (!_running) {
         // ERROR
         return;
@@ -238,6 +277,9 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
 
     _buffLen = i2c_read_blocking_until(_i2c, address, _buff, quantity, !stopBit, make_timeout_time_ms(_timeout));
     if ((_buffLen == PICO_ERROR_GENERIC) || (_buffLen == PICO_ERROR_TIMEOUT)) {
+        if (_buffLen == PICO_ERROR_TIMEOUT) {
+            _handleTimeout(_reset_with_timeout);
+        }
         _buffLen = 0;
     }
     _buffOff = 0;
@@ -249,7 +291,7 @@ size_t TwoWire::requestFrom(uint8_t address, size_t quantity) {
 }
 
 static bool _clockStretch(pin_size_t pin) {
-    auto end = time_us_64() + 100;
+    auto end = time_us_64() + 500;
     while ((time_us_64() < end) && (!digitalRead(pin))) { /* noop */ }
     return digitalRead(pin);
 }
@@ -311,12 +353,59 @@ stop:
     return ack;
 }
 
+void TwoWire::_handleTimeout(bool reset) {
+    _timeoutFlag = true;
+
+    if (reset) {
+        if (_slave) {
+            uint8_t prev_addr = _addr;
+            int prev_clkHz = _clkHz;
+            end();
+            setClock(prev_clkHz);
+            begin(prev_addr);
+        } else {
+            int prev_clkHz = _clkHz;
+            end();
+
+            // Attempt bus recovery if SDA is held LOW by another device
+            // See RP2040 datasheet "Bus clear feature" (not implemented in HW)
+            int delay = 5; //5us LOW/HIGH -> 10us period -> 100kHz freq
+            pinMode(_sda, INPUT_PULLUP);
+            pinMode(_scl, INPUT_PULLUP);
+            gpio_set_function(_scl, GPIO_FUNC_SIO);
+            gpio_set_function(_sda, GPIO_FUNC_SIO);
+
+            if (digitalRead(_sda) == LOW) {
+                int sclPulseCount = 0;
+                while (sclPulseCount < 9 && digitalRead(_sda) == LOW) {
+                    sclPulseCount++;
+                    digitalWrite(_scl, LOW);
+                    sleep_us(delay);
+                    digitalWrite(_scl, HIGH);
+                    sleep_us(delay);
+                }
+
+                if (digitalRead(_sda) == HIGH) {
+                    // Bus recovered : send a STOP
+                    digitalWrite(_sda, LOW);
+                    sleep_us(delay);
+                    digitalWrite(_sda, HIGH);
+                }
+            }
+
+            setClock(prev_clkHz);
+            begin();
+        }
+    }
+}
+
 // Errors:
 //  0 : Success
 //  1 : Data too long
 //  2 : NACK on transmit of address
 //  3 : NACK on transmit of data
 //  4 : Other error
+//  5 : Timeout
 uint8_t TwoWire::endTransmission(bool stopBit) {
     if (!_running || !_txBegun) {
         return 4;
@@ -328,6 +417,10 @@ uint8_t TwoWire::endTransmission(bool stopBit) {
     } else {
         auto len = _buffLen;
         auto ret = i2c_write_blocking_until(_i2c, _addr, _buff, _buffLen, !stopBit, make_timeout_time_ms(_timeout));
+        if (ret == PICO_ERROR_TIMEOUT) {
+            _handleTimeout(_reset_with_timeout);
+            return 5;
+        }
         _buffLen = 0;
         return (ret == len) ? 0 : 4;
     }
@@ -343,10 +436,17 @@ size_t TwoWire::write(uint8_t ucData) {
     }
 
     if (_slave) {
-        // Wait for a spot in the TX FIFO
-        while (0 == (_i2c->hw->status & (1 << 1))) { /* noop wait */ }
-        _i2c->hw->data_cmd = ucData;
-        return 1;
+        // Wait for a spot in the TX FIFO and return in case of timeout
+        auto end = make_timeout_time_ms(_timeout);
+        while ((i2c_get_write_available(_i2c) == 0) && !time_reached(end)) { /* noop wait */ }
+
+        if (i2c_get_write_available(_i2c) > 0) {
+            _i2c->hw->data_cmd = ucData;
+            return 1;
+        } else {
+            _handleTimeout(_reset_with_timeout);
+            return 0;
+        }
     } else {
         if (!_txBegun || (_buffLen == sizeof(_buff))) {
             return 0;
@@ -389,6 +489,226 @@ void TwoWire::flush(void) {
     // data transfer.
 }
 
+// DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
+// All buffers must be valid for entire DMA and not touched until `finishedAsync()` returns true.
+bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes, const void *rbuffer, size_t rbytes, bool sendStop) {
+    if (!_running || _txBegun || (wbytes == 0 && rbytes == 0)) {
+        return false;
+    }
+
+    if (!_dmaRunning) {
+        beginAsync();
+        if (!_dmaRunning) {
+            return false;
+        }
+    }
+
+    // Abort any ongoing transaction
+    abortAsync();
+
+    // Create or enlarge dma command buffer, we need one entry for every i2c byte we want to write/read
+    const size_t bufLen = (wbytes + rbytes) * 2;
+    if (_dmaSendBufferLen < bufLen) {
+        if (_dmaSendBuffer) {
+            free(_dmaSendBuffer);
+            _dmaSendBuffer = nullptr;
+            _dmaSendBufferLen = 0;
+        }
+        _dmaSendBuffer = (uint16_t *)malloc(bufLen);
+        if (!_dmaSendBuffer) {
+            return false;
+        }
+    }
+
+    // Fill the dma command buffer
+    for (size_t i = 0; i < wbytes; i++) {
+        _dmaSendBuffer[i] = ((uint8_t*) wbuffer)[i];
+    }
+    for (size_t i = 0; i < rbytes; i++) {
+        _dmaSendBuffer[wbytes + i] = I2C_IC_DATA_CMD_CMD_BITS; // -> 1 for read
+    }
+    if (_i2c->restart_on_next) {
+        _dmaSendBuffer[0] |= I2C_IC_DATA_CMD_RESTART_BITS;
+    }
+    if (wbytes > 0 && rbytes > 0) {
+        _dmaSendBuffer[wbytes + 0] |= I2C_IC_DATA_CMD_RESTART_BITS;
+    }
+    if (sendStop) {
+        _dmaSendBuffer[wbytes + rbytes - 1] |= I2C_IC_DATA_CMD_STOP_BITS;
+    }
+
+    // Cleanup and Setup dma send channel
+    dma_channel_cleanup(_dmaChannelSend);
+    dma_channel_config c = dma_channel_get_default_config(_dmaChannelSend);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_16); // 16b transfers into I2C FIFO
+    channel_config_set_read_increment(&c, true); // Reading incrementing addresses
+    channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
+    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, true)); // Wait for the TX FIFO specified
+    channel_config_set_chain_to(&c, _dmaChannelSend); // No chaining
+    channel_config_set_irq_quiet(&c, false); // Enable interrupt (can be disabled later with dma_channel_set_irq0_enabled() as needed)
+    dma_channel_configure(_dmaChannelSend, &c, &_i2c->hw->data_cmd, _dmaSendBuffer, wbytes + rbytes, false);
+
+    // Cleanup and setup dma receive channel
+    dma_channel_cleanup(_dmaChannelReceive);
+    c = dma_channel_get_default_config(_dmaChannelReceive);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_8); // 8b transfers from I2C FIFO
+    channel_config_set_read_increment(&c, false); // Reading same FIFO address
+    channel_config_set_write_increment(&c, true); // Writing to the buffer
+    channel_config_set_dreq(&c, i2c_get_dreq(_i2c, false)); // Wait for the RX FIFO specified
+    channel_config_set_chain_to(&c, _dmaChannelReceive); // No chaining
+    channel_config_set_irq_quiet(&c, false); // Enable interrupt (can be disabled later with dma_channel_set_irq0_enabled() as needed)
+    dma_channel_configure(_dmaChannelReceive, &c, (void*) rbuffer, &_i2c->hw->data_cmd, rbytes, false);
+
+    // Enable dma completed interrupt
+    dma_channel_set_irq0_enabled(_dmaChannelSend, (rbytes == 0)); //write only, enable irq on Send channel
+    dma_channel_set_irq0_enabled(_dmaChannelReceive, (rbytes > 0)); //when reading, enable irq on Receive channel
+
+    // Setup i2c hardware
+    _i2c->hw->enable = 0;
+    _i2c->hw->tar = address;
+    _i2c->hw->dma_cr = 1 << 1 | (rbytes > 0 ? 1 : 0) ; // TDMAE + RDMAE when rbytes>0
+    _i2c->hw->enable = 1;
+    _i2c->restart_on_next = !sendStop;
+
+    // Start dma channel(s)
+    _txBegun = true;
+    _dmaFinished = false;
+    if (rbytes > 0) {
+        dma_channel_start(_dmaChannelReceive);
+    }
+    dma_channel_start(_dmaChannelSend);
+
+    return true;
+}
+bool TwoWire::writeAsync(uint8_t address, const void *buffer, size_t bytes, bool sendStop) {
+    return writeReadAsync(address, buffer, bytes, nullptr, 0, sendStop);
+}
+
+bool TwoWire::readAsync(uint8_t address, void *buffer, size_t bytes, bool sendStop) {
+    return writeReadAsync(address, nullptr, 0, buffer, bytes, sendStop);
+}
+
+bool TwoWire::finishedAsync() {
+    return _dmaFinished;
+}
+
+void TwoWire::abortAsync() {
+    if (!_dmaRunning) {
+        return;
+    }
+    if (!_dmaFinished) {
+        dma_channel_abort(_dmaChannelSend);
+        dma_channel_abort(_dmaChannelReceive);
+        _i2c->hw->dma_cr = 0;
+    }
+    _txBegun = false;
+    _dmaFinished = true;
+}
+
+void TwoWire::onFinishedAsync(void(*function)(void)) {
+    _dmaOnFinished = function;
+}
+
+// Dma irq mask and wire instance for low level dma completed handlers
+static uint32_t _dma_i2c0_irq_mask = 0;
+static uint32_t _dma_i2c1_irq_mask = 0;
+static TwoWire * _dma_i2c0_wire_instance = nullptr;
+static TwoWire * _dma_i2c1_wire_instance = nullptr;
+
+// Low level dma completed handlers, calls TwoWire::_dma_irq_handler() to do the work
+void _dma_i2c0_irq_handler() {
+    uint32_t status = dma_hw->ints0;
+    if (status & _dma_i2c0_irq_mask && _dma_i2c0_wire_instance) {
+        _dma_i2c0_wire_instance->_dma_irq_handler();
+    }
+    dma_hw->ints0 = (status & _dma_i2c0_irq_mask); //clear interrupt status
+}
+
+void _dma_i2c1_irq_handler() {
+    uint32_t status = dma_hw->ints0;
+    if (status & _dma_i2c1_irq_mask && _dma_i2c1_wire_instance) {
+        _dma_i2c1_wire_instance->_dma_irq_handler();
+    }
+    dma_hw->ints0 = (status & _dma_i2c1_irq_mask); //clear interrupt status
+}
+
+void TwoWire::_dma_irq_handler() {
+    _i2c->hw->dma_cr = 0;
+    _txBegun = false;
+    _dmaFinished = true;
+    // Disable the DMA IRQs
+    dma_channel_set_irq0_enabled(_dmaChannelSend, false);
+    dma_channel_set_irq0_enabled(_dmaChannelReceive, false);
+    // Call the user handler
+    if (_dmaOnFinished) {
+        _dmaOnFinished();
+    }
+}
+
+void TwoWire::beginAsync() {
+    if (_dmaRunning) {
+        return;
+    }
+
+    // Claim dma channels
+    _dmaChannelReceive = dma_claim_unused_channel(false);
+    if (_dmaChannelReceive == -1) {
+        return;
+    }
+    _dmaChannelSend = dma_claim_unused_channel(false);
+    if (_dmaChannelSend == -1) {
+        dma_channel_unclaim(_dmaChannelReceive);
+        return;
+    }
+
+    // Setup dma irq
+    if (i2c_hw_index(_i2c) == 0) {
+        _dma_i2c0_irq_mask = (1u << _dmaChannelReceive) | (1u << _dmaChannelSend);
+        _dma_i2c0_wire_instance = this;
+        irq_add_shared_handler(DMA_IRQ_0, _dma_i2c0_irq_handler, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
+    } else {
+        _dma_i2c1_irq_mask = (1u << _dmaChannelReceive) | (1u << _dmaChannelSend);
+        _dma_i2c1_wire_instance = this;
+        irq_add_shared_handler(DMA_IRQ_0, _dma_i2c1_irq_handler, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
+    }
+    irq_set_enabled(DMA_IRQ_0, true);
+
+    _dmaRunning = true;
+}
+
+void TwoWire::endAsync() {
+    if (!_dmaRunning) {
+        return;
+    }
+
+    if (i2c_hw_index(_i2c) == 0) {
+        _dma_i2c0_irq_mask = 0;
+        _dma_i2c0_wire_instance = nullptr;
+        irq_remove_handler(DMA_IRQ_0, _dma_i2c0_irq_handler);
+    } else {
+        _dma_i2c1_irq_mask = 0;
+        _dma_i2c1_wire_instance = nullptr;
+        irq_remove_handler(DMA_IRQ_0, _dma_i2c1_irq_handler);
+    }
+    if (_dmaChannelReceive >= 0) {
+        dma_channel_cleanup(_dmaChannelReceive);
+        dma_channel_unclaim(_dmaChannelReceive);
+        _dmaChannelReceive = -1;
+    }
+    if (_dmaChannelSend >= 0) {
+        dma_channel_cleanup(_dmaChannelSend);
+        dma_channel_unclaim(_dmaChannelSend);
+        _dmaChannelSend = -1;
+    }
+    _i2c->hw->dma_cr = 0;
+    free(_dmaSendBuffer);
+    _dmaSendBuffer = nullptr;
+    _dmaSendBufferLen = 0;
+    _txBegun = false;
+    _dmaFinished = true;
+    _dmaOnFinished = nullptr;
+    _dmaRunning = false;
+}
 
 void TwoWire::onReceive(void(*function)(int)) {
     _onReceiveCallback = function;
@@ -398,6 +718,20 @@ void TwoWire::onRequest(void(*function)(void)) {
     _onRequestCallback = function;
 }
 
+void TwoWire::setTimeout(uint32_t timeout, bool reset_with_timeout) {
+    _timeoutFlag = false;
+    Stream::setTimeout(timeout);
+    _reset_with_timeout = reset_with_timeout;
+}
+
+bool TwoWire::getTimeoutFlag() {
+    return _timeoutFlag;
+}
+
+void TwoWire::clearTimeoutFlag() {
+    _timeoutFlag = false;
+}
+
 #ifndef __WIRE0_DEVICE
 #define __WIRE0_DEVICE i2c0
 #endif
@@ -405,5 +739,10 @@ void TwoWire::onRequest(void(*function)(void)) {
 #define __WIRE1_DEVICE i2c1
 #endif
 
+#ifdef PIN_WIRE0_SDA
 TwoWire Wire(__WIRE0_DEVICE, PIN_WIRE0_SDA, PIN_WIRE0_SCL);
+#endif
+
+#ifdef PIN_WIRE1_SDA
 TwoWire Wire1(__WIRE1_DEVICE, PIN_WIRE1_SDA, PIN_WIRE1_SCL);
+#endif

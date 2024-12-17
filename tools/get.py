@@ -51,7 +51,10 @@ def unpack(filename, destination):
     if filename.endswith('tar.gz'):
         tfile = tarfile.open(filename, 'r:gz')
         os.chdir("../system/")
-        tfile.extractall(destination)
+        try:
+            tfile.extractall(destination, filter='fully_trusted')
+        except TypeError:
+            tfile.extractall(destination)
         dirname= tfile.getnames()[0]
     elif filename.endswith('zip'):
         zfile = zipfile.ZipFile(filename)
@@ -99,22 +102,23 @@ def load_tools_list(filename, platform):
     return tools_to_download
 
 def identify_platform():
-    arduino_platform_names = {'Darwin'  : {32 : 'i386-apple-darwin',   64 : 'x86_64-apple-darwin'},
-                              'Linux'   : {32 : 'i686-pc-linux-gnu',   64 : 'x86_64-pc-linux-gnu'},
-                              'LinuxARM': {32 : 'arm-linux-gnueabihf', 64 : 'aarch64-linux-gnu'},
-                              'Windows' : {32 : 'i686-mingw32',        64 : 'x86_64-mingw32'}}
+    arduino_platform_names = {'Darwin'   : {32 : 'i386-apple-darwin',   64 : 'x86_64-apple-darwin'},
+                              'DarwinARM': {32 : 'arm64-apple-darwin',  64 : 'arm64-apple-darwin'},
+                              'Linux'    : {32 : 'i686-pc-linux-gnu',   64 : 'x86_64-pc-linux-gnu'},
+                              'LinuxARM' : {32 : 'arm-linux-gnueabihf', 64 : 'aarch64-linux-gnu'},
+                              'Windows'  : {32 : 'i686-mingw32',        64 : 'x86_64-mingw32'}}
     bits = 32
     if sys.maxsize > 2**32:
         bits = 64
     sys_name = platform.system()
-    if 'Linux' in sys_name and (platform.platform().find('arm') > 0 or platform.platform().find('aarch64') > 0):
+    sys_platform = platform.platform()
+    if 'Darwin' in sys_name and (sys_platform.find('arm') > 0 or sys_platform.find('arm64') > 0):
+        sys_name = 'DarwinARM'
+    if 'Linux' in sys_name and (sys_platform.find('arm') > 0 or sys_platform.find('aarch64') > 0):
         sys_name = 'LinuxARM'
-    if 'CYGWIN_NT' in sys_name:
+    if ('CYGWIN_NT' in sys_name) or ('MSYS_NT' in sys_name) or ('MINGW' in sys_name):
         sys_name = 'Windows'
-    if 'MSYS_NT' in sys_name:
-        sys_name = 'Windows'
-    if 'MINGW' in sys_name:
-        sys_name = 'Windows'
+    print('System: %s, Bits: %d, Info: %s' % (sys_name, bits, sys_platform))
     return arduino_platform_names[sys_name][bits]
 
 def main():

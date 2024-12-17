@@ -84,7 +84,7 @@ git submodule update --init
 (cd pico-extras && git submodule update --init)
 
 export HOME="${TMPCI}"
-export TRAVIS_BUILD_DIR="${TMPCI}"
+export GITHUB_WORKSPACE="${TMPCI}"
 export BUILD_TYPE="$BUILD_TYPE"
 
 if [ "$BUILD_TYPE" = "build" ]; then
