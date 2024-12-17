@@ -68,10 +68,11 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * METE HOCA Akana R1
+* MyMakers RP2040
 * Neko Systems BL2040 Mini
-* Olimex RP2040-Pico30
 * Newsan Archi
 * nullbits Bit-C PRO
+* Olimex RP2040-Pico30
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
 * Pimoroni Pico Plus 2W
