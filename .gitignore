@@ -3,5 +3,7 @@ system
 tools/dist
 docs/_build
 ota/build
+ota/build-rp2350
+ota/build-rp2350-riscv
 tools/libpico/build
 platform.local.txt
