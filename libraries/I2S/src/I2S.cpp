@@ -287,7 +287,7 @@ bool I2S::begin() {
     return true;
 }
 
-void I2S::end() {
+bool I2S::end() {
     if (_running) {
         if (_MCLKenabled) {
             pio_sm_set_enabled(_pioMCLK, _smMCLK, false);
@@ -301,6 +301,7 @@ void I2S::end() {
         delete _i2s;
         _i2s = nullptr;
     }
+    return true;
 }
 
 int I2S::available() {

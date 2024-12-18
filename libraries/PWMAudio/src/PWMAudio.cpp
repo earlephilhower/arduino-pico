@@ -40,7 +40,8 @@ PWMAudio::~PWMAudio() {
     end();
 }
 
-bool PWMAudio::setBuffers(size_t buffers, size_t bufferWords) {
+bool PWMAudio::setBuffers(size_t buffers, size_t bufferWords, int32_t silence) {
+    (void) silence;
     if (_running || (buffers < 3) || (bufferWords < 8)) {
         return false;
     }
@@ -176,7 +177,7 @@ bool PWMAudio::begin() {
     return true;
 }
 
-void PWMAudio::end() {
+bool PWMAudio::end() {
     if (_running) {
         _running = false;
         pinMode(_pin, OUTPUT);
@@ -189,6 +190,7 @@ void PWMAudio::end() {
         dma_timer_unclaim(_pacer);
         _pacer = -1;
     }
+    return true;
 }
 
 int PWMAudio::available() {
