@@ -87,7 +87,6 @@ private:
         delete ab;
     }
 
-    int _bitsPerSample;
     size_t _wordsPerBuffer;
     size_t _bufferCount;
     enum dma_channel_transfer_size _dmaSize;
