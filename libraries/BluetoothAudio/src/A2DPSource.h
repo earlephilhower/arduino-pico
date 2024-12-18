@@ -24,17 +24,20 @@
 #include <BluetoothHCI.h>
 #include <BluetoothLock.h>
 #include "BluetoothMediaConfigurationSBC.h"
+#include <AudioOutputBase.h>
 #include <functional>
 #include <list>
 #include <memory>
 
 
-class A2DPSource : public Stream {
+class A2DPSource : public Stream, public AudioOutputBase {
 public:
     A2DPSource() {
     }
 
-    bool setFrequency(uint32_t rate) {
+    virtual ~A2DPSource() { }
+
+    virtual bool setFrequency(int rate) override {
         if (_running || ((rate != 44100) && (rate != 48000))) {
             return false;
         }
@@ -51,7 +54,14 @@ public:
         return true;
     }
 
-    void onTransmit(void (*cb)(void *), void *cbData = nullptr) {
+    virtual bool setBitsPerSample(int bps) override {
+        return bps == 16;
+    }
+    virtual bool setStereo(bool stereo = true) override {
+        return stereo;
+    }
+
+    virtual void onTransmit(void (*cb)(void *), void *cbData = nullptr) override {
         _transmitCB = cb;
         _transmitData = cbData;
     }
@@ -84,7 +94,11 @@ public:
         return true;
     }
 
-    bool getUnderflow() {
+    virtual bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0) override {
+        return setBufferSize(buffers * bufferWords * sizeof(int32_t));
+    }
+
+    virtual bool getUnderflow() override {
         BluetoothLock b;
         if (!_running) {
             return false;
@@ -102,7 +116,10 @@ public:
         }
     }
 
-    bool begin();
+    virtual bool begin() override;
+    virtual bool end() override {
+        return false; // We can't actually stop bluetooth on this device
+    }
 
     std::vector<BTDeviceInfo> scan(uint32_t mask = BluetoothHCI::speaker_cod, int scanTimeSec = 5, bool async = false) {
         return _hci.scan(mask, scanTimeSec, async);

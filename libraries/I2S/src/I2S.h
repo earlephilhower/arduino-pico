@@ -21,9 +21,10 @@
 
 #pragma once
 #include <Arduino.h>
-#include "AudioBufferManager.h"
+#include <AudioBufferManager.h>
+#include <AudioOutputBase.h>
 
-class I2S : public Stream {
+class I2S : public Stream, public AudioOutputBase {
 public:
     I2S(PinMode direction = OUTPUT, pin_size_t bclk = 26, pin_size_t data = 28, pin_size_t mclk = 25);
     virtual ~I2S();
@@ -31,9 +32,12 @@ public:
     bool setBCLK(pin_size_t pin);
     bool setDATA(pin_size_t pin);
     bool setMCLK(pin_size_t pin);
-    bool setBitsPerSample(int bps);
-    bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0);
-    bool setFrequency(int newFreq);
+    virtual bool setBitsPerSample(int bps) override;
+    virtual bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0) override;
+    virtual bool setFrequency(int newFreq) override;
+    virtual bool setStereo(bool stereo = true) override {
+        return stereo;
+    }
     bool setLSBJFormat();
     bool setTDMFormat();
     bool setTDMChannels(int channels);
@@ -46,8 +50,11 @@ public:
         return begin();
     }
 
-    bool begin();
-    void end();
+    virtual bool begin() override;
+    virtual bool end() override;
+    virtual bool getUnderflow() override {
+        return getOverUnderflow();
+    }
 
     // from Stream
     virtual int available() override;
