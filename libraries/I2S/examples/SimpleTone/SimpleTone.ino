@@ -19,13 +19,13 @@
 
 #include <I2S.h>
 
-// Create the I2S port using a PIO state machine
-I2S i2s(OUTPUT);
-
 // GPIO pin numbers
 #define pBCLK 20
 #define pWS (pBCLK+1)
 #define pDOUT 22
+
+// Create the I2S port using a PIO state machine
+I2S i2s(OUTPUT, pBCLK, pDOUT);
 
 const int frequency = 440; // frequency of square wave in Hz
 const int amplitude = 500; // amplitude of square wave
@@ -43,8 +43,6 @@ void setup() {
   Serial.begin(115200);
   Serial.println("I2S simple tone");
 
-  i2s.setBCLK(pBCLK);
-  i2s.setDATA(pDOUT);
   i2s.setBitsPerSample(16);
 
   // start I2S at the sample rate with 16-bits per sample
