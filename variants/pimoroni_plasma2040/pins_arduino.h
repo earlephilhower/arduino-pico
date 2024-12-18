@@ -64,7 +64,7 @@ static const uint8_t A3  = (31u);
 //#define SPI_SCK        (PIN_SPI1_SCK)
 
 // Wire
-#define __WIRE0_DEVICE (i2c1)
+#define __WIRE0_DEVICE (i2c0)
 #define PIN_WIRE0_SDA  (20u)
 #define PIN_WIRE0_SCL  (21u)
 #define SDA            PIN_WIRE0_SDA
@@ -73,7 +73,7 @@ static const uint8_t A3  = (31u);
 #define I2C_SCL        (SCL)
 
 // Wire1 not pinned out
-#define __WIRE1_DEVICE (i2c0)
+#define __WIRE1_DEVICE (i2c1)
 #define PIN_WIRE1_SDA  (31u)
 #define PIN_WIRE1_SCL  (31u)
 
