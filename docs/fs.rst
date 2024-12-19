@@ -143,15 +143,19 @@ it using the ``mklittlefs`` tool.  A working ``OpenOCD`` setup, DebugProbe, and 
 To download the raw filesystem, from within ``GDB`` run:
 
 .. code::
+
     ^C (break)
     (gdb) dump binary memory littlefs.bin &_FS_start &_FS_end
+
 It may take a few seconds as ``GDB`` reads out the flash to the file.  Once the raw file is downloaded it can be extracted using the ``mklittlefs`` tool from the BASH/Powershell/command line
 
 .. code::
+
     $ <path-to-mklittlefs>/mklittlefs -u output-dir littlefs.bin
      Directory <output-dir> does not exists. Try to create it.
      gmon.out    > <output-dir>/gmon.out    size: 24518 Bytes
      gmon.bak    > <output-dir>/gmon.bak    size: 1 Bytes
+
 The defaults built into ``mklittlefs`` should be appropriate for normal LittleFS filesystems built on the device or using the upload tool.
 
 SD Library Information
