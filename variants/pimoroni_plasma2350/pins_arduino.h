@@ -53,6 +53,8 @@ static const uint8_t A3  = (31u);
 //static const uint8_t MOSI = PIN_SPI0_MOSI;
 //static const uint8_t MISO = PIN_SPI0_MISO;
 //static const uint8_t SCK  = PIN_SPI0_SCK;
+//
+// #define SS PIN_SPI0_SS
 
 // Not pinned out
 #define PIN_SPI1_MISO  (31u)
