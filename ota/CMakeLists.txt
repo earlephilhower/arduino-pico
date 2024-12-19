@@ -113,5 +113,12 @@ target_link_libraries(ota
 add_custom_command(TARGET ota POST_BUILD
         COMMAND ../../system/${TUPLE}/bin/${TUPLE}-ld -r -A ${OBJARCH} -b binary -o ota.o ota.bin
         COMMAND ../../system/${TUPLE}/bin/${TUPLE}-objcopy --rename-section .data=.OTA ota.o ../../lib/${cpu}/ota.o
-        COMMAND cp ../ota_command.h ../../include/${cpu}/pico_base/pico/.
 )
+
+if(NOT ${cpu} MATCHES "rp2350-riscv$")
+        # riscv build uses the same include directories in lib/rp2350-riscv/platform_inc.txt
+        # so we don't copy in that case
+        add_custom_command(TARGET ota POST_BUILD
+                COMMAND cp ../ota_command.h ../../include/${cpu}/pico_base/pico/.
+        )
+endif()
