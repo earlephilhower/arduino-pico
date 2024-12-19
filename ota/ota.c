@@ -196,6 +196,13 @@ void boot_normal() {
 }
 
 void check_ota() {
+    // this runs before the full runtime and hardware is initialized to prevent
+    // initialization happening again in the application. Care must be taken that
+    // no uninitialized peripheral or part of the runtime is used.
+    // If necessary, init routines can be moved before check_ota() by adjusting
+    // their PICO_RUNTIME_INIT_* in CMakeLists.txt.
+    // refer to this source for existing init routines:
+    // https://github.com/raspberrypi/pico-sdk/blob/2.1.0/src/rp2_common/pico_runtime_init/include/pico/runtime_init.h
     if (!has_ota()) {
         boot_normal();
     }
