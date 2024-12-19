@@ -21,20 +21,24 @@
 
 #pragma once
 #include <Arduino.h>
-#include "AudioBufferManager.h"
+#include <AudioOutputBase.h>
+#include <AudioBufferManager.h>
 
-class PWMAudio : public Stream {
+class PWMAudio : public Stream, public AudioOutputBase {
 public:
     PWMAudio(pin_size_t pin = 0, bool stereo = false);
     virtual ~PWMAudio();
 
-    bool setBuffers(size_t buffers, size_t bufferWords);
+    virtual bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0) override;
     /*Sets the frequency of the PWM in hz*/
     bool setPWMFrequency(int newFreq);
     /*Sets the sample rate frequency in hz*/
-    bool setFrequency(int frequency);
+    virtual bool setFrequency(int frequency) override;
     bool setPin(pin_size_t pin);
-    bool setStereo(bool stereo = true);
+    virtual bool setStereo(bool stereo = true) override;
+    virtual bool setBitsPerSample(int bits) override {
+        return bits == 16;
+    }
 
     bool begin(long sampleRate) {
         _sampleRate = sampleRate;
@@ -47,8 +51,8 @@ public:
         return begin();
     }
 
-    bool begin();
-    void end();
+    virtual bool begin() override;
+    virtual bool end() override;
 
     // from Stream
     virtual int available() override;
@@ -73,6 +77,15 @@ public:
     // Note that these callback are called from **INTERRUPT CONTEXT** and hence
     // should be in RAM, not FLASH, and should be quick to execute.
     void onTransmit(void(*)(void));
+    void onTransmit(void(*)(void *), void *data);
+
+    bool getUnderflow() {
+        if (!_running) {
+            return false;
+        } else {
+            return _arb->getOverUnderflow();
+        }
+    }
 
 private:
     pin_size_t _pin;
@@ -94,6 +107,8 @@ private:
     uint32_t _holdWord;
 
     void (*_cb)();
+    void (*_cbd)(void *);
+    void *_cbdata;
 
     AudioBufferManager *_arb;
 

@@ -1,0 +1,42 @@
+# Run whenever it is manually triggered, a pull request or a push is done that modifes the libpico configuration 
+
+name: libpico Builder
+
+on:
+  pull_request:
+    paths:
+      - tools/libpico/**  
+  workflow_dispatch:
+  push:
+    paths:
+      - tools/libpico/**
+jobs:
+    build-libpico:
+        name: Build libpico precompiled libraries
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+          with:
+            submodules: false
+        - name: Get submodules for pico-sdk
+          run: cd pico-sdk && git submodule update --init --recursive
+        - name: Install dependencies
+          run: |
+            sudo apt update
+            sudo apt install cmake make build-essential wget
+            # Automatically get correct toolchain
+            cd tools && python3 get.py && cd ..
+            # add to PATH
+            echo "$GITHUB_WORKSPACE/system/riscv32-unknown-elf/bin" >> "$GITHUB_PATH"
+            echo "$GITHUB_WORKSPACE/system/arm-none-eabi/bin" >> "$GITHUB_PATH"
+        - name: Build libpico
+          run: |
+            cd tools/libpico
+            ./make-libpico.sh
+        - uses: actions/upload-artifact@v4
+          with:
+            name: libpico
+            path: |
+              tools/libpico/build-rp2040/*.a
+              tools/libpico/build-rp2350/*.a
+              tools/libpico/build-rp2350-riscv/*.a

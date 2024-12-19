@@ -27,6 +27,9 @@
                      "name": "Raspberry Pi Pico 2"
                   },
                   {
+                     "name": "Raspberry Pi Pico 2W"
+                  },
+                  {
                      "name": "0xCB Helios"
                   },
                   {
@@ -79,6 +82,9 @@
                   },
                   {
                      "name": "Adafruit Feather RP2350 HSTX"
+                  },
+                  {
+                     "name": "Adafruit Floppsy"
                   },
                   {
                      "name": "Amken BunnyBoard"
@@ -210,6 +216,9 @@
                      "name": "METE HOCA Akana R1"
                   },
                   {
+                     "name": "MyMakers RP2040"
+                  },
+                  {
                      "name": "Neko Systems BL2040 Mini"
                   },
                   {
@@ -234,7 +243,13 @@
                      "name": "Pimoroni PicoPlus2"
                   },
                   {
+                     "name": "Pimoroni PicoPlus2W"
+                  },
+                  {
                      "name": "Pimoroni Plasma2040"
+                  },
+                  {
+                     "name": "Pimoroni Plasma2350"
                   },
                   {
                      "name": "Pimoroni Tiny2040"
@@ -282,7 +297,7 @@
                      "name": "SparkFun Thing Plus RP2040"
                   },
                   {
-                     "name": "uPesy RP2040 DevKit"
+                     "name": "SparkFun Thing Plus RP2350"
                   },
                   {
                      "name": "Seeed INDICATOR RP2040"
@@ -292,6 +307,9 @@
                   },
                   {
                      "name": "Seeed XIAO RP2350"
+                  },
+                  {
+                     "name": "uPesy RP2040 DevKit"
                   },
                   {
                      "name": "VCC-GND YD RP2040"

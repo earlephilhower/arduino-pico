@@ -53,7 +53,7 @@ void setup() {
   TaskHandle_t blinkTask;
   Serial.begin(115200);
   xTaskCreate(blink, "BLINK", 256, nullptr, 1, &blinkTask);
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
   // The PicoW WiFi chip controls the LED, and only core 0 can make calls to it safely
   vTaskCoreAffinitySet(blinkTask, 1 << 0);
 #endif

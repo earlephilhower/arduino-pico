@@ -23,7 +23,7 @@
 #pragma once
 
 #include <Arduino.h>
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
 #include <lwIP_CYW43.h>
 #elif defined(ESPHOSTSPI)
 #include <lwIP_ESPHost.h>
@@ -158,7 +158,7 @@ public:
         return true;
     }
 
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
     uint8_t softAPgetStationNum();
 #endif
 
@@ -405,7 +405,7 @@ public:
 
     unsigned long getTime();
 
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
     void aggressiveLowPowerMode();
     void defaultLowPowerMode();
 #endif

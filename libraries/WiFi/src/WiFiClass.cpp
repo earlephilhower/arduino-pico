@@ -29,7 +29,7 @@
 
 // This is the real WiFi network object, we just tickle it to do our magic
 #include <LwipEthernet.h>
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
 #include <pico/cyw43_arch.h>
 static CYW43lwIP _wifi(1);
 #elif defined(ESPHOSTSPI)
@@ -160,16 +160,14 @@ uint8_t WiFiClass::beginAP(const char *ssid) {
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid, uint8_t channel) {
-    (void) channel;
-    return beginAP(ssid, nullptr);
-}
-
-uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
-    (void) channel;
-    return beginAP(ssid, passphrase);
+    return beginAP(ssid, nullptr, channel);
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
+    return beginAP(ssid, passphrase, 0);
+}
+
+uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
     end();
 
     _ssid = ssid;
@@ -177,6 +175,11 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
     _wifi.setAP();
     _wifi.setSSID(_ssid.c_str());
     _wifi.setPassword(passphrase);
+#if defined(PICO_CYW43_SUPPORTED)
+    if (channel > 0) {
+        cyw43_wifi_ap_set_channel(&cyw43_state, channel);
+    }
+#endif
     _wifi.setTimeout(_timeout);
     _apMode = true;
     IPAddress gw = _wifi.gatewayIP();
@@ -204,7 +207,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
     return WL_CONNECTED;
 }
 
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
 uint8_t WiFiClass::softAPgetStationNum() {
     if (!_apMode || !_wifiHWInitted) {
         return 0;
@@ -324,7 +327,7 @@ void WiFiClass::end(void) {
     return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
 */
 uint8_t* WiFiClass::macAddress(uint8_t* mac) {
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
     if (!_wifiHWInitted) {
         _apMode = false;
         cyw43_wifi_set_up(&cyw43_state, _apMode ? 1 : 0, true, CYW43_COUNTRY_WORLDWIDE);
@@ -423,7 +426,7 @@ uint8_t WiFiClass::encryptionType() {
 int8_t WiFiClass::scanNetworks(bool async) {
     if (!_wifiHWInitted) {
         _apMode = false;
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
         cyw43_arch_enable_sta_mode();
 #endif
         _wifiHWInitted = true;
@@ -519,7 +522,7 @@ unsigned long WiFiClass::getTime() {
     return millis();
 }
 
-#ifdef ARDUINO_RASPBERRY_PI_PICO_W
+#if defined(PICO_CYW43_SUPPORTED)
 void WiFiClass::aggressiveLowPowerMode() {
     cyw43_wifi_pm(&cyw43_state, CYW43_AGGRESSIVE_PM);
 }

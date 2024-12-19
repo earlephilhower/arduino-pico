@@ -42,6 +42,8 @@ AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, i
     _dmaSize = dmaSize;
     _overunderflow = false;
     _callback = nullptr;
+    _callbackCB = nullptr;
+    _useData = false;
     _userOff = 0;
 
     // Create the silence buffer, fill with appropriate value
@@ -101,11 +103,16 @@ AudioBufferManager::~AudioBufferManager() {
 
 void AudioBufferManager::setCallback(void (*fn)()) {
     _callback = fn;
+    _useData = false;
+}
+
+void AudioBufferManager::setCallback(void (*fn)(void *), void *cbData) {
+    _callbackCB = fn;
+    _callbackData = cbData;
+    _useData = true;
 }
 
 bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
-    _running = true;
-
     // Get ping and pong DMA channels
     for (auto i = 0; i < 2; i++) {
         _channelDMA[i] = dma_claim_unused_channel(false);
@@ -116,6 +123,8 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
             return false;
         }
     }
+
+    _running = true;
 
     // Need to know both channels to set up ping-pong, so do in 2 stages
     for (auto i = 0; i < 2; i++) {
@@ -265,7 +274,9 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
     }
     dma_channel_set_trans_count(channel, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
     dma_channel_acknowledge_irq0(channel);
-    if (_callback) {
+    if (_callbackCB) {
+        _callbackCB(_callbackData);
+    } else if (_callback) {
         _callback();
     }
 }

@@ -29,9 +29,8 @@ extern unsigned long __lwip_rand(void);
 #define MEM_SIZE                      (__LWIP_MEMMULT * 16384)
 #define MEMP_NUM_TCP_SEG              (32)
 #define MEMP_NUM_ARP_QUEUE            (10)
-//#define MEMP_NUM_SYS_TIMEOUT          (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 4)
 #define PBUF_POOL_SIZE                (__LWIP_MEMMULT > 1 ? 32 : 24)
-#define LWIP_ARP                      5
+#define LWIP_ARP                      7
 #define LWIP_ETHERNET                 1
 #define LWIP_ICMP                     1
 #define LWIP_RAW                      1

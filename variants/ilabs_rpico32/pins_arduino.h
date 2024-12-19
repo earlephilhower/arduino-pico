@@ -1,6 +1,8 @@
 #pragma once
 
+#ifdef __cplusplus
 #include <Ilabs2040WiFiClass.h>
+#endif
 
 #define PINS_COUNT          (26u)
 #define NUM_DIGITAL_PINS    (26u)

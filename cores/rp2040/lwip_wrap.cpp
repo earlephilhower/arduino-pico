@@ -26,9 +26,7 @@
 #include <lwip/dns.h>
 #include <lwip/raw.h>
 #include <lwip/timeouts.h>
-#ifdef PICO_RP2040
 #include <pico/cyw43_arch.h>
-#endif
 #include <pico/mutex.h>
 #include <sys/lock.h>
 #include "_xoshiro.h"
@@ -46,7 +44,7 @@ public:
         if (ethernet_arch_lwip_gpio_mask)  {
             ethernet_arch_lwip_gpio_mask();
         }
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_begin();
             return;
@@ -60,7 +58,7 @@ public:
     }
 
     ~LWIPMutex() {
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
         if (rp2040.isPicoW()) {
             cyw43_arch_lwip_end();
         } else {
@@ -70,7 +68,7 @@ public:
             } else {
                 recursive_mutex_exit(&__lwipMutex);
             }
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
         }
 #endif
         if (ethernet_arch_lwip_gpio_unmask) {

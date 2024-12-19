@@ -16,9 +16,11 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Raspberry Pi Pico
 * Raspberry Pi Pico W
 * Raspberry Pi Pico 2
+* Raspberry Pi Pico 2W
 * 0xCB Helios
 * Adafruit Feather RP2040
 * Adafruit Feather RP2040 SCORPIO
+* Adafruit Floppsy RP2040
 * Adafruit ItsyBitsy RP2040
 * Adafruit KB2040
 * Adafruit Macropad RP2040
@@ -66,13 +68,16 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * METE HOCA Akana R1
+* MyMakers RP2040
 * Neko Systems BL2040 Mini
-* Olimex RP2040-Pico30
 * Newsan Archi
 * nullbits Bit-C PRO
+* Olimex RP2040-Pico30
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
+* Pimoroni Pico Plus 2W
 * Pimoroni Plasma2040
+* Pimoroni Plasma2350
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
 * Pintronix PinMax
@@ -91,6 +96,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * SparkFun ProMicro RP2040
 * SparkFun ProMicro RP2350
 * SparkFun Thing Plus RP2040
+* SparkFun Thing Plus RP2350
 * uPesy RP2040 DevKit
 * VCC-GND YD-RP2040
 * Viyalab Mizu RP2040
@@ -133,6 +139,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * printf (i.e. debug) output over USB serial
 * Transparent use of PSRAM globals and heap (RP2350 only)
 * ARM or RISC-V (Hazard3) support for the RP2350
+* Semihosted serial and file system access
+* GPROF profiling support
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos

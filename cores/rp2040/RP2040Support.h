@@ -18,6 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#pragma once
+
 #include <hardware/clocks.h>
 #include <hardware/irq.h>
 #include <hardware/pio.h>
@@ -44,6 +46,13 @@
 #include "_freertos.h"
 
 extern "C" volatile bool __otherCoreIdled;
+
+extern "C" {
+#ifdef __PROFILE
+    typedef int (*profileWriteCB)(const void *data, int len);
+    extern void _writeProfile(profileWriteCB writeCB);
+#endif
+}
 
 class _MFIFO {
 public:
@@ -180,7 +189,7 @@ public:
 
     void begin() {
         _epoch = 0;
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         if (!__isFreeRTOS) {
             // Enable SYSTICK exception
             exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
@@ -193,7 +202,7 @@ public:
             _ccountPgm->prepare(&_pio, &_sm, &off);
             ccount_program_init(_pio, _sm, off);
             pio_sm_set_enabled(_pio, _sm, true);
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
     }
@@ -217,7 +226,7 @@ public:
     // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
     volatile uint64_t _epoch = 0;
     inline uint32_t getCycleCount() {
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         if (!__isFreeRTOS) {
             uint32_t epoch;
             uint32_t ctr;
@@ -229,13 +238,13 @@ public:
         } else {
 #endif
             return ccount_read(_pio, _sm);
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
     }
 
     inline uint64_t getCycleCount64() {
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         if (!__isFreeRTOS) {
             uint64_t epoch;
             uint64_t ctr;
@@ -247,7 +256,7 @@ public:
         } else {
 #endif
             return ccount_read(_pio, _sm);
-#if !defined(__riscv)
+#if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
     }
@@ -351,7 +360,9 @@ public:
         }
     }
 
+#ifdef PICO_RP2040
     static void enableDoubleResetBootloader();
+#endif
 
     void wdt_begin(uint32_t delay_ms) {
         watchdog_enable(delay_ms, 1);
@@ -463,13 +474,28 @@ public:
     }
 
     bool isPicoW() {
-#if !defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if !defined(PICO_CYW43_SUPPORTED)
         return false;
 #else
         extern bool __isPicoW;
         return __isPicoW;
 #endif
     }
+
+#ifdef __PROFILE
+    void writeProfiling(Stream *f) {
+        extern Stream *__profileFile;
+        extern int __writeProfileCB(const void *data, int len);
+        __profileFile = f;
+        _writeProfile(__writeProfileCB);
+    }
+
+    size_t getProfileMemoryUsage() {
+        extern int __profileMemSize;
+        return (size_t) __profileMemSize;
+    }
+#endif
+
 
 
 private:
