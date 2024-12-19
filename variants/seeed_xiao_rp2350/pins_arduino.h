@@ -28,6 +28,7 @@ static const uint8_t D18 = (9u);
 
 // LEDs
 #define PIN_LED        (25u)
+#define LED_BUILTIN     PIN_LED
 
 // Serial
 #define PIN_SERIAL1_TX (0u)
