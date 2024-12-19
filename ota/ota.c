@@ -24,6 +24,7 @@
 #include <hardware/sync.h>
 #include <hardware/flash.h>
 #include <pico/time.h>
+#include <pico/runtime_init.h>
 #include <hardware/gpio.h>
 #include <hardware/uart.h>
 #include <hardware/watchdog.h>
@@ -54,26 +55,33 @@ void dumphex(uint32_t x) {
 }
 
 extern OTACmdPage _ota_cmd;
-void do_ota() {
+static uint32_t blockToErase;
+
+
+bool has_ota() {
     if (*__FS_START__ == *__FS_END__) {
-        return;
+        return false;
     }
     if (!lfsMount(*__FS_START__, 4096, *__FS_END__ - *__FS_START__)) {
-        uart_puts(uart0, "mount failed\n");
-        return;
+        return false;
     }
 
     // We are very naughty and record the last block read, since it should be the actual data block of the
     // OTA structure.  We'll erase it behind the scenes to avoid bringing in all of LittleFS write infra.
-    uint32_t blockToErase;
     if (!lfsReadOTA(&_ota_cmd, &blockToErase)) {
-        return;
+        return false;
     }
 
     if (memcmp(_ota_cmd.sign, "Pico OTA", 8)) {
-        return; // No signature
+        return false; // No signature
     }
 
+    return true;
+}
+
+
+
+void do_ota() {
     uint32_t crc = 0xffffffff;
     const uint8_t *data = (const uint8_t *)&_ota_cmd;
     for (uint32_t i = 0; i < offsetof(OTACmdPage, crc32); i++) {
@@ -159,11 +167,48 @@ void do_ota() {
 
     // Do a hard reset just in case the start up sequence is not the same
     watchdog_reboot(0, 0, 100);
+    while (true) {
+        tight_loop_contents();
+    }
 }
-
 
 #pragma GCC push_options
 #pragma GCC optimize("O0")
+__attribute__((noreturn))
+void boot_normal() {
+#ifdef __riscv
+    extern void __mainapp();
+    __mainapp();
+#else
+    // Reset the interrupt/etc. vectors to the real app.  Will be copied to RAM in app's runtime_init
+    scb_hw->vtor = (uint32_t)0x10003000;
+
+    // Jump to it
+    register uint32_t* sp asm("sp");
+    register uint32_t _sp = *(uint32_t *)0x10003000;
+    register void (*fcn)(void) = (void (*)(void)) *(uint32_t *)0x10003004;
+    sp = (uint32_t *)_sp;
+    fcn();
+    (void)sp;
+#endif
+
+    __builtin_unreachable();
+}
+
+void check_ota() {
+    // this runs before the full runtime and hardware is initialized to prevent
+    // initialization happening again in the application. Care must be taken that
+    // no uninitialized peripheral or part of the runtime is used.
+    // If necessary, init routines can be moved before check_ota() by adjusting
+    // their PICO_RUNTIME_INIT_* in CMakeLists.txt.
+    // refer to this source for existing init routines:
+    // https://github.com/raspberrypi/pico-sdk/blob/2.1.0/src/rp2_common/pico_runtime_init/include/pico/runtime_init.h
+    if (!has_ota()) {
+        boot_normal();
+    }
+}
+PICO_RUNTIME_INIT_FUNC_RUNTIME(check_ota, "00099");
+
 int main(int a, char **b) {
     (void) a;
     (void) b;
@@ -176,28 +221,11 @@ int main(int a, char **b) {
     uart_set_format(uart0, 8, 1, UART_PARITY_NONE);
 #endif
 
+    // if we arrive here, it looks like we have an OTA command in the LittleFS
     do_ota();
 
-#ifdef __riscv
-    extern void __mainapp();
-    __mainapp();
-
-    // Should never get here!
-    return 0;
-#else
-    // Reset the interrupt/etc. vectors to the real app.  Will be copied to RAM in app's runtime_init
-    scb_hw->vtor = (uint32_t)0x10003000;
-
-    // Jump to it
-    register uint32_t* sp asm("sp");
-    register uint32_t _sp = *(uint32_t *)0x10003000;
-    register void (*fcn)(void) = (void (*)(void)) *(uint32_t *)0x10003004;
-    sp = (uint32_t *)_sp;
-    fcn();
-
-    // Should never get here!
-    return *sp;
-#endif
+    // fallback to normal boot if do_ota() failed, e.g. due to CRC failure or corruption
+    boot_normal();
 }
 #pragma GCC pop_options
 
