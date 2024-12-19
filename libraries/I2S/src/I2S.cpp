@@ -24,14 +24,14 @@
 #include <pico/stdlib.h>
 
 
-I2S::I2S(PinMode direction) {
+I2S::I2S(PinMode direction, pin_size_t bclk, pin_size_t data, pin_size_t mclk) {
     _running = false;
     _bps = 16;
     _writtenHalf = false;
     _isOutput = direction == OUTPUT;
-    _pinBCLK = 26;
-    _pinDOUT = 28;
-    _pinMCLK = 25;
+    _pinBCLK = bclk;
+    _pinDOUT = data;
+    _pinMCLK = mclk;
     _MCLKenabled = false;
 #ifdef PIN_I2S_BCLK
     _pinBCLK = PIN_I2S_BCLK;
@@ -287,7 +287,7 @@ bool I2S::begin() {
     return true;
 }
 
-void I2S::end() {
+bool I2S::end() {
     if (_running) {
         if (_MCLKenabled) {
             pio_sm_set_enabled(_pioMCLK, _smMCLK, false);
@@ -301,6 +301,7 @@ void I2S::end() {
         delete _i2s;
         _i2s = nullptr;
     }
+    return true;
 }
 
 int I2S::available() {
