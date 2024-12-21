@@ -123,12 +123,10 @@ bool I2S::setFrequency(int newFreq) {
 
 bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
     if (samplerate % 11025 == 0) {
-        set_sys_clock_khz(I2SSYSCLK_44_1, false); // 147.6 unsuccessful - no I2S no USB
-        return true;
+        return set_sys_clock_khz(I2SSYSCLK_44_1, false);
     }
     if (samplerate % 8000 == 0) {
-        set_sys_clock_khz(I2SSYSCLK_8, false);
-        return true;
+        return set_sys_clock_khz(I2SSYSCLK_8, false);
     }
     return false;
 }
