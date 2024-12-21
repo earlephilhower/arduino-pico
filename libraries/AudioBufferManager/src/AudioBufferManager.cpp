@@ -188,6 +188,38 @@ bool AudioBufferManager::write(uint32_t v, bool sync) {
     return true;
 }
 
+size_t AudioBufferManager::write(const uint32_t *v, size_t words, bool sync) {
+    size_t written = 0;
+
+    if (!_running || !_isOutput) {
+        return 0;
+    }
+    while (words) {
+        AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_empty;
+        if (!*p) {
+            if (!sync) {
+                return written;
+            } else {
+                while (!*p) {
+                    /* noop busy wait */
+                }
+            }
+
+        }
+        size_t availToWriteThisBuff = _wordsPerBuffer - _userOff;
+        size_t toWrite = std::min(availToWriteThisBuff, words);
+        memcpy(&((*p)->buff[_userOff]), v, toWrite * sizeof(uint32_t));
+        written += toWrite;
+        _userOff += toWrite;
+        words -= toWrite;
+        if (_userOff == _wordsPerBuffer) {
+            _addToList(&_filled, _takeFromList(p));
+            _userOff = 0;
+        }
+    }
+    return written;
+}
+
 bool AudioBufferManager::read(uint32_t *v, bool sync) {
     if (!_running || _isOutput) {
         return false;

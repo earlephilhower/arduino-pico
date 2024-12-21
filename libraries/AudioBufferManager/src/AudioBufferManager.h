@@ -34,6 +34,7 @@ public:
     bool begin(int dreq, volatile void *pioFIFOAddr);
 
     bool write(uint32_t v, bool sync = true);
+    size_t write(const uint32_t *v, size_t words, bool sync = true);
     bool read(uint32_t *v, bool sync = true);
     void flush();
 
