@@ -196,7 +196,7 @@ jobs:
     name: Mac
     strategy:
       matrix:
-        os: [macOS-12, macOS-14]
+        os: [macOS-13, macOS-14]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
