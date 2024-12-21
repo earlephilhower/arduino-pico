@@ -500,20 +500,7 @@ size_t I2S::write(const uint8_t *buffer, size_t size) {
     if (size & 0x3 || !_running || !_isOutput) {
         return 0;
     }
-
-    size_t writtenSize = 0;
-    uint32_t *p = (uint32_t *)buffer;
-    while (size) {
-        if (!_arb->write(*p, false)) {
-            // Blocked, stop write here
-            return writtenSize;
-        } else {
-            p++;
-            size -= 4;
-            writtenSize += 4;
-        }
-    }
-    return writtenSize;
+    return _arb->write((const uint32_t *)buffer, size / sizeof(uint32_t), false);
 }
 
 int I2S::availableForWrite() {
