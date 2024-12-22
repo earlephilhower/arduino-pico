@@ -20,6 +20,7 @@
 */
 #include <Arduino.h>
 #include "PWMAudio.h"
+#include "PWMAudioPrecalc.h"
 #include <hardware/pwm.h>
 
 
@@ -281,6 +282,19 @@ void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *de
         return;
     }
 
+    // See if it's one of the precalculated values
+    for (size_t i = 0; i < sizeof(__PWMAudio_pacer) / sizeof(__PWMAudio_pacer[0]); i++) {
+        if (target == (int)__PWMAudio_pacer[i].freq) {
+            last_target = target;
+            bestNum = __PWMAudio_pacer[i].n;
+            bestDenom = __PWMAudio_pacer[i].d;
+            *numerator = bestNum;
+            *denominator = bestDenom;
+            return;
+        }
+    }
+
+    // Nope, do exhaustive search.  This is gonna be slooooow
     float targetRatio = (float)F_CPU / target;
     float lowestError = HUGE_VALF;
 
