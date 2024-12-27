@@ -14,6 +14,7 @@ File	KEYWORD1
 timeval	KEYWORD1
 time_t	KEYWORD1
 SoftwareSerial	KEYWORD1
+AudioOutputBase	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
