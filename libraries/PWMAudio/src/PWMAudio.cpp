@@ -101,7 +101,8 @@ bool PWMAudio::setFrequency(int frequency) {
         return true; // We're already at the right speed
     }
     if (_pacer < 0) {
-        return false;
+        _sampleRate = frequency;
+        return true;
     }
     uint16_t _pacer_D, _pacer_N;
     // Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values
@@ -152,6 +153,7 @@ bool PWMAudio::begin() {
     if (_pacer < 0) {
         return false;
     }
+
     uint16_t _pacer_D = 0;
     uint16_t _pacer_N = 0;
     // Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values
