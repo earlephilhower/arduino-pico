@@ -209,6 +209,7 @@ size_t AudioBufferManager::write(const uint32_t *v, size_t words, bool sync) {
         size_t availToWriteThisBuff = _wordsPerBuffer - _userOff;
         size_t toWrite = std::min(availToWriteThisBuff, words);
         memcpy(&((*p)->buff[_userOff]), v, toWrite * sizeof(uint32_t));
+        v += toWrite;
         written += toWrite;
         _userOff += toWrite;
         words -= toWrite;
