@@ -28005,6 +28005,7 @@ sparkfun_iotnode_lorawanrp2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.maxi
 sparkfun_iotnode_lorawanrp2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 sparkfun_iotnode_lorawanrp2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
+# -----------------------------------
 # Seeed INDICATOR RP2040
 # -----------------------------------
 seeed_indicator_rp2040.name=Seeed INDICATOR RP2040
