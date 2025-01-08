@@ -68,14 +68,16 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * METE HOCA Akana R1
+* MyMakers RP2040
 * Neko Systems BL2040 Mini
-* Olimex RP2040-Pico30
 * Newsan Archi
 * nullbits Bit-C PRO
+* Olimex RP2040-Pico30
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
 * Pimoroni Pico Plus 2W
 * Pimoroni Plasma2040
+* Pimoroni Plasma2350
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
 * Pintronix PinMax
@@ -137,6 +139,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * printf (i.e. debug) output over USB serial
 * Transparent use of PSRAM globals and heap (RP2350 only)
 * ARM or RISC-V (Hazard3) support for the RP2350
+* Semihosted serial and file system access
+* GPROF profiling support
 
 The RP2040 PIO state machines (SMs) are used to generate jitter-free:
 * Servos

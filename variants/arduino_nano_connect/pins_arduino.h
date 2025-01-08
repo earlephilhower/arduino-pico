@@ -120,4 +120,7 @@ static const uint8_t SCK = PIN_SPI0_SCK;
 #define CRYPTO_WIRE		Wire
 
 #define USB_MAX_POWER	(500)
+
+#ifdef __cplusplus
 #include "nina_pins.h"
+#endif

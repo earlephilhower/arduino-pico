@@ -216,6 +216,9 @@
                      "name": "METE HOCA Akana R1"
                   },
                   {
+                     "name": "MyMakers RP2040"
+                  },
+                  {
                      "name": "Neko Systems BL2040 Mini"
                   },
                   {
@@ -244,6 +247,9 @@
                   },
                   {
                      "name": "Pimoroni Plasma2040"
+                  },
+                  {
+                     "name": "Pimoroni Plasma2350"
                   },
                   {
                      "name": "Pimoroni Tiny2040"
@@ -297,9 +303,6 @@
                      "name": "SparkFun IoT Node LoRaWAN"
                   },
                   {
-                     "name": "uPesy RP2040 DevKit"
-                  },
-                  {
                      "name": "Seeed INDICATOR RP2040"
                   },
                   {
@@ -307,6 +310,9 @@
                   },
                   {
                      "name": "Seeed XIAO RP2350"
+                  },
+                  {
+                     "name": "uPesy RP2040 DevKit"
                   },
                   {
                      "name": "VCC-GND YD RP2040"

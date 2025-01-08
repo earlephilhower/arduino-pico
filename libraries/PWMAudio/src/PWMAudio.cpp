@@ -20,6 +20,7 @@
 */
 #include <Arduino.h>
 #include "PWMAudio.h"
+#include "PWMAudioPrecalc.h"
 #include <hardware/pwm.h>
 
 
@@ -40,7 +41,8 @@ PWMAudio::~PWMAudio() {
     end();
 }
 
-bool PWMAudio::setBuffers(size_t buffers, size_t bufferWords) {
+bool PWMAudio::setBuffers(size_t buffers, size_t bufferWords, int32_t silence) {
+    (void) silence;
     if (_running || (buffers < 3) || (bufferWords < 8)) {
         return false;
     }
@@ -95,13 +97,18 @@ bool PWMAudio::setPWMFrequency(int newFreq) {
 }
 
 bool PWMAudio::setFrequency(int frequency) {
+    if (frequency == _sampleRate) {
+        return true; // We're already at the right speed
+    }
     if (_pacer < 0) {
-        return false;
+        _sampleRate = frequency;
+        return true;
     }
     uint16_t _pacer_D, _pacer_N;
-    /*Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values*/
+    // Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values
     find_pacer_fraction(frequency, &_pacer_D, &_pacer_N);
     dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D);
+    _sampleRate = frequency;
     return true;
 }
 
@@ -109,6 +116,14 @@ void PWMAudio::onTransmit(void(*fn)(void)) {
     _cb = fn;
     if (_running) {
         _arb->setCallback(_cb);
+    }
+}
+
+void PWMAudio::onTransmit(void(*fn)(void *), void *cbData) {
+    _cbd = fn;
+    _cbdata = cbData;
+    if (_running) {
+        _arb->setCallback(_cbd, _cbdata);
     }
 }
 
@@ -132,15 +147,16 @@ bool PWMAudio::begin() {
 
     setPWMFrequency(_freq);
 
-    /*Calculate and set the DMA pacer timer. This timer will pull data on a fixed sample rate. So the actual PWM frequency can be higher or lower.*/
+    // Calculate and set the DMA pacer timer. This timer will pull data on a fixed sample rate. So the actual PWM frequency can be higher or lower.
     _pacer = dma_claim_unused_timer(false);
-    /*When no unused timer is found, return*/
+    // When no unused timer is found, return
     if (_pacer < 0) {
         return false;
     }
+
     uint16_t _pacer_D = 0;
     uint16_t _pacer_N = 0;
-    /*Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values*/
+    // Flip fraction(N for D, D for N) because we are using it as sys_clk * fraction(mechanic of dma_timer_set_fraction) for smaller than sys_clk values
     find_pacer_fraction(_sampleRate, &_pacer_D, &_pacer_N);
     dma_timer_set_fraction(_pacer, _pacer_N, _pacer_D);
     int _pacer_dreq = dma_get_timer_dreq(_pacer);
@@ -155,12 +171,16 @@ bool PWMAudio::begin() {
         return false;
     }
 
-    _arb->setCallback(_cb);
+    if (_cbd) {
+        _arb->setCallback(_cbd, _cbdata);
+    } else {
+        _arb->setCallback(_cb);
+    }
 
     return true;
 }
 
-void PWMAudio::end() {
+bool PWMAudio::end() {
     if (_running) {
         _running = false;
         pinMode(_pin, OUTPUT);
@@ -173,6 +193,7 @@ void PWMAudio::end() {
         dma_timer_unclaim(_pacer);
         _pacer = -1;
     }
+    return true;
 }
 
 int PWMAudio::available() {
@@ -263,6 +284,19 @@ void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *de
         return;
     }
 
+    // See if it's one of the precalculated values
+    for (size_t i = 0; i < sizeof(__PWMAudio_pacer) / sizeof(__PWMAudio_pacer[0]); i++) {
+        if (target == (int)__PWMAudio_pacer[i].freq) {
+            last_target = target;
+            bestNum = __PWMAudio_pacer[i].n;
+            bestDenom = __PWMAudio_pacer[i].d;
+            *numerator = bestNum;
+            *denominator = bestDenom;
+            return;
+        }
+    }
+
+    // Nope, do exhaustive search.  This is gonna be slooooow
     float targetRatio = (float)F_CPU / target;
     float lowestError = HUGE_VALF;
 

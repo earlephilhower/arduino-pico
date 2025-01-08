@@ -29,10 +29,12 @@ public:
     ~AudioBufferManager();
 
     void setCallback(void (*fn)());
+    void setCallback(void (*fn)(void *), void *cbData);
 
     bool begin(int dreq, volatile void *pioFIFOAddr);
 
     bool write(uint32_t v, bool sync = true);
+    size_t write(const uint32_t *v, size_t words, bool sync = true);
     bool read(uint32_t *v, bool sync = true);
     void flush();
 
@@ -86,14 +88,17 @@ private:
         delete ab;
     }
 
-    int _bitsPerSample;
     size_t _wordsPerBuffer;
     size_t _bufferCount;
     enum dma_channel_transfer_size _dmaSize;
     bool _isOutput;
 
     int _channelDMA[2];
+
+    bool _useData;
     void (*_callback)();
+    void (*_callbackCB)(void *);
+    void *_callbackData;
 
     bool _overunderflow;
 

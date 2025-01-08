@@ -160,16 +160,14 @@ uint8_t WiFiClass::beginAP(const char *ssid) {
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid, uint8_t channel) {
-    (void) channel;
-    return beginAP(ssid, nullptr);
-}
-
-uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
-    (void) channel;
-    return beginAP(ssid, passphrase);
+    return beginAP(ssid, nullptr, channel);
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
+    return beginAP(ssid, passphrase, 0);
+}
+
+uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
     end();
 
     _ssid = ssid;
@@ -177,6 +175,11 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
     _wifi.setAP();
     _wifi.setSSID(_ssid.c_str());
     _wifi.setPassword(passphrase);
+#if defined(PICO_CYW43_SUPPORTED)
+    if (channel > 0) {
+        cyw43_wifi_ap_set_channel(&cyw43_state, channel);
+    }
+#endif
     _wifi.setTimeout(_timeout);
     _apMode = true;
     IPAddress gw = _wifi.gatewayIP();
