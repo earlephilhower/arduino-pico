@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
 */
 
-#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
+#if defined(PICO_CYW43_SUPPORTED)
 #include <btstack.h>
 #include <pico/btstack_flash_bank.h>
 #include <hardware/flash.h>
