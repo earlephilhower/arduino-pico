@@ -27868,12 +27868,14 @@ sparkfun_iotnode_lorawanrp2350.menu.arch.arm.build.toolchain=arm-none-eabi
 sparkfun_iotnode_lorawanrp2350.menu.arch.arm.build.toolchainpkg=pqt-gcc
 sparkfun_iotnode_lorawanrp2350.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
 sparkfun_iotnode_lorawanrp2350.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+sparkfun_iotnode_lorawanrp2350.menu.arch.arm.build.mcu=cortex-m33
 sparkfun_iotnode_lorawanrp2350.menu.arch.riscv=RISC-V
 sparkfun_iotnode_lorawanrp2350.menu.arch.riscv.build.chip=rp2350-riscv
 sparkfun_iotnode_lorawanrp2350.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
 sparkfun_iotnode_lorawanrp2350.menu.arch.riscv.build.toolchainpkg=pqt-gcc-riscv
 sparkfun_iotnode_lorawanrp2350.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
 sparkfun_iotnode_lorawanrp2350.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
+sparkfun_iotnode_lorawanrp2350.menu.arch.riscv.build.mcu=rv32imac
 sparkfun_iotnode_lorawanrp2350.menu.freq.150=150 MHz
 sparkfun_iotnode_lorawanrp2350.menu.freq.150.build.f_cpu=150000000L
 sparkfun_iotnode_lorawanrp2350.menu.freq.50=50 MHz
@@ -27916,6 +27918,10 @@ sparkfun_iotnode_lorawanrp2350.menu.opt.Debug=Debug (-Og)
 sparkfun_iotnode_lorawanrp2350.menu.opt.Debug.build.flags.optimize=-Og
 sparkfun_iotnode_lorawanrp2350.menu.opt.Disabled=Disabled (-O0)
 sparkfun_iotnode_lorawanrp2350.menu.opt.Disabled.build.flags.optimize=-O0
+sparkfun_iotnode_lorawanrp2350.menu.profile.Disabled=Disabled
+sparkfun_iotnode_lorawanrp2350.menu.profile.Disabled.build.flags.profile=
+sparkfun_iotnode_lorawanrp2350.menu.profile.Enabled=Enabled
+sparkfun_iotnode_lorawanrp2350.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
 sparkfun_iotnode_lorawanrp2350.menu.rtti.Disabled=Disabled
 sparkfun_iotnode_lorawanrp2350.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
 sparkfun_iotnode_lorawanrp2350.menu.rtti.Enabled=Enabled
@@ -27938,6 +27944,8 @@ sparkfun_iotnode_lorawanrp2350.menu.dbgport.Serial1=Serial1
 sparkfun_iotnode_lorawanrp2350.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
 sparkfun_iotnode_lorawanrp2350.menu.dbgport.Serial2=Serial2
 sparkfun_iotnode_lorawanrp2350.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+sparkfun_iotnode_lorawanrp2350.menu.dbgport.SerialSemi=SerialSemi
+sparkfun_iotnode_lorawanrp2350.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.None=None
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.None.build.debug_level=
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.Core=Core
