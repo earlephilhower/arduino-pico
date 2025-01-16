@@ -30,40 +30,13 @@
 #include "btstack_resample.h"
 #include "btstack_ring_buffer.h"
 
-class A2DPSink : public Stream {
+class A2DPSink {
 public:
     A2DPSink() {
         _title[0] = 0;
         _artist[0] = 0;
         _album[0] = 0;
         _genre[0] = 0;
-    }
-    virtual int available() override {
-        return 0; // Unreadable, this is output only
-    }
-
-    virtual int read() override {
-        return 0;
-    }
-
-    virtual int peek() override {
-        return 0;
-    }
-
-    virtual void flush() override {
-    }
-    virtual size_t write(const uint8_t *buffer, size_t size) override {
-        (void) buffer;
-        (void) size;
-        return 0;
-    }
-    virtual int availableForWrite() override {
-        return 0;
-    }
-
-    virtual size_t write(uint8_t s) override {
-        (void) s;
-        return 0;
     }
 
     bool setName(const char *name) {
@@ -73,11 +46,6 @@ public:
         free(_name);
         _name = strdup(name);
         return true;
-    }
-
-    void onTransmit(void (*cb)(void *), void *cbData = nullptr) {
-        _transmitCB = cb;
-        _transmitData = cbData;
     }
 
     void onAVRCP(void (*cb)(void *, avrcp_operation_id_t, int), void *cbData = nullptr) {
