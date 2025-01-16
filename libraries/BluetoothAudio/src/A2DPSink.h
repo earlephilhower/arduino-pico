@@ -205,8 +205,6 @@ private:
     bool _connected = false;
 
     // Callbacks
-    void (*_transmitCB)(void *) = nullptr;
-    void *_transmitData;
     void (*_avrcpCB)(void *, avrcp_operation_id_t, int) = nullptr;
     void *_avrcpData;
     void (*_batteryCB)(void *, avrcp_battery_status_t) = nullptr;
