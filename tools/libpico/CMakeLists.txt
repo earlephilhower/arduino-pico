@@ -310,13 +310,19 @@ target_link_libraries(ipv4-ipv6-bt-big-${cpu}
     ${picow_bt_link_libraries}
 )
 
+foreach(tgt ipv4 ipv4-ipv6 ipv4-big ipv4-ipv6-big ipv4-bt ipv4-ipv6-bt ipv4-bt-big ipv4-ipv6-bt-big)
+    add_custom_command(TARGET ${tgt}-${cpu} POST_BUILD
+        COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a atomic.c.o bit_ops_aeabi.S.o boot_lock.c.o bootrom.c.o bootrom_lock.c.o claim.c.o clocks.c.o critical_section.c.o crt0.S.o datetime.c.o divider_hardware.S.o divider.S.o dma.c.o double_aeabi_rp2040.S.o double_init_rom_rp2040.c.o double_math.c.o double_v1_rom_shim_rp2040.S.o exception.c.o flash.c.o flash.c.o float_aeabi_rp2040.S.o float_init_rom_rp2040.c.o float_math.c.o float_v1_rom_shim_rp2040.S.o gpio.c.o irq.c.o irq_handler_chain.S.o lock_core.c.o malloc.c.o mem_ops_aeabi.S.o mutex.c.o panic.c.o pheap.c.o pico_int64_ops_aeabi.S.o pio.c.o platform.c.o pll.c.o printf.c.o queue.c.o rand.c.o runtime.c.o runtime_init_clocks.c.o runtime_init.c.o runtime_init_stack_guard.c.o sem.c.o standard_binary_info.c.o sync.c.o sync_spin_lock.c.o ticks.c.o time.c.o timeout_helper.c.o timer.c.o uart.c.o unique_id.c.o vreg.c.o watchdog.c.o xip_cache.c.o xosc.c.o
+    )
+endforeach()
 foreach(tgt pico ipv4 ipv4-ipv6 ipv4-big ipv4-ipv6-big ipv4-bt ipv4-ipv6-bt ipv4-bt-big ipv4-ipv6-bt-big)
     add_custom_command(TARGET ${tgt}-${cpu} POST_BUILD
-        COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a pico_malloc.c.o newlib_interface.c.o stdlib.c.o stdio.c.o stdio_uart.c.o
+        COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a pico_malloc.c.o newlib_interface.c.o stdlib.c.o stdio.c.o stdio_uart.c.o new_delete.cpp.o
         COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a btstack_flash_bank.c.o  # Need to override with our own implementation
         COMMAND cp lib${tgt}-${cpu}.a ../../../lib/${cpu}/lib${tgt}.a
     )
 endforeach()
+
 add_custom_command(TARGET pico-${cpu} POST_BUILD
     COMMAND mkdir -p ../../../include/${cpu}/pico_base/pico
     COMMAND cp ./generated/pico_base/pico/version.h ../../../include/${cpu}/pico_base/pico/.
