@@ -312,7 +312,7 @@ target_link_libraries(ipv4-ipv6-bt-big-${cpu}
 
 foreach(tgt pico ipv4 ipv4-ipv6 ipv4-big ipv4-ipv6-big ipv4-bt ipv4-ipv6-bt ipv4-bt-big ipv4-ipv6-bt-big)
     add_custom_command(TARGET ${tgt}-${cpu} POST_BUILD
-        COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a pico_malloc.c.o newlib_interface.c.o stdlib.c.o stdio.c.o stdio_uart.c.o
+        COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a pico_malloc.c.o newlib_interface.c.o stdlib.c.o stdio.c.o stdio_uart.c.o new_delete.cpp.o
         COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a btstack_flash_bank.c.o  # Need to override with our own implementation
         COMMAND cp lib${tgt}-${cpu}.a ../../../lib/${cpu}/lib${tgt}.a
     )
