@@ -676,8 +676,9 @@ void A2DPSink::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel
         volume_percentage = volume * 100 / 127;
         DEBUGV("AVRCP Target    : Volume set to %d%% (%d)\n", volume_percentage, volume);
         _consumer->setVolume(volume);
-        if(_volumeCB)
-          _volumeCB(_volumeData, volume);
+        if (_volumeCB) {
+            _volumeCB(_volumeData, volume);
+        }
         break;
 
     case AVRCP_SUBEVENT_OPERATION:
@@ -775,7 +776,7 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
         DEBUGV("A2DP  Sink      : Streaming connection is established, address %s, cid 0x%02x, local seid %d\n",
                bd_addr_to_str(a2dp_conn->addr), a2dp_conn->a2dp_cid, a2dp_conn->a2dp_local_seid);
         memcpy(_sourceAddress, a2dp_conn->addr, sizeof(_sourceAddress));
-        
+
         _connected = true;
         if (_connectCB) {
             _connectCB(_connectData, true);
