@@ -10,9 +10,6 @@
 [submodule "libraries/LittleFS/lib/littlefs"]
 	path = libraries/LittleFS/lib/littlefs
 	url = https://github.com/littlefs-project/littlefs.git
-[submodule "libraries/SdFat"]
-	path = libraries/ESP8266SdFat
-	url = https://github.com/earlephilhower/ESP8266SdFat.git
 [submodule "libraries/Keyboard"]
 	path = libraries/HID_Keyboard
 	url = https://github.com/earlephilhower/Keyboard.git
@@ -49,3 +46,6 @@
 [submodule "libraries/ESPHost"]
 	path = libraries/ESPHost
 	url = https://github.com/Networking-for-Arduino/ESPHost.git
+[submodule "libraries/SdFat"]
+	path = libraries/SdFat
+	url = https://github.com/greiman/SdFat.git

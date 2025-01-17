@@ -114,7 +114,7 @@ void setup() {
   Serial.println();
 
   // print the type and size of the first FAT-type volume
-  uint32_t volumesize;
+  uint64_t volumesize;
   Serial.print("Volume type is:    FAT");
   Serial.println(SD.fatType(), DEC);
 
@@ -130,7 +130,7 @@ void setup() {
   Serial.println((float)volumesize / 1024.0);
 
   Serial.print("Card size:  ");
-  Serial.println((float)SD.size() / 1000);
+  Serial.println((float)SD.size64() / 1000);
 
   FSInfo fs_info;
   SDFS.info(fs_info);

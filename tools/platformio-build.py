@@ -225,6 +225,14 @@ env.Append(
         "-std=gnu++17",
     ],
 
+    CPPDEFINES=[
+        # SdFat definitions required for SDFS
+        ("FILE_COPY_CONSTRUCTOR_SELECT", "FILE_COPY_CONSTRUCTOR_PUBLIC"),
+        ("USE_UTF8_LONG_NAMES", "1"),
+        ("SDFAT_FILE_TYPE", "3"),
+        ("DISABLE_FS_H_WARNING", "1")
+    ],
+
     CPPPATH=[
         os.path.join(FRAMEWORK_DIR, "cores", "rp2040"),
         os.path.join(FRAMEWORK_DIR, "cores", "rp2040", "api", "deprecated"),
