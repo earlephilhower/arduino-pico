@@ -156,7 +156,7 @@ int ADCInput::available() {
     if (!_running) {
         return 0;
     } else {
-        return _arb->available();
+        return _arb->available() + _isHolding ? sizeof(int16_t) : 0;
     }
 }
 
