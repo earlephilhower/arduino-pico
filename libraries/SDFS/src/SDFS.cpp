@@ -63,13 +63,13 @@ FileImplPtr SDFSImpl::open(const char* path, OpenMode openMode, AccessMode acces
         }
         free(pathStr);
     }
-    File32 fd = _fs.open(path, flags);
+    FsFile fd = _fs.open(path, flags);
     if (!fd) {
         DEBUGV("SDFSImpl::openFile: fd=%p path=`%s` openMode=%d accessMode=%d",
                &fd, path, openMode, accessMode);
         return FileImplPtr();
     }
-    auto sharedFd = std::make_shared<File32>(fd);
+    auto sharedFd = std::make_shared<FsFile>(fd);
     return std::make_shared<SDFSFileImpl>(this, sharedFd, path);
 }
 
@@ -88,7 +88,7 @@ DirImplPtr SDFSImpl::openDir(const char* path) {
     }
     // At this point we have a name of "/blah/blah/blah" or "blah" or ""
     // If that references a directory, just open it and we're done.
-    File32 dirFile;
+    FsFile dirFile;
     const char *filter = "";
     if (!pathStr[0]) {
         // openDir("") === openDir("/")
@@ -133,7 +133,7 @@ DirImplPtr SDFSImpl::openDir(const char* path) {
         DEBUGV("SDFSImpl::openDir: path=`%s`\n", path);
         return DirImplPtr();
     }
-    auto sharedDir = std::make_shared<File32>(dirFile);
+    auto sharedDir = std::make_shared<FsFile>(dirFile);
     auto ret = std::make_shared<SDFSDirImpl>(filter, this, sharedDir, pathStr);
     free(pathStr);
     return ret;

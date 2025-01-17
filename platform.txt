@@ -51,7 +51,7 @@ compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-ignored-qualif
 
 compiler.netdefines={build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
 compiler.psramdefines={build.psram_cs} {build.psram_freq}
-compiler.defines={build.led} {build.usbstack_flags} {build.usbpid} {build.usbvid} {build.usbpwr} {compiler.psramdefines} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} {build.variantdefines} -DARDUINO_VARIANT="{build.variant}" -DPICO_FLASH_SIZE_BYTES={build.flash_total} "@{runtime.platform.path}/lib/{build.chip}/platform_def.txt"
+compiler.defines={build.led} {build.usbstack_flags} {build.usbpid} {build.usbvid} {build.usbpwr} {compiler.psramdefines} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}' {compiler.netdefines} {build.sdfatdefines} {build.variantdefines} -DARDUINO_VARIANT="{build.variant}" -DPICO_FLASH_SIZE_BYTES={build.flash_total} "@{runtime.platform.path}/lib/{build.chip}/platform_def.txt"
 compiler.includes="-iprefix{runtime.platform.path}/" "@{runtime.platform.path}/lib/{build.chip}/platform_inc.txt" "@{runtime.platform.path}/lib/core_inc.txt" "-I{runtime.platform.path}/include"
 compiler.flags={build.toolchainopts} -ffunction-sections -fdata-sections {build.flags.exceptions} {build.flags.stackprotect} {build.picodebugflags}
 compiler.wrap="@{runtime.platform.path}/lib/{build.chip}/platform_wrap.txt" "@{runtime.platform.path}/lib/core_wrap.txt"
@@ -114,6 +114,7 @@ build.espwifitype=
 build.debugscript=picoprobe_cmsis_dap.tcl
 build.picodebugflags=
 build.variantdefines=
+build.sdfatdefines=-DFILE_COPY_CONSTRUCTOR_SELECT=FILE_COPY_CONSTRUCTOR_PUBLIC -DUSE_UTF8_LONG_NAMES=1 -DSDFAT_FILE_TYPE=3 -DDISABLE_FS_H_WARNING=1
 
 # Allow Pico boards to be auto-discovered by the IDE
 #discovery.rp2040.pattern={runtime.tools.pqt-python3.path}/python3 -I "{runtime.platform.path}/tools/pluggable_discovery.py"
