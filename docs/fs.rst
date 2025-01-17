@@ -174,6 +174,23 @@ second SPI port, ``SPI1``.  Just use the following call in place of
 
     SD.begin(cspin, SPI1);
 
+Enabling SDIO operation for SD
+------------------------------
+SDIO support is available thanks to SdFat implementing a PIO-based SDIO controller.
+This mode can significantly increase IO performance to SD cards but it requires that
+all 4 DAT0..DAT3 lines to be wired to the Pico (most SD breakout boards only provide
+1-but SPI mode of operation).
+
+To enable SDIO mode, simply specify the SD_CLK, SD_CMD, and SD_DAT0 GPIO pins.  The clock
+and command pins can be any GPIO (not limited to legal SPI pins).  The DAT0 pin can be any
+GPIO with remaining DAT1...3 pins consecutively connected.
+
+..code:: cpp
+
+    SD.begin(RP_CLK_GPIO, RP_CMD_GPIO, RP_DAT0_GPIO);
+
+No other changes are required in the application to take advantage of this high
+performance mode.
 
 Using VFS (Virtual File System) for POSIX support
 -------------------------------------------------
