@@ -42,7 +42,6 @@ const int RP_CLK_GPIO = -1; // Set to CLK GPIO
 const int RP_CMD_GPIO = -1; // Set to CMD GPIO
 const int RP_DAT0_GPIO = -1; // Set to DAT0 GPIO. DAT1..3 must be consecutively connected.
 
-
 // include the SD library:
 #include <SPI.h>
 #include <SD.h>
