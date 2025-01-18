@@ -42,8 +42,8 @@ public:
         return SDFS.begin();
     }
 
-    bool begin(uint8_t clkPin, uint8_t cmdPin, uint8_t dat0Pin, uint32_t cfg = SD_SCK_MHZ(50)) {
-        SDFS.setConfig(SDFSConfig(clkPin, cmdPin, dat0Pin, cfg));
+    bool begin(uint8_t clkPin, uint8_t cmdPin, uint8_t dat0Pin) {
+        SDFS.setConfig(SDFSConfig(clkPin, cmdPin, dat0Pin));
         return SDFS.begin();
     }
 
