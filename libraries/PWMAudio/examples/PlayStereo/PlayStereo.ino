@@ -24,7 +24,7 @@ double sineTable[128]; // Precompute sine wave in 128 steps
 
 unsigned int cnt = 0;
 void cb() {
-  while (pwm.availableForWrite() >= 2 * sizeof(int16_t)) {
+  while (pwm.availableForWrite() >= 2 * (int)sizeof(int16_t)) {
     double now = ((double)cnt) / (double)freq;
     int fl = freqL << 7; // Prescale by 128 to avoid FP math later on
     int fr = freqR << 7; // Prescale by 128 to avoid FP math later on

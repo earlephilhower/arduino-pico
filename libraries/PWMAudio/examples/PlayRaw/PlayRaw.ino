@@ -17,7 +17,7 @@ PWMAudio pwm(1);
 unsigned int count = 0;
 
 void cb() {
-  while (pwm.availableForWrite() > sizeof(int16_t)) {
+  while (pwm.availableForWrite() > (int)sizeof(int16_t)) {
     pwm.write(*p++);
     count += 2;
     if (count >= sizeof(out_raw)) {
