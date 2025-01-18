@@ -46,7 +46,7 @@ public:
     static constexpr uint32_t FSId = 0x53444653;
 
     SDFSConfig(uint8_t csPin = 4, uint32_t spi = SD_SCK_MHZ(10), HardwareSPI &port = SPI) : FSConfig(FSId, false), _sdio(false), _clkPin(255), _csPin(csPin), _cmdPin(255), _dat0Pin(255), _part(0), _spiSettings(spi), _spi(&port)  { }
-    SDFSConfig(uint8_t clkPin, uint8_t cmdPin, uint8_t dataPin, uint32_t spi = SD_SCK_MHZ(10)) : FSConfig(FSId, false), _sdio(true), _clkPin(clkPin), _cmdPin(cmdPin), _dat0Pin(dataPin), _part(0), _spiSettings(spi), _spi(nullptr)  { }
+    SDFSConfig(uint8_t clkPin, uint8_t cmdPin, uint8_t dataPin) : FSConfig(FSId, false), _sdio(true), _clkPin(clkPin), _cmdPin(cmdPin), _dat0Pin(dataPin), _part(0), _spiSettings(SD_SCK_MHZ(1)), _spi(nullptr)  { }
 
     SDFSConfig setAutoFormat(bool val = true) {
         _autoFormat = val;
