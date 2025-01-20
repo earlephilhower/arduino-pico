@@ -33,7 +33,6 @@
 
 static std::map<const pio_program_t *, int> __pioMap[PIOCNT];
 static bool __pioAllocated[PIOCNT];
-static bool __pioHighGPIO[PIOCNT];
 auto_init_mutex(_pioMutex);
 
 PIOProgram::PIOProgram(const pio_program_t *pgm) {
@@ -64,16 +63,16 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     return ret;
 #endif
 
-    bool needsHigh = (start + cnt) >= 32;
-    DEBUGV("PIOProgram %p: Searching for high=%d, pins %d-%d\n", _pgm, needsHigh ? 1 : 0, start, start + cnt - 1);
+    uint gpioBaseNeeded = ((start + cnt) >= 32) ? 16 : 0;
+    DEBUGV("PIOProgram %p: Searching for base=%d, pins %d-%d\n", _pgm, gpioBaseNeeded, start, start + cnt - 1);
 
     // If it's already loaded into PIO IRAM, try and allocate in that specific PIO
     for (int o = 0; o < PIOCNT; o++) {
         auto p = __pioMap[o].find(_pgm);
-        if ((p != __pioMap[o].end()) && (__pioHighGPIO[o] == needsHigh)) {
+        if ((p != __pioMap[o].end()) && (pio_get_gpio_base(pio_get_instance(o)) == gpioBaseNeeded)) {
             int idx = pio_claim_unused_sm(pi[o], false);
             if (idx >= 0) {
-                DEBUGV("PIOProgram %p: Reusing IMEM ON PIO %p(high=%d) for pins %d-%d\n", _pgm, pi[o], __pioHighGPIO[o] ? 1 : 0, start, start + cnt - 1);
+                DEBUGV("PIOProgram %p: Reusing IMEM ON PIO %p(base=%d) for pins %d-%d\n", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
                 _pio = pi[o];
                 _sm = idx;
                 *pio = pi[o];
@@ -86,12 +85,12 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
 
     // Not in any PIO IRAM, so try and add
     for (int o = 0; o < PIOCNT; o++) {
-        if (__pioAllocated[o] && (__pioHighGPIO[o] == needsHigh)) {
+        if (__pioAllocated[o] && (pio_get_gpio_base(pio_get_instance(o)) == gpioBaseNeeded)) {
             DEBUGV("PIOProgram: Checking PIO %p\n", pi[o]);
             if (pio_can_add_program(pi[o], _pgm)) {
                 int idx = pio_claim_unused_sm(pi[o], false);
                 if (idx >= 0) {
-                    DEBUGV("PIOProgram %p: Adding IMEM ON PIO %p(high=%d) for pins %d-%d\n", _pgm, pi[o], __pioHighGPIO[o] ? 1 : 0, start, start + cnt - 1);
+                    DEBUGV("PIOProgram %p: Adding IMEM ON PIO %p(base=%d) for pins %d-%d\n", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
                     int off = pio_add_program(pi[o], _pgm);
                     __pioMap[o].insert({_pgm, off});
                     _pio = pi[o];
@@ -123,8 +122,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
         }
         assert(!__pioAllocated[o]);
         __pioAllocated[o]  = true;
-        __pioHighGPIO[o] = needsHigh;
-        DEBUGV("PIOProgram %p: Allocating new PIO %p(high=%d) for pins %d-%d\n", _pgm, pi[o], __pioHighGPIO[o] ? 1 : 0, start, start + cnt - 1);
+        DEBUGV("PIOProgram %p: Allocating new PIO %p(base=%d) for pins %d-%d\n", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
         __pioMap[o].insert({_pgm, off});
         _pio = pi[o];
         _sm = idx;
