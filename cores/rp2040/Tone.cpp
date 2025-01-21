@@ -71,10 +71,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         return;    // Weird deadlock case
     }
 
-    int us = 1'000'000 / frequency / 2;
-    if (us < 5) {
-        us = 5;
-    }
+    unsigned int delay = (RP2040::f_cpu() + frequency) / (frequency * 2) - 3; // rounded
     auto entry = _toneMap.find(pin);
     Tone *newTone;
     if (entry == _toneMap.end()) {
@@ -99,7 +96,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         tone2_program_init(newTone->pio, newTone->sm, newTone->off, pin);
     }
     pio_sm_clear_fifos(newTone->pio, newTone->sm); // Remove any old updates that haven't yet taken effect
-    pio_sm_put_blocking(newTone->pio, newTone->sm, RP2040::usToPIOCycles(us));
+    pio_sm_put_blocking(newTone->pio, newTone->sm, delay);
     pio_sm_exec(newTone->pio, newTone->sm, pio_encode_pull(false, false));
     pio_sm_exec(newTone->pio, newTone->sm, pio_encode_mov(pio_x, pio_osr));
     pio_sm_set_enabled(newTone->pio, newTone->sm, true);
