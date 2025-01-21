@@ -18,7 +18,7 @@
 
 ; Side-set pin 0 is used for Tone output
 
-; OSR == Halfcycle count
+; OSR == Halfcycle count - 3
 
 .program tone2
 .side_set 1 opt
@@ -26,10 +26,11 @@
 ;    pull                     ; TXFIFO -> OSR, or X -> OSR if no new period
 ;    mov x, osr               ; OSR -> X
 
+.wrap_target
 high:
     pull noblock             ; Potentially grab new HALFCYCLECOUNT, OTW copy from backup in X
-    mov x, osr               ; OSR -> X
-    mov y, osr      side 1   ; HALFCYCLECOUNT -> Y
+    mov x, osr      side 1   ; OSR -> X
+    mov y, osr               ; HALFCYCLECOUNT -> Y
 highloop:
     jmp y-- highloop         ; while (y--) { /* noop delay */ }
 
@@ -38,7 +39,7 @@ low:
 lowloop:
     jmp y-- lowloop          ; while (y--) { /* noop delay */ }
 
-    jmp high                 ; GOTO high
+    .wrap                    ; GOTO high
 
 % c-sdk {
 static inline void tone2_program_init(PIO pio, uint sm, uint offset, uint pin) {
