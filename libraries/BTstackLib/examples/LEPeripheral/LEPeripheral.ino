@@ -82,7 +82,7 @@ void deviceDisconnectedCallback(BLEDevice * device) {
    @text In BTstack, the Read Callback is first called to query the size of the
    Characteristic Value, before it is called to provide the data.
    Both times, the size has to be returned. The data is only stored in the provided
-   buffer, if the buffer argeument is not NULL.
+   buffer, if the buffer argument is not NULL.
    If more than one dynamic Characteristics is used, the value handle is used
    to distinguish them.
 */
