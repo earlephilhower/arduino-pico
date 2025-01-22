@@ -161,7 +161,7 @@ bool MDNSResponder::_prepareMDNSMessage(MDNSResponder::stcMDNSSendParameter& p_r
     // Prepare header; count answers
     stcMDNS_MsgHeader msgHeader(p_rSendParameter.m_u16ID, p_rSendParameter.m_bResponse, 0,
                                 p_rSendParameter.m_bAuthorative);
-    // If this is a response, the answers are anwers,
+    // If this is a response, the answers are answers,
     // else this is a query or probe and the answers go into auth section
     uint16_t& ru16Answers
         = (p_rSendParameter.m_bResponse ? msgHeader.m_u16ANCount : msgHeader.m_u16NSCount);

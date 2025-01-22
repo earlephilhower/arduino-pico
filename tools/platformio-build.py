@@ -229,7 +229,6 @@ env.Append(
         # SdFat definitions required for SDFS
         ("FILE_COPY_CONSTRUCTOR_SELECT", "FILE_COPY_CONSTRUCTOR_PUBLIC"),
         ("USE_UTF8_LONG_NAMES", "1"),
-        ("SDFAT_FILE_TYPE", "3"),
         ("DISABLE_FS_H_WARNING", "1")
     ],
 
