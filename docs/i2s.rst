@@ -170,11 +170,6 @@ int availableForWrite()
 Returns the amount of bytes that can be written without
 potentially blocking.
 
-int availableForRead()
-~~~~~~~~~~~~~~~~~~~~~~~
-Returns the amount of bytes that can be read without
-potentially blocking.
-
 int read()
 ~~~~~~~~~~
 Reads a single sample of I2S data, whatever the I2S sample size is configured.

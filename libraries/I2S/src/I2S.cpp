@@ -579,16 +579,3 @@ int I2S::availableForWrite() {
         return avail;
     }
 }
-
-int I2S::availableForRead() {
-    if (!_running || !_isInput) {
-        return 0;
-    } else {
-        auto avail = _arbInput->available();
-        avail *= 4; // 4 samples per 32-bits
-        if (_bps < 24 && _isInput) {
-            avail += _isHolding / 8;
-        }
-        return avail;
-    }
-}

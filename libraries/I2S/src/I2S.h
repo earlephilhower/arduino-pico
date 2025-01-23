@@ -60,7 +60,6 @@ public:
 
     // from Stream
     virtual int available() override;
-    virtual int availableForRead();
     virtual int read() override;
     virtual int peek() override;
     virtual void flush() override;
