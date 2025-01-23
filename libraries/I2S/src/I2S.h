@@ -54,9 +54,6 @@ public:
 
     virtual bool begin() override;
     virtual bool end() override;
-    virtual bool getUnderflow() override {
-        return getOverUnderflow();
-    }
 
     // from Stream
     virtual int available() override;
@@ -76,14 +73,14 @@ public:
             return _isOutput ? _arbOutput->getOverUnderflow() : _arbInput->getOverUnderflow();
         }
     }
-    bool getInputOverUnderflow() {
+    bool getOverflow() {
         if (!_running || !_isInput) {
             return false;
         } else {
             return _arbInput->getOverUnderflow();
         }
     }
-    bool getOutputOverUnderflow() {
+    virtual bool getUnderflow() override {
         if (!_running || !_isOutput) {
             return false;
         } else {
