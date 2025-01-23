@@ -131,11 +131,11 @@ void getOverUnderflow()
 Returns a flag indicating if the I2S system ran our of data to send on output,
 or had to throw away data on input.
 
-void getInputOverUnderflow()
+void getOverflow()
 ~~~~~~~~~~~~~~~~~~~~~~~
 Returns a flag indicating if the I2S system had to throw away data on input.
 
-void getOutputOverUnderflow()
+void getUnderflow()
 ~~~~~~~~~~~~~~~~~~~~~~~
 Returns a flag indicating if the I2S system ran our of data to send on output.
 
