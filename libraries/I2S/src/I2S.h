@@ -26,7 +26,7 @@
 
 class I2S : public Stream, public AudioOutputBase {
 public:
-    I2S(PinMode direction = OUTPUT, pin_size_t bclk = 26, pin_size_t data_out = 28, pin_size_t data_in = 22, pin_size_t mclk = 25);
+    I2S(PinMode direction = OUTPUT, pin_size_t bclk = 26, pin_size_t data = 28, pin_size_t mclk = 25, pin_size_t data_rx = 22);
     virtual ~I2S();
 
     bool setBCLK(pin_size_t pin);
