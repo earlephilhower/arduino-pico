@@ -572,7 +572,7 @@ int I2S::availableForWrite() {
         return 0;
     } else {
         auto avail = _arbOutput->available();
-        avail *= 4; // 4 samples per 32-bits
+        avail *= 4; // 4 bytes per 32-bits
         if (_bps < 24 && _isInput) {
             avail += _isHolding / 8;
         }
