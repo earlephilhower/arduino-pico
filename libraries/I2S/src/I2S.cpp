@@ -375,7 +375,7 @@ int I2S::available() {
 }
 
 int I2S::read() {
-    if (!_running || _isOutput) {
+    if (!_running || !_isInput) {
         return 0;
     }
 
@@ -411,7 +411,7 @@ int I2S::read() {
 }
 
 int I2S::peek() {
-    if (!_running || _isOutput) {
+    if (!_running || !_isInput) {
         return 0;
     }
     if (!_hasPeeked) {
