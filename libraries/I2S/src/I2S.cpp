@@ -307,7 +307,6 @@ int I2S::available() {
         return 0;
     } else {
         auto avail = _arb->available();
-        avail *= 4; // 4 samples per 32-bits
         if (_bps < 24 && !_isOutput) {
             avail += _isHolding / 8;
         }

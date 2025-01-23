@@ -262,7 +262,6 @@ int A2DPSource::availableForWrite() {
     } else {
         avail = _pcmBufferSize - _pcmWriter + _pcmReader - 1;
     }
-    avail /= sizeof(uint32_t); // availableForWrite always 32b sample pairs in this core...
     return avail;
 }
 

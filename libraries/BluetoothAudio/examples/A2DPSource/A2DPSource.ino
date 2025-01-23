@@ -80,7 +80,7 @@ void setup() {
 }
 
 void loop() {
-  while ((size_t)a2dp.availableForWrite() > sizeof(pcm)) {
+  while ((size_t)a2dp.availableForWrite() >= sizeof(pcm)) {
     fillPCM();
     a2dp.write((const uint8_t *)pcm, sizeof(pcm));
   }

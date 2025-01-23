@@ -259,12 +259,12 @@ int AudioBufferManager::available() {
         return 0;
     }
 
-    int avail = _wordsPerBuffer - _userOff; // Currently available in this buffer
+    int avail = (_wordsPerBuffer - _userOff) * sizeof(uint32_t); // Currently available in this buffer
 
     // Each add'l buffer has wpb spaces...
     auto x = p->next;
     while (x) {
-        avail += _wordsPerBuffer;
+        avail += _wordsPerBuffer * sizeof(uint32_t);
         x = x->next;
     }
     return avail;

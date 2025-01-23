@@ -46,7 +46,7 @@ void silenceOscillators() {
 
 // PWM callback, generates sum of online oscillators
 void fill() {
-  int num_samples = pwm.availableForWrite() / 2;
+  int num_samples = pwm.availableForWrite() / (2 * sizeof(int16_t));
   int16_t buff[32 * 2];
 
   while (num_samples > 63) {
