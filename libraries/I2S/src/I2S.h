@@ -77,14 +77,14 @@ public:
             return _isOutput ? _arbOutput->getOverUnderflow() : _arbInput->getOverUnderflow();
         }
     }
-    bool getOverflow() {
+    bool getInputOverUnderflow() {
         if (!_running || !_isInput) {
             return false;
         } else {
             return _arbInput->getOverUnderflow();
         }
     }
-    bool getUnderflow() {
+    bool getOutputOverUnderflow() {
         if (!_running || !_isOutput) {
             return false;
         } else {
