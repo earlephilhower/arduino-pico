@@ -43,7 +43,8 @@ due to limitations of the PIO state machines.  Call this before ``I2S::begin()``
 
 bool setDATA(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sets the DOUT or DIN pin of the I2S device.  Any pin may be used.
+Sets the DOUT or DIN pin of the I2S device.  Any pin may be used. In bi-directional
+operation, must use ``I2S::setDOUT()`` and ``I2S::setDIN`` instead.
 Call before ``I2S::begin()``
 
 bool setDOUT(pin_size_t pin)

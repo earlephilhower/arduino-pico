@@ -88,7 +88,7 @@ bool I2S::setMCLK(pin_size_t pin) {
 }
 
 bool I2S::setDATA(pin_size_t pin) {
-    if (_running || (pin >= __GPIOCNT)) {
+    if (_running || (pin >= __GPIOCNT) || (_isOutput && _isInput)) {
         return false;
     }
     if (_isOutput) {
