@@ -26,11 +26,13 @@
 
 class I2S : public Stream, public AudioOutputBase {
 public:
-    I2S(PinMode direction = OUTPUT, pin_size_t bclk = 26, pin_size_t data = 28, pin_size_t mclk = 25);
+    I2S(PinMode direction = OUTPUT, pin_size_t bclk = 26, pin_size_t data_out = 28, pin_size_t data_in = 22, pin_size_t mclk = 25);
     virtual ~I2S();
 
     bool setBCLK(pin_size_t pin);
     bool setDATA(pin_size_t pin);
+    bool setDOUT(pin_size_t pin);
+    bool setDIN(pin_size_t pin);
     bool setMCLK(pin_size_t pin);
     virtual bool setBitsPerSample(int bps) override;
     virtual bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0) override;
@@ -58,6 +60,7 @@ public:
 
     // from Stream
     virtual int available() override;
+    virtual int availableForRead();
     virtual int read() override;
     virtual int peek() override;
     virtual void flush() override;
@@ -71,7 +74,21 @@ public:
         if (!_running) {
             return false;
         } else {
-            return _arb->getOverUnderflow();
+            return _isOutput ? _arbOutput->getOverUnderflow() : _arbInput->getOverUnderflow();
+        }
+    }
+    bool getInputOverUnderflow() {
+        if (!_running || !_isInput) {
+            return false;
+        } else {
+            return _arbInput->getOverUnderflow();
+        }
+    }
+    bool getOutputOverUnderflow() {
+        if (!_running || !_isOutput) {
+            return false;
+        } else {
+            return _arbOutput->getOverUnderflow();
         }
     }
 
@@ -124,6 +141,7 @@ public:
 private:
     pin_size_t _pinBCLK;
     pin_size_t _pinDOUT;
+    pin_size_t _pinDIN;
     pin_size_t _pinMCLK;
     int _bps;
     int _freq;
@@ -134,6 +152,7 @@ private:
     bool _isLSBJ;
     bool _isTDM;
     int _tdmChannels;
+    bool _isInput;
     bool _isOutput;
     bool _swapClocks;
     bool _MCLKenabled;
@@ -150,13 +169,18 @@ private:
     int32_t _holdWord = 0;
     int _isHolding = 0;
 
-    void (*_cb)();
-    void (*_cbd)(void *);
-    void *_cbdata;
+    void (*_cbInput)();
+    void (*_cbdInput)(void *);
+    void *_cbdataInput;
+
+    void (*_cbOutput)();
+    void (*_cbdOutput)(void *);
+    void *_cbdataOutput;
 
     void MCLKbegin();
 
-    AudioBufferManager *_arb;
+    AudioBufferManager *_arbInput;
+    AudioBufferManager *_arbOutput;
     PIOProgram *_i2s;
     PIOProgram *_i2sMCLK;
     PIO _pio, _pioMCLK;
