@@ -164,7 +164,7 @@ size_t write(const uint8_t \*buffer, size_t size)
 Transfers number of bytes from an application buffer to the I2S output buffer.
 Be aware that ``size`` is in *bytes** and not samples.  Size must be a multiple
 of **4 bytes**.  Will not block, so check the return value to find out how
-many bytes were actually written.
+many 32-bit words were actually written.
 
 int availableForWrite()
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -180,6 +180,13 @@ int peek()
 ~~~~~~~~~~
 Returns the next sample to be read from the I2S buffer (without actually
 removing it).
+
+size_t read(const uint8_t \*buffer, size_t size)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Transfers number of bytes from the I2S input buffer to an application buffer.
+Be aware that ``size`` is in *bytes** and not samples.  Size must be a multiple
+of **4 bytes**.  Will not block, so check the return value to find out how
+many 32-bit words were actually read.
 
 void onTransmit(void (\*fn)(void))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

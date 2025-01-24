@@ -559,6 +559,14 @@ bool I2S::read32(int32_t *l, int32_t *r) {
     return true;
 }
 
+size_t I2S::read(const uint8_t *buffer, size_t size) {
+    // We can only read 32-bit chunks here
+    if (size & 0x3 || !_running || !_isInput) {
+        return 0;
+    }
+    return _arbInput->read((const uint32_t *)buffer, size / sizeof(uint32_t), false);
+}
+
 size_t I2S::write(const uint8_t *buffer, size_t size) {
     // We can only write 32-bit chunks here
     if (size & 0x3 || !_running || !_isOutput) {
