@@ -30,6 +30,12 @@ I2S(INPUT)
 Creates an I2S input port.  Needs to be connected up to the
 desired pins (see below) and started before any input can happen.
 
+I2S(INPUT_PULLUP)
+~~~~~~~~~~~~~~~~~
+Creates a bi-directional I2S input and output port.  Needs to be
+connected up to the desired pins (see below) and started before
+any input or output can happen.
+
 bool setBCLK(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the BCLK pin of the I2S device.  The LRCLK/word clock will be ``pin + 1``
@@ -37,7 +43,18 @@ due to limitations of the PIO state machines.  Call this before ``I2S::begin()``
 
 bool setDATA(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sets the DOUT or DIN pin of the I2S device.  Any pin may be used.
+Sets the DOUT or DIN pin of the I2S device.  Any pin may be used. In bi-directional
+operation, must use ``I2S::setDOUT()`` and ``I2S::setDIN`` instead.
+Call before ``I2S::begin()``
+
+bool setDOUT(pin_size_t pin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the DOUT pin of the I2S device.  Any pin may be used.
+Call before ``I2S::begin()``
+
+bool setDIN(pin_size_t pin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the DIN pin of the I2S device.  Any pin may be used.
 Call before ``I2S::begin()``
 
 bool setMCLK(pin_size_t pin)
@@ -114,6 +131,14 @@ void getOverUnderflow()
 ~~~~~~~~~~~~~~~~~~~~~~~
 Returns a flag indicating if the I2S system ran our of data to send on output,
 or had to throw away data on input.
+
+void getOverflow()
+~~~~~~~~~~~~~~~~~~~~~~~
+Returns a flag indicating if the I2S system had to throw away data on input.
+
+void getUnderflow()
+~~~~~~~~~~~~~~~~~~~~~~~
+Returns a flag indicating if the I2S system ran our of data to send on output.
 
 size_t write(uint8_t/int8_t/int16_t/int32_t)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
