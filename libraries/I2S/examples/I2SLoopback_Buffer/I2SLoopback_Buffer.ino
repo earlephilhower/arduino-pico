@@ -26,8 +26,8 @@ void setup() {
     count = i2s.read((const uint8_t *)&buffer, SIZE * sizeof(int16_t)) * sizeof(uint32_t) / sizeof(int16_t);
     index = 0;
     while (index < count) {
-        buffer[index++]; // left
-        buffer[index++]; // right
+      buffer[index++]; // left
+      buffer[index++]; // right
     }
     i2s.write((const uint8_t *)&buffer, count * sizeof(int16_t));
   }
