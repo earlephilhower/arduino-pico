@@ -244,7 +244,7 @@ bool AudioBufferManager::read(uint32_t *v, bool sync) {
     return true;
 }
 
-size_t AudioBufferManager::read(const uint32_t *v, size_t words, bool sync) {
+size_t AudioBufferManager::read(uint32_t *v, size_t words, bool sync) {
     size_t read = 0;
 
     if (!_running || _isOutput) {

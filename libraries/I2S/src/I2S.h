@@ -128,7 +128,7 @@ public:
     bool read32(int32_t *l, int32_t *r);
 
     // Read samples into buffer
-    size_t read(const uint8_t *buffer, size_t size);
+    size_t read(uint8_t *buffer, size_t size);
 
     // Note that these callback are called from **INTERRUPT CONTEXT** and hence
     // should be in RAM, not FLASH, and should be quick to execute.

@@ -181,7 +181,7 @@ int peek()
 Returns the next sample to be read from the I2S buffer (without actually
 removing it).
 
-size_t read(const uint8_t \*buffer, size_t size)
+size_t read(uint8_t \*buffer, size_t size)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Transfers number of bytes from the I2S input buffer to an application buffer.
 Be aware that ``size`` is in *bytes** and not samples.  Size must be a multiple
