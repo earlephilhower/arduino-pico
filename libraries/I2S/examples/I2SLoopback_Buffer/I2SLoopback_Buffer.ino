@@ -23,7 +23,7 @@ void setup() {
 
   size_t count, index;
   while (1) {
-    count = i2s.read((const uint8_t *)&buffer, SIZE * sizeof(int16_t)) * sizeof(uint32_t) / sizeof(int16_t);
+    count = i2s.read((uint8_t *)&buffer, SIZE * sizeof(int16_t)) * sizeof(uint32_t) / sizeof(int16_t);
     index = 0;
     while (index < count) {
       // Reduce volume by half
