@@ -27,14 +27,14 @@
 
 class SoftwareSPI : public arduino::HardwareSPI {
 public:
-/**
-@brief Create a PIO-based SPI instance
+    /**
+        @brief Create a PIO-based SPI instance
 
-@param [in] sck SCK GPIO
-@param [in] miso MISO GPIO
-@param [in] mosi MOSI GPIO
-@param [in] cs Optional CS pin for HW CS, must be SCK+1
-*/
+        @param [in] sck SCK GPIO
+        @param [in] miso MISO GPIO
+        @param [in] mosi MOSI GPIO
+        @param [in] cs Optional CS pin for HW CS, must be SCK+1
+    */
     SoftwareSPI(pin_size_t sck, pin_size_t miso, pin_size_t mosi, pin_size_t cs = -1);
 
     // Send or receive 8- or 16-bit data.  Returns read back value

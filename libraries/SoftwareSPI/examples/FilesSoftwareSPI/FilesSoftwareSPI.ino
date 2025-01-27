@@ -8,7 +8,7 @@
    ** CS            - GPIO1
    ** MISO (AKA RX) - GPIO2
    ** MOSI (AKA TX) - GPIO3
-   
+
   created   Nov 2010
   by David A. Mellis
   modified 9 Apr 2012
