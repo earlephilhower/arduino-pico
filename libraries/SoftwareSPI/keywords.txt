@@ -1,0 +1,43 @@
+#######################################
+# Syntax Coloring Map SPI
+#######################################
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+SoftwareSPI	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+end	KEYWORD2
+beginTransaction	KEYWORD2
+endTransaction	KEYWORD2
+SPISettings	KEYWORD2
+transfer	KEYWORD2
+transfer16	KEYWORD2
+setBitOrder	KEYWORD2
+setDataMode	KEYWORD2
+setClockDivider	KEYWORD2
+setSCK	KEYWORD2
+setMOSI	KEYWORD2
+setMISO	KEYWORD2
+setCS	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+SPI_CLOCK_DIV4	LITERAL1
+SPI_CLOCK_DIV16	LITERAL1
+SPI_CLOCK_DIV64	LITERAL1
+SPI_CLOCK_DIV128	LITERAL1
+SPI_CLOCK_DIV2	LITERAL1
+SPI_CLOCK_DIV8	LITERAL1
+SPI_CLOCK_DIV32	LITERAL1
+SPI_CLOCK_DIV64	LITERAL1
+SPI_MODE0	LITERAL1
+SPI_MODE1	LITERAL1
+SPI_MODE2	LITERAL1
+SPI_MODE3	LITERAL1
