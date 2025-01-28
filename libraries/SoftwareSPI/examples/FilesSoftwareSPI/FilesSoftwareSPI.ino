@@ -37,6 +37,11 @@ void setup() {
     delay(100);  // wait for serial port to connect. Needed for native USB port only
   } while (!Serial);
 
+  if (_CS != _SCK + 1) {
+    Serial.printf("Error, CS (%d) must be defined as SCK (%d) + 1 \n", _CS, _SCK);
+    return;
+  }
+
   Serial.print("Initializing SD card...");
 
   bool sdInitialized = false;

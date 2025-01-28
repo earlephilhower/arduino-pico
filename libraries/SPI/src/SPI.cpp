@@ -45,47 +45,6 @@ SPIClassRP2040::SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pi
     _CS = cs;
 }
 
-inline spi_cpol_t SPIClassRP2040::cpol() {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPOL_0;
-    case SPI_MODE1:
-        return SPI_CPOL_0;
-    case SPI_MODE2:
-        return SPI_CPOL_1;
-    case SPI_MODE3:
-        return SPI_CPOL_1;
-    }
-    // Error
-    return SPI_CPOL_0;
-}
-
-inline spi_cpha_t SPIClassRP2040::cpha() {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPHA_0;
-    case SPI_MODE1:
-        return SPI_CPHA_1;
-    case SPI_MODE2:
-        return SPI_CPHA_0;
-    case SPI_MODE3:
-        return SPI_CPHA_1;
-    }
-    // Error
-    return SPI_CPHA_0;
-}
-
-inline uint8_t SPIClassRP2040::reverseByte(uint8_t b) {
-    b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-    b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-    b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-    return b;
-}
-
-inline uint16_t SPIClassRP2040::reverse16Bit(uint16_t w) {
-    return (reverseByte(w & 0xff) << 8) | (reverseByte(w >> 8));
-}
-
 // The HW can't do LSB first, only MSB first, so need to bitreverse
 void SPIClassRP2040::adjustBuffer(const void *s, void *d, size_t cnt, bool by16) {
     if (_spis.getBitOrder() == MSBFIRST) {
@@ -94,13 +53,13 @@ void SPIClassRP2040::adjustBuffer(const void *s, void *d, size_t cnt, bool by16)
         const uint8_t *src = (const uint8_t *)s;
         uint8_t *dst = (uint8_t *)d;
         for (size_t i = 0; i < cnt; i++) {
-            *(dst++) = reverseByte(*(src++));
+            *(dst++) = _helper.reverseByte(*(src++));
         }
     } else { /* by16 */
         const uint16_t *src = (const uint16_t *)s;
         uint16_t *dst = (uint16_t *)d;
         for (size_t i = 0; i < cnt; i++) {
-            *(dst++) = reverse16Bit(*(src++));
+            *(dst++) = _helper.reverse16Bit(*(src++));
         }
     }
 }
@@ -110,11 +69,11 @@ byte SPIClassRP2040::transfer(uint8_t data) {
     if (!_initted) {
         return 0;
     }
-    data = (_spis.getBitOrder() == MSBFIRST) ? data : reverseByte(data);
-    DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
+    data = (_spis.getBitOrder() == MSBFIRST) ? data : _helper.reverseByte(data);
+    DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, _helper.cpol(_spis), _helper.cpha(_spis));
     hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
     spi_write_read_blocking(_spi, &data, &ret, 1);
-    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
+    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : _helper.reverseByte(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
 }
@@ -124,11 +83,11 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
     if (!_initted) {
         return 0;
     }
-    data = (_spis.getBitOrder() == MSBFIRST) ? data : reverse16Bit(data);
-    DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
+    data = (_spis.getBitOrder() == MSBFIRST) ? data : _helper.reverse16Bit(data);
+    DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, _helper.cpol(_spis), _helper.cpha(_spis));
     hw_write_masked(&spi_get_hw(_spi)->cr0, (16 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 16-bits
     spi_write16_read16_blocking(_spi, &data, &ret, 1);
-    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverse16Bit(ret);
+    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : _helper.reverse16Bit(ret);
     DEBUGSPI("SPI: read back %02x\n", ret);
     return ret;
 }
@@ -172,21 +131,14 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
     // If its LSB this isn't nearly as fun, we'll just let transfer(x) do it :(
     for (size_t i = 0; i < count; i++) {
         *rxbuff = transfer(*txbuff);
-        *rxbuff = (_spis.getBitOrder() == MSBFIRST) ? *rxbuff : reverseByte(*rxbuff);
+        *rxbuff = (_spis.getBitOrder() == MSBFIRST) ? *rxbuff : _helper.reverseByte(*rxbuff);
         txbuff++;
         rxbuff++;
     }
     DEBUGSPI("SPI::transfer completed\n");
 }
 
-#ifdef PICO_RP2350B
-#define GPIOIRQREGS 6
-#else
-#define GPIOIRQREGS 4
-#endif
-
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
-    noInterrupts(); // Avoid possible race conditions if IRQ comes in while main app is in middle of this
     DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)\n", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
     if (_initted && settings == _spis) {
         DEBUGSPI("SPI: Reusing existing initted SPI\n");
@@ -202,39 +154,15 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
             DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
         }
         _spis = settings;
-        spi_set_format(_spi, 8, cpol(), cpha(), SPI_MSB_FIRST);
+        spi_set_format(_spi, 8, _helper.cpol(_spis), _helper.cpha(_spis), SPI_MSB_FIRST);
         _initted = true;
     }
-    // Disable any IRQs that are being used for SPI
-    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    DEBUGSPI("SPI: IRQ masks before = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    for (auto entry : _usingIRQs) {
-        int gpio = entry.first;
-
-        // There is no gpio_get_irq, so manually twiddle the register
-        io_rw_32 *en_reg = &irq_ctrl_base->inte[gpio / 8];
-        uint32_t val = ((*en_reg) >> (4 * (gpio % 8))) & 0xf;
-        _usingIRQs.insert_or_assign(gpio, val);
-        DEBUGSPI("SPI: GPIO %d = %lu\n", gpio, val);
-        (*en_reg) ^= val << (4 * (gpio % 8));
-    }
-    DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    interrupts();
+    _helper.maskInterrupts();
 }
 
 void SPIClassRP2040::endTransaction(void) {
-    noInterrupts(); // Avoid race condition so the GPIO IRQs won't come back until all state is restored
     DEBUGSPI("SPI::endTransaction()\n");
-    // Re-enable IRQs
-    for (auto entry : _usingIRQs) {
-        int gpio = entry.first;
-        int mode = entry.second;
-        gpio_set_irq_enabled(gpio, mode, true);
-    }
-    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    (void) irq_ctrl_base;
-    DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    interrupts();
+    _helper.unmaskInterrupts();
 }
 
 bool SPIClassRP2040::transferAsync(const void *send, void *recv, size_t bytes) {
@@ -265,7 +193,7 @@ bool SPIClassRP2040::transferAsync(const void *send, void *recv, size_t bytes) {
             return false;
         }
         for (size_t i = 0; i < bytes; i++) {
-            _dmaBuffer[i] = reverseByte(txbuff[i]);
+            _dmaBuffer[i] = _helper.reverseByte(txbuff[i]);
         }
     }
     _dmaBytes = bytes;
@@ -312,7 +240,7 @@ bool SPIClassRP2040::finishedAsync() {
     spi_get_hw(_spi)->dmacr = 0;
     if (_spis.getBitOrder() != MSBFIRST) {
         for (int i = 0; i < _dmaBytes; i++) {
-            _rxFinalBuffer[i] = reverseByte(_rxFinalBuffer[i]);
+            _rxFinalBuffer[i] = _helper.reverseByte(_rxFinalBuffer[i]);
         }
         free(_dmaBuffer);
         _dmaBuffer = nullptr;

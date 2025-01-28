@@ -21,9 +21,9 @@
 #pragma once
 
 #include <Arduino.h>
+#include <SPI.h> // For SPIHelper
 #include <api/HardwareSPI.h>
 #include <hardware/spi.h>
-#include <map>
 
 class SoftwareSPI : public arduino::HardwareSPI {
 public:
@@ -77,20 +77,15 @@ public:
 
     // List of GPIO IRQs to disable during a transaction
     virtual void usingInterrupt(int interruptNumber) override {
-        _usingIRQs.insert({interruptNumber, 0});
+        _helper.usingInterrupt(interruptNumber);
     }
     virtual void notUsingInterrupt(int interruptNumber) override {
-        _usingIRQs.erase(interruptNumber);
+        _helper.notUsingInterrupt(interruptNumber);
     }
     virtual void attachInterrupt() override { /* noop */ }
     virtual void detachInterrupt() override { /* noop */ }
 
 private:
-    spi_cpol_t cpol();
-    spi_cpha_t cpha();
-    uint8_t reverseByte(uint8_t b);
-    uint16_t reverse16Bit(uint16_t w);
-    void adjustBuffer(const void *s, void *d, size_t cnt, bool by16);
     void _adjustPIO(int bits);
 
     PIOProgram *_spi;
@@ -104,6 +99,5 @@ private:
     bool _running; // SPI port active
     bool _initted; // Transaction begun
     int _bits;
-
-    std::map<int, int> _usingIRQs;
+    SPIHelper _helper;
 };

@@ -22,6 +22,10 @@ Wiznet5500lwIP eth(_CS, softSPI, _INT);
 void setup() {
   Serial.begin(115200);
   delay(5000);
+  if (_CS != _SCK + 1) {
+    Serial.printf("Error, CS (%d) must be defined as SCK (%d) + 1 \n", _CS, _SCK);
+    return;
+  }
   Serial.println();
   Serial.println();
   Serial.println("Starting Ethernet port");
