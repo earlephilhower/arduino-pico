@@ -43,66 +43,6 @@ SoftwareSPI::SoftwareSPI(pin_size_t sck, pin_size_t miso, pin_size_t mosi, pin_s
     _cs = cs;
 }
 
-inline spi_cpol_t SoftwareSPI::cpol() {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPOL_0;
-    case SPI_MODE1:
-        return SPI_CPOL_0;
-    case SPI_MODE2:
-        return SPI_CPOL_1;
-    case SPI_MODE3:
-        return SPI_CPOL_1;
-    }
-    // Error
-    return SPI_CPOL_0;
-}
-
-inline spi_cpha_t SoftwareSPI::cpha() {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPHA_0;
-    case SPI_MODE1:
-        return SPI_CPHA_1;
-    case SPI_MODE2:
-        return SPI_CPHA_0;
-    case SPI_MODE3:
-        return SPI_CPHA_1;
-    }
-    // Error
-    return SPI_CPHA_0;
-}
-
-inline uint8_t SoftwareSPI::reverseByte(uint8_t b) {
-    b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-    b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-    b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-    return b;
-}
-
-inline uint16_t SoftwareSPI::reverse16Bit(uint16_t w) {
-    return (reverseByte(w & 0xff) << 8) | (reverseByte(w >> 8));
-}
-
-// The HW can't do LSB first, only MSB first, so need to bitreverse
-void SoftwareSPI::adjustBuffer(const void *s, void *d, size_t cnt, bool by16) {
-    if (_spis.getBitOrder() == MSBFIRST) {
-        memcpy(d, s, cnt * (by16 ? 2 : 1));
-    } else if (!by16) {
-        const uint8_t *src = (const uint8_t *)s;
-        uint8_t *dst = (uint8_t *)d;
-        for (size_t i = 0; i < cnt; i++) {
-            *(dst++) = reverseByte(*(src++));
-        }
-    } else { /* by16 */
-        const uint16_t *src = (const uint16_t *)s;
-        uint16_t *dst = (uint16_t *)d;
-        for (size_t i = 0; i < cnt; i++) {
-            *(dst++) = reverse16Bit(*(src++));
-        }
-    }
-}
-
 void SoftwareSPI::_adjustPIO(int bits) {
     if (_bits == bits) {
         return; // Nothing to do!
@@ -130,8 +70,8 @@ byte SoftwareSPI::transfer(uint8_t data) {
     if (!_initted) {
         return 0;
     }
-    data = (_spis.getBitOrder() == MSBFIRST) ? data : reverseByte(data);
-    DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
+    data = (_spis.getBitOrder() == MSBFIRST) ? data : _helper.reverseByte(data);
+    DEBUGSPI("SoftwareSPI::transfer(%02x), cpol=%d, cpha=%d\n", data, _helper.cpol(_spis), _helper.cpha(_spis));
     _adjustPIO(8);
     io_rw_8 *txfifo = (io_rw_8 *) &_pio->txf[_sm];
     io_rw_8 *rxfifo = (io_rw_8 *) &_pio->rxf[_sm];
@@ -139,8 +79,8 @@ byte SoftwareSPI::transfer(uint8_t data) {
     *txfifo = data;
     while (pio_sm_is_rx_fifo_empty(_pio, _sm)) { /* noop wait for in data */ }
     ret = *rxfifo;
-    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverseByte(ret);
-    DEBUGSPI("SPI: read back %02x\n", ret);
+    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : _helper.reverseByte(ret);
+    DEBUGSPI("SoftwareSPI: read back %02x\n", ret);
     return ret;
 }
 
@@ -149,8 +89,8 @@ uint16_t SoftwareSPI::transfer16(uint16_t data) {
     if (!_initted) {
         return 0;
     }
-    data = (_spis.getBitOrder() == MSBFIRST) ? data : reverse16Bit(data);
-    DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, cpol(), cpha());
+    data = (_spis.getBitOrder() == MSBFIRST) ? data : _helper.reverse16Bit(data);
+    DEBUGSPI("SoftwareSPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, _helper.cpol(_spis), _helper.cpha(_spis));
     _adjustPIO(16);
     io_rw_16 *txfifo = (io_rw_16 *) &_pio->txf[_sm];
     io_rw_16 *rxfifo = (io_rw_16 *) &_pio->rxf[_sm];
@@ -158,8 +98,8 @@ uint16_t SoftwareSPI::transfer16(uint16_t data) {
     *txfifo = data;
     while (pio_sm_is_rx_fifo_empty(_pio, _sm)) { /* noop wait for in data */ }
     ret = *rxfifo;
-    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : reverse16Bit(ret);
-    DEBUGSPI("SPI: read back %04x\n", ret);
+    ret = (_spis.getBitOrder() == MSBFIRST) ? ret : _helper.reverse16Bit(ret);
+    DEBUGSPI("SoftwareSPI: read back %04x\n", ret);
     return ret;
 }
 
@@ -171,7 +111,7 @@ void SoftwareSPI::transfer(const void *csrc, void *cdest, size_t count) {
     if (!_initted) {
         return;
     }
-    DEBUGSPI("SPI::transfer(%p, %p %d)\n", csrc, cdest, count);
+    DEBUGSPI("SoftwareSPI::transfer(%p, %p %d)\n", csrc, cdest, count);
     const uint8_t *src = reinterpret_cast<const uint8_t *>(csrc);
     uint8_t *dest = reinterpret_cast<uint8_t *>(cdest);
     _adjustPIO(8);
@@ -184,7 +124,7 @@ void SoftwareSPI::transfer(const void *csrc, void *cdest, size_t count) {
         // We're going to hack like heck here and reverse the txbuf into the receive buff (because txbuff is const
         // Then by construction SPI will send before it received, we can use the rx buff to trans and recv
         for (size_t i = 0; i < count; i++) {
-            dest[i] = reverseByte(src[i]);
+            dest[i] = _helper.reverseByte(src[i]);
         }
         src = dest; // We'll transmit the flipped data...
     }
@@ -203,72 +143,35 @@ void SoftwareSPI::transfer(const void *csrc, void *cdest, size_t count) {
     if (_spis.getBitOrder() == !MSBFIRST) {
         // Now we have data in recv but also need to flip it before returning to the app
         for (size_t i = 0; i < count; i++) {
-            dest[i] = reverseByte(dest[i]);
+            dest[i] = _helper.reverseByte(dest[i]);
         }
     }
-    DEBUGSPI("SPI::transfer completed\n");
+    DEBUGSPI("SoftwareSPI::transfer completed\n");
 }
 
-#ifdef PICO_RP2350B
-#define GPIOIRQREGS 6
-#else
-#define GPIOIRQREGS 4
-#endif
-
 void SoftwareSPI::beginTransaction(SPISettings settings) {
-    noInterrupts(); // Avoid possible race conditions if IRQ comes in while main app is in middle of this
-    DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)\n", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
+    DEBUGSPI("SoftwareSPI::beginTransaction(clk=%lu, bo=%s)\n", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
     if (_initted && settings == _spis) {
-        DEBUGSPI("SPI: Reusing existing initted SPI\n");
+        DEBUGSPI("SoftwareSPI: Reusing existing initted SPI\n");
     } else {
         /* Only de-init if the clock changes frequency */
         if (settings.getClockFreq() != _spis.getClockFreq()) {
-            DEBUGSPI("SPI: initting SPI\n");
+            DEBUGSPI("SoftwareSPI: initting SPI\n");
             float divider = (float)rp2040.f_cpu() / (float)settings.getClockFreq();
             divider /= _hwCS ? 4.0f : 4.0f;
             pio_sm_set_clkdiv(_pio, _sm, divider);
-            DEBUGSPI("SPI: divider=%f\n", divider);
+            DEBUGSPI("SoftwareSPI: divider=%f\n", divider);
         }
         _spis = settings;
         // Note we can only change frequency, not CPOL/CPHA (which would be physically not too useful anyway)
         _initted = true;
     }
-    // Disable any IRQs that are being used for SPI
-    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    DEBUGSPI("SPI: IRQ masks before = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0],
-             (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3],
-             (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    for (auto entry : _usingIRQs) {
-        int gpio = entry.first;
-
-        // There is no gpio_get_irq, so manually twiddle the register
-        io_rw_32 *en_reg = &irq_ctrl_base->inte[gpio / 8];
-        uint32_t val = ((*en_reg) >> (4 * (gpio % 8))) & 0xf;
-        _usingIRQs.insert_or_assign(gpio, val);
-        DEBUGSPI("SPI: GPIO %d = %lu\n", gpio, val);
-        (*en_reg) ^= val << (4 * (gpio % 8));
-    }
-    DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0],
-             (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3],
-             (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    interrupts();
+    _helper.maskInterrupts();
 }
 
 void SoftwareSPI::endTransaction(void) {
-    noInterrupts(); // Avoid race condition so the GPIO IRQs won't come back until all state is restored
-    DEBUGSPI("SPI::endTransaction()\n");
-    // Re-enable IRQs
-    for (auto entry : _usingIRQs) {
-        int gpio = entry.first;
-        int mode = entry.second;
-        gpio_set_irq_enabled(gpio, mode, true);
-    }
-    io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    (void) irq_ctrl_base;
-    DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1],
-             (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0,
-             (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
-    interrupts();
+    DEBUGSPI("SoftwareSPI::endTransaction()\n");
+    _helper.unmaskInterrupts();
 }
 
 bool SoftwareSPI::setCS(pin_size_t pin) {
@@ -310,27 +213,27 @@ bool SoftwareSPI::setMOSI(pin_size_t pin) {
 }
 
 void SoftwareSPI::begin(bool hwCS) {
-    DEBUGSPI("SPI::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d\n", hwCS, _miso, _cs, _sck, _mosi);
+    DEBUGSPI("SoftwareSPI::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d\n", hwCS, _miso, _cs, _sck, _mosi);
     float divider = (float)rp2040.f_cpu() / (float)_spis.getClockFreq();
-    DEBUGSPI("SPI: divider=%f\n", divider);
+    DEBUGSPI("SoftwareSPI: divider=%f\n", divider);
     if (!hwCS) {
-        _spi = new PIOProgram(cpha() == SPI_CPHA_0 ? &spi_cpha0_program : &spi_cpha1_program);
+        _spi = new PIOProgram(_helper.cpha(_spis) == SPI_CPHA_0 ? &spi_cpha0_program : &spi_cpha1_program);
         if (!_spi->prepare(&_pio, &_sm, &_off, _sck, 1)) {
             _running = false;
             delete _spi;
             _spi = nullptr;
             return;
         }
-        pio_spi_init(_pio, _sm, _off, 8, divider / 4.0f, cpha(), cpol(), _sck, _mosi, _miso);
+        pio_spi_init(_pio, _sm, _off, 8, divider / 4.0f, _helper.cpha(_spis), _helper.cpol(_spis), _sck, _mosi, _miso);
     } else {
-        _spi = new PIOProgram(cpha() == SPI_CPHA_0 ? &spi_cpha0_cs_program : &spi_cpha1_cs_program);
+        _spi = new PIOProgram(_helper.cpha(_spis) == SPI_CPHA_0 ? &spi_cpha0_cs_program : &spi_cpha1_cs_program);
         if (!_spi->prepare(&_pio, &_sm, &_off, _sck, 2)) {
             _running = false;
             delete _spi;
             _spi = nullptr;
             return;
         }
-        pio_spi_cs_init(_pio, _sm, _off, 8, divider / 4.0f, cpha(), cpol(), _sck, _mosi, _miso);
+        pio_spi_cs_init(_pio, _sm, _off, 8, divider / 4.0f, _helper.cpha(_spis), _helper.cpol(_spis), _sck, _mosi, _miso);
     }
     _hwCS = hwCS;
     _bits = 8;
@@ -340,10 +243,12 @@ void SoftwareSPI::begin(bool hwCS) {
 }
 
 void SoftwareSPI::end() {
-    DEBUGSPI("SPI::end()\n");
+    DEBUGSPI("SoftwareSPI::end()\n");
     if (_initted) {
-        DEBUGSPI("SPI: deinitting currently active SPI\n");
+        DEBUGSPI("SoftwareSPI: deinitting currently active SPI\n");
         _initted = false;
+        pio_sm_set_enabled(_pio, _sm, false);
+        // TODO - We don't have a good PIOProgram reclamation method so this will possibly leak an SM
     }
     _spis = SPISettings(0, LSBFIRST, SPI_MODE0);
 }
