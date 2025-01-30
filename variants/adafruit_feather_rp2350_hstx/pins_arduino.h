@@ -23,8 +23,11 @@
 #define PIN_SPI1_SS    (31u)
 
 // Wire
+#define __WIRE0_DEVICE i2c1
 #define PIN_WIRE0_SDA  (2u)
 #define PIN_WIRE0_SCL  (3u)
+
+#define __WIRE1_DEVICE i2c0
 #define PIN_WIRE1_SDA  (31u) // not pinned out
 #define PIN_WIRE1_SCL  (31u)
 
