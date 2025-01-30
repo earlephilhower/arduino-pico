@@ -20,10 +20,21 @@
 
 #pragma once
 
+/**
+    @brief Wrapper class for polling the BOOTSEL button
+*/
 class __Bootsel {
 public:
     __Bootsel() { }
+    /**
+        @brief Get state of the BOOTSEL pin
+
+        @returns True if BOOTSEL pushed
+    */
     operator bool();
 };
 
+/**
+    @brief BOOTSEL accessor instance
+*/
 extern __Bootsel BOOTSEL;
