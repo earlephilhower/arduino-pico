@@ -19,7 +19,7 @@ void setup()
 	// Reserve space in the PSRAM vector
 	psramVector.resize(100);
 	
-    // Write some values
+	// Write some values
 	for (size_t i = 0; i < psramVector.size(); i++)
 	{
 		psramVector[i] = i * 2; // e.g. fill with even numbers
@@ -29,7 +29,7 @@ void setup()
 
 	delay(1000);
 
-    // Read them back
+	// Read them back
 	Serial.println("Reading back the first 10 elements:");
 	for (size_t i = 0; i < 10 && i < psramVector.size(); i++)
 	{
