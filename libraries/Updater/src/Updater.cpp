@@ -97,12 +97,18 @@ bool UpdaterClass::begin(size_t size, int command) {
     _md5 = MD5Builder();
 
     if (command == U_FLASH) {
+        // Basic sanity, if it's larger than entire FS then it can't possibly succeed
+        if (&_FS_start + size > &_FS_end) {
+            _setError(UPDATE_ERROR_SPACE);
+            return false;
+        }
         LittleFS.begin();
         _fp = LittleFS.open("firmware.bin", "w+");
         if (!_fp) {
 #ifdef DEBUG_UPDATER
             DEBUG_UPDATER.println(F("[begin] unable to create file"));
 #endif
+            _setError(UPDATE_ERROR_SPACE);
             return false;
         }
         updateStartAddress = 0;  // Not used
@@ -288,6 +294,7 @@ bool UpdaterClass::end(bool evenIfRemaining) {
 bool UpdaterClass::_writeBuffer() {
     if (_command == U_FLASH) {
         if (_bufferLen != _fp.write(_buffer, _bufferLen)) {
+            _setError(UPDATE_ERROR_SPACE);
             return false;
         }
     } else {
