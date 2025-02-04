@@ -173,7 +173,7 @@ To learn more about PSRAM usage, see: :doc:`RP2350 PSRAM Support <psram>`
     board_upload.psram_length = 4194304
 
 PSRAM chip select (CS)
-----------
+----------------------
 
 For RP2350 based boards, this controls what chip-select (also called: slave-select / SS) pin to use when wanting to talk to the PSRAM chip.
 
