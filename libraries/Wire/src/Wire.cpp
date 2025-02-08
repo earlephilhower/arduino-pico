@@ -507,7 +507,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes
     abortAsync();
 
     // Create or enlarge dma command buffer, we need one entry for every i2c byte we want to write/read
-    const size_t bufLen = (wbytes + rbytes) * 2;
+    const size_t bufLen = (wbytes + rbytes) * sizeof(uint16_t);
     if (_dmaSendBufferLen < bufLen) {
         if (_dmaSendBuffer) {
             free(_dmaSendBuffer);
@@ -518,6 +518,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes
         if (!_dmaSendBuffer) {
             return false;
         }
+        _dmaSendBufferLen = bufLen;
     }
 
     // Fill the dma command buffer
