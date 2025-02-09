@@ -24,7 +24,7 @@
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
 
-class SerialUSB : public HardwareSerial {
+class SerialUSB : public arduino::HardwareSerial {
 public:
     SerialUSB() { }
     void begin(unsigned long baud = 115200) override;

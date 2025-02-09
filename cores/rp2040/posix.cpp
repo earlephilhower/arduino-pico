@@ -23,6 +23,7 @@
 #include <errno.h>
 #include <_syslist.h>
 #include <sys/times.h>
+#include <sys/unistd.h>
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 
