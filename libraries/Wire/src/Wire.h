@@ -87,6 +87,7 @@ public:
     bool writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes, const void *rbuffer, size_t rbytes, bool sendStop = true);
     bool writeAsync(uint8_t address, const void *buffer, size_t bytes, bool sendStop = true);
     bool readAsync(uint8_t address, void *buffer, size_t bytes, bool sendStop = true);
+    bool busIdle();
     bool finishedAsync(); // Call to check if the async operations is completed and the buffer can be reused/read
     void abortAsync(); // Cancel an outstanding async I2C operation
     void onFinishedAsync(void(*function)(void)); // Set callback for async operation
