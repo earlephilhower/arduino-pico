@@ -489,8 +489,7 @@ void TwoWire::flush(void) {
     // data transfer.
 }
 
-bool TwoWire::busIdle()
-{
+bool TwoWire::busIdle() {
     // Check hardware status
     uint32_t status = _i2c->hw->status;
     bool tfe = (status & I2C_IC_STATUS_TFE_BITS);
