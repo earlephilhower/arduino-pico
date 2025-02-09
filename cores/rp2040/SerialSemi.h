@@ -24,7 +24,7 @@
 #include "Arduino.h"
 #include "api/HardwareSerial.h"
 
-class SerialSemiClass : public HardwareSerial {
+class SerialSemiClass : public arduino::HardwareSerial {
 public:
     SerialSemiClass() {
         /* noop */
