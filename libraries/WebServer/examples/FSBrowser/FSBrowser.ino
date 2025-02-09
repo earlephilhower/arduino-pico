@@ -216,9 +216,9 @@ void handleFileList() {
       // as an HTTP chunk
       Serial.println(output);
       server.sendContent(output);
-      output = ',';
+      output = ",";
     } else {
-      output = '[';
+      output = "[";
     }
 
     output += "{\"type\":\"";

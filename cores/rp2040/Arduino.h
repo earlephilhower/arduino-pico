@@ -110,7 +110,7 @@ extern bool __isFreeRTOS;
 #endif
 
 #ifndef PGM_VOID_P
-#define PGM_VOID_P void *
+#define PGM_VOID_P const void *
 #endif
 
 #ifdef __cplusplus
@@ -158,4 +158,8 @@ constexpr uint64_t __bitset(const int (&a)[N], size_t i = 0U) {
 #else
 #define __GPIOCNT 30
 #define __FIRSTANALOGGPIO 26
+#endif
+
+#ifdef __cplusplus
+using namespace arduino;
 #endif
