@@ -25,6 +25,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Adafruit KB2040
 * Adafruit Macropad RP2040
 * Adafruit Metro RP2040
+* Adafruit Metro RP2350
 * Adafruit QTPy RP2040
 * Adafruit STEMMA Friend RP2040
 * Adafruit Trinkey RP2040 QT

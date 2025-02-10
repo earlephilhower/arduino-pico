@@ -489,10 +489,22 @@ void TwoWire::flush(void) {
     // data transfer.
 }
 
+bool TwoWire::busIdle() {
+    // Check hardware status
+    uint32_t status = _i2c->hw->status;
+    bool tfe = (status & I2C_IC_STATUS_TFE_BITS);
+    bool mast = (status & I2C_IC_STATUS_MST_ACTIVITY_BITS);
+    return (tfe && !mast);
+}
+
 // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
 // All buffers must be valid for entire DMA and not touched until `finishedAsync()` returns true.
 bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes, const void *rbuffer, size_t rbytes, bool sendStop) {
     if (!_running || _txBegun || (wbytes == 0 && rbytes == 0)) {
+        return false;
+    }
+
+    if (!busIdle()) {
         return false;
     }
 
