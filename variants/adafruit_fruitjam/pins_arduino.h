@@ -78,4 +78,14 @@
 #define RP2350_PSRAM_CS         (47u)
 #define RP2350_PSRAM_MAX_SCK_HZ (109*1000*1000)
 
+// DVI connector
+#define PIN_CKN (12u)
+#define PIN_CKP (13u)
+#define PIN_D0N (14u)
+#define PIN_D0P (15u)
+#define PIN_D1N (16u)
+#define PIN_D1P (17u)
+#define PIN_D2N (18u)
+#define PIN_D2P (19u)
+
 #include "../generic/common.h"
