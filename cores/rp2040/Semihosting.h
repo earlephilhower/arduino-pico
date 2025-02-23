@@ -24,7 +24,9 @@
 
 // Input/output will be handled by OpenOCD
 
-// From https://developer.arm.com/documentation/dui0471/g/Semihosting/Semihosting-operations?lang=en
+/**
+    @brief Semihosting host API opcodes, from https://developer.arm.com/documentation/dui0471/g/Semihosting/Semihosting-operations?lang=en
+*/
 typedef enum {
     SEMIHOST_SYS_CLOSE = 0x02,
     SEMIHOST_SYS_CLOCK = 0x10,
@@ -52,7 +54,13 @@ typedef enum {
 
 #ifdef __arm__
 
-// From https://github.com/ErichStyger/mcuoneclipse/blob/master/Examples/MCUXpresso/FRDM-K22F/FRDM-K22F_Semihosting/source/McuSemihost.c
+/**
+    @brief Execute a semihosted request, from https://github.com/ErichStyger/mcuoneclipse/blob/master/Examples/MCUXpresso/FRDM-K22F/FRDM-K22F_Semihosting/source/McuSemihost.c
+
+    @param [in] reason Opcode to execute
+    @param [in] arg Any arguments for the opcode
+    @returns Result of operation
+*/
 static inline int __attribute__((always_inline)) Semihost(int reason, void *arg) {
     int value;
     __asm volatile(
@@ -69,7 +77,13 @@ static inline int __attribute__((always_inline)) Semihost(int reason, void *arg)
 }
 #else
 
-// https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/n-5VQ9PHZ4w/m/KbzH5t9MBgAJ
+/**
+    @brief Execute a semihosted request, from https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/n-5VQ9PHZ4w/m/KbzH5t9MBgAJ
+
+    @param [in] reason Opcode to execute
+    @param [in] argPack Any arguments for the opcode
+    @returns Result of operation
+*/
 static inline int __attribute__((always_inline)) Semihost(int reason, void *argPack) {
     register int value asm("a0") = reason;
     register void *ptr asm("a1") = argPack;
