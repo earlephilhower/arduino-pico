@@ -3,11 +3,6 @@
 // Pin definitions taken from:
 //    https://datasheets.raspberrypi.org/pico/pico-datasheet.pdf
 
-
-// LEDs
-#define PIN_LED        (25u)
-
-// Serial
 #define PIN_HE0 (0u)
 
 #define PIN_FAN0 (1u)
@@ -16,7 +11,10 @@
 
 #define PIN_E0_DIR (4u)
 #define PIN_E0_STEP (5u)
+
+#define PIN_SERIAL1_TX (6u)
 #define PIN_E0_UART (6u)
+#define PIN_SERIAL1_RX (31u)
 #define PIN_E0_DIAG (7u)
 #define PIN_E0_EN (10u)
 
