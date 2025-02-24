@@ -210,6 +210,12 @@
                      "name": "iLabs Challenger 2350 BConnect"
                   },
                   {
+                     "name": "Makerbase MKS THR36"
+                  },
+                  {
+                     "name": "Makerbase MKS THR42"
+                  },
+                  {
                      "name": "Melopero Cookie RP2040"
                   },
                   {
@@ -304,6 +310,9 @@
                   },
                   {
                      "name": "SparkFun IoT Node LoRaWAN"
+                  },
+                  {
+                     "name": "SparkFun XRP Controller (Beta)"
                   },
                   {
                      "name": "Seeed INDICATOR RP2040"

@@ -69,6 +69,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * METE HOCA Akana R1
+* Makerbase MKSTHR36
+* Makerbase MKSTHR42
 * MyMakers RP2040
 * Neko Systems BL2040 Mini
 * Newsan Archi

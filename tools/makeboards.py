@@ -591,6 +591,10 @@ MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250
 MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "none")
 MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "none")
 
+# Makerbase
+MakeBoard("mksthr36", "rp2040", "Makerbase", "MKS THR36", "0x2e8a", "0x000a", 250, "MAKERBASE_MKSTHR36", 1, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("mksthr42", "rp2040", "Makerbase", "MKS THR42", "0x2e8a", "0x000a", 250, "MAKERBASE_MKSTHR42", 1, 0, "boot2_w25q080_2_padded_checksum")
+
 # Melopero
 MakeBoard("melopero_cookie_rp2040", "rp2040", "Melopero", "Cookie RP2040", "0x2e8a", "0x1011", 250, "MELOPERO_COOKIE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("melopero_shake_rp2040", "rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005", 250, "MELOPERO_SHAKE_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
@@ -652,6 +656,7 @@ MakeBoard("sparkfun_promicrorp2350", "rp2350", "SparkFun", "ProMicro RP2350", "0
 MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_thingplusrp2350", "rp2350", "SparkFun", "Thing Plus RP2350", "0x1b4f", "0x0038", 250, "SPARKFUN_THINGPLUS_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("sparkfun_iotnode_lorawanrp2350", "rp2350", "SparkFun", "IoT Node LoRaWAN", "0x1b4f", "0x0044", 250, "SPARKFUN_IOTNODE_LORAWAN_RP2350", 16, 8, "none")
+MakeBoard("sparkfun_xrp_controller_beta", "rp2040", "SparkFun", "XRP Controller (Beta)", "0x1b4f", "0x0045", 250, "SPARKFUN_XRP_CONTROLLER_BETA", 2, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 
 # Seeed
 MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
