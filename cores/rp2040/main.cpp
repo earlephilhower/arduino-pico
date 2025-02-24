@@ -23,6 +23,9 @@
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 #include <reent.h>
+#ifdef RP2350_PSRAM_CS
+#include "psram.h"
+#endif
 
 RP2040 rp2040;
 extern "C" {
@@ -81,6 +84,9 @@ static struct _reent *_impure_ptr1 = nullptr;
 extern "C" int main() {
 #if (defined(PICO_RP2040) && (F_CPU != 125000000)) || (defined(PICO_RP2350) && (F_CPU != 150000000))
     set_sys_clock_khz(F_CPU / 1000, true);
+#ifdef RP2350_PSRAM_CS
+    psram_reinit_timing();
+#endif
 #endif
 
     // Let rest of core know if we're using FreeRTOS
