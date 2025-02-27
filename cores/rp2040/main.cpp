@@ -24,6 +24,9 @@
 #include <pico/multicore.h>
 #include <hardware/vreg.h>
 #include <reent.h>
+#ifdef RP2350_PSRAM_CS
+#include "psram.h"
+#endif
 
 RP2040 rp2040;
 extern "C" {
@@ -91,7 +94,27 @@ extern "C" int main() {
     }
 #endif
 
+#if defined(RP2350_PSRAM_CS) && (F_CPU > 150000000)
+    // Need to increase the qmi divider before upping sysclk to ensure we keep the output sck w/in legal bounds
+    psram_reinit_timing(F_CPU);
+    // Per datasheet, need to do a dummy access and memory barrier before it takes effect
+    extern uint8_t __psram_start__;
+    volatile uint8_t *x = &__psram_start__;
+    *x ^= 0xff;
+    *x ^= 0xff;
+    asm volatile("" ::: "memory");
+#endif
+
     set_sys_clock_khz(F_CPU / 1000, true);
+
+#if defined(RP2350_PSRAM_CS) && (F_CPU < 150000000)
+    psram_reinit_timing();
+    // Per datasheet, need to do a dummy access and memory barrier before it takes effect
+    extern uint8_t __psram_start__;
+    volatile uint8_t *x = &__psram_start__;
+    *x ^= 0xff;
+    *x ^= 0xff;
+    asm volatile("" ::: "memory");
 #endif
 
     // Let rest of core know if we're using FreeRTOS
