@@ -117,6 +117,8 @@ extern "C" int main() {
     asm volatile("" ::: "memory");
 #endif
 
+#endif // over/underclock
+
     // Let rest of core know if we're using FreeRTOS
     __isFreeRTOS = initFreeRTOS ? true : false;
 
