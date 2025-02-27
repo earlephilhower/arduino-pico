@@ -31,7 +31,7 @@
 
 #include <Arduino.h>
 
-void psram_reinit_timing();
+void psram_reinit_timing(uint32_t hz = 0);
 void *__psram_malloc(size_t size);
 void __psram_free(void *ptr);
 void *__psram_realloc(void *ptr, size_t size);

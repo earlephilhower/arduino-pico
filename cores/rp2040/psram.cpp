@@ -195,10 +195,7 @@ static size_t __no_inline_not_in_flash_func(get_psram_size)(void) {
 ///
 /// @note This function expects interrupts to be enabled on entry
 
-static void __no_inline_not_in_flash_func(set_psram_timing)(void) {
-    // Get secs / cycle for the system clock - get before disabling interrupts.
-    uint32_t sysHz = (uint32_t)clock_get_hz(clk_sys);
-
+static void __no_inline_not_in_flash_func(set_psram_timing)(uint32_t sysHz) {
     // Calculate the clock divider - goal to get clock used for PSRAM <= what
     // the PSRAM IC can handle - which is defined in SFE_PSRAM_MAX_SCK_HZ
     volatile uint8_t clockDivider = (sysHz + SFE_PSRAM_MAX_SCK_HZ - 1) / SFE_PSRAM_MAX_SCK_HZ;
@@ -283,7 +280,7 @@ static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t p
 
     // check our interrupts and setup the timing
     restore_interrupts(intr_stash);
-    set_psram_timing();
+    set_psram_timing((uint32_t)clock_get_hz(clk_sys));
 
     // and now stash interrupts again
     intr_stash = save_and_disable_interrupts();
@@ -323,8 +320,11 @@ static void __no_inline_not_in_flash_func(runtime_init_setup_psram)(/*uint32_t p
 PICO_RUNTIME_INIT_FUNC_RUNTIME(runtime_init_setup_psram, PICO_RUNTIME_INIT_PSRAM);
 
 // update timing -- used if the system clock/timing was changed.
-void psram_reinit_timing() {
-    set_psram_timing();
+void psram_reinit_timing(uint32_t hz) {
+    if (!hz) {
+        hz = (uint32_t)clock_get_hz(clk_sys);
+    }
+    set_psram_timing(hz);
 }
 
 static bool __psram_heap_init() {
