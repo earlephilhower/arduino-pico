@@ -114,7 +114,7 @@ build.espwifitype=
 build.debugscript=picoprobe_cmsis_dap.tcl
 build.picodebugflags=
 build.variantdefines=
-build.sdfatdefines=-DFILE_COPY_CONSTRUCTOR_SELECT=FILE_COPY_CONSTRUCTOR_PUBLIC -DUSE_UTF8_LONG_NAMES=1 -DDISABLE_FS_H_WARNING=1
+build.sdfatdefines=-DFILE_COPY_CONSTRUCTOR_SELECT=FILE_COPY_CONSTRUCTOR_PUBLIC -DUSE_UTF8_LONG_NAMES=1 -DDISABLE_FS_H_WARNING=1 -DUSE_BLOCK_DEVICE_INTERFACE=1 -DFAT12_SUPPORT=1
 
 # Allow Pico boards to be auto-discovered by the IDE
 #discovery.rp2040.pattern={runtime.tools.pqt-python3.path}/python3 -I "{runtime.platform.path}/tools/pluggable_discovery.py"

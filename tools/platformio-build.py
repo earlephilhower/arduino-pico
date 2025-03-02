@@ -229,7 +229,9 @@ env.Append(
         # SdFat definitions required for SDFS
         ("FILE_COPY_CONSTRUCTOR_SELECT", "FILE_COPY_CONSTRUCTOR_PUBLIC"),
         ("USE_UTF8_LONG_NAMES", "1"),
-        ("DISABLE_FS_H_WARNING", "1")
+        ("DISABLE_FS_H_WARNING", "1"),
+        ("USE_BLOCK_DEVICE_INTERFACE", "1"),
+        ("FAT12_SUPPORT", "1"),
     ],
 
     CPPPATH=[
