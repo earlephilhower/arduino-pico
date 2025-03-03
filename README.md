@@ -95,6 +95,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Solder Party RP2040 Stamp
 * Solder Party RP2350 Stamp
 * Solder Party RP2350 Stamp XL
+* SparkFun IoT RedBoard RP2350
 * SparkFun MicroMod RP2040
 * SparkFun ProMicro RP2040
 * SparkFun ProMicro RP2350
