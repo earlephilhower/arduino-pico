@@ -10,5 +10,6 @@
 -iwithprefixbefore/pico-sdk/lib/btstack/src
 -iwithprefixbefore/pico-sdk/lib/btstack/3rd-party/bluedroid/decoder/include
 -iwithprefixbefore/pico-sdk/lib/btstack/3rd-party/bluedroid/encoder/include
+-iwithprefixbefore/pico-sdk/lib/btstack/3rd-party/yxml
 -iwithprefixbefore/pico-sdk/lib/btstack/platform/embedded
 -iwithprefixbefore/pico-sdk/src/rp2_common/cmsis/stub/CMSIS/Device/RP2040/Include
