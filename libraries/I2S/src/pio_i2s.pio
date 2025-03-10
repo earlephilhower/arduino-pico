@@ -112,13 +112,13 @@ lastbit:
 ;                           |+---- BCLK
     mov x, y         side 0b00 [1]
 bitloop:
-    out pins, 1      side 0b11    ; Output changes on falling edge
-    in pins, 1       side 0b11    ; Sample input on falling edge
+    out pins, 1      side 0b01    ; Output changes on rising edge
+    in pins, 1       side 0b01    ; Sample input on rising edge
     jmp x-- bitloop  side 0b00 [1]
 
 lastbit:             ; Last bit toggles WCLK to mark frame boundary
-    in pins, 1       side 0b01
-    out pins, 1      side 0b01
+    in pins, 1       side 0b11
+    out pins, 1      side 0b11
     ; Loop back to the beginning
 
 
@@ -130,13 +130,13 @@ lastbit:             ; Last bit toggles WCLK to mark frame boundary
 ;                           |+---- BCLK
     mov x, y         side 0b00 [1]
 bitloop:
-    out pins, 1      side 0b11    ; Output changes on falling edge
-    in pins, 1       side 0b11    ; Sample input on falling edge
+    out pins, 1      side 0b10    ; Output changes on rising edge
+    in pins, 1       side 0b10    ; Sample input on rising edge
     jmp x-- bitloop  side 0b00 [1]
 
 lastbit:             ; Last bit toggles WCLK to mark frame boundary
-    in pins, 1       side 0b10
-    out pins, 1      side 0b10
+    in pins, 1       side 0b11
+    out pins, 1      side 0b11
     ; Loop back to the beginning
 
 

@@ -203,11 +203,11 @@ static inline pio_sm_config pio_tdm_out_swap_program_get_default_config(uint off
 static const uint16_t pio_tdm_inout_program_instructions[] = {
             //     .wrap_target
     0xa122, //  0: mov    x, y            side 0 [1] 
-    0x7801, //  1: out    pins, 1         side 3     
-    0x5801, //  2: in     pins, 1         side 3     
+    0x6801, //  1: out    pins, 1         side 1     
+    0x4801, //  2: in     pins, 1         side 1     
     0x0141, //  3: jmp    x--, 1          side 0 [1] 
-    0x4801, //  4: in     pins, 1         side 1     
-    0x6801, //  5: out    pins, 1         side 1     
+    0x5801, //  4: in     pins, 1         side 3     
+    0x7801, //  5: out    pins, 1         side 3     
             //     .wrap
 };
 
@@ -240,11 +240,11 @@ static inline pio_sm_config pio_tdm_inout_program_get_default_config(uint offset
 static const uint16_t pio_tdm_inout_swap_program_instructions[] = {
             //     .wrap_target
     0xa122, //  0: mov    x, y            side 0 [1] 
-    0x7801, //  1: out    pins, 1         side 3     
-    0x5801, //  2: in     pins, 1         side 3     
+    0x7001, //  1: out    pins, 1         side 2     
+    0x5001, //  2: in     pins, 1         side 2     
     0x0141, //  3: jmp    x--, 1          side 0 [1] 
-    0x5001, //  4: in     pins, 1         side 2     
-    0x7001, //  5: out    pins, 1         side 2     
+    0x5801, //  4: in     pins, 1         side 3     
+    0x7801, //  5: out    pins, 1         side 3     
             //     .wrap
 };
 
