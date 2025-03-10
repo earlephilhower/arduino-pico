@@ -22,6 +22,7 @@
 #include "RP2040USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
+#include <hardware/vreg.h>
 #include <reent.h>
 #ifdef RP2350_PSRAM_CS
 #include "psram.h"
@@ -83,6 +84,16 @@ static struct _reent *_impure_ptr1 = nullptr;
 
 extern "C" int main() {
 #if (defined(PICO_RP2040) && (F_CPU != 125000000)) || (defined(PICO_RP2350) && (F_CPU != 150000000))
+
+#if defined(PICO_RP2040)
+    // From runtime_init_clocks() to bump up RP2040 V for 200Mhz+ operation
+    if ((F_CPU > 133000000) && (vreg_get_voltage() < VREG_VOLTAGE_1_15)) {
+        vreg_set_voltage(VREG_VOLTAGE_1_15);
+        // wait for voltage to settle; must use CPU cycles as TIMER is not yet clocked correctly
+        busy_wait_at_least_cycles((uint32_t)((SYS_CLK_VREG_VOLTAGE_AUTO_ADJUST_DELAY_US * (uint64_t)XOSC_HZ) / 1000000));
+    }
+#endif
+
 #if defined(RP2350_PSRAM_CS) && (F_CPU > 150000000)
     // Need to increase the qmi divider before upping sysclk to ensure we keep the output sck w/in legal bounds
     psram_reinit_timing(F_CPU);
@@ -93,7 +104,9 @@ extern "C" int main() {
     *x ^= 0xff;
     asm volatile("" ::: "memory");
 #endif
+
     set_sys_clock_khz(F_CPU / 1000, true);
+
 #if defined(RP2350_PSRAM_CS) && (F_CPU < 150000000)
     psram_reinit_timing();
     // Per datasheet, need to do a dummy access and memory barrier before it takes effect
@@ -103,7 +116,8 @@ extern "C" int main() {
     *x ^= 0xff;
     asm volatile("" ::: "memory");
 #endif
-#endif
+
+#endif // over/underclock
 
     // Let rest of core know if we're using FreeRTOS
     __isFreeRTOS = initFreeRTOS ? true : false;
