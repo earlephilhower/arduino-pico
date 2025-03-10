@@ -178,7 +178,7 @@ bool I2S::setLSBJFormat() {
 }
 
 bool I2S::setTDMFormat() {
-    if (_running || !_isOutput || _isInput) {
+    if (_running || !_isOutput) {
         return false;
     }
     _isTDM = true;
@@ -186,7 +186,7 @@ bool I2S::setTDMFormat() {
 }
 
 bool I2S::setTDMChannels(int channels) {
-    if (_running || !_isOutput || _isInput) {
+    if (_running || !_isOutput) {
         return false;
     }
     _tdmChannels = channels;
@@ -255,9 +255,17 @@ bool I2S::begin() {
     _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
-        _i2s = new PIOProgram(_isOutput ? (_isInput ? &pio_i2s_inout_program : (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program))) : &pio_i2s_in_program);
+        _i2s = new PIOProgram(_isOutput ?
+                                (_isInput ?
+                                    (_isTDM ? &pio_tdm_inout_program : &pio_i2s_inout_program) : 
+                                    (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program))
+                                ) : &pio_i2s_in_program);
     } else {
-        _i2s = new PIOProgram(_isOutput ? (_isInput ? &pio_i2s_inout_swap_program : (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program))) : &pio_i2s_in_swap_program);
+        _i2s = new PIOProgram(_isOutput ?
+                                (_isInput ? 
+                                    (_isTDM? &pio_tdm_inout_swap_program : &pio_i2s_inout_swap_program) : 
+                                    (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program))
+                                ) : &pio_i2s_in_swap_program);
     }
     int minpin, maxpin;
     if (_isOutput && _isInput) {
@@ -278,7 +286,11 @@ bool I2S::begin() {
     }
     if (_isOutput) {
         if (_isInput) {
-            pio_i2s_inout_program_init(_pio, _sm, off, _pinDIN, _pinDOUT, _pinBCLK, _bps, _swapClocks);
+            if (_isTDM) {
+                pio_tdm_inout_program_init(_pio, _sm, off, _pinDIN, _pinDOUT, _pinBCLK, _bps, _swapClocks, _tdmChannels);
+            } else {
+                pio_i2s_inout_program_init(_pio, _sm, off, _pinDIN, _pinDOUT, _pinBCLK, _bps, _swapClocks);
+            }
         } else if (_isTDM) {
             pio_tdm_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks, _tdmChannels);
         } else if (_isLSBJ) {
