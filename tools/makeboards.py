@@ -363,7 +363,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
     else:
-        BuildFreq(name, 133)
+        BuildFreq(name, 200)
     BuildOptimize(name)
     BuildProfile(name)
     BuildRTTI(name)
