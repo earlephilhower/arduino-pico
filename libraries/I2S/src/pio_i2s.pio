@@ -107,7 +107,7 @@ lastbit:
 
 .program pio_tdm_in
 .side_set 2   ; 0 = bclk, 1 = wclk
-; The C code should place (number of bits - 1) in Y and update SHIFTCTRL
+; The C code should place (number of bits * channels - 1) in Y and update SHIFTCTRL
 ; to be 32 (as per the TDM specs)
 ;                           +----- WCLK
 ;                           |+---- BCLK
@@ -116,13 +116,13 @@ bitloop:
     in pins, 1       side 0b00
     jmp x-- bitloop  side 0b01
 
-lastbit:
+lastbit:             ; Last bit toggles WCLK to mark frame boundary
     in pins, 1       side 0b10
     ; Loop back to the beginning
 
 .program pio_tdm_in_swap
 .side_set 2   ; 0 = wclk, 1 = bclk
-; The C code should place (number of bits - 1) in Y and update SHIFTCTRL
+; The C code should place (number of bits * channels - 1) in Y and update SHIFTCTRL
 ; to be 32 (as per the TDM specs)
 ;                           +----- BCLK
 ;                           |+---- WCLK
@@ -131,40 +131,40 @@ bitloop:
     in pins, 1       side 0b00
     jmp x-- bitloop  side 0b10
 
-lastbit:
+lastbit:             ; Last bit toggles WCLK to mark frame boundary
     in pins, 1       side 0b01
     ; Loop back to the beginning
 
 .program pio_tdm_inout
 .side_set 2   ; 0 = bclk, 1 = wclk
-; The C code should place (number of bits - 1) in Y and update SHIFTCTRL
+; The C code should place (number of bits * channels - 1) in Y and update SHIFTCTRL
 ; to be 32 (as per the TDM specs)
 ;                           +----- WCLK
 ;                           |+---- BCLK
     mov x, y         side 0b11
 bitloop:
-    in pins, 1       side 0b00
-    out pins, 1      side 0b00
+    in pins, 1       side 0b00    ; Sample input on falling edge
+    out pins, 1      side 0b00    ; Output changes on falling edge
     jmp x-- bitloop  side 0b01
 
-lastbit:
+lastbit:             ; Last bit toggles WCLK to mark frame boundary
     in pins, 1       side 0b10
     out pins, 1      side 0b10
     ; Loop back to the beginning
 
 .program pio_tdm_inout_swap
 .side_set 2   ; 0 = wclk, 1 = bclk
-; The C code should place (number of bits - 1) in Y and update SHIFTCTRL
+; The C code should place (number of bits * channels - 1) in Y and update SHIFTCTRL
 ; to be 32 (as per the TDM specs)
 ;                           +----- BCLK
 ;                           |+---- WCLK
     mov x, y         side 0b11
 bitloop:
-    in pins, 1       side 0b00
-    out pins, 1      side 0b00
+    in pins, 1       side 0b00    ; Sample input on falling edge
+    out pins, 1      side 0b00    ; Output changes on falling edge
     jmp x-- bitloop  side 0b10
 
-lastbit:
+lastbit:             ; Last bit toggles WCLK to mark frame boundary
     in pins, 1       side 0b01
     out pins, 1      side 0b01
     ; Loop back to the beginning
