@@ -633,9 +633,24 @@ static inline void pio_tdm_in_program_init(PIO pio, uint sm, uint offset, uint d
     pio_sm_config c = swap ? pio_tdm_in_swap_program_get_default_config(offset) : pio_tdm_in_program_get_default_config(offset);
     sm_config_set_in_pins(&c, data_pin);
     sm_config_set_sideset_pins(&c, clock_pin_base);
-    sm_config_set_in_shift(&c, false, true, 32);
+    sm_config_set_in_shift(&c, false, true, 32);  // TDM always uses 32-bit shifts
     sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
     pio_sm_init(pio, sm, offset, &c);
+    // Set pin directions like I2S
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
+    // Initialize PIO state for TDM
+    // Can't set constant > 31, so push and pop/mov if needed
+    if (bits * channels - 1 > 31) {
+        pio_sm_put_blocking(pio, sm, bits * channels - 1);
+        pio_sm_exec(pio, sm, pio_encode_pull(false, false));
+        pio_sm_exec(pio, sm, pio_encode_mov(pio_y, pio_osr));
+    } else {
+        pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits * channels - 1));
+    }
+    // Initialize input shift register
+    pio_sm_exec(pio, sm, pio_encode_in(pio_pins, 32));  // Shift in first TDM frame
 }
 static inline void pio_tdm_inout_program_init(PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
     pio_gpio_init(pio, data_in_pin);
@@ -650,6 +665,24 @@ static inline void pio_tdm_inout_program_init(PIO pio, uint sm, uint offset, uin
     sm_config_set_out_shift(&c, false, true, 32);
     sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_NONE);
     pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_in_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_out_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
+    // Initialize PIO state for TDM
+    // Can't set constant > 31, so push and pop/mov if needed
+    if (bits * channels - 1 > 31) {
+        pio_sm_put_blocking(pio, sm, bits * channels - 1);
+        pio_sm_exec(pio, sm, pio_encode_pull(false, false));
+        pio_sm_exec(pio, sm, pio_encode_mov(pio_y, pio_osr));
+    } else {
+        pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits * channels - 1));
+    }
+    // Initialize input shift register
+    pio_sm_exec(pio, sm, pio_encode_in(pio_pins, 32));  // Shift in first TDM frame
+    // Need to make OSR believe there's nothing left to shift out
+    pio_sm_exec(pio, sm, pio_encode_out(pio_osr, 32));
 }
 
 #endif

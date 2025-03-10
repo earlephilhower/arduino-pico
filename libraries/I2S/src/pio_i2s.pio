@@ -512,7 +512,7 @@ static inline void pio_tdm_inout_program_init(PIO pio, uint sm, uint offset, uin
     sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_NONE);
 
     pio_sm_init(pio, sm, offset, &c);
-    
+
     pio_sm_set_consecutive_pindirs(pio, sm, data_in_pin, 1, false);
     pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
