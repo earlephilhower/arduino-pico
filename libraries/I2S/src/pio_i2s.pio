@@ -110,15 +110,15 @@ lastbit:
 ; to be 32 (as per the TDM specs)
 ;                           +----- WCLK
 ;                           |+---- BCLK
-    mov x, y         side 0b00 [1]
+    mov x, y         side 0b01 [1]
 bitloop:
-    out pins, 1      side 0b01    ; Output changes on rising edge
-    in pins, 1       side 0b01    ; Sample input on rising edge
-    jmp x-- bitloop  side 0b00 [1]
+    out pins, 1      side 0b00      ; Output changes on falling edge
+    in pins, 1       side 0b00      ; Sample input on falling edge
+    jmp x-- bitloop  side 0b11 [1]  ; Last bit toggles WCLK to mark frame boundary
 
-lastbit:             ; Last bit toggles WCLK to mark frame boundary
-    in pins, 1       side 0b11
-    out pins, 1      side 0b11
+lastbit:
+    in pins, 1       side 0b10
+    out pins, 1      side 0b10
     ; Loop back to the beginning
 
 
@@ -128,15 +128,15 @@ lastbit:             ; Last bit toggles WCLK to mark frame boundary
 ; to be 32 (as per the TDM specs)
 ;                           +----- WCLK
 ;                           |+---- BCLK
-    mov x, y         side 0b00 [1]
+    mov x, y         side 0b10 [1]
 bitloop:
-    out pins, 1      side 0b10    ; Output changes on rising edge
-    in pins, 1       side 0b10    ; Sample input on rising edge
-    jmp x-- bitloop  side 0b00 [1]
+    out pins, 1      side 0b00      ; Output changes on falling edge
+    in pins, 1       side 0b00      ; Sample input on falling edge
+    jmp x-- bitloop  side 0b11 [1]  ; Last bit toggles WCLK to mark frame boundary
 
-lastbit:             ; Last bit toggles WCLK to mark frame boundary
-    in pins, 1       side 0b11
-    out pins, 1      side 0b11
+lastbit:
+    in pins, 1       side 0b01
+    out pins, 1      side 0b01
     ; Loop back to the beginning
 
 
