@@ -193,6 +193,80 @@ static inline pio_sm_config pio_tdm_out_swap_program_get_default_config(uint off
 }
 #endif
 
+// ------------- //
+// pio_tdm_inout //
+// ------------- //
+
+#define pio_tdm_inout_wrap_target 0
+#define pio_tdm_inout_wrap 5
+
+static const uint16_t pio_tdm_inout_program_instructions[] = {
+    //     .wrap_target
+    0xa922, //  0: mov    x, y            side 1 [1]
+    0x6001, //  1: out    pins, 1         side 0
+    0x4001, //  2: in     pins, 1         side 0
+    0x1941, //  3: jmp    x--, 1          side 3 [1]
+    0x5001, //  4: in     pins, 1         side 2
+    0x7001, //  5: out    pins, 1         side 2
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_tdm_inout_program = {
+    .instructions = pio_tdm_inout_program_instructions,
+    .length = 6,
+    .origin = -1,
+    .pio_version = 0,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_tdm_inout_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_tdm_inout_wrap_target, offset + pio_tdm_inout_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
+// ------------------ //
+// pio_tdm_inout_swap //
+// ------------------ //
+
+#define pio_tdm_inout_swap_wrap_target 0
+#define pio_tdm_inout_swap_wrap 5
+
+static const uint16_t pio_tdm_inout_swap_program_instructions[] = {
+    //     .wrap_target
+    0xb122, //  0: mov    x, y            side 2 [1]
+    0x6001, //  1: out    pins, 1         side 0
+    0x4001, //  2: in     pins, 1         side 0
+    0x1941, //  3: jmp    x--, 1          side 3 [1]
+    0x4801, //  4: in     pins, 1         side 1
+    0x6801, //  5: out    pins, 1         side 1
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_tdm_inout_swap_program = {
+    .instructions = pio_tdm_inout_swap_program_instructions,
+    .length = 6,
+    .origin = -1,
+    .pio_version = 0,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_tdm_inout_swap_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_tdm_inout_swap_wrap_target, offset + pio_tdm_inout_swap_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
 // ------------ //
 // pio_lsbj_out //
 // ------------ //
@@ -488,6 +562,36 @@ static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint 
     pio_sm_exec(pio, sm, pio_encode_pull(false, false));
     pio_sm_exec(pio, sm, pio_encode_mov(pio_y, pio_osr));
     // Need to make OSR believe there's nothing left to shift out, or the 1st word will be the count we just passed in, not a sample
+    pio_sm_exec(pio, sm, pio_encode_out(pio_osr, 32));
+}
+static inline void pio_tdm_inout_program_init(PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
+    pio_gpio_init(pio, data_in_pin);
+    pio_gpio_init(pio, data_out_pin);
+    pio_gpio_init(pio, clock_pin_base);
+    pio_gpio_init(pio, clock_pin_base + 1);
+    pio_sm_config c = swap ? pio_tdm_inout_swap_program_get_default_config(offset) : pio_tdm_inout_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, data_in_pin);
+    sm_config_set_out_pins(&c, data_out_pin, 1);
+    sm_config_set_sideset_pins(&c, clock_pin_base);
+    sm_config_set_in_shift(&c, false, true, 32);
+    sm_config_set_out_shift(&c, false, true, 32);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_NONE);
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_in_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_out_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
+    // Initialize PIO state for TDM
+    // Can't set constant > 31, so push and pop/mov if needed
+    if (bits * channels - 1 > 31) {
+        pio_sm_put_blocking(pio, sm, bits * channels - 2);
+        pio_sm_exec(pio, sm, pio_encode_pull(false, false));
+        pio_sm_exec(pio, sm, pio_encode_mov(pio_y, pio_osr));
+    } else {
+        pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits * channels - 2));
+    }
+    // Need to make OSR believe there's nothing left to shift out
     pio_sm_exec(pio, sm, pio_encode_out(pio_osr, 32));
 }
 static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
