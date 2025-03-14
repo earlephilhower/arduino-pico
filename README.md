@@ -101,6 +101,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * SparkFun ProMicro RP2350
 * SparkFun Thing Plus RP2040
 * SparkFun Thing Plus RP2350
+* SparkFun XRP Controller
 * uPesy RP2040 DevKit
 * VCC-GND YD-RP2040
 * Viyalab Mizu RP2040
