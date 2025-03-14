@@ -22,9 +22,18 @@
 
 #include "SerialPIO.h"
 
+/**
+    @brief Implements a UART port using PIO for input and output
+*/
 class SoftwareSerial : public SerialPIO {
 public:
-    // Note the rx/tx pins are swapped in PIO vs SWSerial
+    /**
+        @brief Constructs a PIO-based UART
+
+        @param [in] rx GPIO for RX pin or -1 for transmit-only
+        @param [in] tx GPIO for TX pin or -1 for receive-only
+        @param [in] invert True to invert the receive and transmit lines
+    */
     SoftwareSerial(pin_size_t rx, pin_size_t tx, bool invert = false) : SerialPIO(tx, rx) {
         _invert = invert;
     }
@@ -32,18 +41,37 @@ public:
     ~SoftwareSerial() {
     }
 
+    /**
+        @brief Starts the PIO UART
+
+        @param [in] baud Serial bit rate
+    */
     virtual void begin(unsigned long baud = 115200) override {
         begin(baud, SERIAL_8N1);
     };
 
+    /**
+        @brief Starts the PIO UART
+
+        @param [in] baud Serial bit rate
+        @param [in] config Start/Stop/Len configuration (i.e. SERIAL_8N1 or SERIAL_7E2)
+    */
     void begin(unsigned long baud, uint16_t config) override {
         setInvertTX(_invert);
         setInvertRX(_invert);
         SerialPIO::begin(baud, config);
     }
 
+    /**
+        @brief No-op on this core
+    */
     void listen() { /* noop */ }
 
+    /**
+        @brief No-op on this core
+
+        @returns True always
+    */
     bool isListening() {
         return true;
     }
