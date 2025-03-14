@@ -257,7 +257,7 @@ bool I2S::begin() {
     if (!_swapClocks) {
         _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM ? &pio_tdm_inout_program : &pio_i2s_inout_program) : (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program))) : &pio_i2s_in_program);
     } else {
-        _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM? &pio_tdm_inout_swap_program : &pio_i2s_inout_swap_program) : (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program))) : &pio_i2s_in_swap_program);
+        _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM ? &pio_tdm_inout_swap_program : &pio_i2s_inout_swap_program) : (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program))) : &pio_i2s_in_swap_program);
     }
     int minpin, maxpin;
     if (_isOutput && _isInput) {
