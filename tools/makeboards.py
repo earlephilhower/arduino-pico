@@ -39,7 +39,7 @@ def BuildDebugLevel(name):
 
 def BuildFreq(name, defmhz):
     out = 0
-    for f in [ defmhz, 50, 100, 120, 125, 128, 133, 150, 175, 200, 225, 240, 250, 275, 300]:
+    for f in [ defmhz, 50, 100, 120, 125, 128, 133, 150, 176, 200, 225, 240, 250, 276, 300]:
         warn = ""
         if f > defmhz: warn = " (Overclock)"
         if (out == 1) and (f == defmhz):
