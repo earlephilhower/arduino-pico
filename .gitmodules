@@ -3,7 +3,7 @@
 	url = https://github.com/earlephilhower/ArduinoCore-API.git
 [submodule "pico-sdk"]
 	path = pico-sdk
-	url = https://github.com/raspberrypi/pico-sdk.git
+	url = https://github.com/bauer-alex-174/pico-sdk.git
 [submodule "system/pyserial"]
 	path = tools/pyserial
 	url = https://github.com/pyserial/pyserial.git

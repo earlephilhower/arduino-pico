@@ -488,6 +488,9 @@ BuildGlobalMenuList()
 # alphabetically starting with the company name and then the board name.
 # Otherwise it is difficult to find a specific board in the menu.
 
+# Alyx
+MakeBoard("alyx_base_v2", "rp2040", "Alyx", "Base", "0x2e8a", "0x000a", 250, "ALYX_BASE_V2", 2, 0, "boot2_w25q080_2_padded_checksum")
+
 # Raspberry Pi
 MakeBoard("rpipico", "rp2040", "Raspberry Pi", "Pico", "0x2e8a", "0x000a", 250, "RASPBERRY_PI_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("rpipicow", "rp2040", "Raspberry Pi", "Pico W", "0x2e8a", "0xf00a", 250, "RASPBERRY_PI_PICO_W", 2, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])

@@ -25,6 +25,244 @@ menu.ipbtstack=IP/Bluetooth Stack
 menu.uploadmethod=Upload Method
 
 # -----------------------------------
+# Alyx Base
+# -----------------------------------
+alyx_base_v2.name=Alyx Base
+alyx_base_v2.vid.0=0x2e8a
+alyx_base_v2.pid.0=0x000a
+alyx_base_v2.vid.1=0x2e8a
+alyx_base_v2.pid.1=0x010a
+alyx_base_v2.vid.2=0x2e8a
+alyx_base_v2.pid.2=0x400a
+alyx_base_v2.vid.3=0x2e8a
+alyx_base_v2.pid.3=0x410a
+alyx_base_v2.vid.4=0x2e8a
+alyx_base_v2.pid.4=0x800a
+alyx_base_v2.vid.5=0x2e8a
+alyx_base_v2.pid.5=0x810a
+alyx_base_v2.vid.6=0x2e8a
+alyx_base_v2.pid.6=0xc00a
+alyx_base_v2.vid.7=0x2e8a
+alyx_base_v2.pid.7=0xc10a
+alyx_base_v2.upload_port.0.vid=0x2e8a
+alyx_base_v2.upload_port.0.pid=0x000a
+alyx_base_v2.upload_port.1.vid=0x2e8a
+alyx_base_v2.upload_port.1.pid=0x010a
+alyx_base_v2.upload_port.2.vid=0x2e8a
+alyx_base_v2.upload_port.2.pid=0x400a
+alyx_base_v2.upload_port.3.vid=0x2e8a
+alyx_base_v2.upload_port.3.pid=0x410a
+alyx_base_v2.upload_port.4.vid=0x2e8a
+alyx_base_v2.upload_port.4.pid=0x800a
+alyx_base_v2.upload_port.5.vid=0x2e8a
+alyx_base_v2.upload_port.5.pid=0x810a
+alyx_base_v2.upload_port.6.vid=0x2e8a
+alyx_base_v2.upload_port.6.pid=0xc00a
+alyx_base_v2.upload_port.7.vid=0x2e8a
+alyx_base_v2.upload_port.7.pid=0xc10a
+alyx_base_v2.build.usbvid=-DUSBD_VID=0x2e8a
+alyx_base_v2.build.usbpid=-DUSBD_PID=0x000a
+alyx_base_v2.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+alyx_base_v2.build.board=ALYX_BASE_V2
+alyx_base_v2.build.mcu=cortex-m0plus
+alyx_base_v2.build.chip=rp2040
+alyx_base_v2.build.toolchain=arm-none-eabi
+alyx_base_v2.build.toolchainpkg=pqt-gcc
+alyx_base_v2.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+alyx_base_v2.build.uf2family=--family rp2040
+alyx_base_v2.build.variant=alyx_base_v2
+alyx_base_v2.upload.maximum_size=2097152
+alyx_base_v2.upload.wait_for_upload_port=true
+alyx_base_v2.upload.erase_cmd=
+alyx_base_v2.serial.disableDTR=false
+alyx_base_v2.serial.disableRTS=false
+alyx_base_v2.build.f_cpu=125000000
+alyx_base_v2.build.led=
+alyx_base_v2.build.core=rp2040
+alyx_base_v2.build.ldscript=memmap_default.ld
+alyx_base_v2.build.boot2=boot2_w25q080_2_padded_checksum
+alyx_base_v2.build.usb_manufacturer="Alyx"
+alyx_base_v2.build.usb_product="Base"
+alyx_base_v2.menu.flash.2097152_0=2MB (no FS)
+alyx_base_v2.menu.flash.2097152_0.upload.maximum_size=2093056
+alyx_base_v2.menu.flash.2097152_0.build.flash_total=2097152
+alyx_base_v2.menu.flash.2097152_0.build.flash_length=2093056
+alyx_base_v2.menu.flash.2097152_0.build.eeprom_start=270528512
+alyx_base_v2.menu.flash.2097152_0.build.fs_start=270528512
+alyx_base_v2.menu.flash.2097152_0.build.fs_end=270528512
+alyx_base_v2.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+alyx_base_v2.menu.flash.2097152_65536.upload.maximum_size=2027520
+alyx_base_v2.menu.flash.2097152_65536.build.flash_total=2097152
+alyx_base_v2.menu.flash.2097152_65536.build.flash_length=2027520
+alyx_base_v2.menu.flash.2097152_65536.build.eeprom_start=270528512
+alyx_base_v2.menu.flash.2097152_65536.build.fs_start=270462976
+alyx_base_v2.menu.flash.2097152_65536.build.fs_end=270528512
+alyx_base_v2.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+alyx_base_v2.menu.flash.2097152_131072.upload.maximum_size=1961984
+alyx_base_v2.menu.flash.2097152_131072.build.flash_total=2097152
+alyx_base_v2.menu.flash.2097152_131072.build.flash_length=1961984
+alyx_base_v2.menu.flash.2097152_131072.build.eeprom_start=270528512
+alyx_base_v2.menu.flash.2097152_131072.build.fs_start=270397440
+alyx_base_v2.menu.flash.2097152_131072.build.fs_end=270528512
+alyx_base_v2.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+alyx_base_v2.menu.flash.2097152_262144.upload.maximum_size=1830912
+alyx_base_v2.menu.flash.2097152_262144.build.flash_total=2097152
+alyx_base_v2.menu.flash.2097152_262144.build.flash_length=1830912
+alyx_base_v2.menu.flash.2097152_262144.build.eeprom_start=270528512
+alyx_base_v2.menu.flash.2097152_262144.build.fs_start=270266368
+alyx_base_v2.menu.flash.2097152_262144.build.fs_end=270528512
+alyx_base_v2.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+alyx_base_v2.menu.flash.2097152_524288.upload.maximum_size=1568768
+alyx_base_v2.menu.flash.2097152_524288.build.flash_total=2097152
+alyx_base_v2.menu.flash.2097152_524288.build.flash_length=1568768
+alyx_base_v2.menu.flash.2097152_524288.build.eeprom_start=270528512
+alyx_base_v2.menu.flash.2097152_524288.build.fs_start=270004224
+alyx_base_v2.menu.flash.2097152_524288.build.fs_end=270528512
+alyx_base_v2.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+alyx_base_v2.menu.flash.2097152_1048576.upload.maximum_size=1044480
+alyx_base_v2.menu.flash.2097152_1048576.build.flash_total=2097152
+alyx_base_v2.menu.flash.2097152_1048576.build.flash_length=1044480
+alyx_base_v2.menu.flash.2097152_1048576.build.eeprom_start=270528512
+alyx_base_v2.menu.flash.2097152_1048576.build.fs_start=269479936
+alyx_base_v2.menu.flash.2097152_1048576.build.fs_end=270528512
+alyx_base_v2.menu.freq.200=200 MHz
+alyx_base_v2.menu.freq.200.build.f_cpu=200000000L
+alyx_base_v2.menu.freq.50=50 MHz
+alyx_base_v2.menu.freq.50.build.f_cpu=50000000L
+alyx_base_v2.menu.freq.100=100 MHz
+alyx_base_v2.menu.freq.100.build.f_cpu=100000000L
+alyx_base_v2.menu.freq.120=120 MHz
+alyx_base_v2.menu.freq.120.build.f_cpu=120000000L
+alyx_base_v2.menu.freq.125=125 MHz
+alyx_base_v2.menu.freq.125.build.f_cpu=125000000L
+alyx_base_v2.menu.freq.128=128 MHz
+alyx_base_v2.menu.freq.128.build.f_cpu=128000000L
+alyx_base_v2.menu.freq.133=133 MHz
+alyx_base_v2.menu.freq.133.build.f_cpu=133000000L
+alyx_base_v2.menu.freq.150=150 MHz
+alyx_base_v2.menu.freq.150.build.f_cpu=150000000L
+alyx_base_v2.menu.freq.176=176 MHz
+alyx_base_v2.menu.freq.176.build.f_cpu=176000000L
+alyx_base_v2.menu.freq.225=225 MHz (Overclock)
+alyx_base_v2.menu.freq.225.build.f_cpu=225000000L
+alyx_base_v2.menu.freq.240=240 MHz (Overclock)
+alyx_base_v2.menu.freq.240.build.f_cpu=240000000L
+alyx_base_v2.menu.freq.250=250 MHz (Overclock)
+alyx_base_v2.menu.freq.250.build.f_cpu=250000000L
+alyx_base_v2.menu.freq.276=276 MHz (Overclock)
+alyx_base_v2.menu.freq.276.build.f_cpu=276000000L
+alyx_base_v2.menu.freq.300=300 MHz (Overclock)
+alyx_base_v2.menu.freq.300.build.f_cpu=300000000L
+alyx_base_v2.menu.opt.Small=Small (-Os) (standard)
+alyx_base_v2.menu.opt.Small.build.flags.optimize=-Os
+alyx_base_v2.menu.opt.Optimize=Optimize (-O)
+alyx_base_v2.menu.opt.Optimize.build.flags.optimize=-O
+alyx_base_v2.menu.opt.Optimize2=Optimize More (-O2)
+alyx_base_v2.menu.opt.Optimize2.build.flags.optimize=-O2
+alyx_base_v2.menu.opt.Optimize3=Optimize Even More (-O3)
+alyx_base_v2.menu.opt.Optimize3.build.flags.optimize=-O3
+alyx_base_v2.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+alyx_base_v2.menu.opt.Fast.build.flags.optimize=-Ofast
+alyx_base_v2.menu.opt.Debug=Debug (-Og)
+alyx_base_v2.menu.opt.Debug.build.flags.optimize=-Og
+alyx_base_v2.menu.opt.Disabled=Disabled (-O0)
+alyx_base_v2.menu.opt.Disabled.build.flags.optimize=-O0
+alyx_base_v2.menu.profile.Disabled=Disabled
+alyx_base_v2.menu.profile.Disabled.build.flags.profile=
+alyx_base_v2.menu.profile.Enabled=Enabled
+alyx_base_v2.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+alyx_base_v2.menu.rtti.Disabled=Disabled
+alyx_base_v2.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+alyx_base_v2.menu.rtti.Enabled=Enabled
+alyx_base_v2.menu.rtti.Enabled.build.flags.rtti=
+alyx_base_v2.menu.stackprotect.Disabled=Disabled
+alyx_base_v2.menu.stackprotect.Disabled.build.flags.stackprotect=
+alyx_base_v2.menu.stackprotect.Enabled=Enabled
+alyx_base_v2.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+alyx_base_v2.menu.exceptions.Disabled=Disabled
+alyx_base_v2.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+alyx_base_v2.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+alyx_base_v2.menu.exceptions.Enabled=Enabled
+alyx_base_v2.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+alyx_base_v2.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+alyx_base_v2.menu.dbgport.Disabled=Disabled
+alyx_base_v2.menu.dbgport.Disabled.build.debug_port=
+alyx_base_v2.menu.dbgport.Serial=Serial
+alyx_base_v2.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+alyx_base_v2.menu.dbgport.Serial1=Serial1
+alyx_base_v2.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+alyx_base_v2.menu.dbgport.Serial2=Serial2
+alyx_base_v2.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+alyx_base_v2.menu.dbgport.SerialSemi=SerialSemi
+alyx_base_v2.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+alyx_base_v2.menu.dbglvl.None=None
+alyx_base_v2.menu.dbglvl.None.build.debug_level=
+alyx_base_v2.menu.dbglvl.Core=Core
+alyx_base_v2.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+alyx_base_v2.menu.dbglvl.SPI=SPI
+alyx_base_v2.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+alyx_base_v2.menu.dbglvl.Wire=Wire
+alyx_base_v2.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+alyx_base_v2.menu.dbglvl.Bluetooth=Bluetooth
+alyx_base_v2.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+alyx_base_v2.menu.dbglvl.All=All
+alyx_base_v2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH
+alyx_base_v2.menu.dbglvl.NDEBUG=NDEBUG
+alyx_base_v2.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+alyx_base_v2.menu.usbstack.picosdk=Pico SDK
+alyx_base_v2.menu.usbstack.picosdk.build.usbstack_flags=
+alyx_base_v2.menu.usbstack.tinyusb=Adafruit TinyUSB
+alyx_base_v2.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+alyx_base_v2.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+alyx_base_v2.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+alyx_base_v2.menu.usbstack.nousb=No USB
+alyx_base_v2.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+alyx_base_v2.menu.ipbtstack.ipv4only=IPv4 Only
+alyx_base_v2.menu.ipbtstack.ipv4only.build.libpicow=libipv4.a
+alyx_base_v2.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+alyx_base_v2.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+alyx_base_v2.menu.ipbtstack.ipv4ipv6.build.libpicow=libipv4-ipv6.a
+alyx_base_v2.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+alyx_base_v2.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+alyx_base_v2.menu.ipbtstack.ipv4btcble.build.libpicow=libipv4-bt.a
+alyx_base_v2.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+alyx_base_v2.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+alyx_base_v2.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libipv4-ipv6-bt.a
+alyx_base_v2.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+alyx_base_v2.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+alyx_base_v2.menu.ipbtstack.ipv4onlybig.build.libpicow=libipv4-big.a
+alyx_base_v2.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+alyx_base_v2.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+alyx_base_v2.menu.ipbtstack.ipv4ipv6big.build.libpicow=libipv4-ipv6-big.a
+alyx_base_v2.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+alyx_base_v2.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+alyx_base_v2.menu.ipbtstack.ipv4btcblebig.build.libpicow=libipv4-bt-big.a
+alyx_base_v2.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+alyx_base_v2.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+alyx_base_v2.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=libipv4-ipv6-bt-big.a
+alyx_base_v2.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+alyx_base_v2.menu.uploadmethod.default=Default (UF2)
+alyx_base_v2.menu.uploadmethod.default.build.ram_length=256k
+alyx_base_v2.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+alyx_base_v2.menu.uploadmethod.default.upload.maximum_data_size=262144
+alyx_base_v2.menu.uploadmethod.default.upload.tool=uf2conv
+alyx_base_v2.menu.uploadmethod.default.upload.tool.default=uf2conv
+alyx_base_v2.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+alyx_base_v2.menu.uploadmethod.picotool=Picotool
+alyx_base_v2.menu.uploadmethod.picotool.build.ram_length=256k
+alyx_base_v2.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+alyx_base_v2.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+alyx_base_v2.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+alyx_base_v2.menu.uploadmethod.picotool.upload.tool=picotool
+alyx_base_v2.menu.uploadmethod.picotool.upload.tool.default=picotool
+alyx_base_v2.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+alyx_base_v2.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+alyx_base_v2.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+alyx_base_v2.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+alyx_base_v2.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+alyx_base_v2.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Raspberry Pi Pico
 # -----------------------------------
 rpipico.name=Raspberry Pi Pico
