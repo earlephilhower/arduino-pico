@@ -34,8 +34,8 @@ jobs:
            # This draft is not visible to normal users and needs to be
            # updated manually with release notes and published from the
            # GitHub web interface.
-           json=$(find ./package/versions -name package_rp2040_index.json)
-           log=$(find ./package/versions  -name package_rp2040_index.log)
+           json=$(find ./package/versions -name package_rp2_index.json)
+           log=$(find ./package/versions  -name package_rp2_index.log)
            zip=$(find ./package/versions  -name rp2040*zip)
-           tag=$(find ./package/versions  -name package_rp2040_index.tag -exec cat \{\} \;)
+           tag=$(find ./package/versions  -name package_rp2_index.tag -exec cat \{\} \;)
            python3 ./package/upload_release.py --repo "$GITHUB_REPOSITORY" --token "$CI_GITHUB_API_KEY" --tag "$tag" --name "Release $tag" --msg "@$log" "$zip" "$json"
