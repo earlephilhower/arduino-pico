@@ -81,6 +81,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Pimoroni Pico Plus 2W
 * Pimoroni Plasma2040
 * Pimoroni Plasma2350
+* Pimoroni Servo2040
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
 * Pintronix PinMax
