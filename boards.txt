@@ -23114,7 +23114,7 @@ pimoroni_plasma2350.upload_port.7.pid=0xd1a5
 pimoroni_plasma2350.build.usbvid=-DUSBD_VID=0x2e8a
 pimoroni_plasma2350.build.usbpid=-DUSBD_PID=0x10a5
 pimoroni_plasma2350.build.usbpwr=-DUSBD_MAX_POWER_MA=500
-pimoroni_plasma2350.build.board=PIMORONI_PLASMA2040
+pimoroni_plasma2350.build.board=PIMORONI_PLASMA2350
 pimoroni_plasma2350.build.variant=pimoroni_plasma2350
 pimoroni_plasma2350.upload.maximum_size=2097152
 pimoroni_plasma2350.upload.wait_for_upload_port=true
@@ -23321,6 +23321,244 @@ pimoroni_plasma2350.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 pimoroni_plasma2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=524288
 pimoroni_plasma2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 pimoroni_plasma2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
+# Pimoroni Servo2040
+# -----------------------------------
+pimoroni_servo2040.name=Pimoroni Servo2040
+pimoroni_servo2040.vid.0=0x2e8a
+pimoroni_servo2040.pid.0=0x10a5
+pimoroni_servo2040.vid.1=0x2e8a
+pimoroni_servo2040.pid.1=0x11a5
+pimoroni_servo2040.vid.2=0x2e8a
+pimoroni_servo2040.pid.2=0x50a5
+pimoroni_servo2040.vid.3=0x2e8a
+pimoroni_servo2040.pid.3=0x51a5
+pimoroni_servo2040.vid.4=0x2e8a
+pimoroni_servo2040.pid.4=0x90a5
+pimoroni_servo2040.vid.5=0x2e8a
+pimoroni_servo2040.pid.5=0x91a5
+pimoroni_servo2040.vid.6=0x2e8a
+pimoroni_servo2040.pid.6=0xd0a5
+pimoroni_servo2040.vid.7=0x2e8a
+pimoroni_servo2040.pid.7=0xd1a5
+pimoroni_servo2040.upload_port.0.vid=0x2e8a
+pimoroni_servo2040.upload_port.0.pid=0x10a5
+pimoroni_servo2040.upload_port.1.vid=0x2e8a
+pimoroni_servo2040.upload_port.1.pid=0x11a5
+pimoroni_servo2040.upload_port.2.vid=0x2e8a
+pimoroni_servo2040.upload_port.2.pid=0x50a5
+pimoroni_servo2040.upload_port.3.vid=0x2e8a
+pimoroni_servo2040.upload_port.3.pid=0x51a5
+pimoroni_servo2040.upload_port.4.vid=0x2e8a
+pimoroni_servo2040.upload_port.4.pid=0x90a5
+pimoroni_servo2040.upload_port.5.vid=0x2e8a
+pimoroni_servo2040.upload_port.5.pid=0x91a5
+pimoroni_servo2040.upload_port.6.vid=0x2e8a
+pimoroni_servo2040.upload_port.6.pid=0xd0a5
+pimoroni_servo2040.upload_port.7.vid=0x2e8a
+pimoroni_servo2040.upload_port.7.pid=0xd1a5
+pimoroni_servo2040.build.usbvid=-DUSBD_VID=0x2e8a
+pimoroni_servo2040.build.usbpid=-DUSBD_PID=0x10a5
+pimoroni_servo2040.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+pimoroni_servo2040.build.board=PIMORONI_SERVO2040
+pimoroni_servo2040.build.mcu=cortex-m0plus
+pimoroni_servo2040.build.chip=rp2040
+pimoroni_servo2040.build.toolchain=arm-none-eabi
+pimoroni_servo2040.build.toolchainpkg=pqt-gcc
+pimoroni_servo2040.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+pimoroni_servo2040.build.uf2family=--family rp2040
+pimoroni_servo2040.build.variant=pimoroni_servo2040
+pimoroni_servo2040.upload.maximum_size=2097152
+pimoroni_servo2040.upload.wait_for_upload_port=true
+pimoroni_servo2040.upload.erase_cmd=
+pimoroni_servo2040.serial.disableDTR=false
+pimoroni_servo2040.serial.disableRTS=false
+pimoroni_servo2040.build.f_cpu=125000000
+pimoroni_servo2040.build.led=
+pimoroni_servo2040.build.core=rp2040
+pimoroni_servo2040.build.ldscript=memmap_default.ld
+pimoroni_servo2040.build.boot2=boot2_w25q080_2_padded_checksum
+pimoroni_servo2040.build.usb_manufacturer="Pimoroni"
+pimoroni_servo2040.build.usb_product="Servo2040"
+pimoroni_servo2040.menu.flash.2097152_0=2MB (no FS)
+pimoroni_servo2040.menu.flash.2097152_0.upload.maximum_size=2093056
+pimoroni_servo2040.menu.flash.2097152_0.build.flash_total=2097152
+pimoroni_servo2040.menu.flash.2097152_0.build.flash_length=2093056
+pimoroni_servo2040.menu.flash.2097152_0.build.eeprom_start=270528512
+pimoroni_servo2040.menu.flash.2097152_0.build.fs_start=270528512
+pimoroni_servo2040.menu.flash.2097152_0.build.fs_end=270528512
+pimoroni_servo2040.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+pimoroni_servo2040.menu.flash.2097152_65536.upload.maximum_size=2027520
+pimoroni_servo2040.menu.flash.2097152_65536.build.flash_total=2097152
+pimoroni_servo2040.menu.flash.2097152_65536.build.flash_length=2027520
+pimoroni_servo2040.menu.flash.2097152_65536.build.eeprom_start=270528512
+pimoroni_servo2040.menu.flash.2097152_65536.build.fs_start=270462976
+pimoroni_servo2040.menu.flash.2097152_65536.build.fs_end=270528512
+pimoroni_servo2040.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+pimoroni_servo2040.menu.flash.2097152_131072.upload.maximum_size=1961984
+pimoroni_servo2040.menu.flash.2097152_131072.build.flash_total=2097152
+pimoroni_servo2040.menu.flash.2097152_131072.build.flash_length=1961984
+pimoroni_servo2040.menu.flash.2097152_131072.build.eeprom_start=270528512
+pimoroni_servo2040.menu.flash.2097152_131072.build.fs_start=270397440
+pimoroni_servo2040.menu.flash.2097152_131072.build.fs_end=270528512
+pimoroni_servo2040.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+pimoroni_servo2040.menu.flash.2097152_262144.upload.maximum_size=1830912
+pimoroni_servo2040.menu.flash.2097152_262144.build.flash_total=2097152
+pimoroni_servo2040.menu.flash.2097152_262144.build.flash_length=1830912
+pimoroni_servo2040.menu.flash.2097152_262144.build.eeprom_start=270528512
+pimoroni_servo2040.menu.flash.2097152_262144.build.fs_start=270266368
+pimoroni_servo2040.menu.flash.2097152_262144.build.fs_end=270528512
+pimoroni_servo2040.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+pimoroni_servo2040.menu.flash.2097152_524288.upload.maximum_size=1568768
+pimoroni_servo2040.menu.flash.2097152_524288.build.flash_total=2097152
+pimoroni_servo2040.menu.flash.2097152_524288.build.flash_length=1568768
+pimoroni_servo2040.menu.flash.2097152_524288.build.eeprom_start=270528512
+pimoroni_servo2040.menu.flash.2097152_524288.build.fs_start=270004224
+pimoroni_servo2040.menu.flash.2097152_524288.build.fs_end=270528512
+pimoroni_servo2040.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+pimoroni_servo2040.menu.flash.2097152_1048576.upload.maximum_size=1044480
+pimoroni_servo2040.menu.flash.2097152_1048576.build.flash_total=2097152
+pimoroni_servo2040.menu.flash.2097152_1048576.build.flash_length=1044480
+pimoroni_servo2040.menu.flash.2097152_1048576.build.eeprom_start=270528512
+pimoroni_servo2040.menu.flash.2097152_1048576.build.fs_start=269479936
+pimoroni_servo2040.menu.flash.2097152_1048576.build.fs_end=270528512
+pimoroni_servo2040.menu.freq.200=200 MHz
+pimoroni_servo2040.menu.freq.200.build.f_cpu=200000000L
+pimoroni_servo2040.menu.freq.50=50 MHz
+pimoroni_servo2040.menu.freq.50.build.f_cpu=50000000L
+pimoroni_servo2040.menu.freq.100=100 MHz
+pimoroni_servo2040.menu.freq.100.build.f_cpu=100000000L
+pimoroni_servo2040.menu.freq.120=120 MHz
+pimoroni_servo2040.menu.freq.120.build.f_cpu=120000000L
+pimoroni_servo2040.menu.freq.125=125 MHz
+pimoroni_servo2040.menu.freq.125.build.f_cpu=125000000L
+pimoroni_servo2040.menu.freq.128=128 MHz
+pimoroni_servo2040.menu.freq.128.build.f_cpu=128000000L
+pimoroni_servo2040.menu.freq.133=133 MHz
+pimoroni_servo2040.menu.freq.133.build.f_cpu=133000000L
+pimoroni_servo2040.menu.freq.150=150 MHz
+pimoroni_servo2040.menu.freq.150.build.f_cpu=150000000L
+pimoroni_servo2040.menu.freq.176=176 MHz
+pimoroni_servo2040.menu.freq.176.build.f_cpu=176000000L
+pimoroni_servo2040.menu.freq.225=225 MHz (Overclock)
+pimoroni_servo2040.menu.freq.225.build.f_cpu=225000000L
+pimoroni_servo2040.menu.freq.240=240 MHz (Overclock)
+pimoroni_servo2040.menu.freq.240.build.f_cpu=240000000L
+pimoroni_servo2040.menu.freq.250=250 MHz (Overclock)
+pimoroni_servo2040.menu.freq.250.build.f_cpu=250000000L
+pimoroni_servo2040.menu.freq.276=276 MHz (Overclock)
+pimoroni_servo2040.menu.freq.276.build.f_cpu=276000000L
+pimoroni_servo2040.menu.freq.300=300 MHz (Overclock)
+pimoroni_servo2040.menu.freq.300.build.f_cpu=300000000L
+pimoroni_servo2040.menu.opt.Small=Small (-Os) (standard)
+pimoroni_servo2040.menu.opt.Small.build.flags.optimize=-Os
+pimoroni_servo2040.menu.opt.Optimize=Optimize (-O)
+pimoroni_servo2040.menu.opt.Optimize.build.flags.optimize=-O
+pimoroni_servo2040.menu.opt.Optimize2=Optimize More (-O2)
+pimoroni_servo2040.menu.opt.Optimize2.build.flags.optimize=-O2
+pimoroni_servo2040.menu.opt.Optimize3=Optimize Even More (-O3)
+pimoroni_servo2040.menu.opt.Optimize3.build.flags.optimize=-O3
+pimoroni_servo2040.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+pimoroni_servo2040.menu.opt.Fast.build.flags.optimize=-Ofast
+pimoroni_servo2040.menu.opt.Debug=Debug (-Og)
+pimoroni_servo2040.menu.opt.Debug.build.flags.optimize=-Og
+pimoroni_servo2040.menu.opt.Disabled=Disabled (-O0)
+pimoroni_servo2040.menu.opt.Disabled.build.flags.optimize=-O0
+pimoroni_servo2040.menu.profile.Disabled=Disabled
+pimoroni_servo2040.menu.profile.Disabled.build.flags.profile=
+pimoroni_servo2040.menu.profile.Enabled=Enabled
+pimoroni_servo2040.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+pimoroni_servo2040.menu.rtti.Disabled=Disabled
+pimoroni_servo2040.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+pimoroni_servo2040.menu.rtti.Enabled=Enabled
+pimoroni_servo2040.menu.rtti.Enabled.build.flags.rtti=
+pimoroni_servo2040.menu.stackprotect.Disabled=Disabled
+pimoroni_servo2040.menu.stackprotect.Disabled.build.flags.stackprotect=
+pimoroni_servo2040.menu.stackprotect.Enabled=Enabled
+pimoroni_servo2040.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector
+pimoroni_servo2040.menu.exceptions.Disabled=Disabled
+pimoroni_servo2040.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+pimoroni_servo2040.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+pimoroni_servo2040.menu.exceptions.Enabled=Enabled
+pimoroni_servo2040.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+pimoroni_servo2040.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+pimoroni_servo2040.menu.dbgport.Disabled=Disabled
+pimoroni_servo2040.menu.dbgport.Disabled.build.debug_port=
+pimoroni_servo2040.menu.dbgport.Serial=Serial
+pimoroni_servo2040.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+pimoroni_servo2040.menu.dbgport.Serial1=Serial1
+pimoroni_servo2040.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+pimoroni_servo2040.menu.dbgport.Serial2=Serial2
+pimoroni_servo2040.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+pimoroni_servo2040.menu.dbgport.SerialSemi=SerialSemi
+pimoroni_servo2040.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+pimoroni_servo2040.menu.dbglvl.None=None
+pimoroni_servo2040.menu.dbglvl.None.build.debug_level=
+pimoroni_servo2040.menu.dbglvl.Core=Core
+pimoroni_servo2040.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+pimoroni_servo2040.menu.dbglvl.SPI=SPI
+pimoroni_servo2040.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+pimoroni_servo2040.menu.dbglvl.Wire=Wire
+pimoroni_servo2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+pimoroni_servo2040.menu.dbglvl.Bluetooth=Bluetooth
+pimoroni_servo2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_servo2040.menu.dbglvl.All=All
+pimoroni_servo2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH
+pimoroni_servo2040.menu.dbglvl.NDEBUG=NDEBUG
+pimoroni_servo2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+pimoroni_servo2040.menu.usbstack.picosdk=Pico SDK
+pimoroni_servo2040.menu.usbstack.picosdk.build.usbstack_flags=
+pimoroni_servo2040.menu.usbstack.tinyusb=Adafruit TinyUSB
+pimoroni_servo2040.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+pimoroni_servo2040.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+pimoroni_servo2040.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+pimoroni_servo2040.menu.usbstack.nousb=No USB
+pimoroni_servo2040.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+pimoroni_servo2040.menu.ipbtstack.ipv4only=IPv4 Only
+pimoroni_servo2040.menu.ipbtstack.ipv4only.build.libpicow=libipv4.a
+pimoroni_servo2040.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6.build.libpicow=libipv4-ipv6.a
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+pimoroni_servo2040.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+pimoroni_servo2040.menu.ipbtstack.ipv4btcble.build.libpicow=libipv4-bt.a
+pimoroni_servo2040.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libipv4-ipv6-bt.a
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+pimoroni_servo2040.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+pimoroni_servo2040.menu.ipbtstack.ipv4onlybig.build.libpicow=libipv4-big.a
+pimoroni_servo2040.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6big.build.libpicow=libipv4-ipv6-big.a
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+pimoroni_servo2040.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+pimoroni_servo2040.menu.ipbtstack.ipv4btcblebig.build.libpicow=libipv4-bt-big.a
+pimoroni_servo2040.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=libipv4-ipv6-bt-big.a
+pimoroni_servo2040.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+pimoroni_servo2040.menu.uploadmethod.default=Default (UF2)
+pimoroni_servo2040.menu.uploadmethod.default.build.ram_length=256k
+pimoroni_servo2040.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+pimoroni_servo2040.menu.uploadmethod.default.upload.maximum_data_size=262144
+pimoroni_servo2040.menu.uploadmethod.default.upload.tool=uf2conv
+pimoroni_servo2040.menu.uploadmethod.default.upload.tool.default=uf2conv
+pimoroni_servo2040.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+pimoroni_servo2040.menu.uploadmethod.picotool=Picotool
+pimoroni_servo2040.menu.uploadmethod.picotool.build.ram_length=256k
+pimoroni_servo2040.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+pimoroni_servo2040.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+pimoroni_servo2040.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+pimoroni_servo2040.menu.uploadmethod.picotool.upload.tool=picotool
+pimoroni_servo2040.menu.uploadmethod.picotool.upload.tool.default=picotool
+pimoroni_servo2040.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+pimoroni_servo2040.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+pimoroni_servo2040.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+pimoroni_servo2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+pimoroni_servo2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+pimoroni_servo2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
 # Pimoroni Tiny2040
