@@ -172,6 +172,37 @@ To learn more about PSRAM usage, see: :doc:`RP2350 PSRAM Support <psram>`
     ; PSRAM size: 4MB
     board_upload.psram_length = 4194304
 
+PSRAM chip select (CS)
+----------------------
+
+For RP2350 based boards, this controls what chip-select (also called: slave-select / SS) pin to use when wanting to talk to the PSRAM chip.
+
+Note that it's not needed to set this with a board that is known to have a PSRAM chip on-board, such as a "Sparkfun Thing Plus 2350". The ``pins_arduino.h`` of that variant already has the correct definition.
+
+To learn more about PSRAM usage, see: :doc:`RP2350 PSRAM Support <psram>` 
+
+.. code:: ini
+
+    ; PSRAM CS is at GP47
+    build_flags =
+      -DRP2350_PSRAM_CS=47
+
+
+Boot2 Source
+------------
+
+Boot2 is the second stage bootloader and predominantly used on the RP2040.
+Its main purpose is to configure the communication with the Flash at the highest, safest speed it can.
+All known boards have their correct value already configured. However, when choosing ``board = generic``,
+you can freely configure the Boot2 to be for a different flash. 
+
+For possible Boot2 filenames, `please see here <https://github.com/earlephilhower/arduino-pico/tree/master/boot2/rp2040>`__.
+
+.. code:: ini
+
+    ; expect an ISSI IS25LP080 flash, SPI frequency = CPU frequency divided by 2 
+    board_build.arduino.earlephilhower.boot2_source = boot2_is25lp080_2_padded_checksum.S
+
 CPU Speed
 ---------
 

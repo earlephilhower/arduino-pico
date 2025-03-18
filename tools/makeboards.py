@@ -39,7 +39,7 @@ def BuildDebugLevel(name):
 
 def BuildFreq(name, defmhz):
     out = 0
-    for f in [ defmhz, 50, 100, 120, 125, 128, 133, 150, 175, 200, 225, 240, 250, 275, 300]:
+    for f in [ defmhz, 50, 100, 120, 125, 128, 133, 150, 176, 200, 225, 240, 250, 276, 300]:
         warn = ""
         if f > defmhz: warn = " (Overclock)"
         if (out == 1) and (f == defmhz):
@@ -313,7 +313,8 @@ def BuildWifiType(name):
     print("%s.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1" % (name))
 
 def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra = None, board_url = None):
-    fssizelist = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
+    smallfs = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
+    fssizelist = list(smallfs)
     for i in range(1, flashsizemb):
         fssizelist.append(i * 1024 * 1024)
     if chip == "rp2040":
@@ -329,16 +330,20 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         raise Exception("Unknown board type " + str(chip));
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
     if (name == "generic") or (name == "generic_rp2350") or (name == "vccgnd_yd_rp2040"):
-        BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
+        smfs =  [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
+        BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     elif name == "pimoroni_tiny2040":
-        BuildFlashMenu(name, chip, 2*1024*1024, fssizelist)
+        BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
     elif name == "akana_r1":
-        BuildFlashMenu(name, chip, 2*1024*1024, [0, 1*1024*1024])
+        BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
+    elif name == "olimex_rp2040pico30":
+        BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     elif (name == "challenger_2350_wifi6_ble5") or (name == "challenger_2040_wifi_ble"):        
         BuildWifiType(name)
@@ -363,7 +368,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
     else:
-        BuildFreq(name, 133)
+        BuildFreq(name, 200)
     BuildOptimize(name)
     BuildProfile(name)
     BuildRTTI(name)
@@ -516,7 +521,7 @@ MakeBoard("adafruit_macropad2040", "rp2040", "Adafruit", "MacroPad RP2040", "0x2
 MakeBoard("adafruit_kb2040", "rp2040", "Adafruit", "KB2040", "0x239a", "0x8105", 250, "ADAFRUIT_KB2040_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("adafruit_feather_rp2350_hstx", "rp2350", "Adafruit", "Feather RP2350 HSTX", "0x239a", "0x814f", 250, "ADAFRUIT_FEATHER_RP2350_HSTX", 8, 0, "none")
 MakeBoard("adafruit_floppsy", "rp2040", "Adafruit", "Floppsy", "0x239a", "0x8151", 250, "ADAFRUIT_FLOPPSY_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
-
+MakeBoard("adafruit_metro_rp2350", "rp2350", "Adafruit", "Metro RP2350", "0x239a", "0x814d", 250, "ADAFRUIT_METRO_RP2350", 16, 0, "none")
 # Amken
 MakeBoard("amken_bunny", "rp2040","Amken","BunnyBoard","0x2770",["0x7303"],250,"AMKEN_BB",128,0,"boot2_w25q128jvxq_4_padded_checksum","","https://www.amken3d.com")
 MakeBoard("amken_revelop", "rp2040","Amken","Revelop","0x2770",["0x7304"],250,"AMKEN_REVELOP",32,0,"boot2_W25Q32JVxQ_4_padded_checksum","","https://www.amken3d.com")
@@ -591,6 +596,10 @@ MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250
 MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "none")
 MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "none")
 
+# Makerbase
+MakeBoard("mksthr36", "rp2040", "Makerbase", "MKS THR36", "0x2e8a", "0x000a", 250, "MAKERBASE_MKSTHR36", 1, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("mksthr42", "rp2040", "Makerbase", "MKS THR42", "0x2e8a", "0x000a", 250, "MAKERBASE_MKSTHR42", 1, 0, "boot2_w25q080_2_padded_checksum")
+
 # Melopero
 MakeBoard("melopero_cookie_rp2040", "rp2040", "Melopero", "Cookie RP2040", "0x2e8a", "0x1011", 250, "MELOPERO_COOKIE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("melopero_shake_rp2040", "rp2040", "Melopero", "Shake RP2040", "0x2e8a", "0x1005", 250, "MELOPERO_SHAKE_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
@@ -611,8 +620,9 @@ MakeBoard("newsan_archi", "rp2040", "Newsan", "Archi", "0x2E8A", "0x1043", 250, 
 MakeBoard("nullbits_bit_c_pro", "rp2040", "nullbits", "Bit-C PRO", "0x2e8a", "0x6e61", 500, "NULLBITS_BIT_C_PRO", 4, 0, "boot2_w25x10cl_4_padded_checksum")
 
 # Olimex
-MakeBoard("olimex_rp2040pico30_2mb", "rp2040", "Olimex", "RP2040-Pico30 2MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_2MB", 2, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("olimex_rp2040pico30_16mb", "rp2040", "Olimex", "RP2040-Pico30 16MB", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30_16MB", 16, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("olimex_pico2xl", "rp2350", "Olimex", "Pico2XL", "0x15ba", "0x0026", 250, "OLIMEX_PICO2XL", 2, 0, "none")
+MakeBoard("olimex_pico2xxl", "rp2350", "Olimex", "Pico2XXL", "0x15ba", "0x0026", 500, "OLIMEX_PICO2XXL", 16, 8, "none")
+MakeBoard("olimex_rp2040pico30", "rp2040", "Olimex", "RP2040-Pico30", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # Pimoroni
 MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, 0, "boot2_w25q64jv_4_padded_checksum")
@@ -620,7 +630,8 @@ MakeBoard("pimoroni_pga2350", "rp2350", "Pimoroni", "PGA2350", "0x2e8a", "0x1018
 MakeBoard("pimoroni_pico_plus_2", "rp2350", "Pimoroni", "PicoPlus2", "0x2e8a", "0x100a", 500, "PIMORONI_PICO_PLUS_2", 16, 8, "none")
 MakeBoard("pimoroni_pico_plus_2w", "rp2350", "Pimoroni", "PicoPlus2W", "0x2e8a", "0x100a", 500, "PIMORONI_PICO_PLUS_2W", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("pimoroni_plasma2040", "rp2040", "Pimoroni", "Plasma2040", "0x2e8a", "0x100a", 500, "PIMORONI_PLASMA2040", 2, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("pimoroni_plasma2350", "rp2350", "Pimoroni", "Plasma2350", "0x2e8a", "0x10a5", 500, "PIMORONI_PLASMA2040", 2, 0, "none")
+MakeBoard("pimoroni_plasma2350", "rp2350", "Pimoroni", "Plasma2350", "0x2e8a", "0x10a5", 500, "PIMORONI_PLASMA2350", 2, 0, "none")
+MakeBoard("pimoroni_servo2040", "rp2040", "Pimoroni", "Servo2040", "0x2e8a", "0x10a5", 500, "PIMORONI_SERVO2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "rp2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, 0, "boot2_w25q64jv_4_padded_checksum")
 MakeBoard("pimoroni_tiny2350", "rp2350", "Pimoroni", "Tiny2350", "0x2e8a", "0x100b", 500, "PIMORONI_TINY2350", 4, 0, "none")
 
@@ -646,17 +657,20 @@ MakeBoard("solderparty_rp2350_stamp", "rp2350", "Solder Party", "RP2350 Stamp", 
 MakeBoard("solderparty_rp2350_stamp_xl", "rp2350", "Solder Party", "RP2350 Stamp XL", "0x1209", "0xa184", 500, "SOLDERPARTY_RP2350_STAMP_XL", 16, 0, "none", None, "https://www.solder.party/docs/rp2350-stamp-xl/")
 
 # SparkFun
+MakeBoard("sparkfun_iotredboard_rp2350", "rp2350", "SparkFun", "IoT RedBoard RP2350", "0x1b4f", "0x0047", 250, "SPARKFUN_IOTREDBOARD_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"], "https://www.sparkfun.com/sparkfun-iot-redboard-rp2350.html")
 MakeBoard("sparkfun_micromodrp2040", "rp2040", "SparkFun", "MicroMod RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_MICROMOD_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_promicrorp2040", "rp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("sparkfun_promicrorp2350", "rp2350", "SparkFun", "ProMicro RP2350", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2350", 16, 8, "none")
 MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_THINGPLUS_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_thingplusrp2350", "rp2350", "SparkFun", "Thing Plus RP2350", "0x1b4f", "0x0038", 250, "SPARKFUN_THINGPLUS_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("sparkfun_iotnode_lorawanrp2350", "rp2350", "SparkFun", "IoT Node LoRaWAN", "0x1b4f", "0x0044", 250, "SPARKFUN_IOTNODE_LORAWAN_RP2350", 16, 8, "none")
+MakeBoard("sparkfun_xrp_controller_beta", "rp2040", "SparkFun", "XRP Controller (Beta)", "0x1b4f", "0x0045", 250, "SPARKFUN_XRP_CONTROLLER_BETA", 2, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
+MakeBoard("sparkfun_xrp_controller", "rp2350", "SparkFun", "XRP Controller", "0x1b4f", "0x0046", 250, "SPARKFUN_XRP_CONTROLLER", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 
 # Seeed
 MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("seeed_xiao_rp2040", "rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("seeed_xiao_rp2350", "rp2350", "Seeed", "XIAO RP2350", "0x2886", "0x0058", 250, "SEEED_XIAO_RP2350", 16, 8, "none", None, "https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html")
+MakeBoard("seeed_xiao_rp2350", "rp2350", "Seeed", "XIAO RP2350", "0x2886", "0x0058", 250, "SEEED_XIAO_RP2350", 2, 0, "none", None, "https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html")
 
 # Upesy
 MakeBoard("upesy_rp2040_devkit", "rp2040", "uPesy", "RP2040 DevKit", "0x2e8a", "0x1007", 250, "UPESY_RP2040_DEVKIT", 2, 0, "boot2_w25q080_2_padded_checksum")

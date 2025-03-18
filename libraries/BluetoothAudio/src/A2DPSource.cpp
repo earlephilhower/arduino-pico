@@ -223,7 +223,7 @@ size_t A2DPSource::write(const uint8_t *buffer, size_t size) {
     size = std::min((size_t)availableForWrite(), size);
 
     size_t count = 0;
-    size /= 2;
+    size /= sizeof(int16_t); // Convert size to samples
 
     // First copy from writer to either end of
     uint32_t start = _pcmWriter;
@@ -262,7 +262,7 @@ int A2DPSource::availableForWrite() {
     } else {
         avail = _pcmBufferSize - _pcmWriter + _pcmReader - 1;
     }
-    avail /= sizeof(uint32_t); // availableForWrite always 32b sample pairs in this core...
+    avail *= sizeof(int16_t); // Convert samples to bytes
     return avail;
 }
 

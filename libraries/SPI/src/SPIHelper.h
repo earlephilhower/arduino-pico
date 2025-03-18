@@ -108,6 +108,9 @@ public:
         @brief Disables any GPIO interrupts registered before an SPI transaction begins
     */
     void maskInterrupts() {
+        if (_usingIRQs.empty()) {
+            return;
+        }
         noInterrupts(); // Avoid possible race conditions if IRQ comes in while main app is in middle of this
         // Disable any IRQs that are being used for SPI
         io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
@@ -134,6 +137,9 @@ public:
         @brief Restores GPIO interrupts masks after an SPI transaction completes
     */
     void unmaskInterrupts() {
+        if (_usingIRQs.empty()) {
+            return;
+        }
         noInterrupts(); // Avoid race condition so the GPIO IRQs won't come back until all state is restored
         DEBUGSPI("SPI::endTransaction()\n");
         // Re-enable IRQs

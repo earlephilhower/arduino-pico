@@ -87,6 +87,9 @@
                      "name": "Adafruit Floppsy"
                   },
                   {
+                     "name": "Adafruit Metro RP2350"
+                  },
+                  {
                      "name": "Amken BunnyBoard"
                   },
                   {
@@ -207,6 +210,12 @@
                      "name": "iLabs Challenger 2350 BConnect"
                   },
                   {
+                     "name": "Makerbase MKS THR36"
+                  },
+                  {
+                     "name": "Makerbase MKS THR42"
+                  },
+                  {
                      "name": "Melopero Cookie RP2040"
                   },
                   {
@@ -228,10 +237,13 @@
                      "name": "nullbits Bit-C PRO"
                   },
                   {
-                     "name": "Olimex RP2040-Pico30 2MB"
+                     "name": "Olimex Pico2XL"
                   },
                   {
-                     "name": "Olimex RP2040-Pico30 16MB"
+                     "name": "Olimex Pico2XXL"
+                  },
+                  {
+                     "name": "Olimex RP2040-Pico30"
                   },
                   {
                      "name": "Pimoroni PGA2040"
@@ -250,6 +262,9 @@
                   },
                   {
                      "name": "Pimoroni Plasma2350"
+                  },
+                  {
+                     "name": "Pimoroni Servo2040"
                   },
                   {
                      "name": "Pimoroni Tiny2040"
@@ -285,6 +300,9 @@
                      "name": "Solder Party RP2350 Stamp XL"
                   },
                   {
+                     "name": "SparkFun IoT RedBoard RP2350"
+                  },
+                  {
                      "name": "SparkFun MicroMod RP2040"
                   },
                   {
@@ -301,6 +319,12 @@
                   },
                   {
                      "name": "SparkFun IoT Node LoRaWAN"
+                  },
+                  {
+                     "name": "SparkFun XRP Controller (Beta)"
+                  },
+                  {
+                     "name": "SparkFun XRP Controller"
                   },
                   {
                      "name": "Seeed INDICATOR RP2040"
