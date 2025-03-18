@@ -178,8 +178,8 @@ mv tmp $new_json
 set -e
 cat $new_json | jq empty
 
-cat $new_log > package_rp2040_index.log
-cat $new_tag > package_rp2040_index.tag
+cat $new_log > package_rp2_index.log
+cat $new_tag > package_rp2_index.tag
 rm -f $new_log $new_tag
 
 popd
