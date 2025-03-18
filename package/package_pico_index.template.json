@@ -237,6 +237,12 @@
                      "name": "nullbits Bit-C PRO"
                   },
                   {
+                     "name": "Olimex Pico2XL"
+                  },
+                  {
+                     "name": "Olimex Pico2XXL"
+                  },
+                  {
                      "name": "Olimex RP2040-Pico30"
                   },
                   {
