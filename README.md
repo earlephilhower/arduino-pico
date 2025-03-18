@@ -75,6 +75,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Neko Systems BL2040 Mini
 * Newsan Archi
 * nullbits Bit-C PRO
+* Olimex Pico2XL
+* Olimex Pico2XXL
 * Olimex RP2040-Pico30
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
