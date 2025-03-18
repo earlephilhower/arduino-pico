@@ -39,8 +39,8 @@ jobs:
       run: |
            pip3 install PyGithub
            TAG=$(git describe --exact-match --tags)
-           curl -L -o package_rp2040_index.json "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$TAG/package_rp2040_index.json"
-           ./package/update_release.py --token ${CI_GITHUB_API_KEY} --repo "$GITHUB_REPOSITORY" --tag global package_rp2040_index.json
+           curl -L -o package_rp2_index.json "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$TAG/package_rp2_index.json"
+           ./package/update_release.py --token ${CI_GITHUB_API_KEY} --repo "$GITHUB_REPOSITORY" --tag global package_rp2_index.json
            # Upload to Platform.IO
            # curl -LO $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/$TAG/rp2040-$TAG.zip
            # pio package publish rp2040-$TAG.zip --non-interactive
