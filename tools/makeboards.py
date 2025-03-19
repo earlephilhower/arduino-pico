@@ -377,7 +377,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     BuildDebugPort(name)
     BuildDebugLevel(name)
     BuildUSBStack(name)
-    if name in ["rpipicow", "pimoroni_pico_plus_2w", "sparkfun_thingplusrp2350"]:
+    if name in ["rpipicow", "rpipico2w", "pimoroni_pico_plus_2w", "sparkfun_thingplusrp2350"]:
         BuildCountry(name)
     BuildIPBTStack(name)
     if name == "generic":
