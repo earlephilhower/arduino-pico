@@ -32,7 +32,7 @@
     "frameworks": [
         "arduino"
     ],
-    "name": "FruitJam RP2350",
+    "name": "Fruit Jam RP2350",
     "upload": {
         "maximum_ram_size": 524288,
         "maximum_size": 16777216,

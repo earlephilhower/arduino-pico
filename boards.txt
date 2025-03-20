@@ -6647,9 +6647,9 @@ adafruit_metro_rp2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprob
 adafruit_metro_rp2350.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
-# Adafruit FruitJam RP2350
+# Adafruit Fruit Jam RP2350
 # -----------------------------------
-adafruit_fruitjam.name=Adafruit FruitJam RP2350
+adafruit_fruitjam.name=Adafruit Fruit Jam RP2350
 adafruit_fruitjam.vid.0=0x239a
 adafruit_fruitjam.pid.0=0x816b
 adafruit_fruitjam.vid.1=0x239a
@@ -6674,7 +6674,7 @@ adafruit_fruitjam.build.core=rp2040
 adafruit_fruitjam.build.ldscript=memmap_default.ld
 adafruit_fruitjam.build.boot2=none
 adafruit_fruitjam.build.usb_manufacturer="Adafruit"
-adafruit_fruitjam.build.usb_product="FruitJam RP2350"
+adafruit_fruitjam.build.usb_product="Fruit Jam RP2350"
 adafruit_fruitjam.build.psram_length=0x000000
 adafruit_fruitjam.menu.flash.16777216_0=16MB (no FS)
 adafruit_fruitjam.menu.flash.16777216_0.upload.maximum_size=16769024
@@ -6844,8 +6844,8 @@ adafruit_fruitjam.menu.freq.128=128 MHz
 adafruit_fruitjam.menu.freq.128.build.f_cpu=128000000L
 adafruit_fruitjam.menu.freq.133=133 MHz
 adafruit_fruitjam.menu.freq.133.build.f_cpu=133000000L
-adafruit_fruitjam.menu.freq.175=175 MHz (Overclock)
-adafruit_fruitjam.menu.freq.175.build.f_cpu=175000000L
+adafruit_fruitjam.menu.freq.176=176 MHz (Overclock)
+adafruit_fruitjam.menu.freq.176.build.f_cpu=176000000L
 adafruit_fruitjam.menu.freq.200=200 MHz (Overclock)
 adafruit_fruitjam.menu.freq.200.build.f_cpu=200000000L
 adafruit_fruitjam.menu.freq.225=225 MHz (Overclock)
@@ -6854,8 +6854,8 @@ adafruit_fruitjam.menu.freq.240=240 MHz (Overclock)
 adafruit_fruitjam.menu.freq.240.build.f_cpu=240000000L
 adafruit_fruitjam.menu.freq.250=250 MHz (Overclock)
 adafruit_fruitjam.menu.freq.250.build.f_cpu=250000000L
-adafruit_fruitjam.menu.freq.275=275 MHz (Overclock)
-adafruit_fruitjam.menu.freq.275.build.f_cpu=275000000L
+adafruit_fruitjam.menu.freq.276=276 MHz (Overclock)
+adafruit_fruitjam.menu.freq.276.build.f_cpu=276000000L
 adafruit_fruitjam.menu.freq.300=300 MHz (Overclock)
 adafruit_fruitjam.menu.freq.300.build.f_cpu=300000000L
 adafruit_fruitjam.menu.opt.Small=Small (-Os) (standard)
