@@ -125,6 +125,14 @@ public:
         return _hci.scan(mask, scanTimeSec, async);
     }
 
+    bool scanAsyncDone() {
+        return _hci.scanAsyncDone();
+    }
+
+    std::vector<BTDeviceInfo> scanAsyncResult() {
+        return _hci.scanAsyncResult();
+    }
+
     bool connect(const uint8_t *addr = nullptr);
 
     bool connected() {
@@ -151,6 +159,7 @@ public:
     }
 
     // from Print (see notes on write() methods below)
+    // Writes only full samples (size must be divisible by sample size in bytes)
     virtual size_t write(const uint8_t *buffer, size_t size) override;
     virtual int availableForWrite() override;
 

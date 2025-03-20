@@ -69,16 +69,21 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * METE HOCA Akana R1
+* Makerbase MKSTHR36
+* Makerbase MKSTHR42
 * MyMakers RP2040
 * Neko Systems BL2040 Mini
 * Newsan Archi
 * nullbits Bit-C PRO
+* Olimex Pico2XL
+* Olimex Pico2XXL
 * Olimex RP2040-Pico30
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
 * Pimoroni Pico Plus 2W
 * Pimoroni Plasma2040
 * Pimoroni Plasma2350
+* Pimoroni Servo2040
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
 * Pintronix PinMax
@@ -93,11 +98,13 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Solder Party RP2040 Stamp
 * Solder Party RP2350 Stamp
 * Solder Party RP2350 Stamp XL
+* SparkFun IoT RedBoard RP2350
 * SparkFun MicroMod RP2040
 * SparkFun ProMicro RP2040
 * SparkFun ProMicro RP2350
 * SparkFun Thing Plus RP2040
 * SparkFun Thing Plus RP2350
+* SparkFun XRP Controller
 * uPesy RP2040 DevKit
 * VCC-GND YD-RP2040
 * Viyalab Mizu RP2040
