@@ -41,7 +41,7 @@
 #error Invalid RP2350 definition.  Need to set PICO_RP2350A=0/1 for A/B variant
 #endif
 #if defined(PICO_RP2350B)
-#error Do not defile PICO_RP2350B.  Use PICO_RP2350A=0 to indicate RP2350B.  See the SDK for more details
+#error Do not define PICO_RP2350B.  Use PICO_RP2350A=0 to indicate RP2350B.  See the SDK for more details
 #endif
 
 // Try and make the best of the old Arduino abs() macro.  When in C++, use
