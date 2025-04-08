@@ -3,7 +3,6 @@
 // Pin definitions taken from:
 //    https://rp2xxx-stamp-carrier-xl.solder.party/
 
-#undef PICO_RP2350A
 #define PICO_RP2350A 0 // RP2350B
 
 // LEDs
