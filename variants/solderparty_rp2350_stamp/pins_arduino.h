@@ -1,5 +1,8 @@
 #pragma once
 
+#undef PICO_RP2350A
+#define PICO_RP2350A 1
+
 // Pin definitions taken from:
 //    https://rp2xxx-stamp-carrier-xl.solder.party/
 

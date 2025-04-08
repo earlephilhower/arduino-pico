@@ -1,5 +1,8 @@
 #pragma once
 
+#undef PICO_RP2350A
+#define PICO_RP2350A 1
+
 // This is a bare board with few predefined pins, so based on generic
 
 // Pin definitions taken from:

@@ -1,5 +1,8 @@
 #pragma once
 
+#undef PICO_RP2350A
+#define PICO_RP2350A 1
+
 // LEDs
 #define PIN_LED         (29u)
 

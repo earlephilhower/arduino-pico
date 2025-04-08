@@ -1,5 +1,8 @@
 #pragma once
 
+#undef PICO_RP2350A
+#define PICO_RP2350A 1
+
 #define PINS_COUNT          (30u)
 #define NUM_DIGITAL_PINS    (30u)
 #define NUM_ANALOG_INPUTS   (4u)

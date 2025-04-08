@@ -1,5 +1,8 @@
 #pragma once
 
+#undef PICO_RP2350A
+#define PICO_RP2350A 1
+
 #include <cyw43_wrappers.h>
 
 // LEDs

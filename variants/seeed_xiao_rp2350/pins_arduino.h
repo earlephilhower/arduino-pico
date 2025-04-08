@@ -1,4 +1,8 @@
 #pragma once
+
+#undef PICO_RP2350A
+#define PICO_RP2350A 1
+
 // Pin definitions taken from:
 //    https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html
 
