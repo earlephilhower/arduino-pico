@@ -27,6 +27,7 @@
 #include "RP2040Version.h"
 #include "api/ArduinoAPI.h"
 #include "api/itoa.h" // ARM toolchain doesn't provide itoa etc, provide them
+#include <pico.h>
 #include <pins_arduino.h>
 #include <hardware/gpio.h> // Required for the port*Register macros
 #include "debug_internal.h"

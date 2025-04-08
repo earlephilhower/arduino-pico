@@ -85,7 +85,7 @@ def BuildPSRAMFreq(name):
         print("%s.menu.psramfreq.freq%d.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=%d" % (name, s, s * 1000000))
 
 def BuildRP2350Variant(name):
-    for l in [ ("RP2350A", "-DPICO_RP2350A=1"), ("RP2530B", "-DPICO_RP2350A=0") ]:
+    for l in [ ("RP2350A", "-D__PICO_RP2350A=1"), ("RP2530B", "-D__PICO_RP2350A=0") ]:
         print("%s.menu.variantchip.%s=%s" % (name, l[0], l[0]))
         print("%s.menu.variantchip.%s.build.variantdefines=%s" % (name, l[0], l[1]))
 

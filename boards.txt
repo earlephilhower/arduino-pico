@@ -36083,9 +36083,9 @@ generic_rp2350.menu.freq.276.build.f_cpu=276000000L
 generic_rp2350.menu.freq.300=300 MHz (Overclock)
 generic_rp2350.menu.freq.300.build.f_cpu=300000000L
 generic_rp2350.menu.variantchip.RP2350A=RP2350A
-generic_rp2350.menu.variantchip.RP2350A.build.variantdefines=-DPICO_RP2350A=1
+generic_rp2350.menu.variantchip.RP2350A.build.variantdefines=-D__PICO_RP2350A=1
 generic_rp2350.menu.variantchip.RP2530B=RP2530B
-generic_rp2350.menu.variantchip.RP2530B.build.variantdefines=-DPICO_RP2350A=0
+generic_rp2350.menu.variantchip.RP2530B.build.variantdefines=-D__PICO_RP2350A=0
 generic_rp2350.menu.psramcs.GPIOnone=None
 generic_rp2350.menu.psramcs.GPIOnone.build.psram_cs=
 generic_rp2350.menu.psramcs.GPIO0=GPIO 0
