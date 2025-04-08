@@ -49,7 +49,7 @@ bool ADCInput::setBuffers(size_t buffers, size_t bufferWords) {
 
 int ADCInput::_mask(pin_size_t p) {
     switch (p) {
-#if !defined(PICO_RP2350B)
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     case 26: return 1;
     case 27: return 2;
     case 28: return 4;
@@ -106,7 +106,7 @@ bool ADCInput::begin() {
     // Set up the GPIOs to go to ADC
     adc_init();
     int cnt = 0;
-#if !defined(PICO_RP2350B)
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     int startpin = 26;
     int maxpin = 29;
 #else

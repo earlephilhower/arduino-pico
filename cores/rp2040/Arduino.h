@@ -27,9 +27,22 @@
 #include "RP2040Version.h"
 #include "api/ArduinoAPI.h"
 #include "api/itoa.h" // ARM toolchain doesn't provide itoa etc, provide them
+#include <pico.h>
+#undef PICO_RP2350A // Set in the RP2350 SDK boards file, overridden in the variant pins_arduino.h
 #include <pins_arduino.h>
 #include <hardware/gpio.h> // Required for the port*Register macros
 #include "debug_internal.h"
+
+// Chip sanity checking.  SDK uses interesting way of separating 2350A from 2350B, see https://github.com/raspberrypi/pico-sdk/issues/2364
+#if (!defined(PICO_RP2040) && !defined(PICO_RP2350)) || defined(PICO_RP2040) && defined(PICO_RP2350)
+#error Invalid core definition. Either PICO_RP2040 or PICO_RP2350 must be defined.
+#endif
+#if defined(PICO_RP2350) && !defined(PICO_RP2350A)
+#error Invalid RP2350 definition.  Need to set PICO_RP2350A=0/1 for A/B variant
+#endif
+#if defined(PICO_RP2350B)
+#error Do not define PICO_RP2350B.  Use PICO_RP2350A=0 to indicate RP2350B.  See the SDK for more details
+#endif
 
 // Try and make the best of the old Arduino abs() macro.  When in C++, use
 // the sane std::abs() call, but for C code use their macro since stdlib abs()

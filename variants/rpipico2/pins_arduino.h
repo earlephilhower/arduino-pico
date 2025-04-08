@@ -3,6 +3,7 @@
 // Pin definitions taken from:
 //    https://datasheets.raspberrypi.org/pico/pico-datasheet.pdf
 
+#define PICO_RP2350A 1
 
 // LEDs
 #define PIN_LED        (25u)

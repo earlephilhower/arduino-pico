@@ -98,7 +98,7 @@ public:
         return (reverseByte(w & 0xff) << 8) | (reverseByte(w >> 8));
     }
 
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     static constexpr int GPIOIRQREGS = 6;
 #else
     static constexpr int GPIOIRQREGS = 4;

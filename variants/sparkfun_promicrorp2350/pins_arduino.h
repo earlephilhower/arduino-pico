@@ -1,5 +1,7 @@
 #pragma once
 
+#define PICO_RP2350A 1
+
 // Taken from schematic at https://cdn.sparkfun.com/assets/e/2/7/6/b/ProMicroRP2040_Graphical_Datasheet.pdf
 
 // LEDs

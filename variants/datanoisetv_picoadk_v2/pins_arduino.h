@@ -1,5 +1,7 @@
 #pragma once
 
+#define PICO_RP2350A 1
+
 // DatanoiseTV PicoADK v2 - Audio Development Kit with RP2350A
 // https://github.com/DatanoiseTV/PicoDSP-Hardware
 
