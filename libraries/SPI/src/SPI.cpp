@@ -263,7 +263,7 @@ void SPIClassRP2040::abortAsync() {
 
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20, 32, 26}) /* SPI0 */,
                                     __bitset({8, 12, 24, 28, 40, 44})  /* SPI1 */
                                   };
@@ -290,7 +290,7 @@ bool SPIClassRP2040::setRX(pin_size_t pin) {
 }
 
 bool SPIClassRP2040::setCS(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({1, 5, 17, 21, 33, 37}) /* SPI0 */,
                                     __bitset({9, 13, 25, 29, 41, 45})  /* SPI1 */
                                   };
@@ -317,7 +317,7 @@ bool SPIClassRP2040::setCS(pin_size_t pin) {
 }
 
 bool SPIClassRP2040::setSCK(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({2, 6, 18, 22, 34, 38}) /* SPI0 */,
                                     __bitset({10, 14, 26, 30, 42, 46})  /* SPI1 */
                                   };
@@ -344,7 +344,7 @@ bool SPIClassRP2040::setSCK(pin_size_t pin) {
 }
 
 bool SPIClassRP2040::setTX(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({3, 7, 19, 23, 35, 39}) /* SPI0 */,
                                     __bitset({11, 15, 27, 31, 43, 47})  /* SPI1 */
                                   };

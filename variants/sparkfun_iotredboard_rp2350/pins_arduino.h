@@ -3,8 +3,7 @@
 #include <stdint.h>
 #include <cyw43_wrappers.h>
 
-#define PICO_RP2350B 1
-#define PICO_RP2350A 0
+#define PICO_RP2350A 0 // RP2350B
 
 #define PINS_COUNT          (48u)
 #define NUM_DIGITAL_PINS    (48u)

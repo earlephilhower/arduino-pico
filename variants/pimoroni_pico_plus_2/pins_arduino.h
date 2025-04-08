@@ -49,7 +49,7 @@
 #define RP2350_PSRAM_CS         (47u)
 #define RP2350_PSRAM_MAX_SCK_HZ (109*1000*1000)
 
-#define PICO_RP2350B 1
+#define PICO_RP2350A 0 // RP2350B
 
 /* Pins mappings for marked pins on the board */
 static const uint8_t D0 = (0u);

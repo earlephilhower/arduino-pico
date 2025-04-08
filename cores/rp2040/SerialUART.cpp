@@ -32,7 +32,7 @@ extern void serialEvent1() __attribute__((weak));
 extern void serialEvent2() __attribute__((weak));
 
 bool SerialUART::setRX(pin_size_t pin) {
-#if defined(PICO_RP2350B)
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({1, 3, 13, 15, 17, 19, 29, 31, 33, 35, 45, 47}) /* UART0 */,
                                     __bitset({5, 7, 9, 11, 21, 23, 25, 27, 37, 39, 41, 43})  /* UART1 */
                                   };
@@ -64,7 +64,7 @@ bool SerialUART::setRX(pin_size_t pin) {
 }
 
 bool SerialUART::setTX(pin_size_t pin) {
-#if defined(PICO_RP2350B)
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({0, 2, 12, 14, 16, 18, 28, 30, 32, 34, 44, 46}) /* UART0 */,
                                     __bitset({4, 6, 8, 10, 20, 22, 24, 26, 36, 38, 40, 42})  /* UART1 */
                                   };
@@ -95,7 +95,7 @@ bool SerialUART::setTX(pin_size_t pin) {
 }
 
 bool SerialUART::setRTS(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({3, 15, 19, 31, 35, 47}) /* UART0 */,
                                     __bitset({7, 11, 23, 27, 39, 43})  /* UART1 */
                                   };
@@ -122,7 +122,7 @@ bool SerialUART::setRTS(pin_size_t pin) {
 }
 
 bool SerialUART::setCTS(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({2, 14, 18, 30, 34, 46}) /* UART0 */,
                                     __bitset({6, 10, 22, 26, 38, 42})  /* UART1 */
                                   };
@@ -182,7 +182,7 @@ static void _uart1IRQ();
 // Does the selected TX/RX need UART_AUX function (rp2350)
 static gpio_function_t __gpioFunction(int pin) {
     switch (pin) {
-#if defined(PICO_RP2350) || defined(PICO_RP2350B)
+#if defined(PICO_RP2350) && !PICO_RP2350A
     case 2:
     case 3:
     case 6:
