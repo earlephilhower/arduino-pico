@@ -51,7 +51,7 @@ public:
         Constructor that uses the default hardware SPI pins
         @param cs the Arduino Chip Select / Slave Select pin (default 10)
     */
-    Wiznet55rp20(int8_t cs = SS, SPIClass& spi = SPI, int8_t intr = -1);
+    Wiznet55rp20(int8_t cs = WIZNET_PIO_SPI_CS_PIN, SPIClass& spi = SPI, int8_t intr = -1);
     //Wiznet55rp20();
 
     /**
