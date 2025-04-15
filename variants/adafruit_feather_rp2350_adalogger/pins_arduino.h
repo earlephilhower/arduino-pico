@@ -50,8 +50,4 @@
 #define SPI_HOWMANY    (2u)
 #define WIRE_HOWMANY   (1u)
 
-// PSRAM
-#define RP2350_PSRAM_CS         (8u)
-#define RP2350_PSRAM_MAX_SCK_HZ (109*1000*1000)
-
 #include "../generic/common.h"
