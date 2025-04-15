@@ -48,7 +48,8 @@
             "raspberrypi-swd",
             "picotool",
             "picoprobe"
-        ]
+        ],
+        "psram_length": 8388608
     },
     "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
     "vendor": "Adafruit"
