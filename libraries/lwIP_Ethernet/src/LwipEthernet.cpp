@@ -75,7 +75,7 @@ void __removeEthernetPacketHandler(int id) {
 }
 
 #define GPIOSTACKSIZE 8
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
 #define GPIOIRQREGS 6
 #define GPIOIRQREGSINIT 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff
 #else

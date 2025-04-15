@@ -1,5 +1,6 @@
 #pragma once
-#define PICO_RP2350B 1
+
+#define PICO_RP2350A 0 // RP2350B
 
 // LEDs
 #define PIN_LED        (23u)

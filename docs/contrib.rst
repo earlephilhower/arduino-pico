@@ -112,7 +112,7 @@ For only RP2350A variants (using the compile options, not the onboard ID registe
 
 .. code:: cpp
 
-    #if defined(PICO_RP2350) && !defined(PICO_RP2350B)
+    #if defined(PICO_RP2350A) && PICO_RP2350A
     ...RP2350A only code...
     #endif
 
@@ -121,7 +121,7 @@ and not the chip ID register):
 
 .. code:: cpp
 
-    #if defined(PICO_RP2350B)
+    #if defined(PICO_RP2350A) && !PICO_RP2350A
     ...48-GPIO version code here
     #endif
 
