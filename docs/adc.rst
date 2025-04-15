@@ -12,9 +12,9 @@ need to be periodically sampled to be read by applications, easily, such as:
 * Light dependent resistors (LDR), etc.
 
 
-Up to 4 analog samples can be recorded by the hardware (``A0`` ... ``A3``), and all
-recording is done at 16-bit levels (but be aware that the ADC in the Pico will only
-ever return values between 0...4095).
+Up to 4 (or 8 in the case of the RP2350B) analog samples can be recorded by the
+hardware (``A0`` ... ``A3``), and all recording is done at 16-bit levels (but be
+aware that the ADC in the Pico will only ever return values between 0...4095).
 
 The interface for the ``ADCInput`` device is very similar to the ``I2S`` input
 device, and most code can be ported simply by instantiating a ``ADCInput``
@@ -26,11 +26,12 @@ allowed while in use.
 ADC Input API
 -------------
 
-ADCInput(pin0 [, pin1, pin2, pin3])
+ADCInput(pin0 [, pin1, pin2, pin3[, pin4, pin5, pin6, pin7])
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Creates an ADC input object which will record the pins specified in the code.
-Only pins ``A0`` ... ``A3`` can be used, and they must be specified in increasing
-order (i.e. ``ADCInput(A0, A1);`` is valid, but ``ADCInput(A1, A0)`` is not.
+Only pins ``A0`` ... ``A3`` (``A7`` on RP2350B) can be used, and they must be
+specified in increasing order (i.e. ``ADCInput(A0, A1);`` is valid,
+but ``ADCInput(A1, A0)`` is not.
 
 bool setBuffers(size_t buffers, size_t bufferWords)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
