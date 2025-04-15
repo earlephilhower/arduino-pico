@@ -1,5 +1,7 @@
 #pragma once
 
+#define PICO_RP2350A 1
+
 // Pin definitions taken from:
 // https://github.com/rp-rs/rp-hal-boards/blob/main/boards/pimoroni-plasma-2040/src/lib.rs
 

@@ -3,7 +3,7 @@
 // Pin definitions taken from:
 //    https://github.com/Architeuthis-Flux/JumperlessV5/tree/main/Hardware/Jumperless23V50
 
-#define PICO_RP2350B   1
+#define PICO_RP2350A   0 // RP2350B
 
 // LEDs
 #define PIN_LED        (17u)

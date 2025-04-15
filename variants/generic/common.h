@@ -164,7 +164,7 @@ static const uint8_t D29 = __PIN_D29;
 static const uint8_t D29 = (29u);
 #endif
 
-#if !defined(PICO_RP2350B)
+#if defined(PICO_RP2040) || (defined(PICO_RP2350) && PICO_RP2350A)
 
 #ifdef __PIN_A0
 static const uint8_t A0 = __PIN_A0;
@@ -190,7 +190,7 @@ static const uint8_t A3 = __PIN_A3;
 static const uint8_t A3 = (29u);
 #endif
 
-#elif defined(PICO_RP2350B)
+#elif defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
 
 #ifdef __PIN_D30
 static const uint8_t D30 = __PIN_D30;
