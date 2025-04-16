@@ -37,6 +37,7 @@ jobs:
         git diff --exit-code
     - name: Check compiled PIO files
       run: |
+        (cd ./tools && ./get.py)
         ./tools/makepio.py
         # If anything changed, GIT should return an error and fail the test
         git diff -w --exit-code
