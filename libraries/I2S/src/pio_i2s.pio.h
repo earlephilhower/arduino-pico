@@ -199,6 +199,7 @@ static inline pio_sm_config pio_tdm_out_swap_program_get_default_config(uint off
 
 #define pio_tdm_inout_wrap_target 0
 #define pio_tdm_inout_wrap 5
+#define pio_tdm_inout_pio_version 0
 
 static const uint16_t pio_tdm_inout_program_instructions[] = {
     //     .wrap_target
@@ -236,6 +237,7 @@ static inline pio_sm_config pio_tdm_inout_program_get_default_config(uint offset
 
 #define pio_tdm_inout_swap_wrap_target 0
 #define pio_tdm_inout_swap_wrap 5
+#define pio_tdm_inout_swap_pio_version 0
 
 static const uint16_t pio_tdm_inout_swap_program_instructions[] = {
     //     .wrap_target
@@ -659,3 +661,4 @@ static inline void pio_i2s_inout_program_init(PIO pio, uint sm, uint offset, uin
 }
 
 #endif
+

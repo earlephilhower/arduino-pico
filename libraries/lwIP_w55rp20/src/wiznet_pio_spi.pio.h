@@ -14,6 +14,7 @@
 
 #define wiznet_pio_spi_write_read_wrap_target 0
 #define wiznet_pio_spi_write_read_wrap 8
+#define wiznet_pio_spi_write_read_pio_version 0
 
 #define wiznet_pio_spi_write_read_offset_write_bits 0u
 #define wiznet_pio_spi_write_read_offset_write_end 3u
@@ -38,6 +39,10 @@ static const struct pio_program wiznet_pio_spi_write_read_program = {
     .instructions = wiznet_pio_spi_write_read_program_instructions,
     .length = 9,
     .origin = -1,
+    .pio_version = 0,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
 };
 
 static inline pio_sm_config wiznet_pio_spi_write_read_program_get_default_config(uint offset) {
