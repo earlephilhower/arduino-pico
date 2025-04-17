@@ -30,6 +30,15 @@ as necessary to add any add'l fields or menus required.  Used because the
 `boards.txt` file is very repetitive and it's safer to generate with code
 than by hand.
 
+## makepacer.cpp
+Generates ``libraries/PWMAudio/src/PWMAudioPrecalc.h` which contains the
+precalculated DMA pacer settings for common audio sample rates and CPU
+frequencies.  Makes setting the frequency for PWMAudio instantaneous.
+
+## makepio.py
+Rebuilds all the ``*.pio`` files in the core and libraries using the
+currently installed pioasm.  Use when a new PIOASM is available.
+
 ## makever.py
 Updates the version info prior to a release in platform.txt, package.json,
 and the version header.   Run from root of the repo.
