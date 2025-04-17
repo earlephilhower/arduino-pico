@@ -669,7 +669,7 @@ public:
 
 
 private:
-    static void _SystickHandler() {
+    static void __no_inline_not_in_flash_func(_SystickHandler)() {
         rp2040._epoch[sio_hw->cpuid] += 1LL << 24;
     }
     PIO _pio;

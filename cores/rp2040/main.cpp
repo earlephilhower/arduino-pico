@@ -51,10 +51,14 @@ void initVariant() { }
 
 // Optional 2nd core setup and loop
 bool core1_separate_stack __attribute__((weak)) = false;
+bool core1_disable_systick __attribute__((weak)) = false;
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 extern "C" void main1() {
-    rp2040.begin(1);
+    if (!core1_disable_systick) {
+        // Don't install the SYSTICK exception handler. rp2040.getCycleCount will not work properly on core1
+        rp2040.begin(1);
+    }
     rp2040.fifo.registerCore();
     if (setup1) {
         setup1();
