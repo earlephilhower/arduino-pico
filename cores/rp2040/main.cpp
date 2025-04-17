@@ -54,6 +54,7 @@ bool core1_separate_stack __attribute__((weak)) = false;
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 extern "C" void main1() {
+    rp2040.begin(1);
     rp2040.fifo.registerCore();
     if (setup1) {
         setup1();
@@ -128,7 +129,7 @@ extern "C" int main() {
         _REENT_INIT_PTR(_impure_ptr1);
     }
 
-    rp2040.begin();
+    rp2040.begin(0);
 
     initVariant();
 
