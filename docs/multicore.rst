@@ -16,6 +16,25 @@ not necessarily simultaneously!).
 See the ``Multicore.ino`` example in the ``rp2040`` example directory for a
 quick introduction.
 
+Core 1 Operation
+----------------
+
+By default, core1 (the second core) has no non-user written code running on it.
+No interrupts, exceptions, or other background processing is done (but the core
+is still subject to hardware stalls due to on-die memory resource conflicts).
+When flash erase or write operations (i.e. ``LittleFS`` or ``EEPROM``) are called
+from core0, core1 **will** be paused.
+
+If ``rp2040.getCycleCount`` is needed to operate on the second core, then a
+periodic (once ever 16M clock cycles) ``SYSTICK`` exception will happen behind
+the scenes.  For extremely time-critical operations this may not be desirable
+and can be disabled by defining a new ``bool`` variable to ``true`` anywhere
+in your sketch:
+
+.. code:: cpp
+
+    bool core1_disable_systick = true;
+
 Stack Sizes
 -----------
 
@@ -67,6 +86,9 @@ void rp2040.restartCore1()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Hard resets Core1 from Core 0 and restarts its operation from ``setup1()``.
+This can cause unpredictable behavior because globals and the heap
+are shared between cores and not re-initialized with this call.  Use with
+extreme caution.
 
 Communicating Between Cores
 ---------------------------

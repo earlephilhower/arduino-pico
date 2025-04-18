@@ -190,8 +190,8 @@ public:
     RP2040()  { /* noop */ }
     ~RP2040() { /* noop */ }
 
-    void begin() {
-        _epoch = 0;
+    void begin(int cpuid) {
+        _epoch[cpuid] = 0;
 #if !defined(__riscv) && !defined(__PROFILE)
         if (!__isFreeRTOS) {
             // Enable SYSTICK exception
@@ -200,11 +200,14 @@ public:
             systick_hw->rvr = 0x00FFFFFF;
         } else {
 #endif
-            int off = 0;
-            _ccountPgm = new PIOProgram(&ccount_program);
-            _ccountPgm->prepare(&_pio, &_sm, &off);
-            ccount_program_init(_pio, _sm, off);
-            pio_sm_set_enabled(_pio, _sm, true);
+            // Only start 1 instance of the PIO SM
+            if (cpuid == 0) {
+                int off = 0;
+                _ccountPgm = new PIOProgram(&ccount_program);
+                _ccountPgm->prepare(&_pio, &_sm, &off);
+                ccount_program_init(_pio, _sm, off);
+                pio_sm_set_enabled(_pio, _sm, true);
+            }
 #if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
@@ -241,7 +244,7 @@ public:
     /**
         @brief CPU cycle counter epoch (24-bit cycle).  For internal use
     */
-    volatile uint64_t _epoch = 0;
+    volatile uint64_t _epoch[2] = {};
     /**
         @brief Get the count of CPU clock cycles since power on.
 
@@ -258,9 +261,9 @@ public:
             uint32_t epoch;
             uint32_t ctr;
             do {
-                epoch = (uint32_t)_epoch;
+                epoch = (uint32_t)_epoch[sio_hw->cpuid];
                 ctr = systick_hw->cvr;
-            } while (epoch != (uint32_t)_epoch);
+            } while (epoch != (uint32_t)_epoch[sio_hw->cpuid]);
             return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
         } else {
 #endif
@@ -280,9 +283,9 @@ public:
             uint64_t epoch;
             uint64_t ctr;
             do {
-                epoch = _epoch;
+                epoch = _epoch[sio_hw->cpuid];
                 ctr = systick_hw->cvr;
-            } while (epoch != _epoch);
+            } while (epoch != _epoch[sio_hw->cpuid]);
             return epoch + (1LL << 24) - ctr;
         } else {
 #endif
@@ -666,8 +669,8 @@ public:
 
 
 private:
-    static void _SystickHandler() {
-        rp2040._epoch += 1LL << 24;
+    static void __no_inline_not_in_flash_func(_SystickHandler)() {
+        rp2040._epoch[sio_hw->cpuid] += 1LL << 24;
     }
     PIO _pio;
     int _sm;
