@@ -73,7 +73,7 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 ; IN pin 0 and JMP pin are both mapped to the GPIO used as UART RX.
 
 start:
-    set x, 18           ; Preload bit counter...ovewritten by the app
+    set x, 18           ; Preload bit counter...overwritten by the app
     wait 0 pin 0        ; Stall until start bit is asserted
 
    ; Delay until 1/2 way into the bit time
