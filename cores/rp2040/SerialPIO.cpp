@@ -69,7 +69,7 @@ static PIOProgram *_getRxProgram(int bits) {
 // ------------------------------------------------------------------------
 
 // TODO - this works, but there must be a faster/better way...
-static int _parity(int bits, int data) {
+static int __not_in_flash_func(_parity)(int bits, int data) {
     int p = 0;
     for (int b = 0; b < bits; b++) {
         p ^= (data & (1 << b)) ? 1 : 0;
@@ -98,11 +98,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
     }
     while (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM)) {
         uint32_t decode = _rxPIO->rxf[_rxSM];
-        decode >>= 33 - _rxBits;
-        uint32_t val = 0;
-        for (int b = 0; b < _bits + 1; b++) {
-            val |= (decode & (1 << (b * 2))) ? 1 << b : 0;
-        }
+        uint32_t val = decode >> (32 - _rxBits - 1);
         if (_parity == UART_PARITY_EVEN) {
             int p = ::_parity(_bits, val);
             int r = (val & (1 << _bits)) ? 1 : 0;
@@ -234,7 +230,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _writer = 0;
         _reader = 0;
 
-        _rxBits = 2 * (_bits + _stop + (_parity != UART_PARITY_NONE ? 1 : 0) + 1) - 1;
+        _rxBits = _bits + (_parity != UART_PARITY_NONE ? 1 : 0);
         _rxPgm = _getRxProgram(_rxBits);
         int off;
         if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off, _rx, 1)) {
@@ -249,7 +245,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         pio_sm_clear_fifos(_rxPIO, _rxSM); // Remove any existing data
 
         // Put phase divider into OSR w/o using add'l program memory
-        pio_sm_put_blocking(_rxPIO, _rxSM, clock_get_hz(clk_sys) / (_baud * 2) - 7 /* insns in PIO halfbit loop */);
+        pio_sm_put_blocking(_rxPIO, _rxSM, clock_get_hz(clk_sys) / (_baud * 2) - 3);
         pio_sm_exec(_rxPIO, _rxSM, pio_encode_pull(false, false));
 
         // Join the TX FIFO to the RX one now that we don't need it
