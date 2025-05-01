@@ -68,13 +68,10 @@ static PIOProgram *_getRxProgram(int bits) {
 }
 // ------------------------------------------------------------------------
 
-// TODO - this works, but there must be a faster/better way...
-static int __not_in_flash_func(_parity)(int bits, int data) {
-    int p = 0;
-    for (int b = 0; b < bits; b++) {
-        p ^= (data & (1 << b)) ? 1 : 0;
-    }
-    return p;
+static int __not_in_flash_func(_parity)(int data) {
+    data ^= data >> 4;
+    data &= 0xf;
+    return (0x6996 >> data) & 1;
 }
 
 // We need to cache generated SerialPIOs so we can add data to them from
@@ -100,14 +97,14 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
         uint32_t decode = _rxPIO->rxf[_rxSM];
         uint32_t val = decode >> (32 - _rxBits - 1);
         if (_parity == UART_PARITY_EVEN) {
-            int p = ::_parity(_bits, val);
+            int p = ::_parity(val);
             int r = (val & (1 << _bits)) ? 1 : 0;
             if (p != r) {
                 // TODO - parity error
                 continue;
             }
         } else if (_parity == UART_PARITY_ODD) {
-            int p = ::_parity(_bits, val);
+            int p = ::_parity(val);
             int r = (val & (1 << _bits)) ? 1 : 0;
             if (p == r) {
                 // TODO - parity error
@@ -374,10 +371,10 @@ size_t SerialPIO::write(uint8_t c) {
     if (_parity == UART_PARITY_NONE) {
         val |= 7 << _bits; // Set 2 stop bits, the HW will only transmit the required number
     } else if (_parity == UART_PARITY_EVEN) {
-        val |= ::_parity(_bits, c) << _bits;
+        val |= ::_parity(c) << _bits;
         val |= 7 << (_bits + 1);
     } else {
-        val |= (1 ^ ::_parity(_bits, c)) << _bits;
+        val |= (1 ^ ::_parity(c)) << _bits;
         val |= 7 << (_bits + 1);
     }
     val <<= 1;  // Start bit = low
