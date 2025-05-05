@@ -50,11 +50,6 @@ bool ADCInput::setBuffers(size_t buffers, size_t bufferWords) {
 int ADCInput::_mask(pin_size_t p) {
     switch (p) {
 #if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
-    case 26: return 1;
-    case 27: return 2;
-    case 28: return 4;
-    case 29: return 8;
-#else // Starts at 40 and there are 8 of them
     case 40: return 1;
     case 41: return 2;
     case 42: return 4;
@@ -63,6 +58,11 @@ int ADCInput::_mask(pin_size_t p) {
     case 45: return 32;
     case 46: return 64;
     case 47: return 128;
+#else
+    case 26: return 1;
+    case 27: return 2;
+    case 28: return 4;
+    case 29: return 8;
 #endif
     default: return 0;
     }
