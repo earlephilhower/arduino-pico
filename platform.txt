@@ -203,6 +203,7 @@ tools.uf2conv-network.cmd={runtime.platform.path}/system/python3/python3
 tools.uf2conv-network.upload.protocol=uf2
 tools.uf2conv-network.upload.params.verbose=
 tools.uf2conv-network.upload.params.quiet=
+tools.uf2conv-network.upload.field.password=Password
 tools.uf2conv-network.upload.pattern="{cmd}" -I "{runtime.platform.path}/tools/espota.py" -i "{upload.port.address}" -p "{upload.port.properties.port}" "--auth={upload.field.password}" -f "{build.path}/{build.project_name}.bin"
 
 #tools.picotool.cmd={runtime.tools.pqt-picotool.path}
