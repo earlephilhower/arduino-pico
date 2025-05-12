@@ -16,10 +16,10 @@
 
 // SPI
 // Default SPI0 pins are used internally and are unavailable on this board. To use SPI0 other peripherals must be sacrificed.
-// #define PIN_SPI0_MISO  (16u)
-// #define PIN_SPI0_MOSI  (19u)
-// #define PIN_SPI0_SCK   (18u)
-// #define PIN_SPI0_SS    (17u)
+#define PIN_SPI0_MISO  (2u) // 16u is connected to the buck-boost converted.
+#define PIN_SPI0_MOSI  (3u) // 19u is connected to USERLED, defined as PIN_LED.
+#define PIN_SPI0_SCK   (4u) // 18u is connected to a voltage divider on VBUS.
+#define PIN_SPI0_SS    (5u) // 17u doesn't even show up in the schematics.
 
 #define PIN_SPI1_MISO  (12u)
 #define PIN_SPI1_MOSI  (15u)
