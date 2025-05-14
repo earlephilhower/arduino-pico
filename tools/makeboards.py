@@ -112,7 +112,7 @@ def BuildStackProtect(name):
     print("%s.menu.stackprotect.Disabled=Disabled" % (name))
     print("%s.menu.stackprotect.Disabled.build.flags.stackprotect=" % (name))
     print("%s.menu.stackprotect.Enabled=Enabled" % (name))
-    print("%s.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector" % (name))
+    print("%s.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all" % (name))
 
 def BuildExceptions(name):
     print("%s.menu.exceptions.Disabled=Disabled" % (name))
