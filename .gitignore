@@ -5,5 +5,8 @@ docs/_build
 ota/build
 ota/build-rp2350
 ota/build-rp2350-riscv
-tools/libpico/build
+tools/libpico/boot
+tools/libpico/build-rp2040
+tools/libpico/build-rp2350
+tools/libpico/build-rp2350-riscv
 platform.local.txt
