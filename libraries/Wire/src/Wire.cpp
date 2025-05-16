@@ -19,6 +19,8 @@
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+	
+    Modified May 2025 by Sven Bruns (Lorandil on GitHub) to support user defined buffer size (inspired by ESP32 code)
 */
 
 #include <Arduino.h>
@@ -46,6 +48,10 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _running = false;
     _txBegun = false;
     _buffLen = 0;
+	
+    // allocate receive buffer memory early, so we don't fracture the heap later
+    _buffSize = WIRE_BUFFER_SIZE;
+    _buff = (uint8_t *)malloc(_buffSize);
 }
 
 bool TwoWire::setSDA(pin_size_t pin) {
@@ -158,6 +164,16 @@ void TwoWire::begin(uint8_t addr) {
         // ERROR
         return;
     }
+	
+    // allocate receive buffer if necessary
+    if (!_buff) {
+	    _buff=(uint8_t *)malloc(_buffSize);
+        if (!_buff)	{
+            // ERROR
+            return;
+        }
+    }
+	
     _slave = true;
     i2c_init(_i2c, _clkHz);
     i2c_set_slave_mode(_i2c, true, addr);
@@ -192,7 +208,7 @@ void TwoWire::onIRQ() {
     // First, pull off any data available
     if (irqstat & (1 << 2)) {
         // RX_FULL
-        if (_buffLen < (int)sizeof(_buff)) {
+        if (_buffLen < int(_buffSize)) {
             _buff[_buffLen++] = _i2c->hw->data_cmd & 0xff;
         } else {
             _i2c->hw->data_cmd;
@@ -743,6 +759,20 @@ bool TwoWire::getTimeoutFlag() {
 
 void TwoWire::clearTimeoutFlag() {
     _timeoutFlag = false;
+}
+
+size_t TwoWire::setBufferSize(size_t bSize) {
+    if(_running) {
+        // ERROR - transmission already running. Report back current buffer size
+        return(_buffSize);
+    }
+    // only free the buffer, if it already exists and the new size differs from the current one
+    if (_buff && (bSize != _buffSize)) {
+        free(_buff);
+        _buff = nullptr;
+    }
+    _buffSize = max(WIRE_BUFFER_SIZE_MIN,bSize); // enforce minimum buffer size
+    return(_buffSize);
 }
 
 #ifndef __WIRE0_DEVICE

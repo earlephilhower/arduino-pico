@@ -19,6 +19,8 @@
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+	
+	Modified May 2025 by Sven Bruns (Lorandil on GitHub) to support user defined buffer size (inspired by ESP32 code)
 */
 
 #pragma once
@@ -30,8 +32,14 @@
 // WIRE_HAS_END means Wire has end()
 #define WIRE_HAS_END 1
 
+// WIRE_HAS_BUFFER_SIZE means Wire has setBufferSize()
+#define WIRE_HAS_BUFFER_SIZE 1
+
 #ifndef WIRE_BUFFER_SIZE
-#define WIRE_BUFFER_SIZE 256
+#define WIRE_BUFFER_SIZE 256    // default size, if none is set using Wire::setBuffersize(size_t)
+#endif
+#ifndef WIRE_BUFFER_SIZE_MIN
+#define WIRE_BUFFER_SIZE_MIN 32 // minimum size for safe operation
 #endif
 
 class TwoWire : public HardwareI2C {
@@ -96,6 +104,8 @@ public:
     void setTimeout(uint32_t timeout = 25, bool reset_with_timeout = false);     // sets the maximum number of milliseconds to wait
     bool getTimeoutFlag(void);
     void clearTimeoutFlag(void);
+	
+    size_t setBufferSize(size_t bSize);	// set receive buffer size (call prior to 'begin()')
 
     // IRQ callback
     void onIRQ();
@@ -115,7 +125,9 @@ private:
     bool _reset_with_timeout;
     void _handleTimeout(bool reset);
 
-    uint8_t _buff[WIRE_BUFFER_SIZE];
+    uint8_t *_buff;         // pointer to i2c receive buffer
+    size_t  _buffSize;      // current receive buffer size
+	
     int _buffLen;
     int _buffOff;
 
