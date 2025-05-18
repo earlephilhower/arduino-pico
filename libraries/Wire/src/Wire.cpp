@@ -764,7 +764,7 @@ void TwoWire::clearTimeoutFlag() {
 size_t TwoWire::setBufferSize(size_t bSize) {
     if(_running) {
         // ERROR - transmission already running. Report back current buffer size
-        return(_buffSize);
+        return _buffSize;
     }
     // only free the buffer, if it already exists and the new size differs from the current one
     if (_buff && (bSize != _buffSize)) {
@@ -772,7 +772,7 @@ size_t TwoWire::setBufferSize(size_t bSize) {
         _buff = nullptr;
     }
     _buffSize = max(WIRE_BUFFER_SIZE_MIN,int(bSize)); // enforce minimum buffer size
-    return(_buffSize);
+    return _buffSize;
 }
 
 #ifndef __WIRE0_DEVICE
