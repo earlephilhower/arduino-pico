@@ -112,7 +112,7 @@ def BuildStackProtect(name):
     print("%s.menu.stackprotect.Disabled=Disabled" % (name))
     print("%s.menu.stackprotect.Disabled.build.flags.stackprotect=" % (name))
     print("%s.menu.stackprotect.Enabled=Enabled" % (name))
-    print("%s.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector" % (name))
+    print("%s.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all" % (name))
 
 def BuildExceptions(name):
     print("%s.menu.exceptions.Disabled=Disabled" % (name))
@@ -364,7 +364,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
-        elif name == "adafruit_feather_rp2350_hstx":
+        elif (name == "adafruit_feather_rp2350_hstx") or (name == "adafruit_metro_rp2350"):
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
     else:
