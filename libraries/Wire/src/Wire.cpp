@@ -49,7 +49,7 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _txBegun = false;
     _buffLen = 0;
 	
-    // allocate receive buffer memory early, so we don't fracture the heap later
+    // allocate receive buffer memory early, so we don't fragment the heap later
     _buffSize = WIRE_BUFFER_SIZE;
     _buff = (uint8_t *)malloc(_buffSize);
 }
