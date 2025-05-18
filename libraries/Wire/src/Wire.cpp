@@ -49,7 +49,7 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _txBegun = false;
     _buffLen = 0;
 	
-    // allocate receive buffer memory early, so we don't fragment the heap later
+    // allocate buffer memory early, so we don't fragment the heap later
     _buffSize = WIRE_BUFFER_SIZE;
     _buff = (uint8_t *)malloc(_buffSize);
 }
@@ -165,7 +165,7 @@ void TwoWire::begin(uint8_t addr) {
         return;
     }
 	
-    // allocate receive buffer if necessary
+    // allocate buffer if necessary
     if (!_buff) {
 	    _buff=(uint8_t *)malloc(_buffSize);
         if (!_buff)	{
@@ -287,7 +287,7 @@ void TwoWire::beginTransmission(uint8_t addr) {
 }
 
 size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
-    if (!_running || _txBegun || !quantity || (quantity > sizeof(_buff))) {
+    if (!_running || _txBegun || !quantity || (quantity > _buffSize)) {
         return 0;
     }
 
@@ -464,7 +464,7 @@ size_t TwoWire::write(uint8_t ucData) {
             return 0;
         }
     } else {
-        if (!_txBegun || (_buffLen == sizeof(_buff))) {
+        if (!_txBegun || (_buffLen == int(_buffSize))) {
             return 0;
         }
         _buff[_buffLen++] = ucData;
@@ -771,7 +771,7 @@ size_t TwoWire::setBufferSize(size_t bSize) {
         free(_buff);
         _buff = nullptr;
     }
-    _buffSize = max(WIRE_BUFFER_SIZE_MIN,bSize); // enforce minimum buffer size
+    _buffSize = max(WIRE_BUFFER_SIZE_MIN,int(bSize)); // enforce minimum buffer size
     return(_buffSize);
 }
 

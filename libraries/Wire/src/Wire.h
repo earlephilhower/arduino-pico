@@ -105,7 +105,7 @@ public:
     bool getTimeoutFlag(void);
     void clearTimeoutFlag(void);
 	
-    size_t setBufferSize(size_t bSize);	// set receive buffer size (call prior to 'begin()')
+    size_t setBufferSize(size_t bSize);	// set buffer size (call prior to 'begin()')
 
     // IRQ callback
     void onIRQ();
@@ -125,8 +125,8 @@ private:
     bool _reset_with_timeout;
     void _handleTimeout(bool reset);
 
-    uint8_t *_buff;         // pointer to i2c receive buffer
-    size_t  _buffSize;      // current receive buffer size
+    uint8_t *_buff;         // pointer to i2c buffer
+    size_t  _buffSize;      // current buffer size
 	
     int _buffLen;
     int _buffOff;
