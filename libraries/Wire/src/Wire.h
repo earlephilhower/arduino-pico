@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-	
+
 	Modified May 2025 by Sven Bruns (Lorandil on GitHub) to support user defined buffer size (inspired by ESP32 code)
 */
 
@@ -104,7 +104,7 @@ public:
     void setTimeout(uint32_t timeout = 25, bool reset_with_timeout = false);     // sets the maximum number of milliseconds to wait
     bool getTimeoutFlag(void);
     void clearTimeoutFlag(void);
-	
+
     size_t setBufferSize(size_t bSize);	// set buffer size (call prior to 'begin()')
 
     // IRQ callback

@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-	
+
     Modified May 2025 by Sven Bruns (Lorandil on GitHub) to support user defined buffer size (inspired by ESP32 code)
 */
 
@@ -48,7 +48,7 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _running = false;
     _txBegun = false;
     _buffLen = 0;
-	
+
     // allocate buffer memory early, so we don't fragment the heap later
     _buffSize = WIRE_BUFFER_SIZE;
     _buff = (uint8_t *)malloc(_buffSize);
@@ -164,7 +164,7 @@ void TwoWire::begin(uint8_t addr) {
         // ERROR
         return;
     }
-	
+
     // allocate buffer if necessary
     if (!_buff) {
 	    _buff=(uint8_t *)malloc(_buffSize);
@@ -173,7 +173,7 @@ void TwoWire::begin(uint8_t addr) {
             return;
         }
     }
-	
+
     _slave = true;
     i2c_init(_i2c, _clkHz);
     i2c_set_slave_mode(_i2c, true, addr);
