@@ -127,7 +127,7 @@ private:
 
     uint8_t *_buff;         // pointer to i2c buffer
     size_t  _buffSize;      // current buffer size
-	
+
     int _buffLen;
     int _buffOff;
 
