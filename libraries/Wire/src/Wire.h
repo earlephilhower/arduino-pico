@@ -20,7 +20,7 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-	Modified May 2025 by Sven Bruns (Lorandil on GitHub) to support user defined buffer size (inspired by ESP32 code)
+    Modified May 2025 by Sven Bruns (Lorandil on GitHub) to support user defined buffer size (inspired by ESP32 code)
 */
 
 #pragma once
