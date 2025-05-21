@@ -168,7 +168,7 @@ void TwoWire::begin(uint8_t addr) {
     // allocate buffer if necessary
     if (!_buff) {
         _buff=(uint8_t *)malloc(_buffSize);
-        if (!_buff)	{
+        if (!_buff) {
             // ERROR
             return;
         }
