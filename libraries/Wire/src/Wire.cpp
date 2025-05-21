@@ -167,7 +167,7 @@ void TwoWire::begin(uint8_t addr) {
 
     // allocate buffer if necessary
     if (!_buff) {
-        _buff=(uint8_t *)malloc(_buffSize);
+        _buff = (uint8_t *)malloc(_buffSize);
         if (!_buff) {
             // ERROR
             return;
@@ -762,7 +762,7 @@ void TwoWire::clearTimeoutFlag() {
 }
 
 size_t TwoWire::setBufferSize(size_t bSize) {
-    if(_running) {
+    if (_running) {
         // ERROR - transmission already running. Report back current buffer size
         return _buffSize;
     }
@@ -771,7 +771,7 @@ size_t TwoWire::setBufferSize(size_t bSize) {
         free(_buff);
         _buff = nullptr;
     }
-    _buffSize = max(WIRE_BUFFER_SIZE_MIN,int(bSize)); // enforce minimum buffer size
+    _buffSize = max(WIRE_BUFFER_SIZE_MIN, int(bSize)); // enforce minimum buffer size
     return _buffSize;
 }
 
