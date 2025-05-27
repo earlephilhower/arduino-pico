@@ -244,3 +244,10 @@ void hexdump(const void* mem, uint32_t len, uint8_t cols) {
 }
 
 const String emptyString = "";
+
+extern "C" void __attribute__((__noreturn__)) __wrap___stack_chk_fail() {
+    while (true) {
+        panic("*** stack smashing detected ***: terminated\n");
+    }
+}
+

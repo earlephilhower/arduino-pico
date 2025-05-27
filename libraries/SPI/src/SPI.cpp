@@ -264,7 +264,7 @@ void SPIClassRP2040::abortAsync() {
 
 bool SPIClassRP2040::setRX(pin_size_t pin) {
 #if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
-    constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20, 32, 26}) /* SPI0 */,
+    constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20, 32, 36}) /* SPI0 */,
                                     __bitset({8, 12, 24, 28, 40, 44})  /* SPI1 */
                                   };
 #else

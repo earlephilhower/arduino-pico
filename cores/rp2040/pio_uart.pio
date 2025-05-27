@@ -73,20 +73,25 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 ; IN pin 0 and JMP pin are both mapped to the GPIO used as UART RX.
 
 start:
-    set x, 18           ; Preload bit counter...we'll shift in the start bit and stop bit, and each bit will be double-recorded (to be fixed by RP2040 code)
+    set x, 18           ; Preload bit counter...overwritten by the app
     wait 0 pin 0        ; Stall until start bit is asserted
 
-bitloop:
    ; Delay until 1/2 way into the bit time
     mov y, osr
-wait_half:
-    jmp y-- wait_half
+wait_mid_start:
+    jmp y-- wait_mid_start
 
-    ; Read in the bit
-    in pins, 1          ; Shift data bit into ISR
-    jmp x-- bitloop     ; Loop all bits
-    
-    push                ; Stuff it and wait for next start
+bitloop:
+    mov y, osr
+bitloop1:
+    jmp y-- bitloop1
+    mov y, osr
+bitloop2:
+    jmp y-- bitloop2
+
+    in pins, 1
+    jmp x-- bitloop
+    push
 
 % c-sdk {
 static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) {
