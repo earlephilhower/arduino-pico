@@ -109,6 +109,9 @@ uint8_t WiFiMulti::run(uint32_t to) {
                j->bssid[0], j->bssid[1], j->bssid[2], j->bssid[3], j->bssid[4], j->bssid[5], j->rssi);
     }
 
+    // Force DHCP request
+    WiFi.config(IPAddress(0, 0, 0, 0));
+
     // Attempt to connect to each (will be in order of decreasing RSSI)
     for (auto j = _scanList.begin(); j != _scanList.end(); j++) {
         DEBUGV("[WIFIMULTI] Connecting to: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d\n", j->ssid,
