@@ -32,7 +32,7 @@ static const struct pio_program tone2_program = {
     .instructions = tone2_program_instructions,
     .length = 6,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = tone2_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
