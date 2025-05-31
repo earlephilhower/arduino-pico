@@ -186,6 +186,7 @@ protected:
     SPIClass& _spiUnit;
     SPISettings _spiSettings = SPISettings(4000000, MSBFIRST, SPI_MODE0);
     netif _netif;
+    bool _isDHCP = true;
 
     uint16_t _mtu;
     int8_t   _intrPin;
@@ -281,6 +282,8 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
         DEBUGV("LwipIntfDev: use config() then begin()\n");
         return false;
     }
+
+    _isDHCP = (localIP.v4() == 0);
 
     IPAddress realGateway, realNetmask, realDns1;
     if (!ipAddressReorder(localIP, gateway, netmask, dns1, realGateway, realNetmask, realDns1)) {
@@ -389,7 +392,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
     }
 
-    if (localIP().v4() == 0) {
+    if (_isDHCP) {
         // IP not set, starting DHCP
         _netif.flags |= NETIF_FLAG_UP;
         switch (dhcp_start(&_netif)) {
