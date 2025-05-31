@@ -30,7 +30,8 @@
         "svd_path": "rp2040.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "RP2040 Plus 16MB",
     "upload": {

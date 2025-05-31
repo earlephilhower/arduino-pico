@@ -30,7 +30,8 @@
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "Pico2XL",
     "upload": {
