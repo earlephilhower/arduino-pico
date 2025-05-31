@@ -393,7 +393,10 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     }
 
     if (_isDHCP) {
-        // IP not set, starting DHCP
+        // Destroy any existing address
+        ip4_addr_set_u32(ip_2_ip4(&_netif.ip_addr), 0);
+
+        // Start a new DHCP request
         _netif.flags |= NETIF_FLAG_UP;
         switch (dhcp_start(&_netif)) {
         case ERR_OK:
