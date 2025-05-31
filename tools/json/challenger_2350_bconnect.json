@@ -30,7 +30,8 @@
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "Challenger 2350 BConnect",
     "upload": {

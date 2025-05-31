@@ -30,7 +30,8 @@
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "IRIV IO Controller",
     "upload": {

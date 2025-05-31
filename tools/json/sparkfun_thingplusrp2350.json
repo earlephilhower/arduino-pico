@@ -30,7 +30,8 @@
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "Thing Plus RP2350",
     "upload": {
