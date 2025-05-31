@@ -242,8 +242,6 @@ env.Append(
     LINKFLAGS=[
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_wrap.txt"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "lib", "core_wrap.txt"),
-        "-u_printf_float",
-        "-u_scanf_float",
         # no cross-reference table, heavily spams the output
         # "-Wl,--cref",
         "-Wl,--no-warn-rwx-segments",
