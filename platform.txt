@@ -60,7 +60,7 @@ compiler.libbearssl="{runtime.platform.path}/lib/{build.chip}/libbearssl.a"
 compiler.c.cmd={build.toolchain}-gcc
 compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} -std=gnu17 -g -pipe
 compiler.c.elf.cmd={build.toolchain}-g++
-compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize} -u _printf_float -u _scanf_float
+compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize}
 compiler.S.cmd={build.toolchain}-gcc
 compiler.S.flags=-c {compiler.warning_flags} {compiler.defines} -g -x assembler-with-cpp -MMD {compiler.includes} {build.toolchainopts} -g
 compiler.cpp.cmd={build.toolchain}-g++

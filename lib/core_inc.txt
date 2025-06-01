@@ -54,6 +54,7 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_lwip/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_multicore/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_common/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_compiler/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_sections/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_panic/include

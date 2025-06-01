@@ -36,7 +36,7 @@ static const struct pio_program servo_program = {
     .instructions = servo_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = servo_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif

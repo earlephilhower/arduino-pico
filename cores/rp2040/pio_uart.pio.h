@@ -32,7 +32,7 @@ static const struct pio_program pio_tx_program = {
     .instructions = pio_tx_program_instructions,
     .length = 6,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_tx_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -95,7 +95,7 @@ static const struct pio_program pio_rx_program = {
     .instructions = pio_rx_program_instructions,
     .length = 11,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_rx_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif

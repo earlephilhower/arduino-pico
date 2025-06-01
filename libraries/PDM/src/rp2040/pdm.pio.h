@@ -28,7 +28,7 @@ static const struct pio_program pdm_pio_program = {
     .instructions = pdm_pio_program_instructions,
     .length = 2,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pdm_pio_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif

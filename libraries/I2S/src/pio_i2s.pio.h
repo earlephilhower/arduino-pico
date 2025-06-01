@@ -28,7 +28,7 @@ static const struct pio_program pio_i2s_mclk_program = {
     .instructions = pio_i2s_mclk_program_instructions,
     .length = 2,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_mclk_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -67,7 +67,7 @@ static const struct pio_program pio_i2s_out_program = {
     .instructions = pio_i2s_out_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_out_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -107,7 +107,7 @@ static const struct pio_program pio_i2s_out_swap_program = {
     .instructions = pio_i2s_out_swap_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_out_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -143,7 +143,7 @@ static const struct pio_program pio_tdm_out_program = {
     .instructions = pio_tdm_out_program_instructions,
     .length = 4,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_tdm_out_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -179,7 +179,7 @@ static const struct pio_program pio_tdm_out_swap_program = {
     .instructions = pio_tdm_out_swap_program_instructions,
     .length = 4,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_tdm_out_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -217,7 +217,7 @@ static const struct pio_program pio_tdm_inout_program = {
     .instructions = pio_tdm_inout_program_instructions,
     .length = 6,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_tdm_inout_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -255,7 +255,7 @@ static const struct pio_program pio_tdm_inout_swap_program = {
     .instructions = pio_tdm_inout_swap_program_instructions,
     .length = 6,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_tdm_inout_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -295,7 +295,7 @@ static const struct pio_program pio_lsbj_out_program = {
     .instructions = pio_lsbj_out_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_lsbj_out_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -335,7 +335,7 @@ static const struct pio_program pio_lsbj_out_swap_program = {
     .instructions = pio_lsbj_out_swap_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_lsbj_out_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -375,7 +375,7 @@ static const struct pio_program pio_i2s_in_program = {
     .instructions = pio_i2s_in_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_in_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -415,7 +415,7 @@ static const struct pio_program pio_i2s_in_swap_program = {
     .instructions = pio_i2s_in_swap_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_in_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -459,7 +459,7 @@ static const struct pio_program pio_i2s_inout_program = {
     .instructions = pio_i2s_inout_program_instructions,
     .length = 12,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_inout_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -503,7 +503,7 @@ static const struct pio_program pio_i2s_inout_swap_program = {
     .instructions = pio_i2s_inout_swap_program_instructions,
     .length = 12,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_inout_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
