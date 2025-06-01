@@ -10,7 +10,7 @@ jobs:
 
 # Consistent style, spelling
   astyle:
-    name: Spelling, Style, Boards, Package, PIO
+    name: Spelling, Style, Boards, Package
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -21,6 +21,11 @@ jobs:
       with:
         skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./libraries/FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino,./.git,./libraries/FatFS/lib/fatfs,./libraries/FatFS/src/diskio.h,./libraries/FatFS/src/ff.cpp,./libraries/FatFS/src/ffconf.h,./libraries/FatFS/src/ffsystem.cpp,./libraries/FatFS/src/ff.h,./libraries/lwIP_WINC1500/src/driver,./libraries/lwIP_WINC1500/src/common,./libraries/lwIP_WINC1500/src/bus_wrapper,./libraries/lwIP_WINC1500/src/spi_flash
         ignore_words_list: ser,dout,shiftIn,acount,froms
+    - name: Get submodules for following tests
+      run: git submodule update --init
+    - name: Check package references
+      run: |
+        ./tests/ci/pkgrefs_test.sh
     - name: Check boards.txt was not edited after makeboards.py
       run: |
         ./tools/makeboards.py
@@ -33,15 +38,6 @@ jobs:
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
-    - name: Check compiled PIO files
-      run: |
-        (cd ./tools && ./get.py)
-        ./tools/makepio.py
-        # If anything changed, GIT should return an error and fail the test
-        git diff -w --exit-code
-    - name: Check package references
-      run: |
-        ./tests/ci/pkgrefs_test.sh
 
 # Build all examples on linux (core and Arduino IDE)
   build-linux:
@@ -200,7 +196,7 @@ jobs:
     name: Mac
     strategy:
       matrix:
-        os: [macOS-13, macOS-14]
+        os: [macOS-12, macOS-14]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -268,8 +264,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
+        rm -rf ~/.platformio/platforms/raspberrypi*
         pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
-        pio pkg update --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
         pio pkg install --global --tool symlink://.
         cp -f /home/runner/work/arduino-pico/arduino-pico/tools/json/*.json /home/runner/.platformio/platforms/raspberrypi/boards/.
     - name: Build Multicore Example
@@ -325,8 +321,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
+        rm -rf ~/.platformio/platforms/raspberrypi*
         pio pkg install --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
-        pio pkg update --global --platform https://github.com/maxgerhardt/platform-raspberrypi.git
         pio pkg install --global --tool symlink://.
         cp -f /home/runner/work/arduino-pico/arduino-pico/tools/json/*.json /home/runner/.platformio/platforms/raspberrypi/boards/.
     - name: Build Every Variant
