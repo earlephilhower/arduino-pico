@@ -37,6 +37,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Architeuthis Flux Jumperless V5
 * Arduino Nano RP2040 Connect
 * ArtronShop RP2 Nano
+* BIGTREETECH SKR-Pico
 * Breadstick Raspberry
 * BridgeTek IDM2040-7A
 * BridgeTek IDM2040-43A
