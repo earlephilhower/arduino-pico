@@ -120,6 +120,9 @@
                      "name": "ArtronShop RP2 Nano"
                   },
                   {
+                     "name": "BIGTREETECH SKR-Pico"
+                  },
+                  {
                      "name": "Breadstick Raspberry"
                   },
                   {
@@ -127,9 +130,6 @@
                   },
                   {
                      "name": "BridgeTek IDM2040-43A"
-                  },
-                  {
-                     "name": "BIGTREETECH SKR-Pico"
                   },
                   {
                      "name": "Cytron IRIV IO Controller"
