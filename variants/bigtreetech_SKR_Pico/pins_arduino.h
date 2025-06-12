@@ -63,19 +63,21 @@
 
 // ----------------------
 // Not available..  (all pins already in use)
-// #define PIN_SPI0_MISO  (99u)
-// #define PIN_SPI0_MOSI  (99u)
-// #define PIN_SPI0_SCK   (99u)
-// #define PIN_SPI0_SS    (99u)
+#define PIN_SPI0_MISO  (99u)
+#define PIN_SPI0_MOSI  (99u)
+#define PIN_SPI0_SCK   (99u)
+#define PIN_SPI0_SS    (99u)
 
-// #define PIN_SPI1_MISO  (99u)
-// #define PIN_SPI1_MOSI  (99u)
-// #define PIN_SPI1_SCK   (99u)
-// #define PIN_SPI1_SS    (99u)
+#define PIN_SPI1_MISO  (99u)
+#define PIN_SPI1_MOSI  (99u)
+#define PIN_SPI1_SCK   (99u)
+#define PIN_SPI1_SS    (99u)
 
 // #define __WIRE1_DEVICE i2c0
-// #define PIN_WIRE1_SDA  (99u)
-// #define PIN_WIRE1_SCL  (99u)
+#define PIN_WIRE1_SDA  (99u)
+#define PIN_WIRE1_SCL  (99u)
+
+
 
 #define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (0u)
