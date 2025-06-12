@@ -28,7 +28,7 @@ static const struct pio_program spi_cpha0_program = {
     .instructions = spi_cpha0_program_instructions,
     .length = 2,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = spi_cpha0_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -63,7 +63,7 @@ static const struct pio_program spi_cpha1_program = {
     .instructions = spi_cpha1_program_instructions,
     .length = 3,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = spi_cpha1_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -133,7 +133,7 @@ static const struct pio_program spi_cpha0_cs_program = {
     .instructions = spi_cpha0_cs_program_instructions,
     .length = 9,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = spi_cpha0_cs_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -176,7 +176,7 @@ static const struct pio_program spi_cpha1_cs_program = {
     .instructions = spi_cpha1_cs_program_instructions,
     .length = 9,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = spi_cpha1_cs_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
