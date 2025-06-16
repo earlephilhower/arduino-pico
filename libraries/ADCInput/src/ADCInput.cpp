@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include "ADCInput.h"
 #include <hardware/adc.h>
+#include <debug_internal.h>
 
 ADCInput::ADCInput(pin_size_t p0, pin_size_t p1, pin_size_t p2, pin_size_t p3, pin_size_t p4, pin_size_t p5, pin_size_t p6, pin_size_t p7) {
     _running = false;
@@ -122,6 +123,18 @@ bool ADCInput::begin() {
             adc_gpio_init(pin);
         }
     }
+
+    // Make sure the bufferWords is a multiple of the natural size.
+    // For 1 and 2 inputs there will never be a misalignment on overflow
+    // For 3 inputs we need to have a multiple of 3 words to guarantee that every buffer[0] is ADC[0].  OTW we can slip on an overflow
+    // Data = [ADC0:ADC1, ADC2:ADC0, ADC1:ADC2], [ADC0:ADC1, ADC2:ADC0, ADC1:ADC2,ADC3], ...
+    // For 4 inputs we need to have a multiple of 2 words, same reason.  See #2991
+    // Data = [ADC0:ADC1, ADC2:ADC3] [ADC0:ADC1, ADC2:ADC3]
+    if (((cnt == 3) && (_bufferWords % 3)) || ((cnt == 4) && (_bufferWords % 2))) {
+        DEBUGV("ADCInput: bufferWords needs to be a multiple of 3 for 3 inputs, 2 for 4 inputs\n");
+        return false;
+    }
+
     adc_set_round_robin(_pinMask);
     adc_fifo_setup(true, true, 1, false, false);
 
