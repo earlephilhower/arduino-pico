@@ -39,7 +39,7 @@ static const struct pio_program wiznet_pio_spi_write_read_program = {
     .instructions = wiznet_pio_spi_write_read_program_instructions,
     .length = 9,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = wiznet_pio_spi_write_read_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif

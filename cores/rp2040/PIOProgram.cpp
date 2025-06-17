@@ -53,16 +53,6 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     CoreMutex m(&_pioMutex);
     PIO pi[PIOCNT] = { PIOS };
 
-#if 0
-    uint usm;
-    uint uoff;
-    auto ret = pio_claim_free_sm_and_add_program_for_gpio_range(_pgm, pio, &usm, &uoff, start, cnt, true);
-    *sm = usm;
-    *offset = uoff;
-    DEBUGV("clain %d\n", ret);
-    return ret;
-#endif
-
     uint gpioBaseNeeded = ((start + cnt) >= 32) ? 16 : 0;
     DEBUGV("PIOProgram %p: Searching for base=%d, pins %d-%d\n", _pgm, gpioBaseNeeded, start, start + cnt - 1);
 
