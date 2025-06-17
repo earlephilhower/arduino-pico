@@ -542,7 +542,7 @@ MakeBoard("arduino_nano_connect", "rp2040", "Arduino", "Nano RP2040 Connect", "0
 MakeBoard("artronshop_rp2_nano", "rp2040", "ArtronShop", "RP2 Nano", "0x2e8a", "0x000a", 250, "ARTRONSHOP_RP2_NANO", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # BIGTREETECH
-MakeBoard("bigtreetech_SKR_Pico", "rp2040", "BIGTREETECH", "SKR-Pico", "0x2e8b", "0xf00a", 250, "BIGTREETECH_SKR_PICO", 16, 0, "boot2_w25q080_2_padded_checksum", board_url="https://github.com/bigtreetech/SKR-Pico")
+MakeBoard("bigtreetech_SKR_Pico", "rp2040", "BIGTREETECH", "SKR-Pico", "0x2e8b", "0xf00a", 250, "BIGTREETECH_SKR_PICO", 2, 0, "boot2_w25q080_2_padded_checksum", board_url="https://github.com/bigtreetech/SKR-Pico")
 
 # Breadstick
 MakeBoard("breadstick_raspberry", "rp2040", "Breadstick", "Raspberry", "0x2e8a", "0x105e" , 500, "Breadstick_Raspberry", 16, 0, "boot2_w25q080_2_padded_checksum", board_url="https://shop.breadstick.ca/products/raspberry-breadstick-rp2040")
