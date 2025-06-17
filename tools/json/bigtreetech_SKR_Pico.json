@@ -36,7 +36,7 @@
     "name": "SKR-Pico",
     "upload": {
         "maximum_ram_size": 262144,
-        "maximum_size": 16777216,
+        "maximum_size": 2097152,
         "require_upload_port": true,
         "native_usb": true,
         "use_1200bps_touch": true,
