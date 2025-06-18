@@ -51,8 +51,7 @@ wiznet_pio_qspi_handle_t wiznet_pio_qspi_handle = NULL;
     Check physical link
     @return true when physical link is up
 */
-bool Wiznet6300::isLinked()
-{
+bool Wiznet6300::isLinked() {
     ethernet_arch_lwip_gpio_mask();
     ethernet_arch_lwip_begin();
     auto ret = wizphy_getphylink() == PHY_LINK_ON;
@@ -63,12 +62,12 @@ bool Wiznet6300::isLinked()
 
 uint8_t Wiznet6300::wizchip_read(uint8_t block, uint16_t address) {
     uint8_t ret = 0;
-	uint8_t opcode = 0;
-	uint16_t ADDR = 0;
+    uint8_t opcode = 0;
+    uint16_t ADDR = 0;
 
     wizchip_cs_select();
 
-	opcode = (uint8_t)((block & 0x000000FF)| (_W6300_SPI_READ_)|(QSPI_QUAD_MODE));
+    opcode = (uint8_t)((block & 0x000000FF) | (_W6300_SPI_READ_) | (QSPI_QUAD_MODE));
     ADDR = (uint16_t)(address & 0x0000FFFF);
     (*wiznet_pio_qspi_handle)->read_byte(opcode, ADDR, &ret, 1);
 
@@ -81,12 +80,12 @@ uint16_t Wiznet6300::wizchip_read_word(uint8_t block, uint16_t address) {
 }
 
 void Wiznet6300::wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf, uint16_t len) {
-	uint8_t opcode = 0;
-	uint16_t ADDR = 0;
+    uint8_t opcode = 0;
+    uint16_t ADDR = 0;
 
     wizchip_cs_select();
 
-    opcode = (uint8_t)((block & 0x000000FF)| (_W6300_SPI_READ_)|(QSPI_QUAD_MODE));
+    opcode = (uint8_t)((block & 0x000000FF) | (_W6300_SPI_READ_) | (QSPI_QUAD_MODE));
     ADDR = (uint16_t)(address & 0x0000FFFF);
     (*wiznet_pio_qspi_handle)->read_byte(opcode, ADDR, pBuf, len);
 
@@ -95,11 +94,11 @@ void Wiznet6300::wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf
 
 void Wiznet6300::wizchip_write(uint8_t block, uint16_t address, uint8_t wb) {
     uint8_t opcode = 0;
-	uint16_t ADDR = 0;
+    uint16_t ADDR = 0;
 
     wizchip_cs_select();
 
-    opcode = (uint8_t)((block & 0x000000FF)| (_W6300_SPI_WRITE_)|(QSPI_QUAD_MODE));
+    opcode = (uint8_t)((block & 0x000000FF) | (_W6300_SPI_WRITE_) | (QSPI_QUAD_MODE));
     ADDR = (uint16_t)(address & 0x0000FFFF);
     (*wiznet_pio_qspi_handle)->write_byte(opcode, ADDR, &wb, 1);
 
@@ -114,11 +113,11 @@ void Wiznet6300::wizchip_write_word(uint8_t block, uint16_t address, uint16_t wo
 void Wiznet6300::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_t* pBuf,
                                    uint16_t len) {
     uint8_t opcode = 0;
-	uint16_t ADDR = 0;
+    uint16_t ADDR = 0;
 
     wizchip_cs_select();
 
-    opcode = (uint8_t)((block & 0x000000FF)| (_W6300_SPI_WRITE_)|(QSPI_QUAD_MODE));
+    opcode = (uint8_t)((block & 0x000000FF) | (_W6300_SPI_WRITE_) | (QSPI_QUAD_MODE));
     ADDR = (uint16_t)(address & 0x0000FFFF);
     (*wiznet_pio_qspi_handle)->write_byte(opcode, ADDR, (uint8_t *)pBuf, len);
 
@@ -194,20 +193,20 @@ void Wiznet6300::wizchip_recv_ignore(uint16_t len) {
 bool Wiznet6300::wizchip_sw_reset() {
     setChipLOCK(CHPLCKR_UNLOCK);
     uint16_t count = 0;
-    do
-    { // Wait Unlock Complete
-        if (++count > 20)
-        {             // Check retry count
+    do {
+        // Wait Unlock Complete
+        if (++count > 20) {
+            // Check retry count
             return false; // Over Limit retry count
         }
     } while ((getStatus() & SYSR_CHPL_LOCK) ^ SYSR_CHPL_ULOCK); // Exit Wait Unlock Complete
 
     setCommand0(0x0); // Software Reset
 
-    do
-    { // Wait Lock Complete
-        if (++count > 20)
-        {             // Check retry count
+    do {
+        // Wait Lock Complete
+        if (++count > 20) {
+            // Check retry count
             return false; // Over Limit retry count
         }
 
@@ -285,15 +284,16 @@ bool Wiznet6300::begin(const uint8_t* mac_address, netif *net) {
     wiznet_pio_qspi_config.clock_pin = WIZNET_PIO_QSPI_SCK_PIN;
     wiznet_pio_qspi_config.cs_pin = WIZNET_PIO_QSPI_CS_PIN;
 
-    if (wiznet_pio_qspi_handle != NULL)
+    if (wiznet_pio_qspi_handle != NULL) {
         wiznet_pio_qspi_close(wiznet_pio_qspi_handle);
+    }
     wiznet_pio_qspi_handle = wiznet_pio_qspi_open(&wiznet_pio_qspi_config);
     (*wiznet_pio_qspi_handle)->set_active(wiznet_pio_qspi_handle);
 
     _netif = net;
     memcpy(_mac_address, mac_address, 6);
 
-	pinMode(_cs, OUTPUT);
+    pinMode(_cs, OUTPUT);
     wizchip_cs_deselect();
 
     wizchip_sw_reset();
@@ -332,9 +332,9 @@ bool Wiznet6300::begin(const uint8_t* mac_address, netif *net) {
     Serial.println("MAC RAW mode!");
 
     if (_intr >= 0) {
-        
+
         setSn_IR(0xff); // Clear everything
-        
+
 
         // Configure socket 0 interrupts
         setSn_IMR(Sn_IMR_RECV); // we're not interested in Sn_IMR_SENDOK atm
@@ -347,7 +347,7 @@ bool Wiznet6300::begin(const uint8_t* mac_address, netif *net) {
 
         // Enable interrupt pin
         setCommand1(SYCR1_IEN);
-        
+
     }
 
     // Success
@@ -366,7 +366,7 @@ void Wiznet6300::end() {
 }
 
 /*
-uint16_t Wiznet6100::readFrame(uint8_t* buffer, uint16_t bufsize) {
+    uint16_t Wiznet6100::readFrame(uint8_t* buffer, uint16_t bufsize) {
     uint16_t data_len = readFrameSize();
 
     if (data_len == 0) {
@@ -380,7 +380,7 @@ uint16_t Wiznet6100::readFrame(uint8_t* buffer, uint16_t bufsize) {
     }
 
     return readFrameData(buffer, data_len);
-}
+    }
 */
 
 uint16_t Wiznet6300::readFrameSize() {

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2023 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
+    Copyright (c) 2023 Raspberry Pi (Trading) Ltd.
+
+    SPDX-License-Identifier: BSD-3-Clause
+*/
 
 #ifndef _WIZNET_SPI_PIO_H_
 #define _WIZNET_SPI_PIO_H_
@@ -13,8 +13,7 @@ extern "C" {
 
 #include <stdint.h>
 
-typedef struct wiznet_pio_qspi_config
-{
+typedef struct wiznet_pio_qspi_config {
     uint16_t clock_div_major;
     uint8_t clock_div_minor;
     uint8_t clock_pin;

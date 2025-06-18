@@ -93,8 +93,7 @@ public:
         Report whether ::isLinked() API is implemented
         @return true when ::isLinked() API is implemented
     */
-    constexpr bool isLinkDetectable() const
-    {
+    constexpr bool isLinkDetectable() const {
         return true;
     }
 
@@ -472,7 +471,7 @@ private:
         PHYCFGR_LNK_ON      = (1 << 0),
         PHYCFGR_LNK_OFF     = (0 << 0),
     };
-    
+
     /* Lock register commands */
     enum {
         CHPLCKR_UNLOCK      = 0xCE,
@@ -551,25 +550,24 @@ private:
     }
 
     /**
-     * Reads the W6300 system status register
-     * @return uint8_t 
-     */
+        Reads the W6300 system status register
+        @return uint8_t
+    */
     inline uint8_t getStatus() {
         return wizchip_read(BlockSelectCReg, SYSR);
     }
 
     /**
-     * Writes a W6300 command
-     */
+        Writes a W6300 command
+    */
     inline void setCommand0(uint8_t cmd) {
         wizchip_write(BlockSelectCReg, SYCR0, cmd);
     }
 
     /**
-     * Writes a W6300 command
-     */
-    inline void setCommand1(uint8_t cmd)
-    {
+        Writes a W6300 command
+    */
+    inline void setCommand1(uint8_t cmd) {
         wizchip_write(BlockSelectCReg, SYCR1, cmd);
     }
 
@@ -657,12 +655,11 @@ private:
     }
 
     /**
-     Set @ref _SIMR_ register
-     @param (uint8_t)imr Value to set @ref _SIMR_ register.
-     @sa getIMR()
- */
-    inline void setICLR(uint8_t imr)
-    {
+        Set @ref _SIMR_ register
+        @param (uint8_t)imr Value to set @ref _SIMR_ register.
+        @sa getIMR()
+    */
+    inline void setICLR(uint8_t imr) {
         wizchip_write(BlockSelectSReg, Sn_ICLR, imr);
     }
 
@@ -694,27 +691,25 @@ private:
     }
 
     /**
-     * Sets the chip lock to
-     * @param state 
-     */
+        Sets the chip lock to
+        @param state
+    */
     inline void setChipLOCK(uint8_t state) {
         wizchip_write(BlockSelectCReg, CHPLCKR, state);
     }
 
     /**
-     * Sets the PHY lock to
-     * @param state
-     */
-    inline void setPHYLOCK(uint8_t state)
-    {
+        Sets the PHY lock to
+        @param state
+    */
+    inline void setPHYLOCK(uint8_t state) {
         wizchip_write(BlockSelectCReg, PHYLCKR, state);
     }
     /**
-     * Sets the network lock to
-     * @param state
-     */
-    inline void setNetLOCK(uint8_t state)
-    {
+        Sets the network lock to
+        @param state
+    */
+    inline void setNetLOCK(uint8_t state) {
         wizchip_write(BlockSelectCReg, NETLCKR, state);
     }
 
@@ -813,7 +808,7 @@ private:
         // W6300 DEBUG: rxbufsize = 16
         // W6300 DEBUG: original code:
         /*   static inline uint8_t writeSn(SOCKET s=0, uint16_t addr, uint8_t data=16) {
-    return write(CH_BASE() + s * CH_SIZE + addr, data);
+            return write(CH_BASE() + s * CH_SIZE + addr, data);
         */
         wizchip_write(BlockSelectSReg, Sn_RXBUF_SIZE, rxbufsize);
     }
