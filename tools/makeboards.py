@@ -696,6 +696,7 @@ MakeBoard("waveshare_rp2040_plus_4mb", "rp2040", "Waveshare", "RP2040 Plus 4MB",
 MakeBoard("waveshare_rp2040_plus_16mb", "rp2040", "Waveshare", "RP2040 Plus 16MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
 
 # WIZnet
 MakeBoard("wiznet_5100s_evb_pico", "rp2040", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
