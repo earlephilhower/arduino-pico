@@ -396,6 +396,12 @@
                      "name": "WIZnet W55RP20-EVB-Pico"
                   },
                   {
+                     "name": "WIZnet W6300-EVB-Pico"
+                  },
+                  {
+                     "name": "WIZnet W6300-EVB-Pico2"
+                  },
+                  {
                      "name": "Generic RP2040"
                   },
                   {
