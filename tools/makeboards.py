@@ -706,6 +706,8 @@ MakeBoard("wiznet_wizfi360_evb_pico", "rp2040", "WIZnet", "WizFi360-EVB-Pico", "
 MakeBoard("wiznet_5500_evb_pico", "rp2040", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("wiznet_5500_evb_pico2", "rp2350", "WIZnet", "W5500-EVB-Pico2", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO2", 2, 0, "none")
 MakeBoard("wiznet_55rp20_evb_pico", "rp2040", "WIZnet", "W55RP20-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_55RP20_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_6300_evb_pico", "rp2040", "WIZnet", "W6300-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_6300_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_6300_evb_pico2", "rp2350", "WIZnet", "W6300-EVB-Pico2", "0x2e8a", "0x1029", 250, "WIZNET_6300_EVB_PICO2", 2, 0, "none")
 
 # Generic
 MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
