@@ -10694,6 +10694,220 @@ artronshop_rp2_nano.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_
 artronshop_rp2_nano.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
+# BIGTREETECH SKR-Pico
+# -----------------------------------
+bigtreetech_SKR_Pico.name=BIGTREETECH SKR-Pico
+bigtreetech_SKR_Pico.vid.0=0x2e8b
+bigtreetech_SKR_Pico.pid.0=0xf00a
+bigtreetech_SKR_Pico.vid.1=0x2e8b
+bigtreetech_SKR_Pico.pid.1=0xf10a
+bigtreetech_SKR_Pico.upload_port.0.vid=0x2e8b
+bigtreetech_SKR_Pico.upload_port.0.pid=0xf00a
+bigtreetech_SKR_Pico.upload_port.1.vid=0x2e8b
+bigtreetech_SKR_Pico.upload_port.1.pid=0xf10a
+bigtreetech_SKR_Pico.build.usbvid=-DUSBD_VID=0x2e8b
+bigtreetech_SKR_Pico.build.usbpid=-DUSBD_PID=0xf00a
+bigtreetech_SKR_Pico.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+bigtreetech_SKR_Pico.build.board=BIGTREETECH_SKR_PICO
+bigtreetech_SKR_Pico.build.mcu=cortex-m0plus
+bigtreetech_SKR_Pico.build.chip=rp2040
+bigtreetech_SKR_Pico.build.toolchain=arm-none-eabi
+bigtreetech_SKR_Pico.build.toolchainpkg=pqt-gcc
+bigtreetech_SKR_Pico.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+bigtreetech_SKR_Pico.build.uf2family=--family rp2040
+bigtreetech_SKR_Pico.build.variant=bigtreetech_SKR_Pico
+bigtreetech_SKR_Pico.upload.maximum_size=2097152
+bigtreetech_SKR_Pico.upload.wait_for_upload_port=true
+bigtreetech_SKR_Pico.upload.erase_cmd=
+bigtreetech_SKR_Pico.serial.disableDTR=false
+bigtreetech_SKR_Pico.serial.disableRTS=false
+bigtreetech_SKR_Pico.build.f_cpu=125000000
+bigtreetech_SKR_Pico.build.led=
+bigtreetech_SKR_Pico.build.core=rp2040
+bigtreetech_SKR_Pico.build.ldscript=memmap_default.ld
+bigtreetech_SKR_Pico.build.boot2=boot2_w25q080_2_padded_checksum
+bigtreetech_SKR_Pico.build.usb_manufacturer="BIGTREETECH"
+bigtreetech_SKR_Pico.build.usb_product="SKR-Pico"
+bigtreetech_SKR_Pico.menu.flash.2097152_0=2MB (no FS)
+bigtreetech_SKR_Pico.menu.flash.2097152_0.upload.maximum_size=2093056
+bigtreetech_SKR_Pico.menu.flash.2097152_0.build.flash_total=2097152
+bigtreetech_SKR_Pico.menu.flash.2097152_0.build.flash_length=2093056
+bigtreetech_SKR_Pico.menu.flash.2097152_0.build.eeprom_start=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_0.build.fs_start=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_0.build.fs_end=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+bigtreetech_SKR_Pico.menu.flash.2097152_65536.upload.maximum_size=2027520
+bigtreetech_SKR_Pico.menu.flash.2097152_65536.build.flash_total=2097152
+bigtreetech_SKR_Pico.menu.flash.2097152_65536.build.flash_length=2027520
+bigtreetech_SKR_Pico.menu.flash.2097152_65536.build.eeprom_start=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_65536.build.fs_start=270462976
+bigtreetech_SKR_Pico.menu.flash.2097152_65536.build.fs_end=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+bigtreetech_SKR_Pico.menu.flash.2097152_131072.upload.maximum_size=1961984
+bigtreetech_SKR_Pico.menu.flash.2097152_131072.build.flash_total=2097152
+bigtreetech_SKR_Pico.menu.flash.2097152_131072.build.flash_length=1961984
+bigtreetech_SKR_Pico.menu.flash.2097152_131072.build.eeprom_start=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_131072.build.fs_start=270397440
+bigtreetech_SKR_Pico.menu.flash.2097152_131072.build.fs_end=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+bigtreetech_SKR_Pico.menu.flash.2097152_262144.upload.maximum_size=1830912
+bigtreetech_SKR_Pico.menu.flash.2097152_262144.build.flash_total=2097152
+bigtreetech_SKR_Pico.menu.flash.2097152_262144.build.flash_length=1830912
+bigtreetech_SKR_Pico.menu.flash.2097152_262144.build.eeprom_start=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_262144.build.fs_start=270266368
+bigtreetech_SKR_Pico.menu.flash.2097152_262144.build.fs_end=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+bigtreetech_SKR_Pico.menu.flash.2097152_524288.upload.maximum_size=1568768
+bigtreetech_SKR_Pico.menu.flash.2097152_524288.build.flash_total=2097152
+bigtreetech_SKR_Pico.menu.flash.2097152_524288.build.flash_length=1568768
+bigtreetech_SKR_Pico.menu.flash.2097152_524288.build.eeprom_start=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_524288.build.fs_start=270004224
+bigtreetech_SKR_Pico.menu.flash.2097152_524288.build.fs_end=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+bigtreetech_SKR_Pico.menu.flash.2097152_1048576.upload.maximum_size=1044480
+bigtreetech_SKR_Pico.menu.flash.2097152_1048576.build.flash_total=2097152
+bigtreetech_SKR_Pico.menu.flash.2097152_1048576.build.flash_length=1044480
+bigtreetech_SKR_Pico.menu.flash.2097152_1048576.build.eeprom_start=270528512
+bigtreetech_SKR_Pico.menu.flash.2097152_1048576.build.fs_start=269479936
+bigtreetech_SKR_Pico.menu.flash.2097152_1048576.build.fs_end=270528512
+bigtreetech_SKR_Pico.menu.freq.200=200 MHz
+bigtreetech_SKR_Pico.menu.freq.200.build.f_cpu=200000000L
+bigtreetech_SKR_Pico.menu.freq.50=50 MHz
+bigtreetech_SKR_Pico.menu.freq.50.build.f_cpu=50000000L
+bigtreetech_SKR_Pico.menu.freq.100=100 MHz
+bigtreetech_SKR_Pico.menu.freq.100.build.f_cpu=100000000L
+bigtreetech_SKR_Pico.menu.freq.120=120 MHz
+bigtreetech_SKR_Pico.menu.freq.120.build.f_cpu=120000000L
+bigtreetech_SKR_Pico.menu.freq.125=125 MHz
+bigtreetech_SKR_Pico.menu.freq.125.build.f_cpu=125000000L
+bigtreetech_SKR_Pico.menu.freq.128=128 MHz
+bigtreetech_SKR_Pico.menu.freq.128.build.f_cpu=128000000L
+bigtreetech_SKR_Pico.menu.freq.133=133 MHz
+bigtreetech_SKR_Pico.menu.freq.133.build.f_cpu=133000000L
+bigtreetech_SKR_Pico.menu.freq.150=150 MHz
+bigtreetech_SKR_Pico.menu.freq.150.build.f_cpu=150000000L
+bigtreetech_SKR_Pico.menu.freq.176=176 MHz
+bigtreetech_SKR_Pico.menu.freq.176.build.f_cpu=176000000L
+bigtreetech_SKR_Pico.menu.freq.225=225 MHz (Overclock)
+bigtreetech_SKR_Pico.menu.freq.225.build.f_cpu=225000000L
+bigtreetech_SKR_Pico.menu.freq.240=240 MHz (Overclock)
+bigtreetech_SKR_Pico.menu.freq.240.build.f_cpu=240000000L
+bigtreetech_SKR_Pico.menu.freq.250=250 MHz (Overclock)
+bigtreetech_SKR_Pico.menu.freq.250.build.f_cpu=250000000L
+bigtreetech_SKR_Pico.menu.freq.276=276 MHz (Overclock)
+bigtreetech_SKR_Pico.menu.freq.276.build.f_cpu=276000000L
+bigtreetech_SKR_Pico.menu.freq.300=300 MHz (Overclock)
+bigtreetech_SKR_Pico.menu.freq.300.build.f_cpu=300000000L
+bigtreetech_SKR_Pico.menu.opt.Small=Small (-Os) (standard)
+bigtreetech_SKR_Pico.menu.opt.Small.build.flags.optimize=-Os
+bigtreetech_SKR_Pico.menu.opt.Optimize=Optimize (-O)
+bigtreetech_SKR_Pico.menu.opt.Optimize.build.flags.optimize=-O
+bigtreetech_SKR_Pico.menu.opt.Optimize2=Optimize More (-O2)
+bigtreetech_SKR_Pico.menu.opt.Optimize2.build.flags.optimize=-O2
+bigtreetech_SKR_Pico.menu.opt.Optimize3=Optimize Even More (-O3)
+bigtreetech_SKR_Pico.menu.opt.Optimize3.build.flags.optimize=-O3
+bigtreetech_SKR_Pico.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+bigtreetech_SKR_Pico.menu.opt.Fast.build.flags.optimize=-Ofast
+bigtreetech_SKR_Pico.menu.opt.Debug=Debug (-Og)
+bigtreetech_SKR_Pico.menu.opt.Debug.build.flags.optimize=-Og
+bigtreetech_SKR_Pico.menu.opt.Disabled=Disabled (-O0)
+bigtreetech_SKR_Pico.menu.opt.Disabled.build.flags.optimize=-O0
+bigtreetech_SKR_Pico.menu.profile.Disabled=Disabled
+bigtreetech_SKR_Pico.menu.profile.Disabled.build.flags.profile=
+bigtreetech_SKR_Pico.menu.profile.Enabled=Enabled
+bigtreetech_SKR_Pico.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+bigtreetech_SKR_Pico.menu.rtti.Disabled=Disabled
+bigtreetech_SKR_Pico.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+bigtreetech_SKR_Pico.menu.rtti.Enabled=Enabled
+bigtreetech_SKR_Pico.menu.rtti.Enabled.build.flags.rtti=
+bigtreetech_SKR_Pico.menu.stackprotect.Disabled=Disabled
+bigtreetech_SKR_Pico.menu.stackprotect.Disabled.build.flags.stackprotect=
+bigtreetech_SKR_Pico.menu.stackprotect.Enabled=Enabled
+bigtreetech_SKR_Pico.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+bigtreetech_SKR_Pico.menu.exceptions.Disabled=Disabled
+bigtreetech_SKR_Pico.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+bigtreetech_SKR_Pico.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+bigtreetech_SKR_Pico.menu.exceptions.Enabled=Enabled
+bigtreetech_SKR_Pico.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+bigtreetech_SKR_Pico.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+bigtreetech_SKR_Pico.menu.dbgport.Disabled=Disabled
+bigtreetech_SKR_Pico.menu.dbgport.Disabled.build.debug_port=
+bigtreetech_SKR_Pico.menu.dbgport.Serial=Serial
+bigtreetech_SKR_Pico.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+bigtreetech_SKR_Pico.menu.dbgport.Serial1=Serial1
+bigtreetech_SKR_Pico.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+bigtreetech_SKR_Pico.menu.dbgport.Serial2=Serial2
+bigtreetech_SKR_Pico.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+bigtreetech_SKR_Pico.menu.dbgport.SerialSemi=SerialSemi
+bigtreetech_SKR_Pico.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+bigtreetech_SKR_Pico.menu.dbglvl.None=None
+bigtreetech_SKR_Pico.menu.dbglvl.None.build.debug_level=
+bigtreetech_SKR_Pico.menu.dbglvl.Core=Core
+bigtreetech_SKR_Pico.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+bigtreetech_SKR_Pico.menu.dbglvl.SPI=SPI
+bigtreetech_SKR_Pico.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+bigtreetech_SKR_Pico.menu.dbglvl.Wire=Wire
+bigtreetech_SKR_Pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+bigtreetech_SKR_Pico.menu.dbglvl.Bluetooth=Bluetooth
+bigtreetech_SKR_Pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+bigtreetech_SKR_Pico.menu.dbglvl.All=All
+bigtreetech_SKR_Pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH
+bigtreetech_SKR_Pico.menu.dbglvl.NDEBUG=NDEBUG
+bigtreetech_SKR_Pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+bigtreetech_SKR_Pico.menu.usbstack.picosdk=Pico SDK
+bigtreetech_SKR_Pico.menu.usbstack.picosdk.build.usbstack_flags=
+bigtreetech_SKR_Pico.menu.usbstack.tinyusb=Adafruit TinyUSB
+bigtreetech_SKR_Pico.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+bigtreetech_SKR_Pico.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+bigtreetech_SKR_Pico.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+bigtreetech_SKR_Pico.menu.usbstack.nousb=No USB
+bigtreetech_SKR_Pico.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4only=IPv4 Only
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4only.build.libpicow=libipv4.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6.build.libpicow=libipv4-ipv6.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4btcble.build.libpicow=libipv4-bt.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=libipv4-ipv6-bt.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4onlybig.build.libpicow=libipv4-big.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6big.build.libpicow=libipv4-ipv6-big.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4btcblebig.build.libpicow=libipv4-bt-big.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=libipv4-ipv6-bt-big.a
+bigtreetech_SKR_Pico.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+bigtreetech_SKR_Pico.menu.uploadmethod.default=Default (UF2)
+bigtreetech_SKR_Pico.menu.uploadmethod.default.build.ram_length=256k
+bigtreetech_SKR_Pico.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+bigtreetech_SKR_Pico.menu.uploadmethod.default.upload.maximum_data_size=262144
+bigtreetech_SKR_Pico.menu.uploadmethod.default.upload.tool=uf2conv
+bigtreetech_SKR_Pico.menu.uploadmethod.default.upload.tool.default=uf2conv
+bigtreetech_SKR_Pico.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+bigtreetech_SKR_Pico.menu.uploadmethod.picotool=Picotool
+bigtreetech_SKR_Pico.menu.uploadmethod.picotool.build.ram_length=256k
+bigtreetech_SKR_Pico.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+bigtreetech_SKR_Pico.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+bigtreetech_SKR_Pico.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+bigtreetech_SKR_Pico.menu.uploadmethod.picotool.upload.tool=picotool
+bigtreetech_SKR_Pico.menu.uploadmethod.picotool.upload.tool.default=picotool
+bigtreetech_SKR_Pico.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+bigtreetech_SKR_Pico.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+bigtreetech_SKR_Pico.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+bigtreetech_SKR_Pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+bigtreetech_SKR_Pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+bigtreetech_SKR_Pico.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Breadstick Raspberry
 # -----------------------------------
 breadstick_raspberry.name=Breadstick Raspberry
