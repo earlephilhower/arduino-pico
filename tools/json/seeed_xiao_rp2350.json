@@ -25,7 +25,7 @@
         "variant": "seeed_xiao_rp2350"
     },
     "debug": {
-        "jlink_device": "RP2350_0",
+        "jlink_device": "RP2350_M33_0",
         "openocd_target": "rp2350.cfg",
         "svd_path": "rp2350.svd"
     },
