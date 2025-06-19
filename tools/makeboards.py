@@ -327,7 +327,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         tup = "riscv32-unknown-elf"
         opts = "-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32"
     else:
-        raise Exception("Unknown board type " + str(chip));
+        raise Exception("Unknown board type " + str(chip))
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
     if (name == "generic") or (name == "generic_rp2350") or (name == "vccgnd_yd_rp2040"):
         smfs =  [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
@@ -349,6 +349,9 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildWifiType(name)
         BuildCountry(name)
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
+    elif name == "waveshare_rp2350_plus":
+        BuildFlashMenu(name, chip, 4*1024*1024, [*smallfs, 1024*1024, 2*1024*1024, 3*1024*1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
@@ -541,13 +544,16 @@ MakeBoard("arduino_nano_connect", "rp2040", "Arduino", "Nano RP2040 Connect", "0
 # ArtronShop
 MakeBoard("artronshop_rp2_nano", "rp2040", "ArtronShop", "RP2 Nano", "0x2e8a", "0x000a", 250, "ARTRONSHOP_RP2_NANO", 2, 0, "boot2_w25q080_2_padded_checksum")
 
+# BIGTREETECH
+MakeBoard("bigtreetech_SKR_Pico", "rp2040", "BIGTREETECH", "SKR-Pico", "0x2e8b", "0xf00a", 250, "BIGTREETECH_SKR_PICO", 2, 0, "boot2_w25q080_2_padded_checksum", board_url="https://github.com/bigtreetech/SKR-Pico")
+
 # Breadstick
 MakeBoard("breadstick_raspberry", "rp2040", "Breadstick", "Raspberry", "0x2e8a", "0x105e" , 500, "Breadstick_Raspberry", 16, 0, "boot2_w25q080_2_padded_checksum", board_url="https://shop.breadstick.ca/products/raspberry-breadstick-rp2040")
 
 # BridgeTek
 MakeBoard("bridgetek_idm2040_7a", "rp2040", "BridgeTek", "IDM2040-7A", "0x2e8a", "0x1041", 250, "BRIDGETEK_IDM2040_7A", 8, 0, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT817", "DISPLAY_RES=WVGA", "PLATFORM_RP2040"])
 MakeBoard("bridgetek_idm2040_43a", "rp2040", "BridgeTek", "IDM2040-43A", "0x2e8b", "0xf00a", 250, "BRIDGETEK_IDM2040_43A", 8, 0, "boot2_w25q080_2_padded_checksum", ["FT8XX_TYPE=BT883", "DISPLAY_RES=WQVGA", "PLATFORM_RP2040"])
- 
+
 # Cytron
 MakeBoard("cytron_iriv_io_controller", "rp2350", "Cytron", "IRIV IO Controller", "0x2e8a", "0x1093", 250, "CYTRON_IRIV_IO_CONTROLLER", 2, 0, "none")
 MakeBoard("cytron_maker_nano_rp2040", "rp2040", "Cytron", "Maker Nano RP2040", "0x2e8a", "0x100f", 250, "CYTRON_MAKER_NANO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
@@ -693,6 +699,7 @@ MakeBoard("waveshare_rp2040_plus_4mb", "rp2040", "Waveshare", "RP2040 Plus 4MB",
 MakeBoard("waveshare_rp2040_plus_16mb", "rp2040", "Waveshare", "RP2040 Plus 16MB", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a", "0x10B1", 500, "WAVESHARE_RP2350_PLUS", 4, 0, "none")
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
 
 # WIZnet
@@ -702,6 +709,8 @@ MakeBoard("wiznet_wizfi360_evb_pico", "rp2040", "WIZnet", "WizFi360-EVB-Pico", "
 MakeBoard("wiznet_5500_evb_pico", "rp2040", "WIZnet", "W5500-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("wiznet_5500_evb_pico2", "rp2350", "WIZnet", "W5500-EVB-Pico2", "0x2e8a", "0x1029", 250, "WIZNET_5500_EVB_PICO2", 2, 0, "none")
 MakeBoard("wiznet_55rp20_evb_pico", "rp2040", "WIZnet", "W55RP20-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_55RP20_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_6300_evb_pico", "rp2040", "WIZnet", "W6300-EVB-Pico", "0x2e8a", "0x1029", 250, "WIZNET_6300_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("wiznet_6300_evb_pico2", "rp2350", "WIZnet", "W6300-EVB-Pico2", "0x2e8a", "0x1029", 250, "WIZNET_6300_EVB_PICO2", 2, 0, "none")
 
 # Generic
 MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
