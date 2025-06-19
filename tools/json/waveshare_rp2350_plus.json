@@ -22,7 +22,7 @@
             ]
         ],
         "mcu": "rp2350",
-        "variant": "waveshare_rp2350_plus_16mb"
+        "variant": "waveshare_rp2350_plus"
     },
     "debug": {
         "jlink_device": "RP2350_0",
@@ -33,10 +33,10 @@
         "arduino",
         "picosdk"
     ],
-    "name": "RP2350 Plus 16MB",
+    "name": "RP2350 Plus",
     "upload": {
         "maximum_ram_size": 524288,
-        "maximum_size": 16777216,
+        "maximum_size": 4194304,
         "require_upload_port": true,
         "native_usb": true,
         "use_1200bps_touch": true,
