@@ -116,12 +116,15 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Waveshare RP2040 LCD 1.28
 * Waveshare RP2040 Matrix
 * Waveshare RP2040 PiZero
+* Waveshare RP2350 Plus
 * Waveshare RP2350 LCD 0.96
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5100S-EVB-Pico2
 * WIZnet W5500-EVB-Pico
 * WIZnet W5500-EVB-Pico2
 * WIZnet W55RP20-EVB-Pico
+* WIZnet W6300-EVB-Pico
+* WIZnet W6300-EVB-Pico2
 * WIZnet WizFi360-EVB-Pico
 * Generic RP2040 (configurable flash, I/O pins)
 * Generic RP2350 (configurable flash, I/O pins)
@@ -132,7 +135,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Bluetooth Classic and BLE HID master mode (connect to BT keyboard, mouse, or joystick)
 * Generic Arduino USB Serial, Keyboard, Joystick, and Mouse emulation
 * WiFi (Pico W, ESP32-based ESPHost, Atmel WINC1500)
-* Ethernet (Wired WizNet W6100, WizNet W5500, WizNet W5100, ENC28J60)
+* Ethernet (Wired WizNet W6300, WizNet W6100, WizNet W5500, WizNet W5100, ENC28J60)
 * HTTP client and server (WebServer)
 * SSL/TLS/HTTPS
 * Over-the-Air (OTA) upgrades
