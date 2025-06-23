@@ -48,36 +48,6 @@ SPISlaveClass::SPISlaveClass(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_
     _dataLeft = 0;
 }
 
-inline spi_cpol_t SPISlaveClass::cpol(SPISettings _spis) {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPOL_0;
-    case SPI_MODE1:
-        return SPI_CPOL_0;
-    case SPI_MODE2:
-        return SPI_CPOL_1;
-    case SPI_MODE3:
-        return SPI_CPOL_1;
-    }
-    // Error
-    return SPI_CPOL_0;
-}
-
-inline spi_cpha_t SPISlaveClass::cpha(SPISettings _spis) {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPHA_0;
-    case SPI_MODE1:
-        return SPI_CPHA_1;
-    case SPI_MODE2:
-        return SPI_CPHA_0;
-    case SPI_MODE3:
-        return SPI_CPHA_1;
-    }
-    // Error
-    return SPI_CPHA_0;
-}
-
 bool SPISlaveClass::setRX(pin_size_t pin) {
 #if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20, 32, 26}) /* SPI0 */,
@@ -243,7 +213,7 @@ void SPISlaveClass::begin(SPISettings spis) {
     spi_init(_spi, _spis.getClockFreq());
     DEBUGSPI("SPISlave: actual baudrate=%u\n", spi_get_baudrate(_spi));
     spi_set_slave(_spi, true);
-    spi_set_format(_spi, 8, cpol(spis),	cpha(spis), SPI_MSB_FIRST);
+    spi_set_format(_spi, 8, _helper.cpol(spis),	_helper.cpha(spis), SPI_MSB_FIRST);
 
     // Install our IRQ handler
     if (_spi == spi0) {
