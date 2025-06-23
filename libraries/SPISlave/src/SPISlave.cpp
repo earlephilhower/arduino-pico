@@ -166,7 +166,7 @@ void SPISlaveClass::_handleIRQ() {
     if (cnt && _recvCB) {
         _recvCB(buff, cnt);
     }
-    // Attempt to send as many ytes to the TX FIFO as we have/are free
+    // Attempt to send as many bytes to the TX FIFO as we have/are free
     while (spi_is_writable(_spi)) {
         for (; _dataLeft && spi_is_writable(_spi); _dataLeft--) {
             spi_get_hw(_spi)->dr = *(_dataOut++);
