@@ -30,6 +30,7 @@ PWMAudio::PWMAudio(pin_size_t pin, bool stereo) {
     _freq = 48000;
     _arb = nullptr;
     _cb = nullptr;
+    _cbd = nullptr;
     _buffers = 8;
     _bufferWords = 0;
     _stereo = stereo;
