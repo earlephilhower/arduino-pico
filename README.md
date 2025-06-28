@@ -4,7 +4,7 @@
 
 Raspberry Pi Pico Arduino core, for all RP2040 and RP2350 boards
 
-This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 14.2/Newlib 4.3 toolchain and supports ARM and RISC-V cores.
+This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 14.3/Newlib 4.5 toolchain and supports ARM and RISC-V cores.
 
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
