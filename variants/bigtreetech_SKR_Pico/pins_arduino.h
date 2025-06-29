@@ -16,7 +16,6 @@
 #define PIN_RXD0        PIN_SERIAL1_RX
 
 // Wire
-#define __WIRE0_DEVICE  i2c1
 #define PIN_WIRE0_SDA   PIN_SERIAL1_TX
 #define PIN_WIRE0_SCL   PIN_SERIAL1_RX
 
