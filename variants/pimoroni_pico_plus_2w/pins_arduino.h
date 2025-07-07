@@ -53,6 +53,16 @@
 
 #define PICO_RP2350A 0 // RP2530B
 
+// DVI connector
+#define PIN_CKN (15u)
+#define PIN_CKP (14u)
+#define PIN_D0N (13u)
+#define PIN_D0P (12u)
+#define PIN_D1N (19u)
+#define PIN_D1P (18u)
+#define PIN_D2N (17u)
+#define PIN_D2P (16u)
+
 /* Pins mappings for marked pins on the board */
 static const uint8_t D0 = (0u);
 static const uint8_t D1 = (1u);
