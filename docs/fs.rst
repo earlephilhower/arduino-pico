@@ -105,14 +105,14 @@ are automatically created when you attempt to create a file in a
 subdirectory, and when the last file in a subdirectory is removed the
 subdirectory itself is automatically deleted.
 
-Uploading Files to the LittleFS File System
--------------------------------------------
+Uploading Files to the LittleFS File System on IDE 1.x (RP2040 only)
+--------------------------------------------------------------------
 
-*PicoLittleFS* is a tool which integrates into the Arduino IDE. It adds a
-menu item to **Tools** menu for uploading the contents of sketch data
-directory into a new LittleFS flash file system.
-
-**IDE 1.x**
+For the Pico (RP2040) only, *PicoLittleFS* is a tool which integrates into
+the obsolete Arduino 1.x IDE. It adds a menu item to **Tools** menu for uploading the
+contents of sketch data directory into a new LittleFS flash file system.
+Please note that this JAVA plug in for the obsolete 1.x IDE does **NOT**
+support the RP2350 (Pico 2).
 
 -  Download the tool: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
 -  In your Arduino sketchbook directory, create ``tools`` directory if it doesn't exist yet.
@@ -126,7 +126,12 @@ directory into a new LittleFS flash file system.
 -  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
 -  Select ``Tools > Pico LittleFS Data Upload``. This should start uploading the files into the flash file system.
 
-**IDE 2.x**
+Uploading Files to the LittleFS File System on IDE 2.x (RP2040 and RP2350)
+--------------------------------------------------------------------------
+
+For the original Pico (RP2040) and Pico 2 (RP2350), use the Typescript 2.x IDE tool which
+operates in the new Arduino 2.x IDE.  This tool works on all Pico and Pico 2s (and ESP32s
+if you're so inclined).
 
 -  Download the new tool: https://github.com/earlephilhower/arduino-littlefs-upload/releases
 -  Exit the IDE, if running
