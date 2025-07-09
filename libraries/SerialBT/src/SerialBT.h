@@ -79,7 +79,7 @@ private:
     // Lockless, IRQ-handled circular queue
     uint32_t _writer;
     uint32_t _reader;
-    size_t   _fifoSize = 32;
+    size_t   _fifoSize = 1024;
     uint8_t *_queue;
 
     const int RFCOMM_SERVER_CHANNEL = 1;
