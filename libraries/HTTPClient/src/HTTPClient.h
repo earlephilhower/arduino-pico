@@ -203,6 +203,10 @@ public:
         return _conn->write(c);
     }
 
+    size_t write(const uint8_t *buf, size_t size) {
+        return _conn->write(buf, size);
+    }
+
     uint8_t connected() {
         return _conn->connected();
     }
