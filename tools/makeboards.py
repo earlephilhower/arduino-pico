@@ -701,6 +701,7 @@ MakeBoard("waveshare_rp2040_pizero", "rp2040", "Waveshare", "RP2040 PiZero", "0x
 MakeBoard("waveshare_rp2040_plus", "rp2040", "Waveshare", "RP2040 Plus", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 4, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2350_zero", "rp2350", "Waveshare", "RP2350 Zero", "0x2e8a", "0x10B0", 500, "WAVESHARE_RP2350_ZERO", 4, 0, "none")
 MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a", "0x10B1", 500, "WAVESHARE_RP2350_PLUS", 4, 0, "none")
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
 
