@@ -298,65 +298,65 @@ private:
                     return;
                 }
                 switch (_state) {
-                    case READ_HEX:
-                        if (recv == '\r') {
-                            DEBUG_HTTPCLIENT("[HTTPStream] Saw \\r of chunk len\r\n");
-                            _state = READ_LF;
-                            break;
-                        }
-                        if (recv >= '0' && recv <= '9') {
-                            DEBUG_HTTPCLIENT("[HTTPStream] Read %c of chunk size\n", recv);
-                            _partial <<= 4;
-                            _partial |= recv - '0';
-                        } else if (tolower(recv) >= 'a' && tolower(recv) <= 'f') {
-                            DEBUG_HTTPCLIENT("[HTTPStream] Read %c of chunk size\n", recv);
-                            _partial <<= 4;
-                            _partial |= tolower(recv) - 'a' + 10;
-                        } else {
-                            DEBUG_HTTPCLIENT("[HTTPStream] READ_HEX error '%c'\n", recv);
-                            _state = ERROR;
-                            return;
-                        }
+                case READ_HEX:
+                    if (recv == '\r') {
+                        DEBUG_HTTPCLIENT("[HTTPStream] Saw \\r of chunk len\r\n");
+                        _state = READ_LF;
                         break;
-                    case READ_LF:
-                        if (recv != '\n') {
-                            _state = ERROR;
-                            DEBUG_HTTPCLIENT("[HTTPStream] READ_LF error '%02x'\n", recv);
-                            return;
-                        }
-                        DEBUG_HTTPCLIENT("[HTTPStream] Chunk len = %d\n", _partial);
-                        _chunkLen = _partial;
-                        _partial = 0;
-                        _state = TAIL_CR;
-                        if (_chunkLen == 0) {
-                            // 0-sized chunk is EOF special case
-                            _eof = true;
-                        }
+                    }
+                    if (recv >= '0' && recv <= '9') {
+                        DEBUG_HTTPCLIENT("[HTTPStream] Read %c of chunk size\n", recv);
+                        _partial <<= 4;
+                        _partial |= recv - '0';
+                    } else if (tolower(recv) >= 'a' && tolower(recv) <= 'f') {
+                        DEBUG_HTTPCLIENT("[HTTPStream] Read %c of chunk size\n", recv);
+                        _partial <<= 4;
+                        _partial |= tolower(recv) - 'a' + 10;
+                    } else {
+                        DEBUG_HTTPCLIENT("[HTTPStream] READ_HEX error '%c'\n", recv);
+                        _state = ERROR;
                         return;
-                    case TAIL_CR:
-                        if (recv == '\r') {
-                            DEBUG_HTTPCLIENT("[HTTPStream] Saw \\r of chunk end\n");
-                            _state = TAIL_LF;
-                            break;
-                        }
-                        DEBUG_HTTPCLIENT("[HTTPStream] TAIL_CR error '%c'\n", recv);
-                         _state = ERROR;
+                    }
+                    break;
+                case READ_LF:
+                    if (recv != '\n') {
+                        _state = ERROR;
+                        DEBUG_HTTPCLIENT("[HTTPStream] READ_LF error '%02x'\n", recv);
                         return;
-                    case TAIL_LF:
-                        if (recv == '\n') {
-                            DEBUG_HTTPCLIENT("[HTTPStream] Saw \\n of chunk end\n");
-                            _state = READ_HEX;
-                            break;
-                        }
-                        DEBUG_HTTPCLIENT("[HTTPStream] TAIL_LF error '%c'\n", recv);
-                         _state = ERROR;
-                        return;
-                    case ERROR:
-                        return;
+                    }
+                    DEBUG_HTTPCLIENT("[HTTPStream] Chunk len = %d\n", _partial);
+                    _chunkLen = _partial;
+                    _partial = 0;
+                    _state = TAIL_CR;
+                    if (_chunkLen == 0) {
+                        // 0-sized chunk is EOF special case
+                        _eof = true;
+                    }
+                    return;
+                case TAIL_CR:
+                    if (recv == '\r') {
+                        DEBUG_HTTPCLIENT("[HTTPStream] Saw \\r of chunk end\n");
+                        _state = TAIL_LF;
+                        break;
+                    }
+                    DEBUG_HTTPCLIENT("[HTTPStream] TAIL_CR error '%c'\n", recv);
+                    _state = ERROR;
+                    return;
+                case TAIL_LF:
+                    if (recv == '\n') {
+                        DEBUG_HTTPCLIENT("[HTTPStream] Saw \\n of chunk end\n");
+                        _state = READ_HEX;
+                        break;
+                    }
+                    DEBUG_HTTPCLIENT("[HTTPStream] TAIL_LF error '%c'\n", recv);
+                    _state = ERROR;
+                    return;
+                case ERROR:
+                    return;
                 }
             }
         }
-       DEBUG_HTTPCLIENT("[HTTPStream] Timeout waiting for chunk\n");
+        DEBUG_HTTPCLIENT("[HTTPStream] Timeout waiting for chunk\n");
     }
 
     WiFiClient *_conn;
