@@ -323,6 +323,7 @@ bool HTTPClient::beginInternal(const String& __url, const char* expectedProtocol
         return false;
     }
     DEBUG_HTTPCLIENT("[HTTP-Client][begin] host: %s port: %d url: %s\n", _host.c_str(), _port, _uri.c_str());
+
     return true;
 }
 
@@ -675,6 +676,7 @@ int HTTPClient::sendRequest(const char * type, const uint8_t * payload, size_t s
         }
     } while (redirect);
 
+
     // handle Server Response (Header)
     return returnError(code);
 }
@@ -744,7 +746,7 @@ const String& HTTPClient::getLocation(void) {
 */
 WiFiClient& HTTPClient::getStream(void) {
     if (connected()) {
-        return *_client();
+        return _stream;
     }
 
     DEBUG_HTTPCLIENT("[HTTP-Client] getStream: not connected\n");
@@ -758,7 +760,7 @@ WiFiClient& HTTPClient::getStream(void) {
 */
 WiFiClient* HTTPClient::getStreamPtr(void) {
     if (connected()) {
-        return _client();
+        return &_stream;
     }
 
     DEBUG_HTTPCLIENT("[HTTP-Client] getStreamPtr: not connected\n");
@@ -808,57 +810,10 @@ int HTTPClient::writeToPrint(Print * print) {
         //            return returnError(StreamReportToHttpClientReport(_client->getLastSendReport()));
         //        }
     } else if (_transferEncoding == HTTPC_TE_CHUNKED) {
-        int size = 0;
-        while (1) {
-            if (!connected()) {
-                return returnError(HTTPC_ERROR_CONNECTION_LOST);
-            }
-            String chunkHeader = _client()->readStringUntil('\n');
+        ret = StreamSendSize(&_stream, print, -1);
 
-            if (chunkHeader.length() <= 0) {
-                return returnError(HTTPC_ERROR_READ_TIMEOUT);
-            }
-
-            chunkHeader.trim(); // remove \r
-            DEBUG_HTTPCLIENT("[HTTP-Client] chunk header: '%s'\n", chunkHeader.c_str());
-
-            // read size of chunk
-            len = (uint32_t) strtol((const char *) chunkHeader.c_str(), nullptr, 16);
-            size += len;
-            DEBUG_HTTPCLIENT("[HTTP-Client] read chunk len: %d\n", len);
-
-            // data left?
-            if (len > 0) {
-                // read len bytes with timeout
-                int r = StreamSendSize(_client(), print, len);
-                if (r != len) {
-                    return HTTPC_ERROR_NO_STREAM;
-                }
-
-                //               if (_client->getLastSendReport() != Stream::Report::Success)
-                //                    // not all data transferred
-                //                    return returnError(StreamReportToHttpClientReport(_client->getLastSendReport()));
-                ret += r;
-            } else {
-
-                // if no length Header use global chunk size
-                if (_size <= 0) {
-                    _size = size;
-                }
-
-                // check if we have write all data out
-                if (ret != _size) {
-                    return returnError(HTTPC_ERROR_STREAM_WRITE);
-                }
-                break;
-            }
-
-            // read trailing \r\n at the end of the chunk
-            char buf[2];
-            auto trailing_seq_len = _client()->readBytes((uint8_t*)buf, 2);
-            if (trailing_seq_len != 2 || buf[0] != '\r' || buf[1] != '\n') {
-                return returnError(HTTPC_ERROR_READ_TIMEOUT);
-            }
+        if (ret == 0) {
+            return HTTPC_ERROR_NO_STREAM;
         }
     } else {
         return returnError(HTTPC_ERROR_ENCODING);
@@ -1112,6 +1067,9 @@ int HTTPClient::handleHeaderResponse() {
 
     _canReuse = _reuse;
 
+    // Hook up the HTTPStream to this WiFiClient already connected and headers decoded
+    _stream.reset(_client(), false);
+
     String transferEncoding;
 
     _transferEncoding = HTTPC_TE_IDENTITY;
@@ -1203,6 +1161,9 @@ int HTTPClient::handleHeaderResponse() {
                 } else {
                     _transferEncoding = HTTPC_TE_IDENTITY;
                 }
+
+                // Hook up the HTTPStream to this WiFiClient already connected and headers decoded
+                _stream.reset(_client(), _transferEncoding == HTTPC_TE_CHUNKED);
 
                 if (_returnCode <= 0) {
                     DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] Remote host is not an HTTP Server!");
