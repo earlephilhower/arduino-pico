@@ -63,12 +63,10 @@ Step 3: Reboot the computer
 Once the two prior stages are complete, please do a full reboot or power cycle so that the new settings will take effect.
 
 
-Current state of development
-----------------------------
+Updating platformio.ini to use the proper platform
+--------------------------------------------------
 
-At the time of writing, PlatformIO integration for this core is a work-in-progress and not yet merged into mainline PlatformIO. This is subject to change once `this pull request <https://github.com/platformio/platform-raspberrypi/pull/36>`_ is merged.
-
-If you want to use the PlatformIO integration right now, make sure you first create a standard Raspberry Pi Pico + Arduino project within PlatformIO.
+First create a standard Raspberry Pi Pico + Arduino project within PlatformIO.
 This will give you a project with the ``platformio.ini``
 
 .. code:: ini
