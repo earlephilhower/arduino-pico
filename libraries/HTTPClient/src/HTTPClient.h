@@ -199,19 +199,19 @@ public:
         _eof = false;
     }
 
-    size_t write(uint8_t c) {
+    virtual size_t write(uint8_t c) override {
         return _conn->write(c);
     }
 
-    size_t write(const uint8_t *buf, size_t size) {
+    virtual size_t write(const uint8_t *buf, size_t size) override {
         return _conn->write(buf, size);
     }
 
-    uint8_t connected() {
+    virtual uint8_t connected() override {
         return _conn->connected();
     }
 
-    int available() {
+    virtual int available() override {
         if (!_chunked) {
             return _conn->available();
         }
@@ -225,7 +225,19 @@ public:
         return std::min(_chunkLen, _conn->available());
     }
 
-    int read() {
+    virtual int availableForWrite() override {
+        return _conn->availableForWrite();
+    }
+
+    virtual void flush() override {
+        _conn->flush();
+    }
+
+    virtual void stop() override {
+        _conn->stop();
+    }
+
+    virtual int read() override {
         if (!_chunked) {
             return _conn->read();
         }
@@ -254,7 +266,21 @@ public:
         }
     }
 
-    int peek() {
+    virtual int read(uint8_t *buf, size_t size) override {
+        if (!_chunked) {
+            return _conn->read(buf, size);
+        }
+        for (int i = 0; i < (int)size; i++) {
+            int c = read();
+            if (c < 0) {
+                return i;
+            }
+            *(buf++) = (uint8_t)c;
+        }
+        return size;
+    }
+
+    virtual int peek() override {
         if (!_chunked) {
             return _conn->peek();
         }
