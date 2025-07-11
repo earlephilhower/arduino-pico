@@ -176,6 +176,198 @@ typedef struct  {
 } Cookie;
 typedef std::vector<Cookie> CookieJar;
 
+class HTTPStream : public WiFiClient {
+public:
+    HTTPStream() {
+        _conn = nullptr;
+        _chunked = false;
+        _chunkLen = 0;
+        _state = READ_HEX;
+        _partial = 0;
+        _eof = false;
+    }
+
+    HTTPStream(const HTTPStream&);
+    HTTPStream& operator=(const HTTPStream&);
+
+    void reset(WiFiClient *connection, bool chunked) {
+        DEBUG_HTTPCLIENT("[HTTPStream] reset(%p, %d)\n", connection, chunked);
+        _conn = connection;
+        _partial = 0;
+        _state = READ_HEX;
+        _chunked = chunked;
+        _eof = false;
+    }
+
+    size_t write(uint8_t c) {
+        return _conn->write(c);
+    }
+
+    uint8_t connected() {
+        return _conn->connected();
+    }
+
+    int available() {
+        if (!_chunked) {
+            return _conn->available();
+        }
+        // We're chunked at this point
+        if (_eof) {
+            return 0;
+        }
+        if (!_chunkLen) {
+            tryReadChunkLen(1);
+        }
+        return std::min(_chunkLen, _conn->available());
+    }
+
+    int read() {
+        if (!_chunked) {
+            return _conn->read();
+        }
+        // We're chunked at this point
+        if (_eof) {
+            DEBUG_HTTPCLIENT("[HTTPStream] ::read() after EOF\n");
+            return -1;
+        }
+        if (!_chunkLen) {
+            tryReadChunkLen(_timeout);
+        }
+        if (!_chunkLen) {
+            DEBUG_HTTPCLIENT("[HTTPStream] ::read no chunkLen\n");
+            return -1;
+        }
+        uint32_t start = millis();
+        while (((millis() - start) < _timeout) && !_conn->available() && _conn->connected()) {
+            delay(1);
+        }
+        if (_conn->available()) {
+            _chunkLen--;
+            return _conn->read();
+        } else {
+            DEBUG_HTTPCLIENT("[HTTPStream] ::read wrapped stream failure. avail = %d, conn = %d\n", _conn->available(), _conn->connected());
+            return -1;
+        }
+    }
+
+    int peek() {
+        if (!_chunked) {
+            return _conn->peek();
+        }
+        // We're chunked at this point
+        if (_eof) {
+            DEBUG_HTTPCLIENT("[HTTPStream] ::peek after EOF\n");
+            return -1;
+        }
+        if (!_chunkLen) {
+            tryReadChunkLen(_timeout);
+        }
+        if (!_chunkLen) {
+            DEBUG_HTTPCLIENT("[HTTPStream] ::peek no chunkLen\n");
+            return -1;
+        }
+        uint32_t start = millis();
+        while (((millis() - start) < _timeout) && !_conn->available() && _conn->connected()) {
+            delay(1);
+        }
+        if (_conn->available()) {
+            return _conn->peek();
+        } else {
+            DEBUG_HTTPCLIENT("[HTTPStream] ::peek wrapped stream failure. avail = %d, conn = %d\n", _conn->available(), _conn->connected());
+            return -1;
+        }
+    }
+
+    void setTimeout(unsigned long timeout) {
+        _timeout = timeout;
+        _conn->setTimeout(timeout);
+    }
+
+private:
+    void tryReadChunkLen(uint32_t to) {
+        if (_state == ERROR) {
+            return;
+        }
+        uint32_t start = millis();
+        while ((millis() - start) <= to) {
+            if (_conn->available()) {
+                int recv = _conn->read();
+                if (recv < 0) {
+                    DEBUG_HTTPCLIENT("[HTTPStream] Read of available data failed\n");
+                    _state = ERROR;
+                    return;
+                }
+                switch (_state) {
+                    case READ_HEX:
+                        if (recv == '\r') {
+                            DEBUG_HTTPCLIENT("[HTTPStream] Saw \\r of chunk len\r\n");
+                            _state = READ_LF;
+                            break;
+                        }
+                        if (recv >= '0' && recv <= '9') {
+                            DEBUG_HTTPCLIENT("[HTTPStream] Read %c of chunk size\n", recv);
+                            _partial <<= 4;
+                            _partial |= recv - '0';
+                        } else if (tolower(recv) >= 'a' && tolower(recv) <= 'f') {
+                            DEBUG_HTTPCLIENT("[HTTPStream] Read %c of chunk size\n", recv);
+                            _partial <<= 4;
+                            _partial |= tolower(recv) - 'a' + 10;
+                        } else {
+                            DEBUG_HTTPCLIENT("[HTTPStream] READ_HEX error '%c'\n", recv);
+                            _state = ERROR;
+                            return;
+                        }
+                        break;
+                    case READ_LF:
+                        if (recv != '\n') {
+                            _state = ERROR;
+                            DEBUG_HTTPCLIENT("[HTTPStream] READ_LF error '%02x'\n", recv);
+                            return;
+                        }
+                        DEBUG_HTTPCLIENT("[HTTPStream] Chunk len = %d\n", _partial);
+                        _chunkLen = _partial;
+                        _partial = 0;
+                        _state = TAIL_CR;
+                        if (_chunkLen == 0) {
+                            // 0-sized chunk is EOF special case
+                            _eof = true;
+                        }
+                        return;
+                    case TAIL_CR:
+                        if (recv == '\r') {
+                            DEBUG_HTTPCLIENT("[HTTPStream] Saw \\r of chunk end\n");
+                            _state = TAIL_LF;
+                            break;
+                        }
+                        DEBUG_HTTPCLIENT("[HTTPStream] TAIL_CR error '%c'\n", recv);
+                         _state = ERROR;
+                        return;
+                    case TAIL_LF:
+                        if (recv == '\n') {
+                            DEBUG_HTTPCLIENT("[HTTPStream] Saw \\n of chunk end\n");
+                            _state = READ_HEX;
+                            break;
+                        }
+                        DEBUG_HTTPCLIENT("[HTTPStream] TAIL_LF error '%c'\n", recv);
+                         _state = ERROR;
+                        return;
+                    case ERROR:
+                        return;
+                }
+            }
+        }
+       DEBUG_HTTPCLIENT("[HTTPStream] Timeout waiting for chunk\n");
+    }
+
+    WiFiClient *_conn;
+    bool _chunked;
+    int _chunkLen;
+    enum { READ_HEX, READ_LF, TAIL_CR, TAIL_LF, ERROR } _state;
+    int _partial;
+    bool _eof;
+};
+
+
 class HTTPClient {
 public:
     HTTPClient() = default;
@@ -407,4 +599,6 @@ protected:
     std::unique_ptr<StreamString> _payload;
     // Cookie jar support
     CookieJar *_cookieJar = nullptr;
+
+    HTTPStream _stream;
 };
