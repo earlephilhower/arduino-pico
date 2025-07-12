@@ -42,7 +42,7 @@ For many BTStack examples, you simply need call the included
 called afterwards to start processing (in the background).
 
 You will also need to acquire the BT ``async_context`` system lock before
-calling any BTStack APIs.  ``__lockBluetooth`` and ``unlockBluetooth`` are
+calling any BTStack APIs.  ``__lockBluetooth`` and ``__unlockBluetooth`` are
 provided in the PicoW variant code.
 
 Note that if you need to modify the system ``btstack_config.h`` file, do so
