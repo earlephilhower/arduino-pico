@@ -16,7 +16,7 @@ SPI pinouts can be set **before SPI.begin()** using the following calls:
 Note that the ``CS`` pin can be hardware or software controlled by the sketch.
 When software controlled, the ``setCS()`` call is ignored.
 
-The Arduino `SPI documentation <https://www.arduino.cc/en/reference/SPI>`_ gives
+The Arduino `SPI documentation <https://docs.arduino.cc/language-reference/en/functions/communication/SPI/>`_ gives
 a detailed overview of the library, except for the following RP2040-specific
 changes:
 
