@@ -25,13 +25,27 @@ extern void __clearADCPin(pin_size_t p);
 
 static PinMode _pm[__GPIOCNT];
 
+extern "C" void setPinInvert(pin_size_t ulPin, bool invert) __attribute__((weak, alias("__setPinInvert")));
+extern "C" void __setPinInvert(pin_size_t ulPin, bool invert) {
+    if (ulPin >= __GPIOCNT) {
+        DEBUGCORE("ERROR: Illegal pin in setPinInvert (%d)\n", ulPin);
+        return;
+    }
+
+    if (invert)
+        gpio_set_outover(ulPin, GPIO_OVERRIDE_INVERT);
+    else
+        gpio_set_outover(ulPin, GPIO_OVERRIDE_NORMAL);
+}
+
 extern "C" void pinMode(pin_size_t ulPin, PinMode ulMode) __attribute__((weak, alias("__pinMode")));
 extern "C" void __pinMode(pin_size_t ulPin, PinMode ulMode) {
     if (ulPin >= __GPIOCNT) {
         DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
         return;
     }
-
+    
+    gpio_set_function(ulPin, GPIO_FUNC_SIO);
     switch (ulMode) {
     case INPUT:
         gpio_init(ulPin);
@@ -90,7 +104,6 @@ extern "C" void __digitalWrite(pin_size_t ulPin, PinStatus ulVal) {
         DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
         return;
     }
-    gpio_set_function(ulPin, GPIO_FUNC_SIO);
     if (_pm[ulPin] == INPUT_PULLDOWN) {
         if (ulVal == LOW) {
             gpio_set_dir(ulPin, false);
