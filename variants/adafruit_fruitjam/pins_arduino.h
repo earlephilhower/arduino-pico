@@ -29,9 +29,9 @@
 
 // I2S
 #define PIN_I2S_DATAOUT  (24u)
-#define PIN_I2S_WORDSEL  (25u)
+#define PIN_I2S_WORDSEL  (27u)
 #define PIN_I2S_BITCLK   (26u)
-#define PIN_I2S_MCLK     (27u)
+#define PIN_I2S_MCLK     (25u)
 #define PIN_I2S_IRQ      (23u)
 
 
