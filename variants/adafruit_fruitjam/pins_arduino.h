@@ -8,9 +8,9 @@
 #define NUM_NEOPIXEL   (5u)
 
 // 'Boot0' button also on GPIO #0
-#define PIN_BUTTON      (0u)
-#define PIN_BUTTON1     (4u)
-#define PIN_BUTTON2     (5u)
+#define PIN_BUTTON1     (0u)
+#define PIN_BUTTON2     (4u)
+#define PIN_BUTTON3     (5u)
 
 // USB host connector
 #define PIN_USB_HOST_DP (1u)
@@ -32,8 +32,18 @@
 #define PIN_I2S_WORDSEL  (25u)
 #define PIN_I2S_BITCLK   (26u)
 #define PIN_I2S_MCLK     (27u)
+#define PIN_I2S_IRQ      (23u)
+
 
 #define PIN_PERIPHERAL_RESET (22u)
+
+
+#define SerialESP32     Serial1
+#define SPIWIFI         SPI1
+#define SPIWIFI_SS      46      // Chip select pin
+#define SPIWIFI_ACK     3       // a.k.a BUSY or READY pin
+#define ESP32_RESETN    PIN_PERIPHERAL_RESET  // Reset pin
+#define ESP32_GPIO0     PIN_I2S_IRQ
 
 #define __PIN_A0        (40u)
 #define __PIN_A1        (41u)
@@ -43,23 +53,24 @@
 #define __PIN_A5        (45u)
 
 // UARTs
+#define __SERIAL1_DEVICE uart1
 #define PIN_SERIAL1_TX (8u)
 #define PIN_SERIAL1_RX (9u)
-#define PIN_SERIAL2_TX (99u) // not pinned out
+#define PIN_SERIAL2_TX (99u)
 #define PIN_SERIAL2_RX (99u)
 
 // SPI
-#define __SPI1_DEVICE   spi1
-#define PIN_SPI1_MISO  (28u)
-#define PIN_SPI1_MOSI  (31u)
-#define PIN_SPI1_SCK   (30u)
-#define PIN_SPI1_SS    (46u)
-
 #define __SPI0_DEVICE   spi0
 #define PIN_SPI0_MISO  (36u)
 #define PIN_SPI0_MOSI  (35u)
 #define PIN_SPI0_SCK   (34u)
 #define PIN_SPI0_SS    (39u)
+
+#define __SPI1_DEVICE   spi1
+#define PIN_SPI1_MISO  (28u)
+#define PIN_SPI1_MOSI  (31u)
+#define PIN_SPI1_SCK   (30u)
+#define PIN_SPI1_SS    (46u)
 
 // Wire
 #define __WIRE0_DEVICE i2c0
