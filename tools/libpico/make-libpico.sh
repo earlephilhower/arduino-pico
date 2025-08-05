@@ -3,10 +3,12 @@
 set -e # Exit on error
 set -x
 
-export PICO_SDK_PATH="$(cd ../../pico-sdk/; pwd)"
-export PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
-export PATH="$(cd ../../system/riscv32-unknown-elf/bin; pwd):$PATH"
-export PATH="$(cd ../../system/picotool; pwd):$PATH"
+PICO_SDK_PATH="$(cd ../../pico-sdk/; pwd)"
+export PICO_SDK_PATH
+PATH="$(cd ../../system/arm-none-eabi/bin; pwd):$PATH"
+PATH="$(cd ../../system/riscv32-unknown-elf/bin; pwd):$PATH"
+PATH="$(cd ../../system/picotool; pwd):$PATH"
+export PATH
 
 rm -rf build-rp2040
 mkdir build-rp2040
@@ -59,9 +61,26 @@ cd build-rp2350
 CPU=rp2350 cmake ..
 make -j
 
-cd ..
-rm -rf build-rp2350-riscv
-mkdir build-rp2350-riscv
-cd build-rp2350-riscv
-CPU=rp2350-riscv cmake ..
-make -j
+build_rp2350_riscv() {
+    rm -rf build-rp2350-riscv
+    mkdir build-rp2350-riscv
+    cd build-rp2350-riscv
+    CPU=rp2350-riscv cmake "${flags[@]}" ..
+    make -j
+  cd ..
+}
+
+if [[ ${#targets[@]} -eq 0 ]]; then
+    build_rp2040
+    build_rp2350
+    build_rp2350_riscv
+else
+    for t in "${targets[@]}"; do
+        case $t in
+            rp2040) build_rp2040 ;;
+            rp2350) build_rp2350 ;;
+            rp2350-riscv) build_rp2350_riscv ;;
+            *) echo "Unknown target: $t"; exit 1 ;;
+        esac
+    done
+fi

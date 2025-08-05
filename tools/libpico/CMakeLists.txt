@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
+option(LIB_PICO_MULTICORE "Enable multicore support" 0)
+
 set(cpu $ENV{CPU})
 message("Building for CPU ${cpu}")
 
@@ -131,6 +133,7 @@ target_compile_definitions(common-${cpu} INTERFACE
     CYW43_WARN=//
     CYW43_PIO_CLOCK_DIV_DYNAMIC=1
     CYW43_PIN_WL_DYNAMIC=1
+    LIB_PICO_MULTICORE=${LIB_PICO_MULTICORE}
     ${xcd}
 )
 
