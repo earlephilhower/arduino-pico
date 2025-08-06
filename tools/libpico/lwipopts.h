@@ -8,8 +8,8 @@ extern "C" {
 extern void noInterrupts();
 extern void interrupts();
 #define SYS_ARCH_DECL_PROTECT int
-#define SYS_ARCH_PROTECT(lev) noInterrupts
-#define SYS_ARCH_UNPROTECT(lev) interrupts
+#define SYS_ARCH_PROTECT(lev) {(void) lev; noInterrupts;}
+#define SYS_ARCH_UNPROTECT(lev) {(void) lev; interrupts();}
 
 extern unsigned long __lwip_rand(void);
 #define LWIP_RAND() __lwip_rand()
