@@ -47,7 +47,7 @@ compiler.warning_flags=-Werror=return-type -Wno-psabi
 compiler.warning_flags.none=-Werror=return-type -Wno-psabi
 compiler.warning_flags.default=-Werror=return-type -Wno-psabi
 compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi
-compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-psabi -Wno-type-limits -Wno-unused-parameter
+compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-psabi -Wno-type-limits -Wno-unused-parameter -Wno-missing-field-initializers
 
 compiler.netdefines={build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
 compiler.psramdefines={build.psram_cs} {build.psram_freq}
