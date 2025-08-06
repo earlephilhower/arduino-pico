@@ -168,6 +168,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
+    (void) channel; // May not be used on non-CYW32 WiFi implementations
     end();
 
     _ssid = ssid;
