@@ -202,6 +202,8 @@ private:
         or register any functions, null function is called.
     */
     inline void wizchip_spi_write_byte(uint8_t wb) {
+        (void) wb;
+        panic_unsupported(); // shouldn't be used
         //_spi.transfer(wb);
     }
 
