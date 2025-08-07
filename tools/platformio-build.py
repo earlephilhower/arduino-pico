@@ -107,42 +107,25 @@ def add_defines_from_platform_def(file):
         line = line.strip()
         if line.startswith("-D"):
             defn = line[2:].split('=')
-            env.Append( CPPDEFINES=[ (defn[0], defn[1]) ] )
+            if len(defn) == 2:
+                env.Append( CPPDEFINES=[ (defn[0], defn[1]) ] )
+            else:
+                env.Append( CPPDEFINES=[ defn[0] ] )
 
 add_defines_from_platform_def(os.path.join(FRAMEWORK_DIR, "lib", "platform_def.txt"))
 add_defines_from_platform_def(os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_def.txt"))
+
 env.Append(
     CPPDEFINES=[
         ("ARDUINO", 10810),
         "ARDUINO_ARCH_RP2040",
         ("F_CPU", "$BOARD_F_CPU"),
         ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
+        # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
+        # so it's the original value for the full flash.
+        ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
     ]
 )
-
-if chip == "rp2040":
-    env.Append(
-        CPPDEFINES=[
-            "ARM_MATH_CM0_FAMILY",
-            "ARM_MATH_CM0_PLUS",
-            "TARGET_RP2040",
-            ("PICO_RP2040", "1"),
-            # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
-            # so it's the original value for the full flash.
-            ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
-        ]
-    )
-elif (chip == "rp2350") or (chip == "rp2350-riscv"):
-    env.Append(
-        CPPDEFINES=[
-            ("PICO_RP2350", "1"),
-            "TARGET_RP2350",
-            ("PICO_RP2350", "1"),
-            # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
-            # so it's the original value for the full flash.
-            ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
-        ]
-    )
 
 if chip == "rp2040":
     toolopts = ["-march=armv6-m", "-mcpu=cortex-m0plus", "-mthumb"]
