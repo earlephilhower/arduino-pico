@@ -1154,6 +1154,9 @@ int HTTPClient::handleHeaderResponse() {
                     DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] Transfer-Encoding: %s\n", transferEncoding.c_str());
                     if (transferEncoding.equalsIgnoreCase(F("chunked"))) {
                         _transferEncoding = HTTPC_TE_CHUNKED;
+                    } else if (transferEncoding.equalsIgnoreCase(F("identity"))) {
+                        // Not in the RFC but seen in the wild
+                        _transferEncoding = HTTPC_TE_IDENTITY;
                     } else {
                         _returnCode = HTTPC_ERROR_ENCODING;
                         return _returnCode;
