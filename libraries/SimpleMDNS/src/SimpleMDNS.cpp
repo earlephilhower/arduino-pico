@@ -25,6 +25,8 @@
 #include <lwip/apps/mdns.h>
 
 bool SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
+    (void) ttl;
+
     if (_running) {
         return false;
     }

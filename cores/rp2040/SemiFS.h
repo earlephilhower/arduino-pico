@@ -113,6 +113,7 @@ public:
     }
 
     bool truncate(uint32_t size) override {
+        (void) size;
         return false; // Not allowed
     }
 
@@ -215,6 +216,7 @@ public:
     }
 
     DirImplPtr openDir(const char* path) override {
+        (void) path;
         // No directories
         return DirImplPtr();
     }
@@ -229,6 +231,7 @@ public:
     }
 
     bool info(FSInfo& info) override {
+        (void) info;
         // Not available
         return false;
     }
@@ -241,11 +244,13 @@ public:
     }
 
     bool mkdir(const char* path) override {
+        (void) path;
         // No mkdir
         return false;
     }
 
     bool rmdir(const char* path) override {
+        (void) path;
         // No rmdir
         return false;
     }
@@ -271,6 +276,7 @@ public:
     }
 
     bool setConfig(const FSConfig &cfg) override {
+        (void) cfg;
         return true;
     }
 
