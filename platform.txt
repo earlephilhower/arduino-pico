@@ -106,7 +106,7 @@ build.flags.libstdcpp=-lstdc++
 build.flags.exceptions=-fno-exceptions
 build.flags.stackprotect=
 build.libpico=libpico.a
-build.libpicow=libipv4.a
+build.libpicow=liblwip.a
 build.boot2=boot2_generic_03h_4_padded_checksum
 build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
 build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
