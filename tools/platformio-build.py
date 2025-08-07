@@ -99,13 +99,30 @@ env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
 )
 
+# add platform_def file GCC format to CPPDEFINES
+def add_defines_from_platform_def(file):
+    with open(file, "r") as fp:
+        lines = fp.readlines()
+    for line in lines:
+        line = line.strip()
+        if line.startswith("-D"):
+            defn = line[2:].split('=')
+            env.Append( CPPDEFINES=[ (defn[0], defn[1]) ] )
+
+add_defines_from_platform_def(os.path.join(FRAMEWORK_DIR, "lib", "platform_def.txt"))
+add_defines_from_platform_def(os.path.join(FRAMEWORK_DIR, "lib", chip, "platform_def.txt"))
+env.Append(
+    CPPDEFINES=[
+        ("ARDUINO", 10810),
+        "ARDUINO_ARCH_RP2040",
+        ("F_CPU", "$BOARD_F_CPU"),
+        ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
+    ]
+)
+
 if chip == "rp2040":
     env.Append(
         CPPDEFINES=[
-            ("ARDUINO", 10810),
-            "ARDUINO_ARCH_RP2040",
-            ("F_CPU", "$BOARD_F_CPU"),
-            ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
             "ARM_MATH_CM0_FAMILY",
             "ARM_MATH_CM0_PLUS",
             "TARGET_RP2040",
@@ -118,59 +135,7 @@ if chip == "rp2040":
 elif (chip == "rp2350") or (chip == "rp2350-riscv"):
     env.Append(
         CPPDEFINES=[
-            ("ARDUINO", 10810),
-            "ARDUINO_ARCH_RP2040",
-            ("F_CPU", "$BOARD_F_CPU"),
-            ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
-            ("CFG_TUSB_MCU", "OPT_MCU_RP2040"),
-            ("CFG_TUSB_OS", "OPT_OS_PICO"),
-            ("LIB_BOOT_STAGE2_HEADERS", "1"),
-            ("LIB_PICO_ATOMIC", "1"),
-            ("LIB_PICO_BIT_OPS", "1"),
-            ("LIB_PICO_BIT_OPS_PICO", "1"),
-            ("LIB_PICO_CLIB_INTERFACE", "1"),
-            ("LIB_PICO_CRT0", "1"),
-            ("LIB_PICO_CXX_OPTIONS", "1"),
-            ("LIB_PICO_DIVIDER", "1"),
-            ("LIB_PICO_DIVIDER_COMPILER", "1"),
-            ("LIB_PICO_DOUBLE", "1"),
-            ("LIB_PICO_FIX_RP2040_USB_DEVICE_ENUMERATION", "1"),
-            ("LIB_PICO_FLOAT", "1"),
-            ("LIB_PICO_INT64_OPS", "1"),
-            ("LIB_PICO_INT64_OPS_COMPILER", "1"),
-            ("LIB_PICO_MEM_OPS", "1"),
-            ("LIB_PICO_MEM_OPS_COMPILER", "1"),
-            ("LIB_PICO_NEWLIB_INTERFACE", "1"),
-            ("LIB_PICO_PLATFORM", "1"),
-            ("LIB_PICO_PLATFORM_COMPILER", "1"),
-            ("LIB_PICO_PLATFORM_PANIC", "1"),
-            ("LIB_PICO_PLATFORM_SECTIONS", "1"),
-            ("LIB_PICO_RUNTIME", "1"),
-            ("LIB_PICO_RUNTIME_INIT", "1"),
-            ("LIB_PICO_STANDARD_BINARY_INFO", "1"),
-            ("LIB_PICO_STANDARD_LINK", "1"),
-            ("LIB_PICO_SYNC", "1"),
-            ("LIB_PICO_SYNC_CRITICAL_SECTION", "1"),
-            ("LIB_PICO_SYNC_MUTEX", "1"),
-            ("LIB_PICO_SYNC_SEM", "1"),
-            ("LIB_PICO_TIME", "1"),
-            ("LIB_PICO_TIME_ADAPTER", "1"),
-            ("LIB_PICO_UNIQUE_ID", "1"),
-            ("LIB_PICO_UTIL", "1"),
-            ("LIB_TINYUSB_BOARD", "1"),
-            ("LIB_TINYUSB_DEVICE", "1"),
-            ("PICO_32BIT", "1"),
-            ("PICO_BOARD", '\\"pico2\\"'),
-            ("PICO_BUILD", "1"),
-            ("PICO_COPY_TO_RAM", "0"),
-            ("PICO_CXX_ENABLE_EXCEPTIONS", "0"),
-            ("PICO_NO_FLASH", "0"),
-            ("PICO_NO_HARDWARE", "0"),
-            ("PICO_ON_DEVICE", "1"),
-            ("PICO_RP2040_USB_DEVICE_ENUMERATION_FIX", "1"),
-            ("PICO_RP2040_USB_DEVICE_UFRAME_FIX", "1"),
             ("PICO_RP2350", "1"),
-            ("PICO_USE_BLOCKED_RAM", "0"),
             "TARGET_RP2350",
             ("PICO_RP2350", "1"),
             # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
@@ -178,22 +143,6 @@ elif (chip == "rp2350") or (chip == "rp2350-riscv"):
             ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
         ]
     )
-    if chip == "rp2350":
-        env.Append(
-            CPPDEFINES=[
-                ("LIB_PICO_DOUBLE_PICO", "1"),
-                ("LIB_PICO_FLOAT_PICO", "1"),
-                ("LIB_PICO_FLOAT_PICO_VFP", "1")
-            ]
-        )
-    elif chip == "rp2350-riscv":
-        env.Append(
-            CPPDEFINES=[
-                ("LIB_PICO_DOUBLE_COMPILER", "1"),
-                ("LIB_PICO_FLOAT_COMPILER", "1"),
-                ("PICO_RISCV", "1")
-            ]
-        )
 
 if chip == "rp2040":
     toolopts = ["-march=armv6-m", "-mcpu=cortex-m0plus", "-mthumb"]
