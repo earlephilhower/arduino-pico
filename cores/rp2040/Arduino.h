@@ -109,9 +109,6 @@ void analogWriteResolution(int res);
 } // extern "C"
 #endif
 
-// FreeRTOS potential calls
-extern bool __isFreeRTOS;
-
 // Ancient AVR defines
 #define HAVE_HWSERIAL0
 #define HAVE_HWSERIAL1

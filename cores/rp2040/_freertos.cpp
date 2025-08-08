@@ -18,6 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifdef __FREERTOS
+
 #include "_freertos.h"
 #include <pico/mutex.h>
 #include <stdlib.h>
@@ -60,3 +62,5 @@ SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
     }
     return nullptr; // Need to make space for more mutex maps!
 }
+
+#endif

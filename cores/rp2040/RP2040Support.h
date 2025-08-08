@@ -72,17 +72,18 @@ public:
     }
 
     void registerCore() {
-        if (!__isFreeRTOS) {
-            multicore_fifo_clear_irq();
+#ifndef __FREERTOS
+        multicore_fifo_clear_irq();
 #ifdef PICO_RP2350
-            irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
-            irq_set_enabled(SIO_IRQ_FIFO, true);
+        irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
+        irq_set_enabled(SIO_IRQ_FIFO, true);
 #else
-            irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
-            irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
+        irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
+        irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
 #endif
-        }
+#else
         // FreeRTOS port.c will handle the IRQ hooking
+#endif
     }
 
     void push(uint32_t val) {
@@ -113,14 +114,14 @@ public:
         if (!_multicore) {
             return;
         }
-        if (__isFreeRTOS) {
-            __freertos_idle_other_core();
-        } else {
-            mutex_enter_blocking(&_idleMutex);
-            __otherCoreIdled = false;
-            multicore_fifo_push_blocking(_GOTOSLEEP);
-            while (!__otherCoreIdled) { /* noop */ }
-        }
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#else
+        mutex_enter_blocking(&_idleMutex);
+        __otherCoreIdled = false;
+        multicore_fifo_push_blocking(_GOTOSLEEP);
+        while (!__otherCoreIdled) { /* noop */ }
+#endif
     }
 
     void resumeOtherCore() {
@@ -129,9 +130,9 @@ public:
         }
         mutex_exit(&_idleMutex);
         __otherCoreIdled = false;
-        if (__isFreeRTOS) {
-            __freertos_resume_other_core();
-        }
+#ifdef __FREERTOS
+        __freertos_resume_other_core();
+#endif
 
         // Other core will exit busy-loop and return to operation
         // once __otherCoreIdled == false.
@@ -151,18 +152,18 @@ public:
 
 private:
     static void __no_inline_not_in_flash_func(_irq)() {
-        if (!__isFreeRTOS) {
-            multicore_fifo_clear_irq();
-            noInterrupts(); // We need total control, can't run anything
-            while (multicore_fifo_rvalid()) {
-                if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
-                    __otherCoreIdled = true;
-                    while (__otherCoreIdled) { /* noop */ }
-                    break;
-                }
+#ifndef __FREERTOS
+        multicore_fifo_clear_irq();
+        noInterrupts(); // We need total control, can't run anything
+        while (multicore_fifo_rvalid()) {
+            if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
+                __otherCoreIdled = true;
+                while (__otherCoreIdled) { /* noop */ }
+                break;
             }
-            interrupts();
         }
+        interrupts();
+#endif
     }
 
     bool _multicore = false;
@@ -192,23 +193,19 @@ public:
 
     void begin(int cpuid) {
         _epoch[cpuid] = 0;
-#if !defined(__riscv) && !defined(__PROFILE)
-        if (!__isFreeRTOS) {
-            // Enable SYSTICK exception
-            exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
-            systick_hw->csr = 0x7;
-            systick_hw->rvr = 0x00FFFFFF;
-        } else {
-#endif
-            // Only start 1 instance of the PIO SM
-            if (cpuid == 0) {
-                int off = 0;
-                _ccountPgm = new PIOProgram(&ccount_program);
-                _ccountPgm->prepare(&_pio, &_sm, &off);
-                ccount_program_init(_pio, _sm, off);
-                pio_sm_set_enabled(_pio, _sm, true);
-            }
-#if !defined(__riscv) && !defined(__PROFILE)
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
+        // Enable SYSTICK exception
+        exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
+        systick_hw->csr = 0x7;
+        systick_hw->rvr = 0x00FFFFFF;
+#else
+        // Only start 1 instance of the PIO SM
+        if (cpuid == 0) {
+            int off = 0;
+            _ccountPgm = new PIOProgram(&ccount_program);
+            _ccountPgm->prepare(&_pio, &_sm, &off);
+            ccount_program_init(_pio, _sm, off);
+            pio_sm_set_enabled(_pio, _sm, true);
         }
 #endif
     }
@@ -255,21 +252,17 @@ public:
         @returns CPU clock cycles since power up
     */
     inline uint32_t getCycleCount() {
-#if !defined(__riscv) && !defined(__PROFILE)
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
         // Get CPU cycle count.  Needs to do magic to extend 24b HW to something longer
-        if (!__isFreeRTOS) {
-            uint32_t epoch;
-            uint32_t ctr;
-            do {
-                epoch = (uint32_t)_epoch[sio_hw->cpuid];
-                ctr = systick_hw->cvr;
-            } while (epoch != (uint32_t)_epoch[sio_hw->cpuid]);
-            return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
-        } else {
-#endif
-            return ccount_read(_pio, _sm);
-#if !defined(__riscv) && !defined(__PROFILE)
-        }
+        uint32_t epoch;
+        uint32_t ctr;
+        do {
+            epoch = (uint32_t)_epoch[sio_hw->cpuid];
+            ctr = systick_hw->cvr;
+        } while (epoch != (uint32_t)_epoch[sio_hw->cpuid]);
+        return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
+#else
+        return ccount_read(_pio, _sm);
 #endif
     }
     /**
@@ -278,20 +271,16 @@ public:
         @returns CPU clock cycles since power up
     */
     inline uint64_t getCycleCount64() {
-#if !defined(__riscv) && !defined(__PROFILE)
-        if (!__isFreeRTOS) {
-            uint64_t epoch;
-            uint64_t ctr;
-            do {
-                epoch = _epoch[sio_hw->cpuid];
-                ctr = systick_hw->cvr;
-            } while (epoch != _epoch[sio_hw->cpuid]);
-            return epoch + (1LL << 24) - ctr;
-        } else {
-#endif
-            return ccount_read(_pio, _sm);
-#if !defined(__riscv) && !defined(__PROFILE)
-        }
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
+        uint64_t epoch;
+        uint64_t ctr;
+        do {
+            epoch = _epoch[sio_hw->cpuid];
+            ctr = systick_hw->cvr;
+        } while (epoch != _epoch[sio_hw->cpuid]);
+        return epoch + (1LL << 24) - ctr;
+#else
+        return ccount_read(_pio, _sm);
 #endif
     }
 

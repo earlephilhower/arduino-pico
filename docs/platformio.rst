@@ -343,6 +343,19 @@ The Bluetooth Classic (BTC) and Bluetooth Low Energy (BLE) stack can be activate
 
 to the ``platformio.ini``.
 
+FreeRTOS
+--------
+
+FreeRTOS support can be activated by adding
+
+.. code:: ini
+
+    ; Set the compiler flag.  Still need to #include <FreeRTOF.h> in your application
+    build_flags = -D__FREERTOS
+
+to the ``platformio.ini``.
+
+
 Selecting a different core version
 ----------------------------------
 
