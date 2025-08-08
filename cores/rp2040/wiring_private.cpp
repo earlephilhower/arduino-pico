@@ -33,29 +33,33 @@ static uint32_t _irqStackTop[2] = { 0, 0 };
 static uint32_t _irqStack[2][maxIRQs];
 
 extern "C" void interrupts() {
+#ifdef __FREERTOS
     if (__freeRTOSinitted) {
         __freertos_task_exit_critical();
-    } else {
-        auto core = get_core_num();
-        if (!_irqStackTop[core]) {
-            // ERROR
-            return;
-        }
-        restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
+        return;
     }
+#endif
+    auto core = get_core_num();
+    if (!_irqStackTop[core]) {
+        // ERROR
+        return;
+    }
+    restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
 }
 
 extern "C" void noInterrupts() {
+#ifdef __FREERTOS
     if (__freeRTOSinitted) {
         __freertos_task_enter_critical();
-    } else {
-        auto core = get_core_num();
-        if (_irqStackTop[core] == maxIRQs) {
-            // ERROR
-            panic("IRQ stack overflow");
-        }
-        _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
+        return;
     }
+#endif
+    auto core = get_core_num();
+    if (_irqStackTop[core] == maxIRQs) {
+        // ERROR
+        panic("IRQ stack overflow");
+    }
+    _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
 }
 
 auto_init_mutex(_irqMutex);

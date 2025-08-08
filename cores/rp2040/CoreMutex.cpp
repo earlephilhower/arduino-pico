@@ -28,45 +28,45 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _mutex = mutex;
     _acquired = false;
     _option = option;
+#ifdef __FREERTOS
     _pxHigherPriorityTaskWoken = 0; // pdFALSE
-    if (__isFreeRTOS) {
-        auto m = __get_freertos_mutex_for_ptr(mutex);
+    auto m = __get_freertos_mutex_for_ptr(mutex);
 
-        if (__freertos_check_if_in_isr()) {
-            if (!__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
-                return;
-            }
-            // At this point we have the mutex in ISR
-        } else {
-            // Grab the mutex normally, possibly waking other tasks to get it
-            __freertos_mutex_take(m);
+    if (__freertos_check_if_in_isr()) {
+        if (!__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
+            return;
         }
+        // At this point we have the mutex in ISR
     } else {
-        uint32_t owner;
-        if (!mutex_try_enter(_mutex, &owner)) {
-            if (owner == get_core_num()) { // Deadlock!
-                if (_option & DebugEnable) {
-                    DEBUGCORE("CoreMutex - Deadlock detected!\n");
-                }
-                return;
-            }
-            mutex_enter_blocking(_mutex);
-        }
+        // Grab the mutex normally, possibly waking other tasks to get it
+        __freertos_mutex_take(m);
     }
+#else
+    uint32_t owner;
+    if (!mutex_try_enter(_mutex, &owner)) {
+        if (owner == get_core_num()) { // Deadlock!
+            if (_option & DebugEnable) {
+                DEBUGCORE("CoreMutex - Deadlock detected!\n");
+            }
+            return;
+        }
+        mutex_enter_blocking(_mutex);
+    }
+#endif
     _acquired = true;
 }
 
 CoreMutex::~CoreMutex() {
     if (_acquired) {
-        if (__isFreeRTOS) {
-            auto m = __get_freertos_mutex_for_ptr(_mutex);
-            if (__freertos_check_if_in_isr()) {
-                __freertos_mutex_give_from_isr(m, &_pxHigherPriorityTaskWoken);
-            } else {
-                __freertos_mutex_give(m);
-            }
+#ifdef __FREERTOS
+        auto m = __get_freertos_mutex_for_ptr(_mutex);
+        if (__freertos_check_if_in_isr()) {
+            __freertos_mutex_give_from_isr(m, &_pxHigherPriorityTaskWoken);
         } else {
-            mutex_exit(_mutex);
+            __freertos_mutex_give(m);
         }
+#else
+        mutex_exit(_mutex);
+#endif
     }
 }

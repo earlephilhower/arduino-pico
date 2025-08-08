@@ -43,5 +43,7 @@ private:
     mutex_t *_mutex;
     bool _acquired;
     uint8_t _option;
+#ifdef __FREERTOS
     BaseType_t _pxHigherPriorityTaskWoken;
+#endif
 };

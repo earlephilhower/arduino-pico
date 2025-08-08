@@ -49,15 +49,15 @@ static uint32_t pico_flash_bank_get_alignment(void * context) {
 static void pico_flash_bank_erase(void * context, int bank) {
     (void)(context);
     DEBUG_PRINT("erase: bank %d\n", bank);
-    if (!__isFreeRTOS) {
-        noInterrupts();
-    }
+#ifndef __FREERTOS
+    noInterrupts();
+#endif
     rp2040.idleOtherCore();
     flash_range_erase(PICO_FLASH_BANK_STORAGE_OFFSET + (PICO_FLASH_BANK_SIZE * bank), PICO_FLASH_BANK_SIZE);
     rp2040.resumeOtherCore();
-    if (!__isFreeRTOS) {
-        interrupts();
-    }
+#ifndef __FREERTOS
+    interrupts();
+#endif
 }
 
 static void pico_flash_bank_read(void *context, int bank, uint32_t offset, uint8_t *buffer, uint32_t size) {
@@ -151,15 +151,15 @@ static void pico_flash_bank_write(void * context, int bank, uint32_t offset, con
         offset = 0;
 
         // Now program the entire page
-        if (!__isFreeRTOS) {
-            noInterrupts();
-        }
+#ifndef __FREERTOS
+        noInterrupts();
+#endif
         rp2040.idleOtherCore();
         flash_range_program(bank_start_pos + (page * FLASH_PAGE_SIZE), page_data, FLASH_PAGE_SIZE);
         rp2040.resumeOtherCore();
-        if (!__isFreeRTOS) {
-            interrupts();
-        }
+#ifndef __FREERTOS
+        interrupts();
+#endif
     }
 }
 
