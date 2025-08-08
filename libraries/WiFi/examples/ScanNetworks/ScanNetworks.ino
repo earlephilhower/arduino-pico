@@ -4,6 +4,7 @@
 
 void setup() {
   Serial.begin(115200);
+  int x = 5;
 }
 
 const char *macToString(uint8_t mac[6]) {
