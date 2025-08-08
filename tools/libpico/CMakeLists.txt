@@ -151,7 +151,7 @@ target_compile_options(common-${cpu} INTERFACE
     $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
 )
 
-include_directories(BEFORE ${PICO_SDK_PATH}/../tools/libpico)
+include_directories(BEFORE ${PICO_SDK_PATH}/../include)
 
 add_library(pico-${cpu} STATIC)
 target_compile_definitions(pico-${cpu} PUBLIC
