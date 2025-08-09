@@ -63,7 +63,7 @@ static const uint8_t SWITCH_BOOT = (22u);
 #define PIN_LED 25 // The LED will not blink, but sketches will compile
 
 //TODO: LCD
-#define PIN_LCD_BL          (26u) 
+#define PIN_LCD_BL          (26u)
 #define PIN_LCD_CS          (27u)
 #define PIN_LCD_RS          (28u)
 // Pin 29 is NC
@@ -87,8 +87,8 @@ static const uint8_t ADC5 = (45u);
 
 #define LED_BUILTIN PIN_LED
 
-/* Definitions to make people happy (these don't actually exist) 
-I'm setting them to GPIO10, which is NC. */
+// Definitions to make people happy (these don't actually exist) 
+// I'm setting them to GPIO10, which is NC.
 
 // Serial
 #define PIN_SERIAL1_TX (10u)
