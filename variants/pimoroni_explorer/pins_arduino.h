@@ -87,7 +87,7 @@ static const uint8_t ADC5 = (45u);
 
 #define LED_BUILTIN PIN_LED
 
-// Definitions to make people happy (these don't actually exist) 
+// Definitions to make people happy (these don't actually exist)
 // I'm setting them to GPIO10, which is NC.
 
 // Serial
