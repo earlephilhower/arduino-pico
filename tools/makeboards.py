@@ -646,6 +646,7 @@ MakeBoard("pimoroni_plasma2350", "rp2350", "Pimoroni", "Plasma2350", "0x2e8a", "
 MakeBoard("pimoroni_servo2040", "rp2040", "Pimoroni", "Servo2040", "0x2e8a", "0x10a5", 500, "PIMORONI_SERVO2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("pimoroni_tiny2040", "rp2040", "Pimoroni", "Tiny2040", "0x2e8a", "0x100a", 500, "PIMORONI_TINY2040", 2, 0, "boot2_w25q64jv_4_padded_checksum")
 MakeBoard("pimoroni_tiny2350", "rp2350", "Pimoroni", "Tiny2350", "0x2e8a", "0x100b", 500, "PIMORONI_TINY2350", 4, 0, "none")
+MakeBoard("pimoroni_explorer", "rp2350", "Pimoroni", "Explorer", "0x2e8a", "0x10c0", 500, "PIMORONI_EXPLORER", 16, 0, "none")
 
 # Pintronix
 MakeBoard("pintronix_pinmax", "rp2040", "Pintronix", "PinMax", "0x2e8a", "0x9101", 250, "PINTRONIX_PINMAX", 4, 0, "boot2_w25q080_2_padded_checksum")
