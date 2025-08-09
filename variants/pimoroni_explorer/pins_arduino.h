@@ -5,6 +5,7 @@
 // Pin definitions taken from:
 //    https://github.com/pimoroni/explorer/blob/main/explorer/explorer.h
 //    https://github.com/pimoroni/explorer/blob/main/examples/lib/explorer.py
+//    https://cdn.shopify.com/s/files/1/0174/1800/files/Pimoroni_Explorer_Schematic.pdf?v=1729171995
 
 
 //TODO: Is this the chip or board? Do the buttons count?
