@@ -111,6 +111,7 @@ uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {
     if (0 == cyw43_send_ethernet(_self, _itf, datalen, data, false)) {
         return datalen;
     }
+    printf("c++\n");
     fails++;
     return 0;
 }

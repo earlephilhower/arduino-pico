@@ -66,3 +66,5 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_stdio_uart/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_unique_id/include
 -iwithprefixbefore/pico-sdk/lib/lwip/src/include
+
+-iwithprefixbefore/cores/rp2040/freertos

@@ -25,14 +25,42 @@
 #if defined(PICO_CYW43_SUPPORTED)
 #include <pico/cyw43_arch.h>
 #endif
+#if defined(__FREERTOS)
+#include <pico/async_context_freertos.h>
+static async_context_freertos_t lwip_ethernet_async_context_threadsafe_background;
+static StackType_t lwip_ethernet_async_context_freertos_task_stack[CYW43_TASK_STACK_SIZE];
+
+static async_context_t *lwip_ethernet_init_default_async_context(void) {
+    async_context_freertos_config_t config = async_context_freertos_default_config();
+#if configSUPPORT_STATIC_ALLOCATION && !CYW43_NO_DEFAULT_TASK_STACK
+    config.task_stack = lwip_ethernet_async_context_freertos_task_stack;
+#endif
+    if (async_context_freertos_init(&lwip_ethernet_async_context_threadsafe_background, &config)) {
+        return &lwip_ethernet_async_context_threadsafe_background.core;
+    }
+    return NULL;
+}
+
+#else
 #include <pico/async_context_threadsafe_background.h>
+static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
+
+static async_context_t *lwip_ethernet_init_default_async_context(void) {
+    async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
+    if (async_context_threadsafe_background_init(&lwip_ethernet_async_context_threadsafe_background, &config)) {
+        return &lwip_ethernet_async_context_threadsafe_background.core;
+    }
+    return NULL;
+}
+
+#endif
+
 #include <functional>
 #include <map>
 
 bool __ethernetContextInitted = false;
 
 // Async context that pumps the ethernet controllers
-static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
 static async_when_pending_worker_t always_pending_update_timeout_worker;
 static async_at_time_worker_t ethernet_timeout_worker;
 static async_context_t *_context = nullptr;
@@ -41,22 +69,23 @@ static async_context_t *_context = nullptr;
 static std::map<int, std::function<void(void)>> _handlePacketList;
 
 void ethernet_arch_lwip_begin() {
-#if defined(PICO_CYW43_SUPPORTED)
-    if (rp2040.isPicoW()) {
-        cyw43_arch_lwip_begin();
-        return;
-    }
-#endif
+//#if defined(PICO_CYW43_SUPPORTED)
+//    if (rp2040.isPicoW()) {
+//        cyw43_arch_lwip_begin();
+//        return;
+//    }
+//#endif
+    __startEthernetContext();
     async_context_acquire_lock_blocking(_context);
 }
 
 void ethernet_arch_lwip_end() {
-#if defined(PICO_CYW43_SUPPORTED)
-    if (rp2040.isPicoW()) {
-        cyw43_arch_lwip_end();
-        return;
-    }
-#endif
+//#if defined(PICO_CYW43_SUPPORTED)
+//    if (rp2040.isPicoW()) {
+//        cyw43_arch_lwip_end();
+//        return;
+//    }
+//#endif
     async_context_release_lock(_context);
 }
 
@@ -169,14 +198,6 @@ int hostByName(const char* aHostname, IPAddress& aResult, int timeout_ms) {
     return 0;
 }
 
-static async_context_t *lwip_ethernet_init_default_async_context(void) {
-    async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
-    if (async_context_threadsafe_background_init(&lwip_ethernet_async_context_threadsafe_background, &config)) {
-        return &lwip_ethernet_async_context_threadsafe_background.core;
-    }
-    return NULL;
-}
-
 uint32_t __ethernet_timeout_reached_calls = 0;
 static uint32_t _pollingPeriod = 20;
 // This will only be called under the protection of the async context mutex, so no re-entrancy checks needed
@@ -187,13 +208,13 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
     }
-#if defined(PICO_CYW43_SUPPORTED)
-    if (!rp2040.isPicoW()) {
-        sys_check_timeouts();
-    }
-#else
+//#if defined(PICO_CYW43_SUPPORTED)
+//    if (!rp2040.isPicoW()) {
+//        sys_check_timeouts();
+//    }
+//#else
     sys_check_timeouts();
-#endif
+//#endif
     ethernet_arch_lwip_gpio_unmask();
 }
 
@@ -207,15 +228,15 @@ void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
-#if defined(PICO_CYW43_SUPPORTED)
-    if (rp2040.isPicoW()) {
-        _context = cyw43_arch_async_context();
-    } else {
-        _context = lwip_ethernet_init_default_async_context();
-    }
-#else
+//#if defined(PICO_CYW43_SUPPORTED)
+//    if (rp2040.isPicoW()) {
+//        _context = cyw43_arch_async_context();
+//    } else {
+//        _context = lwip_ethernet_init_default_async_context();
+//    }
+//#else
     _context = lwip_ethernet_init_default_async_context();
-#endif
+//#endif
     ethernet_timeout_worker.do_work = ethernet_timeout_reached;
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;

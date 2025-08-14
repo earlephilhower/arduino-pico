@@ -21,7 +21,6 @@
 -Wl,--wrap=tcp_arg
 -Wl,--wrap=tcp_new
 -Wl,--wrap=tcp_bind
--Wl,--wrap=tcp_listen
 -Wl,--wrap=tcp_listen_with_backlog
 -Wl,--wrap=tcp_accept
 -Wl,--wrap=tcp_connect
@@ -39,13 +38,16 @@
 -Wl,--wrap=tcp_backlog_accepted
 
 -Wl,--wrap=udp_new
+-Wl,--wrap=udp_new_ip_type
 -Wl,--wrap=udp_remove
 -Wl,--wrap=udp_bind
 -Wl,--wrap=udp_connect
 -Wl,--wrap=udp_disconnect
 -Wl,--wrap=udp_send
 -Wl,--wrap=udp_recv
+-Wl,--wrap=udp_sendto
 -Wl,--wrap=udp_sendto_if
+-Wl,--wrap=udp_sendto_if_src
 
 -Wl,--wrap=sys_check_timeouts
 

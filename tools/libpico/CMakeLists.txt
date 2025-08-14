@@ -90,7 +90,7 @@ target_compile_definitions(common-${cpu} INTERFACE
     LWIP_CHECKSUM_CTRL_PER_NETIF=1
 
     PICO_CYW43_SUPPORTED=1
-    PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1
+#    PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1
     CFG_TUSB_DEBUG=0
     CFG_TUSB_MCU=OPT_MCU_RP2040
     CFG_TUSB_OS=OPT_OS_PICO
@@ -98,6 +98,7 @@ target_compile_definitions(common-${cpu} INTERFACE
     LIB_TINYUSB_DEVICE=1
 
     CYW43_WARN=//
+    PICO_CYW43_ARCH_DEBUG_ENABLED=1
     CYW43_PIO_CLOCK_DIV_DYNAMIC=1
     CYW43_PIN_WL_DYNAMIC=1
     CYW43_DEFAULT_PIN_WL_REG_ON=23u
@@ -141,6 +142,8 @@ target_compile_definitions(common-${cpu} INTERFACE
     LIB_PICO_TIME_ADAPTER=1
     LIB_PICO_UNIQUE_ID=1
     LIB_PICO_UTIL=1
+
+    PICO_CYW43_ARCH_HEADER=stdint.h
 
     ${xcd}
 )
@@ -227,10 +230,10 @@ set(picow_link_libraries
     cyw43_driver
     cyw43_driver_picow
     pico_async_context
-    pico_async_context_threadsafe_background
+#    pico_async_context_threadsafe_background
     pico_cyw43_driver
     pico_cyw43_arch
-    pico_cyw43_arch_threadsafe_background
+#    pico_cyw43_arch_threadsafe_background
     pico_lwip
     pico_lwip_nosys
     pico_lwip_sntp

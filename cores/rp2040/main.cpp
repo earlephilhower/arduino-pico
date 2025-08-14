@@ -135,11 +135,13 @@ extern "C" int main() {
 
     rp2040.begin(0);
 
-    initVariant();
-
 #ifdef __FREERTOS
     initFreeRTOS();
+    // initVariant will be done in the freertos task
+#else
+    initVariant();
 #endif
+
 
 #ifndef NO_USB
 #ifdef USE_TINYUSB
