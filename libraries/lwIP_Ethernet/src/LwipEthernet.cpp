@@ -63,7 +63,7 @@ bool __ethernetContextInitted = false;
 // Async context that pumps the ethernet controllers
 static async_when_pending_worker_t always_pending_update_timeout_worker;
 static async_at_time_worker_t ethernet_timeout_worker;
-static async_context_t *_context = nullptr;
+//static async_context_t *_context = nullptr;
 
 // Theoretically support multiple interfaces
 static std::map<int, std::function<void(void)>> _handlePacketList;
@@ -76,7 +76,7 @@ void ethernet_arch_lwip_begin() {
 //    }
 //#endif
     __startEthernetContext();
-    async_context_acquire_lock_blocking(_context);
+//    async_context_acquire_lock_blocking(_context);
 }
 
 void ethernet_arch_lwip_end() {
@@ -86,7 +86,7 @@ void ethernet_arch_lwip_end() {
 //        return;
 //    }
 //#endif
-    async_context_release_lock(_context);
+//    async_context_release_lock(_context);
 }
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
@@ -228,6 +228,7 @@ void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
+#if 0
 //#if defined(PICO_CYW43_SUPPORTED)
 //    if (rp2040.isPicoW()) {
 //        _context = cyw43_arch_async_context();
@@ -241,6 +242,7 @@ void __startEthernetContext() {
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;
     async_context_add_when_pending_worker(_context, &always_pending_update_timeout_worker);
+#endif
     __ethernetContextInitted = true;
 }
 
