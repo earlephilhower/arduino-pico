@@ -658,10 +658,22 @@ static void lwipThread(void *params) {
                     *(r->ret) = __real_tcp_new();
                     break;
                 }
+                case __tcp_new_ip_type:
+                {
+                    __tcp_new_ip_type_req *r = (__tcp_new_ip_type_req *)w.req;
+                    *(r->ret) = __real_tcp_new_ip_type(r->type);
+                    break;
+                }
                 case __tcp_bind:
                 {
                     __tcp_bind_req *r = (__tcp_bind_req *)w.req;
                     *(r->ret) = __real_tcp_bind(r->pcb, r->ipaddr, r->port);
+                    break;
+                }
+                case __tcp_bind_netif:
+                {
+                    __tcp_bind_netif_req *r = (__tcp_bind_netif_req *)w.req;
+                    *(r->ret) = __real_tcp_bind_netif(r->pcb, r->netif);
                     break;
                 }
                 case __tcp_listen_with_backlog:
@@ -670,6 +682,14 @@ static void lwipThread(void *params) {
                     *(r->ret) = __real_tcp_listen_with_backlog(r->pcb, r->backlog);
                     break;
                 }
+#if 0
+                case __tcp_listen_with_backlog_and_err:
+                {
+                    __tcp_listen_with_backlog_and_err_req *r = (__tcp_listen_with_backlog_and_err_req *)w.req;
+                    *(r->ret) = __real_tcp_listen_with_backlog_and_err(r->pcb, r->backlog, r->err);
+                    break;
+                }
+#endif
                 case __tcp_accept:
                 {
                     __tcp_accept_req *r = (__tcp_accept_req *)w.req;
@@ -740,6 +760,12 @@ static void lwipThread(void *params) {
                 {
                     __tcp_setprio_req *r = (__tcp_setprio_req *)w.req;
                     __real_tcp_setprio(r->pcb, r->prio);
+                    break;
+                }
+                case __tcp_shutdown:
+                {
+                    __tcp_shutdown_req *r = (__tcp_shutdown_req *)w.req;
+                    *(r->ret) = __real_tcp_shutdown(r->pcb, r->shut_rx, r->shut_tx);
                     break;
                 }
                 case __tcp_backlog_delayed:
@@ -843,6 +869,18 @@ static void lwipThread(void *params) {
                     *(r->ret) = __real_raw_new(r->proto);
                     break;
                 }
+                case __raw_new_ip_type:
+                {
+                    __raw_new_ip_type_req *r = (__raw_new_ip_type_req *)w.req;
+                    *(r->ret) = __real_raw_new_ip_type(r->type, r->proto);
+                    break;
+                }
+                case __raw_connect:
+                {
+                    __raw_connect_req *r = (__raw_connect_req *)w.req;
+                    *(r->ret) = __real_raw_connect(r->pcb, r->ipaddr);
+                    break;
+                }
                 case __raw_recv:
                 {
                     __raw_recv_req *r = (__raw_recv_req *)w.req;
@@ -859,6 +897,12 @@ static void lwipThread(void *params) {
                 {
                     __raw_sendto_req *r = (__raw_sendto_req *)w.req;
                     *(r->ret) = __real_raw_sendto(r->pcb, r->p, r->ipaddr);
+                    break;
+                }
+                case __raw_send:
+                {
+                    __raw_send_req *r = (__raw_send_req *)w.req;
+                    *(r->ret) = __real_raw_send(r->pcb, r->p);
                     break;
                 }
                 case __raw_remove:

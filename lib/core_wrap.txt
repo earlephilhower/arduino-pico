@@ -18,9 +18,12 @@
 -Wl,--wrap=pbuf_get_contiguous
 -Wl,--wrap=pbuf_cat
 
+-Wl,--wrap=tcp_shutdown
 -Wl,--wrap=tcp_arg
 -Wl,--wrap=tcp_new
+-Wl,--wrap=tcp_new_ip_type
 -Wl,--wrap=tcp_bind
+-Wl,--wrap=tcp_bind_netif
 -Wl,--wrap=tcp_listen_with_backlog
 -Wl,--wrap=tcp_accept
 -Wl,--wrap=tcp_connect
@@ -54,11 +57,14 @@
 -Wl,--wrap=dns_gethostbyname
 -Wl,--wrap=dns_gethostbyname_addrtype
 
--Wl,--wrap=raw_new
--Wl,--wrap=raw_recv
 -Wl,--wrap=raw_bind
+-Wl,--wrap=raw_connect
+-Wl,--wrap=raw_recv
 -Wl,--wrap=raw_sendto
+-Wl,--wrap=raw_send
 -Wl,--wrap=raw_remove
+-Wl,--wrap=raw_new
+-Wl,--wrap=raw_new_ip_type
 
 -Wl,--wrap=netif_add
 -Wl,--wrap=netif_remove
