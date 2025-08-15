@@ -181,9 +181,9 @@ static int _bps = 115200;
 static bool _rebooting = false;
 static void CheckSerialReset() {
     if (!_rebooting && (_bps == 1200) && (!_dtr)) {
-        if (__isFreeRTOS) {
-            __freertos_idle_other_core();
-        }
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#endif
         _rebooting = true;
         // Disable NVIC IRQ, so that we don't get bothered anymore
         irq_set_enabled(USBCTRL_IRQ, false);

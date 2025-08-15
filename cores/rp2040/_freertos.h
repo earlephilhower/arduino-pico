@@ -18,14 +18,14 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifdef __FREERTOS
+
 #pragma once
 #include <pico/mutex.h>
 
 // Cannot include refs to FreeRTOS's actual semaphore calls because they
 // are implemented as macros, so we have a wrapper in our variant hook
 // to handle it.
-
-extern bool __isFreeRTOS;
 
 // FreeRTOS has been set up
 extern volatile bool __freeRTOSinitted;
@@ -63,3 +63,5 @@ extern void __freertos_task_enter_critical() __attribute__((weak));
 }
 extern SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive = false);
 #endif // __cplusplus
+
+#endif // __FREERTOS
