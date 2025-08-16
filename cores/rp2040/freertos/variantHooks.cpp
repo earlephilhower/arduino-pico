@@ -253,7 +253,7 @@ void startFreeRTOS(void) {
     // LWIP runs on core 0 only
     __lwipQueue = xQueueCreate(16, sizeof(LWIPWork));
     //__hwMutex = xSemaphoreCreateMutex();
-    xTaskCreate(lwipThread, "LWIP", 1024, 0, configMAX_PRIORITIES / 2 - 1, &__lwipTask);
+    xTaskCreate(lwipThread, "LWIP", 1024, 0, configMAX_PRIORITIES - 1, &__lwipTask);
     vTaskCoreAffinitySet(__lwipTask, 1 << 0);
 
     // Initialise and run the freeRTOS scheduler. Execution should never return here.
@@ -586,6 +586,7 @@ static void lwipThread(void *params) {
 
     while (true) {
         if (xQueueReceive(__lwipQueue, &w, portMAX_DELAY)) {
+            printf("+LWIPTHREAD %p\n", w.wakeup);
             switch (w.op) {
                 case __lwip_init:
                 {
@@ -938,6 +939,7 @@ static void lwipThread(void *params) {
                 }
             }
             // Work done, return value set, just tickle the calling task
+            printf("-LWIPTHREAD %p\n", w.wakeup);
             xTaskNotifyGiveIndexed(w.wakeup, TASK_NOTIFY_LWIP_WAKEUP);
         }
     }

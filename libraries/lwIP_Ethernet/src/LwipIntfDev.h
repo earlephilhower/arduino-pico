@@ -46,6 +46,9 @@
 #include "LwipEthernet.h"
 #include "wl_definitions.h"
 
+#include "FreeRTOS.h"
+#include "semphr.h"
+
 #ifndef DEFAULT_MTU
 #define DEFAULT_MTU 1500
 #endif
@@ -75,6 +78,7 @@ public:
     LwipIntfDev(int8_t cs = SS, SPIClass& spi = SPI, int8_t intr = -1) :
         RawDev(cs, spi, intr), _spiUnit(spi), _mtu(DEFAULT_MTU), _intrPin(intr), _started(false), _default(false) {
         memset(&_netif, 0, sizeof(_netif));
+        _hwMutex = xSemaphoreCreateMutex();
     }
 
     //The argument order for ESP is not the same as for Arduino. However, there is compatibility code under the hood
@@ -181,6 +185,7 @@ protected:
 public:
     // called on a regular basis or on interrupt
     err_t handlePackets();
+    SemaphoreHandle_t _hwMutex;
 protected:
     // members
     SPIClass& _spiUnit;
@@ -205,6 +210,7 @@ protected:
 
     uint32_t _packetsReceived = 0;
     uint32_t _packetsSent = 0;
+
 };
 
 
@@ -485,7 +491,9 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
     printf("presend %d\n", pbuf->len);
 //    ethernet_arch_lwip_begin();
+    xSemaphoreTake(lid->_hwMutex, portMAX_DELAY);
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
+    xSemaphoreGive(lid->_hwMutex);
     lid->_packetsSent++;
 #if PHY_HAS_CAPTURE
     if (phy_capture) {
@@ -573,11 +581,14 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
         {
             return ERR_OK;
         }
-
+printf("handlePackets1\n");
+        xSemaphoreTake(_hwMutex, portMAX_DELAY);
         uint16_t tot_len = RawDev::readFrameSize();
         if (!tot_len) {
+            xSemaphoreGive(_hwMutex);
             return ERR_OK;
         }
+printf("handlePackets2\n");
 
         // from doc: use PBUF_RAM for TX, PBUF_POOL from RX
         // however:
@@ -588,15 +599,18 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
         // TODO: tweak the wiznet driver to allow copying partial chunk
         //       of received data and use PBUF_POOL.
         pbuf* pbuf = pbuf_alloc(PBUF_RAW, tot_len, PBUF_RAM);
+        printf("pballoc ret %p\n", pbuf);
         if (!pbuf || pbuf->len < tot_len) {
             if (pbuf) {
                 pbuf_free(pbuf);
             }
             RawDev::discardFrame(tot_len);
+            xSemaphoreGive(_hwMutex);
             return ERR_BUF;
         }
 
         uint16_t len = RawDev::readFrameData((uint8_t*)pbuf->payload, tot_len);
+        xSemaphoreGive(_hwMutex);
         if (len != tot_len) {
             // tot_len is given by readFrameSize()
             // and is supposed to be honoured by readFrameData()

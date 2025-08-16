@@ -228,26 +228,36 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
     async_context_add_at_time_worker_in_ms(context, &ethernet_timeout_worker, _pollingPeriod);
 }
 
-TaskHandle_t sctTask;
 
-void sct(void *param) {
+// We have a background pump which calls sys_check_timeouts on a periodic basis
+// and polls all Ethernet interfaces
+static TaskHandle_t _ethernetTask;;
+
+static void ethernetTask(void *param) {
     (void) param;
     while (true) {
-        vTaskDelay(100);
-        ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
+        uint32_t sleep_ms = sys_timeouts_sleeptime();
+        if (sleep_ms > _pollingPeriod) {
+            sleep_ms = _pollingPeriod;
+        }
+        vTaskDelay(sleep_ms / portTICK_PERIOD_MS);
+        // Scan the installed Ethernet drivers
         for (auto handlePacket : _handlePacketList) {
+            // Note that each NIC needs to use its own mutex to ensure LWIP isn't doing something with it at the time we want to poll
             handlePacket.second();
         }
+        // Do LWIP stuff as needed
         sys_check_timeouts();
-        ethernet_arch_lwip_gpio_unmask();
     }
 }
+
 void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
-//    xTaskCreate(sct, "SCT", 256, nullptr, 1, &sctTask);
-#if 1
+    xTaskCreate(ethernetTask, "Ethernet", 256, nullptr, 1, &_ethernetTask);
+//    vTaskCoreAffinitySet(_ethernetTask, 1 << 0);
+#if 0
 //#if defined(PICO_CYW43_SUPPORTED)
 //    if (rp2040.isPicoW()) {
 //        _context = cyw43_arch_async_context();

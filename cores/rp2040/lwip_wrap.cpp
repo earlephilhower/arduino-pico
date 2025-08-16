@@ -820,6 +820,7 @@ extern "C" {
         if (!__isLWIPThread()) {
             err_t ret;
             __ethernet_input_req req = { p, netif, &ret };
+            printf("__ethernet_input_req\n");
             __lwip(__ethernet_input, &req);
             return ret;
         }
