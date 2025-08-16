@@ -83,7 +83,7 @@ extern void __setSystemTime(unsigned long long sec, unsigned long us);
 #define SNTP_SERVER_DNS                   1
 
 #ifndef LWIP_DEBUG
-#define LWIP_DEBUG                  1
+#define LWIP_DEBUG                  0
 #endif
 #define ETHARP_DEBUG                (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
 #define NETIF_DEBUG                 (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)

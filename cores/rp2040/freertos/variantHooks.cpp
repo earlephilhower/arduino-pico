@@ -932,7 +932,7 @@ static void lwipThread(void *params) {
                 case __callback:
                 {
                     __callback_req *r = (__callback_req *)w.req;
-                    r->cb();
+                    r->cb(r->cbData);
                     break;
                 }
                 default:
