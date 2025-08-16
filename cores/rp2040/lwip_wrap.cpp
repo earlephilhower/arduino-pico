@@ -814,4 +814,19 @@ extern "C" {
         __real_netif_remove(netif);
     }
 
+    extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
+    err_t __wrap_ethernet_input(struct pbuf *p, struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __ethernet_input_req req = { p, netif, &ret };
+            __lwip(__ethernet_input, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_ethernet_input(p, netif);
+    }
+
+
 }; // extern "C"

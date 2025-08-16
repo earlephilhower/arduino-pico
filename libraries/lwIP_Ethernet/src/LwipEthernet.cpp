@@ -25,9 +25,12 @@
 #if defined(PICO_CYW43_SUPPORTED)
 #include <pico/cyw43_arch.h>
 #endif
+
 #if defined(__FREERTOS)
 #include <pico/async_context_freertos.h>
-static async_context_freertos_t lwip_ethernet_async_context_threadsafe_background;
+#include "FreeRTOS.h"
+#include "task.h"
+static async_context_freertos_t lwip_ethernet_async_context;
 static StackType_t lwip_ethernet_async_context_freertos_task_stack[CYW43_TASK_STACK_SIZE];
 
 static async_context_t *lwip_ethernet_init_default_async_context(void) {
@@ -35,20 +38,20 @@ static async_context_t *lwip_ethernet_init_default_async_context(void) {
 #if configSUPPORT_STATIC_ALLOCATION && !CYW43_NO_DEFAULT_TASK_STACK
     config.task_stack = lwip_ethernet_async_context_freertos_task_stack;
 #endif
-    if (async_context_freertos_init(&lwip_ethernet_async_context_threadsafe_background, &config)) {
-        return &lwip_ethernet_async_context_threadsafe_background.core;
+    if (async_context_freertos_init(&lwip_ethernet_async_context, &config)) {
+        return &lwip_ethernet_async_context.core;
     }
     return NULL;
 }
 
 #else
 #include <pico/async_context_threadsafe_background.h>
-static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
+static async_context_threadsafe_background_t lwip_ethernet_async_context;
 
 static async_context_t *lwip_ethernet_init_default_async_context(void) {
     async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
-    if (async_context_threadsafe_background_init(&lwip_ethernet_async_context_threadsafe_background, &config)) {
-        return &lwip_ethernet_async_context_threadsafe_background.core;
+    if (async_context_threadsafe_background_init(&lwip_ethernet_async_context, &config)) {
+        return &lwip_ethernet_async_context.core;
     }
     return NULL;
 }
@@ -63,7 +66,7 @@ bool __ethernetContextInitted = false;
 // Async context that pumps the ethernet controllers
 static async_when_pending_worker_t always_pending_update_timeout_worker;
 static async_at_time_worker_t ethernet_timeout_worker;
-//static async_context_t *_context = nullptr;
+static async_context_t *_context = nullptr;
 
 // Theoretically support multiple interfaces
 static std::map<int, std::function<void(void)>> _handlePacketList;
@@ -75,7 +78,7 @@ void ethernet_arch_lwip_begin() {
 //        return;
 //    }
 //#endif
-    __startEthernetContext();
+//    __startEthernetContext();
 //    async_context_acquire_lock_blocking(_context);
 }
 
@@ -224,11 +227,26 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
     async_context_add_at_time_worker_in_ms(context, &ethernet_timeout_worker, _pollingPeriod);
 }
 
+TaskHandle_t sctTask;
+
+void sct(void *param) {
+    (void) param;
+    while (true) {
+        vTaskDelay(100);
+        ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
+        for (auto handlePacket : _handlePacketList) {
+            handlePacket.second();
+        }
+        sys_check_timeouts();
+        ethernet_arch_lwip_gpio_unmask();
+    }
+}
 void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
-#if 0
+//    xTaskCreate(sct, "SCT", 256, nullptr, 1, &sctTask);
+#if 1
 //#if defined(PICO_CYW43_SUPPORTED)
 //    if (rp2040.isPicoW()) {
 //        _context = cyw43_arch_async_context();

@@ -606,7 +606,9 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
         }
 
         _packetsReceived++;
-
+printf("recv pkt %d: ", tot_len);
+for (int i=0; i < tot_len; i++)  printf("%02x ", ((uint8_t*)pbuf->payload)[i]);
+printf("\n");
         err_t err = _netif.input(pbuf, &_netif);
 
 #if PHY_HAS_CAPTURE

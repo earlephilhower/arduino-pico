@@ -923,6 +923,13 @@ static void lwipThread(void *params) {
                     __real_netif_remove(r->netif);
                     break;
                 }
+                case __ethernet_input:
+                {
+                    __ethernet_input_req *r = (__ethernet_input_req *)w.req;
+                    printf("__real_ethernet_input\n");
+                    *(r->ret) = __real_ethernet_input(r->p, r->netif);
+                    break;
+                }
                 default:
                 {
                     // Any new unimplemented calls = ERROR!!!
