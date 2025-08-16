@@ -233,6 +233,16 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
 // and polls all Ethernet interfaces
 static TaskHandle_t _ethernetTask;;
 
+static void stage2() {
+        // Scan the installed Ethernet drivers
+        for (auto handlePacket : _handlePacketList) {
+            // Note that each NIC needs to use its own mutex to ensure LWIP isn't doing something with it at the time we want to poll
+            handlePacket.second();
+        }
+        // Do LWIP stuff as needed
+        sys_check_timeouts();
+}
+extern "C" void lwip_callback(void (*cb)());
 static void ethernetTask(void *param) {
     (void) param;
     while (true) {
@@ -241,6 +251,8 @@ static void ethernetTask(void *param) {
             sleep_ms = _pollingPeriod;
         }
         vTaskDelay(sleep_ms / portTICK_PERIOD_MS);
+        lwip_callback(stage2);
+#if 0
         // Scan the installed Ethernet drivers
         for (auto handlePacket : _handlePacketList) {
             // Note that each NIC needs to use its own mutex to ensure LWIP isn't doing something with it at the time we want to poll
@@ -248,6 +260,7 @@ static void ethernetTask(void *param) {
         }
         // Do LWIP stuff as needed
         sys_check_timeouts();
+#endif
     }
 }
 

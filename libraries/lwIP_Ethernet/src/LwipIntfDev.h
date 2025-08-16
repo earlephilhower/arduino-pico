@@ -581,14 +581,13 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
         {
             return ERR_OK;
         }
-printf("handlePackets1\n");
+
         xSemaphoreTake(_hwMutex, portMAX_DELAY);
         uint16_t tot_len = RawDev::readFrameSize();
         if (!tot_len) {
             xSemaphoreGive(_hwMutex);
             return ERR_OK;
         }
-printf("handlePackets2\n");
 
         // from doc: use PBUF_RAM for TX, PBUF_POOL from RX
         // however:
@@ -599,7 +598,6 @@ printf("handlePackets2\n");
         // TODO: tweak the wiznet driver to allow copying partial chunk
         //       of received data and use PBUF_POOL.
         pbuf* pbuf = pbuf_alloc(PBUF_RAW, tot_len, PBUF_RAM);
-        printf("pballoc ret %p\n", pbuf);
         if (!pbuf || pbuf->len < tot_len) {
             if (pbuf) {
                 pbuf_free(pbuf);
@@ -620,9 +618,9 @@ printf("handlePackets2\n");
         }
 
         _packetsReceived++;
-printf("recv pkt %d: ", tot_len);
-for (int i=0; i < tot_len; i++)  printf("%02x ", ((uint8_t*)pbuf->payload)[i]);
-printf("\n");
+//printf("recv pkt %d: ", tot_len);
+//for (int i=0; i < tot_len; i++)  printf("%02x ", ((uint8_t*)pbuf->payload)[i]);
+//printf("\n");
         err_t err = _netif.input(pbuf, &_netif);
 
 #if PHY_HAS_CAPTURE

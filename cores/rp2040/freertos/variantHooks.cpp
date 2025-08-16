@@ -578,7 +578,6 @@ extern "C" bool __isLWIPThread() {
     return t.xHandle == __lwipTask;
 }
 
-
 static void lwipThread(void *params) {
     (void) params;
     LWIPWork w;
@@ -586,7 +585,6 @@ static void lwipThread(void *params) {
 
     while (true) {
         if (xQueueReceive(__lwipQueue, &w, portMAX_DELAY)) {
-            printf("+LWIPTHREAD %p\n", w.wakeup);
             switch (w.op) {
                 case __lwip_init:
                 {
@@ -931,6 +929,12 @@ static void lwipThread(void *params) {
                     *(r->ret) = __real_ethernet_input(r->p, r->netif);
                     break;
                 }
+                case __callback:
+                {
+                    __callback_req *r = (__callback_req *)w.req;
+                    r->cb();
+                    break;
+                }
                 default:
                 {
                     // Any new unimplemented calls = ERROR!!!
@@ -939,7 +943,6 @@ static void lwipThread(void *params) {
                 }
             }
             // Work done, return value set, just tickle the calling task
-            printf("-LWIPTHREAD %p\n", w.wakeup);
             xTaskNotifyGiveIndexed(w.wakeup, TASK_NOTIFY_LWIP_WAKEUP);
         }
     }

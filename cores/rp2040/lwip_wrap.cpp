@@ -829,5 +829,17 @@ extern "C" {
         return __real_ethernet_input(p, netif);
     }
 
+    void lwip_callback(void (*cb)()) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __callback_req req = { cb };
+            __lwip(__callback, &req);
+            return;
+        }
+#endif
+        cb();
+        return;
+    }
+
 
 }; // extern "C"
