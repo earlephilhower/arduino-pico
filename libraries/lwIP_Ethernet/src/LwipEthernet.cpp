@@ -206,6 +206,7 @@ static uint32_t _pollingPeriod = 20;
 // This will only be called under the protection of the async context mutex, so no re-entrancy checks needed
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
+    printf("__ethernet_timeout_reached_calls %d\n",__ethernet_timeout_reached_calls);
     __ethernet_timeout_reached_calls++;
     ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
     for (auto handlePacket : _handlePacketList) {
