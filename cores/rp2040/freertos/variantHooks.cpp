@@ -556,20 +556,28 @@ void __USBStart() {
 }
 
 
-
-
-
-extern "C" void __lwip(__lwip_op op, void *req) {
+extern "C" void __lwip(__lwip_op op, void *req, bool fromISR) {
     LWIPWork w;
-    TaskStatus_t t;
-    vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
-    w.op = op;
-    w.req = req;
-    w.wakeup = t.xHandle;
-    if (!xQueueSend(__lwipQueue, &w, portMAX_DELAY)) {
-        panic("LWIP task send failed");
+    if (fromISR) {
+        w.op = op;
+        w.req = req;
+        w.wakeup = 0; // Don't try and wake up a task when done, we're not in one!
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        if (!xQueueSendFromISR(__lwipQueue, &w, &xHigherPriorityTaskWoken)) {
+            panic("LWIP task send failed");
+        }
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+    } else {
+        TaskStatus_t t;
+        vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
+        w.op = op;
+        w.req = req;
+        w.wakeup = t.xHandle;
+        if (!xQueueSend(__lwipQueue, &w, portMAX_DELAY)) {
+            panic("LWIP task send failed");
+        }
+        ulTaskNotifyTakeIndexed(TASK_NOTIFY_LWIP_WAKEUP, pdTRUE, portMAX_DELAY);
     }
-    ulTaskNotifyTakeIndexed(TASK_NOTIFY_LWIP_WAKEUP, pdTRUE, portMAX_DELAY);
 }
 
 extern "C" bool __isLWIPThread() {
@@ -585,7 +593,8 @@ static void lwipThread(void *params) {
 
     while (true) {
         if (xQueueReceive(__lwipQueue, &w, portMAX_DELAY)) {
-            switch (w.op) {
+            switch (w.op)
+            {
                 case __lwip_init:
                 {
                     __real_lwip_init();
@@ -943,7 +952,9 @@ static void lwipThread(void *params) {
                 }
             }
             // Work done, return value set, just tickle the calling task
-            xTaskNotifyGiveIndexed(w.wakeup, TASK_NOTIFY_LWIP_WAKEUP);
+            if (w.wakeup) {
+                xTaskNotifyGiveIndexed(w.wakeup, TASK_NOTIFY_LWIP_WAKEUP);
+            }
         }
     }
 }

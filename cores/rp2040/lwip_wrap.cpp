@@ -37,7 +37,7 @@ recursive_mutex_t __lwipMutex;
 
 extern "C" {
 
-    extern void __lwip(__lwip_op op, void *req) __attribute((weak));
+    extern void __lwip(__lwip_op op, void *req, bool fromISR = false);
     extern bool __isLWIPThread();
 
     static XoshiroCpp::Xoshiro256PlusPlus *_lwip_rng = nullptr;
@@ -820,7 +820,6 @@ extern "C" {
         if (!__isLWIPThread()) {
             err_t ret;
             __ethernet_input_req req = { p, netif, &ret };
-            printf("__ethernet_input_req\n");
             __lwip(__ethernet_input, &req);
             return ret;
         }
@@ -829,17 +828,21 @@ extern "C" {
         return __real_ethernet_input(p, netif);
     }
 
-    void lwip_callback(void (*cb)(void *), void *cbData) {
+    void lwip_callback(void (*cb)(void *), void *cbData, bool fromISR) {
 #ifdef __FREERTOS
-        if (!__isLWIPThread()) {
+        if (fromISR) {
+            // In ISR we can't check what the current thread is
             __callback_req req = { cb, cbData };
-            __lwip(__callback, &req);
+            __lwip(__callback, &req, fromISR);
+            return;
+        } else if (!__isLWIPThread()) {
+            __callback_req req = { cb, cbData };
+            __lwip(__callback, &req, fromISR);
             return;
         }
 #endif
         cb(cbData);
         return;
     }
-
 
 }; // extern "C"

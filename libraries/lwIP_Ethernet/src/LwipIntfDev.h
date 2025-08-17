@@ -72,6 +72,9 @@ enum EthernetLinkStatus {
     LinkOFF
 };
 
+extern "C" void lwip_callback(void (*cb)(void *), void *cbData, bool fromISR);
+
+
 template<class RawDev>
 class LwipIntfDev: public LwipIntf, public RawDev {
 public:
@@ -211,6 +214,7 @@ protected:
     uint32_t _packetsReceived = 0;
     uint32_t _packetsSent = 0;
 
+    static void _lwipCallback(void *param);
 };
 
 
@@ -468,12 +472,23 @@ void LwipIntfDev<RawDev>::end() {
 }
 
 template<class RawDev>
-void LwipIntfDev<RawDev>::_irq(void *param) {
+void LwipIntfDev<RawDev>::_lwipCallback(void *param) {
     LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
-    //ethernet_arch_lwip_begin();
     d->handlePackets();
     sys_check_timeouts();
+    ethernet_arch_lwip_gpio_unmask();
+}
+
+template<class RawDev>
+void LwipIntfDev<RawDev>::_irq(void *param) {
+    LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
+    ethernet_arch_lwip_gpio_mask(); // Disable other IRQs until we're done processing this one
+    lwip_callback(_lwipCallback, param, true);
+    //ethernet_arch_lwip_begin();
+//    d->handlePackets();
+//    sys_check_timeouts();
     //ethernet_arch_lwip_end();
+
 }
 
 template<class RawDev>
@@ -489,7 +504,6 @@ EthernetLinkStatus LwipIntfDev<RawDev>::linkStatus() {
 template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
-    printf("presend %d\n", pbuf->len);
 //    ethernet_arch_lwip_begin();
     xSemaphoreTake(lid->_hwMutex, portMAX_DELAY);
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
@@ -501,7 +515,6 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
                     /*success*/ len == pbuf->len);
     }
 #endif
-    printf("sent len %d\n", len);
 //    ethernet_arch_lwip_end();
     return len == pbuf->len ? ERR_OK : ERR_MEM;
 }
