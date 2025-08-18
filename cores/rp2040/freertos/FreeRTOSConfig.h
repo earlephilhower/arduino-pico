@@ -96,8 +96,14 @@
 #define configGENERATE_RUN_TIME_STATS	1
 #endif
 #ifdef configGENERATE_RUN_TIME_STATS
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern void vMainConfigureTimerForRunTimeStats(void);
 extern unsigned long ulMainGetRunTimeCounterValue(void);
+#ifdef __cplusplus
+};
+#endif
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() //vMainConfigureTimerForRunTimeStats()
 #define portGET_RUN_TIME_COUNTER_VALUE() ulMainGetRunTimeCounterValue()
 #endif

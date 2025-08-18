@@ -235,11 +235,13 @@ static TaskHandle_t _ethernetTask;;
 
 static void stage2(void *cbData) {
     (void) cbData;
+    ethernet_arch_lwip_gpio_mask();
     // Scan the installed Ethernet drivers
     for (auto handlePacket : _handlePacketList) {
         // Note that each NIC needs to use its own mutex to ensure LWIP isn't doing something with it at the time we want to poll
-//        handlePacket.second();
+        handlePacket.second();
     }
+    ethernet_arch_lwip_gpio_unmask();
     // Do LWIP stuff as needed
     sys_check_timeouts();
 }
