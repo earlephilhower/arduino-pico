@@ -590,9 +590,14 @@ static void lwipThread(void *params) {
     (void) params;
     LWIPWork w;
     assert(__isLWIPThread());
+    unsigned int scd = 100 / portTICK_PERIOD_MS;
+
+    lwip_init(); // Will call our wrapper and set up the RNG
 
     while (true) {
-        if (xQueueReceive(__lwipQueue, &w, portMAX_DELAY)) {
+        auto ret = xQueueReceive(__lwipQueue, &w, scd);
+        if (ret)
+        {
             switch (w.op)
             {
                 case __lwip_init:
@@ -954,6 +959,15 @@ static void lwipThread(void *params) {
             // Work done, return value set, just tickle the calling task
             if (w.wakeup) {
                 xTaskNotifyGiveIndexed(w.wakeup, TASK_NOTIFY_LWIP_WAKEUP);
+            }
+        } else
+        {
+            // No work received, do periodic processing
+            __real_sys_check_timeouts();
+            // When should we wake up next to redo timeouts?
+            scd = sys_timeouts_sleeptime();
+            if (scd == SYS_TIMEOUTS_SLEEPTIME_INFINITE) {
+                scd = portMAX_DELAY / portTICK_PERIOD_MS;
             }
         }
     }

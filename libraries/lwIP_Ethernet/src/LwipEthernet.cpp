@@ -211,13 +211,13 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
     ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
+        sys_check_timeouts();
     }
 //#if defined(PICO_CYW43_SUPPORTED)
 //    if (!rp2040.isPicoW()) {
 //        sys_check_timeouts();
 //    }
 //#else
-    sys_check_timeouts();
 //#endif
     ethernet_arch_lwip_gpio_unmask();
 }
