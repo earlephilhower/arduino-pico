@@ -250,9 +250,6 @@ extern "C" {
         return __real_tcp_bind_netif(pcb, netif);
     }
 
-
-
-
     extern struct tcp_pcb *__real_tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog);
     struct tcp_pcb *__wrap_tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog) {
 #ifdef __FREERTOS
