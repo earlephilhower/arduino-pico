@@ -56,8 +56,7 @@ void loop5(void *pvPramaters);
 void loop6(void *pvPramaters);
 void loop7(void *pvPramaters);
 
-void setup()
-{
+void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   xSemaphoreMalloc = xSemaphoreCreateMutex();
@@ -79,24 +78,22 @@ void setup()
 }
 static int _loop[8];
 
-void loop()
-{
-  while (1)
-  {
+void loop() {
+  while (1) {
     _loop[0]++;
     digitalWrite(LED_BUILTIN, HIGH);
     delay(500);
     digitalWrite(LED_BUILTIN, LOW);
     delay(500);
-    for (int i=0; i<8; i++) Serial.printf("%d ", _loop[i]);
+    for (int i = 0; i < 8; i++) {
+      Serial.printf("%d ", _loop[i]);
+    }
     Serial.println("");
   }
 }
 
-void loop1()
-{
-  while (1)
-  {
+void loop1() {
+  while (1) {
     _loop[1]++;
     char *tmp;
 
@@ -106,8 +103,7 @@ void loop1()
 
     strcpy(tmp, "foo");
 
-    if (tryRealloc)
-    {
+    if (tryRealloc) {
       semphrTakeConditional(useMutexOnRealloc, xSemaphoreRealloc);
       tmp = (char *)realloc(tmp, 20 * sizeof(char));
       semphrGiveConditional(useMutexOnRealloc, xSemaphoreRealloc);
@@ -122,11 +118,9 @@ void loop1()
   }
 }
 
-void loop2(void *pvPramaters)
-{
+void loop2(void *pvPramaters) {
   (void) pvPramaters;
-  while (1)
-  {
+  while (1) {
     _loop[2]++;
     char *tmp;
 
@@ -136,8 +130,7 @@ void loop2(void *pvPramaters)
 
     strcpy(tmp, "bar");
 
-    if (tryRealloc)
-    {
+    if (tryRealloc) {
       semphrTakeConditional(useMutexOnRealloc, xSemaphoreRealloc);
       tmp = (char *)realloc(tmp, 20 * sizeof(char));
       semphrGiveConditional(useMutexOnRealloc, xSemaphoreRealloc);
@@ -152,11 +145,9 @@ void loop2(void *pvPramaters)
   }
 }
 
-void loop3(void *pvPramaters)
-{
+void loop3(void *pvPramaters) {
   (void) pvPramaters;
-  while (1)
-  {
+  while (1) {
     _loop[3]++;
     char *tmp;
 
@@ -166,8 +157,7 @@ void loop3(void *pvPramaters)
 
     strcpy(tmp, "yeah");
 
-    if (tryRealloc)
-    {
+    if (tryRealloc) {
       semphrTakeConditional(useMutexOnRealloc, xSemaphoreRealloc);
       tmp = (char *)realloc(tmp, 20 * sizeof(char));
       semphrGiveConditional(useMutexOnRealloc, xSemaphoreRealloc);
@@ -182,11 +172,9 @@ void loop3(void *pvPramaters)
   }
 }
 
-void loop4(void *pvPramaters)
-{
+void loop4(void *pvPramaters) {
   (void) pvPramaters;
-  while (1)
-  {
+  while (1) {
     _loop[4]++;
     char *tmp;
 
@@ -196,8 +184,7 @@ void loop4(void *pvPramaters)
 
     strcpy(tmp, "baz");
 
-    if (tryRealloc)
-    {
+    if (tryRealloc) {
       semphrTakeConditional(useMutexOnRealloc, xSemaphoreRealloc);
       tmp = (char *)realloc(tmp, 20 * sizeof(char));
       semphrGiveConditional(useMutexOnRealloc, xSemaphoreRealloc);
@@ -212,11 +199,9 @@ void loop4(void *pvPramaters)
   }
 }
 
-void loop5(void *pvPramaters)
-{
+void loop5(void *pvPramaters) {
   (void) pvPramaters;
-  while (1)
-  {
+  while (1) {
     _loop[5]++;
     char *tmp;
 
@@ -226,8 +211,7 @@ void loop5(void *pvPramaters)
 
     strcpy(tmp, "asd");
 
-    if (tryRealloc)
-    {
+    if (tryRealloc) {
       semphrTakeConditional(useMutexOnRealloc, xSemaphoreRealloc);
       tmp = (char *)realloc(tmp, 20 * sizeof(char));
       semphrGiveConditional(useMutexOnRealloc, xSemaphoreRealloc);
@@ -242,11 +226,9 @@ void loop5(void *pvPramaters)
   }
 }
 
-void loop6(void *pvPramaters)
-{
+void loop6(void *pvPramaters) {
   (void) pvPramaters;
-  while (1)
-  {
+  while (1) {
     _loop[6]++;
     char *tmp;
 
@@ -256,8 +238,7 @@ void loop6(void *pvPramaters)
 
     strcpy(tmp, "lol");
 
-    if (tryRealloc)
-    {
+    if (tryRealloc) {
       semphrTakeConditional(useMutexOnRealloc, xSemaphoreRealloc);
       tmp = (char *)realloc(tmp, 20 * sizeof(char));
       semphrGiveConditional(useMutexOnRealloc, xSemaphoreRealloc);
@@ -272,11 +253,9 @@ void loop6(void *pvPramaters)
   }
 }
 
-void loop7(void *pvPramaters)
-{
+void loop7(void *pvPramaters) {
   (void) pvPramaters;
-  while (1)
-  {
+  while (1) {
     _loop[7]++;
     char *tmp;
 
@@ -286,8 +265,7 @@ void loop7(void *pvPramaters)
 
     strcpy(tmp, "yay");
 
-    if (tryRealloc)
-    {
+    if (tryRealloc) {
       semphrTakeConditional(useMutexOnRealloc, xSemaphoreRealloc);
       tmp = (char *)realloc(tmp, 20 * sizeof(char));
       semphrGiveConditional(useMutexOnRealloc, xSemaphoreRealloc);
@@ -302,18 +280,14 @@ void loop7(void *pvPramaters)
   }
 }
 
-void semphrTakeConditional(bool useMutexOn, SemaphoreHandle_t xSemaphore)
-{
-  if (useMutexOn)
-  {
+void semphrTakeConditional(bool useMutexOn, SemaphoreHandle_t xSemaphore) {
+  if (useMutexOn) {
     xSemaphoreTake(xSemaphore, TickType_t(portMAX_DELAY));
   }
 }
 
-void semphrGiveConditional(bool useMutexOn, SemaphoreHandle_t xSemaphore)
-{
-  if (useMutexOn)
-  {
+void semphrGiveConditional(bool useMutexOn, SemaphoreHandle_t xSemaphore) {
+  if (useMutexOn) {
     xSemaphoreGive(xSemaphore);
   }
 }

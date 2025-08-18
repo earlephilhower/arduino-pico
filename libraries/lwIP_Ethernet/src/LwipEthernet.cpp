@@ -72,24 +72,24 @@ static async_context_t *_context = nullptr;
 static std::map<int, std::function<void(void)>> _handlePacketList;
 
 void ethernet_arch_lwip_begin() {
-//#if defined(PICO_CYW43_SUPPORTED)
-//    if (rp2040.isPicoW()) {
-//        cyw43_arch_lwip_begin();
-//        return;
-//    }
-//#endif
-//    __startEthernetContext();
-//    async_context_acquire_lock_blocking(_context);
+    //#if defined(PICO_CYW43_SUPPORTED)
+    //    if (rp2040.isPicoW()) {
+    //        cyw43_arch_lwip_begin();
+    //        return;
+    //    }
+    //#endif
+    //    __startEthernetContext();
+    //    async_context_acquire_lock_blocking(_context);
 }
 
 void ethernet_arch_lwip_end() {
-//#if defined(PICO_CYW43_SUPPORTED)
-//    if (rp2040.isPicoW()) {
-//        cyw43_arch_lwip_end();
-//        return;
-//    }
-//#endif
-//    async_context_release_lock(_context);
+    //#if defined(PICO_CYW43_SUPPORTED)
+    //    if (rp2040.isPicoW()) {
+    //        cyw43_arch_lwip_end();
+    //        return;
+    //    }
+    //#endif
+    //    async_context_release_lock(_context);
 }
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
@@ -206,19 +206,19 @@ static uint32_t _pollingPeriod = 20;
 // This will only be called under the protection of the async context mutex, so no re-entrancy checks needed
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
-    printf("__ethernet_timeout_reached_calls %d\n",__ethernet_timeout_reached_calls);
+    printf("__ethernet_timeout_reached_calls %d\n", __ethernet_timeout_reached_calls);
     __ethernet_timeout_reached_calls++;
     ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
         sys_check_timeouts();
     }
-//#if defined(PICO_CYW43_SUPPORTED)
-//    if (!rp2040.isPicoW()) {
-//        sys_check_timeouts();
-//    }
-//#else
-//#endif
+    //#if defined(PICO_CYW43_SUPPORTED)
+    //    if (!rp2040.isPicoW()) {
+    //        sys_check_timeouts();
+    //    }
+    //#else
+    //#endif
     ethernet_arch_lwip_gpio_unmask();
 }
 
@@ -273,17 +273,17 @@ void __startEthernetContext() {
         return;
     }
     xTaskCreate(ethernetTask, "Ethernet", 256, nullptr, 1, &_ethernetTask);
-//    vTaskCoreAffinitySet(_ethernetTask, 1 << 0);
+    //    vTaskCoreAffinitySet(_ethernetTask, 1 << 0);
 #if 0
-//#if defined(PICO_CYW43_SUPPORTED)
-//    if (rp2040.isPicoW()) {
-//        _context = cyw43_arch_async_context();
-//    } else {
-//        _context = lwip_ethernet_init_default_async_context();
-//    }
-//#else
+    //#if defined(PICO_CYW43_SUPPORTED)
+    //    if (rp2040.isPicoW()) {
+    //        _context = cyw43_arch_async_context();
+    //    } else {
+    //        _context = lwip_ethernet_init_default_async_context();
+    //    }
+    //#else
     _context = lwip_ethernet_init_default_async_context();
-//#endif
+    //#endif
     ethernet_timeout_worker.do_work = ethernet_timeout_reached;
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;

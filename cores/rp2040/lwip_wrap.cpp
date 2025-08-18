@@ -702,8 +702,8 @@ extern "C" {
         return __real_raw_new_ip_type(type, proto);
     }
 
-    extern err_t __real_raw_connect (struct raw_pcb *pcb, const ip_addr_t *ipaddr);
-    err_t __wrap_raw_connect (struct raw_pcb *pcb, const ip_addr_t *ipaddr) {
+    extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
+    err_t __wrap_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
             err_t ret;

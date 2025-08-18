@@ -1,12 +1,12 @@
 /* The code in this example is mostly derived from the official FreeRTOS
- * code examples.
- * 
- * For more information on static allocation and to read the original
- * code visit the following links:
- * https://www.freertos.org/Static_Vs_Dynamic_Memory_Allocation.html
- * https://www.freertos.org/xTaskCreateStatic.html
- * https://www.freertos.org/xSemaphoreCreateMutexStatic.html
- */
+   code examples.
+
+   For more information on static allocation and to read the original
+   code visit the following links:
+   https://www.freertos.org/Static_Vs_Dynamic_Memory_Allocation.html
+   https://www.freertos.org/xTaskCreateStatic.html
+   https://www.freertos.org/xSemaphoreCreateMutexStatic.html
+*/
 
 #include <FreeRTOS.h>
 #include <task.h>
@@ -44,7 +44,7 @@ void setup() {
   /* Create a mutex semaphore without using any dynamic memory
     allocation.  The mutex's data structures will be saved into
     the xMutexBuffer variable. */
-  xSemaphore = xSemaphoreCreateMutexStatic( &xMutexBuffer );
+  xSemaphore = xSemaphoreCreateMutexStatic(&xMutexBuffer);
 
   ledOnTask = xTaskCreateStatic(led_ON, "led_ON", STACK_SIZE, NULL, configMAX_PRIORITIES - 1, xStack_A, &xTaskBuffer_A);
 #if defined(PICO_CYW43_SUPPORTED)
@@ -56,34 +56,30 @@ void setup() {
   // The PicoW WiFi chip controls the LED, and only core 0 can make calls to it safely
   vTaskCoreAffinitySet(ledOffTask, 1 << 0);
 #endif
-  }
+}
 
-void led_ON(void *pvParameters)
-{
+void led_ON(void *pvParameters) {
   (void) pvParameters;
   delay(100);
-  while (1)
-  {
-    xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );
+  while (1) {
+    xSemaphoreTake(xSemaphore, (TickType_t) portMAX_DELAY);
     SERIAL_PORT.println("LED ON!");
     digitalWrite(LED_BUILTIN, HIGH);
     delay(BLINK_ON_TIME);
-    xSemaphoreGive( xSemaphore );
+    xSemaphoreGive(xSemaphore);
     delay(1);
   }
 }
 
-void led_OFF(void *pvParameters)
-{
+void led_OFF(void *pvParameters) {
   (void) pvParameters;
   delay(100);
-  while (1)
-  {
-    xSemaphoreTake( xSemaphore, ( TickType_t ) portMAX_DELAY );
+  while (1) {
+    xSemaphoreTake(xSemaphore, (TickType_t) portMAX_DELAY);
     SERIAL_PORT.println("LED OFF!");
     digitalWrite(LED_BUILTIN, LOW);
     delay(BLINK_OFF_TIME);
-    xSemaphoreGive( xSemaphore );
+    xSemaphoreGive(xSemaphore);
     delay(1);
   }
 }

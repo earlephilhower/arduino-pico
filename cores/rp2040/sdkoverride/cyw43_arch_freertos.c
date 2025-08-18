@@ -2,10 +2,10 @@
 // Taken from SDK because we need to remove the !NO_SYS check
 #define PICO_CYW43_ARCH_FREERTOS 1
 /*
- * Copyright (c) 2022 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
+    Copyright (c) 2022 Raspberry Pi (Trading) Ltd.
+
+    SPDX-License-Identifier: BSD-3-Clause
+*/
 
 #if PICO_CYW43_ARCH_FREERTOS
 
@@ -43,8 +43,9 @@ async_context_t *cyw43_arch_init_default_async_context(void) {
 #if configSUPPORT_STATIC_ALLOCATION && !CYW43_NO_DEFAULT_TASK_STACK
     config.task_stack = cyw43_async_context_freertos_task_stack;
 #endif
-    if (async_context_freertos_init(&cyw43_async_context_freertos, &config))
+    if (async_context_freertos_init(&cyw43_async_context_freertos, &config)) {
         return &cyw43_async_context_freertos.core;
+    }
     return NULL;
 }
 
@@ -52,7 +53,9 @@ int cyw43_arch_init(void) {
     async_context_t *context = cyw43_arch_async_context();
     if (!context) {
         context = cyw43_arch_init_default_async_context();
-        if (!context) return PICO_ERROR_GENERIC;
+        if (!context) {
+            return PICO_ERROR_GENERIC;
+        }
         cyw43_arch_set_async_context(context);
     }
     bool ok = cyw43_driver_init(context);

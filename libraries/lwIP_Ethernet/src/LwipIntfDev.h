@@ -486,8 +486,8 @@ void LwipIntfDev<RawDev>::_irq(void *param) {
     ethernet_arch_lwip_gpio_mask(); // Disable other IRQs until we're done processing this one
     lwip_callback(_lwipCallback, param, (void *)d->_irqBuffer);
     //ethernet_arch_lwip_begin();
-//    d->handlePackets();
-//    sys_check_timeouts();
+    //    d->handlePackets();
+    //    sys_check_timeouts();
     //ethernet_arch_lwip_end();
 
 }
@@ -505,7 +505,7 @@ EthernetLinkStatus LwipIntfDev<RawDev>::linkStatus() {
 template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
-//    ethernet_arch_lwip_begin();
+    //    ethernet_arch_lwip_begin();
     xSemaphoreTake(lid->_hwMutex, portMAX_DELAY);
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
     xSemaphoreGive(lid->_hwMutex);
@@ -516,7 +516,7 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
                     /*success*/ len == pbuf->len);
     }
 #endif
-//    ethernet_arch_lwip_end();
+    //    ethernet_arch_lwip_end();
     return len == pbuf->len ? ERR_OK : ERR_MEM;
 }
 
@@ -632,9 +632,9 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
         }
 
         _packetsReceived++;
-//printf("recv pkt %d: ", tot_len);
-//for (int i=0; i < tot_len; i++)  printf("%02x ", ((uint8_t*)pbuf->payload)[i]);
-//printf("\n");
+        //printf("recv pkt %d: ", tot_len);
+        //for (int i=0; i < tot_len; i++)  printf("%02x ", ((uint8_t*)pbuf->payload)[i]);
+        //printf("\n");
         err_t err = _netif.input(pbuf, &_netif);
 
 #if PHY_HAS_CAPTURE

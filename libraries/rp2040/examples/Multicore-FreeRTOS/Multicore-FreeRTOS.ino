@@ -26,10 +26,10 @@ void ps() {
   int tasks = uxTaskGetNumberOfTasks();
   TaskStatus_t *pxTaskStatusArray = new TaskStatus_t[tasks];
   unsigned long runtime;
-  tasks = uxTaskGetSystemState( pxTaskStatusArray, tasks, &runtime );
+  tasks = uxTaskGetSystemState(pxTaskStatusArray, tasks, &runtime);
   Serial.printf("# Tasks: %d\n", tasks);
   Serial.println("ID, NAME, STATE, PRIO, CYCLES");
-  for (int i=0; i < tasks; i++) {
+  for (int i = 0; i < tasks; i++) {
     Serial.printf("%d: %-16s %-10s %d %lu\n", i, pxTaskStatusArray[i].pcTaskName, eTaskStateName[pxTaskStatusArray[i].eCurrentState], (int)pxTaskStatusArray[i].uxCurrentPriority, pxTaskStatusArray[i].ulRunTimeCounter);
   }
   delete[] pxTaskStatusArray;
@@ -80,7 +80,7 @@ void loop1() {
   val++;
   if (++x < 10) {
     EEPROM.begin(512);
-    EEPROM.write(0,x);
+    EEPROM.write(0, x);
     EEPROM.commit();
   }
   delay(1000);
