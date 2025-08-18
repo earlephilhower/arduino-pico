@@ -246,7 +246,7 @@ static void stage2(void *cbData) {
     sys_check_timeouts();
 }
 
-extern "C" void lwip_callback(void (*cb)(void *), void *cbData, bool fromISR);
+#include <lwip_wrap.h>
 static void ethernetTask(void *param) {
     (void) param;
     while (true) {
@@ -255,7 +255,7 @@ static void ethernetTask(void *param) {
             sleep_ms = _pollingPeriod;
         }
         vTaskDelay(sleep_ms / portTICK_PERIOD_MS);
-        lwip_callback(stage2, nullptr, false);
+        lwip_callback(stage2, nullptr);
 #if 0
         // Scan the installed Ethernet drivers
         for (auto handlePacket : _handlePacketList) {

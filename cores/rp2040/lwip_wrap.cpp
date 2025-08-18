@@ -828,28 +828,17 @@ extern "C" {
         return __real_ethernet_input(p, netif);
     }
 
-    void lwip_callback(void (*cb)(void *), void *cbData, bool fromISR) {
+    void lwip_callback(void (*cb)(void *), void *cbData, void *buffer) {
 #ifdef __FREERTOS
-        if (fromISR) {
-            // In ISR we can't check what the current thread is
-            static __callback_req req = { cb, cbData }; // TODO HACK HERE
-            // We pass in the address of an unknown sized request to the LWIP work queue
-            // For normal mode that address is on the app stack, which will be frozen until
-            // the callback is performed.  So no problem, that stack address will remain valid.
-            // Here, we're in an ISR and won't block, just put a pointer on the queue and
-            // return from the interrupt.  The stack address, there, is no longer safe and you
-            // will see memory corruption when the actual app thread uses its stack.
-            // We can't allocate memory in an IRQ in FreeRTOS, so for now we'll just have
-            // a single heap-based (static) request which will live forever.  As long as
-            // only a single lwip_callback from IRQ is present we're OK.  Should you have 2
-            // IRQ driver network cards, this will fail.
-            // A more satisfying method might have the NIC driver pass in its own class local
-            // preallocated storage space which we can use.
-            __lwip(__callback, &req, fromISR);
+        if (buffer) {
+            __callback_req *req = (__callback_req *)buffer;
+            req->cb = cb;
+            req->cbData = cbData;
+            __lwip(__callback, req, true);
             return;
         } else if (!__isLWIPThread()) {
             __callback_req req = { cb, cbData };
-            __lwip(__callback, &req, fromISR);
+            __lwip(__callback, &req, false);
             return;
         }
 #endif

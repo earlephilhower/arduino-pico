@@ -72,7 +72,7 @@ enum EthernetLinkStatus {
     LinkOFF
 };
 
-extern "C" void lwip_callback(void (*cb)(void *), void *cbData, bool fromISR);
+#include <lwip_wrap.h>
 
 
 template<class RawDev>
@@ -189,6 +189,7 @@ public:
     // called on a regular basis or on interrupt
     err_t handlePackets();
     SemaphoreHandle_t _hwMutex;
+    uint8_t _irqBuffer[LWIP_CALLBACK_BUFFER_SIZE];
 protected:
     // members
     SPIClass& _spiUnit;
@@ -483,7 +484,7 @@ template<class RawDev>
 void LwipIntfDev<RawDev>::_irq(void *param) {
     LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
     ethernet_arch_lwip_gpio_mask(); // Disable other IRQs until we're done processing this one
-    lwip_callback(_lwipCallback, param, true);
+    lwip_callback(_lwipCallback, param, (void *)d->_irqBuffer);
     //ethernet_arch_lwip_begin();
 //    d->handlePackets();
 //    sys_check_timeouts();
