@@ -167,14 +167,14 @@ void SPISlaveClass::_handleIRQ() {
         _recvCB(buff, cnt);
     }
     // Attempt to send as many bytes to the TX FIFO as we have/are free
-    while (spi_is_writable(_spi)) {
+    do {
         for (; _dataLeft && spi_is_writable(_spi); _dataLeft--) {
             spi_get_hw(_spi)->dr = *(_dataOut++);
         }
         if (!_dataLeft && _sentCB) {
             _sentCB();
         }
-    }
+    } while (spi_is_writable(_spi) & _dataLeft);
     // Disable the TX FIFO IRQ if there is still no data to send or we'd always be stuck in an IRQ
     // Will be re-enabled once user does a setData
     if (!_dataLeft) {
