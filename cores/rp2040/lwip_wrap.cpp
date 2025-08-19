@@ -843,23 +843,23 @@ extern "C" {
     }
 
 #ifndef __FREERTOS
-    extern bool __real_cyw43_driver_init(async_context_t *context)'
+    extern bool __real_cyw43_driver_init(async_context_t *context);
     bool __wrap_cyw43_driver_init(async_context_t *context) {
-        return __real_cyw43_driver_init(async_context_t *context);
+        return __real_cyw43_driver_init(context);
     }
     extern void __real_cyw43_driver_deinit(async_context_t *context);
     void __wrap_cyw43_driver_deinit(async_context_t *context) {
         __real_cyw43_driver_deinit(context);
     }
-    extern void __real_cyw43_thread_enter(void);
+    extern void __real_cyw43_thread_enter();
     void __wrap_cyw43_thread_enter() {
         __real_cyw43_thread_enter();
     }
-    extern void __real_cyw43_thread_exit(void);
+    extern void __real_cyw43_thread_exit();
     void __wrap_cyw43_thread_exit() {
         __real_cyw43_thread_exit();
     }
-    extern void __real_cyw43_thread_lock_check(void);
+    extern void __real_cyw43_thread_lock_check();
     void __wrap_cyw43_thread_lock_check() {
         __real_cyw43_thread_lock_check();
     }
@@ -875,9 +875,17 @@ extern "C" {
     void __wrap_cyw43_delay_us(uint32_t us) {
         __real_cyw43_delay_us(us);
     }
-    extern void __real_cyw43_post_poll_hook(void);
-    void __wrap_cyw43_post_poll_hook(void) {
+    extern void __real_cyw43_post_poll_hook();
+    void __wrap_cyw43_post_poll_hook() {
         __real_cyw43_post_poll_hook();
+    }
+    extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
+    void __wrap_cyw43_await_background_or_timeout_us(uint32_t timeout_us) {
+        __real_cyw43_await_background_or_timeout_us(timeout_us);
+    }
+    extern void __real_cyw43_schedule_internal_poll_dispatch(void (*func)());
+    void __wrap_cyw43_schedule_internal_poll_dispatch(void (*func)()) {
+        __real_cyw43_schedule_internal_poll_dispatch(func);
     }
 
 #endif

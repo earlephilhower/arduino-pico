@@ -194,8 +194,8 @@ public:
     err_t handlePackets();
 #ifdef __FREERTOS
     SemaphoreHandle_t _hwMutex;
-    __callback_req _irqBuffer;
 #endif
+    __callback_req _irqBuffer;
 protected:
     // members
     SPIClass& _spiUnit;

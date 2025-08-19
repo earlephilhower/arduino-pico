@@ -82,7 +82,7 @@ extern "C" void __wrap_cyw43_post_poll_hook() {
     cyw43_set_irq_enabled(true);
 }
 
-void cyw43_schedule_internal_poll_dispatch(__unused void (*func)()) {
+extern "C" void __wrap_cyw43_schedule_internal_poll_dispatch(__unused void (*func)()) {
     lwip_callback(cb_cyw43_do_poll, nullptr);
 }
 
@@ -164,24 +164,5 @@ extern "C" void __wrap_cyw43_delay_us(uint32_t us) {
     }
     delayMicroseconds(us);
 }
-
-// Generate a mac address if one is not set in otp
-extern "C" void cyw43_hal_generate_laa_mac(__unused int idx, uint8_t buf[6]) {
-    CYW43_DEBUG("Warning. No mac in otp. Generating mac from board id\n");
-    pico_unique_board_id_t board_id;
-    pico_get_unique_board_id(&board_id);
-    memcpy(buf, &board_id.id[2], 6);
-    buf[0] &= (uint8_t)~0x1; // unicast
-    buf[0] |= 0x2; // locally administered
-}
-
-// Return mac address
-extern "C" void cyw43_hal_get_mac(__unused int idx, uint8_t buf[6]) {
-    // The mac should come from cyw43 otp.
-    // This is loaded into the state after the driver is initialised
-    // cyw43_hal_generate_laa_mac is called by the driver to generate a mac if otp is not set
-    memcpy(buf, cyw43_state.mac, 6);
-}
-
 
 #endif
