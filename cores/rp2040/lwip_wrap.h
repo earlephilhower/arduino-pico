@@ -569,14 +569,12 @@ typedef struct {
 } __ethernet_input_req;
 
 // Run a callback in the LWIP thread (i.e. for Ethernet device polling and packet reception)
-// When in an interrupt, need to pass in a heap-allocated buffer (i.e. class variable) of
-// size LWIP_CALLBACK_BUFFER_SIZE that will be used to store the request.
-extern void lwip_callback(void (*cb)(void *), void *cbData, void *buffer = nullptr);
+// When in an interrupt, need to pass in a heap-allocated buffer
 typedef struct {
     void (*cb)(void *);
     void *cbData;
 } __callback_req;
-#define LWIP_CALLBACK_BUFFER_SIZE sizeof(__callback_req)
+extern void lwip_callback(void (*cb)(void *), void *cbData, __callback_req *buffer = nullptr);
 
 #ifdef __cplusplus
 };

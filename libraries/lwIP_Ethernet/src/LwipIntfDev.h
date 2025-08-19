@@ -194,8 +194,8 @@ public:
     err_t handlePackets();
 #ifdef __FREERTOS
     SemaphoreHandle_t _hwMutex;
+    __callback_req _irqBuffer;
 #endif
-    uint8_t _irqBuffer[LWIP_CALLBACK_BUFFER_SIZE] __attribute__ ((aligned (4)));;
 protected:
     // members
     SPIClass& _spiUnit;
@@ -490,7 +490,7 @@ template<class RawDev>
 void LwipIntfDev<RawDev>::_irq(void *param) {
     LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
     ethernet_arch_lwip_gpio_mask(); // Disable other IRQs until we're done processing this one
-    lwip_callback(_lwipCallback, param, (void *)d->_irqBuffer);
+    lwip_callback(_lwipCallback, param, &d->_irqBuffer);
     //ethernet_arch_lwip_begin();
     //    d->handlePackets();
     //    sys_check_timeouts();

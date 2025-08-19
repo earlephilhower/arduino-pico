@@ -825,13 +825,12 @@ extern "C" {
         return __real_ethernet_input(p, netif);
     }
 
-    void lwip_callback(void (*cb)(void *), void *cbData, void *buffer) {
+    void lwip_callback(void (*cb)(void *), void *cbData, __callback_req *buffer) {
 #ifdef __FREERTOS
         if (buffer) {
-            __callback_req *req = (__callback_req *)buffer;
-            req->cb = cb;
-            req->cbData = cbData;
-            __lwip(__callback, req, true);
+            buffer->cb = cb;
+            buffer->cbData = cbData;
+            __lwip(__callback, buffer, true);
             return;
         } else if (!__isLWIPThread()) {
             __callback_req req = { cb, cbData };
