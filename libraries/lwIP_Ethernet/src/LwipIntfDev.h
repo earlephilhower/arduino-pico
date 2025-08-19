@@ -195,7 +195,7 @@ public:
 #ifdef __FREERTOS
     SemaphoreHandle_t _hwMutex;
 #endif
-    uint8_t _irqBuffer[LWIP_CALLBACK_BUFFER_SIZE];
+    uint8_t _irqBuffer[LWIP_CALLBACK_BUFFER_SIZE] __attribute__ ((aligned (4)));;
 protected:
     // members
     SPIClass& _spiUnit;
