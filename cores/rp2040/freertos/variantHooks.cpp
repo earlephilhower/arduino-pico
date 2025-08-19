@@ -229,7 +229,6 @@ extern mutex_t __usb_mutex;
 static TaskHandle_t __usbTask;
 static void __usb(void *param);
 extern volatile bool __freeRTOSinitted;
-static void lwipThread(void *params);
 void startFreeRTOS(void) {
 
     TaskHandle_t c0;
@@ -330,29 +329,6 @@ void vApplicationTickHook(void) {
 #endif /* configUSE_TICK_HOOK == 1 */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_MALLOC_FAILED_HOOK == 1 || configCHECK_FOR_STACK_OVERFLOW >= 1 || configDEFAULT_ASSERT == 1 )
-
-/**
-    Private function to enable board led to use it in application hooks
-*/
-void prvSetMainLedOn(void) {
-#ifdef LED_BUILTIN
-    gpio_init(LED_BUILTIN);
-    gpio_set_dir(LED_BUILTIN, true);
-    gpio_put(LED_BUILTIN, true);
-#endif
-}
-
-/**
-    Private function to blink board led to use it in application hooks
-*/
-void prvBlinkMainLed(void) {
-#ifdef LED_BUILTIN
-    gpio_put(LED_BUILTIN, !gpio_get(LED_BUILTIN));
-#endif
-}
-
-#endif
 
 /*  ---------------------------------------------------------------------------*\
     Usage:
@@ -360,15 +336,7 @@ void prvBlinkMainLed(void) {
     \*---------------------------------------------------------------------------*/
 extern "C"
 void rtosFatalError(void) {
-    prvSetMainLedOn(); // Main LED on.
-
-    for (;;) {
-        // Main LED slow flash
-        sleep_ms(100);
-        prvBlinkMainLed();
-        sleep_ms(2000);
-        prvBlinkMainLed();
-    }
+    panic("Fatal error");
 }
 
 #if ( configUSE_MALLOC_FAILED_HOOK == 1 )
@@ -391,12 +359,7 @@ extern "C"
 void vApplicationMallocFailedHook(void) __attribute__((weak));
 
 void vApplicationMallocFailedHook(void) {
-    prvSetMainLedOn(); // Main LED on.
-
-    for (;;) {
-        sleep_ms(50);
-        prvBlinkMainLed(); // Main LED fast blink.
-    }
+    panic("Malloc failed");
 }
 
 #endif /* configUSE_MALLOC_FAILED_HOOK == 1 */
@@ -411,12 +374,7 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask,
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask __attribute__((unused)),
                                    char * pcTaskName __attribute__((unused))) {
-    prvSetMainLedOn(); // Main LED on.
-
-    for (;;) {
-        sleep_ms(2000);
-        prvBlinkMainLed();  // Main LED slow blink.
-    }
+    panic("Stack overflow");
 }
 
 #endif /* configCHECK_FOR_STACK_OVERFLOW >= 1 */
