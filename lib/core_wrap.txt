@@ -79,3 +79,13 @@
 -Wl,--wrap=cyw43_cb_tcpip_deinit
 
 -Wl,--wrap=__stack_chk_fail
+
+-Wl,--wrap=cyw43_driver_init
+-Wl,--wrap=cyw43_driver_deinit
+-Wl,--wrap=cyw43_thread_enter
+-Wl,--wrap=cyw43_thread_exit
+-Wl,--wrap=cyw43_thread_lock_check
+-Wl,--wrap=cyw43_await_background_or_timeout_us
+-Wl,--wrap=cyw43_delay_ms
+-Wl,--wrap=cyw43_delay_us
+-Wl,--wrap=cyw43_post_poll_hook

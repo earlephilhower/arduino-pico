@@ -842,4 +842,44 @@ extern "C" {
         return;
     }
 
+#ifndef __FREERTOS
+    extern bool __real_cyw43_driver_init(async_context_t *context)'
+    bool __wrap_cyw43_driver_init(async_context_t *context) {
+        return __real_cyw43_driver_init(async_context_t *context);
+    }
+    extern void __real_cyw43_driver_deinit(async_context_t *context);
+    void __wrap_cyw43_driver_deinit(async_context_t *context) {
+        __real_cyw43_driver_deinit(context);
+    }
+    extern void __real_cyw43_thread_enter(void);
+    void __wrap_cyw43_thread_enter() {
+        __real_cyw43_thread_enter();
+    }
+    extern void __real_cyw43_thread_exit(void);
+    void __wrap_cyw43_thread_exit() {
+        __real_cyw43_thread_exit();
+    }
+    extern void __real_cyw43_thread_lock_check(void);
+    void __wrap_cyw43_thread_lock_check() {
+        __real_cyw43_thread_lock_check();
+    }
+    extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
+    void _wrap_cyw43_await_background_or_timeout_us(uint32_t timeout_us) {
+        __real_cyw43_await_background_or_timeout_us(timeout_us);
+    }
+    extern void __real_cyw43_delay_ms(uint32_t ms);
+    void __wrap_cyw43_delay_ms(uint32_t ms) {
+        __real_cyw43_delay_ms(ms);
+    }
+    extern void __real_cyw43_delay_us(uint32_t us);
+    void __wrap_cyw43_delay_us(uint32_t us) {
+        __real_cyw43_delay_us(us);
+    }
+    extern void __real_cyw43_post_poll_hook(void);
+    void __wrap_cyw43_post_poll_hook(void) {
+        __real_cyw43_post_poll_hook();
+    }
+
+#endif
+
 }; // extern "C"
