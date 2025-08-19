@@ -74,6 +74,8 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
             fqbn = fqbn + ",ipbtstack=ipv4btcble"
         if '/Profiling' in sketch:
             fqbn = fqbn + ",profile=Enabled"
+        if '/FreeRTOS' in sketch:
+            fqbn = fqbn + ",os=freertos"
     if '/FreeRTOS' in sketch:
         fqbn = fqbn + ",os=freertos"
     cmd += [fqbn]

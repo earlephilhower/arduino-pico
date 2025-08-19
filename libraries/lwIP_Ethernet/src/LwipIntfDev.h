@@ -46,8 +46,10 @@
 #include "LwipEthernet.h"
 #include "wl_definitions.h"
 
+#ifdef __FREERTOS
 #include "FreeRTOS.h"
 #include "semphr.h"
+#endif
 
 #ifndef DEFAULT_MTU
 #define DEFAULT_MTU 1500
