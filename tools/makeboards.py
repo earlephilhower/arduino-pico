@@ -175,10 +175,10 @@ def BuildIPBTStack(name):
     print('%s.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1' % (name))
     print("%s.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth" % (name))
     print('%s.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a' % (name))
-    print('%s.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1' % (name))
+    print('%s.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1' % (name))
     print("%s.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth" % (name))
     print('%s.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a' % (name))
-    print('%s.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1' % (name))
+    print('%s.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1' % (name))
     print("%s.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K" % (name))
     print('%s.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a' % (name))
     print('%s.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2' % (name))
@@ -187,10 +187,10 @@ def BuildIPBTStack(name):
     print('%s.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2' % (name))
     print("%s.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K" % (name))
     print('%s.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a' % (name))
-    print('%s.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2' % (name))
+    print('%s.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2' % (name))
     print("%s.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K" % (name))
     print('%s.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a' % (name))
-    print('%s.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2' % (name))
+    print('%s.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2' % (name))
 
 
 def BuildUploadMethodMenu(name, ram):

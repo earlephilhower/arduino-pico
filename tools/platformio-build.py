@@ -89,7 +89,8 @@ if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
     env.Append(
         CPPDEFINES=[
             ("ENABLE_CLASSIC", 1),
-            ("ENABLE_BLE", 1)
+            ("ENABLE_BLE", 1),
+            ("CYW43_ENABLE_BLUETOOTH", 1)
         ]
     )
 else:
