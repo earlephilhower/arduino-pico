@@ -59,7 +59,7 @@ SemaphoreHandle_t __lock___tz_mutex_freertos;
 SemaphoreHandle_t __lock___dd_hash_mutex_freertos;
 SemaphoreHandle_t __lock___arc4random_mutex_freertos;
 
-void __initFreeRTOSMutexes() {
+extern "C" void __initFreeRTOSMutexes() {
     __lock___sinit_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();
     __lock___sfp_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();
     __lock___atexit_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();

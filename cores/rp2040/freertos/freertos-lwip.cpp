@@ -1,5 +1,5 @@
 /*
-    LWIP-on-FreeRTOs Plumbing
+    LWIP-on-FreeRTOS Plumbing
 
     Copyright (c) 2025 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
@@ -41,7 +41,6 @@ typedef struct {
 static void lwipThread(void *params);
 static TaskHandle_t __lwipTask;
 static QueueHandle_t __lwipQueue;
-
 
 void __startLWIPThread() {
     __lwipQueue = xQueueCreate(LWIP_WORK_ENTRIES, sizeof(LWIPWork));

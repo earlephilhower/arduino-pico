@@ -1,7 +1,7 @@
 /*
-    _freertos.h - Internal core definitions for FreeRTOS
+    FreeRTOS USB task
 
-    Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
+    Copyright (c) 2025 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -21,28 +21,7 @@
 #pragma once
 
 #ifdef __FREERTOS
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
+extern void __USBStart();
+extern volatile bool __usbInitted;
 
-#include <FreeRTOS.h>
-#include "semphr.h"
-#include "task.h"
-
-#include <pico/mutex.h>
-
-// FreeRTOS has been set up
-extern volatile bool __freeRTOSinitted;
-
-extern void __freertos_idle_other_core() __attribute__((weak));
-extern void __freertos_resume_other_core() __attribute__((weak));
-
-extern void __initFreeRTOSMutexes();
-
-extern SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive = false);
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus
-
-#endif // __FREERTOS
+#endif

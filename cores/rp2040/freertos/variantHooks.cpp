@@ -24,165 +24,13 @@
     This file is NOT part of the FreeRTOS distribution.
 
 */
-#include <stdlib.h>
 
-/* FreeRTOS includes. */
+#include <Arduino.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "timers.h"
 #include "semphr.h"
-
-/* Arduino Core includes */
-#include <Arduino.h>
-#include <RP2040USB.h>
-#include "tusb.h"
-
-/* Raspberry PI Pico includes */
-#include <pico.h>
-#include <pico/time.h>
-
-#include <_freertos.h>
-
-#include <lwip_wrap.h>
-#include "freertos-lwip.h"
-
-/*-----------------------------------------------------------*/
-
-extern void __initFreeRTOSMutexes();
-void initFreeRTOS(void) {
-    __initFreeRTOSMutexes();
-}
-
-extern void setup() __attribute__((weak));
-extern void loop() __attribute__((weak));
-extern void setup1() __attribute__((weak));
-extern void loop1() __attribute__((weak));
-// Idle functions (USB, events, ...) from the core
-extern void __loop();
-volatile bool __usbInitted = false;
-
-extern void initVariant();
-static void __core1(void *params);
-static void __core0(void *params) {
-    (void) params;
-    initVariant();
-
-    if (setup1 || loop1) {
-        TaskHandle_t c1;
-        xTaskCreate(__core1, "CORE1", 1024, 0, configMAX_PRIORITIES / 2, &c1);
-        vTaskCoreAffinitySet(c1, 1 << 1);
-    }
-
-#if !defined(NO_USB) && !defined(USE_TINYUSB)
-    while (!__usbInitted) {
-        delay(1);
-    }
-#endif
-    if (setup) {
-        setup();
-    }
-    if (loop) {
-        while (1) {
-            loop();
-            __loop();
-        }
-    } else {
-        while (1) {
-            __loop();
-        }
-    }
-}
-
-static void __core1(void *params) {
-    (void) params;
-#if !defined(NO_USB) && !defined(USE_TINYUSB)
-    while (!__usbInitted) {
-        delay(1);
-    }
-#endif
-    if (setup1) {
-        setup1();
-    }
-    if (loop1) {
-        while (1) {
-            loop1();
-        }
-    } else {
-        while (1) {
-            vTaskDelay(1000);
-        }
-    }
-}
-
-extern "C" void delay(unsigned long ms) {
-    vTaskDelay(ms / portTICK_PERIOD_MS);
-}
-
-extern "C" void yield() {
-    taskYIELD();
-}
-
-static TaskHandle_t __idleCoreTask[2];
-static void __no_inline_not_in_flash_func(IdleThisCore)(void *param) {
-    (void) param;
-    while (true) {
-        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-        vTaskPreemptionDisable(nullptr);
-        portDISABLE_INTERRUPTS();
-        __otherCoreIdled = true;
-        while (__otherCoreIdled) {
-            /* noop */
-        }
-        portENABLE_INTERRUPTS();
-        vTaskPreemptionEnable(nullptr);
-    }
-}
-
-extern "C" void __no_inline_not_in_flash_func(__freertos_idle_other_core)() {
-    vTaskPreemptionDisable(nullptr);
-    xTaskNotifyGive(__idleCoreTask[ 1 ^ sio_hw->cpuid ]);
-    while (!__otherCoreIdled) {
-        /* noop */
-    }
-    portDISABLE_INTERRUPTS();
-    vTaskSuspendAll();
-}
-
-extern "C" void __no_inline_not_in_flash_func(__freertos_resume_other_core)() {
-    __otherCoreIdled = false;
-    portENABLE_INTERRUPTS();
-    xTaskResumeAll();
-    vTaskPreemptionEnable(nullptr);
-}
-
-
-extern mutex_t __usb_mutex;
-static TaskHandle_t __usbTask;
-static void __usb(void *param);
-extern volatile bool __freeRTOSinitted;
-void startFreeRTOS(void) {
-
-    TaskHandle_t c0;
-    xTaskCreate(__core0, "CORE0", 1024, 0, configMAX_PRIORITIES / 2, &c0);
-    vTaskCoreAffinitySet(c0, 1 << 0);
-
-    // Create the idle-other-core tasks (for when flash is being written)
-    xTaskCreate(IdleThisCore, "IdleCore0", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 0);
-    vTaskCoreAffinitySet(__idleCoreTask[0], 1 << 0);
-    xTaskCreate(IdleThisCore, "IdleCore1", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 1);
-    vTaskCoreAffinitySet(__idleCoreTask[1], 1 << 1);
-
-    __startLWIPThread();
-
-    // Initialise and run the freeRTOS scheduler. Execution should never return here.
-    __freeRTOSinitted = true;
-    vTaskStartScheduler();
-
-    while (true) {
-        /* noop */
-    }
-}
-
+#include <stdlib.h>
 
 /*-----------------------------------------------------------*/
 
@@ -205,10 +53,7 @@ void prvEnableInterrupts() {
 
 */
 
-extern "C"
-void vApplicationIdleHook(void) __attribute__((weak));
-
-
+extern "C" void vApplicationIdleHook(void) __attribute__((weak));
 void vApplicationIdleHook(void) {
     __wfe(); // Low power idle if nothing to do...
 }
@@ -216,7 +61,6 @@ void vApplicationIdleHook(void) {
 #endif /* configUSE_IDLE_HOOK == 1 */
 /*-----------------------------------------------------------*/
 
-//#if ( configUSE_MINIMAL_IDLE_HOOK == 1 )
 /*
     Call the user defined minimalIdle() function from within the idle task.
     This allows the application designer to add background functionality
@@ -228,14 +72,10 @@ void vApplicationIdleHook(void) {
 void passiveIdle(void) __attribute__((weak));
 void passiveIdle() {} //Empty minimalIdle function
 
-extern "C"
-//void vApplicationPassiveIdleHook(void) __attribute__((weak));
-
-void vApplicationPassiveIdleHook(void) {
+extern "C" void vApplicationPassiveIdleHook(void) {
     passiveIdle();
 }
 
-//#endif /* configUSE_MINIMAL_IDLE_HOOK == 1 */
 /*-----------------------------------------------------------*/
 
 #if ( configUSE_TICK_HOOK == 1 )
@@ -250,9 +90,7 @@ void vApplicationPassiveIdleHook(void) {
 void tick(void) __attribute__((weak));
 void tick() {} //Empty minimalIdle function
 
-extern "C"
-void vApplicationTickHook(void) __attribute__((weak));
-
+extern "C" void vApplicationTickHook(void) __attribute__((weak));
 void vApplicationTickHook(void) {
     tick();
 }
@@ -265,8 +103,7 @@ void vApplicationTickHook(void) {
     Usage:
 	called on fatal error (interrupts disabled already)
     \*---------------------------------------------------------------------------*/
-extern "C"
-void rtosFatalError(void) {
+extern "C" void rtosFatalError(void) {
     panic("Fatal error");
 }
 
@@ -274,21 +111,9 @@ void rtosFatalError(void) {
 /*  ---------------------------------------------------------------------------*\
     Usage:
     called by task system when a malloc failure is noticed
-    Description:
-    Malloc failure handler -- Shut down all interrupts, send serious complaint
-    to command port. FAST Blink on main LED.
-    Arguments:
-    pxTask - pointer to task handle
-    pcTaskName - pointer to task name
-    Results:
-    <none>
-    Notes:
-    This routine will never return.
-    This routine is referenced in the task.c file of FreeRTOS as an extern.
     \*---------------------------------------------------------------------------*/
 extern "C"
 void vApplicationMallocFailedHook(void) __attribute__((weak));
-
 void vApplicationMallocFailedHook(void) {
     panic("Malloc failed");
 }
@@ -299,24 +124,15 @@ void vApplicationMallocFailedHook(void) {
 
 #if ( configCHECK_FOR_STACK_OVERFLOW >= 1 )
 
-extern "C"
-void vApplicationStackOverflowHook(TaskHandle_t xTask,
-                                   char * pcTaskName) __attribute__((weak));
-
-void vApplicationStackOverflowHook(TaskHandle_t xTask __attribute__((unused)),
-                                   char * pcTaskName __attribute__((unused))) {
+extern "C" void vApplicationStackOverflowHook(TaskHandle_t xTask, char * pcTaskName) __attribute__((weak));
+void vApplicationStackOverflowHook(TaskHandle_t xTask __attribute__((unused)), char * pcTaskName __attribute__((unused))) {
     panic("Stack overflow");
 }
 
 #endif /* configCHECK_FOR_STACK_OVERFLOW >= 1 */
 /*-----------------------------------------------------------*/
 
-
-
-extern "C" void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
-        StackType_t ** ppxIdleTaskStackBuffer,
-        configSTACK_DEPTH_TYPE * puxIdleTaskStackSize,
-        BaseType_t xPassiveIdleTaskIndex) {
+extern "C" void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer, StackType_t ** ppxIdleTaskStackBuffer, configSTACK_DEPTH_TYPE * puxIdleTaskStackSize, BaseType_t xPassiveIdleTaskIndex) {
     static StaticTask_t xIdleTaskTCBs[ configNUMBER_OF_CORES ];
     static StackType_t uxIdleTaskStacks[ configNUMBER_OF_CORES ][ configMINIMAL_STACK_SIZE ];
 
@@ -326,17 +142,11 @@ extern "C" void vApplicationGetPassiveIdleTaskMemory(StaticTask_t ** ppxIdleTask
 }
 
 
-
 #if ( configSUPPORT_STATIC_ALLOCATION >= 1 )
 
 extern "C"
-void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                   StackType_t ** ppxIdleTaskStackBuffer,
-                                   configSTACK_DEPTH_TYPE * pulIdleTaskStackSize) __attribute__((weak));
-
-void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
-                                   StackType_t ** ppxIdleTaskStackBuffer,
-                                   configSTACK_DEPTH_TYPE * pulIdleTaskStackSize) {
+void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer, StackType_t ** ppxIdleTaskStackBuffer, configSTACK_DEPTH_TYPE * pulIdleTaskStackSize) __attribute__((weak));
+void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer, StackType_t ** ppxIdleTaskStackBuffer, configSTACK_DEPTH_TYPE * pulIdleTaskStackSize) {
     static StaticTask_t xIdleTaskTCB;
     static StackType_t uxIdleTaskStack[ configMINIMAL_STACK_SIZE ];
 
@@ -347,14 +157,8 @@ void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
 
 #if ( configUSE_TIMERS >= 1 )
 
-extern "C"
-void vApplicationGetTimerTaskMemory(StaticTask_t ** ppxTimerTaskTCBBuffer,
-                                    StackType_t ** ppxTimerTaskStackBuffer,
-                                    configSTACK_DEPTH_TYPE * pulTimerTaskStackSize) __attribute__((weak));
-
-void vApplicationGetTimerTaskMemory(StaticTask_t ** ppxTimerTaskTCBBuffer,
-                                    StackType_t ** ppxTimerTaskStackBuffer,
-                                    configSTACK_DEPTH_TYPE * pulTimerTaskStackSize) {
+extern "C" void vApplicationGetTimerTaskMemory(StaticTask_t ** ppxTimerTaskTCBBuffer, StackType_t ** ppxTimerTaskStackBuffer, configSTACK_DEPTH_TYPE * pulTimerTaskStackSize) __attribute__((weak));
+void vApplicationGetTimerTaskMemory(StaticTask_t ** ppxTimerTaskTCBBuffer, StackType_t ** ppxTimerTaskStackBuffer, configSTACK_DEPTH_TYPE * pulTimerTaskStackSize) {
     static StaticTask_t xTimerTaskTCB;
     static StackType_t uxTimerTaskStack[ configTIMER_TASK_STACK_DEPTH ];
 
@@ -371,65 +175,10 @@ void vApplicationGetTimerTaskMemory(StaticTask_t ** ppxTimerTaskTCBBuffer,
     configASSERT default implementation
 */
 #if configDEFAULT_ASSERT == 1
-
 extern "C"
 void vApplicationAssertHook() {
-
-    taskDISABLE_INTERRUPTS(); // Disable task interrupts
-
-    prvSetMainLedOn(); // Main LED on.
-    for (;;) {
-        sleep_ms(100);
-        prvBlinkMainLed(); // Led off.
-
-        sleep_ms(2000);
-        prvBlinkMainLed(); // Led on.
-
-        sleep_ms(100);
-        prvBlinkMainLed(); // Led off
-
-        sleep_ms(100);
-        prvBlinkMainLed(); // Led on.
-    }
+    panic("vApplicationAssertHook");
 }
 #endif
-
-BaseType_t ss;
-
-static void __usb(void *param) {
-    (void) param;
-
-    tusb_init();
-
-    Serial.begin(115200);
-
-    __usbInitted = true;
-
-    while (true) {
-        ss = xTaskGetSchedulerState();
-        if (ss != taskSCHEDULER_SUSPENDED) {
-            auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
-            if (xSemaphoreTake(m, 0)) {
-                tud_task();
-                xSemaphoreGive(m);
-            }
-        }
-        vTaskDelay(1 / portTICK_PERIOD_MS);
-    }
-}
-
-extern void __SetupDescHIDReport();
-extern void __SetupUSBDescriptor();
-
-void __USBStart() {
-    mutex_init(&__usb_mutex);
-
-    __SetupDescHIDReport();
-    __SetupUSBDescriptor();
-
-    // Make high prio and locked to core 0
-    xTaskCreate(__usb, "USB", 256, 0, configMAX_PRIORITIES - 2, &__usbTask);
-    vTaskCoreAffinitySet(__usbTask, 1 << 0);
-}
 
 #endif

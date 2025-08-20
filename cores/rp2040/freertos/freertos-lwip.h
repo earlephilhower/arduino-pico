@@ -18,10 +18,9 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#pragma once
 
 #ifdef __FREERTOS
-
-#pragma once
 
 // Create the thread and work queue
 void __startLWIPThread();
