@@ -597,6 +597,9 @@ MakeBoard("evn_alpha", "rp2040", "EVN", "Alpha", "0x2e8a", "0xf00a", 500, "EVN_A
 # ExtremeElectronics
 MakeBoard("extelec_rc2040", "rp2040", "ExtremeElectronics", "RC2040", "0x2e8a", "0xee20", 250, "EXTREMEELEXTRONICS_RC2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 
+# GeeekPi
+MakeBoard("geeekpi_rp2040_plus", "rp2040", "GeeekPi", "RP2040 Plus", "0x2e8a", "0x000a", 250, "GEEEKPI_RP2040_PLUS", 4, 0, "boot2_w25q080_2_padded_checksum")
+
 # GroundStudio
 MakeBoard('groundstudio_marble_pico', "rp2040", "GroundStudio", "Marble Pico", "0x2e8a", "0x0003", 500, "MARBLE_PICO", 8, 0, "boot2_w25q16jvxq_4_padded_checksum", None, "https://ardushop.ro/2652-marble-pico.html")
 
