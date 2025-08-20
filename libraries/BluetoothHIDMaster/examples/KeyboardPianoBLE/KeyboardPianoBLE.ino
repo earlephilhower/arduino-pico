@@ -206,7 +206,9 @@ void setup() {
 
   hid.begin(true);
 
-  hid.connectBLE();
+  do {
+    hid.connectBLE();
+  } while (!hid.connected());
 }
 
 void loop() {
