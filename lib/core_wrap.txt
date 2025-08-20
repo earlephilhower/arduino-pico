@@ -92,3 +92,4 @@
 -Wl,--wrap=cyw43_schedule_internal_poll_dispatch
 -Wl,--wrap=cyw43_arch_wifi_connect_bssid_timeout_ms
 -Wl,--wrap=cyw43_arch_wifi_connect_timeout_ms
+-Wl,--wrap=cyw43_arch_gpio_put

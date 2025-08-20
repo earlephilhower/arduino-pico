@@ -892,9 +892,14 @@ extern "C" {
         return __real_cyw43_arch_wifi_connect_bssid_timeout_ms(ssid, bssid, pw, auth, timeout_ms);
     }
     extern int __real_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms);
-    extern "C" int __wrap_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
+    int __wrap_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
         return __real_cyw43_arch_wifi_connect_timeout_ms(ssid, pw, auth, timeout_ms);
     }
+    extern void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
+    void __wrap_cyw43_arch_gpio_put(uint wl_gpio, bool value) {
+        __real_cyw43_arch_gpio_put(wl_gpio, value);
+    }
+
 
 #endif
 

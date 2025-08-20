@@ -226,4 +226,18 @@ extern "C" int __wrap_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const
     return __wrap_cyw43_arch_wifi_connect_bssid_timeout_ms(ssid, nullptr, pw, auth, timeout_ms);
 }
 
+extern "C" void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
+void do_cyw43_arch_gpio_put(void *data) {
+    uint32_t d = (uint32_t)data;
+    uint wl_gpio = d >> 1;
+    bool value = d & 1;
+    __real_cyw43_arch_gpio_put(wl_gpio, value);
+}
+
+extern "C" void __wrap_cyw43_arch_gpio_put(uint wl_gpio, bool value) {
+    uint32_t cbdata = (wl_gpio << 1) | (value ? 1 : 0);
+    lwip_callback(do_cyw43_arch_gpio_put, (void *)cbdata);
+}
+
+
 #endif
