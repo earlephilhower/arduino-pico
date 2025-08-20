@@ -24,8 +24,6 @@ Supported Features
 Important Information
 ---------------------
 
-Please note that WiFi on the Pico W is a work-in-progress and there are some important caveats:
-
 * Adding WiFi increases flash usage by over 220KB
 
   * There is a 220KB binary firmware blob for the WiFi chip (CYW43-series) which the Pico W uses, even to control the onboard LED.
@@ -34,17 +32,14 @@ Please note that WiFi on the Pico W is a work-in-progress and there are some imp
 
   * LWIP, the TCP/IP driver, requires preallocated buffers to allow it to run in non-polling mode (i.e. packets can be sent and received in the background without the application needing to explicitly do anything).
 
-* The WiFi driver is a little limited as of now, but fully functional for sending and receiving data
+* The WiFi driver has some limitations stemming from the upstream SDK:
 
   * Extensible Authentication Protocol (EAP) is not supported
 
   * Combined STA/AP mode is not supported
 
-* Multicore is supported, but only core 0 may run ``WiFi`` related code.
+* Multicore is supported, but only core 0 may run ``WiFi`` related code when in bare metal.  When using FreeRTOS, any Task on any core can perform networking operations.
 
-  * FreeRTOS is supported only on core 0 and from within ``setup`` and ``loop``, not tasks, due to the requirement for a very different LWIP implementation.  PRs always appreciated!
-
-  * LEAmDNS (``MDNS``) is not supported in FreeRTOS due to internal IRQ-time memory allocations.  Instead, use the SimpleMDNS library ( ``#include <SimpleMDNS.h>`` ) which has no such allocations.
 
 The WiFi library borrows much work from the `ESP8266 Arduino Core <https://github.com/esp8266/Arduino>`__ , especially the ``WiFiClient`` and ``WiFiServer`` classes.
 

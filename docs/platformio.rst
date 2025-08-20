@@ -350,8 +350,8 @@ FreeRTOS support can be activated by adding
 
 .. code:: ini
 
-    ; Set the compiler flag.  Still need to #include <FreeRTOF.h> in your application
-    build_flags = -D__FREERTOS
+    ; Enable FreeRTOS Support
+    build_flags = -DPIO_FRAMEWORK_ARDUINO_ENABLE_FREERTOS
 
 to the ``platformio.ini``.
 
