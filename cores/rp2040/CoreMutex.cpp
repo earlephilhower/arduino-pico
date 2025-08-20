@@ -32,14 +32,14 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _pxHigherPriorityTaskWoken = 0; // pdFALSE
     auto m = __get_freertos_mutex_for_ptr(mutex);
 
-    if (__freertos_check_if_in_isr()) {
-        if (!__freertos_mutex_take_from_isr(m, &_pxHigherPriorityTaskWoken)) {
+    if (portCHECK_IF_IN_ISR()) {
+        if (!xSemaphoreTakeFromISR(m, &_pxHigherPriorityTaskWoken)) {
             return;
         }
         // At this point we have the mutex in ISR
     } else {
         // Grab the mutex normally, possibly waking other tasks to get it
-        __freertos_mutex_take(m);
+        xSemaphoreTake(m, portMAX_DELAY);
     }
 #else
     uint32_t owner;
@@ -60,10 +60,11 @@ CoreMutex::~CoreMutex() {
     if (_acquired) {
 #ifdef __FREERTOS
         auto m = __get_freertos_mutex_for_ptr(_mutex);
-        if (__freertos_check_if_in_isr()) {
-            __freertos_mutex_give_from_isr(m, &_pxHigherPriorityTaskWoken);
+        if (portCHECK_IF_IN_ISR()) {
+            xSemaphoreGiveFromISR(m, &_pxHigherPriorityTaskWoken);
+            portYIELD_FROM_ISR(_pxHigherPriorityTaskWoken);
         } else {
-            __freertos_mutex_give(m);
+            xSemaphoreGive(m);
         }
 #else
         mutex_exit(_mutex);

@@ -47,9 +47,9 @@ SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
             // Make a new mutex
             SemaphoreHandle_t fm;
             if (recursive) {
-                fm = _freertos_recursive_mutex_create();
+                fm = xSemaphoreCreateRecursiveMutex();
             } else {
-                fm = __freertos_mutex_create();
+                fm = xSemaphoreCreateMutex();
             }
             if (fm == nullptr) {
                 return nullptr;

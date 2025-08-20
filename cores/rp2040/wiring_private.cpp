@@ -32,10 +32,18 @@
 static uint32_t _irqStackTop[2] = { 0, 0 };
 static uint32_t _irqStack[2][maxIRQs];
 
+#ifdef __FREERTOS
+static UBaseType_t __savedIrqs[configNUMBER_OF_CORES];
+#endif
+
 extern "C" void interrupts() {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
-        __freertos_task_exit_critical();
+        if (portGET_CRITICAL_NESTING_COUNT() == 1U && portCHECK_IF_IN_ISR()) {
+            taskEXIT_CRITICAL_FROM_ISR(__savedIrqs[portGET_CORE_ID()]);
+        } else {
+            taskEXIT_CRITICAL();
+        }
         return;
     }
 #endif
@@ -50,7 +58,11 @@ extern "C" void interrupts() {
 extern "C" void noInterrupts() {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
-        __freertos_task_enter_critical();
+        if (portGET_CRITICAL_NESTING_COUNT() == 0U && portCHECK_IF_IN_ISR()) {
+            __savedIrqs[portGET_CORE_ID()] = taskENTER_CRITICAL_FROM_ISR();
+        } else {
+            taskENTER_CRITICAL();
+        }
         return;
     }
 #endif

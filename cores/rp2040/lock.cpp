@@ -60,15 +60,15 @@ SemaphoreHandle_t __lock___dd_hash_mutex_freertos;
 SemaphoreHandle_t __lock___arc4random_mutex_freertos;
 
 void __initFreeRTOSMutexes() {
-    __lock___sinit_recursive_mutex_freertos = _freertos_recursive_mutex_create();
-    __lock___sfp_recursive_mutex_freertos = _freertos_recursive_mutex_create();
-    __lock___atexit_recursive_mutex_freertos = _freertos_recursive_mutex_create();
-    __lock___at_quick_exit_mutex_freertos = __freertos_mutex_create();
-    __lock___malloc_recursive_mutex_freertos = _freertos_recursive_mutex_create();
-    __lock___env_recursive_mutex_freertos = _freertos_recursive_mutex_create();
-    __lock___tz_mutex_freertos = __freertos_mutex_create();
-    __lock___dd_hash_mutex_freertos = __freertos_mutex_create();
-    __lock___arc4random_mutex_freertos = __freertos_mutex_create();
+    __lock___sinit_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();
+    __lock___sfp_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();
+    __lock___atexit_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();
+    __lock___at_quick_exit_mutex_freertos = xSemaphoreCreateMutex();
+    __lock___malloc_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();
+    __lock___env_recursive_mutex_freertos = xSemaphoreCreateRecursiveMutex();
+    __lock___tz_mutex_freertos = xSemaphoreCreateMutex();
+    __lock___dd_hash_mutex_freertos = xSemaphoreCreateMutex();
+    __lock___arc4random_mutex_freertos = xSemaphoreCreateMutex();
 }
 
 static SemaphoreHandle_t __getFreeRTOSMutex(_LOCK_T lock) {
@@ -150,7 +150,7 @@ void __retarget_lock_acquire(_LOCK_T lock) {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
         auto mtx = __getFreeRTOSMutex(lock);
-        __freertos_mutex_take(mtx);
+        xSemaphoreTake(mtx, portMAX_DELAY);
     } else {
         mutex_enter_blocking((mutex_t*)lock);
     }
@@ -163,7 +163,7 @@ void __retarget_lock_acquire_recursive(_LOCK_T lock) {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
         auto mtx = __getFreeRTOSRecursiveMutex(lock);
-        __freertos_recursive_mutex_take(mtx);
+        xSemaphoreTakeRecursive(mtx, portMAX_DELAY);
     } else {
         recursive_mutex_enter_blocking((recursive_mutex_t*)lock);
     }
@@ -177,7 +177,7 @@ int __retarget_lock_try_acquire(_LOCK_T lock) {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
         auto mtx = __getFreeRTOSMutex(lock);
-        ret = __freertos_mutex_try_take(mtx);
+        ret = xSemaphoreTake(mtx, 0);
     } else {
         ret = mutex_try_enter((mutex_t *)lock, nullptr);
     }
@@ -192,7 +192,7 @@ int __retarget_lock_try_acquire_recursive(_LOCK_T lock) {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
         auto mtx = __getFreeRTOSRecursiveMutex(lock);
-        ret = __freertos_recursive_mutex_try_take(mtx);
+        ret = xSemaphoreTakeRecursive(mtx, 0);
     } else {
         ret = recursive_mutex_try_enter((recursive_mutex_t*)lock, nullptr);
     }
@@ -206,7 +206,7 @@ void __retarget_lock_release(_LOCK_T lock) {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
         auto mtx = __getFreeRTOSMutex(lock);
-        __freertos_mutex_give(mtx);
+        xSemaphoreGive(mtx);
     } else {
         mutex_exit((mutex_t*)lock);
     }
@@ -219,7 +219,7 @@ void __retarget_lock_release_recursive(_LOCK_T lock) {
 #ifdef __FREERTOS
     if (__freeRTOSinitted) {
         auto mtx = __getFreeRTOSRecursiveMutex(lock);
-        __freertos_recursive_mutex_give(mtx);
+        xSemaphoreGiveRecursive(mtx);
     } else {
         recursive_mutex_exit((recursive_mutex_t*)lock);
     }
