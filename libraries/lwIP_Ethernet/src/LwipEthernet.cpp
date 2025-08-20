@@ -19,28 +19,52 @@
 */
 
 #include <LwipEthernet.h>
+#include <lwip_wrap.h>
 #include <lwip/timeouts.h>
 #include <lwip/dns.h>
 #include <pico/mutex.h>
 #if defined(PICO_CYW43_SUPPORTED)
 #include <pico/cyw43_arch.h>
 #endif
+
+#if defined(__FREERTOS)
+#include <pico/async_context_freertos.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
+static SemaphoreHandle_t _lwip_ethernet_mutex;
+#else
 #include <pico/async_context_threadsafe_background.h>
+static async_context_threadsafe_background_t lwip_ethernet_async_context;
+
+static async_context_t *lwip_ethernet_init_default_async_context(void) {
+    async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
+    if (async_context_threadsafe_background_init(&lwip_ethernet_async_context, &config)) {
+        return &lwip_ethernet_async_context.core;
+    }
+    return NULL;
+}
+// Async context that pumps the ethernet controllers
+static async_when_pending_worker_t always_pending_update_timeout_worker;
+static async_at_time_worker_t ethernet_timeout_worker;
+static async_context_t *_context = nullptr;
+
+#endif
+
 #include <functional>
 #include <map>
 
 bool __ethernetContextInitted = false;
 
-// Async context that pumps the ethernet controllers
-static async_context_threadsafe_background_t lwip_ethernet_async_context_threadsafe_background;
-static async_when_pending_worker_t always_pending_update_timeout_worker;
-static async_at_time_worker_t ethernet_timeout_worker;
-static async_context_t *_context = nullptr;
 
 // Theoretically support multiple interfaces
 static std::map<int, std::function<void(void)>> _handlePacketList;
 
 void ethernet_arch_lwip_begin() {
+    __startEthernetContext();
+#ifdef __FREERTOS
+    xSemaphoreTake(_lwip_ethernet_mutex, portMAX_DELAY);
+#else
 #if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
         cyw43_arch_lwip_begin();
@@ -48,9 +72,13 @@ void ethernet_arch_lwip_begin() {
     }
 #endif
     async_context_acquire_lock_blocking(_context);
+#endif
 }
 
 void ethernet_arch_lwip_end() {
+#ifdef __FREERTOS
+    xSemaphoreGive(_lwip_ethernet_mutex);
+#else
 #if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
         cyw43_arch_lwip_end();
@@ -58,6 +86,7 @@ void ethernet_arch_lwip_end() {
     }
 #endif
     async_context_release_lock(_context);
+#endif
 }
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
@@ -169,16 +198,39 @@ int hostByName(const char* aHostname, IPAddress& aResult, int timeout_ms) {
     return 0;
 }
 
-static async_context_t *lwip_ethernet_init_default_async_context(void) {
-    async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
-    if (async_context_threadsafe_background_init(&lwip_ethernet_async_context_threadsafe_background, &config)) {
-        return &lwip_ethernet_async_context_threadsafe_background.core;
-    }
-    return NULL;
-}
-
 uint32_t __ethernet_timeout_reached_calls = 0;
 static uint32_t _pollingPeriod = 20;
+
+// We have a background pump which calls sys_check_timeouts on a periodic basis
+// and polls all Ethernet interfaces
+#ifdef __FREERTOS
+static TaskHandle_t _ethernetTask;;
+
+static void stage2(void *cbData) {
+    (void) cbData;
+    ethernet_arch_lwip_gpio_mask();
+    // Scan the installed Ethernet drivers
+    for (auto handlePacket : _handlePacketList) {
+        // Note that each NIC needs to use its own mutex to ensure LWIP isn't doing something with it at the time we want to poll
+        handlePacket.second();
+    }
+    ethernet_arch_lwip_gpio_unmask();
+    // Do LWIP stuff as needed
+    sys_check_timeouts();
+}
+
+static void ethernetTask(void *param) {
+    (void) param;
+    while (true) {
+        uint32_t sleep_ms = sys_timeouts_sleeptime();
+        if (sleep_ms > _pollingPeriod) {
+            sleep_ms = _pollingPeriod;
+        }
+        vTaskDelay(sleep_ms / portTICK_PERIOD_MS);
+        lwip_callback(stage2, nullptr);
+    }
+}
+#else
 // This will only be called under the protection of the async context mutex, so no re-entrancy checks needed
 static void ethernet_timeout_reached(__unused async_context_t *context, __unused async_at_time_worker_t *worker) {
     assert(worker == &ethernet_timeout_worker);
@@ -186,14 +238,8 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
     ethernet_arch_lwip_gpio_mask(); // Ensure non-polled devices won't interrupt us
     for (auto handlePacket : _handlePacketList) {
         handlePacket.second();
-    }
-#if defined(PICO_CYW43_SUPPORTED)
-    if (!rp2040.isPicoW()) {
         sys_check_timeouts();
     }
-#else
-    sys_check_timeouts();
-#endif
     ethernet_arch_lwip_gpio_unmask();
 }
 
@@ -202,11 +248,17 @@ static void update_next_timeout(async_context_t *context, async_when_pending_wor
     worker->work_pending = true;
     async_context_add_at_time_worker_in_ms(context, &ethernet_timeout_worker, _pollingPeriod);
 }
+#endif
+
 
 void __startEthernetContext() {
     if (__ethernetContextInitted) {
         return;
     }
+#ifdef __FREERTOS
+    _lwip_ethernet_mutex = xSemaphoreCreateMutex();
+    xTaskCreate(ethernetTask, "EthPoll", 256, nullptr, 1, &_ethernetTask);
+#else
 #if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
         _context = cyw43_arch_async_context();
@@ -220,6 +272,7 @@ void __startEthernetContext() {
     always_pending_update_timeout_worker.work_pending = true;
     always_pending_update_timeout_worker.do_work = update_next_timeout;
     async_context_add_when_pending_worker(_context, &always_pending_update_timeout_worker);
+#endif
     __ethernetContextInitted = true;
 }
 

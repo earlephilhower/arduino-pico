@@ -23,7 +23,7 @@
 	path = libraries/Adafruit_TinyUSB_Arduino
 	url = https://github.com/adafruit/Adafruit_TinyUSB_Arduino.git
 [submodule "libraries/FreeRTOS/lib/FreeRTOS-Kernel"]
-	path = libraries/FreeRTOS/lib/FreeRTOS-Kernel
+	path = FreeRTOS-Kernel
 	url = https://github.com/earlephilhower/FreeRTOS-Kernel.git
 [submodule "tools/libbearssl/bearssl"]
 	path = tools/libbearssl/bearssl
@@ -49,3 +49,6 @@
 [submodule "libraries/SdFat"]
 	path = libraries/SdFat
 	url = https://github.com/greiman/SdFat.git
+[submodule "FreeRTOS-Kernel"]
+	path = FreeRTOS-Kernel
+	url = https://github.com/earlephilhower/FreeRTOS-Kernel.git

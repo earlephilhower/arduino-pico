@@ -36,6 +36,13 @@
 
 template<>
 WiFiUDP* SList<WiFiUDP>::_s_first = 0;
+#ifdef __FREERTOS
+template<>
+SemaphoreHandle_t SList<WiFiUDP>::_s_first_lock = 0;
+template<>
+bool SList<WiFiUDP>::_s_first_lock_created = false;
+#endif
+
 
 /* Constructor */
 WiFiUDP::WiFiUDP() : _ctx(0), _multicast(false), _dirty(false) {

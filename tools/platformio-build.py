@@ -95,6 +95,14 @@ if "PIO_FRAMEWORK_ARDUINO_ENABLE_BLUETOOTH" in flatten_cppdefines:
 else:
     libpicow = File(os.path.join(FRAMEWORK_DIR, "lib", chip, "liblwip.a"))
 
+if "PIO_FRAMEWORK_ARDUINO_ENABLE_FREERTOS" in flatten_cppdefines:
+    env.Append(
+        CPPDEFINES=[
+            ("__FREERTOS", 1)
+        ]
+    )
+
+
 env.Append(
     ASFLAGS=env.get("CCFLAGS", [])[:],
 )

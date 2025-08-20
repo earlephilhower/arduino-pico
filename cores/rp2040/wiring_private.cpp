@@ -32,30 +32,46 @@
 static uint32_t _irqStackTop[2] = { 0, 0 };
 static uint32_t _irqStack[2][maxIRQs];
 
+#ifdef __FREERTOS
+static UBaseType_t __savedIrqs[configNUMBER_OF_CORES];
+#endif
+
 extern "C" void interrupts() {
+#ifdef __FREERTOS
     if (__freeRTOSinitted) {
-        __freertos_task_exit_critical();
-    } else {
-        auto core = get_core_num();
-        if (!_irqStackTop[core]) {
-            // ERROR
-            return;
+        if (portGET_CRITICAL_NESTING_COUNT() == 1U && portCHECK_IF_IN_ISR()) {
+            taskEXIT_CRITICAL_FROM_ISR(__savedIrqs[portGET_CORE_ID()]);
+        } else {
+            taskEXIT_CRITICAL();
         }
-        restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
+        return;
     }
+#endif
+    auto core = get_core_num();
+    if (!_irqStackTop[core]) {
+        // ERROR
+        return;
+    }
+    restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
 }
 
 extern "C" void noInterrupts() {
+#ifdef __FREERTOS
     if (__freeRTOSinitted) {
-        __freertos_task_enter_critical();
-    } else {
-        auto core = get_core_num();
-        if (_irqStackTop[core] == maxIRQs) {
-            // ERROR
-            panic("IRQ stack overflow");
+        if (portGET_CRITICAL_NESTING_COUNT() == 0U && portCHECK_IF_IN_ISR()) {
+            __savedIrqs[portGET_CORE_ID()] = taskENTER_CRITICAL_FROM_ISR();
+        } else {
+            taskENTER_CRITICAL();
         }
-        _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
+        return;
     }
+#endif
+    auto core = get_core_num();
+    if (_irqStackTop[core] == maxIRQs) {
+        // ERROR
+        panic("IRQ stack overflow");
+    }
+    _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
 }
 
 auto_init_mutex(_irqMutex);

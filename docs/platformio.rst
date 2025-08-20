@@ -343,6 +343,19 @@ The Bluetooth Classic (BTC) and Bluetooth Low Energy (BLE) stack can be activate
 
 to the ``platformio.ini``.
 
+FreeRTOS
+--------
+
+FreeRTOS support can be activated by adding
+
+.. code:: ini
+
+    ; Enable FreeRTOS Support
+    build_flags = -DPIO_FRAMEWORK_ARDUINO_ENABLE_FREERTOS
+
+to the ``platformio.ini``.
+
+
 Selecting a different core version
 ----------------------------------
 
