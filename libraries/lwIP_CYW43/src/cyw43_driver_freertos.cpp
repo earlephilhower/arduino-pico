@@ -39,6 +39,7 @@ extern "C" {
 
 static SemaphoreHandle_t _cyw43_arch_mutex;
 static SemaphoreHandle_t _cyw43_irq_called_binary;
+static SemaphoreHandle_t _cyw43_sleep_poll_binary;
 
 static void cb_cyw43_do_poll(void *context);
 static __callback_req _irqBuffer;
@@ -86,12 +87,17 @@ extern "C" void __wrap_cyw43_schedule_internal_poll_dispatch(__unused void (*fun
     lwip_callback(cb_cyw43_do_poll, nullptr);
 }
 
+
+
 static int64_t cb_cyw43_sleep_timeout_reached(alarm_id_t id, void *ptr) {
     (void) id;
     (void) ptr;
     static __callback_req _sleepIRQBuffer;
     // This will be in IRQ context, so do a lwip callback.  Only one at a time can be outstanding so this single struct is good enough
-    lwip_callback(cb_cyw43_do_poll, nullptr, &_sleepIRQBuffer);
+    BaseType_t pxHigherPriorityTaskWoken;
+    if (xSemaphoreTakeFromISR(_cyw43_sleep_poll_binary, &pxHigherPriorityTaskWoken)) {
+        lwip_callback(cb_cyw43_do_poll, nullptr, &_sleepIRQBuffer);
+    }
     return 0; // Don't reschedule
 }
 
@@ -100,6 +106,7 @@ static void cb_cyw43_do_poll(void *context) { //, __unused async_when_pending_wo
 #ifndef NDEBUG
     assert(get_core_num() == 0);
 #endif
+    cyw43_thread_enter();
     if (cyw43_poll) {
         if (cyw43_sleep > 0) {
             cyw43_sleep--;
@@ -111,12 +118,17 @@ static void cb_cyw43_do_poll(void *context) { //, __unused async_when_pending_wo
             // Nothing to do.  We have 1-shot alarms
         }
     }
+    cyw43_thread_exit();
+    xSemaphoreGive(_cyw43_irq_called_binary);
+    xSemaphoreGive(_cyw43_sleep_poll_binary);
 }
 
 extern "C" bool __wrap_cyw43_driver_init(async_context_t *context) {
     assert(get_core_num() == 0);
     _cyw43_arch_mutex = xSemaphoreCreateRecursiveMutex();
     _cyw43_irq_called_binary = xSemaphoreCreateBinary();
+    _cyw43_sleep_poll_binary = xSemaphoreCreateBinary();
+    xSemaphoreGive(_cyw43_sleep_poll_binary);
     cyw43_init(&cyw43_state);
     cyw43_irq_init(nullptr);
     return true;
@@ -144,6 +156,7 @@ extern "C" void __wrap_cyw43_thread_lock_check() {
 #endif
 
 extern "C" void __wrap_cyw43_await_background_or_timeout_us(uint32_t timeout_us) {
+//    cyw43_set_irq_enabled(true);
     if (__get_current_exception() > 0) {
         vTaskDelay((timeout_us / 1000) / portTICK_PERIOD_MS);
         return;
@@ -163,6 +176,50 @@ extern "C" void __wrap_cyw43_delay_us(uint32_t us) {
         us -= ms * 1000;
     }
     delayMicroseconds(us);
+}
+
+
+
+static int this_cyw43_arch_wifi_connect_bssid_until(const char *ssid, const uint8_t *bssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
+    uint32_t start = millis();
+    int err = cyw43_arch_wifi_connect_bssid_async(ssid, bssid, pw, auth);
+    if (err) return err;
+    int status = CYW43_LINK_UP + 1;
+    while(status >= 0 && status != CYW43_LINK_UP) {
+        int new_status = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
+        // If there was no network, keep trying
+        if (new_status == CYW43_LINK_NONET) {
+            new_status = CYW43_LINK_JOIN;
+            err = cyw43_arch_wifi_connect_bssid_async(ssid, bssid, pw, auth);
+            if (err) return err;
+        }
+        if (new_status != status) {
+            status = new_status;
+        }
+        uint32_t delta = millis() - start;
+        if (delta > timeout_ms) {
+            return PICO_ERROR_TIMEOUT;
+        }
+        // Do polling
+        //cyw43_arch_poll();
+        __wrap_cyw43_await_background_or_timeout_us((timeout_ms - delta) * 1000); //cyw43_arch_wait_for_work_until(until);
+    }
+    // Turn status into a pico_error_codes, CYW43_LINK_NONET shouldn't happen as we fail with PICO_ERROR_TIMEOUT instead
+    assert(status == CYW43_LINK_UP || status == CYW43_LINK_BADAUTH || status == CYW43_LINK_FAIL);
+    if (status == CYW43_LINK_UP) {
+        return PICO_OK; // success
+    } else if (status == CYW43_LINK_BADAUTH) {
+        return PICO_ERROR_BADAUTH;
+    } else {
+        return PICO_ERROR_CONNECT_FAILED;
+    }
+}
+extern "C" int __wrap_cyw43_arch_wifi_connect_bssid_timeout_ms(const char *ssid, const uint8_t *bssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
+    return this_cyw43_arch_wifi_connect_bssid_until(ssid, bssid, pw, auth, timeout_ms); //make_timeout_time_ms(timeout_ms));
+}
+
+extern "C" int __wrap_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
+    return __wrap_cyw43_arch_wifi_connect_bssid_timeout_ms(ssid, nullptr, pw, auth, timeout_ms);
 }
 
 #endif

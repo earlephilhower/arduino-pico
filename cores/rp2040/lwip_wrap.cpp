@@ -887,6 +887,14 @@ extern "C" {
     void __wrap_cyw43_schedule_internal_poll_dispatch(void (*func)()) {
         __real_cyw43_schedule_internal_poll_dispatch(func);
     }
+    extern int __real_cyw43_arch_wifi_connect_bssid_timeout_ms(const char *ssid, const uint8_t *bssid, const char *pw, uint32_t auth, uint32_t timeout_ms);
+    int __wrap_cyw43_arch_wifi_connect_bssid_timeout_ms(const char *ssid, const uint8_t *bssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
+        return __real_cyw43_arch_wifi_connect_bssid_timeout_ms(ssid, bssid, pw, auth, timeout_ms);
+    }
+    extern int __real_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms);
+    extern "C" int __wrap_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
+        return __real_cyw43_arch_wifi_connect_timeout_ms(ssid, pw, auth, timeout_ms);
+    }
 
 #endif
 
