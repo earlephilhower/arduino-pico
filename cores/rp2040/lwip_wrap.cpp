@@ -51,7 +51,7 @@ extern "C" {
     void __wrap_lwip_init() {
         if (!_lwip_rng) {
             recursive_mutex_init(&__lwipMutex);
-            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros() * rp2040.getCycleCount());
+            _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros());
             __real_lwip_init();
         }
     }
