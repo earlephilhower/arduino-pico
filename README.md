@@ -54,6 +54,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * ElectronicCats Hunter Cat NFC
 * EVN Alpha
 * ExtremeElectronics RC2040
+* GeeekPi RP2040 Plus
 * GroundStudio Marble Pico
 * Invector Labs Challenger RP2040 WiFi
 * Invector Labs Challenger RP2040 WiFi/BLE
