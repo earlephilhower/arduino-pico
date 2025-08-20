@@ -50,14 +50,14 @@ async_context_t *cyw43_arch_init_default_async_context(void) {
 }
 
 int cyw43_arch_init(void) {
-//    async_context_t *context = cyw43_arch_async_context();
-//    if (!context) {
-//        context = cyw43_arch_init_default_async_context();
-//        if (!context) {
-//            return PICO_ERROR_GENERIC;
-//        }
-//        cyw43_arch_set_async_context(context);
-//    }
+    //    async_context_t *context = cyw43_arch_async_context();
+    //    if (!context) {
+    //        context = cyw43_arch_init_default_async_context();
+    //        if (!context) {
+    //            return PICO_ERROR_GENERIC;
+    //        }
+    //        cyw43_arch_set_async_context(context);
+    //    }
     async_context_t *context = NULL;
     cyw43_arch_set_async_context(context);
 

@@ -156,7 +156,7 @@ extern "C" void __wrap_cyw43_thread_lock_check() {
 #endif
 
 extern "C" void __wrap_cyw43_await_background_or_timeout_us(uint32_t timeout_us) {
-//    cyw43_set_irq_enabled(true);
+    //    cyw43_set_irq_enabled(true);
     if (__get_current_exception() > 0) {
         vTaskDelay((timeout_us / 1000) / portTICK_PERIOD_MS);
         return;
@@ -183,15 +183,19 @@ extern "C" void __wrap_cyw43_delay_us(uint32_t us) {
 static int this_cyw43_arch_wifi_connect_bssid_until(const char *ssid, const uint8_t *bssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
     uint32_t start = millis();
     int err = cyw43_arch_wifi_connect_bssid_async(ssid, bssid, pw, auth);
-    if (err) return err;
+    if (err) {
+        return err;
+    }
     int status = CYW43_LINK_UP + 1;
-    while(status >= 0 && status != CYW43_LINK_UP) {
+    while (status >= 0 && status != CYW43_LINK_UP) {
         int new_status = cyw43_tcpip_link_status(&cyw43_state, CYW43_ITF_STA);
         // If there was no network, keep trying
         if (new_status == CYW43_LINK_NONET) {
             new_status = CYW43_LINK_JOIN;
             err = cyw43_arch_wifi_connect_bssid_async(ssid, bssid, pw, auth);
-            if (err) return err;
+            if (err) {
+                return err;
+            }
         }
         if (new_status != status) {
             status = new_status;
