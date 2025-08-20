@@ -15616,6 +15616,264 @@ extelec_rc2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis
 extelec_rc2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
+# GeeekPi RP2040 Plus
+# -----------------------------------
+geeekpi_rp2040_plus.name=GeeekPi RP2040 Plus
+geeekpi_rp2040_plus.vid.0=0x2e8a
+geeekpi_rp2040_plus.pid.0=0x000a
+geeekpi_rp2040_plus.vid.1=0x2e8a
+geeekpi_rp2040_plus.pid.1=0x010a
+geeekpi_rp2040_plus.vid.2=0x2e8a
+geeekpi_rp2040_plus.pid.2=0x400a
+geeekpi_rp2040_plus.vid.3=0x2e8a
+geeekpi_rp2040_plus.pid.3=0x410a
+geeekpi_rp2040_plus.vid.4=0x2e8a
+geeekpi_rp2040_plus.pid.4=0x800a
+geeekpi_rp2040_plus.vid.5=0x2e8a
+geeekpi_rp2040_plus.pid.5=0x810a
+geeekpi_rp2040_plus.vid.6=0x2e8a
+geeekpi_rp2040_plus.pid.6=0xc00a
+geeekpi_rp2040_plus.vid.7=0x2e8a
+geeekpi_rp2040_plus.pid.7=0xc10a
+geeekpi_rp2040_plus.upload_port.0.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.0.pid=0x000a
+geeekpi_rp2040_plus.upload_port.1.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.1.pid=0x010a
+geeekpi_rp2040_plus.upload_port.2.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.2.pid=0x400a
+geeekpi_rp2040_plus.upload_port.3.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.3.pid=0x410a
+geeekpi_rp2040_plus.upload_port.4.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.4.pid=0x800a
+geeekpi_rp2040_plus.upload_port.5.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.5.pid=0x810a
+geeekpi_rp2040_plus.upload_port.6.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.6.pid=0xc00a
+geeekpi_rp2040_plus.upload_port.7.vid=0x2e8a
+geeekpi_rp2040_plus.upload_port.7.pid=0xc10a
+geeekpi_rp2040_plus.build.usbvid=-DUSBD_VID=0x2e8a
+geeekpi_rp2040_plus.build.usbpid=-DUSBD_PID=0x000a
+geeekpi_rp2040_plus.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+geeekpi_rp2040_plus.build.board=GEEEKPI_RP2040_PLUS
+geeekpi_rp2040_plus.build.mcu=cortex-m0plus
+geeekpi_rp2040_plus.build.chip=rp2040
+geeekpi_rp2040_plus.build.toolchain=arm-none-eabi
+geeekpi_rp2040_plus.build.toolchainpkg=pqt-gcc
+geeekpi_rp2040_plus.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+geeekpi_rp2040_plus.build.uf2family=--family rp2040
+geeekpi_rp2040_plus.build.variant=geeekpi_rp2040_plus
+geeekpi_rp2040_plus.upload.maximum_size=4194304
+geeekpi_rp2040_plus.upload.wait_for_upload_port=true
+geeekpi_rp2040_plus.upload.erase_cmd=
+geeekpi_rp2040_plus.serial.disableDTR=false
+geeekpi_rp2040_plus.serial.disableRTS=false
+geeekpi_rp2040_plus.build.f_cpu=125000000
+geeekpi_rp2040_plus.build.led=
+geeekpi_rp2040_plus.build.core=rp2040
+geeekpi_rp2040_plus.build.ldscript=memmap_default.ld
+geeekpi_rp2040_plus.build.boot2=boot2_w25q080_2_padded_checksum
+geeekpi_rp2040_plus.build.usb_manufacturer="GeeekPi"
+geeekpi_rp2040_plus.build.usb_product="RP2040 Plus"
+geeekpi_rp2040_plus.menu.flash.4194304_0=4MB (no FS)
+geeekpi_rp2040_plus.menu.flash.4194304_0.upload.maximum_size=4190208
+geeekpi_rp2040_plus.menu.flash.4194304_0.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_0.build.flash_length=4190208
+geeekpi_rp2040_plus.menu.flash.4194304_0.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_0.build.fs_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_0.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_65536=4MB (Sketch: 4032KB, FS: 64KB)
+geeekpi_rp2040_plus.menu.flash.4194304_65536.upload.maximum_size=4124672
+geeekpi_rp2040_plus.menu.flash.4194304_65536.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_65536.build.flash_length=4124672
+geeekpi_rp2040_plus.menu.flash.4194304_65536.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_65536.build.fs_start=272560128
+geeekpi_rp2040_plus.menu.flash.4194304_65536.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_131072=4MB (Sketch: 3968KB, FS: 128KB)
+geeekpi_rp2040_plus.menu.flash.4194304_131072.upload.maximum_size=4059136
+geeekpi_rp2040_plus.menu.flash.4194304_131072.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_131072.build.flash_length=4059136
+geeekpi_rp2040_plus.menu.flash.4194304_131072.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_131072.build.fs_start=272494592
+geeekpi_rp2040_plus.menu.flash.4194304_131072.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_262144=4MB (Sketch: 3840KB, FS: 256KB)
+geeekpi_rp2040_plus.menu.flash.4194304_262144.upload.maximum_size=3928064
+geeekpi_rp2040_plus.menu.flash.4194304_262144.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_262144.build.flash_length=3928064
+geeekpi_rp2040_plus.menu.flash.4194304_262144.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_262144.build.fs_start=272363520
+geeekpi_rp2040_plus.menu.flash.4194304_262144.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_524288=4MB (Sketch: 3584KB, FS: 512KB)
+geeekpi_rp2040_plus.menu.flash.4194304_524288.upload.maximum_size=3665920
+geeekpi_rp2040_plus.menu.flash.4194304_524288.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_524288.build.flash_length=3665920
+geeekpi_rp2040_plus.menu.flash.4194304_524288.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_524288.build.fs_start=272101376
+geeekpi_rp2040_plus.menu.flash.4194304_524288.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_1048576=4MB (Sketch: 3MB, FS: 1MB)
+geeekpi_rp2040_plus.menu.flash.4194304_1048576.upload.maximum_size=3141632
+geeekpi_rp2040_plus.menu.flash.4194304_1048576.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_1048576.build.flash_length=3141632
+geeekpi_rp2040_plus.menu.flash.4194304_1048576.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_1048576.build.fs_start=271577088
+geeekpi_rp2040_plus.menu.flash.4194304_1048576.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_2097152=4MB (Sketch: 2MB, FS: 2MB)
+geeekpi_rp2040_plus.menu.flash.4194304_2097152.upload.maximum_size=2093056
+geeekpi_rp2040_plus.menu.flash.4194304_2097152.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_2097152.build.flash_length=2093056
+geeekpi_rp2040_plus.menu.flash.4194304_2097152.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_2097152.build.fs_start=270528512
+geeekpi_rp2040_plus.menu.flash.4194304_2097152.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_3145728=4MB (Sketch: 1MB, FS: 3MB)
+geeekpi_rp2040_plus.menu.flash.4194304_3145728.upload.maximum_size=1044480
+geeekpi_rp2040_plus.menu.flash.4194304_3145728.build.flash_total=4194304
+geeekpi_rp2040_plus.menu.flash.4194304_3145728.build.flash_length=1044480
+geeekpi_rp2040_plus.menu.flash.4194304_3145728.build.eeprom_start=272625664
+geeekpi_rp2040_plus.menu.flash.4194304_3145728.build.fs_start=269479936
+geeekpi_rp2040_plus.menu.flash.4194304_3145728.build.fs_end=272625664
+geeekpi_rp2040_plus.menu.freq.200=200 MHz
+geeekpi_rp2040_plus.menu.freq.200.build.f_cpu=200000000L
+geeekpi_rp2040_plus.menu.freq.50=50 MHz
+geeekpi_rp2040_plus.menu.freq.50.build.f_cpu=50000000L
+geeekpi_rp2040_plus.menu.freq.100=100 MHz
+geeekpi_rp2040_plus.menu.freq.100.build.f_cpu=100000000L
+geeekpi_rp2040_plus.menu.freq.120=120 MHz
+geeekpi_rp2040_plus.menu.freq.120.build.f_cpu=120000000L
+geeekpi_rp2040_plus.menu.freq.125=125 MHz
+geeekpi_rp2040_plus.menu.freq.125.build.f_cpu=125000000L
+geeekpi_rp2040_plus.menu.freq.128=128 MHz
+geeekpi_rp2040_plus.menu.freq.128.build.f_cpu=128000000L
+geeekpi_rp2040_plus.menu.freq.133=133 MHz
+geeekpi_rp2040_plus.menu.freq.133.build.f_cpu=133000000L
+geeekpi_rp2040_plus.menu.freq.150=150 MHz
+geeekpi_rp2040_plus.menu.freq.150.build.f_cpu=150000000L
+geeekpi_rp2040_plus.menu.freq.176=176 MHz
+geeekpi_rp2040_plus.menu.freq.176.build.f_cpu=176000000L
+geeekpi_rp2040_plus.menu.freq.225=225 MHz (Overclock)
+geeekpi_rp2040_plus.menu.freq.225.build.f_cpu=225000000L
+geeekpi_rp2040_plus.menu.freq.240=240 MHz (Overclock)
+geeekpi_rp2040_plus.menu.freq.240.build.f_cpu=240000000L
+geeekpi_rp2040_plus.menu.freq.250=250 MHz (Overclock)
+geeekpi_rp2040_plus.menu.freq.250.build.f_cpu=250000000L
+geeekpi_rp2040_plus.menu.freq.276=276 MHz (Overclock)
+geeekpi_rp2040_plus.menu.freq.276.build.f_cpu=276000000L
+geeekpi_rp2040_plus.menu.freq.300=300 MHz (Overclock)
+geeekpi_rp2040_plus.menu.freq.300.build.f_cpu=300000000L
+geeekpi_rp2040_plus.menu.opt.Small=Small (-Os) (standard)
+geeekpi_rp2040_plus.menu.opt.Small.build.flags.optimize=-Os
+geeekpi_rp2040_plus.menu.opt.Optimize=Optimize (-O)
+geeekpi_rp2040_plus.menu.opt.Optimize.build.flags.optimize=-O
+geeekpi_rp2040_plus.menu.opt.Optimize2=Optimize More (-O2)
+geeekpi_rp2040_plus.menu.opt.Optimize2.build.flags.optimize=-O2
+geeekpi_rp2040_plus.menu.opt.Optimize3=Optimize Even More (-O3)
+geeekpi_rp2040_plus.menu.opt.Optimize3.build.flags.optimize=-O3
+geeekpi_rp2040_plus.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+geeekpi_rp2040_plus.menu.opt.Fast.build.flags.optimize=-Ofast
+geeekpi_rp2040_plus.menu.opt.Debug=Debug (-Og)
+geeekpi_rp2040_plus.menu.opt.Debug.build.flags.optimize=-Og
+geeekpi_rp2040_plus.menu.opt.Disabled=Disabled (-O0)
+geeekpi_rp2040_plus.menu.opt.Disabled.build.flags.optimize=-O0
+geeekpi_rp2040_plus.menu.os.none=None
+geeekpi_rp2040_plus.menu.os.none.build.os=
+geeekpi_rp2040_plus.menu.os.freertos=FreeRTOS SMP
+geeekpi_rp2040_plus.menu.os.freertos.build.os=-D__FREERTOS
+geeekpi_rp2040_plus.menu.profile.Disabled=Disabled
+geeekpi_rp2040_plus.menu.profile.Disabled.build.flags.profile=
+geeekpi_rp2040_plus.menu.profile.Enabled=Enabled
+geeekpi_rp2040_plus.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+geeekpi_rp2040_plus.menu.rtti.Disabled=Disabled
+geeekpi_rp2040_plus.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+geeekpi_rp2040_plus.menu.rtti.Enabled=Enabled
+geeekpi_rp2040_plus.menu.rtti.Enabled.build.flags.rtti=
+geeekpi_rp2040_plus.menu.stackprotect.Disabled=Disabled
+geeekpi_rp2040_plus.menu.stackprotect.Disabled.build.flags.stackprotect=
+geeekpi_rp2040_plus.menu.stackprotect.Enabled=Enabled
+geeekpi_rp2040_plus.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+geeekpi_rp2040_plus.menu.exceptions.Disabled=Disabled
+geeekpi_rp2040_plus.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+geeekpi_rp2040_plus.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+geeekpi_rp2040_plus.menu.exceptions.Enabled=Enabled
+geeekpi_rp2040_plus.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+geeekpi_rp2040_plus.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+geeekpi_rp2040_plus.menu.dbgport.Disabled=Disabled
+geeekpi_rp2040_plus.menu.dbgport.Disabled.build.debug_port=
+geeekpi_rp2040_plus.menu.dbgport.Serial=Serial
+geeekpi_rp2040_plus.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+geeekpi_rp2040_plus.menu.dbgport.Serial1=Serial1
+geeekpi_rp2040_plus.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+geeekpi_rp2040_plus.menu.dbgport.Serial2=Serial2
+geeekpi_rp2040_plus.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+geeekpi_rp2040_plus.menu.dbgport.SerialSemi=SerialSemi
+geeekpi_rp2040_plus.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+geeekpi_rp2040_plus.menu.dbglvl.None=None
+geeekpi_rp2040_plus.menu.dbglvl.None.build.debug_level=
+geeekpi_rp2040_plus.menu.dbglvl.Core=Core
+geeekpi_rp2040_plus.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+geeekpi_rp2040_plus.menu.dbglvl.SPI=SPI
+geeekpi_rp2040_plus.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+geeekpi_rp2040_plus.menu.dbglvl.Wire=Wire
+geeekpi_rp2040_plus.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+geeekpi_rp2040_plus.menu.dbglvl.Bluetooth=Bluetooth
+geeekpi_rp2040_plus.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+geeekpi_rp2040_plus.menu.dbglvl.LWIP=LWIP
+geeekpi_rp2040_plus.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
+geeekpi_rp2040_plus.menu.dbglvl.All=All
+geeekpi_rp2040_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+geeekpi_rp2040_plus.menu.dbglvl.NDEBUG=NDEBUG
+geeekpi_rp2040_plus.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+geeekpi_rp2040_plus.menu.usbstack.picosdk=Pico SDK
+geeekpi_rp2040_plus.menu.usbstack.picosdk.build.usbstack_flags=
+geeekpi_rp2040_plus.menu.usbstack.tinyusb=Adafruit TinyUSB
+geeekpi_rp2040_plus.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+geeekpi_rp2040_plus.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+geeekpi_rp2040_plus.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+geeekpi_rp2040_plus.menu.usbstack.nousb=No USB
+geeekpi_rp2040_plus.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4only=IPv4 Only
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6.build.libpicow=liblwip.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6big.build.libpicow=liblwip.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a
+geeekpi_rp2040_plus.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -D__LWIP_MEMMULT=2
+geeekpi_rp2040_plus.menu.uploadmethod.default=Default (UF2)
+geeekpi_rp2040_plus.menu.uploadmethod.default.build.ram_length=256k
+geeekpi_rp2040_plus.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+geeekpi_rp2040_plus.menu.uploadmethod.default.upload.maximum_data_size=262144
+geeekpi_rp2040_plus.menu.uploadmethod.default.upload.tool=uf2conv
+geeekpi_rp2040_plus.menu.uploadmethod.default.upload.tool.default=uf2conv
+geeekpi_rp2040_plus.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+geeekpi_rp2040_plus.menu.uploadmethod.picotool=Picotool
+geeekpi_rp2040_plus.menu.uploadmethod.picotool.build.ram_length=256k
+geeekpi_rp2040_plus.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+geeekpi_rp2040_plus.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+geeekpi_rp2040_plus.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+geeekpi_rp2040_plus.menu.uploadmethod.picotool.upload.tool=picotool
+geeekpi_rp2040_plus.menu.uploadmethod.picotool.upload.tool.default=picotool
+geeekpi_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+geeekpi_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+geeekpi_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+geeekpi_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+geeekpi_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+geeekpi_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # GroundStudio Marble Pico
 # -----------------------------------
 groundstudio_marble_pico.name=GroundStudio Marble Pico
