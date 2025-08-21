@@ -31,6 +31,7 @@
 #include <sys/lock.h>
 #include "_xoshiro.h"
 #include "lwip_wrap.h"
+#include <pico/btstack_run_loop_async_context.h>
 
 //auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 recursive_mutex_t __lwipMutex;
@@ -898,6 +899,11 @@ extern "C" {
     extern void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
     void __wrap_cyw43_arch_gpio_put(uint wl_gpio, bool value) {
         __real_cyw43_arch_gpio_put(wl_gpio, value);
+    }
+
+    extern const btstack_run_loop_t *__real_btstack_run_loop_async_context_get_instance(async_context_t *async_context);
+    const btstack_run_loop_t *__wrap_btstack_run_loop_async_context_get_instance(async_context_t *async_context) {
+        return __real_btstack_run_loop_async_context_get_instance(async_context);
     }
 
 
