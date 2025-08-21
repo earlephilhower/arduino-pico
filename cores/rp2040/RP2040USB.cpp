@@ -108,13 +108,13 @@ const uint8_t *tud_descriptor_device_cb(void) {
     }
     // Need a multi-endpoint config which will require changing the PID to help Windows not barf
     if (__USBInstallKeyboard) {
-        usbd_desc_device.idProduct |= 0x8000;
+        usbd_desc_device.idProduct ^= 0x8000;
     }
     if (__USBInstallMouse || __USBInstallAbsoluteMouse) {
-        usbd_desc_device.idProduct |= 0x4000;
+        usbd_desc_device.idProduct ^= 0x4000;
     }
     if (__USBInstallJoystick) {
-        usbd_desc_device.idProduct |= 0x0100;
+        usbd_desc_device.idProduct ^= 0x0100;
     }
     if (__USBInstallMassStorage) {
         usbd_desc_device.idProduct ^= 0x2000;
