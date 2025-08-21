@@ -568,7 +568,7 @@ size_t I2S::read(uint8_t *buffer, size_t size) {
     if (size & 0x3 || !_running || !_isInput) {
         return 0;
     }
-    return _arbInput->read((uint32_t *)buffer, size / sizeof(uint32_t), false);
+    return 4 * _arbInput->read((uint32_t *)buffer, size / sizeof(uint32_t), false);
 }
 
 size_t I2S::write(const uint8_t *buffer, size_t size) {
@@ -576,7 +576,7 @@ size_t I2S::write(const uint8_t *buffer, size_t size) {
     if (size & 0x3 || !_running || !_isOutput) {
         return 0;
     }
-    return _arbOutput->write((const uint32_t *)buffer, size / sizeof(uint32_t), false);
+    return 4 * _arbOutput->write((const uint32_t *)buffer, size / sizeof(uint32_t), false);
 }
 
 int I2S::availableForWrite() {
