@@ -206,8 +206,10 @@ void setup() {
 
   hid.begin();
 
-  hid.connectAny();
-  // or hid.connectMouse();
+  do {
+    hid.connectAny();
+    // or hid.connectMouse();
+  } while (!hid.connected());
 }
 
 void loop() {
