@@ -219,7 +219,7 @@ int PWMAudio::availableForWrite() {
     if (!_running) {
         return 0;
     }
-    return _arb->available();
+    return _arb->available() * 4; // ARB reports in 32b words
 }
 
 size_t PWMAudio::write(int16_t val, bool sync) {
