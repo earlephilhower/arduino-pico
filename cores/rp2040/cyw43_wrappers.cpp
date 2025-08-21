@@ -161,7 +161,7 @@ extern "C" void init_cyw43_wifi() {
 extern "C" void __lockBluetooth() {
 #ifdef __FREERTOS
     cyw43_thread_enter();
-#else __FREERTOS
+#else
     async_context_acquire_lock_blocking(cyw43_arch_async_context());
 #endif
 }

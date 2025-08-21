@@ -14,7 +14,6 @@
 #include "pico/btstack_run_loop_async_context.h"
 #include "hardware/sync.h"
 
-static void btstack_timeout_reached(async_context_t *context, async_at_time_worker_t *worker);
 static void btstack_work_pending(async_context_t *context, async_when_pending_worker_t *worker);
 static SemaphoreHandle_t _run_loop_exit_binary;
 
