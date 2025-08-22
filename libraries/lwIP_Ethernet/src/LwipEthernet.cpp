@@ -33,6 +33,8 @@
 #include "task.h"
 #include "semphr.h"
 static SemaphoreHandle_t _lwip_ethernet_mutex;
+static TaskHandle_t _ethernetTask = nullptr;
+static void ethernetTask(void *param);
 #else
 #include <pico/async_context_threadsafe_background.h>
 static async_context_threadsafe_background_t lwip_ethernet_async_context;
@@ -91,6 +93,12 @@ void ethernet_arch_lwip_end() {
 
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler) {
     static int id = 0xdead;
+#ifdef __FREERTOS
+    // Only create the task if we need to poll
+    if (!_ethernetTask) {
+        xTaskCreate(ethernetTask, "EthPoll", 256, nullptr, 1, &_ethernetTask);
+    }
+#endif
     ethernet_arch_lwip_begin();
     _handlePacketList.insert({id, _packetHandler});
     ethernet_arch_lwip_end();
@@ -204,7 +212,6 @@ static uint32_t _pollingPeriod = 20;
 // We have a background pump which calls sys_check_timeouts on a periodic basis
 // and polls all Ethernet interfaces
 #ifdef __FREERTOS
-static TaskHandle_t _ethernetTask;;
 
 static void stage2(void *cbData) {
     (void) cbData;
@@ -257,7 +264,6 @@ void __startEthernetContext() {
     }
 #ifdef __FREERTOS
     _lwip_ethernet_mutex = xSemaphoreCreateMutex();
-    xTaskCreate(ethernetTask, "EthPoll", 256, nullptr, 1, &_ethernetTask);
 #else
 #if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
