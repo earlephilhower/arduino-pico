@@ -35,6 +35,10 @@ typedef struct {
 
 #define LWIP_WORK_ENTRIES 16
 
+#ifndef LWIP_TASK_PRIORITY
+#define LWIP_TASK_PRIORITY (configMAX_PRIORITIES - 2)
+#endif
+
 // The notify item we'll use to wake the calling process back up
 #define TASK_NOTIFY_LWIP_WAKEUP (configTASK_NOTIFICATION_ARRAY_ENTRIES - 1)
 
@@ -47,7 +51,7 @@ void __startLWIPThread() {
     if (!__lwipQueue) {
         panic("Unable to allocate LWIP work queue");
     }
-    if (pdPASS != xTaskCreate(lwipThread, "LWIP", 1024, 0, configMAX_PRIORITIES - 1, &__lwipTask)) {
+    if (pdPASS != xTaskCreate(lwipThread, "LWIP", 1024, 0, LWIP_TASK_PRIORITY, &__lwipTask)) {
         panic("Unable to create LWIP task");
     }
     vTaskCoreAffinitySet(__lwipTask, 1 << 0);
