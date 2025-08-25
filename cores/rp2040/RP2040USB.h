@@ -20,28 +20,32 @@
 */
 
 #include <pico/mutex.h>
+#include <limits.h>
 
-// Weak function definitions for each type of endpoint
-extern void __USBInstallSerial() __attribute__((weak));
+// Called by an object at global init time to register a HID device, returns a localID to be mapped using findHIDReportID
+// vidMask is the bits in the VID that should be XOR'd when this device is present.
+// 0 means don't invert anything, OTW select a single bitmask 1<<n.
+uint8_t usbRegisterHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask = 0);
 
-extern void __USBInstallKeyboard() __attribute__((weak));
+// Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
+uint8_t usbRegisterInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering = INT_MAX, uint32_t vidMask = 0);
 
-extern void __USBInstallJoystick() __attribute__((weak));
+// Get the USB HID actual report ID from the localid
+uint8_t usbFindHIDReportID(unsigned int localid);
 
-// One or the other allowed, not both
-extern void __USBInstallMouse() __attribute__((weak));
-extern void __USBInstallAbsoluteMouse() __attribute__((weak));
+// Get the USB interface number from the localid
+uint8_t usbFindInterfaceID(unsigned int localid);
 
-extern void __USBInstallMassStorage() __attribute__((weak));
+// Register a string for a USB descriptor
+uint8_t usbRegisterString(const char *str);
+
+// Get an unassigned in/cmd or out endpoint number
+uint8_t usbRegisterEndpointIn();
+uint8_t usbRegisterEndpointOut();
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't
 // have multiple cores updating the TUSB state in parallel
 extern mutex_t __usb_mutex;
-
-// HID report ID inquiry (report ID will vary depending on the number/type of other HID)
-int __USBGetKeyboardReportID();
-int __USBGetMouseReportID();
-int __USBGetJoystickReportID();
 
 // Called by main() to init the USB HW/SW.
 void __USBStart();

@@ -32,6 +32,8 @@ class Keyboard_ : public HID_Keyboard {
 protected:
     virtual void sendReport(KeyReport* keys) override;
     virtual void sendConsumerReport(uint16_t key) override;
+    uint8_t _id;
+    uint8_t _idConsumer;
 
 public:
     Keyboard_(void);

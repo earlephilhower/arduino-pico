@@ -26,14 +26,15 @@
 #include "tusb.h"
 #include "class/hid/hid_device.h"
 
-// Weak function override to add our descriptor to the TinyUSB list
-void __USBInstallKeyboard() { /* noop */ }
-
 //================================================================================
 //================================================================================
 //  Keyboard
 
+static const uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1))};
+static const uint8_t desc_hid_report_consumer[] = { TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2))};
 Keyboard_::Keyboard_(void) {
+    _id = usbRegisterHIDDevice(desc_hid_report_keyboard, sizeof(desc_hid_report_keyboard), 10, 0x0001);
+    _idConsumer = usbRegisterHIDDevice(desc_hid_report_consumer, sizeof(desc_hid_report_consumer), 11, 0x0000);
     // Base class clears the members we care about
 }
 
@@ -41,7 +42,7 @@ void Keyboard_::sendReport(KeyReport* keys) {
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (__USBHIDReady()) {
-        tud_hid_keyboard_report(__USBGetKeyboardReportID(), keys->modifiers, keys->keys);
+        tud_hid_keyboard_report(usbFindHIDReportID(_id), keys->modifiers, keys->keys);
     }
     tud_task();
 }
@@ -50,7 +51,7 @@ void Keyboard_::sendConsumerReport(uint16_t key) {
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (__USBHIDReady()) {
-        tud_hid_report(__USBGetKeyboardReportID() + 1, &key, sizeof(key));
+        tud_hid_report(usbFindHIDReportID(_idConsumer), &key, sizeof(key));
     }
     tud_task();
 }

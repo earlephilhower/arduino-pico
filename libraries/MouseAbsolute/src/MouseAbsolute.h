@@ -31,5 +31,7 @@ class MouseAbsolute_ : public HID_Mouse {
 public:
     MouseAbsolute_(void);
     virtual void move(int x, int y, signed char wheel = 0) override;
+private:
+    uint8_t _id;
 };
 extern MouseAbsolute_ MouseAbsolute;

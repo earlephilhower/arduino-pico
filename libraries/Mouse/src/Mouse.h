@@ -31,5 +31,7 @@ class Mouse_ : public HID_Mouse {
 public:
     Mouse_(void);
     virtual void move(int x, int y, signed char wheel = 0) override;
+private:
+    uint8_t _id;
 };
 extern Mouse_ Mouse;

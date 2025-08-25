@@ -24,6 +24,7 @@
 
 #include <Arduino.h>
 #include "CoreMutex.h"
+#include "RP2040USB.h"
 
 #include <tusb.h>
 #include <pico/time.h>
@@ -35,10 +36,17 @@
 #include <pico/unique_id.h>
 #include <hardware/resets.h>
 
-#ifndef DISABLE_USB_SERIAL
-// Ensure we are installed in the USB chain
-void __USBInstallSerial() { /* noop */ }
-#endif
+#include <tusb.h>
+#include <class/hid/hid_device.h>
+#include <class/audio/audio.h>
+#include <pico/time.h>
+#include <hardware/irq.h>
+#include <pico/mutex.h>
+#include <pico/unique_id.h>
+#include <pico/usb_reset_interface.h>
+#include <hardware/watchdog.h>
+#include <pico/bootrom.h>
+#include <device/usbd_pvt.h>
 
 // SerialEvent functions are weak, so when the user doesn't define them,
 // the linker just sets their address to 0 (which is checked below).
@@ -47,8 +55,21 @@ void __USBInstallSerial() { /* noop */ }
 // HardwareSerial instance if the user doesn't also refer to it.
 extern void serialEvent() __attribute__((weak));
 
-
 extern mutex_t __usb_mutex;
+
+#define USBD_CDC_CMD_MAX_SIZE (8)
+#define USBD_CDC_IN_OUT_MAX_SIZE (64)
+
+
+static const uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
+    // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
+    TUD_CDC_DESCRIPTOR(0 /* placeholder*/, usbRegisterString("Pico Serial"), usbRegisterEndpointIn(), USBD_CDC_CMD_MAX_SIZE, usbRegisterEndpointOut(), usbRegisterEndpointIn(), USBD_CDC_IN_OUT_MAX_SIZE)
+};
+
+SerialUSB::SerialUSB() {
+    _id = usbRegisterInterface(2, cdc_desc, sizeof(cdc_desc), 1, 0);
+}
+
 
 void SerialUSB::begin(unsigned long baud) {
     (void) baud; //ignored
