@@ -23,30 +23,10 @@
 #if !defined(USE_TINYUSB) && !defined(NO_USB)
 
 #include <Arduino.h>
+#include <tusb.h>
 #include "CoreMutex.h"
 #include "RP2040USB.h"
 
-#include <tusb.h>
-#include <pico/time.h>
-#include <pico/binary_info.h>
-#include <pico/bootrom.h>
-#include <hardware/irq.h>
-#include <pico/mutex.h>
-#include <hardware/watchdog.h>
-#include <pico/unique_id.h>
-#include <hardware/resets.h>
-
-#include <tusb.h>
-#include <class/hid/hid_device.h>
-#include <class/audio/audio.h>
-#include <pico/time.h>
-#include <hardware/irq.h>
-#include <pico/mutex.h>
-#include <pico/unique_id.h>
-#include <pico/usb_reset_interface.h>
-#include <hardware/watchdog.h>
-#include <pico/bootrom.h>
-#include <device/usbd_pvt.h>
 
 // SerialEvent functions are weak, so when the user doesn't define them,
 // the linker just sets their address to 0 (which is checked below).
