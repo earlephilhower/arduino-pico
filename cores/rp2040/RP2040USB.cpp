@@ -27,16 +27,12 @@
 
 #include <tusb.h>
 #include <class/hid/hid_device.h>
-#include <class/audio/audio.h>
 #include <pico/time.h>
 #include <hardware/irq.h>
 #include <pico/mutex.h>
 #include <pico/unique_id.h>
 #include <pico/usb_reset_interface.h>
 #include <hardware/watchdog.h>
-#include <pico/bootrom.h>
-#include "sdkoverride/tusb_gamepad16.h"
-#include <device/usbd_pvt.h>
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't
 // have multiple cores updating the TUSB state in parallel
@@ -76,17 +72,21 @@ typedef struct Entry {
 static Entry *_hids = nullptr;
 static Entry *_interfaces = nullptr;
 
-// USB strings kept in a list of pointers
+// USB strings kept in a list of pointers.  Can't use std::vector again because of
+// CRT init non-ordering.
 static const char **usbd_desc_str;
 static uint8_t usbd_desc_str_cnt = 0;
 static uint8_t usbd_desc_str_alloc = 0;
+
+// HID report
 static int      __hid_report_len = 0;
 static uint8_t *__hid_report     = nullptr;
+
+// Global USB descriptor
 static uint8_t *usbd_desc_cfg = nullptr;
 #ifdef ENABLE_PICOTOOL_USB
 static uint8_t _picotool_itf_num;
 #endif
-
 int usb_hid_poll_interval __attribute__((weak)) = 10;
 
 
@@ -133,7 +133,7 @@ static uint8_t AddEntry(Entry **head, int interfaces, const uint8_t *descriptor,
 }
 
 // Find the index (HID report ID or USB interface) of a given localid
-unsigned int usbFindID(Entry *head, unsigned int localid) {
+static unsigned int usbFindID(Entry *head, unsigned int localid) {
     unsigned int x = 0;
     while (head && head->localid != localid) {
         head = head->next;
@@ -276,6 +276,10 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
     return usbd_desc_cfg;
 }
 
+// Build the binary image of the complete USB descriptor
+// Note that we can add stack-allocated descriptors here because we know
+// we're going to use them before the function exits and they'll not be
+// needed ever again
 void __SetupUSBDescriptor() {
     uint8_t interface_count = 0;
     int usbd_desc_len;
