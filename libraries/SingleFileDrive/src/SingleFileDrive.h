@@ -49,10 +49,11 @@ private:
     void directorySector(char buff[512]);
     void fatSector(char buff[512]);
 
-private:
     bool _started = false;
     char *_localFile = nullptr;
     char *_dosFile = nullptr;
+
+    uint8_t _id;
 
     char _sectBuff[512]; // Read sector region
 

@@ -26,7 +26,7 @@
 
 class SerialUSB : public arduino::HardwareSerial {
 public:
-    SerialUSB() { }
+    SerialUSB();
     void begin(unsigned long baud = 115200) override;
     void begin(unsigned long baud, uint16_t config) override {
         (void) config;
@@ -56,6 +56,7 @@ public:
 private:
     bool _running = false;
     bool _ignoreFlowControl = false;
+    uint8_t _id;
 };
 
 extern SerialUSB Serial;
