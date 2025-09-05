@@ -433,31 +433,32 @@ static inline pio_sm_config pio_i2s_in_swap_program_get_default_config(uint offs
 // pio_i2s_inout //
 // ------------- //
 
-#define pio_i2s_inout_wrap_target 0
-#define pio_i2s_inout_wrap 11
+#define pio_i2s_inout_wrap_target 1
+#define pio_i2s_inout_wrap 12
 #define pio_i2s_inout_pio_version 0
 
 static const uint16_t pio_i2s_inout_program_instructions[] = {
+    0x4801, //  0: in     pins, 1         side 1
     //     .wrap_target
-    0xa122, //  0: mov    x, y            side 0 [1]
-    0x6801, //  1: out    pins, 1         side 1
-    0x4801, //  2: in     pins, 1         side 1
-    0x0141, //  3: jmp    x--, 1          side 0 [1]
-    0x6801, //  4: out    pins, 1         side 1
-    0x4801, //  5: in     pins, 1         side 1
-    0xb122, //  6: mov    x, y            side 2 [1]
-    0x7801, //  7: out    pins, 1         side 3
-    0x5801, //  8: in     pins, 1         side 3
-    0x1147, //  9: jmp    x--, 7          side 2 [1]
-    0x7801, // 10: out    pins, 1         side 3
-    0x5801, // 11: in     pins, 1         side 3
+    0xa822, //  1: mov    x, y            side 1
+    0x6101, //  2: out    pins, 1         side 0 [1]
+    0x4801, //  3: in     pins, 1         side 1
+    0x0842, //  4: jmp    x--, 2          side 1
+    0x7101, //  5: out    pins, 1         side 2 [1]
+    0x5801, //  6: in     pins, 1         side 3
+    0xb822, //  7: mov    x, y            side 3
+    0x7101, //  8: out    pins, 1         side 2 [1]
+    0x5801, //  9: in     pins, 1         side 3
+    0x1848, // 10: jmp    x--, 8          side 3
+    0x6101, // 11: out    pins, 1         side 0 [1]
+    0x4801, // 12: in     pins, 1         side 1
     //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program pio_i2s_inout_program = {
     .instructions = pio_i2s_inout_program_instructions,
-    .length = 12,
+    .length = 13,
     .origin = -1,
     .pio_version = pio_i2s_inout_pio_version,
 #if PICO_PIO_VERSION > 0
@@ -477,31 +478,32 @@ static inline pio_sm_config pio_i2s_inout_program_get_default_config(uint offset
 // pio_i2s_inout_swap //
 // ------------------ //
 
-#define pio_i2s_inout_swap_wrap_target 0
-#define pio_i2s_inout_swap_wrap 11
+#define pio_i2s_inout_swap_wrap_target 1
+#define pio_i2s_inout_swap_wrap 12
 #define pio_i2s_inout_swap_pio_version 0
 
 static const uint16_t pio_i2s_inout_swap_program_instructions[] = {
+    0x5001, //  0: in     pins, 1         side 2
     //     .wrap_target
-    0xa122, //  0: mov    x, y            side 0 [1]
-    0x7001, //  1: out    pins, 1         side 2
-    0x5001, //  2: in     pins, 1         side 2
-    0x0141, //  3: jmp    x--, 1          side 0 [1]
-    0x7001, //  4: out    pins, 1         side 2
-    0x5001, //  5: in     pins, 1         side 2
-    0xa922, //  6: mov    x, y            side 1 [1]
-    0x7801, //  7: out    pins, 1         side 3
-    0x5801, //  8: in     pins, 1         side 3
-    0x0947, //  9: jmp    x--, 7          side 1 [1]
-    0x7801, // 10: out    pins, 1         side 3
-    0x5801, // 11: in     pins, 1         side 3
+    0xb022, //  1: mov    x, y            side 2
+    0x6101, //  2: out    pins, 1         side 0 [1]
+    0x5001, //  3: in     pins, 1         side 2
+    0x1042, //  4: jmp    x--, 2          side 2
+    0x6901, //  5: out    pins, 1         side 1 [1]
+    0x5801, //  6: in     pins, 1         side 3
+    0xb822, //  7: mov    x, y            side 3
+    0x6901, //  8: out    pins, 1         side 1 [1]
+    0x5801, //  9: in     pins, 1         side 3
+    0x1848, // 10: jmp    x--, 8          side 3
+    0x6101, // 11: out    pins, 1         side 0 [1]
+    0x5001, // 12: in     pins, 1         side 2
     //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program pio_i2s_inout_swap_program = {
     .instructions = pio_i2s_inout_swap_program_instructions,
-    .length = 12,
+    .length = 13,
     .origin = -1,
     .pio_version = pio_i2s_inout_swap_pio_version,
 #if PICO_PIO_VERSION > 0
