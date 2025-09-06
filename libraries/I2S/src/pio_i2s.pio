@@ -238,23 +238,23 @@ right1:
 
 ;                           +----- WCLK
 ;                           |+---- BCLK
-    mov x, y         side 0b00 [1]
+    in pins, 1       side 0b01 ; Adjust for input shift
+.wrap_target
+    mov x, y         side 0b01
 left1:
-    out pins, 1      side 0b01
+    out pins, 1      side 0b00 [1]
     in pins, 1       side 0b01
-    jmp x--, left1   side 0b00 [1]
-    out pins, 1      side 0b01
-    in pins, 1       side 0b01 ; 2584 LRCK stays low until BCLK goes low
-                               ; Last bit of left has WCLK change per I2S spec
-    mov x, y         side 0b10 [1]
-right1:
-    out pins, 1      side 0b11
+    jmp x--, left1   side 0b01
+    out pins, 1      side 0b10 [1] ; Last bit of left has WCLK change per I2S spec
     in pins, 1       side 0b11
-    jmp x--, right1  side 0b10 [1]
-    out pins, 1      side 0b11
-    in pins, 1       side 0b11 ; 2584 LRCK stays high until BCLK goes low
-    ; Loop back to beginning...
-
+    mov x, y         side 0b11
+right1:
+    out pins, 1      side 0b10 [1]
+    in pins, 1       side 0b11
+    jmp x--, right1  side 0b11
+    out pins, 1      side 0b00 [1]; Last bit of right also has WCLK change
+    in pins, 1       side 0b01
+.wrap  ; Loop back to beginning...
 
 .program pio_i2s_inout_swap ; Note this is the same as _out, just "in" and not "out"
 .side_set 2   ; 0 = wclk, 1=bclk
@@ -264,22 +264,23 @@ right1:
 
 ;                           +----- BCLK
 ;                           |+---- WCLK
-    mov x, y         side 0b00 [1]
+    in pins, 1       side 0b10 ; Adjust for input shift
+.wrap_target
+    mov x, y         side 0b10
 left1:
-    out pins, 1      side 0b10
+    out pins, 1      side 0b00 [1]
     in pins, 1       side 0b10
-    jmp x--, left1   side 0b00 [1]
-    out pins, 1      side 0b10
-    in pins, 1       side 0b10 ;2584 LRCK stays low until BCLK goes low
-
-    mov x, y         side 0b01 [1]
-right1:
-    out pins, 1      side 0b11
+    jmp x--, left1   side 0b10
+    out pins, 1      side 0b01 [1] ; Last bit of left has WCLK change per I2S spec
     in pins, 1       side 0b11
-    jmp x--, right1  side 0b01 [1]
-    out pins, 1      side 0b11
-    in pins, 1       side 0b11 ; 2584 LRCK stays high until BCLK goes low
-    ; Loop back to beginning...
+    mov x, y         side 0b11
+right1:
+    out pins, 1      side 0b01 [1]
+    in pins, 1       side 0b11
+    jmp x--, right1  side 0b11
+    out pins, 1      side 0b00 [1]; Last bit of right also has WCLK change
+    in pins, 1       side 0b10
+.wrap  ; Loop back to beginning...
 
 
 
