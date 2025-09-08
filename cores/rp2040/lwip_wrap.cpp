@@ -32,6 +32,9 @@
 #include "_xoshiro.h"
 #include "lwip_wrap.h"
 #include <pico/btstack_run_loop_async_context.h>
+#ifdef __FREERTOS
+#include "freertos/freertos-lwip.h"
+#endif
 
 //auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 recursive_mutex_t __lwipMutex;
@@ -54,6 +57,9 @@ extern "C" {
             recursive_mutex_init(&__lwipMutex);
             _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros());
             __real_lwip_init();
+#ifdef __FREERTOS
+            __startLWIPThread();
+#endif
         }
     }
 
