@@ -155,8 +155,6 @@ void startFreeRTOS(void) {
     xTaskCreate(IdleThisCore, "IdleCore1", 128, 0, configMAX_PRIORITIES - 1, __idleCoreTask + 1);
     vTaskCoreAffinitySet(__idleCoreTask[1], 1 << 1);
 
-    __startLWIPThread();
-
     // Initialise and run the freeRTOS scheduler. Execution should never return here.
     __freeRTOSinitted = true;
     vTaskStartScheduler();
