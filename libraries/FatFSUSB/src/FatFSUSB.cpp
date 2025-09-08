@@ -20,15 +20,15 @@
 #include "FatFSUSB.h"
 #include <FatFS.h>
 #include <class/msc/msc.h>
+#include <device/usbd.h>
+#include <RP2040USB.h>
 
 FatFSUSBClass FatFSUSB;
-
-// Ensure we are logged in to the USB framework
-void __USBInstallMassStorage() {
-    /* dummy */
-}
+#define USBD_MSC_EPSIZE 64
+static const uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, usbRegisterEndpointOut(), usbRegisterEndpointIn(), USBD_MSC_EPSIZE) };
 
 FatFSUSBClass::FatFSUSBClass() {
+    _id = usbRegisterInterface(2, msd_desc, sizeof(msd_desc), 1, 0);
 }
 
 FatFSUSBClass::~FatFSUSBClass() {

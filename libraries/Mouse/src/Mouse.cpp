@@ -25,9 +25,6 @@
 #include "tusb.h"
 #include "class/hid/hid_device.h"
 
-// Weak function override to add our descriptor to the TinyUSB list
-void __USBInstallMouse() { /* noop */ }
-
 //================================================================================
 //================================================================================
 //	Mouse
@@ -37,15 +34,16 @@ void __USBInstallMouse() { /* noop */ }
     range for a USB HID device.
 */
 
+static const uint8_t desc_hid_report_mouse[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1)) };
 Mouse_::Mouse_(void) {
-    /* noop */
+    _id = usbRegisterHIDDevice(desc_hid_report_mouse, sizeof(desc_hid_report_mouse), 20, 0x0002);
 }
 
 void Mouse_::move(int x, int y, signed char wheel) {
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (__USBHIDReady()) {
-        tud_hid_mouse_report(__USBGetMouseReportID(), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
+        tud_hid_mouse_report(usbFindHIDReportID(_id), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
     }
     tud_task();
 }

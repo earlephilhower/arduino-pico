@@ -32,5 +32,7 @@ class Joystick_ : public HID_Joystick {
 public:
     Joystick_(void);
     virtual void send_now(void) override;
+private:
+    uint8_t _id;
 };
 extern Joystick_ Joystick;

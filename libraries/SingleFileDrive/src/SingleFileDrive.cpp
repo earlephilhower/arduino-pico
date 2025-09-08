@@ -20,18 +20,19 @@
 #include <SingleFileDrive.h>
 #include <LittleFS.h>
 #include <class/msc/msc.h>
+#include <device/usbd.h>
+#include <RP2040USB.h>
 
 SingleFileDrive singleFileDrive;
 
 static const uint32_t _hddsize = (256 * 1024 * 1024); // 256MB
 static const uint32_t _hddsects = _hddsize / 512;
 
-// Ensure we are logged in to the USB framework
-void __USBInstallMassStorage() {
-    /* dummy */
-}
+#define USBD_MSC_EPSIZE 64
+static const uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, usbRegisterEndpointOut(), usbRegisterEndpointIn(), USBD_MSC_EPSIZE) };
 
 SingleFileDrive::SingleFileDrive() {
+    _id = usbRegisterInterface(2, msd_desc, sizeof(msd_desc), 1, 0);
 }
 
 SingleFileDrive::~SingleFileDrive() {
