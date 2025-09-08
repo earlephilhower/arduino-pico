@@ -459,7 +459,7 @@ protected:
     FatFSImpl*              _fs;
     std::shared_ptr<DIR>    _dir;
     bool                    _valid;
-    char                    _lfn[64];
+    char                    _lfn[65];
     time_t                  _time;
     time_t                  _creation;
     std::shared_ptr<char>   _dirPath;
