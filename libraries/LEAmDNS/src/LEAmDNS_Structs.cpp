@@ -26,6 +26,13 @@
 #include "LEAmDNS_Priv.h"
 #include "LEAmDNS_lwIPdefs.h"
 
+// There are many strncpy()s here that immediately set the terminating \0, but GCC
+// doesn't notice that and emits a warning at -O3 -Wall -Wextra.  After inspection,
+// disable that specific warning since it's not a real problem
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 namespace esp8266 {
 
 /*
@@ -2020,3 +2027,5 @@ MDNSResponder::stcMDNSSendParameter::findCachedDomainOffset(const void* p_pHostn
 }  // namespace MDNSImplementation
 
 }  // namespace esp8266
+
+#pragma GCC diagnostic pop
