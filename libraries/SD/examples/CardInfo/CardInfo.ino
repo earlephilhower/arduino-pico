@@ -137,7 +137,7 @@ void setup() {
   volumesize /= 1024;
   Serial.println(volumesize);
   Serial.print("Volume size (Gb):  ");
-  Serial.println((float)volumesize / 1024.0);
+  Serial.println((float)volumesize / 1024.0f);
 
   Serial.print("Card size:  ");
   Serial.println((float)SD.size64() / 1000);
