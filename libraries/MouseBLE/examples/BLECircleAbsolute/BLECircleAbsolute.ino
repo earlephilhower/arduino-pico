@@ -17,7 +17,7 @@ void loop() {
     float r = 1000;
     for (float cx = 1000; cx <= 16000; cx += 4000) {
       for (float cy = 1000; cy <= 16000; cy += 4000) {
-        for (float a = 0; a < 2.0 * 3.14159; a += 0.1) {
+        for (float a = 0.0f; a < 2.0f * 3.14159f; a += 0.1f) {
           float ax = r * cos(a);
           float ay = r * sin(a);
           MouseBLE.move(ax + cx, ay + cy, 0);

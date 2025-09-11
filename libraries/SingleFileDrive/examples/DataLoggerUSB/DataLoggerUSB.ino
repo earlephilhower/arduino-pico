@@ -82,7 +82,7 @@ void loop() {
     // Don't want the USB to connect during an update!
     File f = LittleFS.open("data.csv", "a");
     if (f) {
-      f.printf("%lu,%lu,%f,%lu\n", cnt++, millis(), temp, hwrand);
+      f.printf("%lu,%lu,%f,%lu\n", cnt++, millis(), (double)temp, hwrand);
       f.close();
     }
   }
