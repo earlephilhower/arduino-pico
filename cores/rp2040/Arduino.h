@@ -97,7 +97,7 @@ void *pcalloc(size_t count, size_t size);
 // ADC RP2040-specific calls
 void analogReadResolution(int bits);
 #ifdef __cplusplus
-float analogReadTemp(float vref = 3.3);  // Returns core temp in Centigrade
+float analogReadTemp(float vref = 3.3f);  // Returns core temp in Centigrade
 #endif
 
 // PWM RP2040-specific calls
