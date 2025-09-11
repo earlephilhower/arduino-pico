@@ -22,8 +22,6 @@
 
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
-#include <stdarg.h>
-#include <queue>
 #include "CoreMutex.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
