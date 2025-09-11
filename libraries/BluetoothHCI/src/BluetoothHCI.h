@@ -28,6 +28,8 @@
 #include "BluetoothDevice.h"
 #include <btstack.h>
 
+#include <vector>
+
 
 class BluetoothHCI {
 public:
