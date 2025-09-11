@@ -22,8 +22,6 @@
 
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
-#include <stdarg.h>
-#include <queue>
 #include <hardware/uart.h>
 #include "CoreMutex.h"
 
