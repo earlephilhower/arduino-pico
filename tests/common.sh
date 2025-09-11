@@ -41,6 +41,7 @@ EOL
 /UserSPIDriver/
 /Adafruit_TinyUSB_Arduino/
 /ArduinoISP/
+/p03_LoveOMeter/
 /p08_DigitalHourglass/
 /p13_TouchSensorLamp/
 /StringComparisonOperators/
