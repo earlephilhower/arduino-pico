@@ -61,7 +61,7 @@ waitfirstbit:
     jmp pin waitfirstbit ; LRCLK1 == right channel, so if high keep waiting
 
 .wrap_target
-    pull
+    pull noblock
 sendleft:
     wait 0 pin 0 ; Falling edge start sending
     out pins, 1  ; Shift out a bit
@@ -87,7 +87,7 @@ waitfirstbit:
     jmp pin waitfirstbit ; LRCLK1 == right channel, so if high keep waiting
 
 .wrap_target
-    pull
+    pull noblock
 sendleft:
     wait 0 pin 0 ; Falling edge start sending
     out pins, 1  ; Shift out a bit
@@ -95,7 +95,7 @@ sendleft:
     jmp pin sendright ; LRCLK == 1 => right channel
     jmp sendleft
 
-    pull
+    pull noblock
 sendright:
     wait 0 pin 0 ; Falling edge start sending
     out pins, 1  ; Shift out a bit
@@ -396,7 +396,7 @@ static inline void pio_i2s_out_slave_program_init(PIO pio, uint sm, uint offset,
     pio_sm_set_out_pins(pio, sm, data_pin, 1);
     pio_sm_set_in_pins(pio, sm, clock_pin_base);
 
-    pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
+    pio_sm_exec(pio, sm, pio_encode_set(pio_x, 0));
 }
 
 

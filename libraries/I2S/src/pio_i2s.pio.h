@@ -94,7 +94,7 @@ static const uint16_t pio_i2s_out_slave_16_program_instructions[] = {
     0x20a0, //  1: wait   1 pin, 0
     0x00c0, //  2: jmp    pin, 0
     //     .wrap_target
-    0x80a0, //  3: pull   block
+    0x8080, //  3: pull   noblock
     0x2020, //  4: wait   0 pin, 0
     0x6001, //  5: out    pins, 1
     0x20a0, //  6: wait   1 pin, 0
@@ -138,13 +138,13 @@ static const uint16_t pio_i2s_out_slave_32_program_instructions[] = {
     0x20a0, //  1: wait   1 pin, 0
     0x00c0, //  2: jmp    pin, 0
     //     .wrap_target
-    0x80a0, //  3: pull   block
+    0x8080, //  3: pull   noblock
     0x2020, //  4: wait   0 pin, 0
     0x6001, //  5: out    pins, 1
     0x20a0, //  6: wait   1 pin, 0
     0x00ca, //  7: jmp    pin, 10
     0x0004, //  8: jmp    4
-    0x80a0, //  9: pull   block
+    0x8080, //  9: pull   noblock
     0x2020, // 10: wait   0 pin, 0
     0x6001, // 11: out    pins, 1
     0x20a0, // 12: wait   1 pin, 0
@@ -647,7 +647,7 @@ static inline void pio_i2s_out_slave_program_init(PIO pio, uint sm, uint offset,
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, false);
     pio_sm_set_out_pins(pio, sm, data_pin, 1);
     pio_sm_set_in_pins(pio, sm, clock_pin_base);
-    pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
+    pio_sm_exec(pio, sm, pio_encode_set(pio_x, 0));
 }
 static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
     pio_gpio_init(pio, data_pin);
