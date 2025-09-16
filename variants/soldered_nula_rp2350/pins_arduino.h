@@ -25,7 +25,7 @@
 #define PIN_SPI0_MISO  (2u)
 #define PIN_SPI0_MOSI  (3u)
 #define PIN_SPI0_SCK   (4u)
-#define PIN_SPI0_SS    (5u) 
+#define PIN_SPI0_SS    (5u)
 
 #define PIN_SPI0_POCI  PIN_SPI0_MISO
 #define PIN_SPI0_PICO  PIN_SPI0_MOSI
