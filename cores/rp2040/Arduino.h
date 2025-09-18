@@ -105,6 +105,9 @@ void analogWriteFreq(uint32_t freq);
 void analogWriteRange(uint32_t range);
 void analogWriteResolution(int res);
 
+// GPIO RP2040-specific calls
+void setPinInvert(pin_size_t ulPin, bool invert);
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
