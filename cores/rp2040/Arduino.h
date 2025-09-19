@@ -170,6 +170,9 @@ constexpr uint64_t __bitset(const int (&a)[N], size_t i = 0U) {
 #define __FIRSTANALOGGPIO 26
 #endif
 
+// For peripherals where a pin may be not used
+#define NOPIN ((pin_size_t) 0xff)
+
 #ifdef __cplusplus
 using namespace arduino;
 #endif
