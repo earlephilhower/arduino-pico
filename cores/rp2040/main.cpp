@@ -18,7 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include <Arduino.h>
+#include "Arduino.h"
 #include "RP2040USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
@@ -55,7 +55,7 @@ bool core1_separate_stack __attribute__((weak)) = false;
 bool core1_disable_systick __attribute__((weak)) = false;
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
-extern "C" void main1() {
+void __attribute__((__noreturn__)) main1() {
     if (!core1_disable_systick) {
         // Don't install the SYSTICK exception handler. rp2040.getCycleCount will not work properly on core1
         rp2040.begin(1);

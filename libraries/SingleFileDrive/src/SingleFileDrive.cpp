@@ -20,6 +20,7 @@
 #include <SingleFileDrive.h>
 #include <LittleFS.h>
 #include <class/msc/msc.h>
+#include <class/msc/msc_device.h>
 #include <device/usbd.h>
 #include <RP2040USB.h>
 

@@ -82,7 +82,7 @@ void *_gpioIrqCBParam[__GPIOCNT];
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
 // dispatch to the real callback manually
-void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
+static void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     (void) events;
     uint64_t mask = 1LL << gpio;
     if (_gpioIrqEnabled & mask) {
