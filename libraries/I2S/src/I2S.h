@@ -34,6 +34,7 @@ public:
     bool setDOUT(pin_size_t pin);
     bool setDIN(pin_size_t pin);
     bool setMCLK(pin_size_t pin);
+    bool setSlave();
     virtual bool setBitsPerSample(int bps) override;
     virtual bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0) override;
     virtual bool setFrequency(int newFreq) override;
@@ -155,6 +156,7 @@ private:
     bool _isOutput;
     bool _swapClocks;
     bool _MCLKenabled;
+    bool _isSlave;
 
     bool _running;
 
