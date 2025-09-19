@@ -25,6 +25,7 @@
 #include <string.h>
 #include "stdlib_noniso.h" // Wacky deprecated AVR compatibility functions
 #include "RP2040Version.h"
+#include "RP2040USB.h"
 #include "api/ArduinoAPI.h"
 #include "api/itoa.h" // ARM toolchain doesn't provide itoa etc, provide them
 #include <pico.h>

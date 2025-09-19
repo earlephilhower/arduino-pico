@@ -30,11 +30,32 @@
 
 static const uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD16(HID_REPORT_ID(1)) };
 Joystick_::Joystick_(void) {
+}
+
+void Joystick_::begin() {
+    if (_running) {
+        return;
+    }
+    usbDisconnect();
     _id = usbRegisterHIDDevice(desc_hid_report_joystick, sizeof(desc_hid_report_joystick), 30, 0x0004);
+    usbConnect();
+    HID_Joystick::begin();
+}
+
+void Joystick_::end() {
+    if (_running) {
+        usbDisconnect();
+        usbUnregisterHIDDevice(_id);
+        usbConnect();
+    }
+    HID_Joystick::end();
 }
 
 // immediately send an HID report
 void Joystick_::send_now(void) {
+    if (!_running) {
+        return;
+    }
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (__USBHIDReady()) {

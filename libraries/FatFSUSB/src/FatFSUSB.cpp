@@ -25,10 +25,8 @@
 
 FatFSUSBClass FatFSUSB;
 #define USBD_MSC_EPSIZE 64
-static const uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, usbRegisterEndpointOut(), usbRegisterEndpointIn(), USBD_MSC_EPSIZE) };
 
 FatFSUSBClass::FatFSUSBClass() {
-    _id = usbRegisterInterface(2, msd_desc, sizeof(msd_desc), 1, 0);
 }
 
 FatFSUSBClass::~FatFSUSBClass() {
@@ -54,18 +52,31 @@ bool FatFSUSBClass::begin() {
     if (_started) {
         return false;
     }
-    _started = true;
     fatfs::disk_initialize(0);
     fatfs::WORD ss;
     fatfs::disk_ioctl(0, GET_SECTOR_SIZE, &ss);
     _sectSize = ss;
     _sectBuff = new uint8_t[_sectSize];
     _sectNum = -1;
+
+    usbDisconnect();
+    _epIn = usbRegisterEndpointIn();
+    _epOut = usbRegisterEndpointOut();
+    static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, USBD_MSC_EPSIZE) };
+    _id = usbRegisterInterface(2, msd_desc, sizeof(msd_desc), 2, 0);
+    usbConnect();
+
+    _started = true;
     return true;
 }
 
 void FatFSUSBClass::end() {
     if (_started) {
+        usbDisconnect();
+        usbUnregisterInterface(_id);
+        usbUnregisterEndpointOut(_epOut);
+        usbUnregisterEndpointIn(_epIn);
+        usbConnect();
         _started = false;
         delete[] _sectBuff;
     }

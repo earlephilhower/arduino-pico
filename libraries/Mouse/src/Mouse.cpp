@@ -36,10 +36,32 @@
 
 static const uint8_t desc_hid_report_mouse[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1)) };
 Mouse_::Mouse_(void) {
-    _id = usbRegisterHIDDevice(desc_hid_report_mouse, sizeof(desc_hid_report_mouse), 20, 0x0002);
 }
 
+void Mouse_::begin() {
+    if (_running) {
+        return;
+    }
+    usbDisconnect();
+    _id = usbRegisterHIDDevice(desc_hid_report_mouse, sizeof(desc_hid_report_mouse), 20, 0x0002);
+    usbConnect();
+    HID_Mouse::begin();
+}
+
+void Mouse_::end() {
+    if (_running) {
+        usbDisconnect();
+        usbUnregisterHIDDevice(_id);
+        usbConnect();
+    }
+    HID_Mouse::end();
+}
+
+
 void Mouse_::move(int x, int y, signed char wheel) {
+    if (!_running) {
+        return;
+    }
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (__USBHIDReady()) {

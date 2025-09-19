@@ -41,15 +41,8 @@ extern mutex_t __usb_mutex;
 #define USBD_CDC_IN_OUT_MAX_SIZE (64)
 
 
-static const uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
-    // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-    TUD_CDC_DESCRIPTOR(0 /* placeholder*/, usbRegisterString("Pico Serial"), usbRegisterEndpointIn(), USBD_CDC_CMD_MAX_SIZE, usbRegisterEndpointOut(), usbRegisterEndpointIn(), USBD_CDC_IN_OUT_MAX_SIZE)
-};
-
 SerialUSB::SerialUSB() {
-    _id = usbRegisterInterface(2, cdc_desc, sizeof(cdc_desc), 1, 0);
 }
-
 
 void SerialUSB::begin(unsigned long baud) {
     (void) baud; //ignored
@@ -58,11 +51,28 @@ void SerialUSB::begin(unsigned long baud) {
         return;
     }
 
+    usbDisconnect();
+    static uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
+        // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
+        TUD_CDC_DESCRIPTOR(0 /* placeholder*/, usbRegisterString("Pico Serial"), _epIn = usbRegisterEndpointIn(), USBD_CDC_CMD_MAX_SIZE, _epOut = usbRegisterEndpointOut(), usbRegisterEndpointIn(), USBD_CDC_IN_OUT_MAX_SIZE)
+    };
+
+    _id = usbRegisterInterface(2, cdc_desc, sizeof(cdc_desc), 1, 0);
+
+    usbConnect();
     _running = true;
 }
 
 void SerialUSB::end() {
-    // TODO
+    if (_running) {
+        usbDisconnect();
+        usbUnregisterInterface(_id);
+        usbUnregisterEndpointIn(_epIn);
+        usbUnregisterEndpointOut(_epOut);
+        _running = false;
+        usbConnect();
+    }
+
 }
 
 int SerialUSB::peek() {

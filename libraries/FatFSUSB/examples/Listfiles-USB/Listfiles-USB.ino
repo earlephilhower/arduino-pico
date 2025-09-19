@@ -61,6 +61,8 @@ void loop() {
   if (updated && !driveConnected) {
     inPrinting = true;
     Serial.println("\n\nDisconnected, new file listing:");
+    FatFS.end();
+    FatFS.begin();
     printDirectory("/", 0);
     updated = false;
     inPrinting = false;

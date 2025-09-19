@@ -25,10 +25,16 @@
 // Called by an object at global init time to register a HID device, returns a localID to be mapped using findHIDReportID
 // vidMask is the bits in the VID that should be XOR'd when this device is present.
 // 0 means don't invert anything, OTW select a single bitmask 1<<n.
-uint8_t usbRegisterHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask = 0);
+uint8_t usbRegisterHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+
+// Remove a HID device from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
+void usbUnregisterHIDDevice(unsigned int localid);
 
 // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
-uint8_t usbRegisterInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering = INT_MAX, uint32_t vidMask = 0);
+uint8_t usbRegisterInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+
+// Remove a USB interface from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
+void usbUnregisterInterface(unsigned int localid);
 
 // Get the USB HID actual report ID from the localid
 uint8_t usbFindHIDReportID(unsigned int localid);
@@ -42,6 +48,20 @@ uint8_t usbRegisterString(const char *str);
 // Get an unassigned in/cmd or out endpoint number
 uint8_t usbRegisterEndpointIn();
 uint8_t usbRegisterEndpointOut();
+void usbUnregisterEndpointIn(int ep);
+void usbUnregisterEndpointOut(int ep);
+
+// Disconnects the USB connection to allow editing the HID/interface list
+void usbDisconnect();
+
+// Reconnects the USB connection to pick up the new descriptor
+void usbConnect();
+
+// Override the hardcoded USB VID:PID, product, manufacturer, and serials
+void usbSetVIDPID(uint16_t vid, uint16_t pid);
+void usbSetManufacturer(const char *str);
+void usbSetProduct(const char *str);
+void usbSetSerialNumber(const char *str);
 
 // Big, global USB mutex, shared with all USB devices to make sure we don't
 // have multiple cores updating the TUSB state in parallel
