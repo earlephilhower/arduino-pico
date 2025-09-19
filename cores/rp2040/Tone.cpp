@@ -45,7 +45,7 @@ static inline bool pio_sm_get_enabled(PIO pio, uint sm) {
     return (pio->ctrl & ~(1u << sm)) & (1 << sm);
 }
 
-int64_t _stopTonePIO(alarm_id_t id, void *user_data) {
+static int64_t _stopTonePIO(alarm_id_t id, void *user_data) {
     (void) id;
     Tone *tone = (Tone *)user_data;
     tone->alarm = 0;
