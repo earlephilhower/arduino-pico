@@ -79,25 +79,59 @@ static uint8_t usbd_desc_str_cnt = 0;
 static uint8_t usbd_desc_str_alloc = 0;
 
 // HID report
+static unsigned int __hid_interface = (unsigned int) -1;
+static uint8_t __hid_endpoint = 0;
 static int      __hid_report_len = 0;
 static uint8_t *__hid_report     = nullptr;
 
 // Global USB descriptor
 static uint8_t *usbd_desc_cfg = nullptr;
+static int usbd_desc_cfg_len = 0;
+
 #ifdef ENABLE_PICOTOOL_USB
 static uint8_t _picotool_itf_num;
 #endif
 int usb_hid_poll_interval __attribute__((weak)) = 10;
 
 
+// Available bitmask for endpoints, can never be EP 0
+static uint32_t _endpointIn = 0xfffffffe;
+static uint32_t _endpointOut = 0xfffffffe;
+
+// GCC doesn't seem to have builtin_ffs here
+static int ffs(uint32_t v) {
+    for (auto i = 0; i < 32; i++) {
+        if (v & (1 << i)) {
+            return i;
+        }
+    }
+    return 0;
+}
+
 uint8_t usbRegisterEndpointIn() {
-    static uint8_t epin = 0x81;
-    return epin++;
+    if (!_endpointIn) {
+        return 0; // ERROR, out of EPs
+    }
+    int firstFree = ffs(_endpointIn);
+    _endpointIn &= ~(1 << firstFree);
+    return 0x80 + firstFree;
+}
+
+void usbUnregisterEndpointIn(int ep) {
+    _endpointIn |= 1 << ep;
 }
 
 uint8_t usbRegisterEndpointOut() {
-    static uint8_t epout = 0x01;
-    return epout++;
+    if (!_endpointOut) {
+        return 0; // ERROR, out of EPs
+    }
+    int firstFree = ffs(_endpointOut);
+    _endpointOut &= ~(1 << firstFree);
+    return firstFree;
+}
+
+void usbUnregisterEndpointOut(int ep) {
+    _endpointOut |= (1 << (ep - 0x80));
 }
 
 static uint8_t AddEntry(Entry **head, int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
@@ -132,6 +166,27 @@ static uint8_t AddEntry(Entry **head, int interfaces, const uint8_t *descriptor,
     return n->localid;
 }
 
+static void RemoveEntry(Entry **head, unsigned int localid) {
+    Entry *prev = nullptr;
+    Entry *cur = *head;
+    while (cur && cur->localid != localid) {
+        prev = cur;
+        cur = cur->next;
+    }
+    if (!cur) {
+        // Not found, just exit
+        return;
+    }
+    if (cur == *head) {
+        auto p = cur->next;
+        free(*head);
+        *head = p;
+    } else {
+        prev->next = cur->next;
+        free(cur);
+    }
+}
+
 // Find the index (HID report ID or USB interface) of a given localid
 static unsigned int usbFindID(Entry *head, unsigned int localid) {
     unsigned int x = 0;
@@ -156,11 +211,18 @@ uint8_t usbRegisterHIDDevice(const uint8_t *descriptor, size_t len, int ordering
     return AddEntry(&_hids, 0, descriptor, len, ordering, vidMask);
 }
 
+void usbUnregisterHIDDevice(unsigned int localid) {
+    RemoveEntry(&_hids, localid);
+}
+
 // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
 uint8_t usbRegisterInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
     return AddEntry(&_interfaces, interfaces, descriptor, len, ordering, vidMask);
 }
 
+void usbUnregisterInterface(unsigned int localid) {
+    RemoveEntry(&_interfaces, localid);
+}
 
 uint8_t usbRegisterString(const char *str) {
     if (usbd_desc_str_alloc <= usbd_desc_str_cnt) {
@@ -182,15 +244,34 @@ uint8_t usbRegisterString(const char *str) {
     return usbd_desc_str_cnt++;
 }
 
+static uint16_t _forceVID = 0;
+static uint16_t _forcePID = 0;
+void usbSetVIDPID(uint16_t vid, uint16_t pid) {
+    _forceVID = vid;
+    _forcePID = pid;
+}
 
+static uint8_t _forceManuf = 0;
+static uint8_t _forceProd = 0;
+static uint8_t _forceSerial = 0;
+void usbSetManufacturer(const char *str) {
+    _forceManuf = usbRegisterString(str);
+}
+void usbSetProduct(const char *str) {
+    _forceProd = usbRegisterString(str);
+}
+void usbSetSerialNumber(const char *str) {
+    _forceSerial = usbRegisterString(str);
+}
 
+static tusb_desc_device_t usbd_desc_device;
 const uint8_t *tud_descriptor_device_cb(void) {
     static char idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 3 + 1];
     if (!idString[0]) {
         pico_get_unique_board_id_string(idString, sizeof(idString));
     }
 
-    static tusb_desc_device_t usbd_desc_device = {
+    usbd_desc_device = {
         .bLength = sizeof(tusb_desc_device_t),
         .bDescriptorType = TUSB_DESC_DEVICE,
         .bcdUSB = 0x0200,
@@ -198,25 +279,27 @@ const uint8_t *tud_descriptor_device_cb(void) {
         .bDeviceSubClass = 0,
         .bDeviceProtocol = 0,
         .bMaxPacketSize0 = CFG_TUD_ENDPOINT0_SIZE,
-        .idVendor = USBD_VID,
-        .idProduct = USBD_PID,
+        .idVendor = _forceVID ? _forceVID : (uint16_t)USBD_VID,
+        .idProduct = _forcePID ? _forcePID : (uint16_t)USBD_PID,
         .bcdDevice = 0x0100,
-        .iManufacturer = usbRegisterString(USB_MANUFACTURER),
-        .iProduct = usbRegisterString(USB_PRODUCT),
-        .iSerialNumber = usbRegisterString(idString),
+        .iManufacturer = _forceManuf ? _forceManuf : usbRegisterString(USB_MANUFACTURER),
+        .iProduct = _forceProd ? _forceProd : usbRegisterString(USB_PRODUCT),
+        .iSerialNumber = _forceSerial ? _forceSerial : usbRegisterString(idString),
         .bNumConfigurations = 1
     };
 
-    // Handle any inversions from the sub-devices
-    Entry *h = _hids;
-    while (h) {
-        usbd_desc_device.idProduct ^= h->mask;
-        h = h->next;
-    }
-    h = _interfaces;
-    while (h) {
-        usbd_desc_device.idProduct ^= h->mask;
-        h = h->next;
+    // Handle any inversions from the sub-devices, if we're not forcing things
+    if (!_forcePID) {
+        Entry *h = _hids;
+        while (h) {
+            usbd_desc_device.idProduct ^= h->mask;
+            h = h->next;
+        }
+        h = _interfaces;
+        while (h) {
+            usbd_desc_device.idProduct ^= h->mask;
+            h = h->next;
+        }
     }
 
     return (const uint8_t *)&usbd_desc_device;
@@ -282,7 +365,6 @@ const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
 // needed ever again
 void __SetupUSBDescriptor() {
     uint8_t interface_count = 0;
-    int usbd_desc_len;
     if (usbd_desc_cfg) {
         return;
     }
@@ -291,9 +373,9 @@ void __SetupUSBDescriptor() {
     if (GetDescHIDReport(&hid_report_len)) {
         uint8_t hid_desc[TUD_HID_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-            TUD_HID_DESCRIPTOR(1 /* placeholder*/, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, usbRegisterEndpointIn(), CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
+            TUD_HID_DESCRIPTOR(1 /* placeholder*/, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, __hid_endpoint = usbRegisterEndpointIn(), CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
         };
-        usbRegisterInterface(1, hid_desc, sizeof(hid_desc), 10, 0);
+        __hid_interface = usbRegisterInterface(1, hid_desc, sizeof(hid_desc), 10, 0);
     }
 
 #ifdef ENABLE_PICOTOOL_USB
@@ -301,22 +383,23 @@ void __SetupUSBDescriptor() {
     usbRegisterInterface(1, picotool_desc, sizeof(picotool_desc), 100, 0);
 #endif
 
-    usbd_desc_len = TUD_CONFIG_DESC_LEN; // Always have a config descriptor
+    usbd_desc_cfg_len = TUD_CONFIG_DESC_LEN; // Always have a config descriptor
     Entry *h = _interfaces;
     while (h) {
-        usbd_desc_len += h->len;
+        usbd_desc_cfg_len += h->len;
         interface_count += h->interfaces;
         h = h->next;
     }
 
     uint8_t tud_cfg_desc[TUD_CONFIG_DESC_LEN] = {
         // Config number, interface count, string index, total length, attribute, power in mA
-        TUD_CONFIG_DESCRIPTOR(1, interface_count, usbRegisterString(""), usbd_desc_len, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA)
+        TUD_CONFIG_DESCRIPTOR(1, interface_count, usbRegisterString(""), usbd_desc_cfg_len, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA)
     };
 
     // Allocate the "real" HID report descriptor
-    usbd_desc_cfg = (uint8_t *)malloc(usbd_desc_len);
+    usbd_desc_cfg = (uint8_t *)malloc(usbd_desc_cfg_len);
     assert(usbd_desc_cfg);
+    bzero(usbd_desc_cfg, usbd_desc_cfg_len);
 
     // Now copy the descriptors
     h = _interfaces;
@@ -372,6 +455,48 @@ static void usb_irq() {
 static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
     irq_set_pending(__usb_task_irq);
     return USB_TASK_INTERVAL;
+}
+
+void usbDisconnect() {
+#ifdef __FREERTOS
+    auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
+    xSemaphoreTake(m, portMAX_DELAY);
+    tud_disconnect();
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+    xSemaphoreGive(m);
+#else
+    mutex_enter_blocking(&__usb_mutex);
+    tud_disconnect();
+    sleep_ms(500);
+    mutex_exit(&__usb_mutex);
+#endif
+    // Ensure when we reconnect we make the new descriptor
+    free(usbd_desc_cfg);
+    usbd_desc_cfg = nullptr;
+    usbd_desc_cfg_len = 0;
+    if (__hid_report) {
+        usbUnregisterInterface(__hid_interface);
+        usbUnregisterEndpointIn(__hid_endpoint);
+    }
+    free(__hid_report);
+    __hid_report = nullptr;
+    __hid_report_len = 0;
+}
+
+void usbConnect()  {
+    __SetupDescHIDReport();
+    __SetupUSBDescriptor();
+
+#ifdef __FREERTOS
+    auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
+    xSemaphoreTake(m, portMAX_DELAY);
+    tud_connect();
+    xSemaphoreGive(m);
+#else
+    mutex_enter_blocking(&__usb_mutex);
+    tud_connect();
+    mutex_exit(&__usb_mutex);
+#endif
 }
 
 void __USBStart() __attribute__((weak));

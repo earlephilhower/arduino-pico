@@ -57,6 +57,8 @@ private:
     bool _running = false;
     bool _ignoreFlowControl = false;
     uint8_t _id;
+    uint8_t _epIn;
+    uint8_t _epOut;
 };
 
 extern SerialUSB Serial;

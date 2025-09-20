@@ -33,12 +33,32 @@
 static const uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1))};
 static const uint8_t desc_hid_report_consumer[] = { TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2))};
 Keyboard_::Keyboard_(void) {
-    _id = usbRegisterHIDDevice(desc_hid_report_keyboard, sizeof(desc_hid_report_keyboard), 10, 0x0001);
-    _idConsumer = usbRegisterHIDDevice(desc_hid_report_consumer, sizeof(desc_hid_report_consumer), 11, 0x0000);
     // Base class clears the members we care about
 }
 
+void Keyboard_::begin(const uint8_t *layout) {
+    if (_running) {
+        return;
+    }
+    usbDisconnect();
+    _id = usbRegisterHIDDevice(desc_hid_report_keyboard, sizeof(desc_hid_report_keyboard), 10, 0x0001);
+    _idConsumer = usbRegisterHIDDevice(desc_hid_report_consumer, sizeof(desc_hid_report_consumer), 11, 0x0000);
+    usbConnect();
+    HID_Keyboard::begin(layout);
+}
+
+void Keyboard_::end() {
+    usbDisconnect();
+    usbUnregisterHIDDevice(_id);
+    usbUnregisterHIDDevice(_idConsumer);
+    usbConnect();
+    HID_Keyboard::end();
+}
+
 void Keyboard_::sendReport(KeyReport* keys) {
+    if (!_running) {
+        return;
+    }
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (__USBHIDReady()) {
@@ -48,6 +68,9 @@ void Keyboard_::sendReport(KeyReport* keys) {
 }
 
 void Keyboard_::sendConsumerReport(uint16_t key) {
+    if (!_running) {
+        return;
+    }
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (__USBHIDReady()) {

@@ -87,6 +87,24 @@ digitalReadFast	KEYWORD2
 
 enableDoubleResetBootloader	KEYWORD2
 
+usbRegisterHIDDevice	KEYWORD2
+usbUnregisterHIDDevice	KEYWORD2
+usbRegisterInterface	KEYWORD2
+usbUnregisterInterface	KEYWORD2
+usbFindHIDReportID	KEYWORD2
+usbFindInterfaceID	KEYWORD2
+usbRegisterString	KEYWORD2
+usbRegisterEndpointIn	KEYWORD2
+usbRegisterEndpointOut	KEYWORD2
+usbUnregisterEndpointIn	KEYWORD2
+usbUnregisterEndpointOut	KEYWORD2
+usbDisconnect	KEYWORD2
+usbConnect	KEYWORD2
+usbSetVIDPID	KEYWORD2
+usbSetManufacturer	KEYWORD2
+usbSetProduct	KEYWORD2
+usbSetSerialNumber	KEYWORD2
+
 SerialSemi	KEYWORD2
 SemiFS	KEYWORD2
 

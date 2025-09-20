@@ -54,6 +54,8 @@ private:
     char *_dosFile = nullptr;
 
     uint8_t _id;
+    uint8_t _epOut;
+    uint8_t _epIn;
 
     char _sectBuff[512]; // Read sector region
 

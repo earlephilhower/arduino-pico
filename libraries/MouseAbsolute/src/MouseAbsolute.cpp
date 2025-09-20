@@ -28,10 +28,32 @@
 static const uint8_t desc_hid_report_absmouse[] = { TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(1)) };
 
 MouseAbsolute_::MouseAbsolute_(void) : HID_Mouse(true) {
-    _id = usbRegisterHIDDevice(desc_hid_report_absmouse, sizeof(desc_hid_report_absmouse), 21, 0x0002);
 }
 
+void MouseAbsolute_::begin() {
+    if (_running) {
+        return;
+    }
+    usbDisconnect();
+    _id = usbRegisterHIDDevice(desc_hid_report_absmouse, sizeof(desc_hid_report_absmouse), 21, 0x0002);
+    usbConnect();
+    HID_Mouse::begin();
+}
+
+void MouseAbsolute_::end() {
+    if (_running) {
+        usbDisconnect();
+        usbUnregisterHIDDevice(_id);
+        usbConnect();
+    }
+    HID_Mouse::end();
+}
+
+
 void MouseAbsolute_::move(int x, int y, signed char wheel) {
+    if (!_running) {
+        return;
+    }
     CoreMutex m(&__usb_mutex);
     tud_task();
     if (tud_hid_ready()) {
