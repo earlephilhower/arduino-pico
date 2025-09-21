@@ -281,6 +281,11 @@ bool SPIClassRP2040::setRX(pin_size_t pin) {
         return true;
     }
 
+    if (!_running && (pin == NOPIN)) {
+        _RX = pin;
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set SPI%s.RX while running", spi_get_index(_spi) ? "1" : "");
     } else {
@@ -362,6 +367,11 @@ bool SPIClassRP2040::setTX(pin_size_t pin) {
         return true;
     }
 
+    if (!_running && (pin == NOPIN)) {
+        _TX = pin;
+        return true;
+    }
+
     if (_running) {
         panic("FATAL: Attempting to set SPI%s.TX while running", spi_get_index(_spi) ? "1" : "");
     } else {
@@ -372,13 +382,22 @@ bool SPIClassRP2040::setTX(pin_size_t pin) {
 
 void SPIClassRP2040::begin(bool hwCS) {
     DEBUGSPI("SPI::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d\n", hwCS, _RX, _CS, _SCK, _TX);
-    gpio_set_function(_RX, GPIO_FUNC_SPI);
+
+    if ((_RX == NOPIN) && (_TX == NOPIN)) {
+        panic("SPI%s: TX and RX assigned to NOPIN", spi_get_index(_spi) ? "1" : "");
+    }
+
+    if (_RX != NOPIN) {
+        gpio_set_function(_RX, GPIO_FUNC_SPI);
+    }
     _hwCS = hwCS;
     if (hwCS) {
         gpio_set_function(_CS, GPIO_FUNC_SPI);
     }
     gpio_set_function(_SCK, GPIO_FUNC_SPI);
-    gpio_set_function(_TX, GPIO_FUNC_SPI);
+    if (_TX != NOPIN) {
+        gpio_set_function(_TX, GPIO_FUNC_SPI);
+    }
     // Give a default config in case user doesn't use beginTransaction
     beginTransaction(_spis);
     endTransaction();
@@ -391,12 +410,16 @@ void SPIClassRP2040::end() {
         _initted = false;
         spi_deinit(_spi);
     }
-    gpio_set_function(_RX, GPIO_FUNC_SIO);
+    if (_RX != NOPIN) {
+        gpio_set_function(_RX, GPIO_FUNC_SIO);
+    }
     if (_hwCS) {
         gpio_set_function(_CS, GPIO_FUNC_SIO);
     }
     gpio_set_function(_SCK, GPIO_FUNC_SIO);
-    gpio_set_function(_TX, GPIO_FUNC_SIO);
+    if (_TX != NOPIN) {
+        gpio_set_function(_TX, GPIO_FUNC_SIO);
+    }
     _spis = SPISettings(0, LSBFIRST, SPI_MODE0);
 }
 
