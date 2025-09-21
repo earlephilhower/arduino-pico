@@ -26,6 +26,7 @@
 #include "RP2040USB.h"
 
 #include <tusb.h>
+#include <device/usbd_pvt.h>
 #include <class/hid/hid_device.h>
 #include <pico/time.h>
 #include <hardware/irq.h>
@@ -54,56 +55,18 @@ RP2040USB USB;
 #define USBD_PID (0x000a) // Raspberry Pi Pico SDK CDC
 #endif
 
+#ifdef ENABLE_PICOTOOL_USB
 #define TUD_RPI_RESET_DESCRIPTOR(_itfnum, _stridx) \
   /* Interface */\
   9, TUSB_DESC_INTERFACE, _itfnum, 0, 0, TUSB_CLASS_VENDOR_SPECIFIC, RESET_INTERFACE_SUBCLASS, RESET_INTERFACE_PROTOCOL, _stridx,
-
-// We can't use non-trivial variables to hold the hid, interface, or string lists.  The global
-// initialization where things like the global Keyboard may be called before the non-trivial
-// objects (i.e. no std::vector).
-
-// Either a USB interface or HID device descriptor, kept in a linked list
-typedef struct Entry {
-    const uint8_t *descriptor;
-    unsigned int len        : 12;
-    unsigned int interfaces : 4;
-    unsigned int order      : 18;
-    unsigned int localid    : 6;
-    uint32_t mask;
-    struct Entry *next;
-} Entry;
-
-static Entry *_hids = nullptr;
-static Entry *_interfaces = nullptr;
-
-// USB strings kept in a list of pointers.  Can't use std::vector again because of
-// CRT init non-ordering.
-static const char **usbd_desc_str;
-static uint8_t usbd_desc_str_cnt = 0;
-static uint8_t usbd_desc_str_alloc = 0;
-
-// HID report
-static unsigned int __hid_interface = (unsigned int) -1;
-static uint8_t __hid_endpoint = 0;
-static int      __hid_report_len = 0;
-static uint8_t *__hid_report     = nullptr;
-
-// Global USB descriptor
-static uint8_t *usbd_desc_cfg = nullptr;
-static int usbd_desc_cfg_len = 0;
-
-#ifdef ENABLE_PICOTOOL_USB
-static uint8_t _picotool_itf_num;
+uint8_t _picotool_itf_num;
 #endif
+
+
 int usb_hid_poll_interval __attribute__((weak)) = 10;
 
-
-// Available bitmask for endpoints, can never be EP 0
-static uint32_t _endpointIn = 0xfffffffe;
-static uint32_t _endpointOut = 0xfffffffe;
-
 // GCC doesn't seem to have builtin_ffs here
-static int ffs(uint32_t v) {
+int RP2040USB::ffs(uint32_t v) {
     for (auto i = 0; i < 32; i++) {
         if (v & (1 << i)) {
             return i;
@@ -138,7 +101,7 @@ void RP2040USB::unregisterEndpointOut(int ep) {
     _endpointOut |= (1 << (ep - 0x80));
 }
 
-static uint8_t AddEntry(Entry **head, int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
+uint8_t RP2040USB::addEntry(Entry **head, int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
     static uint8_t id = 1;
 
     Entry *n = (Entry *)malloc(sizeof(Entry));
@@ -170,7 +133,7 @@ static uint8_t AddEntry(Entry **head, int interfaces, const uint8_t *descriptor,
     return n->localid;
 }
 
-static void RemoveEntry(Entry **head, unsigned int localid) {
+void RP2040USB::removeEntry(Entry **head, unsigned int localid) {
     Entry *prev = nullptr;
     Entry *cur = *head;
     while (cur && cur->localid != localid) {
@@ -192,7 +155,7 @@ static void RemoveEntry(Entry **head, unsigned int localid) {
 }
 
 // Find the index (HID report ID or USB interface) of a given localid
-static unsigned int usbFindID(Entry *head, unsigned int localid) {
+unsigned int RP2040USB::findID(Entry *head, unsigned int localid) {
     unsigned int x = 0;
     while (head && head->localid != localid) {
         head = head->next;
@@ -203,29 +166,29 @@ static unsigned int usbFindID(Entry *head, unsigned int localid) {
 }
 
 uint8_t RP2040USB::findHIDReportID(unsigned int localid) {
-    return usbFindID(_hids, localid) + 1; // HID reports start at 1
+    return findID(_hids, localid) + 1; // HID reports start at 1
 }
 
 uint8_t RP2040USB::findInterfaceID(unsigned int localid) {
-    return usbFindID(_interfaces, localid);
+    return findID(_interfaces, localid);
 }
 
 // Called by a HID device to register a report.  Returns the *local* ID which must be mapped to the HID report ID
 uint8_t RP2040USB::registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
-    return AddEntry(&_hids, 0, descriptor, len, ordering, vidMask);
+    return addEntry(&_hids, 0, descriptor, len, ordering, vidMask);
 }
 
 void RP2040USB::unregisterHIDDevice(unsigned int localid) {
-    RemoveEntry(&_hids, localid);
+    removeEntry(&_hids, localid);
 }
 
 // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
 uint8_t RP2040USB::registerInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
-    return AddEntry(&_interfaces, interfaces, descriptor, len, ordering, vidMask);
+    return addEntry(&_interfaces, interfaces, descriptor, len, ordering, vidMask);
 }
 
 void RP2040USB::unregisterInterface(unsigned int localid) {
-    RemoveEntry(&_interfaces, localid);
+    removeEntry(&_interfaces, localid);
 }
 
 uint8_t RP2040USB::registerString(const char *str) {
@@ -248,28 +211,24 @@ uint8_t RP2040USB::registerString(const char *str) {
     return usbd_desc_str_cnt++;
 }
 
-static uint16_t _forceVID = 0;
-static uint16_t _forcePID = 0;
 void RP2040USB::setVIDPID(uint16_t vid, uint16_t pid) {
     _forceVID = vid;
     _forcePID = pid;
 }
 
-static uint8_t _forceManuf = 0;
-static uint8_t _forceProd = 0;
-static uint8_t _forceSerial = 0;
 void RP2040USB::setManufacturer(const char *str) {
     _forceManuf = USB.registerString(str);
 }
+
 void RP2040USB::setProduct(const char *str) {
     _forceProd = USB.registerString(str);
 }
+
 void RP2040USB::setSerialNumber(const char *str) {
     _forceSerial = USB.registerString(str);
 }
 
-static tusb_desc_device_t usbd_desc_device;
-const uint8_t *tud_descriptor_device_cb(void) {
+const uint8_t *RP2040USB::tud_descriptor_device_cb() {
     static char idString[PICO_UNIQUE_BOARD_ID_SIZE_BYTES * 3 + 1];
     if (!idString[0]) {
         pico_get_unique_board_id_string(idString, sizeof(idString));
@@ -309,34 +268,37 @@ const uint8_t *tud_descriptor_device_cb(void) {
     return (const uint8_t *)&usbd_desc_device;
 }
 
-
-static uint8_t *GetDescHIDReport(int *len) {
-    if (len) {
-        *len = __hid_report_len;
-    }
-    return __hid_report;
+const uint8_t *tud_descriptor_device_cb() {
+    return USB.tud_descriptor_device_cb();
 }
 
-void __SetupDescHIDReport() {
-    __hid_report_len = 0;
+uint8_t *RP2040USB::getDescHIDReport(int *len) {
+    if (len) {
+        *len = _hid_report_len;
+    }
+    return _hid_report;
+}
+
+void RP2040USB::setupDescHIDReport() {
+    _hid_report_len = 0;
     Entry *h = _hids;
     while (h) {
-        __hid_report_len += h->len;
+        _hid_report_len += h->len;
         h = h->next;
     }
 
     // No HID used at all
-    if (__hid_report_len == 0) {
-        __hid_report = nullptr;
+    if (_hid_report_len == 0) {
+        _hid_report = nullptr;
         return;
     }
 
     // Allocate the "real" HID report descriptor
-    __hid_report = (uint8_t *)malloc(__hid_report_len);
-    assert(__hid_report);
+    _hid_report = (uint8_t *)malloc(_hid_report_len);
+    assert(_hid_report);
 
     // Now copy the descriptors
-    uint8_t *p = __hid_report;
+    uint8_t *p = _hid_report;
     uint8_t id = 1;
     h = _hids;
     while (h) {
@@ -353,33 +315,41 @@ void __SetupDescHIDReport() {
 // Invoked when received GET HID REPORT DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
-uint8_t const * tud_hid_descriptor_report_cb(uint8_t instance) {
+uint8_t const *tud_hid_descriptor_report_cb(uint8_t instance) {
+    return USB.tud_hid_descriptor_report_cb(instance);
+}
+
+uint8_t const *RP2040USB::tud_hid_descriptor_report_cb(uint8_t instance) {
     (void) instance;
-    return GetDescHIDReport(nullptr);
+    return getDescHIDReport(nullptr);
 }
 
 const uint8_t *tud_descriptor_configuration_cb(uint8_t index) {
+    return USB.tud_descriptor_configuration_cb(index);
+}
+
+const uint8_t *RP2040USB::tud_descriptor_configuration_cb(uint8_t index) {
     (void)index;
-    return usbd_desc_cfg;
+    return USB.usbd_desc_cfg;
 }
 
 // Build the binary image of the complete USB descriptor
 // Note that we can add stack-allocated descriptors here because we know
 // we're going to use them before the function exits and they'll not be
 // needed ever again
-void __SetupUSBDescriptor() {
+void RP2040USB::setupUSBDescriptor() {
     uint8_t interface_count = 0;
     if (usbd_desc_cfg) {
         return;
     }
 
     int hid_report_len;
-    if (GetDescHIDReport(&hid_report_len)) {
+    if (getDescHIDReport(&hid_report_len)) {
         uint8_t hid_desc[TUD_HID_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-            TUD_HID_DESCRIPTOR(1 /* placeholder*/, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, __hid_endpoint = USB.registerEndpointIn(), CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
+            TUD_HID_DESCRIPTOR(1 /* placeholder*/, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, _hid_endpoint = USB.registerEndpointIn(), CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
         };
-        __hid_interface = USB.registerInterface(1, hid_desc, sizeof(hid_desc), 10, 0);
+        _hid_interface = USB.registerInterface(1, hid_desc, sizeof(hid_desc), 10, 0);
     }
 
 #ifdef ENABLE_PICOTOOL_USB
@@ -420,8 +390,11 @@ void __SetupUSBDescriptor() {
     }
 }
 
-
 const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
+    return USB.tud_descriptor_string_cb(index, langid);
+}
+
+const uint16_t *RP2040USB::tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
     (void) langid;
 #define DESC_STR_MAX (32)
     static uint16_t desc_str[DESC_STR_MAX];
@@ -505,18 +478,18 @@ void RP2040USB::disconnect() {
     free(usbd_desc_cfg);
     usbd_desc_cfg = nullptr;
     usbd_desc_cfg_len = 0;
-    if (__hid_report) {
-        unregisterInterface(__hid_interface);
-        unregisterEndpointIn(__hid_endpoint);
+    if (_hid_report) {
+        unregisterInterface(_hid_interface);
+        unregisterEndpointIn(_hid_endpoint);
     }
-    free(__hid_report);
-    __hid_report = nullptr;
-    __hid_report_len = 0;
+    free(_hid_report);
+    _hid_report = nullptr;
+    _hid_report_len = 0;
 }
 
 void RP2040USB::connect()  {
-    __SetupDescHIDReport();
-    __SetupUSBDescriptor();
+    setupDescHIDReport();
+    setupUSBDescriptor();
 
 #ifdef __FREERTOS
     auto m = __get_freertos_mutex_for_ptr(&USB.mutex);
@@ -541,8 +514,8 @@ void RP2040USB::begin() {
         return;
     }
 
-    __SetupDescHIDReport();
-    __SetupUSBDescriptor();
+    setupDescHIDReport();
+    setupUSBDescriptor();
 
     mutex_init(&mutex);
 

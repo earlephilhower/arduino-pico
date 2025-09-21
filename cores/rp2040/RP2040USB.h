@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <tusb.h>
 #include <pico/mutex.h>
 
 #ifdef __cplusplus
@@ -79,11 +80,82 @@ public:
     // Can't have multiple cores updating the TUSB state in parallel
     mutex_t mutex;
 
+    // TinyUSB callbacks call bare C functions which jump to these
+    const uint8_t *tud_descriptor_device_cb();
+    const uint8_t *tud_descriptor_configuration_cb(uint8_t index);
+    const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid);
+    uint8_t const *tud_hid_descriptor_report_cb(uint8_t instance);
+
 #ifdef __FREERTOS
+    // Should probably use a semaphore or something, but this works for now
     volatile bool initted = false;
 #endif
 
 private:
+    // We can't use non-trivial variables to hold the hid, interface, or string lists.  The global
+    // initialization where things like the global Keyboard may be called before the non-trivial
+    // objects (i.e. no std::vector).
+
+    // Either a USB interface or HID device descriptor, kept in a linked list
+    typedef struct Entry {
+        const uint8_t *descriptor;
+        unsigned int len        : 12;
+        unsigned int interfaces : 4;
+        unsigned int order      : 18;
+        unsigned int localid    : 6;
+        uint32_t mask;
+        struct Entry *next;
+    } Entry;
+
+    // Find-first-set in a 32b quantity.  Not fast, but doesn't need to be
+    int ffs(uint32_t v);
+
+    // Add or remove Entry in a linked list, keeping things ordered by ordering
+    uint8_t addEntry(Entry **head, int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+    void removeEntry(Entry **head, unsigned int localid);
+
+    // Find the index (HID report ID or USB interface) of a given localid
+    unsigned int findID(Entry *head, unsigned int localid);
+
+    // Generate the binary blob for the device descriptor and HID reports
+    void setupDescHIDReport();
+    void setupUSBDescriptor();
+
+    // Gets a pointer to the HID report structure, optionally returning the size in len
+    uint8_t *getDescHIDReport(int *len);
+
+private:
+    Entry *_hids = nullptr;
+    Entry *_interfaces = nullptr;
+
+    // USB strings kept in a list of pointers.  Can't use std::vector again because of CRT init non-ordering.
+    const char **usbd_desc_str = nullptr;
+    uint8_t usbd_desc_str_cnt = 0;
+    uint8_t usbd_desc_str_alloc = 0;
+
+    // HID report
+    unsigned int _hid_interface = (unsigned int) -1;
+    uint8_t _hid_endpoint = 0;
+    int      _hid_report_len = 0;
+    uint8_t *_hid_report     = nullptr;
+
+    // Global USB descriptor
+    uint8_t *usbd_desc_cfg = nullptr;
+    int usbd_desc_cfg_len = 0;
+
+    // Available bitmask for endpoints, can never be EP 0
+    uint32_t _endpointIn = 0xfffffffe;
+    uint32_t _endpointOut = 0xfffffffe;
+
+    // Overrides for the USB ID/etc.
+    uint16_t _forceVID = 0;
+    uint16_t _forcePID = 0;
+    uint8_t _forceManuf = 0;
+    uint8_t _forceProd = 0;
+    uint8_t _forceSerial = 0;
+
+    // USB device descriptor
+    tusb_desc_device_t usbd_desc_device;
 };
 
 extern RP2040USB USB;
