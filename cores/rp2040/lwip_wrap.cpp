@@ -845,6 +845,7 @@ extern "C" {
             return;
         }
 #endif
+        (void) buffer;
         cb(cbData);
         return;
     }

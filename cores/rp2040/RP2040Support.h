@@ -175,7 +175,7 @@ private:
 
 class RP2040;
 extern RP2040 rp2040;
-extern "C" void main1();
+extern void main1();
 extern "C" char __StackLimit;
 extern "C" char __bss_end__;
 extern "C" void setup1() __attribute__((weak));

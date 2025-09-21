@@ -338,7 +338,7 @@ int SerialPIO::available() {
     if (!_running || !m || (_rx == NOPIN)) {
         return 0;
     }
-    return (_writer - _reader) % _fifoSize;
+    return (_fifoSize + _writer - _reader) % _fifoSize;
 }
 
 int SerialPIO::availableForWrite() {

@@ -146,7 +146,7 @@ public:
         if ((rc == 0) && _timeCallback) {
             time_t now = _timeCallback();
             // Add metadata with creation time to the directory marker
-            int rc = lfs_setattr(&_lfs, path, 'c', (const void *)&now, sizeof(now));
+            rc = lfs_setattr(&_lfs, path, 'c', (const void *)&now, sizeof(now));
             if (rc < 0) {
                 DEBUGV("Unable to set creation time on '%s' to %ld\n", path, (long)now);
             }
