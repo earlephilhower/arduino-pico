@@ -35,8 +35,6 @@
 // HardwareSerial instance if the user doesn't also refer to it.
 extern void serialEvent() __attribute__((weak));
 
-extern mutex_t __usb_mutex;
-
 #define USBD_CDC_CMD_MAX_SIZE (8)
 #define USBD_CDC_IN_OUT_MAX_SIZE (64)
 
@@ -51,32 +49,32 @@ void SerialUSB::begin(unsigned long baud) {
         return;
     }
 
-    usbDisconnect();
+    USB.disconnect();
     static uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
         // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-        TUD_CDC_DESCRIPTOR(0 /* placeholder*/, usbRegisterString("Pico Serial"), _epIn = usbRegisterEndpointIn(), USBD_CDC_CMD_MAX_SIZE, _epOut = usbRegisterEndpointOut(), usbRegisterEndpointIn(), USBD_CDC_IN_OUT_MAX_SIZE)
+        TUD_CDC_DESCRIPTOR(0 /* placeholder*/, USB.registerString("Pico Serial"), _epIn = USB.registerEndpointIn(), USBD_CDC_CMD_MAX_SIZE, _epOut = USB.registerEndpointOut(), USB.registerEndpointIn(), USBD_CDC_IN_OUT_MAX_SIZE)
     };
 
-    _id = usbRegisterInterface(2, cdc_desc, sizeof(cdc_desc), 1, 0);
+    _id = USB.registerInterface(2, cdc_desc, sizeof(cdc_desc), 1, 0);
 
-    usbConnect();
+    USB.connect();
     _running = true;
 }
 
 void SerialUSB::end() {
     if (_running) {
-        usbDisconnect();
-        usbUnregisterInterface(_id);
-        usbUnregisterEndpointIn(_epIn);
-        usbUnregisterEndpointOut(_epOut);
+        USB.disconnect();
+        USB.unregisterInterface(_id);
+        USB.unregisterEndpointIn(_epIn);
+        USB.unregisterEndpointOut(_epOut);
         _running = false;
-        usbConnect();
+        USB.connect();
     }
 
 }
 
 int SerialUSB::peek() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -87,7 +85,7 @@ int SerialUSB::peek() {
 }
 
 int SerialUSB::read() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return -1;
     }
@@ -100,7 +98,7 @@ int SerialUSB::read() {
 }
 
 int SerialUSB::available() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -110,7 +108,7 @@ int SerialUSB::available() {
 }
 
 int SerialUSB::availableForWrite() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -120,7 +118,7 @@ int SerialUSB::availableForWrite() {
 }
 
 void SerialUSB::flush() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return;
     }
@@ -134,7 +132,7 @@ size_t SerialUSB::write(uint8_t c) {
 }
 
 size_t SerialUSB::write(const uint8_t *buf, size_t length) {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -173,7 +171,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
 }
 
 SerialUSB::operator bool() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return false;
     }

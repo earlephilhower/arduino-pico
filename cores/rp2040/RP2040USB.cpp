@@ -34,13 +34,17 @@
 #include <pico/usb_reset_interface.h>
 #include <hardware/watchdog.h>
 
-// Big, global USB mutex, shared with all USB devices to make sure we don't
-// have multiple cores updating the TUSB state in parallel
-mutex_t __usb_mutex;
+#ifdef __FREERTOS
+#include "FreeRTOS.h"
+#include "task.h"
+#include "timers.h"
+#include "semphr.h"
+#endif
+
+RP2040USB USB;
 
 // USB processing will be a periodic timer task
 #define USB_TASK_INTERVAL 1000
-static int __usb_task_irq;
 
 #ifndef USBD_VID
 #define USBD_VID (0x2E8A) // Raspberry Pi
@@ -108,7 +112,7 @@ static int ffs(uint32_t v) {
     return 0;
 }
 
-uint8_t usbRegisterEndpointIn() {
+uint8_t RP2040USB::registerEndpointIn() {
     if (!_endpointIn) {
         return 0; // ERROR, out of EPs
     }
@@ -117,11 +121,11 @@ uint8_t usbRegisterEndpointIn() {
     return 0x80 + firstFree;
 }
 
-void usbUnregisterEndpointIn(int ep) {
+void RP2040USB::unregisterEndpointIn(int ep) {
     _endpointIn |= 1 << ep;
 }
 
-uint8_t usbRegisterEndpointOut() {
+uint8_t RP2040USB::registerEndpointOut() {
     if (!_endpointOut) {
         return 0; // ERROR, out of EPs
     }
@@ -130,7 +134,7 @@ uint8_t usbRegisterEndpointOut() {
     return firstFree;
 }
 
-void usbUnregisterEndpointOut(int ep) {
+void RP2040USB::unregisterEndpointOut(int ep) {
     _endpointOut |= (1 << (ep - 0x80));
 }
 
@@ -198,33 +202,33 @@ static unsigned int usbFindID(Entry *head, unsigned int localid) {
     return x;
 }
 
-uint8_t usbFindHIDReportID(unsigned int localid) {
+uint8_t RP2040USB::findHIDReportID(unsigned int localid) {
     return usbFindID(_hids, localid) + 1; // HID reports start at 1
 }
 
-uint8_t usbFindInterfaceID(unsigned int localid) {
+uint8_t RP2040USB::findInterfaceID(unsigned int localid) {
     return usbFindID(_interfaces, localid);
 }
 
 // Called by a HID device to register a report.  Returns the *local* ID which must be mapped to the HID report ID
-uint8_t usbRegisterHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
+uint8_t RP2040USB::registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
     return AddEntry(&_hids, 0, descriptor, len, ordering, vidMask);
 }
 
-void usbUnregisterHIDDevice(unsigned int localid) {
+void RP2040USB::unregisterHIDDevice(unsigned int localid) {
     RemoveEntry(&_hids, localid);
 }
 
 // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
-uint8_t usbRegisterInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
+uint8_t RP2040USB::registerInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
     return AddEntry(&_interfaces, interfaces, descriptor, len, ordering, vidMask);
 }
 
-void usbUnregisterInterface(unsigned int localid) {
+void RP2040USB::unregisterInterface(unsigned int localid) {
     RemoveEntry(&_interfaces, localid);
 }
 
-uint8_t usbRegisterString(const char *str) {
+uint8_t RP2040USB::registerString(const char *str) {
     if (usbd_desc_str_alloc <= usbd_desc_str_cnt) {
         usbd_desc_str_alloc += 4;
         usbd_desc_str = (const char **)realloc(usbd_desc_str, usbd_desc_str_alloc * sizeof(usbd_desc_str[0]));
@@ -246,7 +250,7 @@ uint8_t usbRegisterString(const char *str) {
 
 static uint16_t _forceVID = 0;
 static uint16_t _forcePID = 0;
-void usbSetVIDPID(uint16_t vid, uint16_t pid) {
+void RP2040USB::setVIDPID(uint16_t vid, uint16_t pid) {
     _forceVID = vid;
     _forcePID = pid;
 }
@@ -254,14 +258,14 @@ void usbSetVIDPID(uint16_t vid, uint16_t pid) {
 static uint8_t _forceManuf = 0;
 static uint8_t _forceProd = 0;
 static uint8_t _forceSerial = 0;
-void usbSetManufacturer(const char *str) {
-    _forceManuf = usbRegisterString(str);
+void RP2040USB::setManufacturer(const char *str) {
+    _forceManuf = USB.registerString(str);
 }
-void usbSetProduct(const char *str) {
-    _forceProd = usbRegisterString(str);
+void RP2040USB::setProduct(const char *str) {
+    _forceProd = USB.registerString(str);
 }
-void usbSetSerialNumber(const char *str) {
-    _forceSerial = usbRegisterString(str);
+void RP2040USB::setSerialNumber(const char *str) {
+    _forceSerial = USB.registerString(str);
 }
 
 static tusb_desc_device_t usbd_desc_device;
@@ -282,9 +286,9 @@ const uint8_t *tud_descriptor_device_cb(void) {
         .idVendor = _forceVID ? _forceVID : (uint16_t)USBD_VID,
         .idProduct = _forcePID ? _forcePID : (uint16_t)USBD_PID,
         .bcdDevice = 0x0100,
-        .iManufacturer = _forceManuf ? _forceManuf : usbRegisterString(USB_MANUFACTURER),
-        .iProduct = _forceProd ? _forceProd : usbRegisterString(USB_PRODUCT),
-        .iSerialNumber = _forceSerial ? _forceSerial : usbRegisterString(idString),
+        .iManufacturer = _forceManuf ? _forceManuf : USB.registerString(USB_MANUFACTURER),
+        .iProduct = _forceProd ? _forceProd : USB.registerString(USB_PRODUCT),
+        .iSerialNumber = _forceSerial ? _forceSerial : USB.registerString(idString),
         .bNumConfigurations = 1
     };
 
@@ -373,14 +377,14 @@ void __SetupUSBDescriptor() {
     if (GetDescHIDReport(&hid_report_len)) {
         uint8_t hid_desc[TUD_HID_DESC_LEN] = {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-            TUD_HID_DESCRIPTOR(1 /* placeholder*/, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, __hid_endpoint = usbRegisterEndpointIn(), CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
+            TUD_HID_DESCRIPTOR(1 /* placeholder*/, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, __hid_endpoint = USB.registerEndpointIn(), CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
         };
-        __hid_interface = usbRegisterInterface(1, hid_desc, sizeof(hid_desc), 10, 0);
+        __hid_interface = USB.registerInterface(1, hid_desc, sizeof(hid_desc), 10, 0);
     }
 
 #ifdef ENABLE_PICOTOOL_USB
-    uint8_t picotool_desc[] = { TUD_RPI_RESET_DESCRIPTOR(1, usbRegisterString("Reset")) };
-    usbRegisterInterface(1, picotool_desc, sizeof(picotool_desc), 100, 0);
+    uint8_t picotool_desc[] = { TUD_RPI_RESET_DESCRIPTOR(1, USB.registerString("Reset")) };
+    USB.registerInterface(1, picotool_desc, sizeof(picotool_desc), 100, 0);
 #endif
 
     usbd_desc_cfg_len = TUD_CONFIG_DESC_LEN; // Always have a config descriptor
@@ -393,7 +397,7 @@ void __SetupUSBDescriptor() {
 
     uint8_t tud_cfg_desc[TUD_CONFIG_DESC_LEN] = {
         // Config number, interface count, string index, total length, attribute, power in mA
-        TUD_CONFIG_DESCRIPTOR(1, interface_count, usbRegisterString(""), usbd_desc_cfg_len, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA)
+        TUD_CONFIG_DESCRIPTOR(1, interface_count, USB.registerString(""), usbd_desc_cfg_len, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA)
     };
 
     // Allocate the "real" HID report descriptor
@@ -441,14 +445,35 @@ const uint16_t *tud_descriptor_string_cb(uint8_t index, uint16_t langid) {
     return desc_str;
 }
 
+#ifdef __FREERTOS
+void __freertos_usb_task(void *param) {
+    (void) param;
 
+    Serial.begin(115200);
+
+    USB.initted = true;
+
+    while (true) {
+        BaseType_t ss = xTaskGetSchedulerState();
+        if (ss != taskSCHEDULER_SUSPENDED) {
+            auto m = __get_freertos_mutex_for_ptr(&USB.mutex);
+            if (xSemaphoreTake(m, 0)) {
+                tud_task();
+                xSemaphoreGive(m);
+            }
+        }
+        vTaskDelay(1 / portTICK_PERIOD_MS);
+    }
+}
+#else
+static int __usb_task_irq;
 static void usb_irq() {
     // if the mutex is already owned, then we are in user code
     // in this file which will do a tud_task itself, so we'll just do nothing
     // until the next tick; we won't starve
-    if (mutex_try_enter(&__usb_mutex, nullptr)) {
+    if (mutex_try_enter(&USB.mutex, nullptr)) {
         tud_task();
-        mutex_exit(&__usb_mutex);
+        mutex_exit(&USB.mutex);
     }
 }
 
@@ -456,52 +481,61 @@ static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
     irq_set_pending(__usb_task_irq);
     return USB_TASK_INTERVAL;
 }
+#endif
 
-void usbDisconnect() {
+void RP2040USB::disconnect() {
+    bool wasConnected = tud_connected();
 #ifdef __FREERTOS
-    auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
+    auto m = __get_freertos_mutex_for_ptr(&USB.mutex);
     xSemaphoreTake(m, portMAX_DELAY);
     tud_disconnect();
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+    if (wasConnected) {
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+    }
     xSemaphoreGive(m);
 #else
-    mutex_enter_blocking(&__usb_mutex);
+    mutex_enter_blocking(&USB.mutex);
     tud_disconnect();
-    sleep_ms(500);
-    mutex_exit(&__usb_mutex);
+    if (wasConnected) {
+        sleep_ms(500);
+    }
+    mutex_exit(&USB.mutex);
 #endif
     // Ensure when we reconnect we make the new descriptor
     free(usbd_desc_cfg);
     usbd_desc_cfg = nullptr;
     usbd_desc_cfg_len = 0;
     if (__hid_report) {
-        usbUnregisterInterface(__hid_interface);
-        usbUnregisterEndpointIn(__hid_endpoint);
+        unregisterInterface(__hid_interface);
+        unregisterEndpointIn(__hid_endpoint);
     }
     free(__hid_report);
     __hid_report = nullptr;
     __hid_report_len = 0;
 }
 
-void usbConnect()  {
+void RP2040USB::connect()  {
     __SetupDescHIDReport();
     __SetupUSBDescriptor();
 
 #ifdef __FREERTOS
-    auto m = __get_freertos_mutex_for_ptr(&__usb_mutex);
+    auto m = __get_freertos_mutex_for_ptr(&USB.mutex);
     xSemaphoreTake(m, portMAX_DELAY);
     tud_connect();
     xSemaphoreGive(m);
 #else
-    mutex_enter_blocking(&__usb_mutex);
+    mutex_enter_blocking(&USB.mutex);
     tud_connect();
-    mutex_exit(&__usb_mutex);
+    mutex_exit(&USB.mutex);
 #endif
 }
 
-void __USBStart() __attribute__((weak));
 
-void __USBStart() {
+
+
+
+
+void RP2040USB::begin() {
     if (tusb_inited()) {
         // Already called
         return;
@@ -510,19 +544,25 @@ void __USBStart() {
     __SetupDescHIDReport();
     __SetupUSBDescriptor();
 
-    mutex_init(&__usb_mutex);
+    mutex_init(&mutex);
 
     tusb_init();
 
+#ifdef __FREERTOS
+    // Make high prio and locked to core 0
+    TaskHandle_t usbTask;
+    xTaskCreate(__freertos_usb_task, "USB", 256, 0, configMAX_PRIORITIES - 2, &usbTask);
+    vTaskCoreAffinitySet(usbTask, 1 << 0);
+#else
     __usb_task_irq = user_irq_claim_unused(true);
     irq_set_exclusive_handler(__usb_task_irq, usb_irq);
     irq_set_enabled(__usb_task_irq, true);
-
     add_alarm_in_us(USB_TASK_INTERVAL, timer_task, nullptr, true);
+#endif
 }
 
 
-bool __USBHIDReady() {
+bool RP2040USB::HIDReady() {
     uint32_t start = millis();
     const uint32_t timeout = 500;
 

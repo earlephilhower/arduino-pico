@@ -56,12 +56,12 @@ bool SingleFileDrive::begin(const char *localFile, const char *dosFile) {
     if (_started) {
         return false;
     }
-    usbDisconnect();
-    _epIn = usbRegisterEndpointIn();
-    _epOut = usbRegisterEndpointOut();
+    USB.disconnect();
+    _epIn = USB.registerEndpointIn();
+    _epOut = USB.registerEndpointOut();
     static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, USBD_MSC_EPSIZE) };
-    _id = usbRegisterInterface(2, msd_desc, sizeof(msd_desc), 2, 0);
-    usbConnect();
+    _id = USB.registerInterface(2, msd_desc, sizeof(msd_desc), 2, 0);
+    USB.connect();
     _localFile = strdup(localFile);
     _dosFile = strdup(dosFile);
     _started = true;
@@ -72,11 +72,11 @@ void SingleFileDrive::end() {
     if (!_started) {
         return;
     }
-    usbDisconnect();
-    usbUnregisterInterface(_id);
-    usbUnregisterEndpointOut(_epOut);
-    usbUnregisterEndpointIn(_epIn);
-    usbConnect();
+    USB.disconnect();
+    USB.unregisterInterface(_id);
+    USB.unregisterEndpointOut(_epOut);
+    USB.unregisterEndpointIn(_epIn);
+    USB.connect();
     _started = false;
     free(_localFile);
     free(_dosFile);

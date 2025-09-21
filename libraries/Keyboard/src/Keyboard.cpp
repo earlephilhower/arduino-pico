@@ -31,7 +31,8 @@
 //  Keyboard
 
 static const uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1))};
-static const uint8_t desc_hid_report_consumer[] = { TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(2))};
+static const uint8_t desc_hid_report_consumer[] = { TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(1))};
+
 Keyboard_::Keyboard_(void) {
     // Base class clears the members we care about
 }
@@ -40,18 +41,18 @@ void Keyboard_::begin(const uint8_t *layout) {
     if (_running) {
         return;
     }
-    usbDisconnect();
-    _id = usbRegisterHIDDevice(desc_hid_report_keyboard, sizeof(desc_hid_report_keyboard), 10, 0x0001);
-    _idConsumer = usbRegisterHIDDevice(desc_hid_report_consumer, sizeof(desc_hid_report_consumer), 11, 0x0000);
-    usbConnect();
+    USB.disconnect();
+    _id = USB.registerHIDDevice(desc_hid_report_keyboard, sizeof(desc_hid_report_keyboard), 10, 0x0001);
+    _idConsumer = USB.registerHIDDevice(desc_hid_report_consumer, sizeof(desc_hid_report_consumer), 11, 0x0000);
+    USB.connect();
     HID_Keyboard::begin(layout);
 }
 
 void Keyboard_::end() {
-    usbDisconnect();
-    usbUnregisterHIDDevice(_id);
-    usbUnregisterHIDDevice(_idConsumer);
-    usbConnect();
+    USB.disconnect();
+    USB.unregisterHIDDevice(_id);
+    USB.unregisterHIDDevice(_idConsumer);
+    USB.connect();
     HID_Keyboard::end();
 }
 
@@ -59,10 +60,10 @@ void Keyboard_::sendReport(KeyReport* keys) {
     if (!_running) {
         return;
     }
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&USB.mutex);
     tud_task();
-    if (__USBHIDReady()) {
-        tud_hid_keyboard_report(usbFindHIDReportID(_id), keys->modifiers, keys->keys);
+    if (USB.HIDReady()) {
+        tud_hid_keyboard_report(USB.findHIDReportID(_id), keys->modifiers, keys->keys);
     }
     tud_task();
 }
@@ -71,14 +72,13 @@ void Keyboard_::sendConsumerReport(uint16_t key) {
     if (!_running) {
         return;
     }
-    CoreMutex m(&__usb_mutex);
+    CoreMutex m(&USB.mutex);
     tud_task();
-    if (__USBHIDReady()) {
-        tud_hid_report(usbFindHIDReportID(_idConsumer), &key, sizeof(key));
+    if (USB.HIDReady()) {
+        tud_hid_report(USB.findHIDReportID(_idConsumer), &key, sizeof(key));
     }
     tud_task();
 }
-
 
 extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
     (void) report_id;

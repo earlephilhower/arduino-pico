@@ -34,7 +34,7 @@
 #include <lwip_wrap.h>
 #include <_freertos.h>
 #include "freertos-lwip.h"
-#include "freertos-usb.h"
+#include <RP2040USB.h>
 
 /*-----------------------------------------------------------*/
 
@@ -64,7 +64,7 @@ static void __core0(void *params) {
     }
 
 #if !defined(NO_USB) && !defined(USE_TINYUSB)
-    while (!__usbInitted) {
+    while (!USB.initted) {
         delay(1);
     }
 #endif
@@ -86,7 +86,7 @@ static void __core0(void *params) {
 static void __core1(void *params) {
     (void) params;
 #if !defined(NO_USB) && !defined(USE_TINYUSB)
-    while (!__usbInitted) {
+    while (!USB.initted) {
         delay(1);
     }
 #endif

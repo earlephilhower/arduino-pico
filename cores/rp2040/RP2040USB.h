@@ -19,56 +19,74 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#pragma once
+
 #include <pico/mutex.h>
-#include <limits.h>
 
-// Called by an object at global init time to register a HID device, returns a localID to be mapped using findHIDReportID
-// vidMask is the bits in the VID that should be XOR'd when this device is present.
-// 0 means don't invert anything, OTW select a single bitmask 1<<n.
-uint8_t usbRegisterHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+#ifdef __cplusplus
 
-// Remove a HID device from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
-void usbUnregisterHIDDevice(unsigned int localid);
+class RP2040USB {
+public:
+    RP2040USB() { }
 
-// Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
-uint8_t usbRegisterInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+    // Called by an object at global init time to register a HID device, returns a localID to be mapped using findHIDReportID
+    // vidMask is the bits in the VID that should be XOR'd when this device is present.
+    // 0 means don't invert anything, OTW select a single bitmask 1<<n.
+    uint8_t registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
 
-// Remove a USB interface from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
-void usbUnregisterInterface(unsigned int localid);
+    // Remove a HID device from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
+    void unregisterHIDDevice(unsigned int localid);
 
-// Get the USB HID actual report ID from the localid
-uint8_t usbFindHIDReportID(unsigned int localid);
+    // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
+    uint8_t registerInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
 
-// Get the USB interface number from the localid
-uint8_t usbFindInterfaceID(unsigned int localid);
+    // Remove a USB interface from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
+    void unregisterInterface(unsigned int localid);
 
-// Register a string for a USB descriptor
-uint8_t usbRegisterString(const char *str);
+    // Get the USB HID actual report ID from the localid
+    uint8_t findHIDReportID(unsigned int localid);
 
-// Get an unassigned in/cmd or out endpoint number
-uint8_t usbRegisterEndpointIn();
-uint8_t usbRegisterEndpointOut();
-void usbUnregisterEndpointIn(int ep);
-void usbUnregisterEndpointOut(int ep);
+    // Get the USB interface number from the localid
+    uint8_t findInterfaceID(unsigned int localid);
 
-// Disconnects the USB connection to allow editing the HID/interface list
-void usbDisconnect();
+    // Register a string for a USB descriptor
+    uint8_t registerString(const char *str);
 
-// Reconnects the USB connection to pick up the new descriptor
-void usbConnect();
+    // Get an unassigned in/cmd or out endpoint number
+    uint8_t registerEndpointIn();
+    uint8_t registerEndpointOut();
+    void unregisterEndpointIn(int ep);
+    void unregisterEndpointOut(int ep);
 
-// Override the hardcoded USB VID:PID, product, manufacturer, and serials
-void usbSetVIDPID(uint16_t vid, uint16_t pid);
-void usbSetManufacturer(const char *str);
-void usbSetProduct(const char *str);
-void usbSetSerialNumber(const char *str);
+    // Disconnects the USB connection to allow editing the HID/interface list
+    void disconnect();
 
-// Big, global USB mutex, shared with all USB devices to make sure we don't
-// have multiple cores updating the TUSB state in parallel
-extern mutex_t __usb_mutex;
+    // Reconnects the USB connection to pick up the new descriptor
+    void connect();
 
-// Called by main() to init the USB HW/SW.
-void __USBStart();
+    // Override the hardcoded USB VID:PID, product, manufacturer, and serials
+    void setVIDPID(uint16_t vid, uint16_t pid);
+    void setManufacturer(const char *str);
+    void setProduct(const char *str);
+    void setSerialNumber(const char *str);
 
-// Helper class for HID report sending with wait and timeout
-bool __USBHIDReady();
+    // Called by main() to init the USB HW/SW.
+    void begin();
+
+    // Helper class for HID report sending with wait and timeout
+    bool HIDReady();
+
+    // Can't have multiple cores updating the TUSB state in parallel
+    mutex_t mutex;
+
+#ifdef __FREERTOS
+    volatile bool initted = false;
+#endif
+
+private:
+};
+
+extern RP2040USB USB;
+
+#endif
+

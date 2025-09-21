@@ -3,13 +3,13 @@
 
 void setup() {
   // Must *always* disconnect the USB port while doing modifications like this
-  usbDisconnect();
-  usbSetVIDPID(0x1209, 0xca75);
-  usbSetManufacturer("Kitties 'R Us");
-  usbSetProduct("CAT Scanner");
-  usbSetSerialNumber("FUZZBALL_0001");
+  USB.disconnect();
+  USB.setVIDPID(0x1209, 0xca75);
+  USB.setManufacturer("Kitties 'R Us");
+  USB.setProduct("CAT Scanner");
+  USB.setSerialNumber("FUZZBALL_0001");
   // Everything is set, so reconnect under the new device info
-  usbConnect();
+  USB.connect();
 }
 
 void loop() {
