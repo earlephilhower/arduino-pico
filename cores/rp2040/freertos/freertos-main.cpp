@@ -34,7 +34,7 @@
 #include <lwip_wrap.h>
 #include <_freertos.h>
 #include "freertos-lwip.h"
-#include <RP2040USB.h>
+#include <USB.h>
 
 /*-----------------------------------------------------------*/
 

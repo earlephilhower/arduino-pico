@@ -18,8 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include <Arduino.h>
-#include "RP2040USB.h"
+#include "Arduino.h"
+#include "USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 #include <hardware/vreg.h>

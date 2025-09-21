@@ -1,6 +1,8 @@
 // Simple sketch showing how to set the USB information from an application
 // Released to the public Domain 2025 by Earle F. Philhower, III
 
+#include <USB.h>
+
 void setup() {
   // Must *always* disconnect the USB port while doing modifications like this
   USB.disconnect();

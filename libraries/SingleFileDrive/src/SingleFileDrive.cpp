@@ -21,7 +21,7 @@
 #include <LittleFS.h>
 #include <class/msc/msc.h>
 #include <device/usbd.h>
-#include <RP2040USB.h>
+#include <USB.h>
 
 SingleFileDrive singleFileDrive;
 

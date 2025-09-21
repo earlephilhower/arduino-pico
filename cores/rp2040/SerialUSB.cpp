@@ -25,7 +25,7 @@
 #include <Arduino.h>
 #include <tusb.h>
 #include "CoreMutex.h"
-#include "RP2040USB.h"
+#include "USB.h"
 
 
 // SerialEvent functions are weak, so when the user doesn't define them,

@@ -20,7 +20,7 @@
 */
 
 #include "Mouse.h"
-#include <RP2040USB.h>
+#include <USB.h>
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"

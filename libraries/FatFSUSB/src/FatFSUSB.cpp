@@ -21,7 +21,7 @@
 #include <FatFS.h>
 #include <class/msc/msc.h>
 #include <device/usbd.h>
-#include <RP2040USB.h>
+#include <USB.h>
 
 FatFSUSBClass FatFSUSB;
 #define USBD_MSC_EPSIZE 64

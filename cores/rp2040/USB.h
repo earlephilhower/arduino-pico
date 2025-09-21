@@ -26,9 +26,9 @@
 
 #ifdef __cplusplus
 
-class RP2040USB {
+class USBClass {
 public:
-    RP2040USB() { }
+    USBClass() { }
 
     // Called by an object at global init time to register a HID device, returns a localID to be mapped using findHIDReportID
     // vidMask is the bits in the VID that should be XOR'd when this device is present.
@@ -158,7 +158,7 @@ private:
     tusb_desc_device_t usbd_desc_device;
 };
 
-extern RP2040USB USB;
+extern USBClass USB;
 
 #endif
 
