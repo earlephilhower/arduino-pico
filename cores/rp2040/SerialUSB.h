@@ -23,8 +23,17 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
-#include <tusb.h>
 
+// We need the TUSB defines, but BTStack redefines them.  So for this header we
+// turn on off HID before doing the include and then restore it after the include
+// is processed.
+#define SAVE_CFG_TUD_HID CFG_TUD_HID
+#undef CFG_TUD_HID
+#define CFG_TUD_HID 0
+#include <tusb.h>
+#undef CFG_TUD_HID
+#define CFG_TUD_HID SAVE_CFG_TUD_HID
+#undef SAVE_CFG_TUD_HID
 class SerialUSB : public arduino::HardwareSerial {
 public:
     SerialUSB();
