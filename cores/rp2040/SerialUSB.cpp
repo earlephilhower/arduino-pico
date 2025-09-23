@@ -139,7 +139,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
 
     static uint64_t last_avail_time;
     int written = 0;
-    if (tud_cdc_connected() || _ignoreFlowControl) {
+    if (tud_cdc_connected() || _ss.ignoreFlowControl) {
         for (size_t i = 0; i < length;) {
             int n = length - i;
             int avail = tud_cdc_write_available();
@@ -181,19 +181,15 @@ SerialUSB::operator bool() {
 }
 
 void SerialUSB::ignoreFlowControl(bool ignore) {
-    _ignoreFlowControl = ignore;
+    _ss.ignoreFlowControl = ignore;
 }
 
-static bool _dtr = false;
-static bool _rts = false;
-static int _bps = 115200;
-static bool _rebooting = false;
-static void CheckSerialReset() {
-    if (!_rebooting && (_bps == 1200) && (!_dtr)) {
+void SerialUSB::checkSerialReset() {
+    if (!_ss.rebooting && (_ss.bps == 1200) && (!_ss.dtr)) {
 #ifdef __FREERTOS
         __freertos_idle_other_core();
 #endif
-        _rebooting = true;
+        _ss.rebooting = true;
         // Disable NVIC IRQ, so that we don't get bothered anymore
         irq_set_enabled(USBCTRL_IRQ, false);
         // Reset the whole USB hardware block
@@ -207,24 +203,32 @@ static void CheckSerialReset() {
 }
 
 bool SerialUSB::dtr() {
-    return _dtr;
+    return _ss.dtr;
 }
 
 bool SerialUSB::rts() {
-    return _rts;
+    return _ss.rts;
 }
 
 extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
+    Serial.tud_cdc_line_state_cb(itf, dtr, rts);
+}
+
+void SerialUSB::tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
     (void) itf;
-    _dtr = dtr ? true : false;
-    _rts = rts ? true : false;
-    CheckSerialReset();
+    _ss.dtr = dtr ? 1 : 0;
+    _ss.rts = rts ? 1 : 0;
+    checkSerialReset();
 }
 
 extern "C" void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding) {
+    Serial.tud_cdc_line_coding_cb(itf, p_line_coding);
+}
+
+void SerialUSB::tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding) {
     (void) itf;
-    _bps = p_line_coding->bit_rate;
-    CheckSerialReset();
+    _ss.bps = p_line_coding->bit_rate;
+    checkSerialReset();
 }
 
 SerialUSB Serial;

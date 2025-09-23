@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
+#include <tusb.h>
 
 class SerialUSB : public arduino::HardwareSerial {
 public:
@@ -53,12 +54,27 @@ public:
         (void) unused;
     }
 
+    // TUSB callbacks
+    void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts);
+    void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding);
+
 private:
     bool _running = false;
-    bool _ignoreFlowControl = false;
     uint8_t _id;
     uint8_t _epIn;
     uint8_t _epOut;
+
+    typedef struct {
+        unsigned int rebooting : 1;
+        unsigned int ignoreFlowControl : 1;
+        unsigned int dtr : 1;
+        unsigned int rts : 1;
+        unsigned int bps : 28;
+    } SyntheticState;
+    SyntheticState _ss = { 0, 0, 0, 0, 115200};
+
+    void checkSerialReset();
+
 };
 
 extern SerialUSB Serial;
