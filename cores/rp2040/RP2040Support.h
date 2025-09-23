@@ -66,6 +66,7 @@ public:
             return;
         }
         mutex_init(&_idleMutex);
+        _queue = (queue_t *)calloc(2, sizeof(queue_t));
         queue_init(&_queue[0], sizeof(uint32_t), FIFOCNT);
         queue_init(&_queue[1], sizeof(uint32_t), FIFOCNT);
         _multicore = true;
@@ -168,7 +169,7 @@ private:
 
     bool _multicore = false;
     mutex_t _idleMutex;
-    queue_t _queue[2];
+    queue_t *_queue; // Only allocated as [2] if multicore
     static constexpr uint32_t _GOTOSLEEP = 0xC0DED02E;
 };
 
