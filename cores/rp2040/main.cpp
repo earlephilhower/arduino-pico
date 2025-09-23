@@ -19,7 +19,7 @@
 */
 
 #include "Arduino.h"
-#include "RP2040USB.h"
+#include "USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 #include <hardware/vreg.h>
@@ -147,7 +147,7 @@ extern "C" int main() {
 #ifdef USE_TINYUSB
     TinyUSB_Device_Init(0);
 #else
-    __USBStart();
+    USB.begin();
 #if !defined(DISABLE_USB_SERIAL) && !defined(__FREERTOS)
     // Enable serial port for reset/upload always
     Serial.begin(115200);
