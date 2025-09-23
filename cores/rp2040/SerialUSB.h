@@ -24,16 +24,6 @@
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
 
-// We need the TUSB defines, but BTStack redefines them.  So for this header we
-// turn on off HID before doing the include and then restore it after the include
-// is processed.
-#define SAVE_CFG_TUD_HID CFG_TUD_HID
-#undef CFG_TUD_HID
-#define CFG_TUD_HID 0
-#include <tusb.h>
-#undef CFG_TUD_HID
-#define CFG_TUD_HID SAVE_CFG_TUD_HID
-#undef SAVE_CFG_TUD_HID
 class SerialUSB : public arduino::HardwareSerial {
 public:
     SerialUSB();
@@ -65,7 +55,7 @@ public:
 
     // TUSB callbacks
     void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts);
-    void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding);
+    void tud_cdc_line_coding_cb(uint8_t itf, void const *p_line_coding); // Can't use cdc_line_coding_t const* p_line_coding, TinyUSB and BTStack conflict when we include tusb.h + BTStack.h
 
 private:
     bool _running = false;
@@ -83,7 +73,6 @@ private:
     SyntheticState _ss = { 0, 0, 0, 0, 115200};
 
     void checkSerialReset();
-
 };
 
 extern SerialUSB Serial;

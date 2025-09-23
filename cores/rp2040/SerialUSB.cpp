@@ -222,11 +222,12 @@ void SerialUSB::tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
 }
 
 extern "C" void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding) {
-    Serial.tud_cdc_line_coding_cb(itf, p_line_coding);
+    Serial.tud_cdc_line_coding_cb(itf, (void const *)p_line_coding);
 }
 
-void SerialUSB::tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding) {
+void SerialUSB::tud_cdc_line_coding_cb(uint8_t itf, void const *p) {
     (void) itf;
+    cdc_line_coding_t const* p_line_coding = (cdc_line_coding_t const*)p;
     _ss.bps = p_line_coding->bit_rate;
     checkSerialReset();
 }
