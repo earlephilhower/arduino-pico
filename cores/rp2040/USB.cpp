@@ -65,21 +65,11 @@ uint8_t _picotool_itf_num;
 
 int usb_hid_poll_interval __attribute__((weak)) = 10;
 
-// GCC doesn't seem to have builtin_ffs here
-int USBClass::ffs(uint32_t v) {
-    for (auto i = 0; i < 32; i++) {
-        if (v & (1 << i)) {
-            return i;
-        }
-    }
-    return 0;
-}
-
 uint8_t USBClass::registerEndpointIn() {
     if (!_endpointIn) {
         return 0; // ERROR, out of EPs
     }
-    int firstFree = ffs(_endpointIn);
+    int firstFree = __builtin_ctz(_endpointIn);
     _endpointIn &= ~(1 << firstFree);
     return 0x80 + firstFree;
 }
@@ -92,7 +82,7 @@ uint8_t USBClass::registerEndpointOut() {
     if (!_endpointOut) {
         return 0; // ERROR, out of EPs
     }
-    int firstFree = ffs(_endpointOut);
+    int firstFree = __builtin_ctz(_endpointOut);
     _endpointOut &= ~(1 << firstFree);
     return firstFree;
 }
@@ -439,7 +429,6 @@ void __freertos_usb_task(void *param) {
     }
 }
 #else
-static int __usb_task_irq;
 static void usb_irq() {
     // if the mutex is already owned, then we are in user code
     // in this file which will do a tud_task itself, so we'll just do nothing
@@ -451,7 +440,7 @@ static void usb_irq() {
 }
 
 static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
-    irq_set_pending(__usb_task_irq);
+    irq_set_pending(USB.usbTaskIRQ);
     return USB_TASK_INTERVAL;
 }
 #endif
@@ -503,11 +492,6 @@ void USBClass::connect()  {
 #endif
 }
 
-
-
-
-
-
 void USBClass::begin() {
     if (tusb_inited()) {
         // Already called
@@ -527,9 +511,9 @@ void USBClass::begin() {
     xTaskCreate(__freertos_usb_task, "USB", 256, 0, configMAX_PRIORITIES - 2, &usbTask);
     vTaskCoreAffinitySet(usbTask, 1 << 0);
 #else
-    __usb_task_irq = user_irq_claim_unused(true);
-    irq_set_exclusive_handler(__usb_task_irq, usb_irq);
-    irq_set_enabled(__usb_task_irq, true);
+    usbTaskIRQ = user_irq_claim_unused(true);
+    irq_set_exclusive_handler(usbTaskIRQ, usb_irq);
+    irq_set_enabled(usbTaskIRQ, true);
     add_alarm_in_us(USB_TASK_INTERVAL, timer_task, nullptr, true);
 #endif
 }

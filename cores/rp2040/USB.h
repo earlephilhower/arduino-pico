@@ -89,6 +89,9 @@ public:
 #ifdef __FREERTOS
     // Should probably use a semaphore or something, but this works for now
     volatile bool initted = false;
+#else
+    // The user IRQ for the USB "task"
+    int usbTaskIRQ;
 #endif
 
 private:
@@ -106,9 +109,6 @@ private:
         uint32_t mask;
         struct Entry *next;
     } Entry;
-
-    // Find-first-set in a 32b quantity.  Not fast, but doesn't need to be
-    int ffs(uint32_t v);
 
     // Add or remove Entry in a linked list, keeping things ordered by ordering
     uint8_t addEntry(Entry **head, int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
@@ -161,4 +161,3 @@ private:
 extern USBClass USB;
 
 #endif
-
