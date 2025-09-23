@@ -95,7 +95,6 @@ uint8_t USBClass::addEntry(Entry **head, int interfaces, const uint8_t *descript
     static uint8_t id = 1;
 
     Entry *n = (Entry *)malloc(sizeof(Entry));
-    assert(n);
     n->descriptor = descriptor;
     n->len = len;
     n->interfaces = interfaces;
@@ -151,7 +150,6 @@ unsigned int USBClass::findID(Entry *head, unsigned int localid) {
         head = head->next;
         x++;
     }
-    assert(head);
     return x;
 }
 
@@ -285,7 +283,6 @@ void USBClass::setupDescHIDReport() {
 
     // Allocate the "real" HID report descriptor
     _hid_report = (uint8_t *)malloc(_hid_report_len);
-    assert(_hid_report);
 
     // Now copy the descriptors
     uint8_t *p = _hid_report;
@@ -362,7 +359,6 @@ void USBClass::setupUSBDescriptor() {
 
     // Allocate the "real" HID report descriptor
     usbd_desc_cfg = (uint8_t *)malloc(usbd_desc_cfg_len);
-    assert(usbd_desc_cfg);
     bzero(usbd_desc_cfg, usbd_desc_cfg_len);
 
     // Now copy the descriptors
@@ -409,7 +405,7 @@ const uint16_t *USBClass::tud_descriptor_string_cb(uint8_t index, uint16_t langi
 }
 
 #ifdef __FREERTOS
-void __freertos_usb_task(void *param) {
+void USBClass::freertosUSBTask(void *param) {
     (void) param;
 
     Serial.begin(115200);
@@ -429,7 +425,7 @@ void __freertos_usb_task(void *param) {
     }
 }
 #else
-static void usb_irq() {
+void USBClass::usbIRQ() {
     // if the mutex is already owned, then we are in user code
     // in this file which will do a tud_task itself, so we'll just do nothing
     // until the next tick; we won't starve
@@ -439,7 +435,7 @@ static void usb_irq() {
     }
 }
 
-static int64_t timer_task(__unused alarm_id_t id, __unused void *user_data) {
+int64_t USBClass::timerTask(__unused alarm_id_t id, __unused void *user_data) {
     irq_set_pending(USB.usbTaskIRQ);
     return USB_TASK_INTERVAL;
 }
@@ -508,13 +504,13 @@ void USBClass::begin() {
 #ifdef __FREERTOS
     // Make high prio and locked to core 0
     TaskHandle_t usbTask;
-    xTaskCreate(__freertos_usb_task, "USB", 256, 0, configMAX_PRIORITIES - 2, &usbTask);
+    xTaskCreate(freertosUSBTask, "USB", 256, 0, configMAX_PRIORITIES - 2, &usbTask);
     vTaskCoreAffinitySet(usbTask, 1 << 0);
 #else
     usbTaskIRQ = user_irq_claim_unused(true);
-    irq_set_exclusive_handler(usbTaskIRQ, usb_irq);
+    irq_set_exclusive_handler(usbTaskIRQ, usbIRQ);
     irq_set_enabled(usbTaskIRQ, true);
-    add_alarm_in_us(USB_TASK_INTERVAL, timer_task, nullptr, true);
+    add_alarm_in_us(USB_TASK_INTERVAL, timerTask, nullptr, true);
 #endif
 }
 

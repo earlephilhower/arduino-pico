@@ -91,7 +91,7 @@ public:
     volatile bool initted = false;
 #else
     // The user IRQ for the USB "task"
-    int usbTaskIRQ;
+    uint8_t usbTaskIRQ;
 #endif
 
 private:
@@ -134,18 +134,18 @@ private:
     uint8_t usbd_desc_str_alloc = 0;
 
     // HID report
-    unsigned int _hid_interface = (unsigned int) -1;
+    uint8_t _hid_interface = (unsigned uint8_t) -1;
     uint8_t _hid_endpoint = 0;
-    int      _hid_report_len = 0;
+    uint16_t _hid_report_len = 0;
     uint8_t *_hid_report     = nullptr;
 
     // Global USB descriptor
     uint8_t *usbd_desc_cfg = nullptr;
-    int usbd_desc_cfg_len = 0;
+    uint16_t usbd_desc_cfg_len = 0;
 
     // Available bitmask for endpoints, can never be EP 0
-    uint32_t _endpointIn = 0xfffffffe;
-    uint32_t _endpointOut = 0xfffffffe;
+    uint16_t _endpointIn = 0xfffe;
+    uint16_t _endpointOut = 0xfffe;
 
     // Overrides for the USB ID/etc.
     uint16_t _forceVID = 0;
@@ -156,6 +156,15 @@ private:
 
     // USB device descriptor
     tusb_desc_device_t usbd_desc_device;
+
+    // Periodic task
+#ifdef __FREERTOS
+    static void freertosUSBTask(void *param);
+#else
+    static void usbIRQ();
+    static int64_t timerTask(__unused alarm_id_t id, __unused void *user_data);
+#endif
+
 };
 
 extern USBClass USB;
