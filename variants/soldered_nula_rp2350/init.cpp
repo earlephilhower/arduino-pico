@@ -1,8 +1,7 @@
 /*
-    Mouse.h
+    Initialize the Pico W WiFi driver
 
-    Copyright (c) 2015, Arduino LLC
-    Original code (pre-library): Copyright (c) 2011, Peter Barrett
+    Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -19,21 +18,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#pragma once
+#include <cyw43_wrappers.h>
+#include "pico/cyw43_driver.h"
 
-#ifdef USE_TINYUSB
-#error Mouse is not compatible with Adafruit TinyUSB
-#endif
-
-#include <HID_Mouse.h>
-
-class Mouse_ : public HID_Mouse {
-public:
-    Mouse_(void);
-    void begin() override;
-    void end() override;
-    virtual void move(int x, int y, signed char wheel = 0) override;
-private:
-    uint8_t _id;
-};
-extern Mouse_ Mouse;
+extern "C" void initVariant() {
+    static uint cyw43_pin_array[CYW43_PIN_INDEX_WL_COUNT] = {24, 38, 38, 38, 37, 36};
+    cyw43_set_pins_wl(cyw43_pin_array);
+    init_cyw43_wifi();
+}

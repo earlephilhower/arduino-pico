@@ -20,7 +20,7 @@
 */
 
 #include "MouseAbsolute.h"
-#include <RP2040USB.h>
+#include <USB.h>
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"
@@ -28,14 +28,36 @@
 static const uint8_t desc_hid_report_absmouse[] = { TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(1)) };
 
 MouseAbsolute_::MouseAbsolute_(void) : HID_Mouse(true) {
-    _id = usbRegisterHIDDevice(desc_hid_report_absmouse, sizeof(desc_hid_report_absmouse), 21, 0x0002);
 }
 
+void MouseAbsolute_::begin() {
+    if (_running) {
+        return;
+    }
+    USB.disconnect();
+    _id = USB.registerHIDDevice(desc_hid_report_absmouse, sizeof(desc_hid_report_absmouse), 21, 0x0002);
+    USB.connect();
+    HID_Mouse::begin();
+}
+
+void MouseAbsolute_::end() {
+    if (_running) {
+        USB.disconnect();
+        USB.unregisterHIDDevice(_id);
+        USB.connect();
+    }
+    HID_Mouse::end();
+}
+
+
 void MouseAbsolute_::move(int x, int y, signed char wheel) {
-    CoreMutex m(&__usb_mutex);
+    if (!_running) {
+        return;
+    }
+    CoreMutex m(&USB.mutex);
     tud_task();
     if (tud_hid_ready()) {
-        tud_hid_abs_mouse_report(usbFindHIDReportID(_id), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
+        tud_hid_abs_mouse_report(USB.findHIDReportID(_id), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
     }
     tud_task();
 }

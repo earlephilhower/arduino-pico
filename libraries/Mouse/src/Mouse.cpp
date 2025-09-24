@@ -20,7 +20,7 @@
 */
 
 #include "Mouse.h"
-#include <RP2040USB.h>
+#include <USB.h>
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"
@@ -35,15 +35,38 @@
 */
 
 static const uint8_t desc_hid_report_mouse[] = { TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(1)) };
+
 Mouse_::Mouse_(void) {
-    _id = usbRegisterHIDDevice(desc_hid_report_mouse, sizeof(desc_hid_report_mouse), 20, 0x0002);
 }
 
+void Mouse_::begin() {
+    if (_running) {
+        return;
+    }
+    USB.disconnect();
+    _id = USB.registerHIDDevice(desc_hid_report_mouse, sizeof(desc_hid_report_mouse), 20, 0x0002);
+    USB.connect();
+    HID_Mouse::begin();
+}
+
+void Mouse_::end() {
+    if (_running) {
+        USB.disconnect();
+        USB.unregisterHIDDevice(_id);
+        USB.connect();
+    }
+    HID_Mouse::end();
+}
+
+
 void Mouse_::move(int x, int y, signed char wheel) {
-    CoreMutex m(&__usb_mutex);
+    if (!_running) {
+        return;
+    }
+    CoreMutex m(&USB.mutex);
     tud_task();
-    if (__USBHIDReady()) {
-        tud_hid_mouse_report(usbFindHIDReportID(_id), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
+    if (USB.HIDReady()) {
+        tud_hid_mouse_report(USB.findHIDReportID(_id), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
     }
     tud_task();
 }

@@ -274,37 +274,39 @@ size_t PWMAudio::write(const uint8_t *buffer, size_t size) {
 void PWMAudio::find_pacer_fraction(int target, uint16_t *numerator, uint16_t *denominator) {
     const uint16_t max = 0xFFFF;
 
-    /*Cache last results so we dont have to recalculate*/
+    // Cache last results so we dont have to recalculate
     static int last_target;
     static uint16_t bestNum;
     static uint16_t bestDenom;
-    /*Check if we can load the previous values*/
+    // Check if we can load the previous values
     if (target == last_target) {
         *numerator = bestNum;
         *denominator = bestDenom;
         return;
     }
 
-    // See if it's one of the precalculated values
-    for (size_t i = 0; i < sizeof(__PWMAudio_pacer) / sizeof(__PWMAudio_pacer[0]); i++) {
-        if (target == (int)__PWMAudio_pacer[i].freq) {
-            last_target = target;
-            bestNum = __PWMAudio_pacer[i].n;
-            bestDenom = __PWMAudio_pacer[i].d;
-            *numerator = bestNum;
-            *denominator = bestDenom;
-            return;
+    // See if it's one of the precalculated values, and we're at the precalculated frequency
+    if (rp2040.f_cpu() == F_CPU) {
+        for (size_t i = 0; i < sizeof(__PWMAudio_pacer) / sizeof(__PWMAudio_pacer[0]); i++) {
+            if (target == (int)__PWMAudio_pacer[i].freq) {
+                last_target = target;
+                bestNum = __PWMAudio_pacer[i].n;
+                bestDenom = __PWMAudio_pacer[i].d;
+                *numerator = bestNum;
+                *denominator = bestDenom;
+                return;
+            }
         }
     }
 
     // Nope, do exhaustive search.  This is gonna be slooooow
-    float targetRatio = (float)F_CPU / target;
+    float targetRatio = (float)rp2040.f_cpu() / target;
     float lowestError = HUGE_VALF;
 
     for (uint16_t denom = 1; denom < max; denom++) {
-        uint16_t num = (int)((targetRatio * denom) + 0.5f); /*Calculate numerator, rounding to nearest integer*/
+        uint16_t num = (int)((targetRatio * denom) + 0.5f); // Calculate numerator, rounding to nearest integer
 
-        /*Check if numerator is within bounds*/
+        // Check if numerator is within bounds
         if (num > 0 && num < max) {
             float actualRatio = (float)num / denom;
             float error = fabsf(actualRatio - targetRatio);

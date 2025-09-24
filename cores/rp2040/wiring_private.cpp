@@ -30,7 +30,12 @@
 #define maxIRQs 15
 #endif
 static uint32_t _irqStackTop[2] = { 0, 0 };
+#ifdef __riscv
 static uint32_t _irqStack[2][maxIRQs];
+#else
+// ARM there's only 1 bit valid, so we'll just shift it in and out...
+static uint32_t _irqStack[2];
+#endif
 
 #ifdef __FREERTOS
 static UBaseType_t __savedIrqs[configNUMBER_OF_CORES];
@@ -52,7 +57,13 @@ extern "C" void interrupts() {
         // ERROR
         return;
     }
+#ifdef __riscv
     restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
+#else
+    uint32_t mask = _irqStack[core] & 1;
+    _irqStack[core] >>= 1;
+    restore_interrupts(mask);
+#endif
 }
 
 extern "C" void noInterrupts() {
@@ -71,7 +82,13 @@ extern "C" void noInterrupts() {
         // ERROR
         panic("IRQ stack overflow");
     }
+#ifdef __riscv
     _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
+#else
+    _irqStack[core] <<= 1;
+    _irqStack[core] |= save_and_disable_interrupts() ? 1 : 0;
+    _irqStackTop[core]++;
+#endif
 }
 
 auto_init_mutex(_irqMutex);
@@ -82,7 +99,7 @@ void *_gpioIrqCBParam[__GPIOCNT];
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
 // dispatch to the real callback manually
-void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
+static void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     (void) events;
     uint64_t mask = 1LL << gpio;
     if (_gpioIrqEnabled & mask) {

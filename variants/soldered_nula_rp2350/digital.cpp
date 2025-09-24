@@ -1,7 +1,6 @@
 /*
-    FreeRTOS USB task
-
-    Copyright (c) 2025 Earle F. Philhower, III <earlephilhower@yahoo.com>
+    pinMode and digitalRead/Write for the Raspberry Pi Pico W RP2040
+    Copyright (c) 2022 Earle F. Philhower, III <earlephilhower@yahoo.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -18,10 +17,17 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#pragma once
+#include "Arduino.h"
+#include <cyw43_wrappers.h>
 
-#ifdef __FREERTOS
-extern void __USBStart();
-extern volatile bool __usbInitted;
+extern "C" void pinMode(pin_size_t pin, PinMode mode) {
+    cyw43_pinMode(pin, mode);
+}
 
-#endif
+extern "C" void digitalWrite(pin_size_t pin, PinStatus val) {
+    cyw43_digitalWrite(pin, val);
+}
+
+extern "C" PinStatus digitalRead(pin_size_t pin) {
+    return cyw43_digitalRead(pin);
+}

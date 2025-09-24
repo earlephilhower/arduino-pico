@@ -9,7 +9,8 @@ Pico SDK USB Support
 --------------------
 This is the default mode and automatically includes a USB-based
 serial port, ``Serial`` as well as supporting automatic reset-to-upload
-from the IDE.
+from the IDE.  Note that if you ``Serial.end()`` in your code that the
+reset-to-upload feature will NOT work.
 
 The Arduino-Pico core includes ported versions of the basic Arduino
 ``Keyboard``, ``Mouse`` and ``Joystick`` libraries.  These libraries 
@@ -21,6 +22,71 @@ See the examples and Arduino Reference at
 https://www.arduino.cc/reference/en/language/functions/usb/keyboard/
 and
 https://www.arduino.cc/reference/en/language/functions/usb/mouse
+
+USB class
+---------
+The ``USB`` class allows for applications and libraries to add, remove,
+or modify the USB connection.  Before calling any of the class functions,
+be sure to include the appropriate header:
+
+.. code::  cpp
+
+    #include <USB.h>
+
+Dynamic USB Configuration
+-------------------------
+Whenever changing the USB device information or adding or removing a device,
+the USB port must be disconnected in software using ``USB.disconnect()`` to
+ensure no partially-updated information gets used by the USB stack.  Once
+configuration is completed calling ``USB.connect()`` will signal the PC that
+a new device has been attached to the port and it should re-scan and update
+the devices seen on your system.
+
+Only the most commonly needed calls will be described in this document.  For
+examples of implementing your own custom HID, please look at the ``Keyboard``
+library shipped with the core.
+
+void USB.disconnect()
+~~~~~~~~~~~~~~~~~~~~
+Tells the Pico to electrically disconnect from an attached USB host.
+Any devices exported by the Pico should be removed in the host's OS/
+This **must** be called before doing any USB modification calls.
+It is safe to call this function even if the Pico isn't actually plugged
+into a PC (i.e. when self-powered).
+
+void USB.connect()
+~~~~~~~~~~~~~~~~~
+Tells the Pico to signal to the host that a device has been plugged
+in.  The host OS should re-scan the Pico and create the new devices
+exported by it.  Call this after modifying USB configurations
+
+void USB.setVIDPID(uint16_t vid, uint16_t pid)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the VID:PID the Pico will export to the host.  By default it will
+use the settings defined for your specific board.  Be aware that Using
+VIDs that are not registered by you with the USB Implementers Forum may
+be problematic.  Only call after a ``usbDisconnect()``.
+
+void USB.setManufacturer(const char *str)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the Manufacturer field text in the USB descriptor.  Note that most
+OSes will use the ``VID`` (vendor ID) to identify the manufacturer but a
+``lsusb -v`` or examination in the Windows device manager will show this
+manufacturer string.   The string must be long-lived (i.e. not a local
+stack stream, make it a constant or on the heap only).  Only call after
+a ``usbDisconnect()``.
+
+void USB.setProduct(const char *str)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Similar to ``usbSetManufacturer``.  Again, the OS may use the ``PID``
+(product ID) to identify a device and not this string, but it will be
+present on deeper inspection.  Only call after a ``usbDisconnect()``.
+
+void USB.setSerialNumber(const char *str)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Similar to ``usbSetManufacturer``.   This is a free-form string and need
+not be only numerical.  Only call after a ``usbDisconnect()``.
+
 
 HID Polling Interval
 --------------------
