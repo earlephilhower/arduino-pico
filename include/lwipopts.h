@@ -11,6 +11,11 @@ extern void interrupts();
 #define SYS_ARCH_PROTECT(lev) {(void) lev; noInterrupts();}
 #define SYS_ARCH_UNPROTECT(lev) {(void) lev; interrupts();}
 
+#ifndef DEBUG_RP2040_PORT
+extern void panic(const char *fmt, ...);
+#define LWIP_PLATFORM_ASSERT(x) panic("lwip")
+#endif
+
 extern unsigned long __lwip_rand(void);
 #define LWIP_RAND() __lwip_rand()
 
@@ -77,38 +82,6 @@ extern void __setSystemTime(unsigned long long sec, unsigned long us);
 #define SNTP_SERVER_DNS                   1
 
 #ifndef LWIP_DEBUG
-#define LWIP_DEBUG                  0
-#endif
-#define ETHARP_DEBUG                (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define NETIF_DEBUG                 (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define PBUF_DEBUG                  (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define API_LIB_DEBUG               (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define API_MSG_DEBUG               (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define SOCKETS_DEBUG               (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define ICMP_DEBUG                  (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define INET_DEBUG                  (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define IP_DEBUG                    (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define IP_REASS_DEBUG              (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define RAW_DEBUG                   (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define MEM_DEBUG                   (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define MEMP_DEBUG                  (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define SYS_DEBUG                   (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_DEBUG                   (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_INPUT_DEBUG             (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_OUTPUT_DEBUG            (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_RTO_DEBUG               (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_CWND_DEBUG              (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_WND_DEBUG               (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_FR_DEBUG                (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_QLEN_DEBUG              (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCP_RST_DEBUG               (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define UDP_DEBUG                   (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define TCPIP_DEBUG                 (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define PPP_DEBUG                   (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define SLIP_DEBUG                  (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-#define DHCP_DEBUG                  (LWIP_DEBUG ? LWIP_DBG_ON : LWIP_DBG_OFF)
-
-#if !LWIP_DEBUG
 #define LWIP_STATS                    0
 #define LWIP_STATS_DISPLAY            0
 #define MEM_STATS                     0
@@ -122,7 +95,36 @@ extern void __setSystemTime(unsigned long long sec, unsigned long us);
 #define SYS_STATS                     1
 #define MEMP_STATS                    1
 #define LINK_STATS                    1
+#define ETHARP_DEBUG                  LWIP_DBG_ON
+#define NETIF_DEBUG                   LWIP_DBG_ON
+#define PBUF_DEBUG                    LWIP_DBG_ON
+#define API_LIB_DEBUG                 LWIP_DBG_ON
+#define API_MSG_DEBUG                 LWIP_DBG_ON
+#define SOCKETS_DEBUG                 LWIP_DBG_ON
+#define ICMP_DEBUG                    LWIP_DBG_ON
+#define INET_DEBUG                    LWIP_DBG_ON
+#define IP_DEBUG                      LWIP_DBG_ON
+#define IP_REASS_DEBUG                LWIP_DBG_ON
+#define RAW_DEBUG                     LWIP_DBG_ON
+#define MEM_DEBUG                     LWIP_DBG_ON
+#define MEMP_DEBUG                    LWIP_DBG_ON
+#define SYS_DEBUG                     LWIP_DBG_ON
+#define TCP_DEBUG                     LWIP_DBG_ON
+#define TCP_INPUT_DEBUG               LWIP_DBG_ON
+#define TCP_OUTPUT_DEBUG              LWIP_DBG_ON
+#define TCP_RTO_DEBUG                 LWIP_DBG_ON
+#define TCP_CWND_DEBUG                LWIP_DBG_ON
+#define TCP_WND_DEBUG                 LWIP_DBG_ON
+#define TCP_FR_DEBUG                  LWIP_DBG_ON
+#define TCP_QLEN_DEBUG                LWIP_DBG_ON
+#define TCP_RST_DEBUG                 LWIP_DBG_ON
+#define UDP_DEBUG                     LWIP_DBG_ON
+#define TCPIP_DEBUG                   LWIP_DBG_ON
+#define PPP_DEBUG                     LWIP_DBG_ON
+#define SLIP_DEBUG                    LWIP_DBG_ON
+#define DHCP_DEBUG                    LWIP_DBG_ON
 #endif
+
 
 #ifdef __cplusplus
 }
