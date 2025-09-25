@@ -62,6 +62,7 @@ extern "C" void interrupts() {
 #else
     uint32_t mask = _irqStack[core] & 1;
     _irqStack[core] >>= 1;
+    _irqStackTop[core]--;
     restore_interrupts(mask);
 #endif
 }
