@@ -402,6 +402,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     }
 
     if (!RawDev::begin(_macAddress, &_netif)) {
+        netif_remove(&_netif);
         return false;
     }
 
@@ -420,6 +421,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
             break;
 
         case ERR_IF:
+            netif_remove(&_netif);
             return false;
 
         default:

@@ -167,6 +167,9 @@ typedef enum {
 
     __ethernet_input = 9000,
 
+    __cyw43_wifi_join = 9500,
+    __cyw43_wifi_leave,
+
     __callback = 10000,
 } __lwip_op;
 
@@ -230,6 +233,8 @@ extern void __real_raw_remove(struct raw_pcb *pcb);
 extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
 extern void __real_netif_remove(struct netif *netif);
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
+extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
+extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
 
 
 typedef struct {
@@ -567,6 +572,24 @@ typedef struct {
     struct netif *netif;
     err_t *ret;
 } __ethernet_input_req;
+
+typedef struct {
+    cyw43_t *self;
+    size_t ssid_len;
+    const uint8_t *ssid;
+    size_t key_len;
+    const uint8_t *key;
+    uint32_t auth_type;
+    const uint8_t *bssid;
+    uint32_t channel;
+    int *ret;
+} __cyw43_wifi_join_req;
+
+typedef struct {
+    cyw43_t *self;
+    int itf;
+    int *ret;
+} __cyw43_wifi_leave_req;
 
 // Run a callback in the LWIP thread (i.e. for Ethernet device polling and packet reception)
 // When in an interrupt, need to pass in a heap-allocated buffer
