@@ -36,6 +36,12 @@ Creates a bi-directional I2S input and output port.  Needs to be
 connected up to the desired pins (see below) and started before
 any input or output can happen.
 
+bool setSlave()
+~~~~~~~~~~~~~~~
+Enables slave mode.  BCLK and LRCLK are inputs and used to control the
+timing of the DOUT output.  Only normal I2S output mode is supported in
+slave mode.
+
 bool setBCLK(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the BCLK pin of the I2S device.  The LRCLK/word clock will be ``pin + 1``

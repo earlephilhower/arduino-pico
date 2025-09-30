@@ -65,6 +65,7 @@ I2S::I2S(PinMode direction, pin_size_t bclk, pin_size_t data, pin_size_t mclk, p
     _tdmChannels = 8;
     _swapClocks = false;
     _multMCLK = 256;
+    _isSlave = false;
 }
 
 I2S::~I2S() {
@@ -84,6 +85,14 @@ bool I2S::setMCLK(pin_size_t pin) {
         return false;
     }
     _pinMCLK = pin;
+    return true;
+}
+
+bool I2S::setSlave() {
+    if (_running) {
+        return false;
+    }
+    _isSlave = true;
     return true;
 }
 
@@ -136,12 +145,16 @@ bool I2S::setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample) 
 bool I2S::setFrequency(int newFreq) {
     _freq = newFreq;
     if (_running) {
-        if (_MCLKenabled) {
-            int bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * (_isInput && _isOutput ? 4.0 : 2.0) /* edges per clock */;
-            pio_sm_set_clkdiv_int_frac(_pio, _sm, clock_get_hz(clk_sys) / bitClk, 0);
+        if (_isSlave) {
+            pio_sm_set_clkdiv_int_frac(_pio, _sm, 1, 0);
         } else {
-            float bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * (_isInput && _isOutput ? 4.0 : 2.0) /* edges per clock */;
-            pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+            if (_MCLKenabled) {
+                int bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * (_isInput && _isOutput ? 4.0 : 2.0) /* edges per clock */;
+                pio_sm_set_clkdiv_int_frac(_pio, _sm, clock_get_hz(clk_sys) / bitClk, 0);
+            } else {
+                float bitClk = _freq * _bps * (_isTDM ? (double)_tdmChannels : 2.0) /* channels */ * (_isInput && _isOutput ? 4.0 : 2.0) /* edges per clock */;
+                pio_sm_set_clkdiv(_pio, _sm, (float)clock_get_hz(clk_sys) / bitClk);
+            }
         }
     }
     return true;
@@ -255,7 +268,11 @@ bool I2S::begin() {
     _isHolding = 0;
     int off = 0;
     if (!_swapClocks) {
-        _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM ? &pio_tdm_inout_program : &pio_i2s_inout_program) : (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program))) : &pio_i2s_in_program);
+        if (!_isSlave) {
+            _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM ? &pio_tdm_inout_program : &pio_i2s_inout_program) : (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program))) : &pio_i2s_in_program);
+        } else {
+            _i2s = new PIOProgram(_bps > 16 ? &pio_i2s_out_slave_32_program : &pio_i2s_out_slave_16_program);
+        }
     } else {
         _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM ? &pio_tdm_inout_swap_program : &pio_i2s_inout_swap_program) : (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program))) : &pio_i2s_in_swap_program);
     }
@@ -288,7 +305,11 @@ bool I2S::begin() {
         } else if (_isLSBJ) {
             pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
         } else {
-            pio_i2s_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
+            if (_isSlave) {
+                pio_i2s_out_slave_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
+            } else {
+                pio_i2s_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
+            }
         }
     } else {
         pio_i2s_in_program_init(_pio, _sm, off, _pinDIN, _pinBCLK, _bps, _swapClocks);
