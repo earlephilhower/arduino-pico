@@ -341,7 +341,7 @@ void USBClass::setupUSBDescriptor() {
 
 #ifdef ENABLE_PICOTOOL_USB
     uint8_t picotool_desc[] = { TUD_RPI_RESET_DESCRIPTOR(1, USB.registerString("Reset")) };
-    USB.registerInterface(1, picotool_desc, sizeof(picotool_desc), 100, 0);
+    _picotool_itf_num = USB.registerInterface(1, picotool_desc, sizeof(picotool_desc), 100, 0);
 #endif
 
     usbd_desc_cfg_len = TUD_CONFIG_DESC_LEN; // Always have a config descriptor
@@ -470,6 +470,9 @@ void USBClass::disconnect() {
     free(_hid_report);
     _hid_report = nullptr;
     _hid_report_len = 0;
+#ifdef ENABLE_PICOTOOL_USB
+    unregisterInterface(_picotool_itf_num);
+#endif
 }
 
 void USBClass::connect()  {
@@ -608,12 +611,14 @@ extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t pr
 
 #ifdef ENABLE_PICOTOOL_USB
 
+static uint32_t _itf_num = 0;
+
 static void resetd_init() {
 }
 
 static void resetd_reset(uint8_t rhport) {
     (void) rhport;
-    _picotool_itf_num = 0;
+    _itf_num = 0;
 }
 
 static uint16_t resetd_open(uint8_t rhport,
@@ -626,7 +631,7 @@ static uint16_t resetd_open(uint8_t rhport,
     uint16_t const drv_len = sizeof(tusb_desc_interface_t);
     TU_VERIFY(max_len >= drv_len, 0);
 
-    _picotool_itf_num = itf_desc->bInterfaceNumber;
+    _itf_num = itf_desc->bInterfaceNumber;
     return drv_len;
 }
 
@@ -639,7 +644,7 @@ static bool resetd_control_xfer_cb(uint8_t rhport, uint8_t stage,
         return true;
     }
 
-    if (request->wIndex == _picotool_itf_num) {
+    if (request->wIndex == _itf_num) {
         if (request->bRequest == RESET_REQUEST_BOOTSEL) {
             reset_usb_boot(0, (request->wValue & 0x7f));
             // does not return, otherwise we'd return true
