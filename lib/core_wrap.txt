@@ -74,7 +74,6 @@
 -Wl,--wrap=cyw43_cb_process_ethernet
 -Wl,--wrap=cyw43_cb_tcpip_set_link_up
 -Wl,--wrap=cyw43_cb_tcpip_set_link_down
--Wl,--wrap=cyw43_tcpip_link_status
 -Wl,--wrap=cyw43_cb_tcpip_init
 -Wl,--wrap=cyw43_cb_tcpip_deinit
 
@@ -90,7 +89,7 @@
 -Wl,--wrap=cyw43_delay_us
 -Wl,--wrap=cyw43_post_poll_hook
 -Wl,--wrap=cyw43_schedule_internal_poll_dispatch
--Wl,--wrap=cyw43_arch_wifi_connect_bssid_timeout_ms
--Wl,--wrap=cyw43_arch_wifi_connect_timeout_ms
+-Wl,--wrap=cyw43_wifi_join
+-Wl,--wrap=cyw43_wifi_leave
 -Wl,--wrap=cyw43_arch_gpio_put
 -Wl,--wrap=btstack_run_loop_async_context_get_instance
