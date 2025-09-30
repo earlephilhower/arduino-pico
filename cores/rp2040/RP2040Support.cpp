@@ -35,7 +35,10 @@ void RP2040::enableDoubleResetBootloader() {
         boot_double_tap_check();
     }
 }
+#endif
 
+#ifdef PICO_RP2350
+uint8_t _MFIFO::_doorbell = 0;
 #endif
 
 #ifdef __PROFILE
