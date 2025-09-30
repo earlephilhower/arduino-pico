@@ -99,6 +99,11 @@ use the following functions to access a software-managed, multicore safe
 FIFO.  There are two FIFOs, one written to by core 0 and read by core 1, and
 the other written to by core 1 and read by core 0.
 
+On the RP2350, the hardware FIFO is available for use using the SDK APIs
+or the calls below (which just wrap the SDK APIs very lightly).  This is
+because the idle/resume calls above are implemented using a hardware doorbell
+on the RP2350, not the hardware FIFO.
+
 You can (and probably should) use shared memory (such as ``volatile`` globals)
 or other normal multiprocessor communication algorithms to transfer data or
 work between cores, but for simple tasks these FIFO routines can suffice.
