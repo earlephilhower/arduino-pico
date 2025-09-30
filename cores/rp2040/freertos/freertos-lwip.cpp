@@ -381,8 +381,17 @@ static void lwipThread(void *params) {
             }
             case __ethernet_input: {
                 __ethernet_input_req *r = (__ethernet_input_req *)w.req;
-                printf("__real_ethernet_input\n");
                 *(r->ret) = __real_ethernet_input(r->p, r->netif);
+                break;
+            }
+            case __cyw43_wifi_join: {
+                __cyw43_wifi_join_req *r = (__cyw43_wifi_join_req *)w.req;
+                *(r->ret) = __real_cyw43_wifi_join(r->self, r->ssid_len, r->ssid, r->key_len, r->key, r->auth_type, r->bssid, r->channel);
+                break;
+            }
+            case __cyw43_wifi_leave: {
+                __cyw43_wifi_leave_req *r = (__cyw43_wifi_leave_req*)w.req;
+                *(r->ret) = __real_cyw43_wifi_leave(r->self, r->itf);
                 break;
             }
             case __callback: {

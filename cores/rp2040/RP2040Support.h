@@ -42,7 +42,6 @@
 #include "PIOProgram.h"
 #include "ccount.pio.h"
 #include <malloc.h>
-
 #include "_freertos.h"
 
 extern "C" volatile bool __otherCoreIdled;
@@ -54,6 +53,110 @@ extern "C" {
 #endif
 }
 
+
+#ifdef PICO_RP2350
+class _MFIFO {
+public:
+    _MFIFO() { /* noop */ };
+    ~_MFIFO() { /* noop */ };
+
+    void begin(int cores) {
+        if (cores == 1) {
+            _multicore = false;
+            return;
+        }
+        _doorbell = multicore_doorbell_claim_unused(0b11, true);
+        _multicore = true;
+        __otherCoreIdled = false;
+    }
+
+    void registerCore() {
+#ifndef __FREERTOS
+        multicore_doorbell_clear_current_core(_doorbell);
+        uint32_t irq = multicore_doorbell_irq_num(_doorbell);
+        irq_add_shared_handler(irq, _irq, 128);
+        irq_set_enabled(irq, true);
+#else
+        // FreeRTOS port.c will handle the IRQ hooking
+#endif
+    }
+
+    void push(uint32_t val) {
+        multicore_fifo_push_blocking_inline(val);
+    }
+
+    bool push_nb(uint32_t val) {
+        if (multicore_fifo_wready()) {
+            multicore_fifo_push_blocking_inline(val);
+            return true;
+        }
+        return false;
+    }
+
+    uint32_t pop() {
+        return multicore_fifo_pop_blocking_inline();
+    }
+
+    bool pop_nb(uint32_t *val) {
+        if (multicore_fifo_rvalid()) {
+            *val = multicore_fifo_pop_blocking_inline();
+            return true;
+        }
+        return false;
+    }
+
+    int available() {
+        return multicore_fifo_rvalid() ? 1 : 0; // Can't really say how many, but at least one is there
+    }
+
+    void clear() {
+        multicore_fifo_drain();
+    }
+
+    void idleOtherCore() {
+        if (!_multicore) {
+            return;
+        }
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#else
+        __otherCoreIdled = false;
+        multicore_doorbell_set_other_core(_doorbell);
+        while (!__otherCoreIdled) { /* noop */ }
+#endif
+    }
+
+    void resumeOtherCore() {
+        if (!_multicore) {
+            return;
+        }
+        __otherCoreIdled = false;
+#ifdef __FREERTOS
+        __freertos_resume_other_core();
+#endif
+        // Other core will exit busy-loop and return to operation
+        // once __otherCoreIdled == false.
+    }
+
+    static uint8_t _doorbell;
+
+private:
+    static void __no_inline_not_in_flash_func(_irq)() {
+#ifndef __FREERTOS
+        if (multicore_doorbell_is_set_current_core(_doorbell)) {
+            noInterrupts(); // We need total control, can't run anything
+            __otherCoreIdled = true;
+            while (__otherCoreIdled) { /* noop */ }
+            interrupts();
+            multicore_doorbell_clear_current_core(_doorbell);
+        }
+#endif
+    }
+
+    bool _multicore = false;
+};
+
+#else
 class _MFIFO {
 public:
     _MFIFO() { /* noop */ };
@@ -75,13 +178,8 @@ public:
     void registerCore() {
 #ifndef __FREERTOS
         multicore_fifo_clear_irq();
-#ifdef PICO_RP2350
-        irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
-        irq_set_enabled(SIO_IRQ_FIFO, true);
-#else
         irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
         irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
-#endif
 #else
         // FreeRTOS port.c will handle the IRQ hooking
 #endif
@@ -172,7 +270,7 @@ private:
     queue_t *_queue; // Only allocated as [2] if multicore
     static constexpr uint32_t _GOTOSLEEP = 0xC0DED02E;
 };
-
+#endif
 
 class RP2040;
 extern RP2040 rp2040;

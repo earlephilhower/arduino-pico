@@ -832,6 +832,34 @@ extern "C" {
         return __real_ethernet_input(p, netif);
     }
 
+    int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
+    int __wrap_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            int ret;
+            __cyw43_wifi_join_req req = { self, ssid_len, ssid, key_len, key, auth_type, bssid, channel, &ret };
+            __lwip(__cyw43_wifi_join, &req);
+            return ret;
+        }
+#endif
+        return __real_cyw43_wifi_join(self, ssid_len, ssid, key_len, key, auth_type, bssid, channel);
+    }
+
+    int __real_cyw43_wifi_leave(cyw43_t* self, int itf);
+    int __wrap_cyw43_wifi_leave(cyw43_t* self, int itf) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            int ret;
+            __cyw43_wifi_leave_req req = { self, itf, &ret };
+            __lwip(__cyw43_wifi_leave, &req);
+            return ret;
+        }
+#endif
+        return __real_cyw43_wifi_leave(self, itf);
+    }
+
+
+
     void lwip_callback(void (*cb)(void *), void *cbData, __callback_req *buffer) {
 #ifdef __FREERTOS
         if (buffer) {
@@ -894,14 +922,6 @@ extern "C" {
     extern void __real_cyw43_schedule_internal_poll_dispatch(void (*func)());
     void __wrap_cyw43_schedule_internal_poll_dispatch(void (*func)()) {
         __real_cyw43_schedule_internal_poll_dispatch(func);
-    }
-    extern int __real_cyw43_arch_wifi_connect_bssid_timeout_ms(const char *ssid, const uint8_t *bssid, const char *pw, uint32_t auth, uint32_t timeout_ms);
-    int __wrap_cyw43_arch_wifi_connect_bssid_timeout_ms(const char *ssid, const uint8_t *bssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
-        return __real_cyw43_arch_wifi_connect_bssid_timeout_ms(ssid, bssid, pw, auth, timeout_ms);
-    }
-    extern int __real_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms);
-    int __wrap_cyw43_arch_wifi_connect_timeout_ms(const char *ssid, const char *pw, uint32_t auth, uint32_t timeout_ms) {
-        return __real_cyw43_arch_wifi_connect_timeout_ms(ssid, pw, auth, timeout_ms);
     }
     extern void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
     void __wrap_cyw43_arch_gpio_put(uint wl_gpio, bool value) {
