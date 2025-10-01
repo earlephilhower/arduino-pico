@@ -36,8 +36,14 @@ public:
         SDFS.setConfig(SDFSConfig(csPin, SPI_HALF_SPEED, spi));
         return SDFS.begin();
     }
+
     bool begin(uint8_t csPin, uint32_t cfg = SPI_HALF_SPEED, HardwareSPI &spi = SPI) {
         SDFS.setConfig(SDFSConfig(csPin, cfg, spi));
+        return SDFS.begin();
+    }
+
+    bool begin(uint8_t clkPin, uint8_t cmdPin, uint8_t dat0Pin) {
+        SDFS.setConfig(SDFSConfig(clkPin, cmdPin, dat0Pin));
         return SDFS.begin();
     }
 

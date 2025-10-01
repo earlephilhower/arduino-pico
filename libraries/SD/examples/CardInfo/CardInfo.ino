@@ -37,6 +37,11 @@ const int _MOSI = 7;  // AKA SPI TX
 const int _CS = 5;
 const int _SCK = 6;
 
+// If you have all 4 DAT pins wired up to the Pico you can use SDIO mode
+const int RP_CLK_GPIO = -1; // Set to CLK GPIO
+const int RP_CMD_GPIO = -1; // Set to CMD GPIO
+const int RP_DAT0_GPIO = -1; // Set to DAT0 GPIO. DAT1..3 must be consecutively connected.
+
 // include the SD library:
 #include <SPI.h>
 #include <SD.h>
@@ -54,21 +59,26 @@ void setup() {
   Serial.println("\nInitializing SD card...");
 
   bool sdInitialized = false;
-  // Ensure the SPI pinout the SD card is connected to is configured properly
-  // Select the correct SPI based on _MISO pin for the RP2040
-  if (_MISO == 0 || _MISO == 4 || _MISO == 16) {
-    SPI.setRX(_MISO);
-    SPI.setTX(_MOSI);
-    SPI.setSCK(_SCK);
-    sdInitialized = SD.begin(_CS);
-  } else if (_MISO == 8 || _MISO == 12) {
-    SPI1.setRX(_MISO);
-    SPI1.setTX(_MOSI);
-    SPI1.setSCK(_SCK);
-    sdInitialized = SD.begin(_CS, SPI1);
+  if (RP_CLK_GPIO >= 0) {
+    // No special requirements on pin locations, this is PIO programmed
+    sdInitialized = SD.begin(RP_CLK_GPIO, RP_CMD_GPIO, RP_DAT0_GPIO);
   } else {
-    Serial.println(F("ERROR: Unknown SPI Configuration"));
-    return;
+    // Ensure the SPI pinout the SD card is connected to is configured properly
+    // Select the correct SPI based on _MISO pin for the RP2040
+    if (_MISO == 0 || _MISO == 4 || _MISO == 16) {
+      SPI.setRX(_MISO);
+      SPI.setTX(_MOSI);
+      SPI.setSCK(_SCK);
+      sdInitialized = SD.begin(_CS);
+    } else if (_MISO == 8 || _MISO == 12) {
+      SPI1.setRX(_MISO);
+      SPI1.setTX(_MOSI);
+      SPI1.setSCK(_SCK);
+      sdInitialized = SD.begin(_CS, SPI1);
+    } else {
+      Serial.println(F("ERROR: Unknown SPI Configuration"));
+      return;
+    }
   }
 
   if (!sdInitialized) {
@@ -114,7 +124,7 @@ void setup() {
   Serial.println();
 
   // print the type and size of the first FAT-type volume
-  uint32_t volumesize;
+  uint64_t volumesize;
   Serial.print("Volume type is:    FAT");
   Serial.println(SD.fatType(), DEC);
 
@@ -127,10 +137,10 @@ void setup() {
   volumesize /= 1024;
   Serial.println(volumesize);
   Serial.print("Volume size (Gb):  ");
-  Serial.println((float)volumesize / 1024.0);
+  Serial.println((float)volumesize / 1024.0f);
 
   Serial.print("Card size:  ");
-  Serial.println((float)SD.size() / 1000);
+  Serial.println((float)SD.size64() / 1000);
 
   FSInfo fs_info;
   SDFS.info(fs_info);

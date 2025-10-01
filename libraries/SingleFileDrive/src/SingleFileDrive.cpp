@@ -20,16 +20,16 @@
 #include <SingleFileDrive.h>
 #include <LittleFS.h>
 #include <class/msc/msc.h>
+#include <class/msc/msc_device.h>
+#include <device/usbd.h>
+#include <USB.h>
 
 SingleFileDrive singleFileDrive;
 
 static const uint32_t _hddsize = (256 * 1024 * 1024); // 256MB
 static const uint32_t _hddsects = _hddsize / 512;
 
-// Ensure we are logged in to the USB framework
-void __USBInstallMassStorage() {
-    /* dummy */
-}
+#define USBD_MSC_EPSIZE 64
 
 SingleFileDrive::SingleFileDrive() {
 }
@@ -57,6 +57,12 @@ bool SingleFileDrive::begin(const char *localFile, const char *dosFile) {
     if (_started) {
         return false;
     }
+    USB.disconnect();
+    _epIn = USB.registerEndpointIn();
+    _epOut = USB.registerEndpointOut();
+    static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, USBD_MSC_EPSIZE) };
+    _id = USB.registerInterface(2, msd_desc, sizeof(msd_desc), 2, 0);
+    USB.connect();
     _localFile = strdup(localFile);
     _dosFile = strdup(dosFile);
     _started = true;
@@ -64,6 +70,14 @@ bool SingleFileDrive::begin(const char *localFile, const char *dosFile) {
 }
 
 void SingleFileDrive::end() {
+    if (!_started) {
+        return;
+    }
+    USB.disconnect();
+    USB.unregisterInterface(_id);
+    USB.unregisterEndpointOut(_epOut);
+    USB.unregisterEndpointIn(_epIn);
+    USB.connect();
     _started = false;
     free(_localFile);
     free(_dosFile);

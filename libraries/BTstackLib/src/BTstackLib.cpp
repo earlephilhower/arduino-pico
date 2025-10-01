@@ -196,7 +196,7 @@ static void extract_service(gatt_client_service_t * service, uint8_t * packet) {
     service->start_group_handle = little_endian_read_16(packet, 4);
     service->end_group_handle   = little_endian_read_16(packet, 6);
     service->uuid16 = 0;
-    reverse_128(&packet[8], service->uuid128);
+    reverse_128(&packet[12], service->uuid128);
     if (uuid_has_bluetooth_prefix(service->uuid128)) {
         service->uuid16 = big_endian_read_32(service->uuid128, 0);
     }

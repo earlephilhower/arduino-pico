@@ -34,7 +34,9 @@ public:
     bool begin(int dreq, volatile void *pioFIFOAddr);
 
     bool write(uint32_t v, bool sync = true);
+    size_t write(const uint32_t *v, size_t words, bool sync = true);
     bool read(uint32_t *v, bool sync = true);
+    size_t read(uint32_t *v, size_t words, bool sync = true);
     void flush();
 
     bool getOverUnderflow();
@@ -87,7 +89,6 @@ private:
         delete ab;
     }
 
-    int _bitsPerSample;
     size_t _wordsPerBuffer;
     size_t _bufferCount;
     enum dma_channel_transfer_size _dmaSize;

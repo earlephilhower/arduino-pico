@@ -195,7 +195,7 @@ void iLabsConnectivityClass::flashEspReset() { // Prepare ESP for flashing
 // after a sw or hw reset have been performed to ensure that the AT
 // interpreter is up and running.
 bool iLabsConnectivityClass::waitForEspReady() {
-    int timeout = 20;                         // Aprox max 2 sec
+    int timeout = 20;                         // Approx max 2 sec
 
     _espSerial->setTimeout(100);
     String rdy = _espSerial->readStringUntil('\n');

@@ -105,14 +105,14 @@ are automatically created when you attempt to create a file in a
 subdirectory, and when the last file in a subdirectory is removed the
 subdirectory itself is automatically deleted.
 
-Uploading Files to the LittleFS File System
--------------------------------------------
+Uploading Files to the LittleFS File System on IDE 1.x (RP2040 only)
+--------------------------------------------------------------------
 
-*PicoLittleFS* is a tool which integrates into the Arduino IDE. It adds a
-menu item to **Tools** menu for uploading the contents of sketch data
-directory into a new LittleFS flash file system.
-
-**IDE 1.x**
+For the Pico (RP2040) only, *PicoLittleFS* is a tool which integrates into
+the obsolete Arduino 1.x IDE. It adds a menu item to **Tools** menu for uploading the
+contents of sketch data directory into a new LittleFS flash file system.
+Please note that this JAVA plug in for the obsolete 1.x IDE does **NOT**
+support the RP2350 (Pico 2).
 
 -  Download the tool: https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases
 -  In your Arduino sketchbook directory, create ``tools`` directory if it doesn't exist yet.
@@ -126,7 +126,12 @@ directory into a new LittleFS flash file system.
 -  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
 -  Select ``Tools > Pico LittleFS Data Upload``. This should start uploading the files into the flash file system.
 
-**IDE 2.x**
+Uploading Files to the LittleFS File System on IDE 2.x (RP2040 and RP2350)
+--------------------------------------------------------------------------
+
+For the original Pico (RP2040) and Pico 2 (RP2350), use the Typescript 2.x IDE tool which
+operates in the new Arduino 2.x IDE.  This tool works on all Pico and Pico 2s (and ESP32s
+if you're so inclined).
 
 -  Download the new tool: https://github.com/earlephilhower/arduino-littlefs-upload/releases
 -  Exit the IDE, if running
@@ -143,15 +148,19 @@ it using the ``mklittlefs`` tool.  A working ``OpenOCD`` setup, DebugProbe, and 
 To download the raw filesystem, from within ``GDB`` run:
 
 .. code::
+
     ^C (break)
     (gdb) dump binary memory littlefs.bin &_FS_start &_FS_end
+
 It may take a few seconds as ``GDB`` reads out the flash to the file.  Once the raw file is downloaded it can be extracted using the ``mklittlefs`` tool from the BASH/Powershell/command line
 
 .. code::
+
     $ <path-to-mklittlefs>/mklittlefs -u output-dir littlefs.bin
      Directory <output-dir> does not exists. Try to create it.
      gmon.out    > <output-dir>/gmon.out    size: 24518 Bytes
      gmon.bak    > <output-dir>/gmon.bak    size: 1 Bytes
+
 The defaults built into ``mklittlefs`` should be appropriate for normal LittleFS filesystems built on the device or using the upload tool.
 
 SD Library Information
@@ -170,6 +179,23 @@ second SPI port, ``SPI1``.  Just use the following call in place of
 
     SD.begin(cspin, SPI1);
 
+Enabling SDIO operation for SD
+------------------------------
+SDIO support is available thanks to SdFat implementing a PIO-based SDIO controller.
+This mode can significantly increase IO performance to SD cards but it requires that
+all 4 DAT0..DAT3 lines to be wired to the Pico (most SD breakout boards only provide
+1-but SPI mode of operation).
+
+To enable SDIO mode, simply specify the SD_CLK, SD_CMD, and SD_DAT0 GPIO pins.  The clock
+and command pins can be any GPIO (not limited to legal SPI pins).  The DAT0 pin can be any
+GPIO with remaining DAT1...3 pins consecutively connected.
+
+..code:: cpp
+
+    SD.begin(RP_CLK_GPIO, RP_CMD_GPIO, RP_DAT0_GPIO);
+
+No other changes are required in the application to take advantage of this high
+performance mode.
 
 Using VFS (Virtual File System) for POSIX support
 -------------------------------------------------

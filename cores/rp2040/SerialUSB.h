@@ -24,9 +24,9 @@
 #include "api/HardwareSerial.h"
 #include <stdarg.h>
 
-class SerialUSB : public HardwareSerial {
+class SerialUSB : public arduino::HardwareSerial {
 public:
-    SerialUSB() { }
+    SerialUSB();
     void begin(unsigned long baud = 115200) override;
     void begin(unsigned long baud, uint16_t config) override {
         (void) config;
@@ -53,9 +53,26 @@ public:
         (void) unused;
     }
 
+    // TUSB callbacks
+    void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts);
+    void tud_cdc_line_coding_cb(uint8_t itf, void const *p_line_coding); // Can't use cdc_line_coding_t const* p_line_coding, TinyUSB and BTStack conflict when we include tusb.h + BTStack.h
+
 private:
     bool _running = false;
-    bool _ignoreFlowControl = false;
+    uint8_t _id;
+    uint8_t _epIn;
+    uint8_t _epOut;
+
+    typedef struct {
+        unsigned int rebooting : 1;
+        unsigned int ignoreFlowControl : 1;
+        unsigned int dtr : 1;
+        unsigned int rts : 1;
+        unsigned int bps : 28;
+    } SyntheticState;
+    SyntheticState _ss = { 0, 0, 0, 0, 115200};
+
+    void checkSerialReset();
 };
 
 extern SerialUSB Serial;

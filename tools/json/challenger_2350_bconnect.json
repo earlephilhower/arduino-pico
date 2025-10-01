@@ -25,12 +25,13 @@
         "variant": "challenger_2350_bconnect"
     },
     "debug": {
-        "jlink_device": "RP2350_0",
+        "jlink_device": "RP2350_M33_0",
         "openocd_target": "rp2350.cfg",
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "Challenger 2350 BConnect",
     "upload": {

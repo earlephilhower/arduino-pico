@@ -91,7 +91,7 @@ public:
                 cb();
             }
         }
-        return time(nullptr) < 10000000;
+        return time(nullptr) >= 10000000;
     }
 
     bool running() {

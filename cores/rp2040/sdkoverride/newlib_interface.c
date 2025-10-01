@@ -170,7 +170,7 @@ void __weak __assert_func(const char *file, int line, const char *func, const ch
 }
 GCC_Pragma("GCC diagnostic pop")
 #endif
-void runtime_init(void) {
+__attribute__((no_stack_protector)) void runtime_init(void) {
 #ifndef NDEBUG
     if (__get_current_exception()) {
         // crap; started in exception handler

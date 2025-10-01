@@ -220,8 +220,10 @@ void A2DPSource::clearPairing() {
 size_t A2DPSource::write(const uint8_t *buffer, size_t size) {
     BluetoothLock b;
 
+    size = std::min((size_t)availableForWrite(), size);
+
     size_t count = 0;
-    size /= 2;
+    size /= sizeof(int16_t); // Convert size to samples
 
     // First copy from writer to either end of
     uint32_t start = _pcmWriter;
@@ -260,6 +262,7 @@ int A2DPSource::availableForWrite() {
     } else {
         avail = _pcmBufferSize - _pcmWriter + _pcmReader - 1;
     }
+    avail *= sizeof(int16_t); // Convert samples to bytes
     return avail;
 }
 

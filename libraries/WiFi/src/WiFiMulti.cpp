@@ -53,7 +53,7 @@ bool WiFiMulti::addAP(const char *ssid, const char *pass) {
     } else {
         ap.pass = nullptr;
     }
-    DEBUGV("[WIFIMULTI] Adding: '%s' %s' to list\n", ap.ssid, ap.pass);
+    DEBUGV("[WIFIMULTI] Adding: '%s' '%s' to list\n", ap.ssid, ap.pass);
     _list.push_front(ap);
     return true;
 }

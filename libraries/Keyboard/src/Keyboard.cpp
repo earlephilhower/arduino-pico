@@ -21,40 +21,64 @@
 */
 
 #include "Keyboard.h"
-#include <RP2040USB.h>
+#include <USB.h>
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"
-
-// Weak function override to add our descriptor to the TinyUSB list
-void __USBInstallKeyboard() { /* noop */ }
 
 //================================================================================
 //================================================================================
 //  Keyboard
 
+static const uint8_t desc_hid_report_keyboard[] = { TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(1))};
+static const uint8_t desc_hid_report_consumer[] = { TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(1))};
+
 Keyboard_::Keyboard_(void) {
     // Base class clears the members we care about
 }
 
+void Keyboard_::begin(const uint8_t *layout) {
+    if (_running) {
+        return;
+    }
+    USB.disconnect();
+    _id = USB.registerHIDDevice(desc_hid_report_keyboard, sizeof(desc_hid_report_keyboard), 10, 0x0001);
+    _idConsumer = USB.registerHIDDevice(desc_hid_report_consumer, sizeof(desc_hid_report_consumer), 11, 0x0000);
+    USB.connect();
+    HID_Keyboard::begin(layout);
+}
+
+void Keyboard_::end() {
+    USB.disconnect();
+    USB.unregisterHIDDevice(_id);
+    USB.unregisterHIDDevice(_idConsumer);
+    USB.connect();
+    HID_Keyboard::end();
+}
+
 void Keyboard_::sendReport(KeyReport* keys) {
-    CoreMutex m(&__usb_mutex);
+    if (!_running) {
+        return;
+    }
+    CoreMutex m(&USB.mutex);
     tud_task();
-    if (__USBHIDReady()) {
-        tud_hid_keyboard_report(__USBGetKeyboardReportID(), keys->modifiers, keys->keys);
+    if (USB.HIDReady()) {
+        tud_hid_keyboard_report(USB.findHIDReportID(_id), keys->modifiers, keys->keys);
     }
     tud_task();
 }
 
 void Keyboard_::sendConsumerReport(uint16_t key) {
-    CoreMutex m(&__usb_mutex);
+    if (!_running) {
+        return;
+    }
+    CoreMutex m(&USB.mutex);
     tud_task();
-    if (__USBHIDReady()) {
-        tud_hid_report(__USBGetKeyboardReportID() + 1, &key, sizeof(key));
+    if (USB.HIDReady()) {
+        tud_hid_report(USB.findHIDReportID(_idConsumer), &key, sizeof(key));
     }
     tud_task();
 }
-
 
 extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize) {
     (void) report_id;

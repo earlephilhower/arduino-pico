@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include "ADCInput.h"
 #include <hardware/adc.h>
+#include <debug_internal.h>
 
 ADCInput::ADCInput(pin_size_t p0, pin_size_t p1, pin_size_t p2, pin_size_t p3, pin_size_t p4, pin_size_t p5, pin_size_t p6, pin_size_t p7) {
     _running = false;
@@ -49,12 +50,7 @@ bool ADCInput::setBuffers(size_t buffers, size_t bufferWords) {
 
 int ADCInput::_mask(pin_size_t p) {
     switch (p) {
-#if !defined(PICO_RP2350B)
-    case 26: return 1;
-    case 27: return 2;
-    case 28: return 4;
-    case 29: return 8;
-#else // Starts at 40 and there are 8 of them
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     case 40: return 1;
     case 41: return 2;
     case 42: return 4;
@@ -63,6 +59,11 @@ int ADCInput::_mask(pin_size_t p) {
     case 45: return 32;
     case 46: return 64;
     case 47: return 128;
+#else
+    case 26: return 1;
+    case 27: return 2;
+    case 28: return 4;
+    case 29: return 8;
 #endif
     default: return 0;
     }
@@ -77,8 +78,9 @@ bool ADCInput::setPins(pin_size_t pin0, pin_size_t pin1, pin_size_t pin2, pin_si
 }
 
 bool ADCInput::setFrequency(int newFreq) {
-    _freq = newFreq * __builtin_popcount(_pinMask); // Want to sample all channels at given frequency
-    adc_set_clkdiv(48000000.0f / _freq - 1.0f);
+    _freq = newFreq;
+    int scaledFreq = newFreq * __builtin_popcount(_pinMask); // Want to sample all channels at given frequency
+    adc_set_clkdiv(48000000.0f / scaledFreq - 1.0f);
     return true;
 }
 
@@ -105,7 +107,7 @@ bool ADCInput::begin() {
     // Set up the GPIOs to go to ADC
     adc_init();
     int cnt = 0;
-#if !defined(PICO_RP2350B)
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     int startpin = 26;
     int maxpin = 29;
 #else
@@ -121,6 +123,18 @@ bool ADCInput::begin() {
             adc_gpio_init(pin);
         }
     }
+
+    // Make sure the bufferWords is a multiple of the natural size.
+    // For 1 and 2 inputs there will never be a misalignment on overflow
+    // For 3 inputs we need to have a multiple of 3 words to guarantee that every buffer[0] is ADC[0].  OTW we can slip on an overflow
+    // Data = [ADC0:ADC1, ADC2:ADC0, ADC1:ADC2], [ADC0:ADC1, ADC2:ADC0, ADC1:ADC2,ADC3], ...
+    // For 4 inputs we need to have a multiple of 2 words, same reason.  See #2991
+    // Data = [ADC0:ADC1, ADC2:ADC3] [ADC0:ADC1, ADC2:ADC3]
+    if (((cnt == 3) && (_bufferWords % 3)) || ((cnt == 4) && (_bufferWords % 2))) {
+        DEBUGV("ADCInput: bufferWords needs to be a multiple of 3 for 3 inputs, 2 for 4 inputs\n");
+        return false;
+    }
+
     adc_set_round_robin(_pinMask);
     adc_fifo_setup(true, true, 1, false, false);
 

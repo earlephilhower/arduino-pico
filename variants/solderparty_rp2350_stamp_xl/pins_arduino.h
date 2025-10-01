@@ -3,7 +3,7 @@
 // Pin definitions taken from:
 //    https://rp2xxx-stamp-carrier-xl.solder.party/
 
-#define PICO_RP2350B   1
+#define PICO_RP2350A 0 // RP2350B
 
 // LEDs
 #define PIN_LED        (3u)

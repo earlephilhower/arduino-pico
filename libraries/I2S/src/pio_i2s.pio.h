@@ -28,7 +28,7 @@ static const struct pio_program pio_i2s_mclk_program = {
     .instructions = pio_i2s_mclk_program_instructions,
     .length = 2,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_mclk_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -67,7 +67,7 @@ static const struct pio_program pio_i2s_out_program = {
     .instructions = pio_i2s_out_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_out_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -77,6 +77,95 @@ static inline pio_sm_config pio_i2s_out_program_get_default_config(uint offset) 
     pio_sm_config c = pio_get_default_sm_config();
     sm_config_set_wrap(&c, offset + pio_i2s_out_wrap_target, offset + pio_i2s_out_wrap);
     sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
+// -------------------- //
+// pio_i2s_out_slave_16 //
+// -------------------- //
+
+#define pio_i2s_out_slave_16_wrap_target 3
+#define pio_i2s_out_slave_16_wrap 12
+#define pio_i2s_out_slave_16_pio_version 0
+
+static const uint16_t pio_i2s_out_slave_16_program_instructions[] = {
+    0x2020, //  0: wait   0 pin, 0
+    0x20a0, //  1: wait   1 pin, 0
+    0x00c0, //  2: jmp    pin, 0
+    //     .wrap_target
+    0x8080, //  3: pull   noblock
+    0x2020, //  4: wait   0 pin, 0
+    0x6001, //  5: out    pins, 1
+    0x20a0, //  6: wait   1 pin, 0
+    0x00c9, //  7: jmp    pin, 9
+    0x0004, //  8: jmp    4
+    0x2020, //  9: wait   0 pin, 0
+    0x6001, // 10: out    pins, 1
+    0x20a0, // 11: wait   1 pin, 0
+    0x00c9, // 12: jmp    pin, 9
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_i2s_out_slave_16_program = {
+    .instructions = pio_i2s_out_slave_16_program_instructions,
+    .length = 13,
+    .origin = -1,
+    .pio_version = pio_i2s_out_slave_16_pio_version,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_i2s_out_slave_16_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_i2s_out_slave_16_wrap_target, offset + pio_i2s_out_slave_16_wrap);
+    return c;
+}
+#endif
+
+// -------------------- //
+// pio_i2s_out_slave_32 //
+// -------------------- //
+
+#define pio_i2s_out_slave_32_wrap_target 3
+#define pio_i2s_out_slave_32_wrap 13
+#define pio_i2s_out_slave_32_pio_version 0
+
+static const uint16_t pio_i2s_out_slave_32_program_instructions[] = {
+    0x2020, //  0: wait   0 pin, 0
+    0x20a0, //  1: wait   1 pin, 0
+    0x00c0, //  2: jmp    pin, 0
+    //     .wrap_target
+    0x8080, //  3: pull   noblock
+    0x2020, //  4: wait   0 pin, 0
+    0x6001, //  5: out    pins, 1
+    0x20a0, //  6: wait   1 pin, 0
+    0x00ca, //  7: jmp    pin, 10
+    0x0004, //  8: jmp    4
+    0x8080, //  9: pull   noblock
+    0x2020, // 10: wait   0 pin, 0
+    0x6001, // 11: out    pins, 1
+    0x20a0, // 12: wait   1 pin, 0
+    0x00ca, // 13: jmp    pin, 10
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_i2s_out_slave_32_program = {
+    .instructions = pio_i2s_out_slave_32_program_instructions,
+    .length = 14,
+    .origin = -1,
+    .pio_version = pio_i2s_out_slave_32_pio_version,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_i2s_out_slave_32_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_i2s_out_slave_32_wrap_target, offset + pio_i2s_out_slave_32_wrap);
     return c;
 }
 #endif
@@ -107,7 +196,7 @@ static const struct pio_program pio_i2s_out_swap_program = {
     .instructions = pio_i2s_out_swap_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_out_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -143,7 +232,7 @@ static const struct pio_program pio_tdm_out_program = {
     .instructions = pio_tdm_out_program_instructions,
     .length = 4,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_tdm_out_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -179,7 +268,7 @@ static const struct pio_program pio_tdm_out_swap_program = {
     .instructions = pio_tdm_out_swap_program_instructions,
     .length = 4,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_tdm_out_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -188,6 +277,82 @@ static const struct pio_program pio_tdm_out_swap_program = {
 static inline pio_sm_config pio_tdm_out_swap_program_get_default_config(uint offset) {
     pio_sm_config c = pio_get_default_sm_config();
     sm_config_set_wrap(&c, offset + pio_tdm_out_swap_wrap_target, offset + pio_tdm_out_swap_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
+// ------------- //
+// pio_tdm_inout //
+// ------------- //
+
+#define pio_tdm_inout_wrap_target 0
+#define pio_tdm_inout_wrap 5
+#define pio_tdm_inout_pio_version 0
+
+static const uint16_t pio_tdm_inout_program_instructions[] = {
+    //     .wrap_target
+    0xa922, //  0: mov    x, y            side 1 [1]
+    0x6001, //  1: out    pins, 1         side 0
+    0x4001, //  2: in     pins, 1         side 0
+    0x1941, //  3: jmp    x--, 1          side 3 [1]
+    0x5001, //  4: in     pins, 1         side 2
+    0x7001, //  5: out    pins, 1         side 2
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_tdm_inout_program = {
+    .instructions = pio_tdm_inout_program_instructions,
+    .length = 6,
+    .origin = -1,
+    .pio_version = pio_tdm_inout_pio_version,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_tdm_inout_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_tdm_inout_wrap_target, offset + pio_tdm_inout_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
+// ------------------ //
+// pio_tdm_inout_swap //
+// ------------------ //
+
+#define pio_tdm_inout_swap_wrap_target 0
+#define pio_tdm_inout_swap_wrap 5
+#define pio_tdm_inout_swap_pio_version 0
+
+static const uint16_t pio_tdm_inout_swap_program_instructions[] = {
+    //     .wrap_target
+    0xb122, //  0: mov    x, y            side 2 [1]
+    0x6001, //  1: out    pins, 1         side 0
+    0x4001, //  2: in     pins, 1         side 0
+    0x1941, //  3: jmp    x--, 1          side 3 [1]
+    0x4801, //  4: in     pins, 1         side 1
+    0x6801, //  5: out    pins, 1         side 1
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_tdm_inout_swap_program = {
+    .instructions = pio_tdm_inout_swap_program_instructions,
+    .length = 6,
+    .origin = -1,
+    .pio_version = pio_tdm_inout_swap_pio_version,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_tdm_inout_swap_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_tdm_inout_swap_wrap_target, offset + pio_tdm_inout_swap_wrap);
     sm_config_set_sideset(&c, 2, false, false);
     return c;
 }
@@ -219,7 +384,7 @@ static const struct pio_program pio_lsbj_out_program = {
     .instructions = pio_lsbj_out_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_lsbj_out_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -259,7 +424,7 @@ static const struct pio_program pio_lsbj_out_swap_program = {
     .instructions = pio_lsbj_out_swap_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_lsbj_out_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -299,7 +464,7 @@ static const struct pio_program pio_i2s_in_program = {
     .instructions = pio_i2s_in_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_in_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -339,7 +504,7 @@ static const struct pio_program pio_i2s_in_swap_program = {
     .instructions = pio_i2s_in_swap_program_instructions,
     .length = 8,
     .origin = -1,
-    .pio_version = 0,
+    .pio_version = pio_i2s_in_swap_pio_version,
 #if PICO_PIO_VERSION > 0
     .used_gpio_ranges = 0x0
 #endif
@@ -348,6 +513,96 @@ static const struct pio_program pio_i2s_in_swap_program = {
 static inline pio_sm_config pio_i2s_in_swap_program_get_default_config(uint offset) {
     pio_sm_config c = pio_get_default_sm_config();
     sm_config_set_wrap(&c, offset + pio_i2s_in_swap_wrap_target, offset + pio_i2s_in_swap_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
+// ------------- //
+// pio_i2s_inout //
+// ------------- //
+
+#define pio_i2s_inout_wrap_target 1
+#define pio_i2s_inout_wrap 12
+#define pio_i2s_inout_pio_version 0
+
+static const uint16_t pio_i2s_inout_program_instructions[] = {
+    0x4801, //  0: in     pins, 1         side 1
+    //     .wrap_target
+    0xa822, //  1: mov    x, y            side 1
+    0x6101, //  2: out    pins, 1         side 0 [1]
+    0x4801, //  3: in     pins, 1         side 1
+    0x0842, //  4: jmp    x--, 2          side 1
+    0x7101, //  5: out    pins, 1         side 2 [1]
+    0x5801, //  6: in     pins, 1         side 3
+    0xb822, //  7: mov    x, y            side 3
+    0x7101, //  8: out    pins, 1         side 2 [1]
+    0x5801, //  9: in     pins, 1         side 3
+    0x1848, // 10: jmp    x--, 8          side 3
+    0x6101, // 11: out    pins, 1         side 0 [1]
+    0x4801, // 12: in     pins, 1         side 1
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_i2s_inout_program = {
+    .instructions = pio_i2s_inout_program_instructions,
+    .length = 13,
+    .origin = -1,
+    .pio_version = pio_i2s_inout_pio_version,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_i2s_inout_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_i2s_inout_wrap_target, offset + pio_i2s_inout_wrap);
+    sm_config_set_sideset(&c, 2, false, false);
+    return c;
+}
+#endif
+
+// ------------------ //
+// pio_i2s_inout_swap //
+// ------------------ //
+
+#define pio_i2s_inout_swap_wrap_target 1
+#define pio_i2s_inout_swap_wrap 12
+#define pio_i2s_inout_swap_pio_version 0
+
+static const uint16_t pio_i2s_inout_swap_program_instructions[] = {
+    0x5001, //  0: in     pins, 1         side 2
+    //     .wrap_target
+    0xb022, //  1: mov    x, y            side 2
+    0x6101, //  2: out    pins, 1         side 0 [1]
+    0x5001, //  3: in     pins, 1         side 2
+    0x1042, //  4: jmp    x--, 2          side 2
+    0x6901, //  5: out    pins, 1         side 1 [1]
+    0x5801, //  6: in     pins, 1         side 3
+    0xb822, //  7: mov    x, y            side 3
+    0x6901, //  8: out    pins, 1         side 1 [1]
+    0x5801, //  9: in     pins, 1         side 3
+    0x1848, // 10: jmp    x--, 8          side 3
+    0x6101, // 11: out    pins, 1         side 0 [1]
+    0x5001, // 12: in     pins, 1         side 2
+    //     .wrap
+};
+
+#if !PICO_NO_HARDWARE
+static const struct pio_program pio_i2s_inout_swap_program = {
+    .instructions = pio_i2s_inout_swap_program_instructions,
+    .length = 13,
+    .origin = -1,
+    .pio_version = pio_i2s_inout_swap_pio_version,
+#if PICO_PIO_VERSION > 0
+    .used_gpio_ranges = 0x0
+#endif
+};
+
+static inline pio_sm_config pio_i2s_inout_swap_program_get_default_config(uint offset) {
+    pio_sm_config c = pio_get_default_sm_config();
+    sm_config_set_wrap(&c, offset + pio_i2s_inout_swap_wrap_target, offset + pio_i2s_inout_swap_wrap);
     sm_config_set_sideset(&c, 2, false, false);
     return c;
 }
@@ -369,14 +624,30 @@ static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint 
     sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
     pio_sm_init(pio, sm, offset, &sm_config);
-    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
-    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
-    //pio_sm_set_pins(pio, sm, 0); // clear pins
     pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
     pio_sm_set_set_pins(pio, sm, data_pin, 1);
     pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
+}
+static inline void pio_i2s_out_slave_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
+    pio_gpio_init(pio, data_pin);
+    pio_gpio_init(pio, clock_pin_base);
+    pio_gpio_init(pio, clock_pin_base + 1);
+    // 16-bits does a pull every L+R frame.  24/32 bits do a pull every L or R side
+    pio_sm_config sm_config = bits > 16 ? pio_i2s_out_slave_32_program_get_default_config(offset) : pio_i2s_out_slave_16_program_get_default_config(offset); //TBD swap ? pio_i2s_out_swap_program_get_default_config(offset) : pio_i2s_out_program_get_default_config(offset);
+    sm_config_set_out_pins(&sm_config, data_pin, 1);
+    sm_config_set_in_pins(&sm_config, clock_pin_base);
+    sm_config_set_in_pin_count(&sm_config, 2); // BLCK and LRCLK
+    sm_config_set_jmp_pin(&sm_config, clock_pin_base + 1);
+    sm_config_set_out_shift(&sm_config, false, false, (bits <= 16) ? 2 * bits : bits);
+    sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
+    pio_sm_init(pio, sm, offset, &sm_config);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, false);
+    pio_sm_set_out_pins(pio, sm, data_pin, 1);
+    pio_sm_set_in_pins(pio, sm, clock_pin_base);
+    pio_sm_exec(pio, sm, pio_encode_set(pio_x, 0));
 }
 static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
     pio_gpio_init(pio, data_pin);
@@ -400,6 +671,36 @@ static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint 
     pio_sm_exec(pio, sm, pio_encode_pull(false, false));
     pio_sm_exec(pio, sm, pio_encode_mov(pio_y, pio_osr));
     // Need to make OSR believe there's nothing left to shift out, or the 1st word will be the count we just passed in, not a sample
+    pio_sm_exec(pio, sm, pio_encode_out(pio_osr, 32));
+}
+static inline void pio_tdm_inout_program_init(PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
+    pio_gpio_init(pio, data_in_pin);
+    pio_gpio_init(pio, data_out_pin);
+    pio_gpio_init(pio, clock_pin_base);
+    pio_gpio_init(pio, clock_pin_base + 1);
+    pio_sm_config c = swap ? pio_tdm_inout_swap_program_get_default_config(offset) : pio_tdm_inout_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, data_in_pin);
+    sm_config_set_out_pins(&c, data_out_pin, 1);
+    sm_config_set_sideset_pins(&c, clock_pin_base);
+    sm_config_set_in_shift(&c, false, true, 32);
+    sm_config_set_out_shift(&c, false, true, 32);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_NONE);
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_in_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_out_pin, 1);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
+    // Initialize PIO state for TDM
+    // Can't set constant > 31, so push and pop/mov if needed
+    if (bits * channels - 1 > 31) {
+        pio_sm_put_blocking(pio, sm, bits * channels - 2);
+        pio_sm_exec(pio, sm, pio_encode_pull(false, false));
+        pio_sm_exec(pio, sm, pio_encode_mov(pio_y, pio_osr));
+    } else {
+        pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits * channels - 2));
+    }
+    // Need to make OSR believe there's nothing left to shift out
     pio_sm_exec(pio, sm, pio_encode_out(pio_osr, 32));
 }
 static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
@@ -436,6 +737,30 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
     //pio_sm_set_pins(pio, sm, 0); // clear pins
     pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
+    pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
+    pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits)); // Shift in 1st L data
+    pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits - 1)); // Shift in 1st R data modulo one bit, avoiding bit shift from #2037
+}
+static inline void pio_i2s_inout_program_init(PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, bool swap) {
+    pio_gpio_init(pio, data_in_pin);
+    pio_gpio_init(pio, data_out_pin);
+    pio_gpio_init(pio, clock_pin_base);
+    pio_gpio_init(pio, clock_pin_base + 1);
+    pio_sm_config sm_config = swap ? pio_i2s_inout_swap_program_get_default_config(offset) : pio_i2s_inout_program_get_default_config(offset);
+    sm_config_set_in_pins(&sm_config, data_in_pin);
+    sm_config_set_out_pins(&sm_config, data_out_pin, 1);
+    sm_config_set_sideset_pins(&sm_config, clock_pin_base);
+    sm_config_set_in_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
+    sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
+    pio_sm_init(pio, sm, offset, &sm_config);
+    //uint pin_mask = (1u << data_out_pin) | (3u << clock_pin_base);
+    //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
+    //pio_sm_set_pins(pio, sm, 0); // clear pins
+    pio_sm_set_consecutive_pindirs(pio, sm, data_in_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
+    pio_sm_set_set_pins(pio, sm, data_out_pin, 1);
     pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
     pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits)); // Shift in 1st L data

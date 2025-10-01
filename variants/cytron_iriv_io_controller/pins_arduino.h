@@ -1,5 +1,7 @@
 #pragma once
 
+#define PICO_RP2350A 1
+
 // LEDs
 #define PIN_LED         (29u)
 
@@ -62,8 +64,13 @@
 #define PIN_SPI0_SS     (21u)
 
 // Wire
-#define PIN_WIRE0_SDA   (16u)
-#define PIN_WIRE0_SCL   (17u)
+#define __WIRE0_DEVICE i2c0
+#define PIN_WIRE0_SDA  (16u)
+#define PIN_WIRE0_SCL  (17u)
+
+#define __WIRE1_DEVICE i2c1
+#define PIN_WIRE1_SDA  (31u)    // Not used.
+#define PIN_WIRE1_SCL  (31u)    // Not used.
 
 
 

@@ -25,17 +25,18 @@
         "variant": "seeed_xiao_rp2350"
     },
     "debug": {
-        "jlink_device": "RP2350_0",
+        "jlink_device": "RP2350_M33_0",
         "openocd_target": "rp2350.cfg",
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "XIAO RP2350",
     "upload": {
         "maximum_ram_size": 524288,
-        "maximum_size": 16777216,
+        "maximum_size": 2097152,
         "require_upload_port": true,
         "native_usb": true,
         "use_1200bps_touch": true,
@@ -48,8 +49,7 @@
             "raspberrypi-swd",
             "picotool",
             "picoprobe"
-        ],
-        "psram_length": 8388608
+        ]
     },
     "url": "https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html",
     "vendor": "Seeed"

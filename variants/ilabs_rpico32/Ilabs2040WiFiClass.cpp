@@ -53,7 +53,7 @@ void Ilabs2040WiFiClass::flashReset() { // Prepare ESP8285 for flashing
 // after a sw or hw reset have been performed to ensure that the AT
 // interpreter is up and running.
 bool Ilabs2040WiFiClass::waitForReady() {
-    int timeout = 20;                     // Aprox max 2 sec
+    int timeout = 20;                     // Approx max 2 sec
 
     ESP_SERIAL_PORT.begin(DEFAULT_ESP8285_BAUDRATE);
     ESP_SERIAL_PORT.setTimeout(100);

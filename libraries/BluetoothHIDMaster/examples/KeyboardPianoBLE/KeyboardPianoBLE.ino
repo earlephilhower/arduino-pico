@@ -91,7 +91,7 @@ void mb(void *cbdata, int butt, bool down) {
 inline uint32_t stepForHz(float hz) {
   const float stepHz = 1000.0 / 44100.0;
   const float step = hz * stepHz;
-  return (uint32_t)(step * 65536.0);
+  return (uint32_t)(step * 65536.0f);
 }
 
 uint32_t keyStepMap[128]; // The frequency of any raw HID key
@@ -206,7 +206,9 @@ void setup() {
 
   hid.begin(true);
 
-  hid.connectBLE();
+  do {
+    hid.connectBLE();
+  } while (!hid.connected());
 }
 
 void loop() {

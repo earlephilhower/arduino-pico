@@ -170,7 +170,7 @@ bool AudioBufferManager::write(uint32_t v, bool sync) {
     if (!_running || !_isOutput) {
         return false;
     }
-    AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_empty;
+    AudioBuffer ** volatile p = &_empty;
     if (!*p) {
         if (!sync) {
             return false;
@@ -188,12 +188,44 @@ bool AudioBufferManager::write(uint32_t v, bool sync) {
     return true;
 }
 
+size_t AudioBufferManager::write(const uint32_t *v, size_t words, bool sync) {
+    size_t written = 0;
+
+    if (!_running || !_isOutput) {
+        return 0;
+    }
+    while (words) {
+        AudioBuffer ** volatile p = &_empty;
+        if (!*p) {
+            if (!sync) {
+                return written;
+            } else {
+                while (!*p) {
+                    /* noop busy wait */
+                }
+            }
+        }
+        size_t availToWriteThisBuff = _wordsPerBuffer - _userOff;
+        size_t toWrite = std::min(availToWriteThisBuff, words);
+        memcpy(&((*p)->buff[_userOff]), v, toWrite * sizeof(uint32_t));
+        v += toWrite;
+        written += toWrite;
+        _userOff += toWrite;
+        words -= toWrite;
+        if (_userOff == _wordsPerBuffer) {
+            _addToList(&_filled, _takeFromList(p));
+            _userOff = 0;
+        }
+    }
+    return written;
+}
+
 bool AudioBufferManager::read(uint32_t *v, bool sync) {
     if (!_running || _isOutput) {
         return false;
     }
 
-    AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_filled;
+    AudioBuffer ** volatile p = &_filled;
     if (!*p) {
         if (!sync) {
             return false;
@@ -210,6 +242,38 @@ bool AudioBufferManager::read(uint32_t *v, bool sync) {
     }
     *v = ret;
     return true;
+}
+
+size_t AudioBufferManager::read(uint32_t *v, size_t words, bool sync) {
+    size_t read = 0;
+
+    if (!_running || _isOutput) {
+        return 0;
+    }
+    while (words) {
+        AudioBuffer ** volatile p = &_filled;
+        if (!*p) {
+            if (!sync) {
+                return read;
+            } else {
+                while (!*p) {
+                    /* noop busy wait */
+                }
+            }
+        }
+        size_t availToReadThisBuff = _wordsPerBuffer - _userOff;
+        size_t toRead = std::min(availToReadThisBuff, words);
+        memcpy((void *)v, &((*p)->buff[_userOff]), toRead * sizeof(uint32_t));
+        v += toRead;
+        read += toRead;
+        _userOff += toRead;
+        words -= toRead;
+        if (_userOff == _wordsPerBuffer) {
+            _addToList(&_empty, _takeFromList(p));
+            _userOff = 0;
+        }
+    }
+    return read;
 }
 
 bool AudioBufferManager::getOverUnderflow() {
@@ -238,10 +302,10 @@ int AudioBufferManager::available() {
 }
 
 void AudioBufferManager::flush() {
-    AudioBuffer ** volatile a = (AudioBuffer ** volatile)&_active[0];
-    AudioBuffer ** volatile b = (AudioBuffer ** volatile)&_active[1];
-    AudioBuffer ** volatile c = (AudioBuffer ** volatile)&_filled;
-    while (*c && (*b != (AudioBuffer * volatile)_silence) && (*a != (AudioBuffer * volatile)_silence)) {
+    AudioBuffer ** volatile a = &_active[0];
+    AudioBuffer ** volatile b = &_active[1];
+    AudioBuffer ** volatile c = &_filled;
+    while (*c && (*b != _silence) && (*a != _silence)) {
         // busy wait until all user written data enroute
     }
 }

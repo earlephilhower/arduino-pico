@@ -32,15 +32,20 @@ extern void serialEvent1() __attribute__((weak));
 extern void serialEvent2() __attribute__((weak));
 
 bool SerialUART::setRX(pin_size_t pin) {
-#ifdef PICO_RP2350B
-    constexpr uint64_t valid[2] = { __bitset({1, 13, 17, 29, 33, 45}) /* UART0 */,
-                                    __bitset({5, 9, 21, 25, 37, 41})  /* UART1 */
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
+    constexpr uint64_t valid[2] = { __bitset({1, 3, 13, 15, 17, 19, 29, 31, 33, 35, 45, 47}) /* UART0 */,
+                                    __bitset({5, 7, 9, 11, 21, 23, 25, 27, 37, 39, 41, 43})  /* UART1 */
+                                  };
+#elif defined(PICO_RP2350)
+    constexpr uint64_t valid[2] = { __bitset({1, 3, 13, 15, 17, 19, 29})     /* UART0 */,
+                                    __bitset({5, 7, 9, 11, 21, 23, 25, 27})  /* UART1 */
                                   };
 #else
     constexpr uint64_t valid[2] = { __bitset({1, 13, 17, 29}) /* UART0 */,
                                     __bitset({5, 9, 21, 25})  /* UART1 */
                                   };
 #endif
+
     if ((!_running) && ((1LL << pin) & valid[uart_get_index(_uart)])) {
         _rx = pin;
         return true;
@@ -59,9 +64,13 @@ bool SerialUART::setRX(pin_size_t pin) {
 }
 
 bool SerialUART::setTX(pin_size_t pin) {
-#ifdef PICO_RP2350B
-    constexpr uint64_t valid[2] = { __bitset({0, 12, 16, 28, 32, 44}) /* UART0 */,
-                                    __bitset({4, 8, 20, 24, 36, 40})  /* UART1 */
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
+    constexpr uint64_t valid[2] = { __bitset({0, 2, 12, 14, 16, 18, 28, 30, 32, 34, 44, 46}) /* UART0 */,
+                                    __bitset({4, 6, 8, 10, 20, 22, 24, 26, 36, 38, 40, 42})  /* UART1 */
+                                  };
+#elif defined(PICO_RP2350)
+    constexpr uint64_t valid[2] = { __bitset({0, 2, 12, 14, 16, 18, 28})     /* UART0 */,
+                                    __bitset({4, 6, 8, 10, 20, 22, 24, 26})  /* UART1 */
                                   };
 #else
     constexpr uint64_t valid[2] = { __bitset({0, 12, 16, 28}) /* UART0 */,
@@ -86,7 +95,7 @@ bool SerialUART::setTX(pin_size_t pin) {
 }
 
 bool SerialUART::setRTS(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({3, 15, 19, 31, 35, 47}) /* UART0 */,
                                     __bitset({7, 11, 23, 27, 39, 43})  /* UART1 */
                                   };
@@ -113,7 +122,7 @@ bool SerialUART::setRTS(pin_size_t pin) {
 }
 
 bool SerialUART::setCTS(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({2, 14, 18, 30, 34, 46}) /* UART0 */,
                                     __bitset({6, 10, 22, 26, 38, 42})  /* UART1 */
                                   };
@@ -170,6 +179,41 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size
 static void _uart0IRQ();
 static void _uart1IRQ();
 
+// Does the selected TX/RX need UART_AUX function (rp2350)
+static gpio_function_t __gpioFunction(int pin) {
+    switch (pin) {
+#if defined(PICO_RP2350) && !PICO_RP2350A
+    case 2:
+    case 3:
+    case 6:
+    case 7:
+    case 10:
+    case 11:
+    case 14:
+    case 15:
+    case 18:
+    case 19:
+    case 22:
+    case 23:
+    case 26:
+    case 27:
+    case 30:
+    case 31:
+    case 34:
+    case 35:
+    case 38:
+    case 39:
+    case 42:
+    case 43:
+    case 46:
+    case 47:
+        return GPIO_FUNC_UART_AUX;
+#endif
+    default:
+        return GPIO_FUNC_UART;
+    }
+}
+
 void SerialUART::begin(unsigned long baud, uint16_t config) {
     if (_running) {
         end();
@@ -180,9 +224,9 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
 
     _fcnTx = gpio_get_function(_tx);
     _fcnRx = gpio_get_function(_rx);
-    gpio_set_function(_tx, GPIO_FUNC_UART);
+    gpio_set_function(_tx, __gpioFunction(_tx));
     gpio_set_outover(_tx, _invertTX ? 1 : 0);
-    gpio_set_function(_rx, GPIO_FUNC_UART);
+    gpio_set_function(_rx, __gpioFunction(_rx));
     gpio_set_inover(_rx, _invertRX ? 1 : 0);
     if (_rts != UART_PIN_NOT_DEFINED) {
         _fcnRts = gpio_get_function(_rts);

@@ -21,11 +21,11 @@ const char *rate(unsigned long start, unsigned long stop, unsigned long bytes) {
     strcpy_P(buff, PSTR("Inf b/s"));
   } else {
     unsigned long delta = stop - start;
-    float r = 1000.0 * (float)bytes / (float)delta;
-    if (r >= 1000000.0) {
-      sprintf_P(buff, PSTR("%0.2f MB/s"), r / 1000000.0);
-    } else if (r >= 1000.0) {
-      sprintf_P(buff, PSTR("%0.2f KB/s"), r / 1000.0);
+    float r = 1000.0f * (float)bytes / (float)delta;
+    if (r >= 1000000.0f) {
+      sprintf_P(buff, PSTR("%0.2f MB/s"), (double)r / 1000000.0);
+    } else if (r >= 1000.0f) {
+      sprintf_P(buff, PSTR("%0.2f KB/s"), (double)r / 1000.0);
     } else {
       sprintf_P(buff, PSTR("%d bytes/s"), (int)r);
     }

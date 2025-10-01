@@ -46,10 +46,14 @@
 #include "LwipEthernet.h"
 #include "wl_definitions.h"
 
+#ifdef __FREERTOS
+#include "FreeRTOS.h"
+#include "semphr.h"
+#endif
+
 #ifndef DEFAULT_MTU
 #define DEFAULT_MTU 1500
 #endif
-
 
 // Dup'd to avoid CYW43 dependency
 // Generate a mac address if one is not set in otp
@@ -69,12 +73,18 @@ enum EthernetLinkStatus {
     LinkOFF
 };
 
+#include <lwip_wrap.h>
+
+
 template<class RawDev>
 class LwipIntfDev: public LwipIntf, public RawDev {
 public:
     LwipIntfDev(int8_t cs = SS, SPIClass& spi = SPI, int8_t intr = -1) :
         RawDev(cs, spi, intr), _spiUnit(spi), _mtu(DEFAULT_MTU), _intrPin(intr), _started(false), _default(false) {
         memset(&_netif, 0, sizeof(_netif));
+#ifdef __FREERTOS
+        _hwMutex = xSemaphoreCreateMutex();
+#endif
     }
 
     //The argument order for ESP is not the same as for Arduino. However, there is compatibility code under the hood
@@ -181,11 +191,16 @@ protected:
 public:
     // called on a regular basis or on interrupt
     err_t handlePackets();
+#ifdef __FREERTOS
+    SemaphoreHandle_t _hwMutex;
+#endif
+    __callback_req _irqBuffer;
 protected:
     // members
     SPIClass& _spiUnit;
     SPISettings _spiSettings = SPISettings(4000000, MSBFIRST, SPI_MODE0);
     netif _netif;
+    bool _isDHCP = true;
 
     uint16_t _mtu;
     int8_t   _intrPin;
@@ -204,6 +219,8 @@ protected:
 
     uint32_t _packetsReceived = 0;
     uint32_t _packetsSent = 0;
+
+    static void _lwipCallback(void *param);
 };
 
 
@@ -282,6 +299,8 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
         return false;
     }
 
+    _isDHCP = (localIP.v4() == 0);
+
     IPAddress realGateway, realNetmask, realDns1;
     if (!ipAddressReorder(localIP, gateway, netmask, dns1, realGateway, realNetmask, realDns1)) {
         return false;
@@ -320,6 +339,7 @@ bool LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
 }
 
 extern char wifi_station_hostname[];
+extern std::function<void(struct netif *)> _addNetifCB;
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     if (_started) {
@@ -349,15 +369,9 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
                 _netif.num = n->num + 1;
             }
 
-#if 1
         // forge a new mac-address from the esp's wifi sta one
         // I understand this is cheating with an official mac-address
         _cyw43_hal_generate_laa_mac(0, _macAddress);
-#else
-        // https://serverfault.com/questions/40712/what-range-of-mac-addresses-can-i-safely-use-for-my-virtual-machines
-        memset(_macAddress, 0, 6);
-        _macAddress[0] = 0xEE;
-#endif
         _macAddress[3] += _netif.num;  // alter base mac address
         _macAddress[0] &= 0xfe;        // set as locally administered, unicast, per
         _macAddress[0] |= 0x02;  // https://en.wikipedia.org/wiki/MAC_address#Universal_vs._local
@@ -382,6 +396,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     }
 
     if (!RawDev::begin(_macAddress, &_netif)) {
+        netif_remove(&_netif);
         return false;
     }
 
@@ -389,14 +404,18 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         _phID = __addEthernetPacketHandler([this] { this->handlePackets(); });
     }
 
-    if (localIP().v4() == 0) {
-        // IP not set, starting DHCP
+    if (_isDHCP) {
+        // Destroy any existing address
+        ip4_addr_set_u32(ip_2_ip4(&_netif.ip_addr), 0);
+
+        // Start a new DHCP request
         _netif.flags |= NETIF_FLAG_UP;
         switch (dhcp_start(&_netif)) {
         case ERR_OK:
             break;
 
         case ERR_IF:
+            netif_remove(&_netif);
             return false;
 
         default:
@@ -434,8 +453,14 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         }
     }
 
+    if (_addNetifCB) {
+        _addNetifCB(&_netif);
+    }
     return true;
 }
+
+
+extern std::function<void(struct netif *)> _removeNetifCB;
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
@@ -447,6 +472,10 @@ void LwipIntfDev<RawDev>::end() {
             __removeEthernetGPIO(_intrPin);
         }
 
+        if (_removeNetifCB) {
+            _removeNetifCB(&_netif);
+        }
+
         RawDev::end();
 
         netif_remove(&_netif);
@@ -456,12 +485,18 @@ void LwipIntfDev<RawDev>::end() {
 }
 
 template<class RawDev>
-void LwipIntfDev<RawDev>::_irq(void *param) {
+void LwipIntfDev<RawDev>::_lwipCallback(void *param) {
     LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
-    ethernet_arch_lwip_begin();
     d->handlePackets();
     sys_check_timeouts();
-    ethernet_arch_lwip_end();
+    ethernet_arch_lwip_gpio_unmask();
+}
+
+template<class RawDev>
+void LwipIntfDev<RawDev>::_irq(void *param) {
+    LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
+    ethernet_arch_lwip_gpio_mask(); // Disable other IRQs until we're done processing this one
+    lwip_callback(_lwipCallback, param, &d->_irqBuffer);
 }
 
 template<class RawDev>
@@ -477,8 +512,21 @@ EthernetLinkStatus LwipIntfDev<RawDev>::linkStatus() {
 template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
+
+#ifdef __FREERTOS
+    xSemaphoreTake(lid->_hwMutex, portMAX_DELAY);
+#else
     ethernet_arch_lwip_begin();
+#endif
+
     uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
+
+#ifdef __FREERTOS
+    xSemaphoreGive(lid->_hwMutex);
+#else
+    ethernet_arch_lwip_end();
+#endif
+
     lid->_packetsSent++;
 #if PHY_HAS_CAPTURE
     if (phy_capture) {
@@ -486,7 +534,6 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
                     /*success*/ len == pbuf->len);
     }
 #endif
-    ethernet_arch_lwip_end();
     return len == pbuf->len ? ERR_OK : ERR_MEM;
 }
 
@@ -566,8 +613,14 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
             return ERR_OK;
         }
 
+#ifdef __FREERTOS
+        xSemaphoreTake(_hwMutex, portMAX_DELAY);
+#endif
         uint16_t tot_len = RawDev::readFrameSize();
         if (!tot_len) {
+#ifdef __FREERTOS
+            xSemaphoreGive(_hwMutex);
+#endif
             return ERR_OK;
         }
 
@@ -585,10 +638,16 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
                 pbuf_free(pbuf);
             }
             RawDev::discardFrame(tot_len);
+#ifdef __FREERTOS
+            xSemaphoreGive(_hwMutex);
+#endif
             return ERR_BUF;
         }
 
         uint16_t len = RawDev::readFrameData((uint8_t*)pbuf->payload, tot_len);
+#ifdef __FREERTOS
+        xSemaphoreGive(_hwMutex);
+#endif
         if (len != tot_len) {
             // tot_len is given by readFrameSize()
             // and is supposed to be honoured by readFrameData()
@@ -598,7 +657,6 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
         }
 
         _packetsReceived++;
-
         err_t err = _netif.input(pbuf, &_netif);
 
 #if PHY_HAS_CAPTURE

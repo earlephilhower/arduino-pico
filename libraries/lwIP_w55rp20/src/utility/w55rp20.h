@@ -51,7 +51,7 @@ public:
         Constructor that uses the default hardware SPI pins
         @param cs the Arduino Chip Select / Slave Select pin (default 10)
     */
-    Wiznet55rp20(int8_t cs = SS, SPIClass& spi = SPI, int8_t intr = -1);
+    Wiznet55rp20(int8_t cs = WIZNET_PIO_SPI_CS_PIN, SPIClass& spi = SPI, int8_t intr = -1);
     //Wiznet55rp20();
 
     /**
@@ -202,6 +202,8 @@ private:
         or register any functions, null function is called.
     */
     inline void wizchip_spi_write_byte(uint8_t wb) {
+        (void) wb;
+        panic_unsupported(); // shouldn't be used
         //_spi.transfer(wb);
     }
 

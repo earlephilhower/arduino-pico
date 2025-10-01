@@ -25,12 +25,13 @@
         "variant": "solderparty_rp2350_stamp_xl"
     },
     "debug": {
-        "jlink_device": "RP2350_0",
+        "jlink_device": "RP2350_M33_0",
         "openocd_target": "rp2350.cfg",
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "RP2350 Stamp XL",
     "upload": {

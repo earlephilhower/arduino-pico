@@ -42,7 +42,6 @@
 #include "PIOProgram.h"
 #include "ccount.pio.h"
 #include <malloc.h>
-
 #include "_freertos.h"
 
 extern "C" volatile bool __otherCoreIdled;
@@ -54,6 +53,110 @@ extern "C" {
 #endif
 }
 
+
+#ifdef PICO_RP2350
+class _MFIFO {
+public:
+    _MFIFO() { /* noop */ };
+    ~_MFIFO() { /* noop */ };
+
+    void begin(int cores) {
+        if (cores == 1) {
+            _multicore = false;
+            return;
+        }
+        _doorbell = multicore_doorbell_claim_unused(0b11, true);
+        _multicore = true;
+        __otherCoreIdled = false;
+    }
+
+    void registerCore() {
+#ifndef __FREERTOS
+        multicore_doorbell_clear_current_core(_doorbell);
+        uint32_t irq = multicore_doorbell_irq_num(_doorbell);
+        irq_add_shared_handler(irq, _irq, 128);
+        irq_set_enabled(irq, true);
+#else
+        // FreeRTOS port.c will handle the IRQ hooking
+#endif
+    }
+
+    void push(uint32_t val) {
+        multicore_fifo_push_blocking_inline(val);
+    }
+
+    bool push_nb(uint32_t val) {
+        if (multicore_fifo_wready()) {
+            multicore_fifo_push_blocking_inline(val);
+            return true;
+        }
+        return false;
+    }
+
+    uint32_t pop() {
+        return multicore_fifo_pop_blocking_inline();
+    }
+
+    bool pop_nb(uint32_t *val) {
+        if (multicore_fifo_rvalid()) {
+            *val = multicore_fifo_pop_blocking_inline();
+            return true;
+        }
+        return false;
+    }
+
+    int available() {
+        return multicore_fifo_rvalid() ? 1 : 0; // Can't really say how many, but at least one is there
+    }
+
+    void clear() {
+        multicore_fifo_drain();
+    }
+
+    void idleOtherCore() {
+        if (!_multicore) {
+            return;
+        }
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#else
+        __otherCoreIdled = false;
+        multicore_doorbell_set_other_core(_doorbell);
+        while (!__otherCoreIdled) { /* noop */ }
+#endif
+    }
+
+    void resumeOtherCore() {
+        if (!_multicore) {
+            return;
+        }
+        __otherCoreIdled = false;
+#ifdef __FREERTOS
+        __freertos_resume_other_core();
+#endif
+        // Other core will exit busy-loop and return to operation
+        // once __otherCoreIdled == false.
+    }
+
+    static uint8_t _doorbell;
+
+private:
+    static void __no_inline_not_in_flash_func(_irq)() {
+#ifndef __FREERTOS
+        if (multicore_doorbell_is_set_current_core(_doorbell)) {
+            noInterrupts(); // We need total control, can't run anything
+            __otherCoreIdled = true;
+            while (__otherCoreIdled) { /* noop */ }
+            interrupts();
+            multicore_doorbell_clear_current_core(_doorbell);
+        }
+#endif
+    }
+
+    bool _multicore = false;
+};
+
+#else
 class _MFIFO {
 public:
     _MFIFO() { /* noop */ };
@@ -66,23 +169,20 @@ public:
             return;
         }
         mutex_init(&_idleMutex);
+        _queue = (queue_t *)calloc(2, sizeof(queue_t));
         queue_init(&_queue[0], sizeof(uint32_t), FIFOCNT);
         queue_init(&_queue[1], sizeof(uint32_t), FIFOCNT);
         _multicore = true;
     }
 
     void registerCore() {
-        if (!__isFreeRTOS) {
-            multicore_fifo_clear_irq();
-#ifdef PICO_RP2350
-            irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
-            irq_set_enabled(SIO_IRQ_FIFO, true);
+#ifndef __FREERTOS
+        multicore_fifo_clear_irq();
+        irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
+        irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
 #else
-            irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
-            irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
-#endif
-        }
         // FreeRTOS port.c will handle the IRQ hooking
+#endif
     }
 
     void push(uint32_t val) {
@@ -113,14 +213,14 @@ public:
         if (!_multicore) {
             return;
         }
-        if (__isFreeRTOS) {
-            __freertos_idle_other_core();
-        } else {
-            mutex_enter_blocking(&_idleMutex);
-            __otherCoreIdled = false;
-            multicore_fifo_push_blocking(_GOTOSLEEP);
-            while (!__otherCoreIdled) { /* noop */ }
-        }
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#else
+        mutex_enter_blocking(&_idleMutex);
+        __otherCoreIdled = false;
+        multicore_fifo_push_blocking(_GOTOSLEEP);
+        while (!__otherCoreIdled) { /* noop */ }
+#endif
     }
 
     void resumeOtherCore() {
@@ -129,9 +229,9 @@ public:
         }
         mutex_exit(&_idleMutex);
         __otherCoreIdled = false;
-        if (__isFreeRTOS) {
-            __freertos_resume_other_core();
-        }
+#ifdef __FREERTOS
+        __freertos_resume_other_core();
+#endif
 
         // Other core will exit busy-loop and return to operation
         // once __otherCoreIdled == false.
@@ -151,30 +251,30 @@ public:
 
 private:
     static void __no_inline_not_in_flash_func(_irq)() {
-        if (!__isFreeRTOS) {
-            multicore_fifo_clear_irq();
-            noInterrupts(); // We need total control, can't run anything
-            while (multicore_fifo_rvalid()) {
-                if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
-                    __otherCoreIdled = true;
-                    while (__otherCoreIdled) { /* noop */ }
-                    break;
-                }
+#ifndef __FREERTOS
+        multicore_fifo_clear_irq();
+        noInterrupts(); // We need total control, can't run anything
+        while (multicore_fifo_rvalid()) {
+            if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
+                __otherCoreIdled = true;
+                while (__otherCoreIdled) { /* noop */ }
+                break;
             }
-            interrupts();
         }
+        interrupts();
+#endif
     }
 
     bool _multicore = false;
     mutex_t _idleMutex;
-    queue_t _queue[2];
+    queue_t *_queue; // Only allocated as [2] if multicore
     static constexpr uint32_t _GOTOSLEEP = 0xC0DED02E;
 };
-
+#endif
 
 class RP2040;
 extern RP2040 rp2040;
-extern "C" void main1();
+extern void main1();
 extern "C" char __StackLimit;
 extern "C" char __bss_end__;
 extern "C" void setup1() __attribute__((weak));
@@ -182,102 +282,154 @@ extern "C" void loop1() __attribute__((weak));
 extern "C" bool core1_separate_stack;
 extern "C" uint32_t* core1_separate_stack_address;
 
+/**
+    @brief RP2040/RP2350 helper function for HW-specific features
+*/
 class RP2040 {
 public:
     RP2040()  { /* noop */ }
     ~RP2040() { /* noop */ }
 
-    void begin() {
-        _epoch = 0;
-#if !defined(__riscv) && !defined(__PROFILE)
-        if (!__isFreeRTOS) {
-            // Enable SYSTICK exception
-            exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
-            systick_hw->csr = 0x7;
-            systick_hw->rvr = 0x00FFFFFF;
-        } else {
-#endif
+    void begin(int cpuid) {
+        _epoch[cpuid] = 0;
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
+        // Enable SYSTICK exception
+        exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
+        systick_hw->csr = 0x7;
+        systick_hw->rvr = 0x00FFFFFF;
+#else
+        // Only start 1 instance of the PIO SM
+        if (cpuid == 0) {
             int off = 0;
             _ccountPgm = new PIOProgram(&ccount_program);
             _ccountPgm->prepare(&_pio, &_sm, &off);
             ccount_program_init(_pio, _sm, off);
             pio_sm_set_enabled(_pio, _sm, true);
-#if !defined(__riscv) && !defined(__PROFILE)
         }
 #endif
     }
 
-    // Convert from microseconds to PIO clock cycles
+    /**
+        @brief Convert from microseconds to PIO clock cycles
+
+        @returns the PIO cycles for a given microsecond delay
+    */
     static int usToPIOCycles(int us) {
         // Parenthesis needed to guarantee order of operations to avoid 32bit overflow
         return (us * (clock_get_hz(clk_sys) / 1'000'000));
     }
 
-    // Get current clock frequency
+    /**
+        @brief Gets the active CPU speed (may differ from F_CPU
+
+        @returns CPU frequency in Hz
+    */
     static int f_cpu() {
         return clock_get_hz(clk_sys);
     }
 
-    // Get current CPU core number
+    /**
+        @brief Get the core ID that is currently executing this code
+
+        @returns 0 for Core 0, 1 for Core 1
+    */
     static int cpuid() {
         return sio_hw->cpuid;
     }
 
-    // Get CPU cycle count.  Needs to do magic to extens 24b HW to something longer
-    volatile uint64_t _epoch = 0;
+    /**
+        @brief CPU cycle counter epoch (24-bit cycle).  For internal use
+    */
+    volatile uint64_t _epoch[2] = {};
+    /**
+        @brief Get the count of CPU clock cycles since power on.
+
+        @details
+        The 32-bit count will overflow every 4 billion cycles, so consider using ``getCycleCount64`` for
+        longer measurements
+
+        @returns CPU clock cycles since power up
+    */
     inline uint32_t getCycleCount() {
-#if !defined(__riscv) && !defined(__PROFILE)
-        if (!__isFreeRTOS) {
-            uint32_t epoch;
-            uint32_t ctr;
-            do {
-                epoch = (uint32_t)_epoch;
-                ctr = systick_hw->cvr;
-            } while (epoch != (uint32_t)_epoch);
-            return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
-        } else {
-#endif
-            return ccount_read(_pio, _sm);
-#if !defined(__riscv) && !defined(__PROFILE)
-        }
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
+        // Get CPU cycle count.  Needs to do magic to extend 24b HW to something longer
+        uint32_t epoch;
+        uint32_t ctr;
+        do {
+            epoch = (uint32_t)_epoch[sio_hw->cpuid];
+            ctr = systick_hw->cvr;
+        } while (epoch != (uint32_t)_epoch[sio_hw->cpuid]);
+        return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
+#else
+        return ccount_read(_pio, _sm);
 #endif
     }
+    /**
+        @brief Get the count of CPU clock cycles since power on as a 64-bit quantrity
 
+        @returns CPU clock cycles since power up
+    */
     inline uint64_t getCycleCount64() {
-#if !defined(__riscv) && !defined(__PROFILE)
-        if (!__isFreeRTOS) {
-            uint64_t epoch;
-            uint64_t ctr;
-            do {
-                epoch = _epoch;
-                ctr = systick_hw->cvr;
-            } while (epoch != _epoch);
-            return epoch + (1LL << 24) - ctr;
-        } else {
-#endif
-            return ccount_read(_pio, _sm);
-#if !defined(__riscv) && !defined(__PROFILE)
-        }
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
+        uint64_t epoch;
+        uint64_t ctr;
+        do {
+            epoch = _epoch[sio_hw->cpuid];
+            ctr = systick_hw->cvr;
+        } while (epoch != _epoch[sio_hw->cpuid]);
+        return epoch + (1LL << 24) - ctr;
+#else
+        return ccount_read(_pio, _sm);
 #endif
     }
 
+    /**
+        @brief Gets total unused heap (dynamic memory)
+
+        @details
+        Note that the allocations of the size of the total free heap may fail due to fragmentation.
+        For example, ``getFreeHeap`` can report 100KB available, but an allocation of 90KB may fail
+        because there may not be a contiguous 90KB space available
+
+        @returns Free heap in bytes
+    */
     inline int getFreeHeap() {
         return getTotalHeap() - getUsedHeap();
     }
 
+    /**
+        @brief Gets total used heap (dynamic memory)
+
+        @returns Used heap in bytes
+    */
     inline int getUsedHeap() {
         struct mallinfo m = mallinfo();
         return m.uordblks;
     }
 
+    /**
+        @brief Gets total heap (dynamic memory) compiled into the program
+
+        @returns Total heap size in bytes
+    */
     inline int getTotalHeap() {
         return &__StackLimit  - &__bss_end__;
     }
 
+    /**
+        @brief On the RP2350, returns the amount of heap (dynamic memory) available in PSRAM
+
+        @returns Total free heap in PSRAM, or 0 if no PSRAM present
+    */
     inline int getFreePSRAMHeap() {
         return getTotalPSRAMHeap() - getUsedPSRAMHeap();
     }
 
+    /**
+        @brief On the RP2350, returns the total amount of PSRAM heap (dynamic memory) used
+
+        @returns Bytes used in PSRAM, or 0 if no PSRAM present
+    */
     inline int getUsedPSRAMHeap() {
 #if defined(RP2350_PSRAM_CS)
         extern size_t __psram_total_used();
@@ -287,6 +439,11 @@ public:
 #endif
     }
 
+    /**
+        @brief On the RP2350, gets total heap (dynamic memory) compiled into the program
+
+        @returns Total PSRAM heap size in bytes, or 0 if no PSRAM present
+    */
     inline int getTotalPSRAMHeap() {
 #if defined(RP2350_PSRAM_CS)
         extern size_t __psram_total_space();
@@ -296,6 +453,11 @@ public:
 #endif
     }
 
+    /**
+        @brief Gets the current stack pointer in a ARM/RISC-V safe manner
+
+        @returns Current SP
+    */
     inline uint32_t getStackPointer() {
         uint32_t *sp;
 #if defined(__riscv)
@@ -306,6 +468,14 @@ public:
         return (uint32_t)sp;
     }
 
+    /**
+        @brief Calculates approximately how much stack space is still available for the running core.  Handles multiprocessing and separate stacks.
+
+        @details
+        Not valid in FreeRTOS.  Use the FreeRTOS internal functions to access this information.
+
+        @returns Approximation of the amount of stack available for use on the specific core
+    */
     inline int getFreeStack() {
         const unsigned int sp = getStackPointer();
         uint32_t ref = 0x20040000;
@@ -319,6 +489,11 @@ public:
         return sp - ref;
     }
 
+    /**
+        @brief On the RP2350, gets the size of attached PSRAM
+
+        @returns PSRAM size in bytes, or 0 if no PSRAM present
+    */
     inline size_t getPSRAMSize() {
 #if defined(RP2350_PSRAM_CS)
         extern size_t __psram_size;
@@ -328,20 +503,48 @@ public:
 #endif
     }
 
+    /**
+        @brief Freezes the other core in a flash-write-safe state.  Not generally needed by applications
+
+        @details
+        When the external flash chip is erasing or writing, the Pico cannot fetch instructions from it.
+        In this case both the core doing the writing and the other core (if active) need to run from a
+        routine that's contained in RAM.  This call forces the other core into a tight, RAM-based loop
+        safe for this operation.  When flash erase/write is completed, ``resumeOtherCore`` to return
+        it to operation.
+
+        Be sure to disable any interrupts or task switches before calling to avoid deadlocks.
+
+        If the second core is not started, this is a no-op.
+    */
     void idleOtherCore() {
         fifo.idleOtherCore();
     }
 
+    /**
+        @brief Resumes normal operation of the other core
+    */
     void resumeOtherCore() {
         fifo.resumeOtherCore();
     }
 
+    /**
+        @brief Hard resets the 2nd core (CORE1).
+
+        @details
+        Because core1 will restart with the heap and global variables not in the same state as
+        power-on, this call may not work as desired and a full CPU reset may be necessary in
+        certain cases.
+    */
     void restartCore1() {
         multicore_reset_core1();
         fifo.clear();
         multicore_launch_core1(main1);
     }
 
+    /**
+        @brief Warm-reboots the chip in normal mode
+    */
     void reboot() {
         watchdog_reboot(0, 0, 10);
         while (1) {
@@ -349,10 +552,16 @@ public:
         }
     }
 
+    /**
+        @brief Warm-reboots the chip in normal mode
+    */
     inline void restart() {
         reboot();
     }
 
+    /**
+        @brief Warm-reboots the chip into the USB bootloader mode
+    */
     inline void rebootToBootloader() {
         reset_usb_boot(0, 0);
         while (1) {
@@ -364,16 +573,32 @@ public:
     static void enableDoubleResetBootloader();
 #endif
 
+    /**
+        @brief Starts the hardware watchdog timer.  The CPU will reset if the watchdog is not fed every delay_ms
+
+        @param [in] delay_ms Milliseconds without a wdt_reset before rebooting
+    */
     void wdt_begin(uint32_t delay_ms) {
         watchdog_enable(delay_ms, 1);
     }
 
+    /**
+        @brief Feeds the watchdog timer, resetting it for another delay_ms countdown
+    */
     void wdt_reset() {
         watchdog_update();
     }
 
+    /**
+        @brief Best-effort reasons for chip reset
+    */
     enum resetReason_t {UNKNOWN_RESET, PWRON_RESET, RUN_PIN_RESET, SOFT_RESET, WDT_RESET, DEBUG_RESET, GLITCH_RESET, BROWNOUT_RESET};
 
+    /**
+        @brief Attempts to determine the reason for the last chip reset.  May not always be able to determine accurately
+
+        @returns Reason for reset
+    */
     resetReason_t getResetReason(void) {
         io_rw_32 *WD_reason_reg = (io_rw_32 *)(WATCHDOG_BASE + WATCHDOG_REASON_OFFSET);
 
@@ -427,6 +652,10 @@ public:
         return UNKNOWN_RESET;
     }
 
+    /**
+        @brief Get unique ID string for the running board
+        @returns String with the unique board ID as determined by the SDK
+    */
     const char *getChipID() {
         static char id[2 * PICO_UNIQUE_BOARD_ID_SIZE_BYTES + 1] = { 0 };
         if (!id[0]) {
@@ -437,6 +666,17 @@ public:
 
 #pragma GCC push_options
 #pragma GCC optimize ("Os")
+    /**
+        @brief Perform a memcpy using a DMA engine for speed
+
+        @details
+        Uses the DMA to copy to and from RAM.  Only works on 4-byte aligned, 4-byte multiple length
+        sources and destination (i.e. word-aligned, word-length).  Falls back to normal memcpy otherwise.
+
+        @param [out] dest Memcpy destination, 4-byte aligned
+        @param [in] src Memcpy source, 4-byte aligned
+        @param [in] n Count in bytes to transfer (should be a multiple of 4 bytes)
+    */
     void *memcpyDMA(void *dest, const void *src, size_t n) {
         // Allocate a DMA channel on 1st call, reuse it every call after
         if (memcpyDMAChannel < 1) {
@@ -465,14 +705,32 @@ public:
     }
 #pragma GCC pop_options
 
-    // Multicore comms FIFO
+    /**
+        @brief Multicore communications FIFO
+    */
     _MFIFO fifo;
 
 
+    /**
+        @brief Return a 32-bit from the hardware random number generator
+
+        @returns Random value using appropriate hardware (RP2350 has true RNG, RP2040 has a less true RNG method)
+    */
     uint32_t hwrand32() {
         return get_rand_32();
     }
 
+    /**
+        @brief Determines if code is running on a Pico or a PicoW
+
+        @details
+        Code compiled for the RP2040 PicoW can run on the RP2040 Pico.  This call lets an application
+        identify if the current device is really a Pico or PicoW and handle appropriately.  For
+        the RP2350, this runtime detection is not available and the call returns whether it was
+        compiled for the CYW43 WiFi driver
+
+        @returns True if running on a PicoW board with CYW43 WiFi chip.
+    */
     bool isPicoW() {
 #if !defined(PICO_CYW43_SUPPORTED)
         return false;
@@ -499,8 +757,8 @@ public:
 
 
 private:
-    static void _SystickHandler() {
-        rp2040._epoch += 1LL << 24;
+    static void __no_inline_not_in_flash_func(_SystickHandler)() {
+        rp2040._epoch[sio_hw->cpuid] += 1LL << 24;
     }
     PIO _pio;
     int _sm;

@@ -8,7 +8,7 @@
 const char* host = "djxmmx.net";
 const uint16_t port = 17;
 
-Wiznet55rp20lwIP eth(1 /* chip select */);
+Wiznet55rp20lwIP eth(20 /* chip select */);
 
 void setup() {
   Serial.begin(115200);

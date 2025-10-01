@@ -1,4 +1,7 @@
 #pragma once
+
+#define PICO_RP2350A 1
+
 // Pin definitions taken from:
 //    https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html
 
@@ -28,6 +31,7 @@ static const uint8_t D18 = (9u);
 
 // LEDs
 #define PIN_LED        (25u)
+#define LED_BUILTIN     PIN_LED
 
 // Serial
 #define PIN_SERIAL1_TX (0u)
@@ -52,8 +56,17 @@ static const uint8_t D18 = (9u);
 
 
 // Wire
-#define PIN_WIRE1_SDA  (16u)
-#define PIN_WIRE1_SCL  (17u)
+#define __WIRE0_DEVICE (i2c0)
+#define PIN_WIRE0_SDA  (16u)
+#define PIN_WIRE0_SCL  (17u)
+#define SDA            PIN_WIRE0_SDA
+#define SCL            PIN_WIRE0_SCL
+#define I2C_SDA        (SDA)
+#define I2C_SCL        (SCL)
+
+#define __WIRE1_DEVICE (i2c1)
+#define PIN_WIRE1_SDA  (6u)
+#define PIN_WIRE1_SCL  (7u)
 
 #define SERIAL_HOWMANY (3u)
 #define SPI_HOWMANY    (2u)
@@ -65,10 +78,3 @@ static const uint8_t MISO = PIN_SPI0_MISO;
 static const uint8_t SCK  = PIN_SPI0_SCK;
 static const uint8_t SS   = PIN_SPI0_SS;
 
-#define __WIRE0_DEVICE (i2c1)
-#define PIN_WIRE0_SDA  (6u)
-#define PIN_WIRE0_SCL  (7u)
-#define SDA            PIN_WIRE0_SDA
-#define SCL            PIN_WIRE0_SCL
-#define I2C_SDA        (SDA)
-#define I2C_SCL        (SCL)

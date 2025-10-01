@@ -1,0 +1,57 @@
+{
+    "build": {
+        "arduino": {
+            "earlephilhower": {
+                "boot2_source": "none.S",
+                "usb_vid": "0x1B4F",
+                "usb_pid": "0x0046"
+            }
+        },
+        "core": "earlephilhower",
+        "cpu": "cortex-m33",
+        "extra_flags": "-DARDUINO_SPARKFUN_XRP_CONTROLLER -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=250  -DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1",
+        "f_cpu": "150000000L",
+        "hwids": [
+            [
+                "0x2E8A",
+                "0x00C0"
+            ],
+            [
+                "0x1B4F",
+                "0x0046"
+            ]
+        ],
+        "mcu": "rp2350",
+        "variant": "sparkfun_xrp_controller"
+    },
+    "debug": {
+        "jlink_device": "RP2350_M33_0",
+        "openocd_target": "rp2350.cfg",
+        "svd_path": "rp2350.svd"
+    },
+    "frameworks": [
+        "arduino",
+        "picosdk"
+    ],
+    "name": "XRP Controller",
+    "upload": {
+        "maximum_ram_size": 524288,
+        "maximum_size": 16777216,
+        "require_upload_port": true,
+        "native_usb": true,
+        "use_1200bps_touch": true,
+        "wait_for_upload_port": false,
+        "protocol": "picotool",
+        "protocols": [
+            "blackmagic",
+            "cmsis-dap",
+            "jlink",
+            "raspberrypi-swd",
+            "picotool",
+            "picoprobe"
+        ],
+        "psram_length": 8388608
+    },
+    "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+    "vendor": "SparkFun"
+}

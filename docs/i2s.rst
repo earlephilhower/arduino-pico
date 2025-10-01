@@ -30,6 +30,18 @@ I2S(INPUT)
 Creates an I2S input port.  Needs to be connected up to the
 desired pins (see below) and started before any input can happen.
 
+I2S(INPUT_PULLUP)
+~~~~~~~~~~~~~~~~~
+Creates a bi-directional I2S input and output port.  Needs to be
+connected up to the desired pins (see below) and started before
+any input or output can happen.
+
+bool setSlave()
+~~~~~~~~~~~~~~~
+Enables slave mode.  BCLK and LRCLK are inputs and used to control the
+timing of the DOUT output.  Only normal I2S output mode is supported in
+slave mode.
+
 bool setBCLK(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the BCLK pin of the I2S device.  The LRCLK/word clock will be ``pin + 1``
@@ -37,7 +49,18 @@ due to limitations of the PIO state machines.  Call this before ``I2S::begin()``
 
 bool setDATA(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sets the DOUT or DIN pin of the I2S device.  Any pin may be used.
+Sets the DOUT or DIN pin of the I2S device.  Any pin may be used. In bi-directional
+operation, must use ``I2S::setDOUT()`` and ``I2S::setDIN`` instead.
+Call before ``I2S::begin()``
+
+bool setDOUT(pin_size_t pin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the DOUT pin of the I2S device.  Any pin may be used.
+Call before ``I2S::begin()``
+
+bool setDIN(pin_size_t pin)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the DIN pin of the I2S device.  Any pin may be used.
 Call before ``I2S::begin()``
 
 bool setMCLK(pin_size_t pin)
@@ -71,7 +94,7 @@ sample rate on-the-fly.
 bool setSysClk(int samplerate) 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Changes the PICO system clock to optimise for the desired samplerate. 
-The clock changes to 147.6 MHz for samplerates that are a multiple of 8 kHz, and 135.6 MHz for multiples of 11.025 kHz.
+The clock changes to 153.6 MHz for samplerates that are a multiple of 8 kHz, and 135.6 MHz for multiples of 11.025 kHz.
 Note that using ``setSysClk()`` may affect the timing of other sysclk-dependent functions.
 Should be called before any I2S functions and any other sysclk dependent initialisations.
 
@@ -115,6 +138,14 @@ void getOverUnderflow()
 Returns a flag indicating if the I2S system ran our of data to send on output,
 or had to throw away data on input.
 
+void getOverflow()
+~~~~~~~~~~~~~~~~~~~~~~~
+Returns a flag indicating if the I2S system had to throw away data on input.
+
+void getUnderflow()
+~~~~~~~~~~~~~~~~~~~~~~~
+Returns a flag indicating if the I2S system ran our of data to send on output.
+
 size_t write(uint8_t/int8_t/int16_t/int32_t)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Writes a single sample of ``bitsPerSample`` to the buffer.  It is up to the
@@ -139,7 +170,7 @@ size_t write(const uint8_t \*buffer, size_t size)
 Transfers number of bytes from an application buffer to the I2S output buffer.
 Be aware that ``size`` is in *bytes** and not samples.  Size must be a multiple
 of **4 bytes**.  Will not block, so check the return value to find out how
-many bytes were actually written.
+many 32-bit words were actually written.
 
 int availableForWrite()
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,6 +186,13 @@ int peek()
 ~~~~~~~~~~
 Returns the next sample to be read from the I2S buffer (without actually
 removing it).
+
+size_t read(uint8_t \*buffer, size_t size)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Transfers number of bytes from the I2S input buffer to an application buffer.
+Be aware that ``size`` is in *bytes** and not samples.  Size must be a multiple
+of **4 bytes**.  Will not block, so check the return value to find out how
+many 32-bit words were actually read.
 
 void onTransmit(void (\*fn)(void))
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

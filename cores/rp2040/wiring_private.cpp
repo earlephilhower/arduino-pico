@@ -30,32 +30,66 @@
 #define maxIRQs 15
 #endif
 static uint32_t _irqStackTop[2] = { 0, 0 };
+#ifdef __riscv
 static uint32_t _irqStack[2][maxIRQs];
+#else
+// ARM there's only 1 bit valid, so we'll just shift it in and out...
+static uint32_t _irqStack[2];
+#endif
+
+#ifdef __FREERTOS
+static UBaseType_t __savedIrqs[configNUMBER_OF_CORES];
+#endif
 
 extern "C" void interrupts() {
+#ifdef __FREERTOS
     if (__freeRTOSinitted) {
-        __freertos_task_exit_critical();
-    } else {
-        auto core = get_core_num();
-        if (!_irqStackTop[core]) {
-            // ERROR
-            return;
+        if (portGET_CRITICAL_NESTING_COUNT() == 1U && portCHECK_IF_IN_ISR()) {
+            taskEXIT_CRITICAL_FROM_ISR(__savedIrqs[portGET_CORE_ID()]);
+        } else {
+            taskEXIT_CRITICAL();
         }
-        restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
+        return;
     }
+#endif
+    auto core = get_core_num();
+    if (!_irqStackTop[core]) {
+        // ERROR
+        return;
+    }
+#ifdef __riscv
+    restore_interrupts(_irqStack[core][--_irqStackTop[core]]);
+#else
+    uint32_t mask = _irqStack[core] & 1;
+    _irqStack[core] >>= 1;
+    _irqStackTop[core]--;
+    restore_interrupts(mask);
+#endif
 }
 
 extern "C" void noInterrupts() {
+#ifdef __FREERTOS
     if (__freeRTOSinitted) {
-        __freertos_task_enter_critical();
-    } else {
-        auto core = get_core_num();
-        if (_irqStackTop[core] == maxIRQs) {
-            // ERROR
-            panic("IRQ stack overflow");
+        if (portGET_CRITICAL_NESTING_COUNT() == 0U && portCHECK_IF_IN_ISR()) {
+            __savedIrqs[portGET_CORE_ID()] = taskENTER_CRITICAL_FROM_ISR();
+        } else {
+            taskENTER_CRITICAL();
         }
-        _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
+        return;
     }
+#endif
+    auto core = get_core_num();
+    if (_irqStackTop[core] == maxIRQs) {
+        // ERROR
+        panic("IRQ stack overflow");
+    }
+#ifdef __riscv
+    _irqStack[core][_irqStackTop[core]++] = save_and_disable_interrupts();
+#else
+    _irqStack[core] <<= 1;
+    _irqStack[core] |= save_and_disable_interrupts() ? 1 : 0;
+    _irqStackTop[core]++;
+#endif
 }
 
 auto_init_mutex(_irqMutex);
@@ -66,7 +100,7 @@ void *_gpioIrqCBParam[__GPIOCNT];
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
 // dispatch to the real callback manually
-void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
+static void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     (void) events;
     uint64_t mask = 1LL << gpio;
     if (_gpioIrqEnabled & mask) {

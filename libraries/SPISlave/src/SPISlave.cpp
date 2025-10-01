@@ -48,38 +48,8 @@ SPISlaveClass::SPISlaveClass(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_
     _dataLeft = 0;
 }
 
-inline spi_cpol_t SPISlaveClass::cpol(SPISettings _spis) {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPOL_0;
-    case SPI_MODE1:
-        return SPI_CPOL_0;
-    case SPI_MODE2:
-        return SPI_CPOL_1;
-    case SPI_MODE3:
-        return SPI_CPOL_1;
-    }
-    // Error
-    return SPI_CPOL_0;
-}
-
-inline spi_cpha_t SPISlaveClass::cpha(SPISettings _spis) {
-    switch (_spis.getDataMode()) {
-    case SPI_MODE0:
-        return SPI_CPHA_0;
-    case SPI_MODE1:
-        return SPI_CPHA_1;
-    case SPI_MODE2:
-        return SPI_CPHA_0;
-    case SPI_MODE3:
-        return SPI_CPHA_1;
-    }
-    // Error
-    return SPI_CPHA_0;
-}
-
 bool SPISlaveClass::setRX(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({0, 4, 16, 20, 32, 26}) /* SPI0 */,
                                     __bitset({8, 12, 24, 28, 40, 44})  /* SPI1 */
                                   };
@@ -106,7 +76,7 @@ bool SPISlaveClass::setRX(pin_size_t pin) {
 }
 
 bool SPISlaveClass::setCS(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({1, 5, 17, 21, 33, 37}) /* SPI0 */,
                                     __bitset({9, 13, 25, 29, 41, 45})  /* SPI1 */
                                   };
@@ -133,7 +103,7 @@ bool SPISlaveClass::setCS(pin_size_t pin) {
 }
 
 bool SPISlaveClass::setSCK(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({2, 6, 18, 22, 34, 38}) /* SPI0 */,
                                     __bitset({10, 14, 26, 30, 42, 46})  /* SPI1 */
                                   };
@@ -160,7 +130,7 @@ bool SPISlaveClass::setSCK(pin_size_t pin) {
 }
 
 bool SPISlaveClass::setTX(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({3, 7, 19, 23, 35, 39}) /* SPI0 */,
                                     __bitset({11, 15, 27, 31, 43, 47})  /* SPI1 */
                                   };
@@ -196,15 +166,15 @@ void SPISlaveClass::_handleIRQ() {
     if (cnt && _recvCB) {
         _recvCB(buff, cnt);
     }
-    // Attempt to send as many ytes to the TX FIFO as we have/are free
-    while (spi_is_writable(_spi)) {
+    // Attempt to send as many bytes to the TX FIFO as we have/are free
+    do {
         for (; _dataLeft && spi_is_writable(_spi); _dataLeft--) {
             spi_get_hw(_spi)->dr = *(_dataOut++);
         }
         if (!_dataLeft && _sentCB) {
             _sentCB();
         }
-    }
+    } while (spi_is_writable(_spi) & _dataLeft);
     // Disable the TX FIFO IRQ if there is still no data to send or we'd always be stuck in an IRQ
     // Will be re-enabled once user does a setData
     if (!_dataLeft) {
@@ -243,7 +213,7 @@ void SPISlaveClass::begin(SPISettings spis) {
     spi_init(_spi, _spis.getClockFreq());
     DEBUGSPI("SPISlave: actual baudrate=%u\n", spi_get_baudrate(_spi));
     spi_set_slave(_spi, true);
-    spi_set_format(_spi, 8, cpol(spis),	cpha(spis), SPI_MSB_FIRST);
+    spi_set_format(_spi, 8, _helper.cpol(spis),	_helper.cpha(spis), SPI_MSB_FIRST);
 
     // Install our IRQ handler
     if (_spi == spi0) {

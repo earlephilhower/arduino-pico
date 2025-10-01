@@ -29,9 +29,14 @@
 #include <HID_Keyboard.h>
 
 class Keyboard_ : public HID_Keyboard {
+public:
+    void begin(const uint8_t *layout = KeyboardLayout_en_US) override;
+    void end() override;
 protected:
     virtual void sendReport(KeyReport* keys) override;
     virtual void sendConsumerReport(uint16_t key) override;
+    uint8_t _id;
+    uint8_t _idConsumer;
 
 public:
     Keyboard_(void);

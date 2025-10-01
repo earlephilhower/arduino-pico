@@ -79,19 +79,38 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
         cyw43_wifi_update_multicast_filter(&cyw43_state, mdnsV6, true);
 #endif
 
-        if (_bssid[0] | _bssid[1] | _bssid[2] | _bssid[3] | _bssid[4] | _bssid[5]) {
-            if (cyw43_arch_wifi_connect_bssid_timeout_ms(_ssid, _bssid, _password, authmode, _timeout)) {
-                return false;
-            } else {
+        cyw43_wifi_join(&cyw43_state, strlen(_ssid), (const uint8_t *)_ssid, strlen(_password), (const uint8_t *)_password, authmode, (_bssid[0] | _bssid[1] | _bssid[2] | _bssid[3] | _bssid[4] | _bssid[5]) ? _bssid : nullptr, CYW43_CHANNEL_NONE);
+        uint32_t start = millis();
+        while (millis() - start < (long unsigned int)_timeout) {
+            auto link = cyw43_wifi_link_status(&cyw43_state, 0);
+            if (link != 1) {
+                // Some error, we can retry
+                cyw43_wifi_join(&cyw43_state, strlen(_ssid), (const uint8_t *)_ssid, strlen(_password), (const uint8_t *)_password, authmode, (_bssid[0] | _bssid[1] | _bssid[2] | _bssid[3] | _bssid[4] | _bssid[5]) ? _bssid : nullptr, CYW43_CHANNEL_NONE);
+            } else if (cyw43_state.wifi_join_state == 1) {
+                // Link state can == 1 even if the negotiation is ongoing.  Check the internal negotiaion state.  When it hits 1 we are actually connected
                 return true;
-            }
-        } else {
-            if (cyw43_arch_wifi_connect_timeout_ms(_ssid, _password, authmode, _timeout)) {
-                return false;
             } else {
-                return true;
+                delay(50);
             }
         }
+        if (cyw43_wifi_link_status(&cyw43_state, 0) == 1) {
+            // Now we may have just started a retry and the work is still in progress, or we're connected
+            if (cyw43_state.wifi_join_state == 1) {
+                return true; // We succeeded
+            } else {
+                // We're still trying on our last try.  Wait for things to change
+                while (true) {
+                    if (cyw43_wifi_link_status(&cyw43_state, 0) != 1) {
+                        return false;
+                    } else if (cyw43_state.wifi_join_state == 1) {
+                        return true;
+                    } else {
+                        delay(50);
+                    }
+                }
+            }
+        }
+        return false; // We ended above with a failure
     } else {
         _itf = 1;
         cyw43_arch_enable_ap_mode(_ssid, _password, _password ? CYW43_AUTH_WPA2_AES_PSK : CYW43_AUTH_OPEN);
@@ -102,16 +121,13 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
 
 void CYW43::end() {
     _netif = nullptr;
-    cyw43_deinit(&cyw43_state);
+    cyw43_wifi_leave(&cyw43_state, _itf);
 }
-int fails = 0;
-int calls = 0;
+
 uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {
-    calls++;
     if (0 == cyw43_send_ethernet(_self, _itf, datalen, data, false)) {
         return datalen;
     }
-    fails++;
     return 0;
 }
 

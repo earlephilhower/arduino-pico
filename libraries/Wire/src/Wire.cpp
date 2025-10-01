@@ -19,6 +19,8 @@
     You should have received a copy of the GNU Lesser General Public
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+    Modified May 2025 by Sven Bruns (Lorandil on GitHub) to support user defined buffer size (inspired by ESP32 code)
 */
 
 #include <Arduino.h>
@@ -46,10 +48,14 @@ TwoWire::TwoWire(i2c_inst_t *i2c, pin_size_t sda, pin_size_t scl) {
     _running = false;
     _txBegun = false;
     _buffLen = 0;
+
+    // allocate buffer memory early, so we don't fragment the heap later
+    _buffSize = WIRE_BUFFER_SIZE;
+    _buff = (uint8_t *)malloc(_buffSize);
 }
 
 bool TwoWire::setSDA(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44}) /* I2C0 */,
                                     __bitset({2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46})  /* I2C1 */
                                   };
@@ -76,7 +82,7 @@ bool TwoWire::setSDA(pin_size_t pin) {
 }
 
 bool TwoWire::setSCL(pin_size_t pin) {
-#ifdef PICO_RP2350B
+#if defined(PICO_RP2350) && !PICO_RP2350A // RP2350B
     constexpr uint64_t valid[2] = { __bitset({1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45}) /* I2C0 */,
                                     __bitset({3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47})  /* I2C1 */
                                   };
@@ -158,6 +164,16 @@ void TwoWire::begin(uint8_t addr) {
         // ERROR
         return;
     }
+
+    // allocate buffer if necessary
+    if (!_buff) {
+        _buff = (uint8_t *)malloc(_buffSize);
+        if (!_buff) {
+            // ERROR
+            return;
+        }
+    }
+
     _slave = true;
     i2c_init(_i2c, _clkHz);
     i2c_set_slave_mode(_i2c, true, addr);
@@ -192,7 +208,7 @@ void TwoWire::onIRQ() {
     // First, pull off any data available
     if (irqstat & (1 << 2)) {
         // RX_FULL
-        if (_buffLen < (int)sizeof(_buff)) {
+        if (_buffLen < int(_buffSize)) {
             _buff[_buffLen++] = _i2c->hw->data_cmd & 0xff;
         } else {
             _i2c->hw->data_cmd;
@@ -271,7 +287,7 @@ void TwoWire::beginTransmission(uint8_t addr) {
 }
 
 size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
-    if (!_running || _txBegun || !quantity || (quantity > sizeof(_buff))) {
+    if (!_running || _txBegun || !quantity || (quantity > _buffSize)) {
         return 0;
     }
 
@@ -448,7 +464,7 @@ size_t TwoWire::write(uint8_t ucData) {
             return 0;
         }
     } else {
-        if (!_txBegun || (_buffLen == sizeof(_buff))) {
+        if (!_txBegun || (_buffLen == int(_buffSize))) {
             return 0;
         }
         _buff[_buffLen++] = ucData;
@@ -489,10 +505,22 @@ void TwoWire::flush(void) {
     // data transfer.
 }
 
+bool TwoWire::busIdle() {
+    // Check hardware status
+    uint32_t status = _i2c->hw->status;
+    bool tfe = (status & I2C_IC_STATUS_TFE_BITS);
+    bool mast = (status & I2C_IC_STATUS_MST_ACTIVITY_BITS);
+    return (tfe && !mast);
+}
+
 // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
 // All buffers must be valid for entire DMA and not touched until `finishedAsync()` returns true.
 bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes, const void *rbuffer, size_t rbytes, bool sendStop) {
     if (!_running || _txBegun || (wbytes == 0 && rbytes == 0)) {
+        return false;
+    }
+
+    if (!busIdle()) {
         return false;
     }
 
@@ -507,7 +535,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes
     abortAsync();
 
     // Create or enlarge dma command buffer, we need one entry for every i2c byte we want to write/read
-    const size_t bufLen = (wbytes + rbytes) * 2;
+    const size_t bufLen = (wbytes + rbytes) * sizeof(uint16_t);
     if (_dmaSendBufferLen < bufLen) {
         if (_dmaSendBuffer) {
             free(_dmaSendBuffer);
@@ -518,6 +546,7 @@ bool TwoWire::writeReadAsync(uint8_t address, const void *wbuffer, size_t wbytes
         if (!_dmaSendBuffer) {
             return false;
         }
+        _dmaSendBufferLen = bufLen;
     }
 
     // Fill the dma command buffer
@@ -730,6 +759,20 @@ bool TwoWire::getTimeoutFlag() {
 
 void TwoWire::clearTimeoutFlag() {
     _timeoutFlag = false;
+}
+
+size_t TwoWire::setBufferSize(size_t bSize) {
+    if (_running) {
+        // ERROR - transmission already running. Report back current buffer size
+        return _buffSize;
+    }
+    // only free the buffer, if it already exists and the new size differs from the current one
+    if (_buff && (bSize != _buffSize)) {
+        free(_buff);
+        _buff = nullptr;
+    }
+    _buffSize = max(WIRE_BUFFER_SIZE_MIN, int(bSize)); // enforce minimum buffer size
+    return _buffSize;
 }
 
 #ifndef __WIRE0_DEVICE

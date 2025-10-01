@@ -20,13 +20,11 @@
 #include "FatFSUSB.h"
 #include <FatFS.h>
 #include <class/msc/msc.h>
+#include <device/usbd.h>
+#include <USB.h>
 
 FatFSUSBClass FatFSUSB;
-
-// Ensure we are logged in to the USB framework
-void __USBInstallMassStorage() {
-    /* dummy */
-}
+#define USBD_MSC_EPSIZE 64
 
 FatFSUSBClass::FatFSUSBClass() {
 }
@@ -54,18 +52,31 @@ bool FatFSUSBClass::begin() {
     if (_started) {
         return false;
     }
-    _started = true;
     fatfs::disk_initialize(0);
     fatfs::WORD ss;
     fatfs::disk_ioctl(0, GET_SECTOR_SIZE, &ss);
     _sectSize = ss;
     _sectBuff = new uint8_t[_sectSize];
     _sectNum = -1;
+
+    USB.disconnect();
+    _epIn = USB.registerEndpointIn();
+    _epOut = USB.registerEndpointOut();
+    static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, USBD_MSC_EPSIZE) };
+    _id = USB.registerInterface(2, msd_desc, sizeof(msd_desc), 2, 0);
+    USB.connect();
+
+    _started = true;
     return true;
 }
 
 void FatFSUSBClass::end() {
     if (_started) {
+        USB.disconnect();
+        USB.unregisterInterface(_id);
+        USB.unregisterEndpointOut(_epOut);
+        USB.unregisterEndpointIn(_epIn);
+        USB.connect();
         _started = false;
         delete[] _sectBuff;
     }

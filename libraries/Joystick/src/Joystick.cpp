@@ -23,25 +23,44 @@
 
 #include "Joystick.h"
 #include "Arduino.h"
-#include <RP2040USB.h>
+#include <USB.h>
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"
 
-// Weak function override to add our descriptor to the TinyUSB list
-void __USBInstallJoystick() { /* noop */ }
+static const uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD16(HID_REPORT_ID(1)) };
 
 Joystick_::Joystick_(void) {
-    // Everything set up in HID_Joystick constructor
 }
 
+void Joystick_::begin() {
+    if (_running) {
+        return;
+    }
+    USB.disconnect();
+    _id = USB.registerHIDDevice(desc_hid_report_joystick, sizeof(desc_hid_report_joystick), 30, 0x0004);
+    USB.connect();
+    HID_Joystick::begin();
+}
 
-//immediately send an HID report
+void Joystick_::end() {
+    if (_running) {
+        USB.disconnect();
+        USB.unregisterHIDDevice(_id);
+        USB.connect();
+    }
+    HID_Joystick::end();
+}
+
+// immediately send an HID report
 void Joystick_::send_now(void) {
-    CoreMutex m(&__usb_mutex);
+    if (!_running) {
+        return;
+    }
+    CoreMutex m(&USB.mutex);
     tud_task();
-    if (__USBHIDReady()) {
-        tud_hid_n_report(0, __USBGetJoystickReportID(), &data, sizeof(data));
+    if (USB.HIDReady()) {
+        tud_hid_n_report(0, USB.findHIDReportID(_id), &data, sizeof(data));
     }
     tud_task();
 }
