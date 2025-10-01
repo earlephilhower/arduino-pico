@@ -147,8 +147,8 @@ void USBClass::removeEntry(Entry **head, unsigned int localid) {
 unsigned int USBClass::findID(Entry *head, unsigned int localid) {
     unsigned int x = 0;
     while (head && head->localid != localid) {
+        x += head->interfaces;
         head = head->next;
-        x++;
     }
     return x;
 }
@@ -225,10 +225,14 @@ const uint8_t *USBClass::tud_descriptor_device_cb() {
     usbd_desc_device = {
         .bLength = sizeof(tusb_desc_device_t),
         .bDescriptorType = TUSB_DESC_DEVICE,
+#ifdef ENABLE_PICOTOOL_USB
+        .bcdUSB = 0x210,
+#else
         .bcdUSB = 0x0200,
-        .bDeviceClass = 0,
-        .bDeviceSubClass = 0,
-        .bDeviceProtocol = 0,
+#endif
+        .bDeviceClass = 0xef, //0,
+        .bDeviceSubClass = 0x02, //0,
+        .bDeviceProtocol = 0x01, //0,
         .bMaxPacketSize0 = CFG_TUD_ENDPOINT0_SIZE,
         .idVendor = _forceVID ? _forceVID : (uint16_t)USBD_VID,
         .idProduct = _forcePID ? _forcePID : (uint16_t)USBD_PID,
@@ -610,20 +614,82 @@ extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t pr
 
 
 #ifdef ENABLE_PICOTOOL_USB
+// Support for Microsoft OS 2.0 descriptor
+#define BOS_TOTAL_LEN      (TUD_BOS_DESC_LEN + TUD_BOS_MICROSOFT_OS_DESC_LEN)
+
+#define MS_OS_20_DESC_LEN  166
+#define USBD_ITF_RPI_RESET 2
+
+uint8_t const desc_bos[] = {
+    // total length, number of device caps
+    TUD_BOS_DESCRIPTOR(BOS_TOTAL_LEN, 1),
+
+    // Microsoft OS 2.0 descriptor
+    TUD_BOS_MS_OS_20_DESCRIPTOR(MS_OS_20_DESC_LEN, 1)
+};
+
+TU_VERIFY_STATIC(sizeof(desc_bos) == BOS_TOTAL_LEN, "Incorrect size");
 
 static uint32_t _itf_num = 0;
-
-static void resetd_init() {
+uint8_t const * tud_descriptor_bos_cb(void) {
+    return desc_bos;
 }
 
-static void resetd_reset(uint8_t rhport) {
-    (void) rhport;
+
+bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_request_t const * request) {
+    static const uint8_t desc_ms_os_20[] = {
+        // Set header: length, type, windows version, total length
+        U16_TO_U8S_LE(0x000A), U16_TO_U8S_LE(MS_OS_20_SET_HEADER_DESCRIPTOR), U32_TO_U8S_LE(0x06030000), U16_TO_U8S_LE(MS_OS_20_DESC_LEN),
+
+        // Function Subset header: length, type, first interface, reserved, subset length
+        U16_TO_U8S_LE(0x0008), U16_TO_U8S_LE(MS_OS_20_SUBSET_HEADER_FUNCTION), USB.findInterfaceID(_picotool_itf_num), 0, U16_TO_U8S_LE(0x009C),
+
+        // MS OS 2.0 Compatible ID descriptor: length, type, compatible ID, sub compatible ID
+        U16_TO_U8S_LE(0x0014), U16_TO_U8S_LE(MS_OS_20_FEATURE_COMPATBLE_ID), 'W', 'I', 'N', 'U', 'S', 'B', 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // sub-compatible
+
+        // MS OS 2.0 Registry property descriptor: length, type
+        U16_TO_U8S_LE(0x0080), U16_TO_U8S_LE(MS_OS_20_FEATURE_REG_PROPERTY),
+        U16_TO_U8S_LE(0x0001), U16_TO_U8S_LE(0x0028), // wPropertyDataType, wPropertyNameLength and PropertyName "DeviceInterfaceGUID" in UTF-16
+        'D', 0x00, 'e', 0x00, 'v', 0x00, 'i', 0x00, 'c', 0x00, 'e', 0x00, 'I', 0x00, 'n', 0x00, 't', 0x00, 'e', 0x00,
+        'r', 0x00, 'f', 0x00, 'a', 0x00, 'c', 0x00, 'e', 0x00, 'G', 0x00, 'U', 0x00, 'I', 0x00, 'D', 0x00, 0x00, 0x00,
+        U16_TO_U8S_LE(0x004E), // wPropertyDataLength
+        // Vendor-defined Property Data: {bc7398c1-73cd-4cb7-98b8-913a8fca7bf6}
+        '{', 0,     'b', 0,     'c', 0,     '7', 0,     '3', 0,     '9', 0,
+        '8', 0,     'c', 0,     '1', 0,     '-', 0,     '7', 0,     '3', 0,
+        'c', 0,     'd', 0,     '-', 0,     '4', 0,     'c', 0,     'b', 0,
+        '7', 0,     '-', 0,     '9', 0,     '8', 0,     'b', 0,     '8', 0,
+        '-', 0,     '9', 0,     '1', 0,     '3', 0,     'a', 0,     '8', 0,
+        'f', 0,     'c', 0,     'a', 0,     '7', 0,     'b', 0,     'f', 0,
+        '6', 0,     '}', 0,       0, 0
+    };
+
+    TU_VERIFY_STATIC(sizeof(desc_ms_os_20) == MS_OS_20_DESC_LEN, "Incorrect size");
+    // nothing to with DATA & ACK stage
+    if (stage != CONTROL_STAGE_SETUP) {
+        return true;
+    }
+
+    if (request->bRequest == 1 && request->wIndex == 7) {
+        // Get Microsoft OS 2.0 compatible descriptor
+        return tud_control_xfer(rhport, request, (void*)(uintptr_t) desc_ms_os_20, sizeof(desc_ms_os_20));
+    } else {
+        return false;
+    }
+
+    // stall unknown request
+    return false;
+}
+
+
+static void resetd_init(void) {
+}
+
+static void resetd_reset(uint8_t __unused rhport) {
     _itf_num = 0;
 }
 
-static uint16_t resetd_open(uint8_t rhport,
-                            tusb_desc_interface_t const *itf_desc, uint16_t max_len) {
-    (void) rhport;
+static uint16_t resetd_open(uint8_t __unused rhport, tusb_desc_interface_t const *itf_desc, uint16_t max_len) {
     TU_VERIFY(TUSB_CLASS_VENDOR_SPECIFIC == itf_desc->bInterfaceClass &&
               RESET_INTERFACE_SUBCLASS == itf_desc->bInterfaceSubClass &&
               RESET_INTERFACE_PROTOCOL == itf_desc->bInterfaceProtocol, 0);
@@ -636,9 +702,7 @@ static uint16_t resetd_open(uint8_t rhport,
 }
 
 // Support for parameterized reset via vendor interface control request
-static bool resetd_control_xfer_cb(uint8_t rhport, uint8_t stage,
-                                   tusb_control_request_t const *request) {
-    (void) rhport;
+static bool resetd_control_xfer_cb(uint8_t __unused rhport, uint8_t stage, tusb_control_request_t const * request) {
     // nothing to do with DATA & ACK stage
     if (stage != CONTROL_STAGE_SETUP) {
         return true;
@@ -646,25 +710,20 @@ static bool resetd_control_xfer_cb(uint8_t rhport, uint8_t stage,
 
     if (request->wIndex == _itf_num) {
         if (request->bRequest == RESET_REQUEST_BOOTSEL) {
-            reset_usb_boot(0, (request->wValue & 0x7f));
+            int gpio = -1;
+            bool active_low = false;
+            rom_reset_usb_boot_extra(gpio, (request->wValue & 0x7f), active_low);
             // does not return, otherwise we'd return true
         }
-
         if (request->bRequest == RESET_REQUEST_FLASH) {
-            watchdog_reboot(0, 0, 100);
+            watchdog_reboot(0, 0, 10);
             return true;
         }
-
     }
     return false;
 }
 
-static bool resetd_xfer_cb(uint8_t rhport, uint8_t ep_addr,
-                           xfer_result_t result, uint32_t xferred_bytes) {
-    (void) rhport;
-    (void) ep_addr;
-    (void) result;
-    (void) xferred_bytes;
+static bool resetd_xfer_cb(uint8_t __unused rhport, uint8_t __unused ep_addr, xfer_result_t __unused result, uint32_t __unused xferred_bytes) {
     return true;
 }
 
@@ -685,6 +744,7 @@ usbd_class_driver_t const *usbd_app_driver_get_cb(uint8_t *driver_count) {
     *driver_count = 1;
     return &_resetd_driver;
 }
+
 
 #elif defined NO_USB
 
