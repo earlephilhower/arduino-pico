@@ -47,3 +47,7 @@ void lwipPollingPeriod(int ms);
 
 // Sets the global netif state change callback
 void __setStateChangeCallback(std::function<void(struct netif *)> s);
+
+// Set callback when a netif is added after bring-up, removed before netif_remove
+void __setAddNetifCallback(std::function<void(struct netif *)> s);
+void __setRemoveNetifCallback(std::function<void(struct netif *)> s);

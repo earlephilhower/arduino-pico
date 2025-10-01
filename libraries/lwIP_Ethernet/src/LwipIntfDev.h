@@ -55,7 +55,6 @@
 #define DEFAULT_MTU 1500
 #endif
 
-
 // Dup'd to avoid CYW43 dependency
 // Generate a mac address if one is not set in otp
 static void _cyw43_hal_generate_laa_mac(__unused int idx, uint8_t buf[6]) {
@@ -340,6 +339,7 @@ bool LwipIntfDev<RawDev>::config(IPAddress local_ip, IPAddress dns) {
 }
 
 extern char wifi_station_hostname[];
+extern std::function<void(struct netif *)> _addNetifCB;
 template<class RawDev>
 bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     if (_started) {
@@ -369,15 +369,9 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
                 _netif.num = n->num + 1;
             }
 
-#if 1
         // forge a new mac-address from the esp's wifi sta one
         // I understand this is cheating with an official mac-address
         _cyw43_hal_generate_laa_mac(0, _macAddress);
-#else
-        // https://serverfault.com/questions/40712/what-range-of-mac-addresses-can-i-safely-use-for-my-virtual-machines
-        memset(_macAddress, 0, 6);
-        _macAddress[0] = 0xEE;
-#endif
         _macAddress[3] += _netif.num;  // alter base mac address
         _macAddress[0] &= 0xfe;        // set as locally administered, unicast, per
         _macAddress[0] |= 0x02;  // https://en.wikipedia.org/wiki/MAC_address#Universal_vs._local
@@ -459,8 +453,14 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         }
     }
 
+    if (_addNetifCB) {
+        _addNetifCB(&_netif);
+    }
     return true;
 }
+
+
+extern std::function<void(struct netif *)> _removeNetifCB;
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
@@ -470,6 +470,10 @@ void LwipIntfDev<RawDev>::end() {
         } else {
             detachInterrupt(_intrPin);
             __removeEthernetGPIO(_intrPin);
+        }
+
+        if (_removeNetifCB) {
+            _removeNetifCB(&_netif);
         }
 
         RawDev::end();
@@ -493,11 +497,6 @@ void LwipIntfDev<RawDev>::_irq(void *param) {
     LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
     ethernet_arch_lwip_gpio_mask(); // Disable other IRQs until we're done processing this one
     lwip_callback(_lwipCallback, param, &d->_irqBuffer);
-    //ethernet_arch_lwip_begin();
-    //    d->handlePackets();
-    //    sys_check_timeouts();
-    //ethernet_arch_lwip_end();
-
 }
 
 template<class RawDev>
@@ -658,9 +657,6 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
         }
 
         _packetsReceived++;
-        //printf("recv pkt %d: ", tot_len);
-        //for (int i=0; i < tot_len; i++)  printf("%02x ", ((uint8_t*)pbuf->payload)[i]);
-        //printf("\n");
         err_t err = _netif.input(pbuf, &_netif);
 
 #if PHY_HAS_CAPTURE

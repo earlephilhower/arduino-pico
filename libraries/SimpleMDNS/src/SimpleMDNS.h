@@ -24,6 +24,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <lwip/apps/mdns.h>
 
 typedef void* hMDNSTxt; // Unusable in SimpleMDNS, for signature compatibility only
 
@@ -32,6 +33,13 @@ public:
     SimpleMDNSService();
     static void callback(struct mdns_service *service, void *txt_userdata);
     hMDNSTxt add(const char *key, const char *val);
+
+    const char *_service;
+    uint16_t _proto;
+    uint16_t _port;
+    service_get_txt_fn_t _fn;
+    void *_userdata;
+
 private:
     std::vector<const char *> txt;
 };
@@ -60,8 +68,9 @@ public:
     hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int16_t p_i16Value);
     hMDNSTxt addServiceTxt(const hMDNSService p_hService, const char* p_pcKey, int8_t p_i8Value);
 
-    // No-ops here
     void end();
+
+    // No-ops here
     void update();
 
 private:
@@ -70,9 +79,16 @@ private:
     static void _arduinoGetTxt(struct mdns_service *service, void *txt_userdata);
 
     bool _running = false;
+    bool _lwipMSNDInitted = false;
     static const char *_hostname;
     std::map<std::string, SimpleMDNSService*> _svcMap;
     bool _arduinoAdded = false;
+
+    // LwipIntfDev helpers when netifs come up and down, to ensure we set the old services on the new netif
+    static void _addNetifCB(struct netif *n);
+    static void _removeNetifCB(struct netif *n);
+    void removeNetif(struct netif *n);
+    void addNetif(struct netif *n);
 };
 
 extern SimpleMDNS MDNS;
