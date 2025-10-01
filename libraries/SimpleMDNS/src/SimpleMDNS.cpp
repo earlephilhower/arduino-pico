@@ -22,7 +22,9 @@
 #include <Arduino.h>
 #include "SimpleMDNS.h"
 #include <LwipEthernet.h>
-#include <lwip/apps/mdns.h>
+
+// LWIP MDNS doesn't expose a way for us to know if MDNS has been enabled on a netif, so use the private accessor.  Sorry...
+extern "C" struct mdns_host* netif_mdns_data(struct netif *netif);
 
 bool SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
     (void) ttl;
@@ -30,23 +32,63 @@ bool SimpleMDNS::begin(const char *hostname, unsigned int ttl) {
     if (_running) {
         return false;
     }
-    mdns_resp_init();
+    if (!_lwipMSNDInitted) {
+        mdns_resp_init();
+        _lwipMSNDInitted = true;
+    }
     struct netif *n = netif_list;
     while (n) {
         mdns_resp_add_netif(n, hostname);
         n = n->next;
     }
     __setStateChangeCallback(_statusCB);
+    __setAddNetifCallback(_addNetifCB);
+    __setRemoveNetifCallback(_removeNetifCB);
+
     _hostname = strdup(hostname);
     _running = true;
 
     return true;
 }
 
+void SimpleMDNS::_addNetifCB(struct netif *n) {
+    MDNS.addNetif(n);
+}
+
+void SimpleMDNS::_removeNetifCB(struct netif *n) {
+    MDNS.removeNetif(n);
+}
+
+
+// Only call when __useSimpleMDNS == true!
+void SimpleMDNS::removeNetif(struct netif *n) {
+    if (netif_mdns_data(n)) {
+        mdns_resp_remove_netif(n);
+    }
+}
+
+// Only call when __useSimpleMDNS == true!
+void SimpleMDNS::addNetif(struct netif *n) {
+    mdns_resp_add_netif(n, _hostname);
+    for (auto svc : _svcMap) {
+        char s[128];
+        snprintf(s, sizeof(s), "_%s", svc.second->_service);
+        s[sizeof(s) - 1] = 0;
+        mdns_resp_add_service(n, _hostname, s, (mdns_sd_proto)svc.second->_proto, svc.second->_port, svc.second->_fn, svc.second->_userdata);
+    }
+}
+
 void SimpleMDNS::enableArduino(unsigned int port, bool passwd) {
     if (!_running || _arduinoAdded) {
         return;
     }
+    SimpleMDNSService *svc = new SimpleMDNSService();
+    svc->_service = "arduino";
+    svc->_proto = DNSSD_PROTO_TCP;
+    svc->_port = port;
+    svc->_fn = _arduinoGetTxt;
+    svc->_userdata = (void *)passwd;
+    _svcMap.insert({svc->_service, svc});
     struct netif *n = netif_list;
     while (n) {
         mdns_resp_add_service(n, _hostname, "_arduino", DNSSD_PROTO_TCP, port, _arduinoGetTxt, (void *)passwd);
@@ -67,10 +109,15 @@ hMDNSService SimpleMDNS::addService(const char *service, const char *proto, unsi
     snprintf(s, sizeof(s), "_%s", service);
     s[sizeof(s) - 1] = 0;
     SimpleMDNSService *svc = new SimpleMDNSService();
-    _svcMap.insert({strdup(service), svc});
+    svc->_service = strdup(service);
+    svc->_proto = !strcasecmp("tcp", proto) ? DNSSD_PROTO_TCP : DNSSD_PROTO_UDP;
+    svc->_port = port;
+    svc->_fn = SimpleMDNSService::callback;
+    svc->_userdata = (void *)svc;
+    _svcMap.insert({svc->_service, svc});
     struct netif *n = netif_list;
     while (n) {
-        mdns_resp_add_service(n, _hostname, s, !strcasecmp("tcp", proto) ? DNSSD_PROTO_TCP : DNSSD_PROTO_UDP, port, SimpleMDNSService::callback, (void *)svc);
+        mdns_resp_add_service(n, _hostname, s, (mdns_sd_proto)svc->_proto, svc->_port, svc->_fn, svc->_userdata);
         n = n->next;
     }
     return (hMDNSService*) service;
@@ -80,8 +127,22 @@ void SimpleMDNS::update() {
     /* No-op */
 }
 
+
 void SimpleMDNS::end() {
-    /* No-op */
+    if (_running) {
+        struct netif *n = netif_list;
+        while (n) {
+            if (netif_mdns_data(n)) {
+                mdns_resp_remove_netif(n);
+            }
+            n = n->next;
+        }
+        __setStateChangeCallback(nullptr);
+        __setAddNetifCallback(nullptr);
+        __setRemoveNetifCallback(nullptr);
+
+    }
+    _running = false;
 }
 
 void SimpleMDNS::_statusCB(struct netif *netif) {

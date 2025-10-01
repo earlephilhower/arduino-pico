@@ -293,3 +293,13 @@ std::function<void(struct netif *)>  _scb;
 void __setStateChangeCallback(std::function<void(struct netif *)> s) {
     _scb = s;
 }
+
+std::function<void(struct netif *)> _addNetifCB;
+void __setAddNetifCallback(std::function<void(struct netif *)> s) {
+    _addNetifCB = s;
+}
+
+std::function<void(struct netif *)> _removeNetifCB;
+void __setRemoveNetifCallback(std::function<void(struct netif *)> s) {
+    _removeNetifCB = s;
+}
