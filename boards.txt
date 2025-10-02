@@ -22056,43 +22056,43 @@ MyRP_bot.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 MyRP_bot.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
-# MyMakers RP2350B
+# MyMakers 2350B
 # -----------------------------------
-MyRP_2350B.name=MyMakers RP2350B
+MyRP_2350B.name=MyMakers 2350B
 MyRP_2350B.vid.0=0x2e8a
-MyRP_2350B.pid.0=0x1234
+MyRP_2350B.pid.0=0x1000
 MyRP_2350B.vid.1=0x2e8a
-MyRP_2350B.pid.1=0x1334
+MyRP_2350B.pid.1=0x1100
 MyRP_2350B.vid.2=0x2e8a
-MyRP_2350B.pid.2=0x5234
+MyRP_2350B.pid.2=0x5000
 MyRP_2350B.vid.3=0x2e8a
-MyRP_2350B.pid.3=0x5334
+MyRP_2350B.pid.3=0x5100
 MyRP_2350B.vid.4=0x2e8a
-MyRP_2350B.pid.4=0x9234
+MyRP_2350B.pid.4=0x9000
 MyRP_2350B.vid.5=0x2e8a
-MyRP_2350B.pid.5=0x9334
+MyRP_2350B.pid.5=0x9100
 MyRP_2350B.vid.6=0x2e8a
-MyRP_2350B.pid.6=0xd234
+MyRP_2350B.pid.6=0xd000
 MyRP_2350B.vid.7=0x2e8a
-MyRP_2350B.pid.7=0xd334
+MyRP_2350B.pid.7=0xd100
 MyRP_2350B.upload_port.0.vid=0x2e8a
-MyRP_2350B.upload_port.0.pid=0x1234
+MyRP_2350B.upload_port.0.pid=0x1000
 MyRP_2350B.upload_port.1.vid=0x2e8a
-MyRP_2350B.upload_port.1.pid=0x1334
+MyRP_2350B.upload_port.1.pid=0x1100
 MyRP_2350B.upload_port.2.vid=0x2e8a
-MyRP_2350B.upload_port.2.pid=0x5234
+MyRP_2350B.upload_port.2.pid=0x5000
 MyRP_2350B.upload_port.3.vid=0x2e8a
-MyRP_2350B.upload_port.3.pid=0x5334
+MyRP_2350B.upload_port.3.pid=0x5100
 MyRP_2350B.upload_port.4.vid=0x2e8a
-MyRP_2350B.upload_port.4.pid=0x9234
+MyRP_2350B.upload_port.4.pid=0x9000
 MyRP_2350B.upload_port.5.vid=0x2e8a
-MyRP_2350B.upload_port.5.pid=0x9334
+MyRP_2350B.upload_port.5.pid=0x9100
 MyRP_2350B.upload_port.6.vid=0x2e8a
-MyRP_2350B.upload_port.6.pid=0xd234
+MyRP_2350B.upload_port.6.pid=0xd000
 MyRP_2350B.upload_port.7.vid=0x2e8a
-MyRP_2350B.upload_port.7.pid=0xd334
+MyRP_2350B.upload_port.7.pid=0xd100
 MyRP_2350B.build.usbvid=-DUSBD_VID=0x2e8a
-MyRP_2350B.build.usbpid=-DUSBD_PID=0x1234
+MyRP_2350B.build.usbpid=-DUSBD_PID=0x1000
 MyRP_2350B.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 MyRP_2350B.build.board=MYRP_2350B
 MyRP_2350B.build.variant=MyRP_2350B
@@ -22107,7 +22107,7 @@ MyRP_2350B.build.core=rp2040
 MyRP_2350B.build.ldscript=memmap_default.ld
 MyRP_2350B.build.boot2=none
 MyRP_2350B.build.usb_manufacturer="MyMakers"
-MyRP_2350B.build.usb_product="RP2350B"
+MyRP_2350B.build.usb_product="2350B"
 MyRP_2350B.build.psram_length=0x800000
 MyRP_2350B.menu.flash.4194304_0=4MB (no FS)
 MyRP_2350B.menu.flash.4194304_0.upload.maximum_size=4186112
