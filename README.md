@@ -74,7 +74,6 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Makerbase MKSTHR36
 * Makerbase MKSTHR42
 * MyMakers RP2040
-* MyMakers RP2350B
 * Neko Systems BL2040 Mini
 * Newsan Archi
 * nullbits Bit-C PRO
