@@ -33,7 +33,7 @@
         "arduino",
         "picosdk"
     ],
-    "name": "2350B",
+    "name": "RP2350B",
     "upload": {
         "maximum_ram_size": 524288,
         "maximum_size": 4194304,
