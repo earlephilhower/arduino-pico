@@ -21,7 +21,9 @@ void loop() {
   char buff[80];
 
   time(&now);
-  strftime(buff, sizeof(buff), "%c", localtime(&now));
+  struct tm tmstruct;
+  localtime_r(&now, &tmstruct);
+  strftime(buff, sizeof(buff), "%c", &tmstruct);
   Serial.println(buff);
   delay(1000);
 }
