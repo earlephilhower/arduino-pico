@@ -23,6 +23,51 @@ else:
 
 dist_dir = 'dist/'
 
+
+## Borrowed from Arduino-ESP32.  Thanks!
+def is_safe_archive_path(path):
+    # Check for absolute paths (both Unix and Windows style)
+    if path.startswith("/") or (len(path) > 1 and path[1] == ":" and path[2] in "\\/"):
+        raise ValueError(f"Absolute path not allowed: {path}")
+
+    # Normalize the path to handle any path separators
+    normalized_path = os.path.normpath(path)
+
+    # Check for directory traversal attempts using normalized path
+    if ".." in normalized_path.split(os.sep):
+        raise ValueError(f"Directory traversal not allowed: {path}")
+
+    # Additional check for paths that would escape the target directory
+    if normalized_path.startswith(".."):
+        raise ValueError(f"Path would escape target directory: {path}")
+
+    # Check for any remaining directory traversal patterns in the original path
+    # This catches cases that might not be normalized properly
+    path_parts = path.replace("\\", "/").split("/")
+    if ".." in path_parts:
+        raise ValueError(f"Directory traversal not allowed: {path}")
+
+    return True
+
+
+def safe_tar_extract(tar_file, destination):
+    # Validate all paths before extraction
+    for member in tar_file.getmembers():
+        is_safe_archive_path(member.name)
+
+    # If all paths are safe, proceed with extraction
+    tar_file.extractall(destination, filter="tar")
+
+
+def safe_zip_extract(zip_file, destination):
+    # Validate all paths before extraction
+    for name in zip_file.namelist():
+        is_safe_archive_path(name)
+
+    # If all paths are safe, proceed with extraction
+    zip_file.extractall(destination)
+
+
 def sha256sum(filename, blocksize=65536):
     hash = hashlib.sha256()
     with open(filename, "rb") as f:
@@ -51,15 +96,12 @@ def unpack(filename, destination):
     if filename.endswith('tar.gz'):
         tfile = tarfile.open(filename, 'r:gz')
         os.chdir("../system/")
-        try:
-            tfile.extractall(destination, filter='fully_trusted')
-        except TypeError:
-            tfile.extractall(destination)
+        safe_tar_extract(tfile, destination)
         dirname= tfile.getnames()[0]
     elif filename.endswith('zip'):
         zfile = zipfile.ZipFile(filename)
         os.chdir("../system/")
-        zfile.extractall(destination)
+        safe_zip_extract(zfile, destination)
         dirname = zfile.namelist()[0]
     else:
         raise NotImplementedError('Unsupported archive type')
