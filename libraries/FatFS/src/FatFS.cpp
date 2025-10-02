@@ -294,17 +294,18 @@ DWORD get_fattime() {
     } else {
         now = time(nullptr);
     }
-    struct tm *stm = localtime(&now);
-    if (stm->tm_year < 80) {
+    struct tm stm;
+    localtime_r(&now, &stm);
+    if (stm.tm_year < 80) {
         // FAT can't report years before 1980
-        stm->tm_year = 80;
+        stm.tm_year = 80;
     }
-    return (DWORD)(stm->tm_year - 80) << 25 |
-           (DWORD)(stm->tm_mon + 1) << 21 |
-           (DWORD)stm->tm_mday << 16 |
-           (DWORD)stm->tm_hour << 11 |
-           (DWORD)stm->tm_min << 5 |
-           (DWORD)stm->tm_sec >> 1;
+    return (DWORD)(stm.tm_year - 80) << 25 |
+           (DWORD)(stm.tm_mon + 1) << 21 |
+           (DWORD)stm.tm_mday << 16 |
+           (DWORD)stm.tm_hour << 11 |
+           (DWORD)stm.tm_min << 5 |
+           (DWORD)stm.tm_sec >> 1;
 }
 
 }
