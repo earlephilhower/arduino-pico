@@ -3,6 +3,10 @@
 
 name: Arduino-Pico CI
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   pull_request:
   workflow_dispatch:
@@ -18,7 +22,7 @@ jobs:
       with:
         submodules: false
     - name: Run codespell
-      uses: codespell-project/actions-codespell@v2
+      uses: codespell-project/actions-codespell@406322ec52dd7b488e48c1c4b82e2a8b3a1bf630 # v2.1
       with:
         skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino,./.git,./libraries/FatFS/lib/fatfs,./libraries/FatFS/src/diskio.h,./libraries/FatFS/src/ff.cpp,./libraries/FatFS/src/ffconf.h,./libraries/FatFS/src/ffsystem.cpp,./libraries/FatFS/src/ff.h,./libraries/lwIP_WINC1500/src/driver,./libraries/lwIP_WINC1500/src/common,./libraries/lwIP_WINC1500/src/bus_wrapper,./libraries/lwIP_WINC1500/src/spi_flash,./libraries/WiFi/examples/BearSSL_Validation/certs.h
         ignore_words_list: ser,dout,shiftIn,acount,froms,ThirdParty
