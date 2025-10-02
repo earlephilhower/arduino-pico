@@ -6,7 +6,7 @@ name: Arduino-Pico Draft Release
 
 permissions:
   actions: read
-  contents: read
+  contents: write
   packages: write
 
 on:
