@@ -529,8 +529,7 @@ int WiFiClientSecureCtx::_run_until(unsigned target, bool blocking) {
                     wait for it.
                 */
                 return -1;
-            }
-            if (wlen > 0) {
+            } else {
                 br_ssl_engine_sendrec_ack(_eng, wlen);
             }
             no_work = 0;

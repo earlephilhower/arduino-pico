@@ -110,7 +110,7 @@ void printDirectory(File dir, int numTabs) {
       // no more files
       break;
     }
-    for (uint8_t i = 0; i < numTabs; i++) {
+    for (int i = 0; i < numTabs; i++) {
       Serial.print('\t');
     }
     Serial.print(entry.name());
