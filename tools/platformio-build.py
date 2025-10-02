@@ -198,7 +198,7 @@ env.Append(
         "-Wl,--undefined=__pre_init_runtime_init_mutex",
         "-Wl,--undefined=__pre_init_runtime_init_default_alarm_pool",
         "-Wl,--undefined=__pre_init_first_per_core_initializer",
-        "-Wl,--undefined=__pre_init_runtime_init_per_core_bootrom_reset"
+        "-Wl,--undefined=__pre_init_runtime_init_per_core_bootrom_reset",
         "-Wl,--undefined=__pre_init_runtime_init_per_core_h3_irq_registers",
         "-Wl,--undefined=__pre_init_runtime_init_per_core_irq_priorities"
     ] + toolopts,

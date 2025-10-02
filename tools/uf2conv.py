@@ -253,7 +253,7 @@ def get_drives():
             try:
                 nul = open("nul:", "r")
                 r = subprocess.check_output(["powershell", "-NonInteractive", "-Command",
-                                            "Get-WmiObject -class Win32_LogicalDisk | "
+                                            "Get-WmiObject -class Win32_LogicalDisk | " +
                                             "Format-Table -Property DeviceID, DriveType, Filesystem, VolumeName"],
                                             stdin = nul)
                 nul.close()

@@ -187,15 +187,15 @@ private:
         }
         const bool append = (mode & O_APPEND) > 0;
 
-        if (read & !write)           {
+        if (read && !write)           {
             return "r";
-        } else if (!read &  write & !append) {
+        } else if (!read && write && !append) {
             return "w+";
-        } else if (!read &  write &  append) {
+        } else if (!read &&  write &&  append) {
             return "a";
-        } else if (read &  write & !append) {
+        } else if (read &&  write && !append) {
             return "w+";    // may be a bug in FS::mode interpretation, "r+" seems proper
-        } else if (read &  write &  append) {
+        } else if (read &&  write &&  append) {
             return "a+";
         } else                                 {
             return "r";

@@ -389,7 +389,7 @@ public:
     }
 
     int read(uint8_t* buf, size_t size) override {
-        if (!_opened || !_fd | !buf) {
+        if (!_opened || !_fd || !buf) {
             return 0;
         }
         int result = lfs_file_read(_fs->getFS(), _getFD(), (void*) buf, size);
