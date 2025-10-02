@@ -1323,7 +1323,8 @@ void HTTPClient::setCookie(String date, String headerValue) {
 
     // overwrite or delete cookie in/from cookie jar
     time_t now_local = time(NULL);
-    time_t now_gmt = mktime(gmtime(&now_local));
+    struct tm timeinfo;
+    time_t now_gmt = mktime(gmtime_r(&now_local, &timeinfo));
 
     bool found = false;
 
@@ -1353,7 +1354,8 @@ bool HTTPClient::generateCookieString(String *cookieString) {
         return false;
     }
     time_t now_local = time(NULL);
-    time_t now_gmt = mktime(gmtime(&now_local));
+    struct tm timeinfo;
+    time_t now_gmt = mktime(gmtime_r(&now_local, &timeinfo));
 
     *cookieString = "";
     bool found = false;
