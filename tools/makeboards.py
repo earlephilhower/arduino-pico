@@ -632,6 +632,7 @@ MakeBoard("akana_r1", "rp2040", "METE HOCA", "Akana R1", "0x2e8a", "0x3001", 500
 
 # MyMakers
 MakeBoard("MyRP_bot", "rp2040", "MyMakers", "RP2040", "0x2e8a", "0x000a", 250, "MyRP_2040", 2, 0, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("MyRP_2350B", "rp2350", "MyMakers", "RP2350B", "0x2e8a", "0x1234", 500, "MYRP_2350B", 4, 8, "none", board_url="https://www.mymakers.online")
 
 # Neko Systems
 MakeBoard("nekosystems_bl2040_mini", "rp2040", "Neko Systems", "BL2040 Mini", "0x2e8a", "0x000a", 500, "NEKOSYSTEMS_BL2040_MINI", 4, 0, "boot2_generic_03h_2_padded_checksum")
@@ -734,9 +735,6 @@ MakeBoard("wiznet_6300_evb_pico2", "rp2350", "WIZnet", "W6300-EVB-Pico2", "0x2e8
 # Generic
 MakeBoard("generic", "rp2040", "Generic", "RP2040", "0x2e8a", "0xf00a", 250, "GENERIC_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("generic_rp2350", "rp2350", "Generic", "RP2350", "0x2e8a", "0xf00f", 250, "GENERIC_RP2350", 16, 8, "none")
-
-# MyMakers
-MakeBoard("mymakers_rp2350b", "rp2350", "MyMakers", "RP2350B", "0x2e8a", "0x000f", 250, "MYMAKERS_RP2350B", 4, 0, "none", None, "https://www.mymakers.com/rp2350b")
 
 
 sys.stdout.close()
