@@ -632,6 +632,7 @@ MakeBoard("akana_r1", "rp2040", "METE HOCA", "Akana R1", "0x2e8a", "0x3001", 500
 
 # MyMakers
 MakeBoard("MyRP_bot", "rp2040", "MyMakers", "RP2040", "0x2e8a", "0x000a", 250, "MyRP_2040", 2, 0, "boot2_generic_03h_4_padded_checksum")
+MakeBoard("MyRP_2350B", "rp2350", "MyMakers", "RP2350B", "0x2e8a", "0x1000", 500, "MYRP_2350B", 4, 8, "none", extra=None, board_url="https://www.mymakers.online")
 
 # Neko Systems
 MakeBoard("nekosystems_bl2040_mini", "rp2040", "Neko Systems", "BL2040 Mini", "0x2e8a", "0x000a", 500, "NEKOSYSTEMS_BL2040_MINI", 4, 0, "boot2_generic_03h_2_padded_checksum")

@@ -22056,6 +22056,273 @@ MyRP_bot.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 MyRP_bot.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
+# MyMakers RP2350B
+# -----------------------------------
+MyRP_2350B.name=MyMakers RP2350B
+MyRP_2350B.vid.0=0x2e8a
+MyRP_2350B.pid.0=0x1000
+MyRP_2350B.vid.1=0x2e8a
+MyRP_2350B.pid.1=0x1100
+MyRP_2350B.vid.2=0x2e8a
+MyRP_2350B.pid.2=0x5000
+MyRP_2350B.vid.3=0x2e8a
+MyRP_2350B.pid.3=0x5100
+MyRP_2350B.vid.4=0x2e8a
+MyRP_2350B.pid.4=0x9000
+MyRP_2350B.vid.5=0x2e8a
+MyRP_2350B.pid.5=0x9100
+MyRP_2350B.vid.6=0x2e8a
+MyRP_2350B.pid.6=0xd000
+MyRP_2350B.vid.7=0x2e8a
+MyRP_2350B.pid.7=0xd100
+MyRP_2350B.upload_port.0.vid=0x2e8a
+MyRP_2350B.upload_port.0.pid=0x1000
+MyRP_2350B.upload_port.1.vid=0x2e8a
+MyRP_2350B.upload_port.1.pid=0x1100
+MyRP_2350B.upload_port.2.vid=0x2e8a
+MyRP_2350B.upload_port.2.pid=0x5000
+MyRP_2350B.upload_port.3.vid=0x2e8a
+MyRP_2350B.upload_port.3.pid=0x5100
+MyRP_2350B.upload_port.4.vid=0x2e8a
+MyRP_2350B.upload_port.4.pid=0x9000
+MyRP_2350B.upload_port.5.vid=0x2e8a
+MyRP_2350B.upload_port.5.pid=0x9100
+MyRP_2350B.upload_port.6.vid=0x2e8a
+MyRP_2350B.upload_port.6.pid=0xd000
+MyRP_2350B.upload_port.7.vid=0x2e8a
+MyRP_2350B.upload_port.7.pid=0xd100
+MyRP_2350B.build.usbvid=-DUSBD_VID=0x2e8a
+MyRP_2350B.build.usbpid=-DUSBD_PID=0x1000
+MyRP_2350B.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+MyRP_2350B.build.board=MYRP_2350B
+MyRP_2350B.build.variant=MyRP_2350B
+MyRP_2350B.upload.maximum_size=4194304
+MyRP_2350B.upload.wait_for_upload_port=true
+MyRP_2350B.upload.erase_cmd=
+MyRP_2350B.serial.disableDTR=false
+MyRP_2350B.serial.disableRTS=false
+MyRP_2350B.build.f_cpu=125000000
+MyRP_2350B.build.led=
+MyRP_2350B.build.core=rp2040
+MyRP_2350B.build.ldscript=memmap_default.ld
+MyRP_2350B.build.boot2=none
+MyRP_2350B.build.usb_manufacturer="MyMakers"
+MyRP_2350B.build.usb_product="RP2350B"
+MyRP_2350B.build.psram_length=0x800000
+MyRP_2350B.menu.flash.4194304_0=4MB (no FS)
+MyRP_2350B.menu.flash.4194304_0.upload.maximum_size=4186112
+MyRP_2350B.menu.flash.4194304_0.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_0.build.flash_length=4186112
+MyRP_2350B.menu.flash.4194304_0.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_0.build.fs_start=272621568
+MyRP_2350B.menu.flash.4194304_0.build.fs_end=272621568
+MyRP_2350B.menu.flash.4194304_65536=4MB (Sketch: 4032KB, FS: 64KB)
+MyRP_2350B.menu.flash.4194304_65536.upload.maximum_size=4120576
+MyRP_2350B.menu.flash.4194304_65536.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_65536.build.flash_length=4120576
+MyRP_2350B.menu.flash.4194304_65536.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_65536.build.fs_start=272556032
+MyRP_2350B.menu.flash.4194304_65536.build.fs_end=272621568
+MyRP_2350B.menu.flash.4194304_131072=4MB (Sketch: 3968KB, FS: 128KB)
+MyRP_2350B.menu.flash.4194304_131072.upload.maximum_size=4055040
+MyRP_2350B.menu.flash.4194304_131072.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_131072.build.flash_length=4055040
+MyRP_2350B.menu.flash.4194304_131072.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_131072.build.fs_start=272490496
+MyRP_2350B.menu.flash.4194304_131072.build.fs_end=272621568
+MyRP_2350B.menu.flash.4194304_262144=4MB (Sketch: 3840KB, FS: 256KB)
+MyRP_2350B.menu.flash.4194304_262144.upload.maximum_size=3923968
+MyRP_2350B.menu.flash.4194304_262144.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_262144.build.flash_length=3923968
+MyRP_2350B.menu.flash.4194304_262144.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_262144.build.fs_start=272359424
+MyRP_2350B.menu.flash.4194304_262144.build.fs_end=272621568
+MyRP_2350B.menu.flash.4194304_524288=4MB (Sketch: 3584KB, FS: 512KB)
+MyRP_2350B.menu.flash.4194304_524288.upload.maximum_size=3661824
+MyRP_2350B.menu.flash.4194304_524288.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_524288.build.flash_length=3661824
+MyRP_2350B.menu.flash.4194304_524288.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_524288.build.fs_start=272097280
+MyRP_2350B.menu.flash.4194304_524288.build.fs_end=272621568
+MyRP_2350B.menu.flash.4194304_1048576=4MB (Sketch: 3MB, FS: 1MB)
+MyRP_2350B.menu.flash.4194304_1048576.upload.maximum_size=3137536
+MyRP_2350B.menu.flash.4194304_1048576.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_1048576.build.flash_length=3137536
+MyRP_2350B.menu.flash.4194304_1048576.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_1048576.build.fs_start=271572992
+MyRP_2350B.menu.flash.4194304_1048576.build.fs_end=272621568
+MyRP_2350B.menu.flash.4194304_2097152=4MB (Sketch: 2MB, FS: 2MB)
+MyRP_2350B.menu.flash.4194304_2097152.upload.maximum_size=2088960
+MyRP_2350B.menu.flash.4194304_2097152.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_2097152.build.flash_length=2088960
+MyRP_2350B.menu.flash.4194304_2097152.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_2097152.build.fs_start=270524416
+MyRP_2350B.menu.flash.4194304_2097152.build.fs_end=272621568
+MyRP_2350B.menu.flash.4194304_3145728=4MB (Sketch: 1MB, FS: 3MB)
+MyRP_2350B.menu.flash.4194304_3145728.upload.maximum_size=1040384
+MyRP_2350B.menu.flash.4194304_3145728.build.flash_total=4194304
+MyRP_2350B.menu.flash.4194304_3145728.build.flash_length=1040384
+MyRP_2350B.menu.flash.4194304_3145728.build.eeprom_start=272621568
+MyRP_2350B.menu.flash.4194304_3145728.build.fs_start=269475840
+MyRP_2350B.menu.flash.4194304_3145728.build.fs_end=272621568
+MyRP_2350B.menu.arch.arm=ARM
+MyRP_2350B.menu.arch.arm.build.chip=rp2350
+MyRP_2350B.menu.arch.arm.build.toolchain=arm-none-eabi
+MyRP_2350B.menu.arch.arm.build.toolchainpkg=pqt-gcc
+MyRP_2350B.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+MyRP_2350B.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+MyRP_2350B.menu.arch.arm.build.mcu=cortex-m33
+MyRP_2350B.menu.arch.riscv=RISC-V
+MyRP_2350B.menu.arch.riscv.build.chip=rp2350-riscv
+MyRP_2350B.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+MyRP_2350B.menu.arch.riscv.build.toolchainpkg=pqt-gcc-riscv
+MyRP_2350B.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+MyRP_2350B.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
+MyRP_2350B.menu.arch.riscv.build.mcu=rv32imac
+MyRP_2350B.menu.freq.150=150 MHz
+MyRP_2350B.menu.freq.150.build.f_cpu=150000000L
+MyRP_2350B.menu.freq.50=50 MHz
+MyRP_2350B.menu.freq.50.build.f_cpu=50000000L
+MyRP_2350B.menu.freq.100=100 MHz
+MyRP_2350B.menu.freq.100.build.f_cpu=100000000L
+MyRP_2350B.menu.freq.120=120 MHz
+MyRP_2350B.menu.freq.120.build.f_cpu=120000000L
+MyRP_2350B.menu.freq.125=125 MHz
+MyRP_2350B.menu.freq.125.build.f_cpu=125000000L
+MyRP_2350B.menu.freq.128=128 MHz
+MyRP_2350B.menu.freq.128.build.f_cpu=128000000L
+MyRP_2350B.menu.freq.133=133 MHz
+MyRP_2350B.menu.freq.133.build.f_cpu=133000000L
+MyRP_2350B.menu.freq.176=176 MHz (Overclock)
+MyRP_2350B.menu.freq.176.build.f_cpu=176000000L
+MyRP_2350B.menu.freq.200=200 MHz (Overclock)
+MyRP_2350B.menu.freq.200.build.f_cpu=200000000L
+MyRP_2350B.menu.freq.225=225 MHz (Overclock)
+MyRP_2350B.menu.freq.225.build.f_cpu=225000000L
+MyRP_2350B.menu.freq.240=240 MHz (Overclock)
+MyRP_2350B.menu.freq.240.build.f_cpu=240000000L
+MyRP_2350B.menu.freq.250=250 MHz (Overclock)
+MyRP_2350B.menu.freq.250.build.f_cpu=250000000L
+MyRP_2350B.menu.freq.276=276 MHz (Overclock)
+MyRP_2350B.menu.freq.276.build.f_cpu=276000000L
+MyRP_2350B.menu.freq.300=300 MHz (Overclock)
+MyRP_2350B.menu.freq.300.build.f_cpu=300000000L
+MyRP_2350B.menu.opt.Small=Small (-Os) (standard)
+MyRP_2350B.menu.opt.Small.build.flags.optimize=-Os
+MyRP_2350B.menu.opt.Optimize=Optimize (-O)
+MyRP_2350B.menu.opt.Optimize.build.flags.optimize=-O
+MyRP_2350B.menu.opt.Optimize2=Optimize More (-O2)
+MyRP_2350B.menu.opt.Optimize2.build.flags.optimize=-O2
+MyRP_2350B.menu.opt.Optimize3=Optimize Even More (-O3)
+MyRP_2350B.menu.opt.Optimize3.build.flags.optimize=-O3
+MyRP_2350B.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+MyRP_2350B.menu.opt.Fast.build.flags.optimize=-Ofast
+MyRP_2350B.menu.opt.Debug=Debug (-Og)
+MyRP_2350B.menu.opt.Debug.build.flags.optimize=-Og
+MyRP_2350B.menu.opt.Disabled=Disabled (-O0)
+MyRP_2350B.menu.opt.Disabled.build.flags.optimize=-O0
+MyRP_2350B.menu.os.none=None
+MyRP_2350B.menu.os.none.build.os=
+MyRP_2350B.menu.os.freertos=FreeRTOS SMP
+MyRP_2350B.menu.os.freertos.build.os=-D__FREERTOS
+MyRP_2350B.menu.profile.Disabled=Disabled
+MyRP_2350B.menu.profile.Disabled.build.flags.profile=
+MyRP_2350B.menu.profile.Enabled=Enabled
+MyRP_2350B.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+MyRP_2350B.menu.rtti.Disabled=Disabled
+MyRP_2350B.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+MyRP_2350B.menu.rtti.Enabled=Enabled
+MyRP_2350B.menu.rtti.Enabled.build.flags.rtti=
+MyRP_2350B.menu.stackprotect.Disabled=Disabled
+MyRP_2350B.menu.stackprotect.Disabled.build.flags.stackprotect=
+MyRP_2350B.menu.stackprotect.Enabled=Enabled
+MyRP_2350B.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+MyRP_2350B.menu.exceptions.Disabled=Disabled
+MyRP_2350B.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+MyRP_2350B.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+MyRP_2350B.menu.exceptions.Enabled=Enabled
+MyRP_2350B.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+MyRP_2350B.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+MyRP_2350B.menu.dbgport.Disabled=Disabled
+MyRP_2350B.menu.dbgport.Disabled.build.debug_port=
+MyRP_2350B.menu.dbgport.Serial=Serial
+MyRP_2350B.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+MyRP_2350B.menu.dbgport.Serial1=Serial1
+MyRP_2350B.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+MyRP_2350B.menu.dbgport.Serial2=Serial2
+MyRP_2350B.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+MyRP_2350B.menu.dbgport.SerialSemi=SerialSemi
+MyRP_2350B.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+MyRP_2350B.menu.dbglvl.None=None
+MyRP_2350B.menu.dbglvl.None.build.debug_level=
+MyRP_2350B.menu.dbglvl.Core=Core
+MyRP_2350B.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+MyRP_2350B.menu.dbglvl.SPI=SPI
+MyRP_2350B.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+MyRP_2350B.menu.dbglvl.Wire=Wire
+MyRP_2350B.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+MyRP_2350B.menu.dbglvl.Bluetooth=Bluetooth
+MyRP_2350B.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+MyRP_2350B.menu.dbglvl.LWIP=LWIP
+MyRP_2350B.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
+MyRP_2350B.menu.dbglvl.All=All
+MyRP_2350B.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+MyRP_2350B.menu.dbglvl.NDEBUG=NDEBUG
+MyRP_2350B.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+MyRP_2350B.menu.usbstack.picosdk=Pico SDK
+MyRP_2350B.menu.usbstack.picosdk.build.usbstack_flags=
+MyRP_2350B.menu.usbstack.tinyusb=Adafruit TinyUSB
+MyRP_2350B.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+MyRP_2350B.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+MyRP_2350B.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+MyRP_2350B.menu.usbstack.nousb=No USB
+MyRP_2350B.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+MyRP_2350B.menu.ipbtstack.ipv4only=IPv4 Only
+MyRP_2350B.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a
+MyRP_2350B.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+MyRP_2350B.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+MyRP_2350B.menu.ipbtstack.ipv4ipv6.build.libpicow=liblwip.a
+MyRP_2350B.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+MyRP_2350B.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+MyRP_2350B.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a
+MyRP_2350B.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+MyRP_2350B.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+MyRP_2350B.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a
+MyRP_2350B.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+MyRP_2350B.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+MyRP_2350B.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a
+MyRP_2350B.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+MyRP_2350B.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+MyRP_2350B.menu.ipbtstack.ipv4ipv6big.build.libpicow=liblwip.a
+MyRP_2350B.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+MyRP_2350B.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+MyRP_2350B.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a
+MyRP_2350B.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+MyRP_2350B.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+MyRP_2350B.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a
+MyRP_2350B.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+MyRP_2350B.menu.uploadmethod.default=Default (UF2)
+MyRP_2350B.menu.uploadmethod.default.build.ram_length=512k
+MyRP_2350B.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+MyRP_2350B.menu.uploadmethod.default.upload.maximum_data_size=524288
+MyRP_2350B.menu.uploadmethod.default.upload.tool=uf2conv
+MyRP_2350B.menu.uploadmethod.default.upload.tool.default=uf2conv
+MyRP_2350B.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+MyRP_2350B.menu.uploadmethod.picotool=Picotool
+MyRP_2350B.menu.uploadmethod.picotool.build.ram_length=512k
+MyRP_2350B.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+MyRP_2350B.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+MyRP_2350B.menu.uploadmethod.picotool.upload.maximum_data_size=524288
+MyRP_2350B.menu.uploadmethod.picotool.upload.tool=picotool
+MyRP_2350B.menu.uploadmethod.picotool.upload.tool.default=picotool
+MyRP_2350B.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+MyRP_2350B.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=512k
+MyRP_2350B.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+MyRP_2350B.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=524288
+MyRP_2350B.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+MyRP_2350B.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Neko Systems BL2040 Mini
 # -----------------------------------
 nekosystems_bl2040_mini.name=Neko Systems BL2040 Mini
