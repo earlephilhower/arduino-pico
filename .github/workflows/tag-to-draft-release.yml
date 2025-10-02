@@ -4,6 +4,11 @@
 
 name: Arduino-Pico Draft Release
 
+permissions:
+  actions: read
+  contents: read
+  packages: write
+
 on:
   push:
     tags:
