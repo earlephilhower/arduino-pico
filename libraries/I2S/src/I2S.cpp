@@ -66,6 +66,7 @@ I2S::I2S(PinMode direction, pin_size_t bclk, pin_size_t data, pin_size_t mclk, p
     _swapClocks = false;
     _multMCLK = 256;
     _isSlave = false;
+    _pgm = nullptr;
 }
 
 I2S::~I2S() {
@@ -262,20 +263,94 @@ void I2S::MCLKbegin() {
     pio_sm_set_enabled(_pioMCLK, _smMCLK, true);
 }
 
+pio_program_t *I2S::swap2SideSet(const pio_program_t *in) {
+    int size = (sizeof(*in) + 4) % ~3; // Round up to nearest 32b word for alignment purposes
+    size += in->length * sizeof(uint16_t);
+    uint8_t *mem = (uint8_t *)malloc(size);
+    memcpy(mem, in, sizeof(*in));
+    pio_program_t *out = (pio_program_t *)mem;
+    out->instructions = (uint16_t *)(mem + ((sizeof(*in) + 4) % ~3)); // Place the insn memory right after the struct
+    uint16_t *dest = (uint16_t *)out->instructions;
+    const uint16_t *src = in->instructions;
+    for (int i = 0; i < in->length; i++) {
+        uint16_t insn = src[i];
+        uint16_t a = (insn & (1 << 12)) >> 1; // Move upper sideset bit down
+        uint16_t b = (insn & (1 << 11)) << 1; // Move lower sideset bit up
+        insn &= ~((1 << 12) | (1 << 11));
+        insn |= a | b;
+        dest[i] = insn;
+    }
+    return out;
+}
+
+
 bool I2S::begin() {
+    if (_running) {
+        return false;
+    }
+
     _running = true;
     _hasPeeked = false;
     _isHolding = 0;
-    int off = 0;
-    if (!_swapClocks) {
-        if (!_isSlave) {
-            _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM ? &pio_tdm_inout_program : &pio_i2s_inout_program) : (_isTDM ? &pio_tdm_out_program : (_isLSBJ ? &pio_lsbj_out_program : &pio_i2s_out_program))) : &pio_i2s_in_program);
+
+    // Determine the proper base program for the PIO
+    // Probably should have started API with an enum/bitmask instead of bunch of flags, but we're here now...
+    const pio_program *pgm;
+    void (*init)(PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, uint channels);
+    const int _SLAVE = 1 << 0;
+    const int _OUTPUT = 1 << 1;
+    const int _INPUT = 1 << 2;
+    const int _TDM = 1 << 3;
+    const int _LSBJ = 1 << 4;
+    int selector = (_isSlave ? _SLAVE : 0) | (_isOutput ? _OUTPUT : 0) | (_isInput ? _INPUT : 0) | (_isTDM ? _TDM : 0) | (_isLSBJ ? _LSBJ : 0);
+    switch (selector) {
+    case _SLAVE + _OUTPUT:
+        if (_bps > 16) {
+            pgm = &pio_i2s_out_slave_32_program;
         } else {
-            _i2s = new PIOProgram(_bps > 16 ? &pio_i2s_out_slave_32_program : &pio_i2s_out_slave_16_program);
+            pgm = &pio_i2s_out_slave_16_program;
         }
-    } else {
-        _i2s = new PIOProgram(_isOutput ? (_isInput ? (_isTDM ? &pio_tdm_inout_swap_program : &pio_i2s_inout_swap_program) : (_isTDM ? &pio_tdm_out_swap_program : (_isLSBJ ? &pio_lsbj_out_swap_program : &pio_i2s_out_swap_program))) : &pio_i2s_in_swap_program);
+        init = pio_i2s_out_slave_program_init;
+        break;
+    case _OUTPUT + _INPUT + _TDM:
+        pgm = &pio_tdm_inout_program;
+        init = pio_tdm_inout_program_init;
+        break;
+    case _OUTPUT + _INPUT:
+        pgm = &pio_i2s_inout_program;
+        init = pio_i2s_inout_program_init;
+        break;
+    case _OUTPUT + _TDM:
+        pgm = &pio_tdm_out_program;
+        init = pio_tdm_out_program_init;
+        break;
+    case _OUTPUT + _LSBJ:
+        pgm = &pio_lsbj_out_program;
+        init = pio_lsbj_out_program_init;
+        break;
+    case _OUTPUT:
+        pgm = &pio_i2s_out_program;
+        init = pio_i2s_out_program_init;
+        break;
+    case _INPUT:
+        pgm = &pio_i2s_in_program;
+        init = pio_i2s_in_program_init;
+        break;
+    default:
+        // Unsupported combination!
+        _running = false;
+        return false;
     }
+
+    if (_swapClocks) {
+        // If we swap, we need to save the generated bits and free on ::end
+        _pgm = swap2SideSet(pgm);
+        _i2s = new PIOProgram(_pgm);
+    } else {
+        _i2s = new PIOProgram(pgm);
+    }
+
+    // With the RP2350B there is a GPIO-base offset for PIOs, so need to pass the min/max pins to PIOProgram to set appropriately
     int minpin, maxpin;
     if (_isOutput && _isInput) {
         minpin = std::min(std::min((int)_pinDOUT, (int)_pinDIN), (int)_pinBCLK);
@@ -287,37 +362,26 @@ bool I2S::begin() {
         minpin = std::min((int)_pinDIN, (int)_pinBCLK);
         maxpin = std::max((int)_pinDIN, (int)_pinBCLK + 1);
     }
+
+    int off = 0;
     if (!_i2s->prepare(&_pio, &_sm, &off, minpin, maxpin - minpin + 1)) {
         _running = false;
+        free(_pgm);
         delete _i2s;
         _i2s = nullptr;
         return false;
     }
-    if (_isOutput) {
-        if (_isInput) {
-            if (_isTDM) {
-                pio_tdm_inout_program_init(_pio, _sm, off, _pinDIN, _pinDOUT, _pinBCLK, _bps, _swapClocks, _tdmChannels);
-            } else {
-                pio_i2s_inout_program_init(_pio, _sm, off, _pinDIN, _pinDOUT, _pinBCLK, _bps, _swapClocks);
-            }
-        } else if (_isTDM) {
-            pio_tdm_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks, _tdmChannels);
-        } else if (_isLSBJ) {
-            pio_lsbj_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
-        } else {
-            if (_isSlave) {
-                pio_i2s_out_slave_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
-            } else {
-                pio_i2s_out_program_init(_pio, _sm, off, _pinDOUT, _pinBCLK, _bps, _swapClocks);
-            }
-        }
-    } else {
-        pio_i2s_in_program_init(_pio, _sm, off, _pinDIN, _pinBCLK, _bps, _swapClocks);
-    }
+
+    init(_pio, _sm, off, _pinDIN, _pinDOUT, _pinBCLK, _bps, _tdmChannels);
+
     setFrequency(_freq);
+
+    // Start MCLK if needed
     if (_MCLKenabled) {
         MCLKbegin();
     }
+
+    // Calculate what to send on under/overflow based on the bits
     if (_bps == 8) {
         uint8_t a = _silenceSample & 0xff;
         _silenceSample = (a << 24) | (a << 16) | (a << 8) | a;
@@ -325,15 +389,21 @@ bool I2S::begin() {
         uint16_t a = _silenceSample & 0xffff;
         _silenceSample = (a << 16) | a;
     }
+
+    // Ensure a safe minimum if no buffersize is set
     if (!_bufferWords) {
         _bufferWords = 64 * (_bps == 32 ? 2 : 1);
     }
+
+    // Generate the input ARB for DMA to RAM
     if (_isInput) {
         _arbInput = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, INPUT);
         if (!_arbInput->begin(pio_get_dreq(_pio, _sm, false), (volatile void*)&_pio->rxf[_sm])) {
             _running = false;
             delete _arbInput;
             _arbInput = nullptr;
+            free(_pgm);
+            _pgm = nullptr;
             delete _i2s;
             _i2s = nullptr;
             return false;
@@ -344,6 +414,8 @@ bool I2S::begin() {
             _arbInput->setCallback(_cbInput);
         }
     }
+
+    // Generate the output ARB to dump from RAM to I2S
     if (_isOutput) {
         _arbOutput = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, OUTPUT);
         if (!_arbOutput->begin(pio_get_dreq(_pio, _sm, true), &_pio->txf[_sm])) {
@@ -352,6 +424,8 @@ bool I2S::begin() {
             _arbOutput = nullptr;
             delete _arbInput;
             _arbInput = nullptr;
+            free(_pgm);
+            _pgm = nullptr;
             delete _i2s;
             _i2s = nullptr;
             return false;
@@ -362,6 +436,8 @@ bool I2S::begin() {
             _arbOutput->setCallback(_cbOutput);
         }
     }
+
+    // Start the ball rolling!
     pio_sm_set_enabled(_pio, _sm, true);
 
     return true;
@@ -380,6 +456,8 @@ bool I2S::end() {
         _arbOutput = nullptr;
         delete _arbInput;
         _arbInput = nullptr;
+        free(_pgm);
+        _pgm = nullptr;
         delete _i2s;
         _i2s = nullptr;
     }

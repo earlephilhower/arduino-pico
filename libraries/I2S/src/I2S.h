@@ -182,6 +182,8 @@ private:
 
     AudioBufferManager *_arbInput;
     AudioBufferManager *_arbOutput;
+    pio_program_t *swap2SideSet(const pio_program_t *src);
+    pio_program_t *_pgm;
     PIOProgram *_i2s;
     PIOProgram *_i2sMCLK;
     PIO _pio, _pioMCLK;
@@ -189,4 +191,5 @@ private:
 
     static const int I2SSYSCLK_44_1 = 135600; // 44.1, 88.2 kHz sample rates
     static const int I2SSYSCLK_8 = 153600;  // 8k, 16, 32, 48, 96, 192 kHz
+
 };
