@@ -58,11 +58,13 @@ public:
     }
 
     ~LWIPMutex() {
+#if !defined(__FREERTOS)
         if (ethernet_arch_lwip_end) {
             ethernet_arch_lwip_end();
         } else {
             recursive_mutex_exit(&__lwipMutex);
         }
+#endif
     }
 };
 
