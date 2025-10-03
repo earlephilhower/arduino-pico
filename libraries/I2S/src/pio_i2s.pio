@@ -104,29 +104,6 @@ sendright:
 .wrap
 
 
-
-.program pio_i2s_out_swap
-.side_set 2   ; 0 = wclk, 1=bclk
-
-; The C code should place (number of bits/sample - 2) in Y and
-; also update the SHIFTCTRL to be 24 or 32 as appropriate
-
-;                           +----- BCLK
-;                           |+---- WCLK
-    mov x, y         side 0b10
-left1:
-    out pins, 1      side 0b00
-    jmp x--, left1   side 0b10
-    out pins, 1      side 0b01 ; Last bit of left has WCLK change per I2S spec
-
-    mov x, y         side 0b11
-right1:
-    out pins, 1      side 0b01
-    jmp x--, right1  side 0b11
-    out pins, 1      side 0b00 ; Last bit of right also has WCLK change
-    ; Loop back to beginning...
-
-
 .program pio_tdm_out
 .side_set 2   ; 0 = bclk, 1 = wclk
 ; The C code should place (number of bits - 1) in Y and update SHIFTCTRL
@@ -140,22 +117,6 @@ bitloop:
 
 lastbit:
     out pins, 1      side 0b10
-    ; Loop back to the beginning
-
-
-.program pio_tdm_out_swap
-.side_set 2   ; 0 = wclk, 1 = bclk
-; The C code should place (number of bits - 1) in Y and update SHIFTCTRL
-; to be 32 (as per the TDM specs)
-;                           +----- BCLK
-;                           |+---- WCLK
-    mov x, y         side 0b11
-bitloop:
-    out pins, 1      side 0b00
-    jmp x-- bitloop  side 0b10
-
-lastbit:
-    out pins, 1      side 0b01
     ; Loop back to the beginning
 
 
@@ -174,24 +135,6 @@ bitloop:
 lastbit:
     in pins, 1       side 0b10
     out pins, 1      side 0b10
-    ; Loop back to the beginning
-
-
-.program pio_tdm_inout_swap
-.side_set 2   ; 0 = bclk, 1 = wclk
-; The C code should place (number of bits * channels - 1) in Y and update SHIFTCTRL
-; to be 32 (as per the TDM specs)
-;                           +----- WCLK
-;                           |+---- BCLK
-    mov x, y         side 0b10 [1]
-bitloop:
-    out pins, 1      side 0b00      ; Output changes on falling edge
-    in pins, 1       side 0b00      ; Sample input on falling edge
-    jmp x-- bitloop  side 0b11 [1]  ; Last bit toggles WCLK to mark frame boundary
-
-lastbit:
-    in pins, 1       side 0b01
-    out pins, 1      side 0b01
     ; Loop back to the beginning
 
 
@@ -217,29 +160,6 @@ right1:
     ; Loop back to beginning...
 
 
-.program pio_lsbj_out_swap
-.side_set 2   ; 0 = wclk, 1=bclk
-
-; The C code should place (number of bits/sample - 2) in Y and
-; also update the SHIFTCTRL to be 24 or 32 as appropriate
-
-;                           +----- BCLK
-;                           |+---- WCLK
-    mov x, y         side 0b10
-left1:
-    out pins, 1      side 0b01
-    jmp x--, left1    side 0b11
-    out pins, 1      side 0b01
-
-    mov x, y         side 0b11
-right1:
-    out pins, 1      side 0b00
-    jmp x--, right1  side 0b10
-    out pins, 1      side 0b00
-    ; Loop back to beginning...
-
-
-    
 .program pio_i2s_in ; Note this is the same as _out, just "in" and not "out"
 .side_set 2   ; 0 = bclk, 1=wclk
 
@@ -262,29 +182,6 @@ right1:
     ; Loop back to beginning...
 
 
-.program pio_i2s_in_swap ; Note this is the same as _out, just "in" and not "out"
-.side_set 2   ; 0 = wclk, 1=bclk
-
-; The C code should place (number of bits/sample - 2) in Y and
-; also update the SHIFTCTRL to be 24 or 32 as appropriate
-
-;                           +----- BCLK
-;                           |+---- WCLK
-    mov x, y         side 0b00
-left1:
-    in pins, 1       side 0b10
-    jmp x--, left1   side 0b00
-    in pins, 1       side 0b10 ;2584 LRCK stays low until BCLK goes low
-
-    mov x, y         side 0b01
-right1:
-    in pins, 1       side 0b11
-    jmp x--, right1  side 0b01
-    in pins, 1       side 0b11 ; 2584 LRCK stays high until BCLK goes low
-    ; Loop back to beginning...
-
-
-    
 .program pio_i2s_inout
 .side_set 2   ; 0 = bclk, 1=wclk
 
@@ -311,76 +208,55 @@ right1:
     in pins, 1       side 0b01
 .wrap  ; Loop back to beginning...
 
-.program pio_i2s_inout_swap ; Note this is the same as _out, just "in" and not "out"
-.side_set 2   ; 0 = wclk, 1=bclk
-
-; The C code should place (number of bits/sample - 2) in Y and
-; also update the SHIFTCTRL to be 24 or 32 as appropriate
-
-;                           +----- BCLK
-;                           |+---- WCLK
-    in pins, 1       side 0b10 ; Adjust for input shift
-.wrap_target
-    mov x, y         side 0b10
-left1:
-    out pins, 1      side 0b00 [1]
-    in pins, 1       side 0b10
-    jmp x--, left1   side 0b10
-    out pins, 1      side 0b01 [1] ; Last bit of left has WCLK change per I2S spec
-    in pins, 1       side 0b11
-    mov x, y         side 0b11
-right1:
-    out pins, 1      side 0b01 [1]
-    in pins, 1       side 0b11
-    jmp x--, right1  side 0b11
-    out pins, 1      side 0b00 [1]; Last bit of right also has WCLK change
-    in pins, 1       side 0b10
-.wrap  ; Loop back to beginning...
-
-
 
 % c-sdk {
 
 static inline void pio_i2s_MCLK_program_init(PIO pio, uint sm, uint offset, uint MCLK_pin) {
     pio_gpio_init(pio, MCLK_pin);
     pio_sm_set_consecutive_pindirs(pio, sm, MCLK_pin, 1, true);
-    pio_sm_config sm_config = pio_i2s_mclk_program_get_default_config(offset);   
+    pio_sm_config sm_config = pio_i2s_mclk_program_get_default_config(offset);
     sm_config_set_set_pins(&sm_config, MCLK_pin, 1);
     pio_sm_init(pio, sm, offset, &sm_config);
 }
 
-static inline void pio_i2s_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
-    pio_gpio_init(pio, data_pin);
+#define I2S_INIT_PARAMS (PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, uint channels)
+#define I2S_INIT_PARAMS_VOID do { (void) data_in_pin; (void) data_out_pin; (void) clock_pin_base; (void) bits; (void) channels; } while (0)
+
+
+static inline void pio_i2s_out_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
+    pio_gpio_init(pio, data_out_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = swap ? pio_i2s_out_swap_program_get_default_config(offset) : pio_i2s_out_program_get_default_config(offset);
+    pio_sm_config sm_config = pio_i2s_out_program_get_default_config(offset);
 
-    sm_config_set_out_pins(&sm_config, data_pin, 1);
+    sm_config_set_out_pins(&sm_config, data_out_pin, 1);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
     sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
-    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, data_out_pin, 1);
     pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
 
 
-static inline void pio_i2s_out_slave_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
-    pio_gpio_init(pio, data_pin);
+static inline void pio_i2s_out_slave_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
+    pio_gpio_init(pio, data_out_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
     // 16-bits does a pull every L+R frame.  24/32 bits do a pull every L or R side
-    pio_sm_config sm_config = bits > 16 ? pio_i2s_out_slave_32_program_get_default_config(offset) : pio_i2s_out_slave_16_program_get_default_config(offset); //TBD swap ? pio_i2s_out_swap_program_get_default_config(offset) : pio_i2s_out_program_get_default_config(offset);
+    pio_sm_config sm_config = bits > 16 ? pio_i2s_out_slave_32_program_get_default_config(offset) : pio_i2s_out_slave_16_program_get_default_config(offset);
 
-    sm_config_set_out_pins(&sm_config, data_pin, 1);
+    sm_config_set_out_pins(&sm_config, data_out_pin, 1);
 
     sm_config_set_in_pins(&sm_config, clock_pin_base);
     sm_config_set_in_pin_count(&sm_config, 2); // BLCK and LRCLK
@@ -391,36 +267,36 @@ static inline void pio_i2s_out_slave_program_init(PIO pio, uint sm, uint offset,
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, false);
-    pio_sm_set_out_pins(pio, sm, data_pin, 1);
+    pio_sm_set_out_pins(pio, sm, data_out_pin, 1);
     pio_sm_set_in_pins(pio, sm, clock_pin_base);
 
     pio_sm_exec(pio, sm, pio_encode_set(pio_x, 0));
 }
 
 
-
-static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
-    pio_gpio_init(pio, data_pin);
+static inline void pio_tdm_out_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
+    pio_gpio_init(pio, data_out_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = swap ? pio_tdm_out_swap_program_get_default_config(offset) : pio_tdm_out_program_get_default_config(offset);
+    pio_sm_config sm_config = pio_tdm_out_program_get_default_config(offset);
 
-    sm_config_set_out_pins(&sm_config, data_pin, 1);
+    sm_config_set_out_pins(&sm_config, data_out_pin, 1);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
     sm_config_set_out_shift(&sm_config, false, true, 32);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //uint pin_mask = (1u << data_out_pin) | (3u << clock_pin_base);
     //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
     //pio_sm_set_pins(pio, sm, 0); // clear pins
-    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
-    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, data_out_pin, 1);
     pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
     // Can't set constant > 31, so push and pop/mov
@@ -431,13 +307,14 @@ static inline void pio_tdm_out_program_init(PIO pio, uint sm, uint offset, uint 
     pio_sm_exec(pio, sm, pio_encode_out(pio_osr, 32));
 }
 
-static inline void pio_tdm_inout_program_init(PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, bool swap, uint channels) {
+static inline void pio_tdm_inout_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
     pio_gpio_init(pio, data_in_pin);
     pio_gpio_init(pio, data_out_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config c = swap ? pio_tdm_inout_swap_program_get_default_config(offset) : pio_tdm_inout_program_get_default_config(offset);
+    pio_sm_config c = pio_tdm_inout_program_get_default_config(offset);
 
     sm_config_set_in_pins(&c, data_in_pin);
     sm_config_set_out_pins(&c, data_out_pin, 1);
@@ -468,39 +345,41 @@ static inline void pio_tdm_inout_program_init(PIO pio, uint sm, uint offset, uin
     pio_sm_exec(pio, sm, pio_encode_out(pio_osr, 32));
 }
 
-static inline void pio_lsbj_out_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
-    pio_gpio_init(pio, data_pin);
+static inline void pio_lsbj_out_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
+    pio_gpio_init(pio, data_out_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = swap ? pio_lsbj_out_swap_program_get_default_config(offset) : pio_lsbj_out_program_get_default_config(offset);
+    pio_sm_config sm_config = pio_lsbj_out_program_get_default_config(offset);
 
-    sm_config_set_out_pins(&sm_config, data_pin, 1);
+    sm_config_set_out_pins(&sm_config, data_out_pin, 1);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
     sm_config_set_out_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_TX);
 
     pio_sm_init(pio, sm, offset, &sm_config);
 
-    //uint pin_mask = (1u << data_pin) | (3u << clock_pin_base);
+    //uint pin_mask = (1u << data_out_pin) | (3u << clock_pin_base);
     //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
     //pio_sm_set_pins(pio, sm, 0); // clear pins
-    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, true);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_out_pin, 1, true);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
-    pio_sm_set_set_pins(pio, sm, data_pin, 1);
+    pio_sm_set_set_pins(pio, sm, data_out_pin, 1);
     pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
     pio_sm_exec(pio, sm, pio_encode_set(pio_y, bits - 2));
 }
 
-static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint data_pin, uint clock_pin_base, uint bits, bool swap) {
-    pio_gpio_init(pio, data_pin);
+static inline void pio_i2s_in_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
+    pio_gpio_init(pio, data_in_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = swap ? pio_i2s_in_swap_program_get_default_config(offset) : pio_i2s_in_program_get_default_config(offset);
+    pio_sm_config sm_config = pio_i2s_in_program_get_default_config(offset);
 
-    sm_config_set_in_pins(&sm_config, data_pin);
+    sm_config_set_in_pins(&sm_config, data_in_pin);
     sm_config_set_sideset_pins(&sm_config, clock_pin_base);
     sm_config_set_in_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
     sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_RX);
@@ -510,7 +389,7 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
     //uint pin_mask = 3u << clock_pin_base;
     //pio_sm_set_pindirs_with_mask(pio, sm, pin_mask, pin_mask);
     //pio_sm_set_pins(pio, sm, 0); // clear pins
-    pio_sm_set_consecutive_pindirs(pio, sm, data_pin, 1, false);
+    pio_sm_set_consecutive_pindirs(pio, sm, data_in_pin, 1, false);
     pio_sm_set_consecutive_pindirs(pio, sm, clock_pin_base, 2, true);
     pio_sm_set_set_pins(pio, sm, clock_pin_base, 2);
 
@@ -520,13 +399,14 @@ static inline void pio_i2s_in_program_init(PIO pio, uint sm, uint offset, uint d
     pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits - 1)); // Shift in 1st R data modulo one bit, avoiding bit shift from #2037
 }
 
-static inline void pio_i2s_inout_program_init(PIO pio, uint sm, uint offset, uint data_in_pin, uint data_out_pin, uint clock_pin_base, uint bits, bool swap) {
+static inline void pio_i2s_inout_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
     pio_gpio_init(pio, data_in_pin);
     pio_gpio_init(pio, data_out_pin);
     pio_gpio_init(pio, clock_pin_base);
     pio_gpio_init(pio, clock_pin_base + 1);
 
-    pio_sm_config sm_config = swap ? pio_i2s_inout_swap_program_get_default_config(offset) : pio_i2s_inout_program_get_default_config(offset);
+    pio_sm_config sm_config = pio_i2s_inout_program_get_default_config(offset);
 
     sm_config_set_in_pins(&sm_config, data_in_pin);
     sm_config_set_out_pins(&sm_config, data_out_pin, 1);
