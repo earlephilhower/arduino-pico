@@ -578,12 +578,21 @@ int HTTPClient::sendRequest(const char * type, const uint8_t * payload, size_t s
     int code;
     bool redirect = false;
     uint16_t redirectCount = 0;
+    String headers;
     do {
-        // wipe out any existing headers from previous request
+        // wipe out any existing response headers from previous request
         for (size_t i = 0; i < _headerKeysCount; i++) {
             if (_currentHeaders[i].value.length() > 0) {
                 _currentHeaders[i].value = "";
             }
+        }
+
+        // keep request headers for redirects
+        // fixes #3173
+        if (redirect) {
+            _headers = headers;
+        } else {
+            headers = _headers;
         }
 
         DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] type: '%s' redirCount: %d\n", type, redirectCount);
