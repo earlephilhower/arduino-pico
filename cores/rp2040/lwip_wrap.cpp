@@ -832,6 +832,7 @@ extern "C" {
         return __real_ethernet_input(p, netif);
     }
 
+#if defined(PICO_CYW43_SUPPORTED)
     int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
     int __wrap_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel) {
 #ifdef __FREERTOS
@@ -857,7 +858,7 @@ extern "C" {
 #endif
         return __real_cyw43_wifi_leave(self, itf);
     }
-
+#endif
 
 
     void lwip_callback(void (*cb)(void *), void *cbData, __callback_req *buffer) {

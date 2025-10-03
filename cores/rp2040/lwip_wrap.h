@@ -48,15 +48,6 @@ extern recursive_mutex_t __lwipMutex;
 class LWIPMutex {
 public:
     LWIPMutex() {
-        //        if (ethernet_arch_lwip_gpio_mask)  {
-        //            ethernet_arch_lwip_gpio_mask();
-        //        }
-        //#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
-        //        if (rp2040.isPicoW()) {
-        //            cyw43_arch_lwip_begin();
-        //            return;
-        //        }
-        //#endif
 #if !defined(__FREERTOS)
         if (ethernet_arch_lwip_begin) {
             ethernet_arch_lwip_begin();
@@ -67,24 +58,11 @@ public:
     }
 
     ~LWIPMutex() {
-#if !defined(__FREERTOS)
-        //#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
-        //        if (rp2040.isPicoW()) {
-        //            cyw43_arch_lwip_end();
-        //        } else {
-        //#endif
         if (ethernet_arch_lwip_end) {
             ethernet_arch_lwip_end();
         } else {
             recursive_mutex_exit(&__lwipMutex);
         }
-        //#if defined(ARDUINO_RASPBERRY_PI_PICO_W)
-        //        }
-        //#endif
-#endif
-        //        if (ethernet_arch_lwip_gpio_unmask) {
-        //            ethernet_arch_lwip_gpio_unmask();
-        //        }
     }
 };
 
@@ -167,8 +145,10 @@ typedef enum {
 
     __ethernet_input = 9000,
 
+#if defined(PICO_CYW43_SUPPORTED)
     __cyw43_wifi_join = 9500,
     __cyw43_wifi_leave,
+#endif
 
     __callback = 10000,
 } __lwip_op;
@@ -573,6 +553,7 @@ typedef struct {
     err_t *ret;
 } __ethernet_input_req;
 
+#if defined(PICO_CYW43_SUPPORTED)
 typedef struct {
     cyw43_t *self;
     size_t ssid_len;
@@ -590,6 +571,7 @@ typedef struct {
     int itf;
     int *ret;
 } __cyw43_wifi_leave_req;
+#endif
 
 // Run a callback in the LWIP thread (i.e. for Ethernet device polling and packet reception)
 // When in an interrupt, need to pass in a heap-allocated buffer

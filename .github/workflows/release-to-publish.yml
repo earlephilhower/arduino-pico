@@ -1,5 +1,10 @@
 name: Arduino-Pico Release Publisher
 
+permissions:
+  actions: read
+  contents: write
+  packages: write
+
 on:
   release:
     types: [published]

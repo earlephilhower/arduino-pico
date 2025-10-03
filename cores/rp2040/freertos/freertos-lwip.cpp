@@ -384,6 +384,7 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_ethernet_input(r->p, r->netif);
                 break;
             }
+#if defined(PICO_CYW43_SUPPORTED)
             case __cyw43_wifi_join: {
                 __cyw43_wifi_join_req *r = (__cyw43_wifi_join_req *)w.req;
                 *(r->ret) = __real_cyw43_wifi_join(r->self, r->ssid_len, r->ssid, r->key_len, r->key, r->auth_type, r->bssid, r->channel);
@@ -394,6 +395,7 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_cyw43_wifi_leave(r->self, r->itf);
                 break;
             }
+#endif
             case __callback: {
                 __callback_req *r = (__callback_req *)w.req;
                 r->cb(r->cbData);
