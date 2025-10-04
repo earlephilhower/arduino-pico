@@ -86,22 +86,12 @@ extern "C" void __wrap_cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
 }
 
-extern "C" int __wrap_cyw43_tcpip_link_status(cyw43_t *self, int itf) {
-    struct netif *netif = __getCYW43Netif();
-    //if ((CYW43::_netif->flags & (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP))
-    //  Fake this since it's only used in the SDK
-    if (netif && ((netif->flags & (NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_LINK_UP))) {
-        return CYW43_LINK_UP;
-    } else {
-        return cyw43_wifi_link_status(self, itf);
-    }
-}
-
 // CBs from the SDK, not needed here as we do TCP later in the game
 extern "C" void __wrap_cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
 }
+
 extern "C" void __wrap_cyw43_cb_tcpip_deinit(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
