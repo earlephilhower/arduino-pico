@@ -83,7 +83,7 @@ void SimpleMDNS::enableArduino(unsigned int port, bool passwd) {
         return;
     }
     SimpleMDNSService *svc = new SimpleMDNSService();
-    svc->_service = "arduino";
+    svc->_service = strdup("arduino");
     svc->_proto = DNSSD_PROTO_TCP;
     svc->_port = port;
     svc->_fn = _arduinoGetTxt;
@@ -140,7 +140,13 @@ void SimpleMDNS::end() {
         __setStateChangeCallback(nullptr);
         __setAddNetifCallback(nullptr);
         __setRemoveNetifCallback(nullptr);
-
+        for (auto svc : _svcMap) {
+            free(svc.second->_service);
+            delete svc.second;
+        }
+        _svcMap.clear();
+        free(_hostname);
+        _arduinoAdded = false;
     }
     _running = false;
 }
@@ -218,7 +224,5 @@ hMDNSTxt SimpleMDNS::addServiceTxt(const hMDNSService p_hService, const char* p_
     return addServiceTxt(p_hService, p_pcKey, (int32_t)p_i8Value);
 }
 
-
-const char *SimpleMDNS::_hostname = nullptr;
 
 SimpleMDNS MDNS;

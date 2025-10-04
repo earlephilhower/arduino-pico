@@ -34,7 +34,7 @@ public:
     static void callback(struct mdns_service *service, void *txt_userdata);
     hMDNSTxt add(const char *key, const char *val);
 
-    const char *_service;
+    char *_service;
     uint16_t _proto;
     uint16_t _port;
     service_get_txt_fn_t _fn;
@@ -80,8 +80,8 @@ private:
 
     bool _running = false;
     bool _lwipMSNDInitted = false;
-    static const char *_hostname;
-    std::map<std::string, SimpleMDNSService*> _svcMap;
+    char *_hostname;
+    std::map<const char *, SimpleMDNSService*> _svcMap;
     bool _arduinoAdded = false;
 
     // LwipIntfDev helpers when netifs come up and down, to ensure we set the old services on the new netif
