@@ -72,7 +72,6 @@ public:
 
     void registerCore() {
 #ifndef __FREERTOS
-        multicore_doorbell_clear_current_core(_doorbell);
         uint32_t irq = multicore_doorbell_irq_num(_doorbell);
         irq_add_shared_handler(irq, _irq, 128);
         irq_set_enabled(irq, true);
