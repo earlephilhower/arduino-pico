@@ -22,7 +22,7 @@
 #include "pico/cyw43_driver.h"
 
 extern "C" void initVariant() {
-    static uint cyw43_pin_array[CYW43_PIN_INDEX_WL_COUNT] = {24, 38, 38, 38, 37, 36};
+    static uint cyw43_pin_array[CYW43_PIN_INDEX_WL_COUNT] = {23, 24, 24, 24, 29, 25};
     cyw43_set_pins_wl(cyw43_pin_array);
     init_cyw43_wifi();
 }
