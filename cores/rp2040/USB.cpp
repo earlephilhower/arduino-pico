@@ -91,11 +91,12 @@ void USBClass::unregisterEndpointOut(int ep) {
     _endpointOut |= (1 << (ep - 0x80));
 }
 
-uint8_t USBClass::addEntry(Entry **head, int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
+uint8_t USBClass::addEntry(Entry **head, int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), const void *param, size_t len, int ordering, uint32_t vidMask) {
     static uint8_t id = 1;
 
     Entry *n = (Entry *)malloc(sizeof(Entry));
-    n->descriptor = descriptor;
+    n->cb = cb;
+    n->param = param;
     n->len = len;
     n->interfaces = interfaces;
     n->order = ordering;
@@ -163,7 +164,7 @@ uint8_t USBClass::findInterfaceID(unsigned int localid) {
 
 // Called by a HID device to register a report.  Returns the *local* ID which must be mapped to the HID report ID
 uint8_t USBClass::registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
-    return addEntry(&_hids, 0, descriptor, len, ordering, vidMask);
+    return addEntry(&_hids, 0, nullptr, (const void *)descriptor, len, ordering, vidMask);
 }
 
 void USBClass::unregisterHIDDevice(unsigned int localid) {
@@ -171,8 +172,8 @@ void USBClass::unregisterHIDDevice(unsigned int localid) {
 }
 
 // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
-uint8_t USBClass::registerInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
-    return addEntry(&_interfaces, interfaces, descriptor, len, ordering, vidMask);
+uint8_t USBClass::registerInterface(int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *), void *param, size_t len, int ordering, uint32_t vidMask) {
+    return addEntry(&_interfaces, interfaces, cb, param, len, ordering, vidMask);
 }
 
 void USBClass::unregisterInterface(unsigned int localid) {
@@ -293,7 +294,7 @@ void USBClass::setupDescHIDReport() {
     uint8_t id = 1;
     h = _hids;
     while (h) {
-        memcpy(p, h->descriptor, h->len);
+        memcpy(p, h->param, h->len);
         // Need to update the report ID, a 2-byte value
         char buff[] = { HID_REPORT_ID(id) };
         memcpy(p + 6, buff, sizeof(buff));
@@ -340,12 +341,12 @@ void USBClass::setupUSBDescriptor() {
             // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
             TUD_HID_DESCRIPTOR(1 /* placeholder*/, 0, HID_ITF_PROTOCOL_NONE, hid_report_len, _hid_endpoint = USB.registerEndpointIn(), CFG_TUD_HID_EP_BUFSIZE, (uint8_t)usb_hid_poll_interval)
         };
-        _hid_interface = USB.registerInterface(1, hid_desc, sizeof(hid_desc), 10, 0);
+        _hid_interface = USB.registerInterface(1, simpleInterface, hid_desc, sizeof(hid_desc), 10, 0);
     }
 
 #ifdef ENABLE_PICOTOOL_USB
     uint8_t picotool_desc[] = { TUD_RPI_RESET_DESCRIPTOR(1, USB.registerString("Reset")) };
-    _picotool_itf_num = USB.registerInterface(1, picotool_desc, sizeof(picotool_desc), 100, 0);
+    _picotool_itf_num = USB.registerInterface(1, simpleInterface, picotool_desc, sizeof(picotool_desc), 100, 0);
 #endif
 
     usbd_desc_cfg_len = TUD_CONFIG_DESC_LEN; // Always have a config descriptor
@@ -361,19 +362,18 @@ void USBClass::setupUSBDescriptor() {
         TUD_CONFIG_DESCRIPTOR(1, interface_count, USB.registerString(""), usbd_desc_cfg_len, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, USBD_MAX_POWER_MA)
     };
 
-    // Allocate the "real" HID report descriptor
+    // Allocate the "real" report descriptor
     usbd_desc_cfg = (uint8_t *)malloc(usbd_desc_cfg_len);
     bzero(usbd_desc_cfg, usbd_desc_cfg_len);
 
-    // Now copy the descriptors
+    // Now copy the interface descriptors
     h = _interfaces;
     uint8_t *p = usbd_desc_cfg;
     memcpy(p, tud_cfg_desc, sizeof(tud_cfg_desc));
     p += sizeof(tud_cfg_desc);
     int id = 0;
     while (h) {
-        memcpy(p, h->descriptor, h->len);
-        p[2] = id; // Set the interface
+        h->cb(id, p, h->len, (void *)h->param);
         p += h->len;
         id += h->interfaces;
         h = h->next;

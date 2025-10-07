@@ -61,7 +61,7 @@ bool SingleFileDrive::begin(const char *localFile, const char *dosFile) {
     _epIn = USB.registerEndpointIn();
     _epOut = USB.registerEndpointOut();
     static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, USBD_MSC_EPSIZE) };
-    _id = USB.registerInterface(2, msd_desc, sizeof(msd_desc), 2, 0);
+    _id = USB.registerInterface(1, USBClass::simpleInterface, msd_desc, sizeof(msd_desc), 2, 0);
     USB.connect();
     _localFile = strdup(localFile);
     _dosFile = strdup(dosFile);

@@ -57,11 +57,16 @@ public:
     void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts);
     void tud_cdc_line_coding_cb(uint8_t itf, void const *p_line_coding); // Can't use cdc_line_coding_t const* p_line_coding, TinyUSB and BTStack conflict when we include tusb.h + BTStack.h
 
+    // USB interface descriptor CB
+    void interfaceCB(int itf, uint8_t *dst, int len);
+
 private:
     bool _running = false;
     uint8_t _id;
     uint8_t _epIn;
     uint8_t _epOut;
+    uint8_t _epIn2;
+    uint8_t _strID;
 
     typedef struct {
         unsigned int rebooting : 1;
@@ -73,6 +78,10 @@ private:
     SyntheticState _ss = { 0, 0, 0, 0, 115200};
 
     void checkSerialReset();
+
+    static void _cb(int itf, uint8_t *dst, int len, void *param) {
+        ((SerialUSB *)param)->interfaceCB(itf, dst, len);
+    }
 };
 
 extern SerialUSB Serial;
