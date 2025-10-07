@@ -80,7 +80,6 @@ void SerialUSB::end() {
         _running = false;
         USB.connect();
     }
-
 }
 
 int SerialUSB::peek() {
