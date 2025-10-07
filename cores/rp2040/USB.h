@@ -39,7 +39,7 @@ public:
     void unregisterHIDDevice(unsigned int localid);
 
     // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
-    uint8_t registerInterface(int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+    uint8_t registerInterface(int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), void *param, size_t len, int ordering, uint32_t vidMask);
 
     // Remove a USB interface from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
     void unregisterInterface(unsigned int localid);
@@ -94,6 +94,12 @@ public:
     uint8_t usbTaskIRQ;
 #endif
 
+    // Simple 1-interface updated for "easy" interfaces like Picotool or HIF
+    static void simpleInterface(int itf, uint8_t *dst, int len, void *data) {
+        memcpy(dst, data, len);
+        dst[2] = itf; // Set the interface
+    }
+
 private:
     // We can't use non-trivial variables to hold the hid, interface, or string lists.  The global
     // initialization where things like the global Keyboard may be called before the non-trivial
@@ -101,7 +107,8 @@ private:
 
     // Either a USB interface or HID device descriptor, kept in a linked list
     typedef struct Entry {
-        const uint8_t *descriptor;
+        void (*cb)(int itf, uint8_t *dst, int len, void *data); // unused for HID, only the report ID needs updating and we can do that inline
+        const void *param; // CB param or HID descriptor
         unsigned int len        : 12;
         unsigned int interfaces : 4;
         unsigned int order      : 18;
@@ -111,7 +118,7 @@ private:
     } Entry;
 
     // Add or remove Entry in a linked list, keeping things ordered by ordering
-    uint8_t addEntry(Entry **head, int interfaces, const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+    uint8_t addEntry(Entry **head, int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), const void *param, size_t len, int ordering, uint32_t vidMask);
     void removeEntry(Entry **head, unsigned int localid);
 
     // Find the index (HID report ID or USB interface) of a given localid
@@ -124,7 +131,6 @@ private:
     // Gets a pointer to the HID report structure, optionally returning the size in len
     uint8_t *getDescHIDReport(int *len);
 
-private:
     Entry *_hids = nullptr;
     Entry *_interfaces = nullptr;
 

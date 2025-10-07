@@ -39,6 +39,7 @@ extern void serialEvent() __attribute__((weak));
 #define USBD_CDC_IN_OUT_MAX_SIZE (64)
 
 
+
 SerialUSB::SerialUSB() {
 }
 
@@ -50,16 +51,25 @@ void SerialUSB::begin(unsigned long baud) {
     }
 
     USB.disconnect();
-    static uint8_t cdc_desc[TUD_CDC_DESC_LEN] = {
-        // Interface number, string index, protocol, report descriptor len, EP In & Out address, size & polling interval
-        TUD_CDC_DESCRIPTOR(0 /* placeholder*/, USB.registerString("Pico Serial"), _epIn = USB.registerEndpointIn(), USBD_CDC_CMD_MAX_SIZE, _epOut = USB.registerEndpointOut(), USB.registerEndpointIn(), USBD_CDC_IN_OUT_MAX_SIZE)
-    };
 
-    _id = USB.registerInterface(2, cdc_desc, sizeof(cdc_desc), 1, 0);
+    _epIn = USB.registerEndpointIn();
+    _epOut = USB.registerEndpointOut();
+    _epIn2 = USB.registerEndpointIn();
+    _strID = USB.registerString("Pico Serial");
+
+    _id = USB.registerInterface(2, _cb, (void *)this, TUD_CDC_DESC_LEN, 1, 0);
 
     USB.connect();
     _running = true;
 }
+
+// Need to define here so we don't have to include tusb.h in global header (causes problemw w/BT redefining things)
+void SerialUSB::interfaceCB(int itf, uint8_t *dst, int len) {
+    uint8_t desc[TUD_CDC_DESC_LEN] = {
+        TUD_CDC_DESCRIPTOR((uint8_t)itf, _strID, _epIn, USBD_CDC_CMD_MAX_SIZE, _epOut, _epIn2, USBD_CDC_IN_OUT_MAX_SIZE)
+    };
+    memcpy(dst, desc, len);
+};
 
 void SerialUSB::end() {
     if (_running) {
