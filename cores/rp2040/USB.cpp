@@ -62,7 +62,6 @@ USBClass USB;
 uint8_t _picotool_itf_num;
 #endif
 
-
 int usb_hid_poll_interval __attribute__((weak)) = 10;
 
 uint8_t USBClass::registerEndpointIn() {
@@ -91,7 +90,7 @@ void USBClass::unregisterEndpointOut(int ep) {
     _endpointOut |= (1 << (ep - 0x80));
 }
 
-uint8_t USBClass::addEntry(Entry **head, int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), const void *param, size_t len, int ordering, uint32_t vidMask) {
+uint8_t USBClass::addEntry(Entry **head, int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), const void *param, size_t len, int ordering, uint32_t pidMask) {
     static uint8_t id = 1;
 
     Entry *n = (Entry *)malloc(sizeof(Entry));
@@ -101,7 +100,7 @@ uint8_t USBClass::addEntry(Entry **head, int interfaces, void (*cb)(int itf, uin
     n->interfaces = interfaces;
     n->order = ordering;
     n->localid = id++;
-    n->mask = vidMask;
+    n->mask = pidMask;
     n->next = nullptr;
 
     // Go down list until we hit the end or an entry with ordering >= our level
@@ -163,8 +162,8 @@ uint8_t USBClass::findInterfaceID(unsigned int localid) {
 }
 
 // Called by a HID device to register a report.  Returns the *local* ID which must be mapped to the HID report ID
-uint8_t USBClass::registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask) {
-    return addEntry(&_hids, 0, nullptr, (const void *)descriptor, len, ordering, vidMask);
+uint8_t USBClass::registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t pidMask) {
+    return addEntry(&_hids, 0, nullptr, (const void *)descriptor, len, ordering, pidMask);
 }
 
 void USBClass::unregisterHIDDevice(unsigned int localid) {
@@ -172,8 +171,8 @@ void USBClass::unregisterHIDDevice(unsigned int localid) {
 }
 
 // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
-uint8_t USBClass::registerInterface(int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *), void *param, size_t len, int ordering, uint32_t vidMask) {
-    return addEntry(&_interfaces, interfaces, cb, param, len, ordering, vidMask);
+uint8_t USBClass::registerInterface(int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *), void *param, size_t len, int ordering, uint32_t pidMask) {
+    return addEntry(&_interfaces, interfaces, cb, param, len, ordering, pidMask);
 }
 
 void USBClass::unregisterInterface(unsigned int localid) {

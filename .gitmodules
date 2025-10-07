@@ -52,3 +52,6 @@
 [submodule "FreeRTOS-Kernel"]
 	path = FreeRTOS-Kernel
 	url = https://github.com/earlephilhower/FreeRTOS-Kernel.git
+[submodule "libraries/MIDIUSB"]
+	path = libraries/MIDIUSB
+	url = https://github.com/earlephilhower/MIDIUSB.git

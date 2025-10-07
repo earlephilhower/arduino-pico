@@ -31,15 +31,15 @@ public:
     USBClass() { }
 
     // Called by an object at global init time to register a HID device, returns a localID to be mapped using findHIDReportID
-    // vidMask is the bits in the VID that should be XOR'd when this device is present.
+    // pidMask is the bits in the PID that should be XOR'd when this device is present.
     // 0 means don't invert anything, OTW select a single bitmask 1<<n.
-    uint8_t registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t vidMask);
+    uint8_t registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t pidMask);
 
     // Remove a HID device from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
     void unregisterHIDDevice(unsigned int localid);
 
     // Called by an object at global init time to add a new interface (non-HID, like CDC or Picotool)
-    uint8_t registerInterface(int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), void *param, size_t len, int ordering, uint32_t vidMask);
+    uint8_t registerInterface(int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), void *param, size_t len, int ordering, uint32_t pidMask);
 
     // Remove a USB interface from the USB descriptor.  Only call after usbDisconnect or results could be unpredictable!
     void unregisterInterface(unsigned int localid);
@@ -118,7 +118,7 @@ private:
     } Entry;
 
     // Add or remove Entry in a linked list, keeping things ordered by ordering
-    uint8_t addEntry(Entry **head, int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), const void *param, size_t len, int ordering, uint32_t vidMask);
+    uint8_t addEntry(Entry **head, int interfaces, void (*cb)(int itf, uint8_t *dst, int len, void *param), const void *param, size_t len, int ordering, uint32_t pidMask);
     void removeEntry(Entry **head, unsigned int localid);
 
     // Find the index (HID report ID or USB interface) of a given localid
