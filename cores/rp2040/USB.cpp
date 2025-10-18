@@ -163,7 +163,7 @@ uint8_t USBClass::findInterfaceID(unsigned int localid) {
 
 // Called by a HID device to register a report.  Returns the *local* ID which must be mapped to the HID report ID
 uint8_t USBClass::registerHIDDevice(const uint8_t *descriptor, size_t len, int ordering, uint32_t pidMask) {
-    return addEntry(&_hids, 0, nullptr, (const void *)descriptor, len, ordering, pidMask);
+    return addEntry(&_hids, 1, nullptr, (const void *)descriptor, len, ordering, pidMask);
 }
 
 void USBClass::unregisterHIDDevice(unsigned int localid) {
