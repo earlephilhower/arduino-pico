@@ -350,6 +350,8 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     lwip_init();
     __startEthernetContext();
 
+    memset(&_netif, 0, sizeof(_netif));
+
     if (RawDev::needsSPI()) {
         _spiUnit.begin();
         // Set SPI clocks/etc. per request, doesn't seem to be direct way other than a fake transaction
@@ -390,8 +392,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
     _netif.hostname = wifi_station_hostname;
 
-    if (!netif_add(&_netif, ip_2_ip4(&ip_addr), ip_2_ip4(&netmask), ip_2_ip4(&gw), this,
-                   netif_init_s, ethernet_input)) {
+    if (!netif_add(&_netif, ip_2_ip4(&ip_addr), ip_2_ip4(&netmask), ip_2_ip4(&gw), this, netif_init_s, ethernet_input)) {
         return false;
     }
 
@@ -410,15 +411,10 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 
         // Start a new DHCP request
         _netif.flags |= NETIF_FLAG_UP;
-        switch (dhcp_start(&_netif)) {
-        case ERR_OK:
-            break;
-
-        case ERR_IF:
-            netif_remove(&_netif);
-            return false;
-
-        default:
+        if (dhcp_start(&_netif) != ERR_OK) {
+            if (_intrPin < 0) {
+                __removeEthernetPacketHandler(_phID);
+            }
             netif_remove(&_netif);
             return false;
         }
@@ -465,6 +461,9 @@ extern std::function<void(struct netif *)> _removeNetifCB;
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
     if (_started) {
+        if (_isDHCP) {
+            dhcp_stop(&_netif);
+        }
         if (_intrPin < 0) {
             __removeEthernetPacketHandler(_phID);
         } else {
