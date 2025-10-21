@@ -463,6 +463,7 @@ void LwipIntfDev<RawDev>::end() {
     if (_started) {
         if (_isDHCP) {
             dhcp_stop(&_netif);
+            dhcp_cleanup(&_netif);
         }
         if (_intrPin < 0) {
             __removeEthernetPacketHandler(_phID);
