@@ -58,7 +58,6 @@ static async_context_t *_context = nullptr;
 
 bool __ethernetContextInitted = false;
 
-
 // Theoretically support multiple interfaces
 static std::map<int, std::function<void(void)>> _handlePacketList;
 

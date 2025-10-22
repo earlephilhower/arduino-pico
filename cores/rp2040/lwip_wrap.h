@@ -38,6 +38,10 @@ extern void ethernet_arch_lwip_gpio_unmask() __attribute__((weak));
 //auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 extern recursive_mutex_t __lwipMutex;
 
+// When we have a GPIO IRQ for packet reception, the IntfDev will check if we're already doing lwip.
+// If so, it'll disable the IRQ and flag that we need to re-enable it as soon as the current LWIP call ends
+extern volatile int __inLWIP;
+extern volatile bool __needsIRQEN;
 
 // LWIPMutex is a no-op under FreeRTOS because we wrap all calls and just send a request message to
 // the LWIP task.  No locking needed, many people can call LWIP in parallel but the messages will be
@@ -49,6 +53,7 @@ class LWIPMutex {
 public:
     LWIPMutex() {
 #if !defined(__FREERTOS)
+        __inLWIP++;
         if (ethernet_arch_lwip_begin) {
             ethernet_arch_lwip_begin();
         } else {
@@ -63,6 +68,11 @@ public:
             ethernet_arch_lwip_end();
         } else {
             recursive_mutex_exit(&__lwipMutex);
+        }
+        __inLWIP--;
+        if (__needsIRQEN && !__inLWIP) {
+            __needsIRQEN = false;
+            ethernet_arch_lwip_gpio_unmask();
         }
 #endif
     }

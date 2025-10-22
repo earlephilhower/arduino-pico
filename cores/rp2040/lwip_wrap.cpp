@@ -39,6 +39,11 @@
 //auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
 recursive_mutex_t __lwipMutex;
 
+// When we have a GPIO IRQ for packet reception, the IntfDev will check if we're already doing lwip.
+// If so, it'll disable the IRQ and flag that we need to re-enable it as soon as the current LWIP call ends
+volatile int __inLWIP = 0;
+volatile bool __needsIRQEN = false;
+
 extern "C" {
 
     extern void __lwip(__lwip_op op, void *req, bool fromISR = false);

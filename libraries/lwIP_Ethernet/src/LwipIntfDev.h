@@ -75,7 +75,6 @@ enum EthernetLinkStatus {
 
 #include <lwip_wrap.h>
 
-
 template<class RawDev>
 class LwipIntfDev: public LwipIntf, public RawDev {
 public:
@@ -496,6 +495,10 @@ template<class RawDev>
 void LwipIntfDev<RawDev>::_irq(void *param) {
     LwipIntfDev *d = static_cast<LwipIntfDev*>(param);
     ethernet_arch_lwip_gpio_mask(); // Disable other IRQs until we're done processing this one
+    if (__inLWIP) {
+        __needsIRQEN = true;
+        return; // We'll get this same IRQ once the current LWIP call is done
+    }
     lwip_callback(_lwipCallback, param, &d->_irqBuffer);
 }
 
