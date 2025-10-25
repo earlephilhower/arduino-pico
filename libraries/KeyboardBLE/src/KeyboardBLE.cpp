@@ -40,13 +40,14 @@ uint8_t *desc_keyboardBLE;
 uint16_t desc_keyboardBLE_length;
 
 void KeyboardBLE_::begin(const char *localName, const char *hidName, const uint8_t *layout) {
+    HID_Keyboard::begin(layout);
+
     if (!localName) {
         localName = "PicoW BLE Keyboard";
     }
     if (!hidName) {
         hidName = localName;
     }
-    _asciimap = layout;
 
     __SetupHIDreportmap(__BLEInstallMouse, __BLEInstallKeyboard, __BLEInstallJoystick, false, &desc_keyboardBLE_length, &desc_keyboardBLE);
 
