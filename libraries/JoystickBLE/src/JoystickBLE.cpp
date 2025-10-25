@@ -43,6 +43,8 @@ uint8_t *desc_joystickBLE;
 uint16_t desc_joystickBLE_length;
 
 void JoystickBLE_::begin(const char *localName, const char *hidName) {
+    HID_Joystick::begin();
+
     if (!localName) {
         localName = "PicoW BLE Joystick";
     }

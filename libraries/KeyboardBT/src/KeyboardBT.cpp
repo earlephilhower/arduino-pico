@@ -49,13 +49,16 @@ static void _hidReportCB(uint16_t cid, hid_report_type_t report_type, uint16_t r
 }
 
 void KeyboardBT_::begin(const char *localName, const char *hidName, const uint8_t *layout) {
+    HID_Keyboard::begin(layout);
+
     if (!localName) {
         localName = "PicoW BT Keyboard";
     }
     if (!hidName) {
         hidName = localName;
     }
-    _asciimap = layout;
+
+
     // Required because the hid_report_type_t overlap in BTStack and TUSB
     auto *fcn = (void (*)(short unsigned int, hid_report_type_t_bt, short unsigned int, int, unsigned char*))_hidReportCB;
     hid_device_register_report_data_callback(fcn);
