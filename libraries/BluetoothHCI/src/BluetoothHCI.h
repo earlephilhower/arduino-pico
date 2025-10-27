@@ -49,6 +49,10 @@ public:
 
     void scanFree(); // Free allocated scan buffers
 
+    bool connected() {
+        return _hciConn != HCI_CON_HANDLE_INVALID;
+    }
+
     friend class BluetoothHIDMaster;
 
 protected:
