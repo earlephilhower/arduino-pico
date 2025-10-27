@@ -349,8 +349,6 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
     lwip_init();
     __startEthernetContext();
 
-    memset(&_netif, 0, sizeof(_netif));
-
     if (RawDev::needsSPI()) {
         _spiUnit.begin();
         // Set SPI clocks/etc. per request, doesn't seem to be direct way other than a fake transaction
