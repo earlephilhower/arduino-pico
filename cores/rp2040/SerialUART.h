@@ -65,7 +65,7 @@ public:
     bool setPollingMode(bool mode = true);
 
     void begin(unsigned long baud = 115200) override {
-        return begin(baud, SERIAL_8N1);
+        begin(baud, SERIAL_8N1);
     };
     void begin(unsigned long baud, uint16_t config) override;
     void end() override;
