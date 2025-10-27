@@ -94,8 +94,8 @@ public:
     bool getBreakReceived();
 
     // Returns the baud rate the uart is actually operating at vs the desired baud rate specified to begin()
-    int getAcheivedBaud() {
-        return _achievedBaud;
+    int getActualBaud() {
+        return _running ? _actualBaud : 0;
     }
 
 private:
@@ -105,7 +105,7 @@ private:
     pin_size_t _rts, _cts;
     gpio_function_t _fcnTx, _fcnRx, _fcnRts, _fcnCts;
     int _baud;
-    int _achievedBaud;
+    int _actualBaud;
     mutex_t _mutex;
     bool _polling = false;
     bool _overflow;

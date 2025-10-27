@@ -239,7 +239,7 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         gpio_set_inover(_cts, _invertControl ? 1 : 0);
     }
 
-    _achievedBaud = uart_init(_uart, baud);
+    _actualBaud = uart_init(_uart, baud);
     int bits, stop;
     uart_parity_t parity;
     switch (config & SERIAL_PARITY_MASK) {
