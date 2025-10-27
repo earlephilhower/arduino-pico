@@ -64,10 +64,10 @@ public:
     bool setFIFOSize(size_t size);
     bool setPollingMode(bool mode = true);
 
-    void begin(unsigned long baud = 115200) override {
-        begin(baud, SERIAL_8N1);
+    int begin(unsigned long baud = 115200) override {
+        return begin(baud, SERIAL_8N1);
     };
-    void begin(unsigned long baud, uint16_t config) override;
+    int begin(unsigned long baud, uint16_t config) override;
     void end() override;
 
     virtual int peek() override;
