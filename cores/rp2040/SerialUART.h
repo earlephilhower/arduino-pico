@@ -64,10 +64,10 @@ public:
     bool setFIFOSize(size_t size);
     bool setPollingMode(bool mode = true);
 
-    int begin(unsigned long baud = 115200) override {
+    void begin(unsigned long baud = 115200) override {
         return begin(baud, SERIAL_8N1);
     };
-    int begin(unsigned long baud, uint16_t config) override;
+    void begin(unsigned long baud, uint16_t config) override;
     void end() override;
 
     virtual int peek() override;
@@ -93,6 +93,11 @@ public:
     // on read)
     bool getBreakReceived();
 
+    // Returns the baud rate the uart is actually operating at vs the desired baud rate specified to begin()
+    int getAcheivedBaud() {
+        return _achievedBaud;
+    }
+
 private:
     bool _running = false;
     uart_inst_t *_uart;
@@ -100,6 +105,7 @@ private:
     pin_size_t _rts, _cts;
     gpio_function_t _fcnTx, _fcnRx, _fcnRts, _fcnCts;
     int _baud;
+    int _achievedBaud;
     mutex_t _mutex;
     bool _polling = false;
     bool _overflow;
