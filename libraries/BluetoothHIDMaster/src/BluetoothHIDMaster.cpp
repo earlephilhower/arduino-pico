@@ -225,7 +225,22 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
     }
     uint8_t a[6];
     memcpy(a, addr, sizeof(a));
-    return ERROR_CODE_SUCCESS == gap_connect(a, (bd_addr_type_t)addrType);
+    if (ERROR_CODE_SUCCESS != gap_connect(a, (bd_addr_type_t)addrType)) {
+        return false;
+    }
+    // GAP connection running async.  Wait for HCI connect
+    uint32_t now = millis();
+    while (millis() - now < 5000) {
+        if (_hci.connected()) {
+            break;
+        }
+        delay(25);
+    }
+    if (!_hci.connected()) {
+        gap_connect_cancel();
+        return false;
+    }
+    return _hci.connected();
 }
 
 bool BluetoothHIDMaster::connectBLE() {
