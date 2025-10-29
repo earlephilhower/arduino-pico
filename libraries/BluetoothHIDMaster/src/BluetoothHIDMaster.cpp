@@ -231,12 +231,12 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
     // GAP connection running async.  Wait for HCI connect
     uint32_t now = millis();
     while (millis() - now < 5000) {
-        if (_hci.connected()) {
+        if (_hid_host_descriptor_available) {
             break;
         }
         delay(25);
     }
-    if (!_hci.connected()) {
+    if (!_hid_host_descriptor_available) {
         gap_connect_cancel();
         return false;
     }
