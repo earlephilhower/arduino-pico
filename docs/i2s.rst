@@ -39,8 +39,11 @@ any input or output can happen.
 bool setSlave()
 ~~~~~~~~~~~~~~~
 Enables slave mode.  BCLK and LRCLK are inputs and used to control the
-timing of the DOUT output.  Only normal I2S output mode is supported in
-slave mode.
+timing of the DOUT output.  Only normal I2S output and input modes are
+supported in slave mode.
+
+In I2S in slave mode, the clock pins and swapClocks are ignored.  The pins
+must be consecutive starting with DIN, then BCLK, then LRCLK.
 
 bool setBCLK(pin_size_t pin)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -332,6 +332,10 @@ bool I2S::begin() {
         pgm = &pio_i2s_out_program;
         init = pio_i2s_out_program_init;
         break;
+    case _SLAVE + _INPUT:
+        pgm = &pio_i2s_in_slave_program;
+        init = pio_i2s_in_slave_program_init;
+        break;
     case _INPUT:
         pgm = &pio_i2s_in_program;
         init = pio_i2s_in_program_init;
