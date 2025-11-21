@@ -182,6 +182,34 @@ right1:
     ; Loop back to beginning...
 
 
+.program pio_i2s_in_slave
+; The C code should update SHIFTCTRL to be 24 or 32 (for 16- and 32- bit mode)
+
+; IN 0 = DIN
+; IN 1 = BCLK
+; IN 2 = LRCLK
+
+waitfirstbit:
+    wait 0 pin 1
+    wait 1 pin 1
+    jmp pin waitfirstbit; LRCLK==1, so this is right channel...wait for left
+
+.wrap_target
+readleft:
+    wait 0 pin 1
+    wait 1 pin 1
+    in pins, 1  ; read din on rising edge
+    jmp pin readright
+    jmp readleft
+
+readright:
+    wait 0 pin 1
+    wait 1 pin 1
+    in pins, 1
+    jmp pin readright
+.wrap
+
+
 .program pio_i2s_inout
 .side_set 2   ; 0 = bclk, 1=wclk
 
@@ -398,6 +426,28 @@ static inline void pio_i2s_in_program_init I2S_INIT_PARAMS {
     pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits)); // Shift in 1st L data
     pio_sm_exec(pio, sm, pio_encode_in(pio_pins, bits - 1)); // Shift in 1st R data modulo one bit, avoiding bit shift from #2037
 }
+
+static inline void pio_i2s_in_slave_program_init I2S_INIT_PARAMS {
+    I2S_INIT_PARAMS_VOID;
+    // Note that the CLOCK_BASE pin is ignored.  It's DIN, BCLK, LRCLK consecutive due to PIO limitations
+    pio_gpio_init(pio, data_in_pin);
+    pio_gpio_init(pio, data_in_pin + 1);
+    pio_gpio_init(pio, data_in_pin + 2);
+
+    pio_sm_config sm_config = pio_i2s_in_slave_program_get_default_config(offset);
+
+    sm_config_set_in_pins(&sm_config, data_in_pin);
+    sm_config_set_in_pin_count(&sm_config, 3);
+    sm_config_set_in_shift(&sm_config, false, true, (bits <= 16) ? 2 * bits : bits);
+    sm_config_set_fifo_join(&sm_config, PIO_FIFO_JOIN_RX);
+    sm_config_set_jmp_pin(&sm_config, data_in_pin + 2);
+
+    pio_sm_init(pio, sm, offset, &sm_config);
+
+    pio_sm_set_consecutive_pindirs(pio, sm, data_in_pin, 3, false);
+}
+
+
 
 static inline void pio_i2s_inout_program_init I2S_INIT_PARAMS {
     I2S_INIT_PARAMS_VOID;
