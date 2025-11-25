@@ -118,7 +118,7 @@ setTLSConnectTimeout(int connectTimeout)
 
 Because the Pico doesn't have any cryptographic acceleration, TLS connections can take up to 10 or 15 seconds to complete whereas the default `Stream` and `WiFiClent` timeout is only 5 seconds.  To allow for this large difference, the timeout used for a `WiFiClientSecure::connect()` call is different from that used for a normal read or write (or normal `WiFiClient::connect()` call).
 
-By default, the connection phase of a TLS `WiFiClientSecure::connect()` is set to 15 seconds (all other read/writes use the value set with `setTimeout`).  If your application needs to reduce this connection timoeut, simply call:
+By default, the connection phase of a TLS `WiFiClientSecure::connect()` is set to 15 seconds (all other read/writes use the value set with `setTimeout`).  If your application needs to reduce this connection timeout, simply call:
 
 .. code :: cpp
 
