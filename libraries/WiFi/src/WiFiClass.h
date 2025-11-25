@@ -416,6 +416,7 @@ public:
     int ping(IPAddress host, uint8_t ttl = 128);
 
     void setTimeout(unsigned long timeout);
+    void setTLSConnectTimeout(unsigned long timeout);
 
     void setFeedWatchdogFunc(FeedHostProcessorWatchdogFuncPointer func);
     void feedWatchdog();
@@ -434,6 +435,7 @@ private:
     bool _beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid = nullptr);
 
     int _timeout = 15000;
+    int _tlsTimeout = 15000;
     String _ssid;
     uint8_t _bssid[6];
     String _password;

@@ -113,6 +113,19 @@ Limiting TLS(SSL) Versions
 
 By default, BearSSL will connect with TLS 1.0, TLS 1.1, or TLS 1.2 protocols (depending on the request of the remote side).  If you want to limit to a subset, use the following call:
 
+setTLSConnectTimeout(int connectTimeout)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Because the Pico doesn't have any cryptographic acceleration, TLS connections can take up to 10 or 15 seconds to complete whereas the default `Stream` and `WiFiClent` timeout is only 5 seconds.  To allow for this large difference, the timeout used for a `WiFiClientSecure::connect()` call is different from that used for a normal read or write (or normal `WiFiClient::connect()` call).
+
+By default, the connection phase of a TLS `WiFiClientSecure::connect()` is set to 15 seconds (all other read/writes use the value set with `setTimeout`).  If your application needs to reduce this connection timoeut, simply call:
+
+.. code :: cpp
+
+    WiFiClientSecure::setTLSConnectTimeout(5000); // Value is in milliseconds
+
+This setting is global for all TLS connections.
+
 setSSLVersion(uint32_t min, uint32_t max)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
