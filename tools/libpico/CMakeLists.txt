@@ -147,6 +147,8 @@ target_compile_definitions(common-${cpu} INTERFACE
 
     PICO_CYW43_ARCH_HEADER=stdint.h
 
+    PICO_DIVIDER_DISABLE_INTERRUPTS=1
+
     ${xcd}
 )
 
