@@ -62,10 +62,9 @@ extern "C" uint32_t __picoRand() {
 
 namespace BearSSL {
 
-void WiFiClientSecureCtx::_clear() {
-    // TLS handshake may take more than the 5 second default timeout
-    _timeout = 15000;
+int WiFiClientSecure::_tlsConnectTimeout = 15000;
 
+void WiFiClientSecureCtx::_clear() {
     _sc = nullptr;
     _sc_svr = nullptr;
     _eng = nullptr;
@@ -268,7 +267,6 @@ void WiFiClientSecureCtx::_freeSSL() {
     _recvapp_len = 0;
     // This connection is toast
     _handshake_done = false;
-    _timeout = 15000;
 }
 
 bool WiFiClientSecureCtx::_clientConnected() {
@@ -1206,7 +1204,12 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
         return false;
     }
 
+    // Just on connection, use the TLS timeout
+    auto holdTime = _timeout;
+    _timeout = WiFiClientSecure::_tlsConnectTimeout;
     auto ret = _wait_for_handshake();
+    // Restore the prior timeout for normal use
+    _timeout = holdTime;
 #if defined(DEBUG_RP2040_CORE) && defined(DEBUG_RP2040_PORT)
     if (!ret) {
         char err[256];
@@ -1221,11 +1224,6 @@ bool WiFiClientSecureCtx::_connectSSL(const char* hostName) {
     _x509_minimal = nullptr;
     _x509_insecure = nullptr;
     _x509_knownkey = nullptr;
-
-    // reduce timeout after successful handshake to fail fast if server stop accepting our data for whatever reason
-    if (ret) {
-        _timeout = 5000;
-    }
 
     return ret;
 }

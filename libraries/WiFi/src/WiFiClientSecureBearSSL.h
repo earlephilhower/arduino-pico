@@ -578,6 +578,12 @@ public:
         return _ctx->connect(host, port, rootCABuff, cli_cert, cli_key);
     }
 
+    // TLS handshake can take >10s, so we have a different connect timeout vs. normal read/write.  Allow users to override the default, though.
+    static int _tlsConnectTimeout;
+    static void setTLSConnectTimeout(int ms) {
+        WiFiClientSecure::_tlsConnectTimeout = ms;
+    }
+
 private:
     std::shared_ptr<WiFiClientSecureCtx> _ctx;
 
