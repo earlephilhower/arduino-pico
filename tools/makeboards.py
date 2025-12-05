@@ -707,6 +707,9 @@ MakeBoard("upesy_rp2040_devkit", "rp2040", "uPesy", "RP2040 DevKit", "0x2e8a", "
 # VCC-GND YD-2040 - Use generic SPI/4 because boards seem to come with varied flash modules but same name
 MakeBoard('vccgnd_yd_rp2040', "rp2040", "VCC-GND", "YD RP2040", "0x2e8a", "0x800a", 500, "YD_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 
+# Vicharak
+MakeBoard("vicharak_shrike-lite", "rp2040", "Vicharak", "Shrike-Lite", "0x2e8a", "0xf00a", 500, "VICHARAK_SHRIKELITE", 4, 0, "boot2_generic_03h_4_padded_checksum", board_url="https://github.com/vicharak-in/shrike-lite.git")
+
 # Viyalab
 MakeBoard("viyalab_mizu", "rp2040", "Viyalab", "Mizu RP2040", "0x2e8a", "0x000a", 250, "VIYALAB_MIZU_RP2040", 8, 0, "boot2_generic_03h_4_padded_checksum")
 
