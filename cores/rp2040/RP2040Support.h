@@ -276,6 +276,8 @@ extern RP2040 rp2040;
 extern void main1();
 extern "C" char __StackLimit;
 extern "C" char __bss_end__;
+extern "C" uint32_t __scratch_x_start__;
+extern "C" uint32_t __scratch_y_start__;
 extern "C" void setup1() __attribute__((weak));
 extern "C" void loop1() __attribute__((weak));
 extern "C" bool core1_separate_stack;
@@ -477,12 +479,12 @@ public:
     */
     inline int getFreeStack() {
         const unsigned int sp = getStackPointer();
-        uint32_t ref = 0x20040000;
+        uint32_t ref = (uint32_t)&__scratch_x_start__;
         if (setup1 || loop1) {
             if (core1_separate_stack) {
-                ref = cpuid() ? (unsigned int)core1_separate_stack_address : 0x20040000;
+                ref = (uint32_t)(cpuid() ? core1_separate_stack_address : &__scratch_x_start__);
             } else {
-                ref = cpuid() ? 0x20040000 : 0x20041000;
+                ref = (uint32_t)(cpuid() ? &__scratch_x_start__ : &__scratch_y_start__);
             }
         }
         return sp - ref;
