@@ -355,10 +355,10 @@ void SerialPIO::flush() {
         return;
     }
     while (!pio_sm_is_tx_fifo_empty(_txPIO, _txSM)) {
-        delay(1); // Wait for all FIFO to be read
+        /* noop */ // Busy wait for all FIFO to be read
     }
     // Could have 1 byte being transmitted, so wait for bit times
-    delay((1000 * (_txBits + 1)) / _baud);
+    delayMicroseconds((1000000 * (_txBits + 3 /* start + stop + parity */)) / _baud);
 }
 
 size_t SerialPIO::write(uint8_t c) {
