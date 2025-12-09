@@ -25,7 +25,6 @@
 #endif
 
 #include <HID_Joystick.h>
-#include <class/hid/hid.h>
 
 //======================================================================
 class Joystick_ : public HID_Joystick {
