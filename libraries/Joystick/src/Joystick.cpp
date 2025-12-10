@@ -27,6 +27,7 @@
 
 #include "tusb.h"
 #include "class/hid/hid_device.h"
+#include <sdkoverride/tusb_gamepad16.h>
 
 static const uint8_t desc_hid_report_joystick[] = { TUD_HID_REPORT_DESC_GAMEPAD16(HID_REPORT_ID(1)) };
 
