@@ -44,7 +44,7 @@ extern "C" {
 * in NCMEthernetlwIP packetReceivedIRQWorker is overridden to call LwipIntfDev::_irq()
 * LwipIntfDev::_irq() calls readFrameSize() and readFrameData() and _netif.input
 *
-* outgoing paket flow:
+* outgoing packet flow:
 * LwipIntfDev calls sendFrame()
 */
 
