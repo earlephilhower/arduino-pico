@@ -136,8 +136,6 @@ SECTIONS
         . = ALIGN(4);
         *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.flashdata*)))
         . = ALIGN(4);
-        *libc_a-locale.o(.data)
-        . = ALIGN(4);
     } > FLASH
 
     .ARM.extab :
