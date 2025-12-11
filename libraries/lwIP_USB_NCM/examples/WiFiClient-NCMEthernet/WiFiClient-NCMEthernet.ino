@@ -36,10 +36,10 @@ void setup() {
   SER.println();
   SER.println("Starting NCM Ethernet port");
 
-
+  
   //optional static config
   // eth.config(my_static_ip_addr, my_static_gateway_and_dns_addr, IPAddress(255, 255, 255, 0), my_static_gateway_and_dns_addr);
-
+  
   // Start the Ethernet port
   // This starts DHCP in case config() was not called before
   bool ok = eth.begin();
@@ -52,7 +52,7 @@ void setup() {
   } else {
     SER.println("NCM Ethernet started successfully.");
   }
-
+  
 }
 
 void loop() {
@@ -74,6 +74,15 @@ void loop() {
     SER.println("Ethernet connected");
     SER.println("IP address: ");
     SER.println(eth.localIP());
+#if LWIP_IPV6
+    for(int i=0;i<LWIP_IPV6_NUM_ADDRESSES;i++) {
+      IPAddress address = IPAddress(&eth.getNetIf()->ip6_addr[i]);
+      if(!address.isSet()) {
+        continue;
+      }
+      SER.println(address);
+    }
+#endif
     connected = true;
   }
 

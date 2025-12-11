@@ -75,6 +75,15 @@ void loop() {
     SER.println("Ethernet connected");
     SER.println("IP address: ");
     SER.println(eth.localIP());
+#if LWIP_IPV6
+    for(int i=0;i<LWIP_IPV6_NUM_ADDRESSES;i++) {
+      IPAddress address = IPAddress(&eth.getNetIf()->ip6_addr[i]);
+      if(!address.isSet()) {
+        continue;
+      }
+      SER.println(address);
+    }
+#endif
     connected = true;
   }
 
