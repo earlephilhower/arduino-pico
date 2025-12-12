@@ -610,7 +610,12 @@ extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t pr
     product_rev[0] = 0;
 }
 
-
+extern "C" bool tud_network_recv_cb(const uint8_t *src, uint16_t size) __attribute__((weak));
+extern "C" bool tud_network_recv_cb(const uint8_t *src, uint16_t size) {
+	(void) src;
+	(void) size;
+	return false;
+}
 
 #ifdef ENABLE_PICOTOOL_USB
 // Support for Microsoft OS 2.0 descriptor
