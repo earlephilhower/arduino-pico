@@ -199,15 +199,10 @@ void SerialUSB::checkSerialReset() {
         __freertos_idle_other_core();
 #endif
         _ss.rebooting = true;
-        // Disable NVIC IRQ, so that we don't get bothered anymore
-        irq_set_enabled(USBCTRL_IRQ, false);
-        // Reset the whole USB hardware block
-        reset_block(RESETS_RESET_USBCTRL_BITS);
-        unreset_block(RESETS_RESET_USBCTRL_BITS);
-        // Delay a bit, so the PC can figure out that we have disconnected.
-        busy_wait_ms(3);
+        tud_disconnect();
+        busy_wait_ms(100);
         reset_usb_boot(0, 0);
-        while (1); // WDT will fire here
+        while (1); // WDT will fire here, we will reboot to MSD
     }
 }
 
