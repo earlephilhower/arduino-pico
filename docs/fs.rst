@@ -138,7 +138,7 @@ if you're so inclined).
 -  Copy the VSIX file manually to (Linux/Mac) ``~/.arduinoIDE/plugins/`` (you may need to make this directory yourself beforehand) or to (Windows) ``C:\Users\<username>\.arduinoIDE\``
 -  Restart the IDE
 -  Double check the Serial Monitor is closed.  Uploads will fail if the Serial Monitor has control of the serial port.
--  Enter ``[Ctrl]`` + ``[Shift]`` + ``[P]`` to bring up the command palette, then select/type ``Upload LittleFS to Pico/ESP8266``
+-  Enter (Linux/Windows) ``[Ctrl]`` + ``[Shift]`` + ``[P]`` or (Mac) ``[Cmd]`` + ``[Shift]`` + ``[P]`` to bring up the command palette, then select/type ``Upload LittleFS to Pico/ESP8266``
 
 Downloading Files from a LittleFS System
 ----------------------------------------
