@@ -53,16 +53,16 @@ static const uint8_t A3  = (31u);
 #define PIN_SERIAL2_RX (31u)
 
 // SPI
-#define PIN_SPI0_MISO  (31u)
-#define PIN_SPI0_MOSI  (31u)
-#define PIN_SPI0_SCK   (31u)
-#define PIN_SPI0_SS    (31u) // not pinned out
-//static const uint8_t SS   = PIN_SPI0_SS;   // SPI Slave SS not used. Set here only for reference.
-//static const uint8_t MOSI = PIN_SPI0_MOSI;
-//static const uint8_t MISO = PIN_SPI0_MISO;
-//static const uint8_t SCK  = PIN_SPI0_SCK;
+#define PIN_SPI0_MISO  (24u) // wired to wifi module
+#define PIN_SPI0_MOSI  (24u)
+#define PIN_SPI0_SCK   (29u)
+#define PIN_SPI0_SS    (25u)
+static const uint8_t SS   = PIN_SPI0_SS;
+static const uint8_t MOSI = PIN_SPI0_MOSI;
+static const uint8_t MISO = PIN_SPI0_MISO;
+static const uint8_t SCK  = PIN_SPI0_SCK;
 //
-// #define SS PIN_SPI0_SS
+#define SS PIN_SPI0_SS
 
 // Not pinned out
 #define PIN_SPI1_MISO  (31u)
