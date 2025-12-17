@@ -19,6 +19,7 @@
 
 #include "FatFSUSB.h"
 #include <FatFS.h>
+#include <tusb-msc.h>
 #include <class/msc/msc.h>
 #include <device/usbd.h>
 #include <USB.h>

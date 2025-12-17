@@ -279,6 +279,11 @@ foreach(tgt pico lwip lwip-bt)
     )
 endforeach()
 
+# The TinyUSB devices are stubbed out with weak functions unless called explicitly
+add_custom_command(TARGET pico-${cpu} POST_BUILD
+    COMMAND arm-none-eabi-ar d libpico-${cpu}.a msc_device.c.o midi_device.c.o hid_device.c.o
+)
+
 add_custom_command(TARGET pico-${cpu} POST_BUILD
     COMMAND mkdir -p ../../../include/${cpu}/pico_base/pico
     COMMAND cp ./generated/pico_base/pico/version.h ../../../include/${cpu}/pico_base/pico/.
