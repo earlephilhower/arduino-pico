@@ -275,14 +275,10 @@ foreach(tgt pico lwip lwip-bt)
     add_custom_command(TARGET ${tgt}-${cpu} POST_BUILD
         COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a pico_malloc.c.o newlib_interface.c.o stdlib.c.o stdio.c.o stdio_uart.c.o new_delete.cpp.o
         COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a btstack_flash_bank.c.o  # Need to override with our own implementation
+        COMMAND arm-none-eabi-ar d lib${tgt}-${cpu}.a msc_device.c.o midi_device.c.o hid_device.c.o ncm_device.c.o # TinyUSB devices stubbed out
         COMMAND cp lib${tgt}-${cpu}.a ../../../lib/${cpu}/lib${tgt}.a
     )
 endforeach()
-
-# The TinyUSB devices are stubbed out with weak functions unless called explicitly
-add_custom_command(TARGET pico-${cpu} POST_BUILD
-    COMMAND arm-none-eabi-ar d libpico-${cpu}.a msc_device.c.o midi_device.c.o hid_device.c.o
-)
 
 add_custom_command(TARGET pico-${cpu} POST_BUILD
     COMMAND mkdir -p ../../../include/${cpu}/pico_base/pico
