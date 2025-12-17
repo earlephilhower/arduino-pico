@@ -25,49 +25,49 @@
 #define USBD_NCM_EPSIZE 64
 
 NCMEthernet::NCMEthernet(int8_t cs, arduino::SPIClass &spi, int8_t intrpin) {
-  (void) cs;
-  (void) spi;
-  (void) intrpin;
+    (void) cs;
+    (void) spi;
+    (void) intrpin;
 }
 
 bool NCMEthernet::begin(const uint8_t* mac_address, netif *net) {
-  	(void) net;
-  	memcpy(tud_network_mac_address, mac_address, 6);
+    (void) net;
+    memcpy(tud_network_mac_address, mac_address, 6);
 
-  	if (!critical_section_is_initialized(&this->_recv_critical_section)) {
-    	critical_section_init(&this->_recv_critical_section);
-      	critical_section_enter_blocking(&this->_recv_critical_section);
-      	this->_recv_pkg.size = 0;
-      	this->_recv_pkg.src = nullptr;
-      	critical_section_exit(&this->_recv_critical_section);
-  	}
+    if (!critical_section_is_initialized(&this->_recv_critical_section)) {
+        critical_section_init(&this->_recv_critical_section);
+        critical_section_enter_blocking(&this->_recv_critical_section);
+        this->_recv_pkg.size = 0;
+        this->_recv_pkg.src = nullptr;
+        critical_section_exit(&this->_recv_critical_section);
+    }
 
-	async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
+    async_context_threadsafe_background_config_t config = async_context_threadsafe_background_default_config();
     if (!async_context_threadsafe_background_init(&this->_async_context, &config)) {
         return false;
     }
 
-	this->_recv_irq_worker.user_data = this;
+    this->_recv_irq_worker.user_data = this;
     this->_recv_irq_worker.do_work = &NCMEthernet::_recv_irq_work;
     async_context_add_when_pending_worker(&this->_async_context.core, &this->_recv_irq_worker);
 
     _ncm_ethernet_instance = this;
 
-	USB.disconnect();
+    USB.disconnect();
 
     _epIn = USB.registerEndpointIn();
     _epOut = USB.registerEndpointOut();
     _epNotif = USB.registerEndpointIn();
     _strID = USB.registerString("Pico NCM");
 
-	// mac address we give to the PC
-	// must be different than our own
+    // mac address we give to the PC
+    // must be different than our own
     uint8_t len = 0;
-    for (unsigned i=0; i<6; i++) {
-		uint8_t mac_byte = tud_network_mac_address[i];
-		if(i==5) { // invert last byte
-			mac_byte^=0xFF;
-		}
+    for (unsigned i = 0; i < 6; i++) {
+        uint8_t mac_byte = tud_network_mac_address[i];
+        if (i == 5) { // invert last byte
+            mac_byte ^= 0xFF;
+        }
         macAddrStr[len++] = "0123456789ABCDEF"[(mac_byte >> 4) & 0xf];
         macAddrStr[len++] = "0123456789ABCDEF"[(mac_byte >> 0) & 0xf];
     }
@@ -77,14 +77,14 @@ bool NCMEthernet::begin(const uint8_t* mac_address, netif *net) {
 
     USB.connect();
 
-  return true;
+    return true;
 }
 
 void NCMEthernet::end() {
     USB.disconnect();
     USB.unregisterInterface(_id);
     USB.unregisterEndpointIn(_epIn);
-	USB.unregisterEndpointIn(_epNotif);
+    USB.unregisterEndpointIn(_epNotif);
     USB.unregisterEndpointOut(_epOut);
     USB.connect();
 }
@@ -99,19 +99,19 @@ void NCMEthernet::usbInterfaceCB(int itf, uint8_t *dst, int len) {
 }
 
 uint16_t NCMEthernet::readFrame(uint8_t* buffer, uint16_t bufsize) {
-  uint16_t data_len = this->readFrameSize();
+    uint16_t data_len = this->readFrameSize();
 
-  if (data_len == 0) {
-    return 0;
-  }
+    if (data_len == 0) {
+        return 0;
+    }
 
-  if (data_len > bufsize) {
-    // Packet is bigger than buffer - drop the packet
-    discardFrame(data_len);
-    return 0;
-  }
+    if (data_len > bufsize) {
+        // Packet is bigger than buffer - drop the packet
+        discardFrame(data_len);
+        return 0;
+    }
 
-  return readFrameData(buffer, data_len);
+    return readFrameData(buffer, data_len);
 }
 
 uint16_t NCMEthernet::readFrameSize() {
@@ -126,62 +126,63 @@ uint16_t NCMEthernet::readFrameData(uint8_t* buffer, uint16_t framesize) {
     this->_recv_pkg.size = 0;
 
     critical_section_exit(&this->_recv_critical_section);
-	tud_network_recv_renew();
+    tud_network_recv_renew();
     return size;
 }
 
 uint16_t NCMEthernet::sendFrame(const uint8_t* buf, uint16_t len) {
-  // this is basically linkoutput_fn
+    // this is basically linkoutput_fn
 
-  for (;;) {
-    /* if TinyUSB isn't ready, we must signal back to lwip that there is nothing we can do */
-    if (!tud_ready())
-      return 0;
+    for (;;) {
+        /* if TinyUSB isn't ready, we must signal back to lwip that there is nothing we can do */
+        if (!tud_ready()) {
+            return 0;
+        }
 
-    /* if the network driver can accept another packet, we make it happen */
-    if (tud_network_can_xmit(len)) {
-      tud_network_xmit((void*)const_cast<uint8_t*>(buf), len);
-      return len;
+        /* if the network driver can accept another packet, we make it happen */
+        if (tud_network_can_xmit(len)) {
+            tud_network_xmit((void*)const_cast<uint8_t*>(buf), len);
+            return len;
+        }
+
+        /* transfer execution to TinyUSB in the hopes that it will finish transmitting the prior packet */
+        tud_task();
     }
-
-    /* transfer execution to TinyUSB in the hopes that it will finish transmitting the prior packet */
-    tud_task();
-  }
 }
 
 extern "C" {
-	// data transfer between tinyUSB callbacks and NCMEthernet class
-	NCMEthernet *_ncm_ethernet_instance = nullptr;
+    // data transfer between tinyUSB callbacks and NCMEthernet class
+    NCMEthernet *_ncm_ethernet_instance = nullptr;
 
-	/*
- 	* Interface to tinyUSB.
- 	*/
-	uint8_t tud_network_mac_address[6] = {0};
+    /*
+        Interface to tinyUSB.
+    */
+    uint8_t tud_network_mac_address[6] = {0};
 
-	void tud_network_init_cb(void) {
-	}
+    void tud_network_init_cb(void) {
+    }
 
-	bool tud_network_recv_cb(const uint8_t *src, uint16_t size) {
-	    if(_ncm_ethernet_instance == nullptr || _ncm_ethernet_instance->_recv_pkg.size > 0) {
-	        return false;
-    	}
+    bool tud_network_recv_cb(const uint8_t *src, uint16_t size) {
+        if (_ncm_ethernet_instance == nullptr || _ncm_ethernet_instance->_recv_pkg.size > 0) {
+            return false;
+        }
 
-    	critical_section_enter_blocking(&_ncm_ethernet_instance->_recv_critical_section);
-    	_ncm_ethernet_instance->_recv_pkg.src = src;
-    	_ncm_ethernet_instance->_recv_pkg.size = size;
-    	critical_section_exit(&_ncm_ethernet_instance->_recv_critical_section);
+        critical_section_enter_blocking(&_ncm_ethernet_instance->_recv_critical_section);
+        _ncm_ethernet_instance->_recv_pkg.src = src;
+        _ncm_ethernet_instance->_recv_pkg.size = size;
+        critical_section_exit(&_ncm_ethernet_instance->_recv_critical_section);
 
         async_context_set_work_pending(&_ncm_ethernet_instance->_async_context.core, &_ncm_ethernet_instance->_recv_irq_worker);
 
-    	return true;
-	}
+        return true;
+    }
 
-	uint16_t tud_network_xmit_cb(uint8_t *dst, void *ref, uint16_t arg) {
-	  	// this is called by tud_network_xmit, which is called by NCMEthernet::sendFrame,
-  		// which is called by LwipIntfDev<RawDev>::linkoutput_s
-  		// linkoutput_s gives us pbuf->payload and pbuf->len
+    uint16_t tud_network_xmit_cb(uint8_t *dst, void *ref, uint16_t arg) {
+        // this is called by tud_network_xmit, which is called by NCMEthernet::sendFrame,
+        // which is called by LwipIntfDev<RawDev>::linkoutput_s
+        // linkoutput_s gives us pbuf->payload and pbuf->len
 
-  		memcpy(dst, ref, arg);
-  		return arg;
-	}
+        memcpy(dst, ref, arg);
+        return arg;
+    }
 }

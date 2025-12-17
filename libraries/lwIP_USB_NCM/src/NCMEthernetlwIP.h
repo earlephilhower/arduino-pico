@@ -10,6 +10,6 @@ public:
     NCMEthernetlwIP();
 
     bool begin(const uint8_t* macAddress = nullptr, const uint16_t mtu = DEFAULT_MTU);
-	void packetReceivedIRQWorker(NCMEthernet *instance) override;
+    void packetReceivedIRQWorker(NCMEthernet *instance) override;
 
 };

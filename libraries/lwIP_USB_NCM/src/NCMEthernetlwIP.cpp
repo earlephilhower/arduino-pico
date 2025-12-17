@@ -13,6 +13,6 @@ bool NCMEthernetlwIP::begin(const uint8_t *macAddress, const uint16_t mtu) {
 }
 
 void NCMEthernetlwIP::packetReceivedIRQWorker(NCMEthernet *instance) {
-	NCMEthernetlwIP *d = static_cast<NCMEthernetlwIP*>(instance);
-	d->_irq(instance);
+    NCMEthernetlwIP *d = static_cast<NCMEthernetlwIP*>(instance);
+    d->_irq(instance);
 }

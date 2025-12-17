@@ -29,23 +29,23 @@
 #include <pico/critical_section.h>
 
 extern "C" {
-	typedef struct _ncmethernet_packet_t {
-    	const uint8_t *src;
-    	uint16_t size;
-	} ncmethernet_packet_t;
+    typedef struct _ncmethernet_packet_t {
+        const uint8_t *src;
+        uint16_t size;
+    } ncmethernet_packet_t;
 }
 
 /**
-* incoming packet flow:
-* tinyUSB calls tud_network_recv_cb
-* that stores the packet in _ncmethernet_pkg and sets _ncm_ethernet_recv_irq_worker pending
-* _ncm_ethernet_recv_irq_worker, in different execution context, calls _recv_irq_work
-* _recv_irq_work uses _ncm_ethernet_instance to call packetReceivedIRQWorker
-* in NCMEthernetlwIP packetReceivedIRQWorker is overridden to call LwipIntfDev::_irq()
-* LwipIntfDev::_irq() calls readFrameSize() and readFrameData() and _netif.input
-*
-* outgoing packet flow:
-* LwipIntfDev calls sendFrame()
+    incoming packet flow:
+    tinyUSB calls tud_network_recv_cb
+    that stores the packet in _ncmethernet_pkg and sets _ncm_ethernet_recv_irq_worker pending
+    _ncm_ethernet_recv_irq_worker, in different execution context, calls _recv_irq_work
+    _recv_irq_work uses _ncm_ethernet_instance to call packetReceivedIRQWorker
+    in NCMEthernetlwIP packetReceivedIRQWorker is overridden to call LwipIntfDev::_irq()
+    LwipIntfDev::_irq() calls readFrameSize() and readFrameData() and _netif.input
+
+    outgoing packet flow:
+    LwipIntfDev calls sendFrame()
 */
 
 class NCMEthernet {
@@ -66,30 +66,30 @@ public:
     uint16_t readFrame(uint8_t* buffer, uint16_t bufsize);
 
     void discardFrame(uint16_t ign) {
-      (void) ign;
+        (void) ign;
     }
 
     bool interruptIsPossible() {
-      return false;
+        return false;
     }
 
     PinStatus interruptMode() {
-      return HIGH;
+        return HIGH;
     }
 
     constexpr bool needsSPI() const {
-      return false;
+        return false;
     }
 
-	void usbInterfaceCB(int itf, uint8_t *dst, int len);
+    void usbInterfaceCB(int itf, uint8_t *dst, int len);
 
-	virtual void packetReceivedIRQWorker(NCMEthernet *instance) {};
+    virtual void packetReceivedIRQWorker(NCMEthernet *instance) {};
 
-	async_context_threadsafe_background_t _async_context;
-	async_when_pending_worker_t _recv_irq_worker;
+    async_context_threadsafe_background_t _async_context;
+    async_when_pending_worker_t _recv_irq_worker;
 
-	critical_section_t _recv_critical_section;
-	ncmethernet_packet_t _recv_pkg;
+    critical_section_t _recv_critical_section;
+    ncmethernet_packet_t _recv_pkg;
 protected:
     netif *_netif;
     uint8_t _id;
@@ -98,19 +98,19 @@ protected:
     uint8_t _epOut;
     uint8_t _strID;
     uint8_t _strMac;
-	char macAddrStr[6*2+2] = {0};
+    char macAddrStr[6 * 2 + 2] = {0};
 
     static void _usb_interface_cb(int itf, uint8_t *dst, int len, void *param) {
         ((NCMEthernet *)param)->usbInterfaceCB(itf, dst, len);
     }
-	static void _recv_irq_work(async_context_t *context, async_when_pending_worker_t *worker) {
-		NCMEthernet *d = static_cast<NCMEthernet*>(worker->user_data);
-		d->packetReceivedIRQWorker(d);
-	}
+    static void _recv_irq_work(async_context_t *context, async_when_pending_worker_t *worker) {
+        NCMEthernet *d = static_cast<NCMEthernet*>(worker->user_data);
+        d->packetReceivedIRQWorker(d);
+    }
 };
 
 extern "C" {
-	extern NCMEthernet *_ncm_ethernet_instance;
+    extern NCMEthernet *_ncm_ethernet_instance;
 }
 
 #endif  // NCM_ETHERNET_H
