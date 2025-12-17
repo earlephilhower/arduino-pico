@@ -14,7 +14,7 @@ for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleF
            ./libraries/MouseBT ./libraries/SerialBT ./libraries/HID_Bluetooth \
            ./libraries/JoystickBLE ./libraries/KeyboardBLE ./libraries/MouseBLE \
            ./libraries/lwIP_w6300 ./libraries/lwIP_w55rp20 ./libraries/lwIP_w5500 ./libraries/lwIP_w5100 ./libraries/lwIP_enc28j60 \
-           ./libraries/SPISlave ./libraries/lwIP_ESPHost ./libraries/FatFS\
+           ./libraries/SPISlave ./libraries/lwIP_ESPHost ./libraries/lwIP_USB_NCM ./libraries/FatFS\
            ./libraries/FatFSUSB ./libraries/BluetoothAudio ./libraries/BluetoothHCI \
            ./libraries/BluetoothHIDMaster ./libraries/NetBIOS ./libraries/Ticker \
            ./libraries/VFS ./libraries/rp2350 ./libraries/SimpleMDNS ./libraries/SoftwareSPI \
