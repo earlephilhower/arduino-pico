@@ -30,8 +30,6 @@ SingleFileDrive singleFileDrive;
 static const uint32_t _hddsize = (256 * 1024 * 1024); // 256MB
 static const uint32_t _hddsects = _hddsize / 512;
 
-#define USBD_MSC_EPSIZE 64
-
 SingleFileDrive::SingleFileDrive() {
 }
 
@@ -61,7 +59,7 @@ bool SingleFileDrive::begin(const char *localFile, const char *dosFile) {
     USB.disconnect();
     _epIn = USB.registerEndpointIn();
     _epOut = USB.registerEndpointOut();
-    static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, USBD_MSC_EPSIZE) };
+    static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, CFG_TUD_MSC_EP_BUFSIZE) };
     _id = USB.registerInterface(1, USBClass::simpleInterface, msd_desc, sizeof(msd_desc), 2, 0);
     USB.connect();
     _localFile = strdup(localFile);
