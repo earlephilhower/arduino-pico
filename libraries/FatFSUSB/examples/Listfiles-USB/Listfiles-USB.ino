@@ -53,6 +53,7 @@ void setup() {
   FatFSUSB.driveReady(mountable);
   // Start FatFS USB drive mode
   FatFSUSB.begin();
+  delay(2000); // TinyUSB seems to have a race condition, see https://github.com/hathach/tinyusb/discussions/1764
   Serial.println("FatFSUSB started.");
   Serial.println("Connect drive via USB to upload/erase files and re-display");
 }
