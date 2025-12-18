@@ -560,57 +560,6 @@ extern "C" void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_r
     (void) bufsize;
 }
 
-extern "C" int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize) __attribute__((weak));
-extern "C" int32_t tud_msc_read10_cb(uint8_t lun, uint32_t lba, uint32_t offset, void* buffer, uint32_t bufsize) {
-    (void) lun;
-    (void) lba;
-    (void) offset;
-    (void) buffer;
-    (void) bufsize;
-    return -1;
-}
-
-extern "C" bool tud_msc_test_unit_ready_cb(uint8_t lun) __attribute__((weak));
-extern "C" bool tud_msc_test_unit_ready_cb(uint8_t lun) {
-    (void) lun;
-    return false;
-}
-
-extern "C" int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize) __attribute__((weak));
-extern "C" int32_t tud_msc_write10_cb(uint8_t lun, uint32_t lba, uint32_t offset, uint8_t* buffer, uint32_t bufsize) {
-    (void) lun;
-    (void) lba;
-    (void) offset;
-    (void) buffer;
-    (void) bufsize;
-    return -1;
-}
-
-extern "C" int32_t tud_msc_scsi_cb(uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, uint16_t bufsize) __attribute__((weak));
-extern "C" int32_t tud_msc_scsi_cb(uint8_t lun, uint8_t const scsi_cmd[16], void* buffer, uint16_t bufsize) {
-    (void) lun;
-    (void) scsi_cmd;
-    (void) buffer;
-    (void) bufsize;
-    return 0;
-}
-
-extern "C" void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size) __attribute__((weak));
-extern "C" void tud_msc_capacity_cb(uint8_t lun, uint32_t* block_count, uint16_t* block_size) {
-    (void) lun;
-    *block_count = 0;
-    *block_size = 0;
-}
-
-extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]) __attribute__((weak));
-extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16], uint8_t product_rev[4]) {
-    (void) lun;
-    vendor_id[0] = 0;
-    product_id[0] = 0;
-    product_rev[0] = 0;
-}
-
-
 
 #ifdef ENABLE_PICOTOOL_USB
 // Support for Microsoft OS 2.0 descriptor
