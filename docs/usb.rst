@@ -102,6 +102,20 @@ to the polling period:
         ....
     }
 
+Native TinyUSB Sketches
+-----------------------
+Sketches or libraries which want to implement their own low-level TinyUSB
+callbacks need to include the appropriate header to have real TinyUSB driver
+support for HID, MSC (USB stick), MIDI, and NCM (network).
+
+.. code::  cpp
+
+    // Include one or more headers from the following list
+    #include <tusb-hid.h>
+    #include <tusb-midi.h>
+    #include <tush-msc.h>
+    #include <tusb-ncm.h>
+
 Adafruit TinyUSB Arduino Support
 --------------------------------
 Examples are provided in the Adafruit_TinyUSB_Arduino for the more

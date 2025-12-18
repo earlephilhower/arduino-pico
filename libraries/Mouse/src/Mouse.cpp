@@ -23,6 +23,7 @@
 #include <USB.h>
 
 #include "tusb.h"
+#include <tusb-hid.h>
 #include "class/hid/hid_device.h"
 
 //================================================================================

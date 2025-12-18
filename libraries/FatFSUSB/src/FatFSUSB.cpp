@@ -19,12 +19,12 @@
 
 #include "FatFSUSB.h"
 #include <FatFS.h>
+#include <tusb-msc.h>
 #include <class/msc/msc.h>
 #include <device/usbd.h>
 #include <USB.h>
 
 FatFSUSBClass FatFSUSB;
-#define USBD_MSC_EPSIZE 64
 
 FatFSUSBClass::FatFSUSBClass() {
 }
@@ -62,7 +62,7 @@ bool FatFSUSBClass::begin() {
     USB.disconnect();
     _epIn = USB.registerEndpointIn();
     _epOut = USB.registerEndpointOut();
-    static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, USBD_MSC_EPSIZE) };
+    static uint8_t msd_desc[] = { TUD_MSC_DESCRIPTOR(1 /* placeholder */, 0, _epOut, _epIn, CFG_TUD_MSC_EP_BUFSIZE) };
     _id = USB.registerInterface(1, USBClass::simpleInterface, msd_desc, sizeof(msd_desc), 2, 0);
     USB.connect();
 

@@ -23,6 +23,7 @@
 #include <USB.h>
 
 #include "tusb.h"
+#include <tusb-hid.h>
 #include "class/hid/hid_device.h"
 
 static const uint8_t desc_hid_report_absmouse[] = { TUD_HID_REPORT_DESC_ABSMOUSE(HID_REPORT_ID(1)) };

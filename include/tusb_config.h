@@ -75,6 +75,7 @@
 #define CFG_TUD_MSC              (1)
 #define CFG_TUD_MIDI             (1)
 #define CFG_TUD_VENDOR           (0)
+#define CFG_TUD_NCM              (1)
 
 #define CFG_TUD_CDC_RX_BUFSIZE  (256)
 #define CFG_TUD_CDC_TX_BUFSIZE  (256)
@@ -82,11 +83,33 @@
 #define CFG_TUD_MSC_EP_BUFSIZE  (64)
 
 // HID buffer size Should be sufficient to hold ID (if any) + Data
-#define CFG_TUD_HID_EP_BUFSIZE  (64)
+#define CFG_TUD_HID_EP_BUFSIZE  (512)
 
 // MIDI
 #define CFG_TUD_MIDI_RX_BUFSIZE (64)
 #define CFG_TUD_MIDI_TX_BUFSIZE (64)
+
+//--------------------------------------------------------------------
+// NCM CLASS CONFIGURATION, SEE "ncm.h" FOR PERFORMANCE TUNING
+//--------------------------------------------------------------------
+#include "lwipopts.h"
+// Must be >> MTU
+// Can be set to 2048 without impact
+#define CFG_TUD_NCM_IN_NTB_MAX_SIZE (2 * TCP_MSS + 100)
+
+// Must be >> MTU
+// Can be set to smaller values if wNtbOutMaxDatagrams==1
+#define CFG_TUD_NCM_OUT_NTB_MAX_SIZE (2 * TCP_MSS + 100)
+
+// Number of NCM transfer blocks for reception side
+#ifndef CFG_TUD_NCM_OUT_NTB_N
+#define CFG_TUD_NCM_OUT_NTB_N 1
+#endif
+
+// Number of NCM transfer blocks for transmission side
+#ifndef CFG_TUD_NCM_IN_NTB_N
+#define CFG_TUD_NCM_IN_NTB_N 1
+#endif
 
 #ifdef __cplusplus
  }

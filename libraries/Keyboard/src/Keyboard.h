@@ -26,6 +26,7 @@
 #error Keyboard is not compatible with Adafruit TinyUSB
 #endif
 
+#include <tusb-hid.h>
 #include <HID_Keyboard.h>
 
 class Keyboard_ : public HID_Keyboard {
