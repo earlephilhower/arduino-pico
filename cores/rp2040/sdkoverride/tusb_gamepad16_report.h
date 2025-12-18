@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 // HID Gamepad Protocol Report.
-typedef struct TU_ATTR_PACKED {
+typedef struct __attribute__((packed)) {
     int16_t x;         ///< Delta x  movement of left analog-stick
     int16_t y;         ///< Delta y  movement of left analog-stick
     int16_t z;         ///< Delta z  movement of right analog-joystick
