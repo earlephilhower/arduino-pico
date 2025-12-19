@@ -19,13 +19,13 @@ Returns the current core ID (0 or 1) of the executing task.
 
 uint32_t rp2040.getCycleCount()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Returns a 32-bit cycle count from then the core started running.  Because it
+Returns a 32-bit cycle count from when the core started running.  Because it
 is only 32-bits, and the Pico runs at 133MHz, this value can loop around
 in a matter of seconds.
 
 uint64_t rp2040.getCycleCount64()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Returns a 64-bit cycle count from then the core started running.  This value
+Returns a 64-bit cycle count from when the core started running.  This value
 should never loop around in normal mode (at 133MHz it would take over 4,000
 years to overflow).
 
