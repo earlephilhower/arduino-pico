@@ -155,6 +155,7 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" "-L{build.path}" 
 
 ## Create output (UF2 file)
 recipe.objcopy.uf2.pattern="{runtime.tools.pqt-picotool.path}/picotool" uf2 convert "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.uf2" {build.uf2family}
+recipe.objcopy.hex.pattern="{compiler.path}/{compiler.objcopy.cmd}" -O ihex "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
 
 ## Create output BIN (for OTA)
 recipe.objcopy.bin.1.pattern="{compiler.path}/{compiler.objcopy.cmd}" -Obinary "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
