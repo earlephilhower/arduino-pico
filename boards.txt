@@ -38378,7 +38378,7 @@ waveshare_rp2350_plus_w.upload_port.7.vid=0x2e8a
 waveshare_rp2350_plus_w.upload_port.7.pid=0xc109
 waveshare_rp2350_plus_w.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2350_plus_w.build.usbpid=-DUSBD_PID=0x0009
-waveshare_rp2350_plus_w.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+waveshare_rp2350_plus_w.build.usbpwr=-DUSBD_MAX_POWER_MA=800
 waveshare_rp2350_plus_w.build.board=WAVESHARE_RP2350_PLUS_W
 waveshare_rp2350_plus_w.build.variant=waveshare_rp2350_plus_w
 waveshare_rp2350_plus_w.upload.maximum_size=16777216
