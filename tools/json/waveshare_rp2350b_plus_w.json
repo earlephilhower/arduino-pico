@@ -9,7 +9,7 @@
         },
         "core": "earlephilhower",
         "cpu": "cortex-m33",
-        "extra_flags": "-DARDUINO_WAVESHARE_RP2350_PLUS_W -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=800  -DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1",
+        "extra_flags": "-DARDUINO_WAVESHARE_RP2350B_PLUS_W -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=800  -DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1",
         "f_cpu": "150000000L",
         "hwids": [
             [
@@ -22,7 +22,7 @@
             ]
         ],
         "mcu": "rp2350",
-        "variant": "waveshare_rp2350_plus_w"
+        "variant": "waveshare_rp2350b_plus_w"
     },
     "debug": {
         "jlink_device": "RP2350_M33_0",
@@ -33,7 +33,7 @@
         "arduino",
         "picosdk"
     ],
-    "name": "RP2350 Plus W",
+    "name": "RP2350B Plus W",
     "upload": {
         "maximum_ram_size": 524288,
         "maximum_size": 16777216,
