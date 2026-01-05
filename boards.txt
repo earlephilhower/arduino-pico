@@ -38341,6 +38341,427 @@ waveshare_rp2350_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprob
 waveshare_rp2350_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
+# Waveshare RP2350 Plus W
+# -----------------------------------
+waveshare_rp2350_plus_w.name=Waveshare RP2350 Plus W
+waveshare_rp2350_plus_w.vid.0=0x2e8a
+waveshare_rp2350_plus_w.pid.0=0x0009
+waveshare_rp2350_plus_w.vid.1=0x2e8a
+waveshare_rp2350_plus_w.pid.1=0x0109
+waveshare_rp2350_plus_w.vid.2=0x2e8a
+waveshare_rp2350_plus_w.pid.2=0x4009
+waveshare_rp2350_plus_w.vid.3=0x2e8a
+waveshare_rp2350_plus_w.pid.3=0x4109
+waveshare_rp2350_plus_w.vid.4=0x2e8a
+waveshare_rp2350_plus_w.pid.4=0x8009
+waveshare_rp2350_plus_w.vid.5=0x2e8a
+waveshare_rp2350_plus_w.pid.5=0x8109
+waveshare_rp2350_plus_w.vid.6=0x2e8a
+waveshare_rp2350_plus_w.pid.6=0xc009
+waveshare_rp2350_plus_w.vid.7=0x2e8a
+waveshare_rp2350_plus_w.pid.7=0xc109
+waveshare_rp2350_plus_w.upload_port.0.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.0.pid=0x0009
+waveshare_rp2350_plus_w.upload_port.1.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.1.pid=0x0109
+waveshare_rp2350_plus_w.upload_port.2.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.2.pid=0x4009
+waveshare_rp2350_plus_w.upload_port.3.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.3.pid=0x4109
+waveshare_rp2350_plus_w.upload_port.4.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.4.pid=0x8009
+waveshare_rp2350_plus_w.upload_port.5.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.5.pid=0x8109
+waveshare_rp2350_plus_w.upload_port.6.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.6.pid=0xc009
+waveshare_rp2350_plus_w.upload_port.7.vid=0x2e8a
+waveshare_rp2350_plus_w.upload_port.7.pid=0xc109
+waveshare_rp2350_plus_w.build.usbvid=-DUSBD_VID=0x2e8a
+waveshare_rp2350_plus_w.build.usbpid=-DUSBD_PID=0x0009
+waveshare_rp2350_plus_w.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+waveshare_rp2350_plus_w.build.board=WAVESHARE_RP2350_PLUS_W
+waveshare_rp2350_plus_w.build.variant=waveshare_rp2350_plus_w
+waveshare_rp2350_plus_w.upload.maximum_size=4194304
+waveshare_rp2350_plus_w.upload.wait_for_upload_port=true
+waveshare_rp2350_plus_w.upload.erase_cmd=
+waveshare_rp2350_plus_w.serial.disableDTR=false
+waveshare_rp2350_plus_w.serial.disableRTS=false
+waveshare_rp2350_plus_w.build.f_cpu=125000000
+waveshare_rp2350_plus_w.build.led=
+waveshare_rp2350_plus_w.build.core=rp2040
+waveshare_rp2350_plus_w.build.ldscript=memmap_default.ld
+waveshare_rp2350_plus_w.build.boot2=none
+waveshare_rp2350_plus_w.build.usb_manufacturer="Waveshare"
+waveshare_rp2350_plus_w.build.usb_product="RP2350 Plus W"
+waveshare_rp2350_plus_w.build.psram_length=0x000000
+waveshare_rp2350_plus_w.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
+waveshare_rp2350_plus_w.menu.flash.4194304_0=4MB (no FS)
+waveshare_rp2350_plus_w.menu.flash.4194304_0.upload.maximum_size=4186112
+waveshare_rp2350_plus_w.menu.flash.4194304_0.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_0.build.flash_length=4186112
+waveshare_rp2350_plus_w.menu.flash.4194304_0.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_0.build.fs_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_0.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_65536=4MB (Sketch: 4032KB, FS: 64KB)
+waveshare_rp2350_plus_w.menu.flash.4194304_65536.upload.maximum_size=4120576
+waveshare_rp2350_plus_w.menu.flash.4194304_65536.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_65536.build.flash_length=4120576
+waveshare_rp2350_plus_w.menu.flash.4194304_65536.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_65536.build.fs_start=272556032
+waveshare_rp2350_plus_w.menu.flash.4194304_65536.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_131072=4MB (Sketch: 3968KB, FS: 128KB)
+waveshare_rp2350_plus_w.menu.flash.4194304_131072.upload.maximum_size=4055040
+waveshare_rp2350_plus_w.menu.flash.4194304_131072.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_131072.build.flash_length=4055040
+waveshare_rp2350_plus_w.menu.flash.4194304_131072.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_131072.build.fs_start=272490496
+waveshare_rp2350_plus_w.menu.flash.4194304_131072.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_262144=4MB (Sketch: 3840KB, FS: 256KB)
+waveshare_rp2350_plus_w.menu.flash.4194304_262144.upload.maximum_size=3923968
+waveshare_rp2350_plus_w.menu.flash.4194304_262144.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_262144.build.flash_length=3923968
+waveshare_rp2350_plus_w.menu.flash.4194304_262144.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_262144.build.fs_start=272359424
+waveshare_rp2350_plus_w.menu.flash.4194304_262144.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_524288=4MB (Sketch: 3584KB, FS: 512KB)
+waveshare_rp2350_plus_w.menu.flash.4194304_524288.upload.maximum_size=3661824
+waveshare_rp2350_plus_w.menu.flash.4194304_524288.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_524288.build.flash_length=3661824
+waveshare_rp2350_plus_w.menu.flash.4194304_524288.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_524288.build.fs_start=272097280
+waveshare_rp2350_plus_w.menu.flash.4194304_524288.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_1048576=4MB (Sketch: 3MB, FS: 1MB)
+waveshare_rp2350_plus_w.menu.flash.4194304_1048576.upload.maximum_size=3137536
+waveshare_rp2350_plus_w.menu.flash.4194304_1048576.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_1048576.build.flash_length=3137536
+waveshare_rp2350_plus_w.menu.flash.4194304_1048576.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_1048576.build.fs_start=271572992
+waveshare_rp2350_plus_w.menu.flash.4194304_1048576.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_2097152=4MB (Sketch: 2MB, FS: 2MB)
+waveshare_rp2350_plus_w.menu.flash.4194304_2097152.upload.maximum_size=2088960
+waveshare_rp2350_plus_w.menu.flash.4194304_2097152.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_2097152.build.flash_length=2088960
+waveshare_rp2350_plus_w.menu.flash.4194304_2097152.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_2097152.build.fs_start=270524416
+waveshare_rp2350_plus_w.menu.flash.4194304_2097152.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_3145728=4MB (Sketch: 1MB, FS: 3MB)
+waveshare_rp2350_plus_w.menu.flash.4194304_3145728.upload.maximum_size=1040384
+waveshare_rp2350_plus_w.menu.flash.4194304_3145728.build.flash_total=4194304
+waveshare_rp2350_plus_w.menu.flash.4194304_3145728.build.flash_length=1040384
+waveshare_rp2350_plus_w.menu.flash.4194304_3145728.build.eeprom_start=272621568
+waveshare_rp2350_plus_w.menu.flash.4194304_3145728.build.fs_start=269475840
+waveshare_rp2350_plus_w.menu.flash.4194304_3145728.build.fs_end=272621568
+waveshare_rp2350_plus_w.menu.flash.16777216_0=16MB (no FS)
+waveshare_rp2350_plus_w.menu.flash.16777216_0.upload.maximum_size=16769024
+waveshare_rp2350_plus_w.menu.flash.16777216_0.build.flash_total=16777216
+waveshare_rp2350_plus_w.menu.flash.16777216_0.build.flash_length=16769024
+waveshare_rp2350_plus_w.menu.flash.16777216_0.build.eeprom_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_0.build.fs_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_0.build.fs_end=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_15728640=16MB (Sketch: 1MB, FS: 15MB)
+waveshare_rp2350_plus_w.menu.flash.16777216_15728640.upload.maximum_size=1040384
+waveshare_rp2350_plus_w.menu.flash.16777216_15728640.build.flash_total=16777216
+waveshare_rp2350_plus_w.menu.flash.16777216_15728640.build.flash_length=1040384
+waveshare_rp2350_plus_w.menu.flash.16777216_15728640.build.eeprom_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_15728640.build.fs_start=269475840
+waveshare_rp2350_plus_w.menu.flash.16777216_15728640.build.fs_end=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_14680064=16MB (Sketch: 2MB, FS: 14MB)
+waveshare_rp2350_plus_w.menu.flash.16777216_14680064.upload.maximum_size=2088960
+waveshare_rp2350_plus_w.menu.flash.16777216_14680064.build.flash_total=16777216
+waveshare_rp2350_plus_w.menu.flash.16777216_14680064.build.flash_length=2088960
+waveshare_rp2350_plus_w.menu.flash.16777216_14680064.build.eeprom_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_14680064.build.fs_start=270524416
+waveshare_rp2350_plus_w.menu.flash.16777216_14680064.build.fs_end=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_12582912=16MB (Sketch: 4MB, FS: 12MB)
+waveshare_rp2350_plus_w.menu.flash.16777216_12582912.upload.maximum_size=4186112
+waveshare_rp2350_plus_w.menu.flash.16777216_12582912.build.flash_total=16777216
+waveshare_rp2350_plus_w.menu.flash.16777216_12582912.build.flash_length=4186112
+waveshare_rp2350_plus_w.menu.flash.16777216_12582912.build.eeprom_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_12582912.build.fs_start=272621568
+waveshare_rp2350_plus_w.menu.flash.16777216_12582912.build.fs_end=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_8388608=16MB (Sketch: 8MB, FS: 8MB)
+waveshare_rp2350_plus_w.menu.flash.16777216_8388608.upload.maximum_size=8380416
+waveshare_rp2350_plus_w.menu.flash.16777216_8388608.build.flash_total=16777216
+waveshare_rp2350_plus_w.menu.flash.16777216_8388608.build.flash_length=8380416
+waveshare_rp2350_plus_w.menu.flash.16777216_8388608.build.eeprom_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_8388608.build.fs_start=276815872
+waveshare_rp2350_plus_w.menu.flash.16777216_8388608.build.fs_end=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_4194304=16MB (Sketch: 12MB, FS: 4MB)
+waveshare_rp2350_plus_w.menu.flash.16777216_4194304.upload.maximum_size=12574720
+waveshare_rp2350_plus_w.menu.flash.16777216_4194304.build.flash_total=16777216
+waveshare_rp2350_plus_w.menu.flash.16777216_4194304.build.flash_length=12574720
+waveshare_rp2350_plus_w.menu.flash.16777216_4194304.build.eeprom_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_4194304.build.fs_start=281010176
+waveshare_rp2350_plus_w.menu.flash.16777216_4194304.build.fs_end=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_2097152=16MB (Sketch: 14MB, FS: 2MB)
+waveshare_rp2350_plus_w.menu.flash.16777216_2097152.upload.maximum_size=14671872
+waveshare_rp2350_plus_w.menu.flash.16777216_2097152.build.flash_total=16777216
+waveshare_rp2350_plus_w.menu.flash.16777216_2097152.build.flash_length=14671872
+waveshare_rp2350_plus_w.menu.flash.16777216_2097152.build.eeprom_start=285204480
+waveshare_rp2350_plus_w.menu.flash.16777216_2097152.build.fs_start=283107328
+waveshare_rp2350_plus_w.menu.flash.16777216_2097152.build.fs_end=285204480
+waveshare_rp2350_plus_w.menu.arch.arm=ARM
+waveshare_rp2350_plus_w.menu.arch.arm.build.chip=rp2350
+waveshare_rp2350_plus_w.menu.arch.arm.build.toolchain=arm-none-eabi
+waveshare_rp2350_plus_w.menu.arch.arm.build.toolchainpkg=pqt-gcc
+waveshare_rp2350_plus_w.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+waveshare_rp2350_plus_w.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+waveshare_rp2350_plus_w.menu.arch.arm.build.mcu=cortex-m33
+waveshare_rp2350_plus_w.menu.arch.riscv=RISC-V
+waveshare_rp2350_plus_w.menu.arch.riscv.build.chip=rp2350-riscv
+waveshare_rp2350_plus_w.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+waveshare_rp2350_plus_w.menu.arch.riscv.build.toolchainpkg=pqt-gcc-riscv
+waveshare_rp2350_plus_w.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+waveshare_rp2350_plus_w.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
+waveshare_rp2350_plus_w.menu.arch.riscv.build.mcu=rv32imac
+waveshare_rp2350_plus_w.menu.freq.150=150 MHz
+waveshare_rp2350_plus_w.menu.freq.150.build.f_cpu=150000000L
+waveshare_rp2350_plus_w.menu.freq.50=50 MHz
+waveshare_rp2350_plus_w.menu.freq.50.build.f_cpu=50000000L
+waveshare_rp2350_plus_w.menu.freq.100=100 MHz
+waveshare_rp2350_plus_w.menu.freq.100.build.f_cpu=100000000L
+waveshare_rp2350_plus_w.menu.freq.120=120 MHz
+waveshare_rp2350_plus_w.menu.freq.120.build.f_cpu=120000000L
+waveshare_rp2350_plus_w.menu.freq.125=125 MHz
+waveshare_rp2350_plus_w.menu.freq.125.build.f_cpu=125000000L
+waveshare_rp2350_plus_w.menu.freq.128=128 MHz
+waveshare_rp2350_plus_w.menu.freq.128.build.f_cpu=128000000L
+waveshare_rp2350_plus_w.menu.freq.133=133 MHz
+waveshare_rp2350_plus_w.menu.freq.133.build.f_cpu=133000000L
+waveshare_rp2350_plus_w.menu.freq.176=176 MHz (Overclock)
+waveshare_rp2350_plus_w.menu.freq.176.build.f_cpu=176000000L
+waveshare_rp2350_plus_w.menu.freq.200=200 MHz (Overclock)
+waveshare_rp2350_plus_w.menu.freq.200.build.f_cpu=200000000L
+waveshare_rp2350_plus_w.menu.freq.225=225 MHz (Overclock)
+waveshare_rp2350_plus_w.menu.freq.225.build.f_cpu=225000000L
+waveshare_rp2350_plus_w.menu.freq.240=240 MHz (Overclock)
+waveshare_rp2350_plus_w.menu.freq.240.build.f_cpu=240000000L
+waveshare_rp2350_plus_w.menu.freq.250=250 MHz (Overclock)
+waveshare_rp2350_plus_w.menu.freq.250.build.f_cpu=250000000L
+waveshare_rp2350_plus_w.menu.freq.276=276 MHz (Overclock)
+waveshare_rp2350_plus_w.menu.freq.276.build.f_cpu=276000000L
+waveshare_rp2350_plus_w.menu.freq.300=300 MHz (Overclock)
+waveshare_rp2350_plus_w.menu.freq.300.build.f_cpu=300000000L
+waveshare_rp2350_plus_w.menu.opt.Small=Small (-Os) (standard)
+waveshare_rp2350_plus_w.menu.opt.Small.build.flags.optimize=-Os
+waveshare_rp2350_plus_w.menu.opt.Optimize=Optimize (-O)
+waveshare_rp2350_plus_w.menu.opt.Optimize.build.flags.optimize=-O
+waveshare_rp2350_plus_w.menu.opt.Optimize2=Optimize More (-O2)
+waveshare_rp2350_plus_w.menu.opt.Optimize2.build.flags.optimize=-O2
+waveshare_rp2350_plus_w.menu.opt.Optimize3=Optimize Even More (-O3)
+waveshare_rp2350_plus_w.menu.opt.Optimize3.build.flags.optimize=-O3
+waveshare_rp2350_plus_w.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+waveshare_rp2350_plus_w.menu.opt.Fast.build.flags.optimize=-Ofast
+waveshare_rp2350_plus_w.menu.opt.Debug=Debug (-Og)
+waveshare_rp2350_plus_w.menu.opt.Debug.build.flags.optimize=-Og
+waveshare_rp2350_plus_w.menu.opt.Disabled=Disabled (-O0)
+waveshare_rp2350_plus_w.menu.opt.Disabled.build.flags.optimize=-O0
+waveshare_rp2350_plus_w.menu.os.none=None
+waveshare_rp2350_plus_w.menu.os.none.build.os=
+waveshare_rp2350_plus_w.menu.os.freertos=FreeRTOS SMP
+waveshare_rp2350_plus_w.menu.os.freertos.build.os=-D__FREERTOS
+waveshare_rp2350_plus_w.menu.profile.Disabled=Disabled
+waveshare_rp2350_plus_w.menu.profile.Disabled.build.flags.profile=
+waveshare_rp2350_plus_w.menu.profile.Enabled=Enabled
+waveshare_rp2350_plus_w.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+waveshare_rp2350_plus_w.menu.rtti.Disabled=Disabled
+waveshare_rp2350_plus_w.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+waveshare_rp2350_plus_w.menu.rtti.Enabled=Enabled
+waveshare_rp2350_plus_w.menu.rtti.Enabled.build.flags.rtti=
+waveshare_rp2350_plus_w.menu.stackprotect.Disabled=Disabled
+waveshare_rp2350_plus_w.menu.stackprotect.Disabled.build.flags.stackprotect=
+waveshare_rp2350_plus_w.menu.stackprotect.Enabled=Enabled
+waveshare_rp2350_plus_w.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+waveshare_rp2350_plus_w.menu.exceptions.Disabled=Disabled
+waveshare_rp2350_plus_w.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+waveshare_rp2350_plus_w.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+waveshare_rp2350_plus_w.menu.exceptions.Enabled=Enabled
+waveshare_rp2350_plus_w.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+waveshare_rp2350_plus_w.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+waveshare_rp2350_plus_w.menu.dbgport.Disabled=Disabled
+waveshare_rp2350_plus_w.menu.dbgport.Disabled.build.debug_port=
+waveshare_rp2350_plus_w.menu.dbgport.Serial=Serial
+waveshare_rp2350_plus_w.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+waveshare_rp2350_plus_w.menu.dbgport.Serial1=Serial1
+waveshare_rp2350_plus_w.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+waveshare_rp2350_plus_w.menu.dbgport.Serial2=Serial2
+waveshare_rp2350_plus_w.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2350_plus_w.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2350_plus_w.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+waveshare_rp2350_plus_w.menu.dbglvl.None=None
+waveshare_rp2350_plus_w.menu.dbglvl.None.build.debug_level=
+waveshare_rp2350_plus_w.menu.dbglvl.Core=Core
+waveshare_rp2350_plus_w.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+waveshare_rp2350_plus_w.menu.dbglvl.SPI=SPI
+waveshare_rp2350_plus_w.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+waveshare_rp2350_plus_w.menu.dbglvl.Wire=Wire
+waveshare_rp2350_plus_w.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+waveshare_rp2350_plus_w.menu.dbglvl.Bluetooth=Bluetooth
+waveshare_rp2350_plus_w.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2350_plus_w.menu.dbglvl.LWIP=LWIP
+waveshare_rp2350_plus_w.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
+waveshare_rp2350_plus_w.menu.dbglvl.All=All
+waveshare_rp2350_plus_w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2350_plus_w.menu.dbglvl.NDEBUG=NDEBUG
+waveshare_rp2350_plus_w.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+waveshare_rp2350_plus_w.menu.usbstack.picosdk=Pico SDK
+waveshare_rp2350_plus_w.menu.usbstack.picosdk.build.usbstack_flags=
+waveshare_rp2350_plus_w.menu.usbstack.tinyusb=Adafruit TinyUSB
+waveshare_rp2350_plus_w.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+waveshare_rp2350_plus_w.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+waveshare_rp2350_plus_w.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+waveshare_rp2350_plus_w.menu.usbstack.nousb=No USB
+waveshare_rp2350_plus_w.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+waveshare_rp2350_plus_w.menu.wificountry.worldwide=Worldwide
+waveshare_rp2350_plus_w.menu.wificountry.worldwide.build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE
+waveshare_rp2350_plus_w.menu.wificountry.australia=Australia
+waveshare_rp2350_plus_w.menu.wificountry.australia.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRALIA
+waveshare_rp2350_plus_w.menu.wificountry.austria=Austria
+waveshare_rp2350_plus_w.menu.wificountry.austria.build.wificc=-DWIFICC=CYW43_COUNTRY_AUSTRIA
+waveshare_rp2350_plus_w.menu.wificountry.belgium=Belgium
+waveshare_rp2350_plus_w.menu.wificountry.belgium.build.wificc=-DWIFICC=CYW43_COUNTRY_BELGIUM
+waveshare_rp2350_plus_w.menu.wificountry.brazil=Brazil
+waveshare_rp2350_plus_w.menu.wificountry.brazil.build.wificc=-DWIFICC=CYW43_COUNTRY_BRAZIL
+waveshare_rp2350_plus_w.menu.wificountry.canada=Canada
+waveshare_rp2350_plus_w.menu.wificountry.canada.build.wificc=-DWIFICC=CYW43_COUNTRY_CANADA
+waveshare_rp2350_plus_w.menu.wificountry.chile=Chile
+waveshare_rp2350_plus_w.menu.wificountry.chile.build.wificc=-DWIFICC=CYW43_COUNTRY_CHILE
+waveshare_rp2350_plus_w.menu.wificountry.china=China
+waveshare_rp2350_plus_w.menu.wificountry.china.build.wificc=-DWIFICC=CYW43_COUNTRY_CHINA
+waveshare_rp2350_plus_w.menu.wificountry.colombia=Colombia
+waveshare_rp2350_plus_w.menu.wificountry.colombia.build.wificc=-DWIFICC=CYW43_COUNTRY_COLOMBIA
+waveshare_rp2350_plus_w.menu.wificountry.czech_republic=Czech Republic
+waveshare_rp2350_plus_w.menu.wificountry.czech_republic.build.wificc=-DWIFICC=CYW43_COUNTRY_CZECH_REPUBLIC
+waveshare_rp2350_plus_w.menu.wificountry.denmark=Denmark
+waveshare_rp2350_plus_w.menu.wificountry.denmark.build.wificc=-DWIFICC=CYW43_COUNTRY_DENMARK
+waveshare_rp2350_plus_w.menu.wificountry.estonia=Estonia
+waveshare_rp2350_plus_w.menu.wificountry.estonia.build.wificc=-DWIFICC=CYW43_COUNTRY_ESTONIA
+waveshare_rp2350_plus_w.menu.wificountry.finland=Finland
+waveshare_rp2350_plus_w.menu.wificountry.finland.build.wificc=-DWIFICC=CYW43_COUNTRY_FINLAND
+waveshare_rp2350_plus_w.menu.wificountry.france=France
+waveshare_rp2350_plus_w.menu.wificountry.france.build.wificc=-DWIFICC=CYW43_COUNTRY_FRANCE
+waveshare_rp2350_plus_w.menu.wificountry.germany=Germany
+waveshare_rp2350_plus_w.menu.wificountry.germany.build.wificc=-DWIFICC=CYW43_COUNTRY_GERMANY
+waveshare_rp2350_plus_w.menu.wificountry.greece=Greece
+waveshare_rp2350_plus_w.menu.wificountry.greece.build.wificc=-DWIFICC=CYW43_COUNTRY_GREECE
+waveshare_rp2350_plus_w.menu.wificountry.hong_kong=Hong Kong
+waveshare_rp2350_plus_w.menu.wificountry.hong_kong.build.wificc=-DWIFICC=CYW43_COUNTRY_HONG_KONG
+waveshare_rp2350_plus_w.menu.wificountry.hungary=Hungary
+waveshare_rp2350_plus_w.menu.wificountry.hungary.build.wificc=-DWIFICC=CYW43_COUNTRY_HUNGARY
+waveshare_rp2350_plus_w.menu.wificountry.iceland=Iceland
+waveshare_rp2350_plus_w.menu.wificountry.iceland.build.wificc=-DWIFICC=CYW43_COUNTRY_ICELAND
+waveshare_rp2350_plus_w.menu.wificountry.india=India
+waveshare_rp2350_plus_w.menu.wificountry.india.build.wificc=-DWIFICC=CYW43_COUNTRY_INDIA
+waveshare_rp2350_plus_w.menu.wificountry.israel=Israel
+waveshare_rp2350_plus_w.menu.wificountry.israel.build.wificc=-DWIFICC=CYW43_COUNTRY_ISRAEL
+waveshare_rp2350_plus_w.menu.wificountry.italy=Italy
+waveshare_rp2350_plus_w.menu.wificountry.italy.build.wificc=-DWIFICC=CYW43_COUNTRY_ITALY
+waveshare_rp2350_plus_w.menu.wificountry.japan=Japan
+waveshare_rp2350_plus_w.menu.wificountry.japan.build.wificc=-DWIFICC=CYW43_COUNTRY_JAPAN
+waveshare_rp2350_plus_w.menu.wificountry.kenya=Kenya
+waveshare_rp2350_plus_w.menu.wificountry.kenya.build.wificc=-DWIFICC=CYW43_COUNTRY_KENYA
+waveshare_rp2350_plus_w.menu.wificountry.latvia=Latvia
+waveshare_rp2350_plus_w.menu.wificountry.latvia.build.wificc=-DWIFICC=CYW43_COUNTRY_LATVIA
+waveshare_rp2350_plus_w.menu.wificountry.liechtenstein=Liechtenstein
+waveshare_rp2350_plus_w.menu.wificountry.liechtenstein.build.wificc=-DWIFICC=CYW43_COUNTRY_LIECHTENSTEIN
+waveshare_rp2350_plus_w.menu.wificountry.lithuania=Lithuania
+waveshare_rp2350_plus_w.menu.wificountry.lithuania.build.wificc=-DWIFICC=CYW43_COUNTRY_LITHUANIA
+waveshare_rp2350_plus_w.menu.wificountry.luxembourg=Luxembourg
+waveshare_rp2350_plus_w.menu.wificountry.luxembourg.build.wificc=-DWIFICC=CYW43_COUNTRY_LUXEMBOURG
+waveshare_rp2350_plus_w.menu.wificountry.malaysia=Malaysia
+waveshare_rp2350_plus_w.menu.wificountry.malaysia.build.wificc=-DWIFICC=CYW43_COUNTRY_MALAYSIA
+waveshare_rp2350_plus_w.menu.wificountry.malta=Malta
+waveshare_rp2350_plus_w.menu.wificountry.malta.build.wificc=-DWIFICC=CYW43_COUNTRY_MALTA
+waveshare_rp2350_plus_w.menu.wificountry.mexico=Mexico
+waveshare_rp2350_plus_w.menu.wificountry.mexico.build.wificc=-DWIFICC=CYW43_COUNTRY_MEXICO
+waveshare_rp2350_plus_w.menu.wificountry.netherlands=Netherlands
+waveshare_rp2350_plus_w.menu.wificountry.netherlands.build.wificc=-DWIFICC=CYW43_COUNTRY_NETHERLANDS
+waveshare_rp2350_plus_w.menu.wificountry.new_zealand=New Zealand
+waveshare_rp2350_plus_w.menu.wificountry.new_zealand.build.wificc=-DWIFICC=CYW43_COUNTRY_NEW_ZEALAND
+waveshare_rp2350_plus_w.menu.wificountry.nigeria=Nigeria
+waveshare_rp2350_plus_w.menu.wificountry.nigeria.build.wificc=-DWIFICC=CYW43_COUNTRY_NIGERIA
+waveshare_rp2350_plus_w.menu.wificountry.norway=Norway
+waveshare_rp2350_plus_w.menu.wificountry.norway.build.wificc=-DWIFICC=CYW43_COUNTRY_NORWAY
+waveshare_rp2350_plus_w.menu.wificountry.peru=Peru
+waveshare_rp2350_plus_w.menu.wificountry.peru.build.wificc=-DWIFICC=CYW43_COUNTRY_PERU
+waveshare_rp2350_plus_w.menu.wificountry.philippines=Philippines
+waveshare_rp2350_plus_w.menu.wificountry.philippines.build.wificc=-DWIFICC=CYW43_COUNTRY_PHILIPPINES
+waveshare_rp2350_plus_w.menu.wificountry.poland=Poland
+waveshare_rp2350_plus_w.menu.wificountry.poland.build.wificc=-DWIFICC=CYW43_COUNTRY_POLAND
+waveshare_rp2350_plus_w.menu.wificountry.portugal=Portugal
+waveshare_rp2350_plus_w.menu.wificountry.portugal.build.wificc=-DWIFICC=CYW43_COUNTRY_PORTUGAL
+waveshare_rp2350_plus_w.menu.wificountry.singapore=Singapore
+waveshare_rp2350_plus_w.menu.wificountry.singapore.build.wificc=-DWIFICC=CYW43_COUNTRY_SINGAPORE
+waveshare_rp2350_plus_w.menu.wificountry.slovakia=Slovakia
+waveshare_rp2350_plus_w.menu.wificountry.slovakia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVAKIA
+waveshare_rp2350_plus_w.menu.wificountry.slovenia=Slovenia
+waveshare_rp2350_plus_w.menu.wificountry.slovenia.build.wificc=-DWIFICC=CYW43_COUNTRY_SLOVENIA
+waveshare_rp2350_plus_w.menu.wificountry.south_africa=South Africa
+waveshare_rp2350_plus_w.menu.wificountry.south_africa.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_AFRICA
+waveshare_rp2350_plus_w.menu.wificountry.south_korea=South Korea
+waveshare_rp2350_plus_w.menu.wificountry.south_korea.build.wificc=-DWIFICC=CYW43_COUNTRY_SOUTH_KOREA
+waveshare_rp2350_plus_w.menu.wificountry.spain=Spain
+waveshare_rp2350_plus_w.menu.wificountry.spain.build.wificc=-DWIFICC=CYW43_COUNTRY_SPAIN
+waveshare_rp2350_plus_w.menu.wificountry.sweden=Sweden
+waveshare_rp2350_plus_w.menu.wificountry.sweden.build.wificc=-DWIFICC=CYW43_COUNTRY_SWEDEN
+waveshare_rp2350_plus_w.menu.wificountry.switzerland=Switzerland
+waveshare_rp2350_plus_w.menu.wificountry.switzerland.build.wificc=-DWIFICC=CYW43_COUNTRY_SWITZERLAND
+waveshare_rp2350_plus_w.menu.wificountry.taiwan=Taiwan
+waveshare_rp2350_plus_w.menu.wificountry.taiwan.build.wificc=-DWIFICC=CYW43_COUNTRY_TAIWAN
+waveshare_rp2350_plus_w.menu.wificountry.thailand=Thailand
+waveshare_rp2350_plus_w.menu.wificountry.thailand.build.wificc=-DWIFICC=CYW43_COUNTRY_THAILAND
+waveshare_rp2350_plus_w.menu.wificountry.turkey=Turkey
+waveshare_rp2350_plus_w.menu.wificountry.turkey.build.wificc=-DWIFICC=CYW43_COUNTRY_TURKEY
+waveshare_rp2350_plus_w.menu.wificountry.uk=UK
+waveshare_rp2350_plus_w.menu.wificountry.uk.build.wificc=-DWIFICC=CYW43_COUNTRY_UK
+waveshare_rp2350_plus_w.menu.wificountry.usa=USA
+waveshare_rp2350_plus_w.menu.wificountry.usa.build.wificc=-DWIFICC=CYW43_COUNTRY_USA
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6.build.libpicow=liblwip.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6big.build.libpicow=liblwip.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a
+waveshare_rp2350_plus_w.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+waveshare_rp2350_plus_w.menu.uploadmethod.default=Default (UF2)
+waveshare_rp2350_plus_w.menu.uploadmethod.default.build.ram_length=512k
+waveshare_rp2350_plus_w.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+waveshare_rp2350_plus_w.menu.uploadmethod.default.upload.maximum_data_size=524288
+waveshare_rp2350_plus_w.menu.uploadmethod.default.upload.tool=uf2conv
+waveshare_rp2350_plus_w.menu.uploadmethod.default.upload.tool.default=uf2conv
+waveshare_rp2350_plus_w.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+waveshare_rp2350_plus_w.menu.uploadmethod.picotool=Picotool
+waveshare_rp2350_plus_w.menu.uploadmethod.picotool.build.ram_length=512k
+waveshare_rp2350_plus_w.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+waveshare_rp2350_plus_w.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+waveshare_rp2350_plus_w.menu.uploadmethod.picotool.upload.maximum_data_size=524288
+waveshare_rp2350_plus_w.menu.uploadmethod.picotool.upload.tool=picotool
+waveshare_rp2350_plus_w.menu.uploadmethod.picotool.upload.tool.default=picotool
+waveshare_rp2350_plus_w.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+waveshare_rp2350_plus_w.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=512k
+waveshare_rp2350_plus_w.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+waveshare_rp2350_plus_w.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=524288
+waveshare_rp2350_plus_w.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+waveshare_rp2350_plus_w.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Waveshare RP2350 LCD 0.96
 # -----------------------------------
 waveshare_rp2350_lcd_0_96.name=Waveshare RP2350 LCD 0.96
