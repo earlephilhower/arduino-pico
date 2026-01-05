@@ -36,7 +36,7 @@
     "name": "RP2350 Plus W",
     "upload": {
         "maximum_ram_size": 524288,
-        "maximum_size": 4194304,
+        "maximum_size": 16777216,
         "require_upload_port": true,
         "native_usb": true,
         "use_1200bps_touch": true,
