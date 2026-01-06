@@ -5,7 +5,7 @@
 #include <cyw43_wrappers.h>
 
 // Waveshare RP2350 Plus W
-// Pin definitionsL:
+// Pin definitions:
 // https://www.waveshare.com/wiki/RP2350B-Plus-W
 // https://files.waveshare.com/wiki/RP2350B-Plus-W/RP2350B-Plus-W.pdf
 // https://www.waveshare.com/w/upload/4/41/RP2350B-Plus-W-details-inter.png
@@ -179,7 +179,7 @@ static const uint8_t D37 = (35u); // GPIO35 = P8
 
 // Analog
 static const uint8_t A0 = (40u); // ADC0 = GPIO40
-static const uint8_t A1 = (41u); // ADC1 = GPIO41`
+static const uint8_t A1 = (41u); // ADC1 = GPIO41
 static const uint8_t A2 = (42u); // ADC2 = GPIO42
 static const uint8_t A3 = (43u); // ADC3 = GPIO43
 static const uint8_t A4 = (44u); // ADC4 = GPIO44
