@@ -4,12 +4,12 @@
             "earlephilhower": {
                 "boot2_source": "none.S",
                 "usb_vid": "0x2E8A",
-                "usb_pid": "0x0009"
+                "usb_pid": "0xF00A"
             }
         },
         "core": "earlephilhower",
         "cpu": "cortex-m33",
-        "extra_flags": "-DARDUINO_WAVESHARE_RP2350B_PLUS_W -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=800  -DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1",
+        "extra_flags": "-DARDUINO_WAVESHARE_RP2350B_PLUS_W -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500  -DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1",
         "f_cpu": "150000000L",
         "hwids": [
             [
@@ -18,7 +18,7 @@
             ],
             [
                 "0x2E8A",
-                "0x0009"
+                "0xF00A"
             ]
         ],
         "mcu": "rp2350",
