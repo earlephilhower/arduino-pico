@@ -67,8 +67,7 @@
 
 // LED_BUILTIN
 #define LED_BUILTIN     PIN_LED
-#define PIN_LED         (64u) // LED1 uses the Raspberry Pi Radio Module 2
-                              // "B1_GPIO0"
+#define PIN_LED         (64u) // LED1 uses the Raspberry Pi Radio Module 2 ("B1_GPIO0")
 
 // Serial
 #define PIN_SERIAL1_TX  (0u)
