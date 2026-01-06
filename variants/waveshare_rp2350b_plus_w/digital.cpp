@@ -17,19 +17,19 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-// https://datasheets.raspberrypi.com/rm2/rm2-datasheet.pdf
-// https://datasheets.raspberrypi.com/rm2/rm2-product-brief.pdf
-// https://pip.raspberrypi.com/categories/1223-design-files
-// NOTE: LED1: LED_WLGP0 B1_GPIO0
-
 /*
-    Radio Module 2 packages the same Infineon CYW43439 radio used on Raspberry
+    https://datasheets.raspberrypi.com/rm2/rm2-datasheet.pdf
+    https://datasheets.raspberrypi.com/rm2/rm2-product-brief.pdf
+    https://pip.raspberrypi.com/categories/1223-design-files
+    NOTE: LED1: LED_WLGP0 B1_GPIO0
+
+    "Radio Module 2 packages the same Infineon CYW43439 radio used on Raspberry
     Pi Pico W and Pico 2 W, featuring 1×1 single-band 2.4GHz Wi-Fi® 4 (802.11n)
     and Bluetooth® 5.2, with support for both Bluetooth Classic and Bluetooth
     Low Energy. Its integrated internal PA, LNA, and T/R switch deliver
     excellent wireless performance even when sharing a single antenna between
-    Wi-Fi and Bluetooth.
- * */
+    Wi-Fi and Bluetooth."
+*/
 
 #include "Arduino.h"
 #include <cyw43_wrappers.h>
