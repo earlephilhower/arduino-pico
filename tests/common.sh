@@ -23,6 +23,7 @@ function skip_ino()
 /HID_Bluetooth/
 /lwIP_ESPHost/
 /lwIP_WINC1500/
+/BLE/
 EOL
     fi
     # Add items to the following list with "\n" netween them to skip running.  No spaces, tabs, etc. allowed
