@@ -5,7 +5,7 @@ The PicoW can connect to a Bluetooth Classic or Bluetooth BLE keyboard,
 mouse, or joystick and receive input events from it.  As opposed to
 the ``Keyboard``, ``Mouse``, and ``Joystick`` libraries, which make
 the PicoW into a peripheral others can use, this lets the PicoW use the
-same kinds of peripherals in a master rols.
+same kinds of peripherals in a master role.
 
 BTDeviceInfo Class
 ------------------
