@@ -33,6 +33,10 @@
 #include <Adafruit_TinyUSB.h>
 #endif
 
+#ifdef __FREERTOS
+#include <FreeRTOS.h>
+#endif
+
 SPISlaveClass::SPISlaveClass(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_size_t sck, pin_size_t tx) {
     _spi = spi;
     _running = false;
@@ -160,11 +164,18 @@ void SPISlaveClass::_handleIRQ() {
     // Attempt to read out all RX FIFO datra and return to callback
     uint8_t buff[8]; // SPI FIFO 8 deep max
     int cnt;
+#ifdef __FREERTOS
+    BaseType_t  xHigherPriorityTaskWoken = pdFALSE;
+#endif
     for (cnt = 0; (cnt < 8) && spi_is_readable(_spi); cnt++) {
         buff[cnt] = spi_get_hw(_spi)->dr;
     }
     if (cnt && _recvCB) {
+#ifdef __FREERTOS
+        _recvCB(buff, cnt, &xHigherPriorityTaskWoken);
+#else
         _recvCB(buff, cnt);
+#endif
     }
     // Attempt to send as many bytes to the TX FIFO as we have/are free
     do {
@@ -172,9 +183,16 @@ void SPISlaveClass::_handleIRQ() {
             spi_get_hw(_spi)->dr = *(_dataOut++);
         }
         if (!_dataLeft && _sentCB) {
+#ifdef __FREERTOS
+            _sentCB(&xHigherPriorityTaskWoken);
+#else
             _sentCB();
+#endif
         }
     } while (spi_is_writable(_spi) & _dataLeft);
+#ifdef __FREERTOS
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);    
+#endif
     // Disable the TX FIFO IRQ if there is still no data to send or we'd always be stuck in an IRQ
     // Will be re-enabled once user does a setData
     if (!_dataLeft) {

@@ -26,8 +26,13 @@
 #include <hardware/spi.h>
 #include <functional>
 
+#ifdef __FREERTOS
+typedef std::function<void(uint8_t *data, size_t len, int32_t *hptw)> SPISlaveRecvHandler;
+typedef std::function<void(int32_t *hptw)> SPISlaveSentHandler;
+#else
 typedef std::function<void(uint8_t *data, size_t len)> SPISlaveRecvHandler;
 typedef std::function<void(void)> SPISlaveSentHandler;
+#endif
 
 class SPISlaveClass {
 public:
