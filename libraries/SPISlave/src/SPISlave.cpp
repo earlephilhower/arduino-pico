@@ -191,7 +191,7 @@ void SPISlaveClass::_handleIRQ() {
         }
     } while (spi_is_writable(_spi) & _dataLeft);
 #ifdef __FREERTOS
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);    
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 #endif
     // Disable the TX FIFO IRQ if there is still no data to send or we'd always be stuck in an IRQ
     // Will be re-enabled once user does a setData
