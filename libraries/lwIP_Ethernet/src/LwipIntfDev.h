@@ -66,12 +66,14 @@ static void _cyw43_hal_generate_laa_mac(__unused int idx, uint8_t buf[6]) {
 }
 
 
-
+#ifndef ETHERNET_LINK_STATUS_ENUM
 enum EthernetLinkStatus {
     Unknown,
     LinkON,
     LinkOFF
 };
+#define ETHERNET_LINK_STATUS_ENUM
+#endif
 
 #include <lwip_wrap.h>
 
