@@ -169,11 +169,6 @@ extern "C" void __digitalWrite(pin_size_t pin, PinStatus val);
 extern "C" PinStatus __digitalRead(pin_size_t pin);
 
 extern "C" void cyw43_pinMode(pin_size_t pin, PinMode mode) {
-#if defined PIN_LED
-    if (!__isPicoW && (pin == PIN_LED)) {
-        pin = 25;  // Silently swap in the Pico's LED
-    }
-#endif
     if (pin < 64) {
         __pinMode(pin, mode);
     } else {
@@ -182,11 +177,6 @@ extern "C" void cyw43_pinMode(pin_size_t pin, PinMode mode) {
 }
 
 extern "C" void cyw43_digitalWrite(pin_size_t pin, PinStatus val) {
-#if defined PIN_LED
-    if (!__isPicoW && (pin == PIN_LED)) {
-        pin = 25;  // Silently swap in the Pico's LED
-    }
-#endif
     if (pin < 64) {
         __digitalWrite(pin, val);
     } else {
@@ -195,11 +185,6 @@ extern "C" void cyw43_digitalWrite(pin_size_t pin, PinStatus val) {
 }
 
 extern "C" PinStatus cyw43_digitalRead(pin_size_t pin) {
-#ifdef PIN_LED
-    if (!__isPicoW && (pin == PIN_LED)) {
-        pin = 25;  // Silently swap in the Pico's LED
-    }
-#endif
     if (pin < 64) {
         return __digitalRead(pin);
     } else {
