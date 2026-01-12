@@ -33,6 +33,7 @@ public:
     static constexpr const char *CHARACTERISTIC_UUID_TX = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
 
     BLEServiceUART(int rxbuff = 32, int txbuff = 32);
+    ~BLEServiceUART();
 
     void begin();
     void begin(unsigned long baud) override;

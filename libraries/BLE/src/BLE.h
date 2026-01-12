@@ -35,6 +35,9 @@ typedef std::vector<BLEAdvertising> BLEScanReport;
 
 class BLEClass {
 public:
+    BLEClass();
+    ~BLEClass();
+
     // Start the BLE hardware up
     void begin(String name = String("")) ;
 

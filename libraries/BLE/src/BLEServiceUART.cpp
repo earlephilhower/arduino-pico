@@ -46,6 +46,15 @@ BLEServiceUART::BLEServiceUART(int rxbuff, int txbuff)
     _lastFlush = millis();
 }
 
+BLEServiceUART::~BLEServiceUART() {
+    BluetoothLock b;
+    delete _rx;
+    delete _tx;
+    delete _rxQueue;
+    delete _txQueue;
+    async_context_remove_at_time_worker(cyw43_arch_async_context(), &_flushwork);
+}
+
 void BLEServiceUART::begin() {
 }
 
@@ -99,25 +108,22 @@ int BLEServiceUART::available() {
 }
 
 bool BLEServiceUART::overflow() {
-    __lockBluetooth();
+    BluetoothLock b;
     bool ovf = _overflow;
     _overflow = false;
-    __unlockBluetooth();
     return ovf;
 }
 
 size_t BLEServiceUART::write(uint8_t c) {
     if (_txQueue->write(c)) {
         // We can just buffer it up for now, but set reminder alarm
-        noInterrupts();
+        BluetoothLock b;
         if ((_flushTimeout > 0) && (_flushAlarm < 0)) {
             _flushwork.do_work = _flushWorkCB;
             _flushwork.user_data = (void *)this;
             async_context_add_at_time_worker_in_ms(cyw43_arch_async_context(), &_flushwork, _flushTimeout);
             _flushAlarm = 1;
-            //_flushAlarm = add_alarm_in_ms(_flushTimeout, _flushcb, (void *)this, true);
         }
-        interrupts();
         return 1;
     }
     // Write buffer is full, update characteristic

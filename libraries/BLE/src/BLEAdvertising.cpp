@@ -235,4 +235,3 @@ bool BLEAdvertising::append(uint8_t c) {
     }
     return false;
 }
-

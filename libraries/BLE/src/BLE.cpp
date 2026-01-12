@@ -41,6 +41,16 @@
 
 BLEClass BLE;
 
+BLEClass::BLEClass() {
+}
+
+
+BLEClass::~BLEClass() {
+    if (_server) {
+        delete _server;
+    }
+}
+
 void BLEClass::begin(String name) {
     /*btstack_packet_callback_registration_t hci_event_callback_registration;*/
     hci_event_callback_registration = realloc(hci_event_callback_registration, sizeof(btstack_packet_callback_registration_t));
