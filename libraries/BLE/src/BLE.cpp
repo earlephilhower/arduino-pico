@@ -127,7 +127,6 @@ BLEServer *BLEClass::server() {
 
 void BLEClass::clearScan() {
     _scanResults.clear();
-    _scanResults.shrink_to_fit();
 }
 
 
@@ -138,12 +137,6 @@ BLEScanReport *BLEClass::scan(int timeoutSec, bool active, int intervalms, int w
         return &_scanResults;  // BT hasn't started up
     }
 
-    // Because we really don't want to be allocating space inside the BTStack
-    // IRQ-level callback, we'll use the main app to resize things as they
-    // go along.  This requires the main app while() loop to run often enough
-    // so the pre-allocated spaces never run out.  Please forgive me.
-    _scanResults.reserve(20);
-
     // Start the scan process
     gap_set_scan_params(active ? 1 : 0, intervalms, windowms, 0 /*all*/);
     gap_start_scan();
@@ -151,17 +144,9 @@ BLEScanReport *BLEClass::scan(int timeoutSec, bool active, int intervalms, int w
     uint32_t startTime = millis();
     uint32_t timeout = timeoutSec * 1000;
     while ((millis() - startTime) < timeout) {
-        do { // Ensure we only lock for the first bit of the wait pass
-            BluetoothLock l;
-            if (_scanResults.capacity() < (_scanResults.size() + 10)) {
-                // Add 10 more spaces in user context.  BT can't run, we own the lock
-                _scanResults.reserve(_scanResults.size() + 20);
-            }
-        } while (0);
         delay(10); // Let some work get done by the BT IRQ
     }
     gap_stop_scan();
-    _scanResults.shrink_to_fit();
     return &_scanResults;
 }
 
@@ -216,17 +201,16 @@ void BLEClass::advertisementHandler(uint8_t *packet) {
 
     bd_addr_t address;
     gap_event_advertising_report_get_address(packet, address);
-    int address_type = gap_event_advertising_report_get_address_type(packet);
-    adv.setAddress(BLEAddress((uint8_t *)address, address_type == BD_ADDR_TYPE_LE_PUBLIC ? BLEPublicAddress : BLERandomAddress));
 
-    // TODO - Can advertisements change?  This should allow us to make out discovery the superset of all advertised values
     BLEAddress ba = BLEAddress(address);
-    for (size_t i = 0; i < _scanResults.size(); i++) {
-        if (_scanResults[i].address() == ba) {
-            adv = _scanResults[i];
-            break;
+    for (auto & a : _scanResults) {
+        if (a.address() == ba) {
+            return; //Already seen this one
         }
     }
+
+    int address_type = gap_event_advertising_report_get_address_type(packet);
+    adv.setAddress(BLEAddress((uint8_t *)address, address_type == BD_ADDR_TYPE_LE_PUBLIC ? BLEPublicAddress : BLERandomAddress));
 
     int8_t rssi = gap_event_advertising_report_get_rssi(packet);
     adv.setRSSI(rssi);
@@ -295,21 +279,5 @@ void BLEClass::advertisementHandler(uint8_t *packet) {
         }
     }
 
-    // Now see if we should append or overwrite an element.  Use dumb C way to avoid
-    // allocations and enable updates
-    bool updated = false;
-    for (size_t i = 0; i < _scanResults.size(); i++) {
-        if (_scanResults[i].address() == ba) {
-            _scanResults[i] = adv;
-            updated = true;
-            break;
-        }
-    }
-    if (!updated) {
-        if (_scanResults.size() < _scanResults.capacity()) {
-            _scanResults.push_back(adv);
-        } else {
-            DEBUGV("OOM for new scan result");
-        }
-    }
+    _scanResults.push_back(adv);
 }

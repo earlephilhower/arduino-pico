@@ -29,9 +29,8 @@
 #include "BLEServiceUART.h"
 #include "BLEServiceBattery.h"
 #include "BLEUUID.h"
-#include <vector>
 
-typedef std::vector<BLEAdvertising> BLEScanReport;
+typedef std::list<BLEAdvertising> BLEScanReport;
 
 class BLEClass {
 public:
