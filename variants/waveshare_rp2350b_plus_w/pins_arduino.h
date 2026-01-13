@@ -66,8 +66,8 @@
 #define ADC_RESOLUTION      (12u)
 
 // LED_BUILTIN
-#define LED_BUILTIN     PIN_LED
-#define PIN_LED         (64u) // LED1 uses the Raspberry Pi Radio Module 2 ("B1_GPIO0")
+#define LED_BUILTIN   (64u) // LED1 uses the Raspberry Pi Radio Module 2 ("B1_GPIO0")  
+#define PIN_LED       (23u) // LED2 uses RP2350B GPIO23 
 
 // Serial
 #define PIN_SERIAL1_TX  (0u)
