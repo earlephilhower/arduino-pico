@@ -23,7 +23,7 @@
 
 extern "C" void initVariant() {
     /* Waveshare rebelliously uses different pins for the CYW43 / RM2, so they
-     * need to be set to these pins from the default.
+     * need to be set to these pins, rather than using the default assignments.
      * */
     static uint cyw43_pin_array[CYW43_PIN_INDEX_WL_COUNT] = {
         36, // CYW43_PIN_INDEX_WL_REG_ON
