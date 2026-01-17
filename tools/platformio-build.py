@@ -132,7 +132,9 @@ env.Append(
         ("BOARD_NAME", '\\"%s\\"' % env.subst("$BOARD")),
         # at this point, the main.py builder script hasn't updated upload.maximum_size yet,
         # so it's the original value for the full flash.
-        ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size"))
+        ("PICO_FLASH_SIZE_BYTES", board.get("upload.maximum_size")),
+        ("FS_START", "$FS_START"),
+        ("FS_END", "$FS_END")
     ]
 )
 
