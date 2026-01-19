@@ -5,8 +5,10 @@
 // https://files.waveshare.com/wiki/RP2040-LoRa/Rp2040-lora-sch.pdf
 // https://www.waveshare.com/w/upload/8/82/RP2040-LoRa_Pinout.jpg
 
+ 
+ 
 /*
-NOTE: USB C connector, RESET button, and BOOT button are on a separate board
+    NOTE: USB C connector, RESET button, and BOOT button are on a separate board
 
                   Pin#                Pin#
                        ___[_____]___
