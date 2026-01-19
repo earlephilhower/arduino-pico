@@ -381,6 +381,9 @@
                      "name": "Waveshare RP2040 One"
                   },
                   {
+                     "name": "Waveshare RP2040 LoRa"
+                  },
+                  {
                      "name": "Waveshare RP2040 Matrix"
                   },
                   {

@@ -117,6 +117,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Waveshare RP2040 Plus
 * Waveshare RP2040 LCD 0.96
 * Waveshare RP2040 LCD 1.28
+* Waveshare RP2040 LoRa
 * Waveshare RP2040 Matrix
 * Waveshare RP2040 PiZero
 * Waveshare RP2350 Zero
