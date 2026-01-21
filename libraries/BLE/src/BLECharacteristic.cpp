@@ -164,17 +164,11 @@ void BLECharacteristic::addATTDB() {
 
 void BLECharacteristic::setConHandle(uint16_t c) {
     con_handle = c;
-    if (_cb) {
-        _cb->onConnect(this);
-    }
 }
 
 // Called when the BLE report disconnect
 void BLECharacteristic::disconnected() {
     _notificationEnabled = false;
-    if (_cb) {
-        _cb->onDisconnect(this);
-    }
 }
 
 void BLECharacteristic::requestNotify() {

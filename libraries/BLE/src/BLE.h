@@ -24,6 +24,9 @@
 #include "BLEAdvertising.h"
 #include "BLEBeacon.h"
 #include "BLECharacteristic.h"
+#include "BLEClient.h"
+#include "BLERemoteCharacteristic.h"
+#include "BLERemoteService.h"
 #include "BLEServer.h"
 #include "BLEService.h"
 #include "BLEServiceUART.h"
@@ -56,11 +59,14 @@ public:
     BLEServer *server();
 
     // Returns the single client instance
-    // BLEClient *client();
+    BLEClient *client();
 
     // Scanning is a global property, runs synchronously
     BLEScanReport *scan(int timeoutSec = 5, bool active = true, int intervalms = 100, int windowms = 99);
     void clearScan(); // Free the memory used for scan
+
+    // After scanning, find any that match out UUID and make new list
+    BLEScanReport *filter(BLEUUID service);
 
     //    bool setAdvertisedDeviceCallbacks(BLEAdvertisedDeviceCallbacks *cb);
 
@@ -72,6 +78,7 @@ private:
     void advertisementHandler(uint8_t *pkt);
 
     BLEServer *_server = nullptr;
+    BLEClient *_client = nullptr;
     BLEAddress _addr;
     BLEAdvertising _advertising;
     BLEScanReport _scanResults;

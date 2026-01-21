@@ -54,20 +54,7 @@ public:
     virtual void onWrite(BLECharacteristic *pCharacteristic) {
         printf("onWrite %p\n", pCharacteristic);
     }
-
-    virtual void onNotify(BLECharacteristic *pCharacteristic) {
-        printf("onNotify %p\n", pCharacteristic);
-    }
-
-    virtual void onConnect(BLECharacteristic *pCharacteristic) {
-        printf("onConnect %p\n", pCharacteristic);
-    }
-
-    virtual void onDisconnect(BLECharacteristic *pCharacteristic) {
-        printf("onDisconnect %p\n", pCharacteristic);
-    }
 };
-
 
 class BLECharacteristic {
 public:

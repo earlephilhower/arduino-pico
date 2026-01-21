@@ -38,6 +38,7 @@ public:
     operator bool();
     bool operator==(const BLEAddress &o);
     uint8_t *rawAddress();
+    int rawType();
 
     String toString();
 

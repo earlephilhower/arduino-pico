@@ -34,7 +34,7 @@ public:
         uuid16 = u;
     }
 
-    BLEUUID(uint8_t u[16]) {
+    BLEUUID(const uint8_t u[16]) {
         is16 = false;
         memcpy(uuid128, u, sizeof(uuid128));
     }
@@ -86,7 +86,7 @@ public:
         }
     }
 
-    bool operator==(const BLEUUID &r) {
+    bool operator==(const BLEUUID &r) const {
         if (is16 != r.is16) {
             return false;
         }
@@ -97,7 +97,18 @@ public:
         }
     }
 
-    String toString() {
+    bool operator!=(const BLEUUID &r) const {
+        if (is16 != r.is16) {
+            return true;
+        }
+        if (is16) {
+            return (uuid16 != r.uuid16);
+        } else {
+            return !!memcmp(uuid128, r.uuid128, sizeof(uuid128));
+        }
+    }
+
+    String toString() const {
         char buff[50];
         if (is16) {
             sprintf(buff, "%04x", uuid16);

@@ -73,3 +73,7 @@ bool BLEAddress::operator==(const BLEAddress &a) {
 uint8_t *BLEAddress::rawAddress() {
     return (uint8_t *)_addr;
 }
+
+int BLEAddress::rawType() {
+    return (int)_type;
+}
