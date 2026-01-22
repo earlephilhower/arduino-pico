@@ -30,6 +30,10 @@ public:
     BLEService(BLEUUID prim);
     virtual ~BLEService();
 
+    // We canna copy this object, cap'n.  Handles/etc. for btstack are singletons
+    BLEService(const BLEService& x) = delete;
+    BLEService operator=(const BLEService& x) = delete;
+
     void addCharacteristic(BLECharacteristic *c);
     void addATTDB();
 

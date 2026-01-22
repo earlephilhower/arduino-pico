@@ -38,8 +38,11 @@ public:
 
 class BLEServer {
 public:
-    BLEServer();
-    ~BLEServer();
+    virtual ~BLEServer();
+
+    // We canna copy this object, cap'n.  Handles/etc. for btstack are singletons
+    BLEServer(const BLEServer& x) = delete;
+    BLEServer operator=(const BLEServer& x) = delete;
 
     void setName(const char *name);
 
@@ -54,6 +57,8 @@ public:
 protected:
     friend class BLEClass;
 
+    // Only BLEClass can make me
+    BLEServer();
     void prepareAdvertising(BLEAdvertising *adv);
 
     uint16_t readHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
