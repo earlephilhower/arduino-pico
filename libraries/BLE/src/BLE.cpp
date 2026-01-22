@@ -175,6 +175,10 @@ BLEScanReport *BLEClass::filter(BLEUUID lookfor) {
     return &_scanResults;
 }
 
+BLEScanReport *BLEClass::scan(BLEUUID lookfor, int timeoutSec, bool active, int intervalms, int windowms) {
+    scan(timeoutSec, active, intervalms, windowms);
+    return filter(lookfor);
+}
 
 uint16_t BLEClass::readHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t offset, uint8_t *buffer, uint16_t buffer_size) {
     if (_server) {

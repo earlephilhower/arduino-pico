@@ -63,6 +63,7 @@ public:
 
     // Scanning is a global property, runs synchronously
     BLEScanReport *scan(int timeoutSec = 5, bool active = true, int intervalms = 100, int windowms = 99);
+    BLEScanReport *scan(BLEUUID service, int timeoutSec = 5, bool active = true, int intervalms = 100, int windowms = 99);
     void clearScan(); // Free the memory used for scan
 
     // After scanning, find any that match out UUID and make new list
