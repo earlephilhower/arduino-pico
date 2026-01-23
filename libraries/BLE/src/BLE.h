@@ -86,8 +86,9 @@ private:
 
     //    BLEAdvertisedDeviceCallbacks *_scanCB = nullptr;
 
-    /*btstack_packet_callback_registration_t hci_event_callback_registration;*/
+    /*btstack_packet_callback_registration_t {hci,sm}_event_callback_registration;*/
     void *hci_event_callback_registration = nullptr;
+    void *sm_event_callback_registration = nullptr;
     /*att_service_handler_t service_handler;*/
     void *service_handler = nullptr;
 };

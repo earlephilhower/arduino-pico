@@ -42,6 +42,12 @@
 BLEClass BLE;
 
 BLEClass::BLEClass() {
+    /*btstack_packet_callback_registration_t hci_event_callback_registration;*/
+    hci_event_callback_registration = malloc(sizeof(btstack_packet_callback_registration_t));
+    /*btstack_packet_callback_registration_t sm_event_callback_registration;*/
+    sm_event_callback_registration = malloc(sizeof(btstack_packet_callback_registration_t));
+    /*att_service_handler_t service_handler;*/
+    service_handler = realloc(service_handler, sizeof(att_service_handler_t));
 }
 
 BLEClass::~BLEClass() {
@@ -51,23 +57,27 @@ BLEClass::~BLEClass() {
     if (_client) {
         delete _client;
     }
+    free(hci_event_callback_registration);
+    free(sm_event_callback_registration);
+    free(service_handler);
 }
 
 void BLEClass::begin(String name) {
-    /*btstack_packet_callback_registration_t hci_event_callback_registration;*/
-    hci_event_callback_registration = realloc(hci_event_callback_registration, sizeof(btstack_packet_callback_registration_t));
-    /*att_service_handler_t service_handler;*/
-    service_handler = realloc(service_handler, sizeof(att_service_handler_t));
 
     _advertising.setName(name.c_str());
 
     l2cap_init();
     sm_init();
 
+    // Register hci handler
     btstack_packet_callback_registration_t *h = (btstack_packet_callback_registration_t *)hci_event_callback_registration;
     bzero(h, sizeof(*h));
     h->callback = PACKETHANDLERCB(BLEClass, packetHandler);
     hci_add_event_handler(h);
+    // And SM too
+    h = (btstack_packet_callback_registration_t *)sm_event_callback_registration;
+    bzero(h, sizeof(*h));
+    h->callback = PACKETHANDLERCB(BLEClass, packetHandler);
     sm_add_event_handler(h);
 
     hci_power_control(HCI_POWER_ON);
