@@ -248,7 +248,7 @@ bool BLERemoteCharacteristic::setValue(double data64) {
 
 bool BLERemoteCharacteristic::enableNotifications() {
     if (!canNotify()) {
-        printf("cant notify\n");
+        printf("can't notify\n");
         return false;
     }
     if (_notifyOn) {
