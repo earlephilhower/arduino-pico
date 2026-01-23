@@ -27,6 +27,7 @@
 #include "BLEClient.h"
 #include "BLERemoteCharacteristic.h"
 #include "BLERemoteService.h"
+#include "BLESecurity.h"
 #include "BLEServer.h"
 #include "BLEService.h"
 #include "BLEServiceUART.h"
@@ -40,11 +41,15 @@ public:
     BLEClass();
     ~BLEClass();
 
+    // Configure the secutiry model, must be called before begin
+    void setSecurity(BLESecurityMode m);
+
     // Start the BLE hardware up
     void begin(String name = String("")) ;
 
     // Return this BLE device's address
     BLEAddress address();
+
 
 
     // Advertising (31-byte broadcast)
@@ -83,6 +88,7 @@ private:
     BLEAddress _addr;
     BLEAdvertising _advertising;
     BLEScanReport _scanResults;
+    BLESecurityMode _secMode = BLESecurityNone;
 
     //    BLEAdvertisedDeviceCallbacks *_scanCB = nullptr;
 

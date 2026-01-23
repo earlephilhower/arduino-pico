@@ -72,6 +72,10 @@ void BLEServer::setName(const char *name) {
     _name = strdup(name);
 }
 
+void BLEServer::setSecurity(BLESecurityMode m) {
+    _secMode = m;
+}
+
 String BLEServer::toString() {
     prepareAdvertising(BLE.advertising());
     uint8_t *p = att_db_util_get_address();
@@ -137,56 +141,12 @@ void BLEServer::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
             if (_serverCB) {
                 _serverCB->onConnect(this);
             }
-            //            sm_request_pairing(con_handle);
+            if (_secMode != BLESecurityNone) {
+                sm_request_pairing(con_handle);
+            }
             break;
         }
         break;
-#if 0
-    case SM_EVENT_JUST_WORKS_REQUEST:
-        printf("Just Works requested\n");
-        sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
-        break;
-    case SM_EVENT_NUMERIC_COMPARISON_REQUEST:
-        printf("Confirming numeric comparison: %" PRIu32 "\n", sm_event_numeric_comparison_request_get_passkey(packet));
-        sm_numeric_comparison_confirm(sm_event_passkey_display_number_get_handle(packet));
-        break;
-    case SM_EVENT_PASSKEY_DISPLAY_NUMBER:
-        printf("Display Passkey: %" PRIu32 "\n", sm_event_passkey_display_number_get_passkey(packet));
-        break;
-    case SM_EVENT_IDENTITY_CREATED:
-        sm_event_identity_created_get_identity_address(packet, addr);
-        printf("Identity created: type %u address %s\n", sm_event_identity_created_get_identity_addr_type(packet), bd_addr_to_str(addr));
-        break;
-    case SM_EVENT_IDENTITY_RESOLVING_SUCCEEDED:
-        sm_event_identity_resolving_succeeded_get_identity_address(packet, addr);
-        printf("Identity resolved: type %u address %s\n", sm_event_identity_resolving_succeeded_get_identity_addr_type(packet), bd_addr_to_str(addr));
-        break;
-    case SM_EVENT_IDENTITY_RESOLVING_FAILED:
-        sm_event_identity_created_get_address(packet, addr);
-        printf("Identity resolving failed\n");
-        break;
-    case SM_EVENT_PAIRING_STARTED:
-        printf("Pairing started\n");
-        break;
-    case SM_EVENT_PAIRING_COMPLETE:
-        switch (sm_event_pairing_complete_get_status(packet)) {
-        case ERROR_CODE_SUCCESS:
-            printf("Pairing complete, success\n");
-            break;
-        case ERROR_CODE_CONNECTION_TIMEOUT:
-            printf("Pairing failed, timeout\n");
-            break;
-        case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
-            printf("Pairing failed, disconnected\n");
-            break;
-        case ERROR_CODE_AUTHENTICATION_FAILURE:
-            printf("Pairing failed, authentication failure with reason = %u\n", sm_event_pairing_complete_get_reason(packet));
-            break;
-        default:
-            break;
-        }
-        break;
-#endif
     // Disconnected from a client
     case HCI_EVENT_DISCONNECTION_COMPLETE:
         if (con_handle) {

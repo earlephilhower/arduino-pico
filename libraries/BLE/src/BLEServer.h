@@ -60,6 +60,7 @@ protected:
     // Only BLEClass can make me
     BLEServer();
     void prepareAdvertising(BLEAdvertising *adv);
+    void setSecurity(BLESecurityMode m);
 
     uint16_t readHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
     int writeHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
@@ -70,4 +71,5 @@ protected:
     char *_name = nullptr;
     uint16_t con_handle = 0;
     uint16_t _nameHandle = 0;
+    BLESecurityMode _secMode = BLESecurityNone;
 };

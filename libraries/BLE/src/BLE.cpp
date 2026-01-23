@@ -62,6 +62,10 @@ BLEClass::~BLEClass() {
     free(service_handler);
 }
 
+void BLEClass::setSecurity(BLESecurityMode m) {
+    _secMode = m;
+}
+
 void BLEClass::begin(String name) {
 
     _advertising.setName(name.c_str());
@@ -79,6 +83,11 @@ void BLEClass::begin(String name) {
     bzero(h, sizeof(*h));
     h->callback = PACKETHANDLERCB(BLEClass, packetHandler);
     sm_add_event_handler(h);
+
+    if (_secMode == BLESecurityJustWorks) {
+        sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
+        sm_set_authentication_requirements(0 | SM_AUTHREQ_BONDING);
+    }
 
     hci_power_control(HCI_POWER_ON);
 
@@ -132,6 +141,7 @@ BLEServer *BLEClass::server() {
     if (!_server) {
         _server = new BLEServer;
         _server->setName(_advertising.getName());
+        _server->setSecurity(_secMode);
     }
     return _server;
 }
@@ -224,6 +234,52 @@ void BLEClass::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, ui
         case GAP_EVENT_ADVERTISING_REPORT:
             advertisementHandler(packet);
             break;
+
+        case SM_EVENT_JUST_WORKS_REQUEST:
+            printf("Just Works requested\n");
+            sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
+            break;
+        case SM_EVENT_NUMERIC_COMPARISON_REQUEST:
+            printf("Confirming numeric comparison: %" PRIu32 "\n", sm_event_numeric_comparison_request_get_passkey(packet));
+            sm_numeric_comparison_confirm(sm_event_passkey_display_number_get_handle(packet));
+            break;
+        case SM_EVENT_PASSKEY_DISPLAY_NUMBER:
+            printf("Display Passkey: %" PRIu32 "\n", sm_event_passkey_display_number_get_passkey(packet));
+            break;
+        case SM_EVENT_IDENTITY_CREATED:
+            sm_event_identity_created_get_identity_address(packet, addr);
+            printf("Identity created: type %u address %s\n", sm_event_identity_created_get_identity_addr_type(packet), bd_addr_to_str(addr));
+            break;
+        case SM_EVENT_IDENTITY_RESOLVING_SUCCEEDED:
+            sm_event_identity_resolving_succeeded_get_identity_address(packet, addr);
+            printf("Identity resolved: type %u address %s\n", sm_event_identity_resolving_succeeded_get_identity_addr_type(packet), bd_addr_to_str(addr));
+            break;
+        case SM_EVENT_IDENTITY_RESOLVING_FAILED:
+            sm_event_identity_created_get_address(packet, addr);
+            printf("Identity resolving failed\n");
+            break;
+        case SM_EVENT_PAIRING_STARTED:
+            printf("Pairing started\n");
+            break;
+        case SM_EVENT_PAIRING_COMPLETE:
+            switch (sm_event_pairing_complete_get_status(packet)) {
+            case ERROR_CODE_SUCCESS:
+                printf("Pairing complete, success\n");
+                break;
+            case ERROR_CODE_CONNECTION_TIMEOUT:
+                printf("Pairing failed, timeout\n");
+                break;
+            case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
+                printf("Pairing failed, disconnected\n");
+                break;
+            case ERROR_CODE_AUTHENTICATION_FAILURE:
+                printf("Pairing failed, authentication failure with reason = %u\n", sm_event_pairing_complete_get_reason(packet));
+                break;
+            default:
+                break;
+            }
+            break;
+
         default:
             break;
         }

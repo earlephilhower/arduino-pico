@@ -1,8 +1,7 @@
 // Demonstrates BLEClient usage (and stress test)
 
 // To use:
-// Run a copy of CharacteristicOnWrite on another PicoW and press
-// its' BOOTSEL to enable advertising.
+// Run a copy of CharacteristicOnWrite on another PicoW
 // Then run this sketch on a separate PicoW to demonstrate
 // 1. Scanning for specific BLE services
 // 2. Automatically connecting to the remote PicoW

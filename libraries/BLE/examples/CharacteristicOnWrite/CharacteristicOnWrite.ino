@@ -21,7 +21,7 @@ BLECharacteristic led(BLEUUID("c3feed71-b50c-400a-836c-c8981beb0b1c"), BLEWrite,
 BLECharacteristic uptime(BLEUUID("c3feed72-b50c-400a-836c-c8981beb0b1c"), BLERead | BLENotify, "Uptime in seconds");
 
 
-bool on = false; // Advertising toggle
+bool on = true; // Advertising toggle
 uint32_t u; // Last uptime change
 
 
@@ -32,8 +32,11 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
+  // If we want to require bonding must set it before BLE.begin()
+  // BLE.setSecurity(BLESecurityJustWorks);
+
   // Start BT and BLE with our name
-  BLE.begin("PicoW");
+  BLE.begin("PicoWsecure");
 
   // Characteristics need to belong to a Service, so add in LED and Uptime
   service.addCharacteristic(&led);
@@ -56,6 +59,9 @@ void setup() {
   // It is also possible to set a class for the callbacks.  Implement a subclass of "class CharacteriscitCallback"
   // and use characteristic.setCallbacks(&myclassinstance).  This is used by the BLEServiceUART class to provide
   // a self-contained BLE service object.
+
+  //Announce our presence
+  BLE.startAdvertising();
 }
 
 void loop() {
