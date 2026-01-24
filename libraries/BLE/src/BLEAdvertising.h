@@ -71,7 +71,7 @@ public:
     uint8_t getBlobLen();
 
     void setAddress(BLEAddress addr);
-    BLEAddress address();
+    BLEAddress getAddress();
 
     void setRSSI(int8_t rssi);
 

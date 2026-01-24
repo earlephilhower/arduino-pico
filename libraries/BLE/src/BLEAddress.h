@@ -37,12 +37,16 @@ public:
 
     operator bool();
     bool operator==(const BLEAddress &o);
-    uint8_t *rawAddress();
-    int rawType();
 
     String toString();
 
 protected:
+    friend class BLEClass;
+    friend class BLEClient;
+
+    uint8_t *rawAddress();
+    int rawType();
+
     BLEMAC _addr;
     BLEAddressType _type;
 };

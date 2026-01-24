@@ -302,7 +302,7 @@ void BLEClass::advertisementHandler(uint8_t *packet) {
 
     BLEAddress ba = BLEAddress(address);
     for (auto & a : _scanResults) {
-        if (a.address() == ba) {
+        if (a.getAddress() == ba) {
             return; //Already seen this one
         }
     }

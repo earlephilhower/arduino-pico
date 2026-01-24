@@ -51,10 +51,8 @@ public:
     BLEAddress address();
 
     // Advertising (31-byte broadcast)
-    BLEAdvertising *advertising();
     void startAdvertising();
     void stopAdvertising();
-
 
     // All real work happens in a BLEServer or BLEClient
 
@@ -71,7 +69,10 @@ public:
 
 
 private:
+    friend class BLEBeacon;
+    friend class BLEServer;
 
+    BLEAdvertising *advertising();
     // After scanning, find any that match out UUID and make new list
     BLEScanReport *filter(BLEUUID service);
 

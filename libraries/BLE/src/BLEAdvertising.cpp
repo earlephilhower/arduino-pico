@@ -220,7 +220,7 @@ void BLEAdvertising::setAddress(BLEAddress addr) {
     _addr = addr;
 }
 
-BLEAddress BLEAdvertising::address() {
+BLEAddress BLEAdvertising::getAddress() {
     return BLEAddress(_addr);
 }
 
