@@ -24,19 +24,6 @@
 #include "BLEUUID.h"
 #include "BLEAddress.h"
 
-class BLEServer;
-class BLEAdvertising;
-
-class BLEAdvertisedDeviceCallbacks {
-public:
-    virtual void onStop(BLEServer *p) {
-        printf("BLEScanCB onStop %p\n", p);
-    }
-    virtual void onReport(BLEServer *p, BLEAdvertising *a) {
-        printf("BLEScanCB onReport %p %p\n", p, a);
-    }
-};
-
 class BLEAdvertising {
 public:
     BLEAdvertising();

@@ -34,7 +34,7 @@ BLERemoteCharacteristic::BLERemoteCharacteristic(uint16_t con, const void /*gatt
     con_handle = con;
     gatt_client_characteristic_t *ch = (gatt_client_characteristic_t *)cha;
     _uuid = ch->uuid16 ? BLEUUID(ch->uuid16) : BLEUUID(ch->uuid128);
-    printf("%s\n", _uuid.toString().c_str());
+    DEBUGBLE("%s\n", _uuid.toString().c_str());
     memcpy(_gcc, cha, sizeof(gatt_client_characteristic_t));
 }
 
@@ -68,26 +68,26 @@ void BLERemoteCharacteristic::packetHandler(uint8_t type, uint16_t channel, uint
 
     switch (hci_event_packet_get_type(packet)) {
     case GATT_EVENT_CHARACTERISTIC_VALUE_QUERY_RESULT:
-        printf("GATT_EVENT_CHARACTERISTIC_VALUE_QUERY_RESULT\n");
+        DEBUGBLE("GATT_EVENT_CHARACTERISTIC_VALUE_QUERY_RESULT\n");
         _remoteValueLen = gatt_event_characteristic_value_query_result_get_value_length(packet);
         _remoteValue = realloc(_remoteValue, _remoteValueLen);
         memcpy(_remoteValue, gatt_event_characteristic_value_query_result_get_value(packet), _remoteValueLen);
         break;
 
     case GATT_EVENT_ALL_CHARACTERISTIC_DESCRIPTORS_QUERY_RESULT:
-        printf("GATT_EVENT_ALL_CHARACTERISTIC_DESCRIPTORS_QUERY_RESULT\n");
+        DEBUGBLE("GATT_EVENT_ALL_CHARACTERISTIC_DESCRIPTORS_QUERY_RESULT\n");
         gatt_event_all_characteristic_descriptors_query_result_get_characteristic_descriptor(packet, &_gattDescriptor[_gattDescriptors++]);
         break;
 
     case GATT_EVENT_CHARACTERISTIC_DESCRIPTOR_QUERY_RESULT:
-        printf("GATT_EVENT_CHARACTERISTIC_DESCRIPTOR_QUERY_RESULT\n");
+        DEBUGBLE("GATT_EVENT_CHARACTERISTIC_DESCRIPTOR_QUERY_RESULT\n");
         _description = (char *)malloc(gatt_event_characteristic_descriptor_query_result_get_descriptor_length(packet) + 1);
         memcpy(_description, gatt_event_characteristic_descriptor_query_result_get_descriptor(packet), gatt_event_characteristic_descriptor_query_result_get_descriptor_length(packet));
         _description[gatt_event_characteristic_descriptor_query_result_get_descriptor_length(packet)] = 0;
         break;
 
     case GATT_EVENT_NOTIFICATION:
-        printf("GATT_EVENT_NOTIFICATION\n");
+        DEBUGBLE("GATT_EVENT_NOTIFICATION\n");
         if (gatt_event_notification_get_value_handle(packet) == _gattCharacteristic->value_handle) {
             if (_charCB) {
                 _charCB->onNotify(this, gatt_event_notification_get_value(packet), gatt_event_notification_get_value_length(packet));
@@ -96,12 +96,12 @@ void BLERemoteCharacteristic::packetHandler(uint8_t type, uint16_t channel, uint
                 (_cbFn)(this, gatt_event_notification_get_value(packet), gatt_event_notification_get_value_length(packet));
             }
         } else {
-            printf("Got unexpected notification CB!\n");
+            DEBUGBLE("Got unexpected notification CB!\n");
         }
         break;
 
     case GATT_EVENT_QUERY_COMPLETE:
-        printf("GATT_EVENT_QUERY_COMPLETE\n");
+        DEBUGBLE("GATT_EVENT_QUERY_COMPLETE\n");
         *_cbflag = false;
         break;
     }
@@ -160,7 +160,7 @@ void *BLERemoteCharacteristic::valueData() {
 String BLERemoteCharacteristic::getDescription() {
     gatt_client_characteristic_descriptor_t *d = (gatt_client_characteristic_descriptor_t *)description();
     if (!d || !con_handle) {
-        printf("no secrription descriptor found\n");
+        DEBUGBLE("no secrription descriptor found\n");
         free(_description);
         _description = nullptr;
         return String("");
@@ -188,7 +188,7 @@ bool BLERemoteCharacteristic::_waitForCompletion(volatile bool &waitForCB) {
         delay(50);
     }
     if (waitForCB) {
-        printf("timeout\n");
+        DEBUGBLE("timeout\n");
     }
     return !waitForCB;
 }
@@ -248,11 +248,11 @@ bool BLERemoteCharacteristic::setValue(double data64) {
 
 bool BLERemoteCharacteristic::enableNotifications() {
     if (!canNotify()) {
-        printf("can't notify\n");
+        DEBUGBLE("can't notify\n");
         return false;
     }
     if (_notifyOn) {
-        printf("notify already on\n");
+        DEBUGBLE("notify already on\n");
         return true;
     }
     volatile bool waitForCB = true;

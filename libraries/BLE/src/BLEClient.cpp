@@ -30,6 +30,7 @@
 #include "BLERemoteCharacteristic.h"
 
 #include "BLECB.h"
+#include "BLEDebug.h"
 
 BLEClient::BLEClient() { }
 BLEClient::~BLEClient() { }
@@ -189,14 +190,14 @@ void BLEClient::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
     }
     switch (hci_event_packet_get_type(packet)) {
     case HCI_EVENT_META_GAP:
-        printf("HCI_EVENT_META_GAP\n");
+        DEBUGBLE("HCI_EVENT_META_GAP\n");
         if (hci_event_gap_meta_get_subevent_code(packet) != GAP_SUBEVENT_LE_CONNECTION_COMPLETE) {
             break;
         }
         con_handle = hci_subevent_le_connection_complete_get_connection_handle(packet);
         break;
     case HCI_EVENT_DISCONNECTION_COMPLETE:
-        printf("HCI_EVENT_DISCONNECTION_COMPLETE\n");
+        DEBUGBLE("HCI_EVENT_DISCONNECTION_COMPLETE\n");
         for (auto &s : _service) {
             s->disconnect();
             delete s;
@@ -207,7 +208,7 @@ void BLEClient::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
         }
         break;
     case GATT_EVENT_SERVICE_QUERY_RESULT:
-        printf("GATT_EVENT_SERVICE_QUERY_RESULT\n");
+        DEBUGBLE("GATT_EVENT_SERVICE_QUERY_RESULT\n");
         gatt_event_service_query_result_get_service(packet, &service);
         if (service.uuid16) {
             _service.push_back(new BLERemoteService(con_handle, BLEUUID(service.uuid16), (void *)&service));
@@ -216,11 +217,11 @@ void BLEClient::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
         }
         break;
     case GATT_EVENT_CHARACTERISTIC_QUERY_RESULT:
-        printf("GATT_EVENT_CHARACTERISTIC_QUERY_RESULT\n");
+        DEBUGBLE("GATT_EVENT_CHARACTERISTIC_QUERY_RESULT\n");
         gatt_event_characteristic_query_result_get_characteristic(packet, &characteristic);
         break;
     case GATT_EVENT_QUERY_COMPLETE:
-        printf("GATT_EVENT_QUERY_COMPLETE\n");
+        DEBUGBLE("GATT_EVENT_QUERY_COMPLETE\n");
         _waitingForCB = false;
         break;
     }

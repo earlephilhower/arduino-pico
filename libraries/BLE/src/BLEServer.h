@@ -23,16 +23,17 @@
 #include <Arduino.h>
 #include "BLEService.h"
 #include "BLEAdvertising.h"
+#include "BLEDebug.h"
 
 class BLEServer;
 
 class BLEServerCallbacks {
 public:
     virtual void onConnect(BLEServer *p) {
-        printf("BLEServer connect: %p\n", p);
+        DEBUGBLE("BLEServer connect: %p\n", p);
     }
     virtual void onDisconnect(BLEServer *p) {
-        printf("BLEServer disconnect: %p\n", p);
+        DEBUGBLE("BLEServer disconnect: %p\n", p);
     }
 };
 
