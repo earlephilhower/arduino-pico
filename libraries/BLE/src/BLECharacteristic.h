@@ -180,11 +180,11 @@ public:
     size_t valueLen();
     const void *valueData();
 
-    void addATTDB();
 
 protected:
     friend class BLEService;
 
+    void addATTDB();
     virtual void setConHandle(uint16_t c);
     virtual void disconnected();
 

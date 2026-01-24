@@ -50,8 +50,6 @@ public:
     // Return this BLE device's address
     BLEAddress address();
 
-
-
     // Advertising (31-byte broadcast)
     BLEAdvertising *advertising();
     void startAdvertising();
@@ -71,12 +69,11 @@ public:
     BLEScanReport *scan(BLEUUID service, int timeoutSec = 5, bool active = true, int intervalms = 100, int windowms = 99);
     void clearScan(); // Free the memory used for scan
 
-    // After scanning, find any that match out UUID and make new list
-    BLEScanReport *filter(BLEUUID service);
-
-    //    bool setAdvertisedDeviceCallbacks(BLEAdvertisedDeviceCallbacks *cb);
 
 private:
+
+    // After scanning, find any that match out UUID and make new list
+    BLEScanReport *filter(BLEUUID service);
 
     uint16_t readHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
     int writeHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);

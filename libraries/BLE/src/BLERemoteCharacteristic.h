@@ -60,9 +60,6 @@ public:
     bool canWriteWithoutResponse();
     bool canNotify();
 
-    // Actually grab the remote data
-    void pollRemote();
-
     size_t valueLen();
     void *valueData();
 
@@ -192,6 +189,9 @@ protected:
 
     // Only BLERemoteService can make an object like this
     BLERemoteCharacteristic(uint16_t con, const void /*gatt_client_characteristic_t*/ *ch);
+
+    // Actually grab the remote data
+    void pollRemote();
 
 
     void scanDescriptors(volatile bool *flag);

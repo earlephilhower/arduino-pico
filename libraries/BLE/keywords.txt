@@ -6,14 +6,114 @@
 # Datatypes (KEYWORD1)
 #######################################
 
+BLE	KEYWORD1
+BLEAdvertising	KEYWORD1
+BLEAddress	KEYWORD1
+BLEBeacon	KEYWORD1
+BLECharacteristic	KEYWORD1
+BLECharacteristicCallbacks	KEYWORD1
+BLEClient	KEYWORD1
+BLERemoteCharacteristic	KEYWORD1
+BLERemoteCharacteristicCallbacks	KEYWORD1
+BLERemoteService	KEYWORD1
 BLEServer	KEYWORD1
+BLEServerCallbacks	KEYWORD1
+BLEService	KEYWORD1
+BLEServiceBattery	KEYWORD1
+BLEServiceUART	KEYWORD1
+BLEUUID	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 begin	KEYWORD2
 end	KEYWORD2
+rawAddress	KEYWORD2
+rawType	KEYWORD2
+toString	KEYWORD2
+setName	KEYWORD2
+getName	KEYWORD2
+setOnlyUUID	KEYWORD2
+setPartialUUID	KEYWORD2
+getUUID	KEYWORD2
+setAppearance	KEYWORD2
+getAppearance	KEYWORD2
+setURL	KEYWORD2
+setManufacturerData	KEYWORD2
+getManufacturerData	KEYWORD2
+setAdvertisingIntervalMin	KEYWORD2
+getAdvertisingIntervalMin	KEYWORD2
+setAdvertisingIntervalMax	KEYWORD2
+getAdvertisingIntervalMax	KEYWORD2
+build	KEYWORD2
+getBlob	KEYWORD2
+getBlobLen	KEYWORD2
+setAddress	KEYWORD2
+address	KEYWORD2
+setRSSI	KEYWORD2
+setUUID	KEYWORD2
+setCompanyID	KEYWORD2
+setMajorMinor	KEYWORD2
+setTXPower	KEYWORD2
+onRead	KEYWORD2
+onWrite	KEYWORD2
+setCallbacks	KEYWORD2
+setValue	KEYWORD2
+valueLen	KEYWORD2
+valueData	KEYWORD2
+getBool	KEYWORD2
+getChar	KEYWORD2
+getInt8	KEYWORD2
+getUChar	KEYWORD2
+getUInt8	KEYWORD2
+getShort	KEYWORD2
+getInt16	KEYWORD2
+getUShort	KEYWORD2
+getUInt16	KEYWORD2
+getInt	KEYWORD2
+getInt32	KEYWORD2
+getUInt	KEYWORD2
+getUInt32	KEYWORD2
+getLong	KEYWORD2
+getULong	KEYWORD2
+getLongLong	KEYWORD2
+getInt64	KEYWORD2
+getULongLong	KEYWORD2
+getUint64	KEYWORD2
+getFloat	KEYWORD2
+getDouble	KEYWORD2
+getString	KEYWORD2
+connect	KEYWORD2
+disconnect	KEYWORD2
+services	KEYWORD2
+service	KEYWORD2
+setTimeout	KEYWORD2
+advertising	KEYWORD2
+startAdvertising	KEYWORD2
+stopAdvertising	KEYWORD2
+server	KEYWORD2
+client	KEYWORD2
+scan	KEYWORD2
+clearScan	KEYWORD2
+canRead	KEYWORD2
+canWrite	KEYWORD2
+canWriteWithoutResponse	KEYWORD2
+canNotify	KEYWORD2
+onNotify	KEYWORD2
+enableNotifications	KEYWORD2
+disableNotifications	KEYWORD2
+characteristic	KEYWORD2
+BLERemoteServiceList	KEYWORD2
+BLERemoteCharacteristicList	KEYWORD2
+BLEScanReport	KEYWORD2
+BLESecurityMode	KEYWORD2
+addService	KEYWORD2
+set	KEYWORD2
+setAutoflush	KEYWORD2
+setSecurity	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
+BLESecurityNone	LITERAL1
+BLESecurityJustWorks	LITERAL1

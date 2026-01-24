@@ -35,12 +35,12 @@ public:
     BLEService operator=(const BLEService& x) = delete;
 
     void addCharacteristic(BLECharacteristic *c);
-    void addATTDB();
 
 protected:
     friend class BLEServer;
     // Called when the BLE connects to pass down the con_handle
     virtual void setConHandle(uint16_t h);
+    void addATTDB();
 
     // Called when the BLE report disconnect
     virtual void disconnected();
