@@ -231,7 +231,7 @@ bool File::stat(FSStat *st) {
     }
     size_t pos = position();
     seek(0, SeekEnd);
-    st->size = position() - pos;
+    st->size = position();
     seek(pos, SeekSet);
     st->blocksize = 0; // Not set here
     st->ctime = getCreationTime();
