@@ -36268,6 +36268,250 @@ waveshare_rp2040_one.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe
 waveshare_rp2040_one.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
+# Waveshare RP2040 LoRa
+# -----------------------------------
+waveshare_rp2040_lora.name=Waveshare RP2040 LoRa
+waveshare_rp2040_lora.vid.0=0x2e8a
+waveshare_rp2040_lora.pid.0=0x0003
+waveshare_rp2040_lora.vid.1=0x2e8a
+waveshare_rp2040_lora.pid.1=0x0103
+waveshare_rp2040_lora.vid.2=0x2e8a
+waveshare_rp2040_lora.pid.2=0x4003
+waveshare_rp2040_lora.vid.3=0x2e8a
+waveshare_rp2040_lora.pid.3=0x4103
+waveshare_rp2040_lora.vid.4=0x2e8a
+waveshare_rp2040_lora.pid.4=0x8003
+waveshare_rp2040_lora.vid.5=0x2e8a
+waveshare_rp2040_lora.pid.5=0x8103
+waveshare_rp2040_lora.vid.6=0x2e8a
+waveshare_rp2040_lora.pid.6=0xc003
+waveshare_rp2040_lora.vid.7=0x2e8a
+waveshare_rp2040_lora.pid.7=0xc103
+waveshare_rp2040_lora.upload_port.0.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.0.pid=0x0003
+waveshare_rp2040_lora.upload_port.1.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.1.pid=0x0103
+waveshare_rp2040_lora.upload_port.2.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.2.pid=0x4003
+waveshare_rp2040_lora.upload_port.3.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.3.pid=0x4103
+waveshare_rp2040_lora.upload_port.4.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.4.pid=0x8003
+waveshare_rp2040_lora.upload_port.5.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.5.pid=0x8103
+waveshare_rp2040_lora.upload_port.6.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.6.pid=0xc003
+waveshare_rp2040_lora.upload_port.7.vid=0x2e8a
+waveshare_rp2040_lora.upload_port.7.pid=0xc103
+waveshare_rp2040_lora.build.usbvid=-DUSBD_VID=0x2e8a
+waveshare_rp2040_lora.build.usbpid=-DUSBD_PID=0x0003
+waveshare_rp2040_lora.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+waveshare_rp2040_lora.build.board=WAVESHARE_RP2040_LORA
+waveshare_rp2040_lora.build.mcu=cortex-m0plus
+waveshare_rp2040_lora.build.chip=rp2040
+waveshare_rp2040_lora.build.toolchain=arm-none-eabi
+waveshare_rp2040_lora.build.toolchainpkg=pqt-gcc
+waveshare_rp2040_lora.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+waveshare_rp2040_lora.build.uf2family=--family rp2040
+waveshare_rp2040_lora.build.variant=waveshare_rp2040_lora
+waveshare_rp2040_lora.upload.maximum_size=2097152
+waveshare_rp2040_lora.upload.wait_for_upload_port=true
+waveshare_rp2040_lora.upload.erase_cmd=
+waveshare_rp2040_lora.serial.disableDTR=false
+waveshare_rp2040_lora.serial.disableRTS=false
+waveshare_rp2040_lora.build.f_cpu=125000000
+waveshare_rp2040_lora.build.led=
+waveshare_rp2040_lora.build.core=rp2040
+waveshare_rp2040_lora.build.ldscript=memmap_default.ld
+waveshare_rp2040_lora.build.boot2=boot2_w25q16jvxq_4_padded_checksum
+waveshare_rp2040_lora.build.usb_manufacturer="Waveshare"
+waveshare_rp2040_lora.build.usb_product="RP2040 LoRa"
+waveshare_rp2040_lora.menu.flash.2097152_0=2MB (no FS)
+waveshare_rp2040_lora.menu.flash.2097152_0.upload.maximum_size=2093056
+waveshare_rp2040_lora.menu.flash.2097152_0.build.flash_total=2097152
+waveshare_rp2040_lora.menu.flash.2097152_0.build.flash_length=2093056
+waveshare_rp2040_lora.menu.flash.2097152_0.build.eeprom_start=270528512
+waveshare_rp2040_lora.menu.flash.2097152_0.build.fs_start=270528512
+waveshare_rp2040_lora.menu.flash.2097152_0.build.fs_end=270528512
+waveshare_rp2040_lora.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+waveshare_rp2040_lora.menu.flash.2097152_65536.upload.maximum_size=2027520
+waveshare_rp2040_lora.menu.flash.2097152_65536.build.flash_total=2097152
+waveshare_rp2040_lora.menu.flash.2097152_65536.build.flash_length=2027520
+waveshare_rp2040_lora.menu.flash.2097152_65536.build.eeprom_start=270528512
+waveshare_rp2040_lora.menu.flash.2097152_65536.build.fs_start=270462976
+waveshare_rp2040_lora.menu.flash.2097152_65536.build.fs_end=270528512
+waveshare_rp2040_lora.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+waveshare_rp2040_lora.menu.flash.2097152_131072.upload.maximum_size=1961984
+waveshare_rp2040_lora.menu.flash.2097152_131072.build.flash_total=2097152
+waveshare_rp2040_lora.menu.flash.2097152_131072.build.flash_length=1961984
+waveshare_rp2040_lora.menu.flash.2097152_131072.build.eeprom_start=270528512
+waveshare_rp2040_lora.menu.flash.2097152_131072.build.fs_start=270397440
+waveshare_rp2040_lora.menu.flash.2097152_131072.build.fs_end=270528512
+waveshare_rp2040_lora.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+waveshare_rp2040_lora.menu.flash.2097152_262144.upload.maximum_size=1830912
+waveshare_rp2040_lora.menu.flash.2097152_262144.build.flash_total=2097152
+waveshare_rp2040_lora.menu.flash.2097152_262144.build.flash_length=1830912
+waveshare_rp2040_lora.menu.flash.2097152_262144.build.eeprom_start=270528512
+waveshare_rp2040_lora.menu.flash.2097152_262144.build.fs_start=270266368
+waveshare_rp2040_lora.menu.flash.2097152_262144.build.fs_end=270528512
+waveshare_rp2040_lora.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+waveshare_rp2040_lora.menu.flash.2097152_524288.upload.maximum_size=1568768
+waveshare_rp2040_lora.menu.flash.2097152_524288.build.flash_total=2097152
+waveshare_rp2040_lora.menu.flash.2097152_524288.build.flash_length=1568768
+waveshare_rp2040_lora.menu.flash.2097152_524288.build.eeprom_start=270528512
+waveshare_rp2040_lora.menu.flash.2097152_524288.build.fs_start=270004224
+waveshare_rp2040_lora.menu.flash.2097152_524288.build.fs_end=270528512
+waveshare_rp2040_lora.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+waveshare_rp2040_lora.menu.flash.2097152_1048576.upload.maximum_size=1044480
+waveshare_rp2040_lora.menu.flash.2097152_1048576.build.flash_total=2097152
+waveshare_rp2040_lora.menu.flash.2097152_1048576.build.flash_length=1044480
+waveshare_rp2040_lora.menu.flash.2097152_1048576.build.eeprom_start=270528512
+waveshare_rp2040_lora.menu.flash.2097152_1048576.build.fs_start=269479936
+waveshare_rp2040_lora.menu.flash.2097152_1048576.build.fs_end=270528512
+waveshare_rp2040_lora.menu.freq.200=200 MHz
+waveshare_rp2040_lora.menu.freq.200.build.f_cpu=200000000L
+waveshare_rp2040_lora.menu.freq.50=50 MHz
+waveshare_rp2040_lora.menu.freq.50.build.f_cpu=50000000L
+waveshare_rp2040_lora.menu.freq.100=100 MHz
+waveshare_rp2040_lora.menu.freq.100.build.f_cpu=100000000L
+waveshare_rp2040_lora.menu.freq.120=120 MHz
+waveshare_rp2040_lora.menu.freq.120.build.f_cpu=120000000L
+waveshare_rp2040_lora.menu.freq.125=125 MHz
+waveshare_rp2040_lora.menu.freq.125.build.f_cpu=125000000L
+waveshare_rp2040_lora.menu.freq.128=128 MHz
+waveshare_rp2040_lora.menu.freq.128.build.f_cpu=128000000L
+waveshare_rp2040_lora.menu.freq.133=133 MHz
+waveshare_rp2040_lora.menu.freq.133.build.f_cpu=133000000L
+waveshare_rp2040_lora.menu.freq.150=150 MHz
+waveshare_rp2040_lora.menu.freq.150.build.f_cpu=150000000L
+waveshare_rp2040_lora.menu.freq.176=176 MHz
+waveshare_rp2040_lora.menu.freq.176.build.f_cpu=176000000L
+waveshare_rp2040_lora.menu.freq.225=225 MHz (Overclock)
+waveshare_rp2040_lora.menu.freq.225.build.f_cpu=225000000L
+waveshare_rp2040_lora.menu.freq.240=240 MHz (Overclock)
+waveshare_rp2040_lora.menu.freq.240.build.f_cpu=240000000L
+waveshare_rp2040_lora.menu.freq.250=250 MHz (Overclock)
+waveshare_rp2040_lora.menu.freq.250.build.f_cpu=250000000L
+waveshare_rp2040_lora.menu.freq.276=276 MHz (Overclock)
+waveshare_rp2040_lora.menu.freq.276.build.f_cpu=276000000L
+waveshare_rp2040_lora.menu.freq.300=300 MHz (Overclock)
+waveshare_rp2040_lora.menu.freq.300.build.f_cpu=300000000L
+waveshare_rp2040_lora.menu.opt.Small=Small (-Os) (standard)
+waveshare_rp2040_lora.menu.opt.Small.build.flags.optimize=-Os
+waveshare_rp2040_lora.menu.opt.Optimize=Optimize (-O)
+waveshare_rp2040_lora.menu.opt.Optimize.build.flags.optimize=-O
+waveshare_rp2040_lora.menu.opt.Optimize2=Optimize More (-O2)
+waveshare_rp2040_lora.menu.opt.Optimize2.build.flags.optimize=-O2
+waveshare_rp2040_lora.menu.opt.Optimize3=Optimize Even More (-O3)
+waveshare_rp2040_lora.menu.opt.Optimize3.build.flags.optimize=-O3
+waveshare_rp2040_lora.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+waveshare_rp2040_lora.menu.opt.Fast.build.flags.optimize=-Ofast
+waveshare_rp2040_lora.menu.opt.Debug=Debug (-Og)
+waveshare_rp2040_lora.menu.opt.Debug.build.flags.optimize=-Og
+waveshare_rp2040_lora.menu.opt.Disabled=Disabled (-O0)
+waveshare_rp2040_lora.menu.opt.Disabled.build.flags.optimize=-O0
+waveshare_rp2040_lora.menu.os.none=None
+waveshare_rp2040_lora.menu.os.none.build.os=
+waveshare_rp2040_lora.menu.os.freertos=FreeRTOS SMP
+waveshare_rp2040_lora.menu.os.freertos.build.os=-D__FREERTOS
+waveshare_rp2040_lora.menu.profile.Disabled=Disabled
+waveshare_rp2040_lora.menu.profile.Disabled.build.flags.profile=
+waveshare_rp2040_lora.menu.profile.Enabled=Enabled
+waveshare_rp2040_lora.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+waveshare_rp2040_lora.menu.rtti.Disabled=Disabled
+waveshare_rp2040_lora.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+waveshare_rp2040_lora.menu.rtti.Enabled=Enabled
+waveshare_rp2040_lora.menu.rtti.Enabled.build.flags.rtti=
+waveshare_rp2040_lora.menu.stackprotect.Disabled=Disabled
+waveshare_rp2040_lora.menu.stackprotect.Disabled.build.flags.stackprotect=
+waveshare_rp2040_lora.menu.stackprotect.Enabled=Enabled
+waveshare_rp2040_lora.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+waveshare_rp2040_lora.menu.exceptions.Disabled=Disabled
+waveshare_rp2040_lora.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+waveshare_rp2040_lora.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+waveshare_rp2040_lora.menu.exceptions.Enabled=Enabled
+waveshare_rp2040_lora.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+waveshare_rp2040_lora.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+waveshare_rp2040_lora.menu.dbgport.Disabled=Disabled
+waveshare_rp2040_lora.menu.dbgport.Disabled.build.debug_port=
+waveshare_rp2040_lora.menu.dbgport.Serial=Serial
+waveshare_rp2040_lora.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+waveshare_rp2040_lora.menu.dbgport.Serial1=Serial1
+waveshare_rp2040_lora.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+waveshare_rp2040_lora.menu.dbgport.Serial2=Serial2
+waveshare_rp2040_lora.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+waveshare_rp2040_lora.menu.dbgport.SerialSemi=SerialSemi
+waveshare_rp2040_lora.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+waveshare_rp2040_lora.menu.dbglvl.None=None
+waveshare_rp2040_lora.menu.dbglvl.None.build.debug_level=
+waveshare_rp2040_lora.menu.dbglvl.Core=Core
+waveshare_rp2040_lora.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+waveshare_rp2040_lora.menu.dbglvl.SPI=SPI
+waveshare_rp2040_lora.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+waveshare_rp2040_lora.menu.dbglvl.Wire=Wire
+waveshare_rp2040_lora.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+waveshare_rp2040_lora.menu.dbglvl.Bluetooth=Bluetooth
+waveshare_rp2040_lora.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_lora.menu.dbglvl.LWIP=LWIP
+waveshare_rp2040_lora.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
+waveshare_rp2040_lora.menu.dbglvl.All=All
+waveshare_rp2040_lora.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_lora.menu.dbglvl.NDEBUG=NDEBUG
+waveshare_rp2040_lora.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+waveshare_rp2040_lora.menu.usbstack.picosdk=Pico SDK
+waveshare_rp2040_lora.menu.usbstack.picosdk.build.usbstack_flags=
+waveshare_rp2040_lora.menu.usbstack.tinyusb=Adafruit TinyUSB
+waveshare_rp2040_lora.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+waveshare_rp2040_lora.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+waveshare_rp2040_lora.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+waveshare_rp2040_lora.menu.usbstack.nousb=No USB
+waveshare_rp2040_lora.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+waveshare_rp2040_lora.menu.ipbtstack.ipv4only=IPv4 Only
+waveshare_rp2040_lora.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6.build.libpicow=liblwip.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+waveshare_rp2040_lora.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+waveshare_rp2040_lora.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+waveshare_rp2040_lora.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+waveshare_rp2040_lora.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6big.build.libpicow=liblwip.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+waveshare_rp2040_lora.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+waveshare_rp2040_lora.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a
+waveshare_rp2040_lora.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+waveshare_rp2040_lora.menu.uploadmethod.default=Default (UF2)
+waveshare_rp2040_lora.menu.uploadmethod.default.build.ram_length=256k
+waveshare_rp2040_lora.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+waveshare_rp2040_lora.menu.uploadmethod.default.upload.maximum_data_size=262144
+waveshare_rp2040_lora.menu.uploadmethod.default.upload.tool=uf2conv
+waveshare_rp2040_lora.menu.uploadmethod.default.upload.tool.default=uf2conv
+waveshare_rp2040_lora.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+waveshare_rp2040_lora.menu.uploadmethod.picotool=Picotool
+waveshare_rp2040_lora.menu.uploadmethod.picotool.build.ram_length=256k
+waveshare_rp2040_lora.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+waveshare_rp2040_lora.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+waveshare_rp2040_lora.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+waveshare_rp2040_lora.menu.uploadmethod.picotool.upload.tool=picotool
+waveshare_rp2040_lora.menu.uploadmethod.picotool.upload.tool.default=picotool
+waveshare_rp2040_lora.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+waveshare_rp2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+waveshare_rp2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+waveshare_rp2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+waveshare_rp2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+waveshare_rp2040_lora.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Waveshare RP2040 Matrix
 # -----------------------------------
 waveshare_rp2040_matrix.name=Waveshare RP2040 Matrix
