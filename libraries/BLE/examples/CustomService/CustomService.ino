@@ -1,5 +1,7 @@
 // This example shows writing your own class to run a BLE device.
-// The class will get all the callbacks#include <BLE.h>
+// The class will get all the callbacks
+
+// Press BOOTSEL to make it send "BONGO" to your attached BLE client
 
 #include <BLE.h>
 
