@@ -203,7 +203,9 @@ bool BLEAdvertising::build() {
             }
         }
     }
+#if defined(DEBUG_RP2040_PORT) && !defined(DEBUG_RP2040_BLE)
     hexdump(_advData, _advDataLen, 16);
+#endif
 
     return ok;
 }
