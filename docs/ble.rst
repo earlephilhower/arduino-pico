@@ -203,14 +203,14 @@ for more information.
 BLEClient \*BLE.client()
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Returns the global client object which will be used to connect to a remore BLE server,
+Returns the global client object which will be used to connect to a remote BLE server,
 remote services, and remove characteristics.  See the Client section below
 
 Configuring BLE Advertising
 ---------------------------
 
 Advertising is the way that a BLE device shares its presence to the world.  The BLE hardware will
-broadcast a small (31 byte) packet containg information cush ad the device name, what it looks
+broadcast a small (31 byte) packet containing information such as the device name, what it looks
 like, and any service UUIDs it provides.  BLE clients normally don't need to advertise and can
 ignore the following information.
 
@@ -582,7 +582,7 @@ BLE Serial UART (Nordic SPP Service)
 
 While not a Bluetooth SIG standard, the BLE "UART" service created by Nordic for their chipsets
 is very commonly used for low-power, low-volume data transmission over BLE.  The
-``BLEServiceUART`` class implemnts this "standard" as a ``arduino::HardwareSerial`` object
+``BLEServiceUART`` class implements this "standard" as a ``arduino::HardwareSerial`` object
 (like Serial or Serial1/2 or SoftwareSerial).  This service can be combined with others, as
 always.  It implements an automatic data flush mechanism, or the user can ``flush()`` as
 appropriate for their protocol.
