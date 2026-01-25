@@ -36452,10 +36452,12 @@ waveshare_rp2040_lora.menu.dbglvl.Wire=Wire
 waveshare_rp2040_lora.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_lora.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_lora.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_lora.menu.dbglvl.BLE=BLE
+waveshare_rp2040_lora.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_lora.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_lora.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_lora.menu.dbglvl.All=All
-waveshare_rp2040_lora.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_lora.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_lora.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_lora.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_lora.menu.usbstack.picosdk=Pico SDK
