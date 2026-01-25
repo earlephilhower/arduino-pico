@@ -87,7 +87,7 @@ void loop() {
     // Examine the LED user description (human readable text)
     auto led = svc->characteristic(BLEUUID(leduuid));
     if (led) {
-      Serial.printf("LED description '%s'\n", led->getDescription().c_str());
+      Serial.printf("LED description '%s'\n", led->description().c_str());
       // And toggle the remote LED, it's a 1-byte characteristic
       led->setValue(true);
       delay(1000);

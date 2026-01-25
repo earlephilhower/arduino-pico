@@ -39,7 +39,8 @@ public:
         memcpy(uuid128, u, sizeof(uuid128));
     }
 
-    BLEUUID(const char *str) {
+    BLEUUID(String s) {
+        const char *str = s.c_str();
         is16 = false;
         bzero(uuid128, sizeof(uuid128));
         // 0000FF11-0000-1000-8000-00805F9B34FB

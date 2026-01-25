@@ -61,7 +61,6 @@ class BLECharacteristic {
 public:
     BLECharacteristic(BLEUUID u);
     BLECharacteristic(BLEUUID u, uint16_t characteristicPermission, const char *desc = nullptr, uint8_t permR = 0, uint8_t permW = 0);
-    BLECharacteristic(BLEUUID u, uint16_t characteristicPermission, void *data, int dataLen, const char *desc = nullptr, uint8_t permR = 0, uint8_t permW = 0);
     virtual ~BLECharacteristic();
 
     // We canna copy this object, cap'n.  Handles/etc. for btstack are singletons

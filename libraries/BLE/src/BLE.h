@@ -41,7 +41,7 @@ public:
     BLEClass();
     ~BLEClass();
 
-    // Configure the secutiry model, must be called before begin
+    // Configure the security model, must be called before begin
     void setSecurity(BLESecurityMode m);
 
     // Start the BLE hardware up
@@ -87,8 +87,6 @@ private:
     BLEAdvertising _advertising;
     BLEScanReport _scanResults;
     BLESecurityMode _secMode = BLESecurityNone;
-
-    //    BLEAdvertisedDeviceCallbacks *_scanCB = nullptr;
 
     /*btstack_packet_callback_registration_t {hci,sm}_event_callback_registration;*/
     void *hci_event_callback_registration = nullptr;

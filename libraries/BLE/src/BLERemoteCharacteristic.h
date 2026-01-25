@@ -66,7 +66,7 @@ public:
     size_t valueLen();
     void *valueData();
 
-    String getDescription();
+    String description();
 
 
     // Write date to the characteristic
@@ -83,7 +83,6 @@ public:
     bool enableNotifications();
     void disableNotifications();
 
-    void disconnect();
 
     template<typename T>
     T get() {
@@ -196,11 +195,12 @@ protected:
     // Actually grab the remote data
     void pollRemote();
 
+    void disconnect();
 
     void scanDescriptors(volatile bool *flag);
     void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size);
     bool _waitForCompletion(volatile bool &waitForCB);
-    void /*gatt_client_characteristic_descriptor_t*/ *description();
+    void /*gatt_client_characteristic_descriptor_t*/ *gattDescription();
 
     uint16_t _valueHandle();
     uint16_t _configurationHandle();

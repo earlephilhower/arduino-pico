@@ -157,8 +157,8 @@ void *BLERemoteCharacteristic::valueData() {
     return _remoteValue;
 }
 
-String BLERemoteCharacteristic::getDescription() {
-    gatt_client_characteristic_descriptor_t *d = (gatt_client_characteristic_descriptor_t *)description();
+String BLERemoteCharacteristic::description() {
+    gatt_client_characteristic_descriptor_t *d = (gatt_client_characteristic_descriptor_t *)gattDescription();
     if (!d || !con_handle) {
         DEBUGBLE("no secrription descriptor found\n");
         free(_description);
@@ -321,7 +321,7 @@ uint16_t BLERemoteCharacteristic::_configurationHandle() {
     return 0;
 }
 
-void /*gatt_client_characteristic_descriptor_t*/ *BLERemoteCharacteristic::description() {
+void /*gatt_client_characteristic_descriptor_t*/ *BLERemoteCharacteristic::gattDescription() {
     gatt_client_characteristic_descriptor_t *_gattDescriptor = (gatt_client_characteristic_descriptor_t *)_gccd;
     for (uint8_t i = 0; i < _gattDescriptors; i++) {
         if (_gattDescriptor[i].uuid16 == 0x2901) {

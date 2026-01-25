@@ -48,18 +48,6 @@ BLECharacteristic::BLECharacteristic(BLEUUID u, uint16_t p, const char *desc, ui
     _canSend = malloc(sizeof(btstack_context_callback_registration_t));
 }
 
-BLECharacteristic::BLECharacteristic(BLEUUID u, uint16_t p, void *data, int dataLen, const char *desc, uint8_t permR, uint8_t permW) {
-    _uuid = u;
-    _flags = p;
-    _data = data;
-    _dataLen = dataLen;
-    _readPerm = permR;
-    _writePerm = permW;
-    _description = desc ? strdup(desc) : nullptr;
-    _descriptionLen = desc ? strlen(desc) : 0;
-    _canSend = malloc(sizeof(btstack_context_callback_registration_t));
-}
-
 BLECharacteristic::~BLECharacteristic() {
     free(_canSend);
     free(_description);
