@@ -158,8 +158,8 @@ Installs and configures the Bluetooth Classic stack and starts processing events
 When running in Classic mode, no BLE devices can be detected or used.
 
 
-bool BluetoothHIDMaster::begin(const char *BLEName)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool BluetoothHIDMaster::begin(const char \*BLEName)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Installs and configures the Bluetooth BLE stack and starts processing events.  No connections are made at this point.
 When running in BLE mode, no Classic devices can be detected or used.
 
@@ -180,19 +180,19 @@ bool BluetoothHIDMaster::hciRunning()
 Returns if the Bluetooth stack has passed the initial HCI start up phase.  Until this returns ``true`` no Bluetooth operations can be performed.
 
 std::vector<BTDeviceInfo> BluetoothHIDMaster::scan(uint32_t mask, int scanTimeSec, bool async)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Passes through the ``BluetoothHCI::scan()`` function to manually scan for a list of nearby devices.  If you want to connect to the first found device, this is not needed.
 
-bool BluetoothHIDMaster::connect(const uint8_t *addr)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool BluetoothHIDMaster::connect(const uint8_t \*addr)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Start the connection process to the Bluetooth Classic device with the given MAC.  Note that this returns immediately, but it may take several seconds until ``connected()`` reports that the connection has been established.
 
 bool BluetoothHIDMaster::connectKeyboard(), connectMouse(), connectJoystick(), connectAny()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Connect to the first found specified Bluetooth Classic device type (or any HID device) in pairing mode.  No need to call ``scan()`` or have an address.
 
-bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool BluetoothHIDMaster::connectBLE(const uint8_t \*addr, int addrType)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Start the connection process to the Bluetooth BLE device with the given MAC.  Note that this returns immediately, but it may take several seconds until ``connected()`` reports that the connection has been established.
 
 bool BluetoothHIDMaster::connectBLE()

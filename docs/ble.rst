@@ -248,8 +248,8 @@ Listens to the BLE announcements for ``timeoutsec`` seconds and returns a ``BLES
 a ``std::list<BLEAddress>`` of all seen BLE servers available.  Enteires in this list can be
 used in a ``BLE.client()->connect()`` call to initiate a BLE client connection (see below).
 
-BLEScanReport *scan(BLEUUID service, int timeoutSec = 5, bool active = true, int intervalms = 100, int windowms = 99)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+BLEScanReport \*scan(BLEUUID service, int timeoutSec = 5, bool active = true, int intervalms = 100, int windowms = 99)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Like the prior call, except only returns servers who are advertising the service UUID specified.
 Most sketches will want to use this call to look for only the device types they want (i.e.
@@ -308,7 +308,7 @@ after the function exits)
         ...
 
 Adding Characteristics to a BLEService
-======================================
+--------------------------------------
 
 Once you have a ``BLEService`` you need to create ``BLECharacteristics`` to share data
 (i.e. current temperature, running speed, solar power, etc.) with a client.  They can
@@ -326,8 +326,8 @@ it could confuse BLE clients.
 Create a characteristic with the following constructor (again, be sure it is a "long
 lived" variable to make it global or use ``new`` to make it on the heap
 
-BLECharacteristic(BLEUUID u, uint16_t characteristicPermission, const char *desc = nullptr, uint8_t permR = 0, uint8_t permW = 0)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+BLECharacteristic(BLEUUID u, uint16_t characteristicPermission, const char \*desc = nullptr, uint8_t permR = 0, uint8_t permW = 0)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Creates a characteristic with the given UUID.
 
@@ -360,7 +360,7 @@ Adds the characteristic to the service.  As always, the variable needs to be on 
 ensure the pointer remains valid the lifetime of the sketch.
 
 Setting Characteristic Data
-===========================
+---------------------------
 
 Characteristics can be read and written to by the sketch (and the remote client if permissions allow it).
 They can be any format desired (character strings, binary floating point, 1-byte booleans), but for well-known
@@ -471,6 +471,9 @@ can use to interact with the device.
 Once a list of available servers is collected via ``BLE.scan()`` as explained above, the
 Pico chooses one to connect to with a call to
 
+BLEClient()
+-----------
+
 bool BLE.client()->connect(BLEAdvertising a, int timeoutsecs = 10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -486,14 +489,14 @@ After successful connections, it is possible to examine the list of remote servi
 choose any specific one (most common)
 
 BLERemoteService \*BLE.client()->service(BLEUUID)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Returns either `nullptr` if no service exists, or ``BLERemoteService`` that can be used
 to find characteristics the sketch cares about.  Don't ``delete`` this object, it is managed
 completely by the ``BLE`` object.
 
 Accessing Remote Characteristics
-================================
+--------------------------------
 
 Remote characteristics can be read, written, or registered for notification (remote permissions
 allowing it, of course).  All remote characteristics are wrapped in ``BLERemoteCharacteristic`` objects.
@@ -521,7 +524,7 @@ if the remote server supplies one.  This is the equivalent of the descriptino pa
 in the BLECharacteristic constructor.
 
 Reading Remote Characteristics
-==============================
+------------------------------
 
 The same ``getXXX`` calls as defined for ``BLECharacteristic`` (local characteristic)
 work for ``BLERemoteCharacteristic`` .  They may be somewhat slower due to the need to
@@ -534,7 +537,7 @@ The same ``setXXX`` calls as defined for ``BLECharacteristic`` work for ``BLERem
 except, of course, that they send the new data to the remote device.
 
 Getting Callbacks for Remote Characteristics
-============================================
+--------------------------------------------
 
 Your sketch can receive notifications when the remote server writes to a characteristic,
 assuming the remote server gives permission.  That avoids having to read a remote characteristic

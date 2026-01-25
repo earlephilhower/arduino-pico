@@ -24,11 +24,10 @@ a detailed overview of the library, except for the following RP2040-specific
 changes:
 
 * ``SPI.begin(bool hwCS)`` can take an options ``hwCS`` parameter.
-By passing in ``true`` for ``hwCS`` the sketch does not need to worry
-about asserting and deasserting the ``CS`` pin between transactions.
-The default is ``false`` and requires the sketch to handle the CS
-pin itself, as is the standard way in Arduino.
-
+    By passing in ``true`` for ``hwCS`` the sketch does not need to worry
+    about asserting and deasserting the ``CS`` pin between transactions.
+    The default is ``false`` and requires the sketch to handle the CS
+    pin itself, as is the standard way in Arduino.
 * The interrupt calls (``attachInterrupt``, and ``detachInterrpt``) are not implemented.
 
 Software SPI (Master Only)

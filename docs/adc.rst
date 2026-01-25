@@ -27,7 +27,7 @@ ADC Input API
 -------------
 
 ADCInput(pin0 [, pin1, pin2, pin3[, pin4, pin5, pin6, pin7])
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Creates an ADC input object which will record the pins specified in the code.
 Only pins ``A0`` ... ``A3`` (``A7`` on RP2350B) can be used, and they must be
 specified in increasing order (i.e. ``ADCInput(A0, A1);`` is valid,
