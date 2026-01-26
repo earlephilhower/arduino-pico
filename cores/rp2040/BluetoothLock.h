@@ -20,6 +20,8 @@
 
 #pragma once
 
+#if defined(ENABLE_CLASSIC) || defined(ENABLE_BLE)
+
 #include <_needsbt.h>
 #include <Arduino.h>
 
@@ -32,3 +34,5 @@ public:
         __unlockBluetooth();
     }
 };
+
+#endif
