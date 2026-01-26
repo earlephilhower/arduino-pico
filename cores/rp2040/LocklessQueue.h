@@ -36,7 +36,7 @@ public:
     }
 
     ~LocklessQueue() {
-        delete (_queue);
+        delete[] _queue;
     }
 
     // How many elements we can read
