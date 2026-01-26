@@ -1,5 +1,6 @@
+########################################
 BLE (Bluetooth Low Energy) Server/Client
-========================================
+########################################
 
 Support for using the Pico W as a BLE server (peripheral) or BLE
 client (central) is available through the BLE library.
@@ -32,8 +33,9 @@ board with RM2 coprocessor).
 This library is not compatible with FreeRTOS due to memory allocations
 required at interrupt time.
 
+********************
 General Architecture
---------------------
+********************
 
 BLE implements a hierarchical object structure, with a top-level
 ``BLE`` containing either a ``BLEServer`` or a ``BLEClient``.
@@ -78,9 +80,9 @@ characteristic at any time.  Callbacks happen when the remote end of
 the connection performs a read or write to a characteristic and execute
 at interrupt-level (so no filesystem access, etc.).
 
-
+*********************************
 General Bluetooth Support Classes
-=================================
+*********************************
 
 
 BLEAddress
@@ -149,9 +151,9 @@ Creates a 128-bit UUID from a human-readable string
 
     BLEUUID myNewUUID("040b4668-cae0-4b57-88c6-a749d7b1e3dd");
 
-
+*******************************
 BLE (Bluetooth Low Energy) Base
-===============================
+*******************************
 
 The ``BLE`` object is how a sketch interacts with the hardware Bluetooth stack.
 It manages the low-level BTStack and contains either a ``BLEClient`` or ``BLEServer``
@@ -186,28 +188,29 @@ BLEAddress BLE.address()
 
 Returns this Pico's BLE MAC address.  Only valid after ``BLE.begin()``.
 
-
+*******************************************
 Accessing the Global BLEServer or BLEClient
--------------------------------------------
+*******************************************
 
 To get a pointer to either the server or client objects to actually do
 work, call the appropriate ``BLE`` method
 
 BLEServer \*BLE.server()
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Returns the global server object which will contain a list of ``BLEService`` objects
 that will be used by the outside world to connect to this Pico.  See the Server section below
 for more information.
 
 BLEClient \*BLE.client()
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Returns the global client object which will be used to connect to a remote BLE server,
 remote services, and remove characteristics.  See the Client section below
 
+***************************
 Configuring BLE Advertising
----------------------------
+***************************
 
 Advertising is the way that a BLE device shares its presence to the world.  The BLE hardware will
 broadcast a small (31 byte) packet containing information such as the device name, what it looks
@@ -215,27 +218,27 @@ like, and any service UUIDs it provides.  BLE clients normally don't need to adv
 ignore the following information.
 
 BLEAdvertising \*BLE.advertising()
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------
 
 This call returns the current advertising object for any defined servers.  In general,
 sketches do not need to work with this call or ``BLEAdvertising`` at all, but this
 call lets you do things like add URLs or appearance information.
 
 BLE.startAdvertising()
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 After all services are created (see below) the sketch needs to use this call to start broadcasting
 for BLE clients to find it.  Call this after all services are defined, or after ``BLE.stopAdvertising()``
 and changing services or characteristics.  Without this call, your Pico won't be discoverable.
 
 BLE.stopAdvertising()
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 Turns off advertising to allow modifying services/etc.
 
-
+*********************************
 Finding BLE Servers to Connect To
----------------------------------
+*********************************
 
 BLE clients need to listen the BLE advertisements around them to discover servers they can
 connect to.  This library allows for scanning for all servers, or only servers exposing a
@@ -263,8 +266,9 @@ device.  If sketches are very memory constrained, call this method to free all t
 with the last ``BLE.scan()`` after you have selected a single device to connect to.  Most sketches
 don't need to do this.
 
+*********************************************
 Implementing a BLE Server (peripheral/device)
-=============================================
+*********************************************
 
 A BLE gadget/peripheral/device offers zero or more ``BLEService`` to the outside world.
 Each ``BLEService`` contains zero or more ``BLECharacteristics`` that the outside world can
@@ -272,7 +276,7 @@ read and/or write to.  The objects defining these services and characteristics m
 created before calling ``BLE.startAdvertising()``.
 
 BLEService
-==========
+----------
 
 A ``BLEService`` is essentially a container to hold a list of ``BLECharacteristics`` identified
 by a ``BLEUUID`` that identifies the type of service.
@@ -383,7 +387,7 @@ Sets the characteristic to any binary data (i.e. a large ``struct``) you pass in
 pointer can be invalidated by the sketch at any time.
 
 Reading Characteristic Data
-===========================
+---------------------------
 
 The BLE client (PC, phone, etc.) can write data to characteristics (if permissions allow) and the sketch
 can read those values and do things with them (i.e. set a thermostat, light an LED, etc.).  Use
@@ -422,7 +426,7 @@ If you need the raw binary data use the following calls
     size_t valueLen()
 
 Getting Callbacks for Characteristics
-=====================================
+-------------------------------------
 
 Your sketch can get a callback to a function or class object whenever
 the remote devices reads or writes a characteristic (i.e. you could configure
@@ -460,8 +464,9 @@ so don't do things like filesystem access or flash writes) use
 
 For a class-based callback demonstration, see the BLEServiceUART.cpp source file.
 
+***************************************
 Implementing a BLE Client (BLE Central)
-=======================================
+***************************************
 
 A BLE client scans the available device and then connects to one that offers the
 service it needs.  When it connects it then gets a full list of zero or more remote services.
@@ -531,7 +536,7 @@ work for ``BLERemoteCharacteristic`` .  They may be somewhat slower due to the n
 poll the remote server for the data.
 
 Writing Remote Characteristics
-==============================
+------------------------------
 
 The same ``setXXX`` calls as defined for ``BLECharacteristic`` work for ``BLERemoteCharacteristic``
 except, of course, that they send the new data to the remote device.
@@ -553,9 +558,9 @@ Registers a callback that will be called ar interrupt level when a BLE notify me
 received for the remote characteristic.  Your callback will need to cast the returned ``data`` pointer
 to the appropriate format (i.e. a ``bool`` or a ``char[]``).
 
-
+***********
 BLE Beacons
-===========
+***********
 
 BLE beacons are devices which just advertise their presence (infrequently, to save power)
 and provide no services or characteristics.  All information about them (their UUID and
@@ -565,9 +570,9 @@ The ``BLEBeacon`` class implements this functionality.  Note that no ``BLE..serv
 should be used in this mode, just ``BLEBeacon::begin()`` (after setting the UUID and major/minor
 IDs.  See the ``Beacon.ino`` example for usage
 
-
+*******************
 BLE Battery Service
-===================
+*******************
 
 The Bluetooth SIG standard BLE Battery service is implemented in ``BLEServiceBattery``.  Instantiate
 an instance of this object and ``BLE.server()->addService()`` it to gain this functionality.
@@ -577,8 +582,9 @@ All other work is handled behind-the-scenes.
 
 This service can be added alongside other services, of course.
 
+************************************
 BLE Serial UART (Nordic SPP Service)
-====================================
+************************************
 
 While not a Bluetooth SIG standard, the BLE "UART" service created by Nordic for their chipsets
 is very commonly used for low-power, low-volume data transmission over BLE.  The
