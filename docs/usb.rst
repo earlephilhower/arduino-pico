@@ -47,7 +47,7 @@ examples of implementing your own custom HID, please look at the ``Keyboard``
 library shipped with the core.
 
 void USB.disconnect()
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 Tells the Pico to electrically disconnect from an attached USB host.
 Any devices exported by the Pico should be removed in the host's OS/
 This **must** be called before doing any USB modification calls.
@@ -55,20 +55,20 @@ It is safe to call this function even if the Pico isn't actually plugged
 into a PC (i.e. when self-powered).
 
 void USB.connect()
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 Tells the Pico to signal to the host that a device has been plugged
 in.  The host OS should re-scan the Pico and create the new devices
 exported by it.  Call this after modifying USB configurations
 
 void USB.setVIDPID(uint16_t vid, uint16_t pid)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the VID:PID the Pico will export to the host.  By default it will
 use the settings defined for your specific board.  Be aware that Using
 VIDs that are not registered by you with the USB Implementers Forum may
 be problematic.  Only call after a ``usbDisconnect()``.
 
-void USB.setManufacturer(const char *str)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void USB.setManufacturer(const char \*str)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sets the Manufacturer field text in the USB descriptor.  Note that most
 OSes will use the ``VID`` (vendor ID) to identify the manufacturer but a
 ``lsusb -v`` or examination in the Windows device manager will show this
@@ -76,14 +76,14 @@ manufacturer string.   The string must be long-lived (i.e. not a local
 stack stream, make it a constant or on the heap only).  Only call after
 a ``usbDisconnect()``.
 
-void USB.setProduct(const char *str)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void USB.setProduct(const char \*str)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Similar to ``usbSetManufacturer``.  Again, the OS may use the ``PID``
 (product ID) to identify a device and not this string, but it will be
 present on deeper inspection.  Only call after a ``usbDisconnect()``.
 
-void USB.setSerialNumber(const char *str)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void USB.setSerialNumber(const char \*str)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Similar to ``usbSetManufacturer``.   This is a free-form string and need
 not be only numerical.  Only call after a ``usbDisconnect()``.
 

@@ -1,5 +1,5 @@
-Serial Ports (USB and UART)
-===========================
+Serial Ports (USB, UART, and BLE "Nordic SPP Service")
+======================================================
 
 The Arduino-Pico core implements a software-based Serial-over-USB port
 using the USB ACM-CDC model to support a wide variety of operating
@@ -53,6 +53,12 @@ Inversion
 ``Serial1`` and ``Serial2`` can both support inverted input and/or outputs via the methods
 ``Serial1/2::setInvertRX(bool invert)`` and ``Serial1/2::setInvertTX(bool invert)`` and
 ``Serial1/2::serInvertControl(bool invert)``.
+
+
+Nordic SPP Serial Service
+-------------------------
+
+Please see the ``File->Examples->BLE->SerialBLE.ino`` example for use over BLE.
 
 
 RP2040 Specific SerialUSB methods

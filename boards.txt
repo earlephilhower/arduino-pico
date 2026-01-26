@@ -210,10 +210,12 @@ rpipico.menu.dbglvl.Wire=Wire
 rpipico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 rpipico.menu.dbglvl.Bluetooth=Bluetooth
 rpipico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+rpipico.menu.dbglvl.BLE=BLE
+rpipico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 rpipico.menu.dbglvl.LWIP=LWIP
 rpipico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 rpipico.menu.dbglvl.All=All
-rpipico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+rpipico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 rpipico.menu.dbglvl.NDEBUG=NDEBUG
 rpipico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipico.menu.usbstack.picosdk=Pico SDK
@@ -431,10 +433,12 @@ rpipicow.menu.dbglvl.Wire=Wire
 rpipicow.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 rpipicow.menu.dbglvl.Bluetooth=Bluetooth
 rpipicow.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+rpipicow.menu.dbglvl.BLE=BLE
+rpipicow.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 rpipicow.menu.dbglvl.LWIP=LWIP
 rpipicow.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 rpipicow.menu.dbglvl.All=All
-rpipicow.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+rpipicow.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 rpipicow.menu.dbglvl.NDEBUG=NDEBUG
 rpipicow.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipicow.menu.usbstack.picosdk=Pico SDK
@@ -802,10 +806,12 @@ rpipico2.menu.dbglvl.Wire=Wire
 rpipico2.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 rpipico2.menu.dbglvl.Bluetooth=Bluetooth
 rpipico2.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+rpipico2.menu.dbglvl.BLE=BLE
+rpipico2.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 rpipico2.menu.dbglvl.LWIP=LWIP
 rpipico2.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 rpipico2.menu.dbglvl.All=All
-rpipico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+rpipico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 rpipico2.menu.dbglvl.NDEBUG=NDEBUG
 rpipico2.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipico2.menu.usbstack.picosdk=Pico SDK
@@ -1046,10 +1052,12 @@ rpipico2w.menu.dbglvl.Wire=Wire
 rpipico2w.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 rpipico2w.menu.dbglvl.Bluetooth=Bluetooth
 rpipico2w.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+rpipico2w.menu.dbglvl.BLE=BLE
+rpipico2w.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 rpipico2w.menu.dbglvl.LWIP=LWIP
 rpipico2w.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 rpipico2w.menu.dbglvl.All=All
-rpipico2w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+rpipico2w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 rpipico2w.menu.dbglvl.NDEBUG=NDEBUG
 rpipico2w.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rpipico2w.menu.usbstack.picosdk=Pico SDK
@@ -1464,10 +1472,12 @@ rpipico2w.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cm
 0xcb_helios.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 0xcb_helios.menu.dbglvl.Bluetooth=Bluetooth
 0xcb_helios.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+0xcb_helios.menu.dbglvl.BLE=BLE
+0xcb_helios.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 0xcb_helios.menu.dbglvl.LWIP=LWIP
 0xcb_helios.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 0xcb_helios.menu.dbglvl.All=All
-0xcb_helios.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+0xcb_helios.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 0xcb_helios.menu.dbglvl.NDEBUG=NDEBUG
 0xcb_helios.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 0xcb_helios.menu.usbstack.picosdk=Pico SDK
@@ -1734,10 +1744,12 @@ adafruit_feather.menu.dbglvl.Wire=Wire
 adafruit_feather.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather.menu.dbglvl.BLE=BLE
+adafruit_feather.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather.menu.dbglvl.LWIP=LWIP
 adafruit_feather.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather.menu.dbglvl.All=All
-adafruit_feather.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather.menu.usbstack.picosdk=Pico SDK
@@ -1996,10 +2008,12 @@ adafruit_feather_scorpio.menu.dbglvl.Wire=Wire
 adafruit_feather_scorpio.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_scorpio.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_scorpio.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_scorpio.menu.dbglvl.BLE=BLE
+adafruit_feather_scorpio.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_scorpio.menu.dbglvl.LWIP=LWIP
 adafruit_feather_scorpio.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_scorpio.menu.dbglvl.All=All
-adafruit_feather_scorpio.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_scorpio.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_scorpio.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_scorpio.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_scorpio.menu.usbstack.picosdk=Pico SDK
@@ -2262,10 +2276,12 @@ adafruit_feather_dvi.menu.dbglvl.Wire=Wire
 adafruit_feather_dvi.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_dvi.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_dvi.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_dvi.menu.dbglvl.BLE=BLE
+adafruit_feather_dvi.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_dvi.menu.dbglvl.LWIP=LWIP
 adafruit_feather_dvi.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_dvi.menu.dbglvl.All=All
-adafruit_feather_dvi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_dvi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_dvi.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_dvi.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_dvi.menu.usbstack.picosdk=Pico SDK
@@ -2528,10 +2544,12 @@ adafruit_feather_adalogger.menu.dbglvl.Wire=Wire
 adafruit_feather_adalogger.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_adalogger.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_adalogger.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_adalogger.menu.dbglvl.BLE=BLE
+adafruit_feather_adalogger.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_adalogger.menu.dbglvl.LWIP=LWIP
 adafruit_feather_adalogger.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_adalogger.menu.dbglvl.All=All
-adafruit_feather_adalogger.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_adalogger.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_adalogger.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_adalogger.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_adalogger.menu.usbstack.picosdk=Pico SDK
@@ -2794,10 +2812,12 @@ adafruit_feather_rfm.menu.dbglvl.Wire=Wire
 adafruit_feather_rfm.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_rfm.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_rfm.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_rfm.menu.dbglvl.BLE=BLE
+adafruit_feather_rfm.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_rfm.menu.dbglvl.LWIP=LWIP
 adafruit_feather_rfm.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_rfm.menu.dbglvl.All=All
-adafruit_feather_rfm.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_rfm.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_rfm.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_rfm.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_rfm.menu.usbstack.picosdk=Pico SDK
@@ -3060,10 +3080,12 @@ adafruit_feather_thinkink.menu.dbglvl.Wire=Wire
 adafruit_feather_thinkink.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_thinkink.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_thinkink.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_thinkink.menu.dbglvl.BLE=BLE
+adafruit_feather_thinkink.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_thinkink.menu.dbglvl.LWIP=LWIP
 adafruit_feather_thinkink.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_thinkink.menu.dbglvl.All=All
-adafruit_feather_thinkink.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_thinkink.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_thinkink.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_thinkink.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_thinkink.menu.usbstack.picosdk=Pico SDK
@@ -3326,10 +3348,12 @@ adafruit_feather_usb_host.menu.dbglvl.Wire=Wire
 adafruit_feather_usb_host.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_usb_host.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_usb_host.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_usb_host.menu.dbglvl.BLE=BLE
+adafruit_feather_usb_host.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_usb_host.menu.dbglvl.LWIP=LWIP
 adafruit_feather_usb_host.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_usb_host.menu.dbglvl.All=All
-adafruit_feather_usb_host.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_usb_host.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_usb_host.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_usb_host.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_usb_host.menu.usbstack.picosdk=Pico SDK
@@ -3592,10 +3616,12 @@ adafruit_feather_can.menu.dbglvl.Wire=Wire
 adafruit_feather_can.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_can.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_can.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_can.menu.dbglvl.BLE=BLE
+adafruit_feather_can.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_can.menu.dbglvl.LWIP=LWIP
 adafruit_feather_can.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_can.menu.dbglvl.All=All
-adafruit_feather_can.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_can.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_can.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_can.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_can.menu.usbstack.picosdk=Pico SDK
@@ -3858,10 +3884,12 @@ adafruit_feather_prop_maker.menu.dbglvl.Wire=Wire
 adafruit_feather_prop_maker.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_prop_maker.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_prop_maker.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_prop_maker.menu.dbglvl.BLE=BLE
+adafruit_feather_prop_maker.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_prop_maker.menu.dbglvl.LWIP=LWIP
 adafruit_feather_prop_maker.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_prop_maker.menu.dbglvl.All=All
-adafruit_feather_prop_maker.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_prop_maker.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_prop_maker.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_prop_maker.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_prop_maker.menu.usbstack.picosdk=Pico SDK
@@ -4132,10 +4160,12 @@ adafruit_itsybitsy.menu.dbglvl.Wire=Wire
 adafruit_itsybitsy.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_itsybitsy.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_itsybitsy.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_itsybitsy.menu.dbglvl.BLE=BLE
+adafruit_itsybitsy.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_itsybitsy.menu.dbglvl.LWIP=LWIP
 adafruit_itsybitsy.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_itsybitsy.menu.dbglvl.All=All
-adafruit_itsybitsy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_itsybitsy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_itsybitsy.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_itsybitsy.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_itsybitsy.menu.usbstack.picosdk=Pico SDK
@@ -4454,10 +4484,12 @@ adafruit_metro.menu.dbglvl.Wire=Wire
 adafruit_metro.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_metro.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_metro.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_metro.menu.dbglvl.BLE=BLE
+adafruit_metro.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_metro.menu.dbglvl.LWIP=LWIP
 adafruit_metro.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_metro.menu.dbglvl.All=All
-adafruit_metro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_metro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_metro.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_metro.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_metro.menu.usbstack.picosdk=Pico SDK
@@ -4728,10 +4760,12 @@ adafruit_qtpy.menu.dbglvl.Wire=Wire
 adafruit_qtpy.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_qtpy.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_qtpy.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_qtpy.menu.dbglvl.BLE=BLE
+adafruit_qtpy.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_qtpy.menu.dbglvl.LWIP=LWIP
 adafruit_qtpy.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_qtpy.menu.dbglvl.All=All
-adafruit_qtpy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_qtpy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_qtpy.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_qtpy.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_qtpy.menu.usbstack.picosdk=Pico SDK
@@ -5002,10 +5036,12 @@ adafruit_stemmafriend.menu.dbglvl.Wire=Wire
 adafruit_stemmafriend.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_stemmafriend.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_stemmafriend.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_stemmafriend.menu.dbglvl.BLE=BLE
+adafruit_stemmafriend.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_stemmafriend.menu.dbglvl.LWIP=LWIP
 adafruit_stemmafriend.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_stemmafriend.menu.dbglvl.All=All
-adafruit_stemmafriend.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_stemmafriend.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_stemmafriend.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_stemmafriend.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_stemmafriend.menu.usbstack.picosdk=Pico SDK
@@ -5268,10 +5304,12 @@ adafruit_trinkeyrp2040qt.menu.dbglvl.Wire=Wire
 adafruit_trinkeyrp2040qt.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_trinkeyrp2040qt.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_trinkeyrp2040qt.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_trinkeyrp2040qt.menu.dbglvl.BLE=BLE
+adafruit_trinkeyrp2040qt.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_trinkeyrp2040qt.menu.dbglvl.LWIP=LWIP
 adafruit_trinkeyrp2040qt.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_trinkeyrp2040qt.menu.dbglvl.All=All
-adafruit_trinkeyrp2040qt.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_trinkeyrp2040qt.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_trinkeyrp2040qt.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_trinkeyrp2040qt.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_trinkeyrp2040qt.menu.usbstack.picosdk=Pico SDK
@@ -5534,10 +5572,12 @@ adafruit_macropad2040.menu.dbglvl.Wire=Wire
 adafruit_macropad2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_macropad2040.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_macropad2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_macropad2040.menu.dbglvl.BLE=BLE
+adafruit_macropad2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_macropad2040.menu.dbglvl.LWIP=LWIP
 adafruit_macropad2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_macropad2040.menu.dbglvl.All=All
-adafruit_macropad2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_macropad2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_macropad2040.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_macropad2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_macropad2040.menu.usbstack.picosdk=Pico SDK
@@ -5800,10 +5840,12 @@ adafruit_kb2040.menu.dbglvl.Wire=Wire
 adafruit_kb2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_kb2040.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_kb2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_kb2040.menu.dbglvl.BLE=BLE
+adafruit_kb2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_kb2040.menu.dbglvl.LWIP=LWIP
 adafruit_kb2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_kb2040.menu.dbglvl.All=All
-adafruit_kb2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_kb2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_kb2040.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_kb2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_kb2040.menu.usbstack.picosdk=Pico SDK
@@ -6075,10 +6117,12 @@ adafruit_feather_rp2350_adalogger.menu.dbglvl.Wire=Wire
 adafruit_feather_rp2350_adalogger.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_rp2350_adalogger.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_rp2350_adalogger.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_rp2350_adalogger.menu.dbglvl.BLE=BLE
+adafruit_feather_rp2350_adalogger.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_rp2350_adalogger.menu.dbglvl.LWIP=LWIP
 adafruit_feather_rp2350_adalogger.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_rp2350_adalogger.menu.dbglvl.All=All
-adafruit_feather_rp2350_adalogger.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_rp2350_adalogger.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_rp2350_adalogger.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_rp2350_adalogger.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_rp2350_adalogger.menu.usbstack.picosdk=Pico SDK
@@ -6354,10 +6398,12 @@ adafruit_feather_rp2350_hstx.menu.dbglvl.Wire=Wire
 adafruit_feather_rp2350_hstx.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_feather_rp2350_hstx.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_feather_rp2350_hstx.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_feather_rp2350_hstx.menu.dbglvl.BLE=BLE
+adafruit_feather_rp2350_hstx.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_feather_rp2350_hstx.menu.dbglvl.LWIP=LWIP
 adafruit_feather_rp2350_hstx.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_feather_rp2350_hstx.menu.dbglvl.All=All
-adafruit_feather_rp2350_hstx.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_feather_rp2350_hstx.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_feather_rp2350_hstx.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_feather_rp2350_hstx.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_feather_rp2350_hstx.menu.usbstack.picosdk=Pico SDK
@@ -6672,10 +6718,12 @@ adafruit_floppsy.menu.dbglvl.Wire=Wire
 adafruit_floppsy.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_floppsy.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_floppsy.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_floppsy.menu.dbglvl.BLE=BLE
+adafruit_floppsy.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_floppsy.menu.dbglvl.LWIP=LWIP
 adafruit_floppsy.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_floppsy.menu.dbglvl.All=All
-adafruit_floppsy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_floppsy.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_floppsy.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_floppsy.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_floppsy.menu.usbstack.picosdk=Pico SDK
@@ -7011,10 +7059,12 @@ adafruit_metro_rp2350.menu.dbglvl.Wire=Wire
 adafruit_metro_rp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_metro_rp2350.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_metro_rp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_metro_rp2350.menu.dbglvl.BLE=BLE
+adafruit_metro_rp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_metro_rp2350.menu.dbglvl.LWIP=LWIP
 adafruit_metro_rp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_metro_rp2350.menu.dbglvl.All=All
-adafruit_metro_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_metro_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_metro_rp2350.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_metro_rp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_metro_rp2350.menu.usbstack.picosdk=Pico SDK
@@ -7338,10 +7388,12 @@ adafruit_fruitjam.menu.dbglvl.Wire=Wire
 adafruit_fruitjam.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 adafruit_fruitjam.menu.dbglvl.Bluetooth=Bluetooth
 adafruit_fruitjam.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+adafruit_fruitjam.menu.dbglvl.BLE=BLE
+adafruit_fruitjam.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 adafruit_fruitjam.menu.dbglvl.LWIP=LWIP
 adafruit_fruitjam.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 adafruit_fruitjam.menu.dbglvl.All=All
-adafruit_fruitjam.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+adafruit_fruitjam.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 adafruit_fruitjam.menu.dbglvl.NDEBUG=NDEBUG
 adafruit_fruitjam.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 adafruit_fruitjam.menu.usbstack.picosdk=Pico SDK
@@ -8437,10 +8489,12 @@ amken_bunny.menu.dbglvl.Wire=Wire
 amken_bunny.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 amken_bunny.menu.dbglvl.Bluetooth=Bluetooth
 amken_bunny.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+amken_bunny.menu.dbglvl.BLE=BLE
+amken_bunny.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 amken_bunny.menu.dbglvl.LWIP=LWIP
 amken_bunny.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 amken_bunny.menu.dbglvl.All=All
-amken_bunny.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+amken_bunny.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 amken_bunny.menu.dbglvl.NDEBUG=NDEBUG
 amken_bunny.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 amken_bunny.menu.usbstack.picosdk=Pico SDK
@@ -8864,10 +8918,12 @@ amken_revelop.menu.dbglvl.Wire=Wire
 amken_revelop.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 amken_revelop.menu.dbglvl.Bluetooth=Bluetooth
 amken_revelop.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+amken_revelop.menu.dbglvl.BLE=BLE
+amken_revelop.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 amken_revelop.menu.dbglvl.LWIP=LWIP
 amken_revelop.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 amken_revelop.menu.dbglvl.All=All
-amken_revelop.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+amken_revelop.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 amken_revelop.menu.dbglvl.NDEBUG=NDEBUG
 amken_revelop.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 amken_revelop.menu.usbstack.picosdk=Pico SDK
@@ -9291,10 +9347,12 @@ amken_revelop_plus.menu.dbglvl.Wire=Wire
 amken_revelop_plus.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 amken_revelop_plus.menu.dbglvl.Bluetooth=Bluetooth
 amken_revelop_plus.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+amken_revelop_plus.menu.dbglvl.BLE=BLE
+amken_revelop_plus.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 amken_revelop_plus.menu.dbglvl.LWIP=LWIP
 amken_revelop_plus.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 amken_revelop_plus.menu.dbglvl.All=All
-amken_revelop_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+amken_revelop_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 amken_revelop_plus.menu.dbglvl.NDEBUG=NDEBUG
 amken_revelop_plus.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 amken_revelop_plus.menu.usbstack.picosdk=Pico SDK
@@ -9606,10 +9664,12 @@ amken_revelop_es.menu.dbglvl.Wire=Wire
 amken_revelop_es.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 amken_revelop_es.menu.dbglvl.Bluetooth=Bluetooth
 amken_revelop_es.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+amken_revelop_es.menu.dbglvl.BLE=BLE
+amken_revelop_es.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 amken_revelop_es.menu.dbglvl.LWIP=LWIP
 amken_revelop_es.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 amken_revelop_es.menu.dbglvl.All=All
-amken_revelop_es.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+amken_revelop_es.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 amken_revelop_es.menu.dbglvl.NDEBUG=NDEBUG
 amken_revelop_es.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 amken_revelop_es.menu.usbstack.picosdk=Pico SDK
@@ -9933,10 +9993,12 @@ jumperless_v1.menu.dbglvl.Wire=Wire
 jumperless_v1.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 jumperless_v1.menu.dbglvl.Bluetooth=Bluetooth
 jumperless_v1.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+jumperless_v1.menu.dbglvl.BLE=BLE
+jumperless_v1.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 jumperless_v1.menu.dbglvl.LWIP=LWIP
 jumperless_v1.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 jumperless_v1.menu.dbglvl.All=All
-jumperless_v1.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+jumperless_v1.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 jumperless_v1.menu.dbglvl.NDEBUG=NDEBUG
 jumperless_v1.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 jumperless_v1.menu.usbstack.picosdk=Pico SDK
@@ -10269,10 +10331,12 @@ jumperless_v5.menu.dbglvl.Wire=Wire
 jumperless_v5.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 jumperless_v5.menu.dbglvl.Bluetooth=Bluetooth
 jumperless_v5.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+jumperless_v5.menu.dbglvl.BLE=BLE
+jumperless_v5.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 jumperless_v5.menu.dbglvl.LWIP=LWIP
 jumperless_v5.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 jumperless_v5.menu.dbglvl.All=All
-jumperless_v5.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+jumperless_v5.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 jumperless_v5.menu.dbglvl.NDEBUG=NDEBUG
 jumperless_v5.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 jumperless_v5.menu.usbstack.picosdk=Pico SDK
@@ -10595,10 +10659,12 @@ arduino_nano_connect.menu.dbglvl.Wire=Wire
 arduino_nano_connect.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 arduino_nano_connect.menu.dbglvl.Bluetooth=Bluetooth
 arduino_nano_connect.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+arduino_nano_connect.menu.dbglvl.BLE=BLE
+arduino_nano_connect.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 arduino_nano_connect.menu.dbglvl.LWIP=LWIP
 arduino_nano_connect.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 arduino_nano_connect.menu.dbglvl.All=All
-arduino_nano_connect.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+arduino_nano_connect.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 arduino_nano_connect.menu.dbglvl.NDEBUG=NDEBUG
 arduino_nano_connect.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 arduino_nano_connect.menu.usbstack.picosdk=Pico SDK
@@ -10839,10 +10905,12 @@ artronshop_rp2_nano.menu.dbglvl.Wire=Wire
 artronshop_rp2_nano.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 artronshop_rp2_nano.menu.dbglvl.Bluetooth=Bluetooth
 artronshop_rp2_nano.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+artronshop_rp2_nano.menu.dbglvl.BLE=BLE
+artronshop_rp2_nano.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 artronshop_rp2_nano.menu.dbglvl.LWIP=LWIP
 artronshop_rp2_nano.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 artronshop_rp2_nano.menu.dbglvl.All=All
-artronshop_rp2_nano.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+artronshop_rp2_nano.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 artronshop_rp2_nano.menu.dbglvl.NDEBUG=NDEBUG
 artronshop_rp2_nano.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 artronshop_rp2_nano.menu.usbstack.picosdk=Pico SDK
@@ -11059,10 +11127,12 @@ bigtreetech_SKR_Pico.menu.dbglvl.Wire=Wire
 bigtreetech_SKR_Pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 bigtreetech_SKR_Pico.menu.dbglvl.Bluetooth=Bluetooth
 bigtreetech_SKR_Pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+bigtreetech_SKR_Pico.menu.dbglvl.BLE=BLE
+bigtreetech_SKR_Pico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 bigtreetech_SKR_Pico.menu.dbglvl.LWIP=LWIP
 bigtreetech_SKR_Pico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 bigtreetech_SKR_Pico.menu.dbglvl.All=All
-bigtreetech_SKR_Pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+bigtreetech_SKR_Pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 bigtreetech_SKR_Pico.menu.dbglvl.NDEBUG=NDEBUG
 bigtreetech_SKR_Pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 bigtreetech_SKR_Pico.menu.usbstack.picosdk=Pico SDK
@@ -11401,10 +11471,12 @@ breadstick_raspberry.menu.dbglvl.Wire=Wire
 breadstick_raspberry.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 breadstick_raspberry.menu.dbglvl.Bluetooth=Bluetooth
 breadstick_raspberry.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+breadstick_raspberry.menu.dbglvl.BLE=BLE
+breadstick_raspberry.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 breadstick_raspberry.menu.dbglvl.LWIP=LWIP
 breadstick_raspberry.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 breadstick_raspberry.menu.dbglvl.All=All
-breadstick_raspberry.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+breadstick_raspberry.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 breadstick_raspberry.menu.dbglvl.NDEBUG=NDEBUG
 breadstick_raspberry.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 breadstick_raspberry.menu.usbstack.picosdk=Pico SDK
@@ -11688,10 +11760,12 @@ bridgetek_idm2040_7a.menu.dbglvl.Wire=Wire
 bridgetek_idm2040_7a.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 bridgetek_idm2040_7a.menu.dbglvl.Bluetooth=Bluetooth
 bridgetek_idm2040_7a.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+bridgetek_idm2040_7a.menu.dbglvl.BLE=BLE
+bridgetek_idm2040_7a.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 bridgetek_idm2040_7a.menu.dbglvl.LWIP=LWIP
 bridgetek_idm2040_7a.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 bridgetek_idm2040_7a.menu.dbglvl.All=All
-bridgetek_idm2040_7a.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+bridgetek_idm2040_7a.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 bridgetek_idm2040_7a.menu.dbglvl.NDEBUG=NDEBUG
 bridgetek_idm2040_7a.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 bridgetek_idm2040_7a.menu.usbstack.picosdk=Pico SDK
@@ -11951,10 +12025,12 @@ bridgetek_idm2040_43a.menu.dbglvl.Wire=Wire
 bridgetek_idm2040_43a.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 bridgetek_idm2040_43a.menu.dbglvl.Bluetooth=Bluetooth
 bridgetek_idm2040_43a.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+bridgetek_idm2040_43a.menu.dbglvl.BLE=BLE
+bridgetek_idm2040_43a.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 bridgetek_idm2040_43a.menu.dbglvl.LWIP=LWIP
 bridgetek_idm2040_43a.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 bridgetek_idm2040_43a.menu.dbglvl.All=All
-bridgetek_idm2040_43a.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+bridgetek_idm2040_43a.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 bridgetek_idm2040_43a.menu.dbglvl.NDEBUG=NDEBUG
 bridgetek_idm2040_43a.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 bridgetek_idm2040_43a.menu.usbstack.picosdk=Pico SDK
@@ -12204,10 +12280,12 @@ cytron_iriv_io_controller.menu.dbglvl.Wire=Wire
 cytron_iriv_io_controller.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 cytron_iriv_io_controller.menu.dbglvl.Bluetooth=Bluetooth
 cytron_iriv_io_controller.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+cytron_iriv_io_controller.menu.dbglvl.BLE=BLE
+cytron_iriv_io_controller.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 cytron_iriv_io_controller.menu.dbglvl.LWIP=LWIP
 cytron_iriv_io_controller.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 cytron_iriv_io_controller.menu.dbglvl.All=All
-cytron_iriv_io_controller.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+cytron_iriv_io_controller.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 cytron_iriv_io_controller.menu.dbglvl.NDEBUG=NDEBUG
 cytron_iriv_io_controller.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_iriv_io_controller.menu.usbstack.picosdk=Pico SDK
@@ -12448,10 +12526,12 @@ cytron_maker_nano_rp2040.menu.dbglvl.Wire=Wire
 cytron_maker_nano_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 cytron_maker_nano_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 cytron_maker_nano_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+cytron_maker_nano_rp2040.menu.dbglvl.BLE=BLE
+cytron_maker_nano_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 cytron_maker_nano_rp2040.menu.dbglvl.LWIP=LWIP
 cytron_maker_nano_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 cytron_maker_nano_rp2040.menu.dbglvl.All=All
-cytron_maker_nano_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+cytron_maker_nano_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 cytron_maker_nano_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 cytron_maker_nano_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_maker_nano_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -12692,10 +12772,12 @@ cytron_maker_pi_rp2040.menu.dbglvl.Wire=Wire
 cytron_maker_pi_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 cytron_maker_pi_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 cytron_maker_pi_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+cytron_maker_pi_rp2040.menu.dbglvl.BLE=BLE
+cytron_maker_pi_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 cytron_maker_pi_rp2040.menu.dbglvl.LWIP=LWIP
 cytron_maker_pi_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 cytron_maker_pi_rp2040.menu.dbglvl.All=All
-cytron_maker_pi_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+cytron_maker_pi_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 cytron_maker_pi_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 cytron_maker_pi_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_maker_pi_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -12936,10 +13018,12 @@ cytron_maker_uno_rp2040.menu.dbglvl.Wire=Wire
 cytron_maker_uno_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 cytron_maker_uno_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 cytron_maker_uno_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+cytron_maker_uno_rp2040.menu.dbglvl.BLE=BLE
+cytron_maker_uno_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 cytron_maker_uno_rp2040.menu.dbglvl.LWIP=LWIP
 cytron_maker_uno_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 cytron_maker_uno_rp2040.menu.dbglvl.All=All
-cytron_maker_uno_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+cytron_maker_uno_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 cytron_maker_uno_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 cytron_maker_uno_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_maker_uno_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -13189,10 +13273,12 @@ cytron_motion_2350_pro.menu.dbglvl.Wire=Wire
 cytron_motion_2350_pro.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 cytron_motion_2350_pro.menu.dbglvl.Bluetooth=Bluetooth
 cytron_motion_2350_pro.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+cytron_motion_2350_pro.menu.dbglvl.BLE=BLE
+cytron_motion_2350_pro.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 cytron_motion_2350_pro.menu.dbglvl.LWIP=LWIP
 cytron_motion_2350_pro.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 cytron_motion_2350_pro.menu.dbglvl.All=All
-cytron_motion_2350_pro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+cytron_motion_2350_pro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 cytron_motion_2350_pro.menu.dbglvl.NDEBUG=NDEBUG
 cytron_motion_2350_pro.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 cytron_motion_2350_pro.menu.usbstack.picosdk=Pico SDK
@@ -13433,10 +13519,12 @@ datanoisetv_picoadk.menu.dbglvl.Wire=Wire
 datanoisetv_picoadk.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 datanoisetv_picoadk.menu.dbglvl.Bluetooth=Bluetooth
 datanoisetv_picoadk.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+datanoisetv_picoadk.menu.dbglvl.BLE=BLE
+datanoisetv_picoadk.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 datanoisetv_picoadk.menu.dbglvl.LWIP=LWIP
 datanoisetv_picoadk.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 datanoisetv_picoadk.menu.dbglvl.All=All
-datanoisetv_picoadk.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+datanoisetv_picoadk.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 datanoisetv_picoadk.menu.dbglvl.NDEBUG=NDEBUG
 datanoisetv_picoadk.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 datanoisetv_picoadk.menu.usbstack.picosdk=Pico SDK
@@ -13712,10 +13800,12 @@ datanoisetv_picoadk_v2.menu.dbglvl.Wire=Wire
 datanoisetv_picoadk_v2.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 datanoisetv_picoadk_v2.menu.dbglvl.Bluetooth=Bluetooth
 datanoisetv_picoadk_v2.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+datanoisetv_picoadk_v2.menu.dbglvl.BLE=BLE
+datanoisetv_picoadk_v2.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 datanoisetv_picoadk_v2.menu.dbglvl.LWIP=LWIP
 datanoisetv_picoadk_v2.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 datanoisetv_picoadk_v2.menu.dbglvl.All=All
-datanoisetv_picoadk_v2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+datanoisetv_picoadk_v2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 datanoisetv_picoadk_v2.menu.dbglvl.NDEBUG=NDEBUG
 datanoisetv_picoadk_v2.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 datanoisetv_picoadk_v2.menu.usbstack.picosdk=Pico SDK
@@ -14030,10 +14120,12 @@ degz_suibo.menu.dbglvl.Wire=Wire
 degz_suibo.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 degz_suibo.menu.dbglvl.Bluetooth=Bluetooth
 degz_suibo.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+degz_suibo.menu.dbglvl.BLE=BLE
+degz_suibo.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 degz_suibo.menu.dbglvl.LWIP=LWIP
 degz_suibo.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 degz_suibo.menu.dbglvl.All=All
-degz_suibo.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+degz_suibo.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 degz_suibo.menu.dbglvl.NDEBUG=NDEBUG
 degz_suibo.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 degz_suibo.menu.usbstack.picosdk=Pico SDK
@@ -14288,10 +14380,12 @@ flyboard2040_core.menu.dbglvl.Wire=Wire
 flyboard2040_core.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 flyboard2040_core.menu.dbglvl.Bluetooth=Bluetooth
 flyboard2040_core.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+flyboard2040_core.menu.dbglvl.BLE=BLE
+flyboard2040_core.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 flyboard2040_core.menu.dbglvl.LWIP=LWIP
 flyboard2040_core.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 flyboard2040_core.menu.dbglvl.All=All
-flyboard2040_core.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+flyboard2040_core.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 flyboard2040_core.menu.dbglvl.NDEBUG=NDEBUG
 flyboard2040_core.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 flyboard2040_core.menu.usbstack.picosdk=Pico SDK
@@ -14516,10 +14610,12 @@ dfrobot_beetle_rp2040.menu.dbglvl.Wire=Wire
 dfrobot_beetle_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 dfrobot_beetle_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 dfrobot_beetle_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+dfrobot_beetle_rp2040.menu.dbglvl.BLE=BLE
+dfrobot_beetle_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 dfrobot_beetle_rp2040.menu.dbglvl.LWIP=LWIP
 dfrobot_beetle_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 dfrobot_beetle_rp2040.menu.dbglvl.All=All
-dfrobot_beetle_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+dfrobot_beetle_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 dfrobot_beetle_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 dfrobot_beetle_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 dfrobot_beetle_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -14774,10 +14870,12 @@ DudesCab.menu.dbglvl.Wire=Wire
 DudesCab.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 DudesCab.menu.dbglvl.Bluetooth=Bluetooth
 DudesCab.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+DudesCab.menu.dbglvl.BLE=BLE
+DudesCab.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 DudesCab.menu.dbglvl.LWIP=LWIP
 DudesCab.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 DudesCab.menu.dbglvl.All=All
-DudesCab.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+DudesCab.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 DudesCab.menu.dbglvl.NDEBUG=NDEBUG
 DudesCab.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 DudesCab.menu.usbstack.picosdk=Pico SDK
@@ -15018,10 +15116,12 @@ electroniccats_huntercat_nfc.menu.dbglvl.Wire=Wire
 electroniccats_huntercat_nfc.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 electroniccats_huntercat_nfc.menu.dbglvl.Bluetooth=Bluetooth
 electroniccats_huntercat_nfc.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+electroniccats_huntercat_nfc.menu.dbglvl.BLE=BLE
+electroniccats_huntercat_nfc.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 electroniccats_huntercat_nfc.menu.dbglvl.LWIP=LWIP
 electroniccats_huntercat_nfc.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 electroniccats_huntercat_nfc.menu.dbglvl.All=All
-electroniccats_huntercat_nfc.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+electroniccats_huntercat_nfc.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 electroniccats_huntercat_nfc.menu.dbglvl.NDEBUG=NDEBUG
 electroniccats_huntercat_nfc.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 electroniccats_huntercat_nfc.menu.usbstack.picosdk=Pico SDK
@@ -15336,10 +15436,12 @@ evn_alpha.menu.dbglvl.Wire=Wire
 evn_alpha.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 evn_alpha.menu.dbglvl.Bluetooth=Bluetooth
 evn_alpha.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+evn_alpha.menu.dbglvl.BLE=BLE
+evn_alpha.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 evn_alpha.menu.dbglvl.LWIP=LWIP
 evn_alpha.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 evn_alpha.menu.dbglvl.All=All
-evn_alpha.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+evn_alpha.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 evn_alpha.menu.dbglvl.NDEBUG=NDEBUG
 evn_alpha.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 evn_alpha.menu.usbstack.picosdk=Pico SDK
@@ -15556,10 +15658,12 @@ extelec_rc2040.menu.dbglvl.Wire=Wire
 extelec_rc2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 extelec_rc2040.menu.dbglvl.Bluetooth=Bluetooth
 extelec_rc2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+extelec_rc2040.menu.dbglvl.BLE=BLE
+extelec_rc2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 extelec_rc2040.menu.dbglvl.LWIP=LWIP
 extelec_rc2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 extelec_rc2040.menu.dbglvl.All=All
-extelec_rc2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+extelec_rc2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 extelec_rc2040.menu.dbglvl.NDEBUG=NDEBUG
 extelec_rc2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 extelec_rc2040.menu.usbstack.picosdk=Pico SDK
@@ -15814,10 +15918,12 @@ geeekpi_rp2040_plus.menu.dbglvl.Wire=Wire
 geeekpi_rp2040_plus.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 geeekpi_rp2040_plus.menu.dbglvl.Bluetooth=Bluetooth
 geeekpi_rp2040_plus.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+geeekpi_rp2040_plus.menu.dbglvl.BLE=BLE
+geeekpi_rp2040_plus.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 geeekpi_rp2040_plus.menu.dbglvl.LWIP=LWIP
 geeekpi_rp2040_plus.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 geeekpi_rp2040_plus.menu.dbglvl.All=All
-geeekpi_rp2040_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+geeekpi_rp2040_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 geeekpi_rp2040_plus.menu.dbglvl.NDEBUG=NDEBUG
 geeekpi_rp2040_plus.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 geeekpi_rp2040_plus.menu.usbstack.picosdk=Pico SDK
@@ -16100,10 +16206,12 @@ groundstudio_marble_pico.menu.dbglvl.Wire=Wire
 groundstudio_marble_pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 groundstudio_marble_pico.menu.dbglvl.Bluetooth=Bluetooth
 groundstudio_marble_pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+groundstudio_marble_pico.menu.dbglvl.BLE=BLE
+groundstudio_marble_pico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 groundstudio_marble_pico.menu.dbglvl.LWIP=LWIP
 groundstudio_marble_pico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 groundstudio_marble_pico.menu.dbglvl.All=All
-groundstudio_marble_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+groundstudio_marble_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 groundstudio_marble_pico.menu.dbglvl.NDEBUG=NDEBUG
 groundstudio_marble_pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 groundstudio_marble_pico.menu.usbstack.picosdk=Pico SDK
@@ -16386,10 +16494,12 @@ challenger_2040_lte.menu.dbglvl.Wire=Wire
 challenger_2040_lte.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_lte.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_lte.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_lte.menu.dbglvl.BLE=BLE
+challenger_2040_lte.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_lte.menu.dbglvl.LWIP=LWIP
 challenger_2040_lte.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_lte.menu.dbglvl.All=All
-challenger_2040_lte.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_lte.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_lte.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_lte.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_lte.menu.usbstack.picosdk=Pico SDK
@@ -16672,10 +16782,12 @@ challenger_2040_lora.menu.dbglvl.Wire=Wire
 challenger_2040_lora.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_lora.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_lora.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_lora.menu.dbglvl.BLE=BLE
+challenger_2040_lora.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_lora.menu.dbglvl.LWIP=LWIP
 challenger_2040_lora.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_lora.menu.dbglvl.All=All
-challenger_2040_lora.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_lora.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_lora.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_lora.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_lora.menu.usbstack.picosdk=Pico SDK
@@ -16958,10 +17070,12 @@ challenger_2040_subghz.menu.dbglvl.Wire=Wire
 challenger_2040_subghz.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_subghz.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_subghz.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_subghz.menu.dbglvl.BLE=BLE
+challenger_2040_subghz.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_subghz.menu.dbglvl.LWIP=LWIP
 challenger_2040_subghz.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_subghz.menu.dbglvl.All=All
-challenger_2040_subghz.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_subghz.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_subghz.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_subghz.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_subghz.menu.usbstack.picosdk=Pico SDK
@@ -17245,10 +17359,12 @@ challenger_2040_wifi.menu.dbglvl.Wire=Wire
 challenger_2040_wifi.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_wifi.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_wifi.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_wifi.menu.dbglvl.BLE=BLE
+challenger_2040_wifi.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_wifi.menu.dbglvl.LWIP=LWIP
 challenger_2040_wifi.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_wifi.menu.dbglvl.All=All
-challenger_2040_wifi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_wifi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_wifi.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_wifi.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_wifi.menu.usbstack.picosdk=Pico SDK
@@ -17632,10 +17748,12 @@ challenger_2040_wifi_ble.menu.dbglvl.Wire=Wire
 challenger_2040_wifi_ble.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_wifi_ble.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_wifi_ble.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_wifi_ble.menu.dbglvl.BLE=BLE
+challenger_2040_wifi_ble.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_wifi_ble.menu.dbglvl.LWIP=LWIP
 challenger_2040_wifi_ble.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_wifi_ble.menu.dbglvl.All=All
-challenger_2040_wifi_ble.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_wifi_ble.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_wifi_ble.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_wifi_ble.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_wifi_ble.menu.usbstack.picosdk=Pico SDK
@@ -17919,10 +18037,12 @@ challenger_2040_wifi6_ble.menu.dbglvl.Wire=Wire
 challenger_2040_wifi6_ble.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_wifi6_ble.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_wifi6_ble.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_wifi6_ble.menu.dbglvl.BLE=BLE
+challenger_2040_wifi6_ble.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_wifi6_ble.menu.dbglvl.LWIP=LWIP
 challenger_2040_wifi6_ble.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_wifi6_ble.menu.dbglvl.All=All
-challenger_2040_wifi6_ble.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_wifi6_ble.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_wifi6_ble.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_wifi6_ble.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_wifi6_ble.menu.usbstack.picosdk=Pico SDK
@@ -18206,10 +18326,12 @@ challenger_nb_2040_wifi.menu.dbglvl.Wire=Wire
 challenger_nb_2040_wifi.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_nb_2040_wifi.menu.dbglvl.Bluetooth=Bluetooth
 challenger_nb_2040_wifi.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_nb_2040_wifi.menu.dbglvl.BLE=BLE
+challenger_nb_2040_wifi.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_nb_2040_wifi.menu.dbglvl.LWIP=LWIP
 challenger_nb_2040_wifi.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_nb_2040_wifi.menu.dbglvl.All=All
-challenger_nb_2040_wifi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_nb_2040_wifi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_nb_2040_wifi.menu.dbglvl.NDEBUG=NDEBUG
 challenger_nb_2040_wifi.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_nb_2040_wifi.menu.usbstack.picosdk=Pico SDK
@@ -18492,10 +18614,12 @@ challenger_2040_sdrtc.menu.dbglvl.Wire=Wire
 challenger_2040_sdrtc.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_sdrtc.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_sdrtc.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_sdrtc.menu.dbglvl.BLE=BLE
+challenger_2040_sdrtc.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_sdrtc.menu.dbglvl.LWIP=LWIP
 challenger_2040_sdrtc.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_sdrtc.menu.dbglvl.All=All
-challenger_2040_sdrtc.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_sdrtc.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_sdrtc.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_sdrtc.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_sdrtc.menu.usbstack.picosdk=Pico SDK
@@ -18778,10 +18902,12 @@ challenger_2040_nfc.menu.dbglvl.Wire=Wire
 challenger_2040_nfc.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_nfc.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_nfc.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_nfc.menu.dbglvl.BLE=BLE
+challenger_2040_nfc.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_nfc.menu.dbglvl.LWIP=LWIP
 challenger_2040_nfc.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_nfc.menu.dbglvl.All=All
-challenger_2040_nfc.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_nfc.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_nfc.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_nfc.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_nfc.menu.usbstack.picosdk=Pico SDK
@@ -19064,10 +19190,12 @@ challenger_2040_uwb.menu.dbglvl.Wire=Wire
 challenger_2040_uwb.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2040_uwb.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2040_uwb.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2040_uwb.menu.dbglvl.BLE=BLE
+challenger_2040_uwb.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2040_uwb.menu.dbglvl.LWIP=LWIP
 challenger_2040_uwb.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2040_uwb.menu.dbglvl.All=All
-challenger_2040_uwb.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2040_uwb.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2040_uwb.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2040_uwb.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2040_uwb.menu.usbstack.picosdk=Pico SDK
@@ -19351,10 +19479,12 @@ connectivity_2040_lte_wifi_ble.menu.dbglvl.Wire=Wire
 connectivity_2040_lte_wifi_ble.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 connectivity_2040_lte_wifi_ble.menu.dbglvl.Bluetooth=Bluetooth
 connectivity_2040_lte_wifi_ble.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+connectivity_2040_lte_wifi_ble.menu.dbglvl.BLE=BLE
+connectivity_2040_lte_wifi_ble.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 connectivity_2040_lte_wifi_ble.menu.dbglvl.LWIP=LWIP
 connectivity_2040_lte_wifi_ble.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 connectivity_2040_lte_wifi_ble.menu.dbglvl.All=All
-connectivity_2040_lte_wifi_ble.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+connectivity_2040_lte_wifi_ble.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 connectivity_2040_lte_wifi_ble.menu.dbglvl.NDEBUG=NDEBUG
 connectivity_2040_lte_wifi_ble.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 connectivity_2040_lte_wifi_ble.menu.usbstack.picosdk=Pico SDK
@@ -19638,10 +19768,12 @@ ilabs_rpico32.menu.dbglvl.Wire=Wire
 ilabs_rpico32.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 ilabs_rpico32.menu.dbglvl.Bluetooth=Bluetooth
 ilabs_rpico32.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+ilabs_rpico32.menu.dbglvl.BLE=BLE
+ilabs_rpico32.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 ilabs_rpico32.menu.dbglvl.LWIP=LWIP
 ilabs_rpico32.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 ilabs_rpico32.menu.dbglvl.All=All
-ilabs_rpico32.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+ilabs_rpico32.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 ilabs_rpico32.menu.dbglvl.NDEBUG=NDEBUG
 ilabs_rpico32.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 ilabs_rpico32.menu.usbstack.picosdk=Pico SDK
@@ -20034,10 +20166,12 @@ challenger_2350_wifi6_ble5.menu.dbglvl.Wire=Wire
 challenger_2350_wifi6_ble5.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2350_wifi6_ble5.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2350_wifi6_ble5.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2350_wifi6_ble5.menu.dbglvl.BLE=BLE
+challenger_2350_wifi6_ble5.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2350_wifi6_ble5.menu.dbglvl.LWIP=LWIP
 challenger_2350_wifi6_ble5.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2350_wifi6_ble5.menu.dbglvl.All=All
-challenger_2350_wifi6_ble5.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2350_wifi6_ble5.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2350_wifi6_ble5.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2350_wifi6_ble5.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2350_wifi6_ble5.menu.usbstack.picosdk=Pico SDK
@@ -20329,10 +20463,12 @@ challenger_2350_bconnect.menu.dbglvl.Wire=Wire
 challenger_2350_bconnect.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 challenger_2350_bconnect.menu.dbglvl.Bluetooth=Bluetooth
 challenger_2350_bconnect.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2350_bconnect.menu.dbglvl.BLE=BLE
+challenger_2350_bconnect.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 challenger_2350_bconnect.menu.dbglvl.LWIP=LWIP
 challenger_2350_bconnect.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 challenger_2350_bconnect.menu.dbglvl.All=All
-challenger_2350_bconnect.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+challenger_2350_bconnect.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 challenger_2350_bconnect.menu.dbglvl.NDEBUG=NDEBUG
 challenger_2350_bconnect.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 challenger_2350_bconnect.menu.usbstack.picosdk=Pico SDK
@@ -20566,10 +20702,12 @@ mksthr36.menu.dbglvl.Wire=Wire
 mksthr36.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 mksthr36.menu.dbglvl.Bluetooth=Bluetooth
 mksthr36.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+mksthr36.menu.dbglvl.BLE=BLE
+mksthr36.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 mksthr36.menu.dbglvl.LWIP=LWIP
 mksthr36.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 mksthr36.menu.dbglvl.All=All
-mksthr36.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+mksthr36.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 mksthr36.menu.dbglvl.NDEBUG=NDEBUG
 mksthr36.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 mksthr36.menu.usbstack.picosdk=Pico SDK
@@ -20803,10 +20941,12 @@ mksthr42.menu.dbglvl.Wire=Wire
 mksthr42.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 mksthr42.menu.dbglvl.Bluetooth=Bluetooth
 mksthr42.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+mksthr42.menu.dbglvl.BLE=BLE
+mksthr42.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 mksthr42.menu.dbglvl.LWIP=LWIP
 mksthr42.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 mksthr42.menu.dbglvl.All=All
-mksthr42.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+mksthr42.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 mksthr42.menu.dbglvl.NDEBUG=NDEBUG
 mksthr42.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 mksthr42.menu.usbstack.picosdk=Pico SDK
@@ -21089,10 +21229,12 @@ melopero_cookie_rp2040.menu.dbglvl.Wire=Wire
 melopero_cookie_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 melopero_cookie_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 melopero_cookie_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+melopero_cookie_rp2040.menu.dbglvl.BLE=BLE
+melopero_cookie_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 melopero_cookie_rp2040.menu.dbglvl.LWIP=LWIP
 melopero_cookie_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 melopero_cookie_rp2040.menu.dbglvl.All=All
-melopero_cookie_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+melopero_cookie_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 melopero_cookie_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 melopero_cookie_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 melopero_cookie_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -21431,10 +21573,12 @@ melopero_shake_rp2040.menu.dbglvl.Wire=Wire
 melopero_shake_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 melopero_shake_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 melopero_shake_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+melopero_shake_rp2040.menu.dbglvl.BLE=BLE
+melopero_shake_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 melopero_shake_rp2040.menu.dbglvl.LWIP=LWIP
 melopero_shake_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 melopero_shake_rp2040.menu.dbglvl.All=All
-melopero_shake_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+melopero_shake_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 melopero_shake_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 melopero_shake_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 melopero_shake_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -21752,10 +21896,12 @@ akana_r1.menu.dbglvl.Wire=Wire
 akana_r1.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 akana_r1.menu.dbglvl.Bluetooth=Bluetooth
 akana_r1.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+akana_r1.menu.dbglvl.BLE=BLE
+akana_r1.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 akana_r1.menu.dbglvl.LWIP=LWIP
 akana_r1.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 akana_r1.menu.dbglvl.All=All
-akana_r1.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+akana_r1.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 akana_r1.menu.dbglvl.NDEBUG=NDEBUG
 akana_r1.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 akana_r1.menu.usbstack.picosdk=Pico SDK
@@ -21996,10 +22142,12 @@ MyRP_bot.menu.dbglvl.Wire=Wire
 MyRP_bot.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 MyRP_bot.menu.dbglvl.Bluetooth=Bluetooth
 MyRP_bot.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+MyRP_bot.menu.dbglvl.BLE=BLE
+MyRP_bot.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 MyRP_bot.menu.dbglvl.LWIP=LWIP
 MyRP_bot.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 MyRP_bot.menu.dbglvl.All=All
-MyRP_bot.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+MyRP_bot.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 MyRP_bot.menu.dbglvl.NDEBUG=NDEBUG
 MyRP_bot.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 MyRP_bot.menu.usbstack.picosdk=Pico SDK
@@ -22263,10 +22411,12 @@ MyRP_2350B.menu.dbglvl.Wire=Wire
 MyRP_2350B.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 MyRP_2350B.menu.dbglvl.Bluetooth=Bluetooth
 MyRP_2350B.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+MyRP_2350B.menu.dbglvl.BLE=BLE
+MyRP_2350B.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 MyRP_2350B.menu.dbglvl.LWIP=LWIP
 MyRP_2350B.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 MyRP_2350B.menu.dbglvl.All=All
-MyRP_2350B.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+MyRP_2350B.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 MyRP_2350B.menu.dbglvl.NDEBUG=NDEBUG
 MyRP_2350B.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 MyRP_2350B.menu.usbstack.picosdk=Pico SDK
@@ -22521,10 +22671,12 @@ nekosystems_bl2040_mini.menu.dbglvl.Wire=Wire
 nekosystems_bl2040_mini.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 nekosystems_bl2040_mini.menu.dbglvl.Bluetooth=Bluetooth
 nekosystems_bl2040_mini.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+nekosystems_bl2040_mini.menu.dbglvl.BLE=BLE
+nekosystems_bl2040_mini.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 nekosystems_bl2040_mini.menu.dbglvl.LWIP=LWIP
 nekosystems_bl2040_mini.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 nekosystems_bl2040_mini.menu.dbglvl.All=All
-nekosystems_bl2040_mini.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+nekosystems_bl2040_mini.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 nekosystems_bl2040_mini.menu.dbglvl.NDEBUG=NDEBUG
 nekosystems_bl2040_mini.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 nekosystems_bl2040_mini.menu.usbstack.picosdk=Pico SDK
@@ -22779,10 +22931,12 @@ newsan_archi.menu.dbglvl.Wire=Wire
 newsan_archi.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 newsan_archi.menu.dbglvl.Bluetooth=Bluetooth
 newsan_archi.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+newsan_archi.menu.dbglvl.BLE=BLE
+newsan_archi.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 newsan_archi.menu.dbglvl.LWIP=LWIP
 newsan_archi.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 newsan_archi.menu.dbglvl.All=All
-newsan_archi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+newsan_archi.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 newsan_archi.menu.dbglvl.NDEBUG=NDEBUG
 newsan_archi.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 newsan_archi.menu.usbstack.picosdk=Pico SDK
@@ -23021,10 +23175,12 @@ nullbits_bit_c_pro.menu.dbglvl.Wire=Wire
 nullbits_bit_c_pro.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 nullbits_bit_c_pro.menu.dbglvl.Bluetooth=Bluetooth
 nullbits_bit_c_pro.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+nullbits_bit_c_pro.menu.dbglvl.BLE=BLE
+nullbits_bit_c_pro.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 nullbits_bit_c_pro.menu.dbglvl.LWIP=LWIP
 nullbits_bit_c_pro.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 nullbits_bit_c_pro.menu.dbglvl.All=All
-nullbits_bit_c_pro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+nullbits_bit_c_pro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 nullbits_bit_c_pro.menu.dbglvl.NDEBUG=NDEBUG
 nullbits_bit_c_pro.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 nullbits_bit_c_pro.menu.usbstack.picosdk=Pico SDK
@@ -23384,10 +23540,12 @@ olimex_pico2bb48.menu.dbglvl.Wire=Wire
 olimex_pico2bb48.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 olimex_pico2bb48.menu.dbglvl.Bluetooth=Bluetooth
 olimex_pico2bb48.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+olimex_pico2bb48.menu.dbglvl.BLE=BLE
+olimex_pico2bb48.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 olimex_pico2bb48.menu.dbglvl.LWIP=LWIP
 olimex_pico2bb48.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 olimex_pico2bb48.menu.dbglvl.All=All
-olimex_pico2bb48.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+olimex_pico2bb48.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 olimex_pico2bb48.menu.dbglvl.NDEBUG=NDEBUG
 olimex_pico2bb48.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 olimex_pico2bb48.menu.usbstack.picosdk=Pico SDK
@@ -23637,10 +23795,12 @@ olimex_pico2xl.menu.dbglvl.Wire=Wire
 olimex_pico2xl.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 olimex_pico2xl.menu.dbglvl.Bluetooth=Bluetooth
 olimex_pico2xl.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+olimex_pico2xl.menu.dbglvl.BLE=BLE
+olimex_pico2xl.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 olimex_pico2xl.menu.dbglvl.LWIP=LWIP
 olimex_pico2xl.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 olimex_pico2xl.menu.dbglvl.All=All
-olimex_pico2xl.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+olimex_pico2xl.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 olimex_pico2xl.menu.dbglvl.NDEBUG=NDEBUG
 olimex_pico2xl.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 olimex_pico2xl.menu.usbstack.picosdk=Pico SDK
@@ -23988,10 +24148,12 @@ olimex_pico2xxl.menu.dbglvl.Wire=Wire
 olimex_pico2xxl.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 olimex_pico2xxl.menu.dbglvl.Bluetooth=Bluetooth
 olimex_pico2xxl.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+olimex_pico2xxl.menu.dbglvl.BLE=BLE
+olimex_pico2xxl.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 olimex_pico2xxl.menu.dbglvl.LWIP=LWIP
 olimex_pico2xxl.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 olimex_pico2xxl.menu.dbglvl.All=All
-olimex_pico2xxl.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+olimex_pico2xxl.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 olimex_pico2xxl.menu.dbglvl.NDEBUG=NDEBUG
 olimex_pico2xxl.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 olimex_pico2xxl.menu.usbstack.picosdk=Pico SDK
@@ -24281,10 +24443,12 @@ olimex_rp2040pico30.menu.dbglvl.Wire=Wire
 olimex_rp2040pico30.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 olimex_rp2040pico30.menu.dbglvl.Bluetooth=Bluetooth
 olimex_rp2040pico30.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+olimex_rp2040pico30.menu.dbglvl.BLE=BLE
+olimex_rp2040pico30.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 olimex_rp2040pico30.menu.dbglvl.LWIP=LWIP
 olimex_rp2040pico30.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 olimex_rp2040pico30.menu.dbglvl.All=All
-olimex_rp2040pico30.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+olimex_rp2040pico30.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 olimex_rp2040pico30.menu.dbglvl.NDEBUG=NDEBUG
 olimex_rp2040pico30.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 olimex_rp2040pico30.menu.usbstack.picosdk=Pico SDK
@@ -24567,10 +24731,12 @@ pimoroni_pga2040.menu.dbglvl.Wire=Wire
 pimoroni_pga2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_pga2040.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_pga2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_pga2040.menu.dbglvl.BLE=BLE
+pimoroni_pga2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_pga2040.menu.dbglvl.LWIP=LWIP
 pimoroni_pga2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_pga2040.menu.dbglvl.All=All
-pimoroni_pga2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_pga2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_pga2040.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_pga2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_pga2040.menu.usbstack.picosdk=Pico SDK
@@ -24918,10 +25084,12 @@ pimoroni_pga2350.menu.dbglvl.Wire=Wire
 pimoroni_pga2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_pga2350.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_pga2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_pga2350.menu.dbglvl.BLE=BLE
+pimoroni_pga2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_pga2350.menu.dbglvl.LWIP=LWIP
 pimoroni_pga2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_pga2350.menu.dbglvl.All=All
-pimoroni_pga2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_pga2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_pga2350.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_pga2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_pga2350.menu.usbstack.picosdk=Pico SDK
@@ -25269,10 +25437,12 @@ pimoroni_pico_plus_2.menu.dbglvl.Wire=Wire
 pimoroni_pico_plus_2.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_pico_plus_2.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_pico_plus_2.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_pico_plus_2.menu.dbglvl.BLE=BLE
+pimoroni_pico_plus_2.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_pico_plus_2.menu.dbglvl.LWIP=LWIP
 pimoroni_pico_plus_2.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_pico_plus_2.menu.dbglvl.All=All
-pimoroni_pico_plus_2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_pico_plus_2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_pico_plus_2.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_pico_plus_2.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_pico_plus_2.menu.usbstack.picosdk=Pico SDK
@@ -25621,10 +25791,12 @@ pimoroni_pico_plus_2w.menu.dbglvl.Wire=Wire
 pimoroni_pico_plus_2w.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_pico_plus_2w.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_pico_plus_2w.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_pico_plus_2w.menu.dbglvl.BLE=BLE
+pimoroni_pico_plus_2w.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_pico_plus_2w.menu.dbglvl.LWIP=LWIP
 pimoroni_pico_plus_2w.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_pico_plus_2w.menu.dbglvl.All=All
-pimoroni_pico_plus_2w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_pico_plus_2w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_pico_plus_2w.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_pico_plus_2w.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_pico_plus_2w.menu.usbstack.picosdk=Pico SDK
@@ -25969,10 +26141,12 @@ pimoroni_plasma2040.menu.dbglvl.Wire=Wire
 pimoroni_plasma2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_plasma2040.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_plasma2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_plasma2040.menu.dbglvl.BLE=BLE
+pimoroni_plasma2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_plasma2040.menu.dbglvl.LWIP=LWIP
 pimoroni_plasma2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_plasma2040.menu.dbglvl.All=All
-pimoroni_plasma2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_plasma2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_plasma2040.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_plasma2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_plasma2040.menu.usbstack.picosdk=Pico SDK
@@ -26222,10 +26396,12 @@ pimoroni_plasma2350.menu.dbglvl.Wire=Wire
 pimoroni_plasma2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_plasma2350.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_plasma2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_plasma2350.menu.dbglvl.BLE=BLE
+pimoroni_plasma2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_plasma2350.menu.dbglvl.LWIP=LWIP
 pimoroni_plasma2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_plasma2350.menu.dbglvl.All=All
-pimoroni_plasma2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_plasma2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_plasma2350.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_plasma2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_plasma2350.menu.usbstack.picosdk=Pico SDK
@@ -26476,10 +26652,12 @@ pimoroni_plasma2350w.menu.dbglvl.Wire=Wire
 pimoroni_plasma2350w.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_plasma2350w.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_plasma2350w.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_plasma2350w.menu.dbglvl.BLE=BLE
+pimoroni_plasma2350w.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_plasma2350w.menu.dbglvl.LWIP=LWIP
 pimoroni_plasma2350w.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_plasma2350w.menu.dbglvl.All=All
-pimoroni_plasma2350w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_plasma2350w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_plasma2350w.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_plasma2350w.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_plasma2350w.menu.usbstack.picosdk=Pico SDK
@@ -26720,10 +26898,12 @@ pimoroni_servo2040.menu.dbglvl.Wire=Wire
 pimoroni_servo2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_servo2040.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_servo2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_servo2040.menu.dbglvl.BLE=BLE
+pimoroni_servo2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_servo2040.menu.dbglvl.LWIP=LWIP
 pimoroni_servo2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_servo2040.menu.dbglvl.All=All
-pimoroni_servo2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_servo2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_servo2040.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_servo2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_servo2040.menu.usbstack.picosdk=Pico SDK
@@ -26992,10 +27172,12 @@ pimoroni_tiny2040.menu.dbglvl.Wire=Wire
 pimoroni_tiny2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_tiny2040.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_tiny2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_tiny2040.menu.dbglvl.BLE=BLE
+pimoroni_tiny2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_tiny2040.menu.dbglvl.LWIP=LWIP
 pimoroni_tiny2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_tiny2040.menu.dbglvl.All=All
-pimoroni_tiny2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_tiny2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_tiny2040.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_tiny2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_tiny2040.menu.usbstack.picosdk=Pico SDK
@@ -27259,10 +27441,12 @@ pimoroni_tiny2350.menu.dbglvl.Wire=Wire
 pimoroni_tiny2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_tiny2350.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_tiny2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_tiny2350.menu.dbglvl.BLE=BLE
+pimoroni_tiny2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_tiny2350.menu.dbglvl.LWIP=LWIP
 pimoroni_tiny2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_tiny2350.menu.dbglvl.All=All
-pimoroni_tiny2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_tiny2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_tiny2350.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_tiny2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_tiny2350.menu.usbstack.picosdk=Pico SDK
@@ -27610,10 +27794,12 @@ pimoroni_explorer.menu.dbglvl.Wire=Wire
 pimoroni_explorer.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pimoroni_explorer.menu.dbglvl.Bluetooth=Bluetooth
 pimoroni_explorer.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pimoroni_explorer.menu.dbglvl.BLE=BLE
+pimoroni_explorer.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pimoroni_explorer.menu.dbglvl.LWIP=LWIP
 pimoroni_explorer.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pimoroni_explorer.menu.dbglvl.All=All
-pimoroni_explorer.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pimoroni_explorer.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pimoroni_explorer.menu.dbglvl.NDEBUG=NDEBUG
 pimoroni_explorer.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pimoroni_explorer.menu.usbstack.picosdk=Pico SDK
@@ -27844,10 +28030,12 @@ pintronix_pinmax.menu.dbglvl.Wire=Wire
 pintronix_pinmax.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 pintronix_pinmax.menu.dbglvl.Bluetooth=Bluetooth
 pintronix_pinmax.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+pintronix_pinmax.menu.dbglvl.BLE=BLE
+pintronix_pinmax.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 pintronix_pinmax.menu.dbglvl.LWIP=LWIP
 pintronix_pinmax.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 pintronix_pinmax.menu.dbglvl.All=All
-pintronix_pinmax.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+pintronix_pinmax.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 pintronix_pinmax.menu.dbglvl.NDEBUG=NDEBUG
 pintronix_pinmax.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 pintronix_pinmax.menu.usbstack.picosdk=Pico SDK
@@ -28088,10 +28276,12 @@ rakwireless_rak11300.menu.dbglvl.Wire=Wire
 rakwireless_rak11300.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 rakwireless_rak11300.menu.dbglvl.Bluetooth=Bluetooth
 rakwireless_rak11300.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+rakwireless_rak11300.menu.dbglvl.BLE=BLE
+rakwireless_rak11300.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 rakwireless_rak11300.menu.dbglvl.LWIP=LWIP
 rakwireless_rak11300.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 rakwireless_rak11300.menu.dbglvl.All=All
-rakwireless_rak11300.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+rakwireless_rak11300.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 rakwireless_rak11300.menu.dbglvl.NDEBUG=NDEBUG
 rakwireless_rak11300.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 rakwireless_rak11300.menu.usbstack.picosdk=Pico SDK
@@ -28414,10 +28604,12 @@ redscorp_rp2040_eins.menu.dbglvl.Wire=Wire
 redscorp_rp2040_eins.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 redscorp_rp2040_eins.menu.dbglvl.Bluetooth=Bluetooth
 redscorp_rp2040_eins.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+redscorp_rp2040_eins.menu.dbglvl.BLE=BLE
+redscorp_rp2040_eins.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 redscorp_rp2040_eins.menu.dbglvl.LWIP=LWIP
 redscorp_rp2040_eins.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 redscorp_rp2040_eins.menu.dbglvl.All=All
-redscorp_rp2040_eins.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+redscorp_rp2040_eins.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 redscorp_rp2040_eins.menu.dbglvl.NDEBUG=NDEBUG
 redscorp_rp2040_eins.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 redscorp_rp2040_eins.menu.usbstack.picosdk=Pico SDK
@@ -28740,10 +28932,12 @@ redscorp_rp2040_promini.menu.dbglvl.Wire=Wire
 redscorp_rp2040_promini.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 redscorp_rp2040_promini.menu.dbglvl.Bluetooth=Bluetooth
 redscorp_rp2040_promini.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+redscorp_rp2040_promini.menu.dbglvl.BLE=BLE
+redscorp_rp2040_promini.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 redscorp_rp2040_promini.menu.dbglvl.LWIP=LWIP
 redscorp_rp2040_promini.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 redscorp_rp2040_promini.menu.dbglvl.All=All
-redscorp_rp2040_promini.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+redscorp_rp2040_promini.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 redscorp_rp2040_promini.menu.dbglvl.NDEBUG=NDEBUG
 redscorp_rp2040_promini.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 redscorp_rp2040_promini.menu.usbstack.picosdk=Pico SDK
@@ -29002,10 +29196,12 @@ sea_picro.menu.dbglvl.Wire=Wire
 sea_picro.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sea_picro.menu.dbglvl.Bluetooth=Bluetooth
 sea_picro.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sea_picro.menu.dbglvl.BLE=BLE
+sea_picro.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sea_picro.menu.dbglvl.LWIP=LWIP
 sea_picro.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sea_picro.menu.dbglvl.All=All
-sea_picro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sea_picro.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sea_picro.menu.dbglvl.NDEBUG=NDEBUG
 sea_picro.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sea_picro.menu.usbstack.picosdk=Pico SDK
@@ -29232,10 +29428,12 @@ silicognition_rp2040_shim.menu.dbglvl.Wire=Wire
 silicognition_rp2040_shim.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 silicognition_rp2040_shim.menu.dbglvl.Bluetooth=Bluetooth
 silicognition_rp2040_shim.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+silicognition_rp2040_shim.menu.dbglvl.BLE=BLE
+silicognition_rp2040_shim.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 silicognition_rp2040_shim.menu.dbglvl.LWIP=LWIP
 silicognition_rp2040_shim.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 silicognition_rp2040_shim.menu.dbglvl.All=All
-silicognition_rp2040_shim.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+silicognition_rp2040_shim.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 silicognition_rp2040_shim.menu.dbglvl.NDEBUG=NDEBUG
 silicognition_rp2040_shim.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 silicognition_rp2040_shim.menu.usbstack.picosdk=Pico SDK
@@ -29494,10 +29692,12 @@ solderparty_rp2040_stamp.menu.dbglvl.Wire=Wire
 solderparty_rp2040_stamp.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 solderparty_rp2040_stamp.menu.dbglvl.Bluetooth=Bluetooth
 solderparty_rp2040_stamp.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+solderparty_rp2040_stamp.menu.dbglvl.BLE=BLE
+solderparty_rp2040_stamp.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 solderparty_rp2040_stamp.menu.dbglvl.LWIP=LWIP
 solderparty_rp2040_stamp.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 solderparty_rp2040_stamp.menu.dbglvl.All=All
-solderparty_rp2040_stamp.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+solderparty_rp2040_stamp.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 solderparty_rp2040_stamp.menu.dbglvl.NDEBUG=NDEBUG
 solderparty_rp2040_stamp.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 solderparty_rp2040_stamp.menu.usbstack.picosdk=Pico SDK
@@ -29821,10 +30021,12 @@ solderparty_rp2350_stamp.menu.dbglvl.Wire=Wire
 solderparty_rp2350_stamp.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 solderparty_rp2350_stamp.menu.dbglvl.Bluetooth=Bluetooth
 solderparty_rp2350_stamp.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+solderparty_rp2350_stamp.menu.dbglvl.BLE=BLE
+solderparty_rp2350_stamp.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 solderparty_rp2350_stamp.menu.dbglvl.LWIP=LWIP
 solderparty_rp2350_stamp.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 solderparty_rp2350_stamp.menu.dbglvl.All=All
-solderparty_rp2350_stamp.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+solderparty_rp2350_stamp.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 solderparty_rp2350_stamp.menu.dbglvl.NDEBUG=NDEBUG
 solderparty_rp2350_stamp.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 solderparty_rp2350_stamp.menu.usbstack.picosdk=Pico SDK
@@ -30148,10 +30350,12 @@ solderparty_rp2350_stamp_xl.menu.dbglvl.Wire=Wire
 solderparty_rp2350_stamp_xl.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 solderparty_rp2350_stamp_xl.menu.dbglvl.Bluetooth=Bluetooth
 solderparty_rp2350_stamp_xl.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+solderparty_rp2350_stamp_xl.menu.dbglvl.BLE=BLE
+solderparty_rp2350_stamp_xl.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 solderparty_rp2350_stamp_xl.menu.dbglvl.LWIP=LWIP
 solderparty_rp2350_stamp_xl.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 solderparty_rp2350_stamp_xl.menu.dbglvl.All=All
-solderparty_rp2350_stamp_xl.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+solderparty_rp2350_stamp_xl.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 solderparty_rp2350_stamp_xl.menu.dbglvl.NDEBUG=NDEBUG
 solderparty_rp2350_stamp_xl.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 solderparty_rp2350_stamp_xl.menu.usbstack.picosdk=Pico SDK
@@ -30500,10 +30704,12 @@ soldered_nula_rp2350.menu.dbglvl.Wire=Wire
 soldered_nula_rp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 soldered_nula_rp2350.menu.dbglvl.Bluetooth=Bluetooth
 soldered_nula_rp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+soldered_nula_rp2350.menu.dbglvl.BLE=BLE
+soldered_nula_rp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 soldered_nula_rp2350.menu.dbglvl.LWIP=LWIP
 soldered_nula_rp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 soldered_nula_rp2350.menu.dbglvl.All=All
-soldered_nula_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+soldered_nula_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 soldered_nula_rp2350.menu.dbglvl.NDEBUG=NDEBUG
 soldered_nula_rp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 soldered_nula_rp2350.menu.usbstack.picosdk=Pico SDK
@@ -30852,10 +31058,12 @@ sparkfun_iotredboard_rp2350.menu.dbglvl.Wire=Wire
 sparkfun_iotredboard_rp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_iotredboard_rp2350.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_iotredboard_rp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_iotredboard_rp2350.menu.dbglvl.BLE=BLE
+sparkfun_iotredboard_rp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_iotredboard_rp2350.menu.dbglvl.LWIP=LWIP
 sparkfun_iotredboard_rp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_iotredboard_rp2350.menu.dbglvl.All=All
-sparkfun_iotredboard_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_iotredboard_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_iotredboard_rp2350.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_iotredboard_rp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_iotredboard_rp2350.menu.usbstack.picosdk=Pico SDK
@@ -31194,10 +31402,12 @@ sparkfun_micromodrp2040.menu.dbglvl.Wire=Wire
 sparkfun_micromodrp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_micromodrp2040.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_micromodrp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_micromodrp2040.menu.dbglvl.BLE=BLE
+sparkfun_micromodrp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_micromodrp2040.menu.dbglvl.LWIP=LWIP
 sparkfun_micromodrp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_micromodrp2040.menu.dbglvl.All=All
-sparkfun_micromodrp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_micromodrp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_micromodrp2040.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_micromodrp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_micromodrp2040.menu.usbstack.picosdk=Pico SDK
@@ -31536,10 +31746,12 @@ sparkfun_promicrorp2040.menu.dbglvl.Wire=Wire
 sparkfun_promicrorp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_promicrorp2040.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_promicrorp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_promicrorp2040.menu.dbglvl.BLE=BLE
+sparkfun_promicrorp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_promicrorp2040.menu.dbglvl.LWIP=LWIP
 sparkfun_promicrorp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_promicrorp2040.menu.dbglvl.All=All
-sparkfun_promicrorp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_promicrorp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_promicrorp2040.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_promicrorp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_promicrorp2040.menu.usbstack.picosdk=Pico SDK
@@ -31887,10 +32099,12 @@ sparkfun_promicrorp2350.menu.dbglvl.Wire=Wire
 sparkfun_promicrorp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_promicrorp2350.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_promicrorp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_promicrorp2350.menu.dbglvl.BLE=BLE
+sparkfun_promicrorp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_promicrorp2350.menu.dbglvl.LWIP=LWIP
 sparkfun_promicrorp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_promicrorp2350.menu.dbglvl.All=All
-sparkfun_promicrorp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_promicrorp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_promicrorp2350.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_promicrorp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_promicrorp2350.menu.usbstack.picosdk=Pico SDK
@@ -32229,10 +32443,12 @@ sparkfun_thingplusrp2040.menu.dbglvl.Wire=Wire
 sparkfun_thingplusrp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_thingplusrp2040.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_thingplusrp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_thingplusrp2040.menu.dbglvl.BLE=BLE
+sparkfun_thingplusrp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_thingplusrp2040.menu.dbglvl.LWIP=LWIP
 sparkfun_thingplusrp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_thingplusrp2040.menu.dbglvl.All=All
-sparkfun_thingplusrp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_thingplusrp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_thingplusrp2040.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_thingplusrp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_thingplusrp2040.menu.usbstack.picosdk=Pico SDK
@@ -32581,10 +32797,12 @@ sparkfun_thingplusrp2350.menu.dbglvl.Wire=Wire
 sparkfun_thingplusrp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_thingplusrp2350.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_thingplusrp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_thingplusrp2350.menu.dbglvl.BLE=BLE
+sparkfun_thingplusrp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_thingplusrp2350.menu.dbglvl.LWIP=LWIP
 sparkfun_thingplusrp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_thingplusrp2350.menu.dbglvl.All=All
-sparkfun_thingplusrp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_thingplusrp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_thingplusrp2350.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_thingplusrp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_thingplusrp2350.menu.usbstack.picosdk=Pico SDK
@@ -33036,10 +33254,12 @@ sparkfun_iotnode_lorawanrp2350.menu.dbglvl.Wire=Wire
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_iotnode_lorawanrp2350.menu.dbglvl.BLE=BLE
+sparkfun_iotnode_lorawanrp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.LWIP=LWIP
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.All=All
-sparkfun_iotnode_lorawanrp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_iotnode_lorawanrp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_iotnode_lorawanrp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_iotnode_lorawanrp2350.menu.usbstack.picosdk=Pico SDK
@@ -33281,10 +33501,12 @@ sparkfun_xrp_controller_beta.menu.dbglvl.Wire=Wire
 sparkfun_xrp_controller_beta.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_xrp_controller_beta.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_xrp_controller_beta.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_xrp_controller_beta.menu.dbglvl.BLE=BLE
+sparkfun_xrp_controller_beta.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_xrp_controller_beta.menu.dbglvl.LWIP=LWIP
 sparkfun_xrp_controller_beta.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_xrp_controller_beta.menu.dbglvl.All=All
-sparkfun_xrp_controller_beta.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_xrp_controller_beta.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_xrp_controller_beta.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_xrp_controller_beta.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_xrp_controller_beta.menu.usbstack.picosdk=Pico SDK
@@ -33633,10 +33855,12 @@ sparkfun_xrp_controller.menu.dbglvl.Wire=Wire
 sparkfun_xrp_controller.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 sparkfun_xrp_controller.menu.dbglvl.Bluetooth=Bluetooth
 sparkfun_xrp_controller.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+sparkfun_xrp_controller.menu.dbglvl.BLE=BLE
+sparkfun_xrp_controller.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 sparkfun_xrp_controller.menu.dbglvl.LWIP=LWIP
 sparkfun_xrp_controller.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 sparkfun_xrp_controller.menu.dbglvl.All=All
-sparkfun_xrp_controller.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+sparkfun_xrp_controller.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 sparkfun_xrp_controller.menu.dbglvl.NDEBUG=NDEBUG
 sparkfun_xrp_controller.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 sparkfun_xrp_controller.menu.usbstack.picosdk=Pico SDK
@@ -33877,10 +34101,12 @@ seeed_indicator_rp2040.menu.dbglvl.Wire=Wire
 seeed_indicator_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 seeed_indicator_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 seeed_indicator_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+seeed_indicator_rp2040.menu.dbglvl.BLE=BLE
+seeed_indicator_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 seeed_indicator_rp2040.menu.dbglvl.LWIP=LWIP
 seeed_indicator_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 seeed_indicator_rp2040.menu.dbglvl.All=All
-seeed_indicator_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+seeed_indicator_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 seeed_indicator_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 seeed_indicator_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 seeed_indicator_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -34121,10 +34347,12 @@ seeed_xiao_rp2040.menu.dbglvl.Wire=Wire
 seeed_xiao_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 seeed_xiao_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 seeed_xiao_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+seeed_xiao_rp2040.menu.dbglvl.BLE=BLE
+seeed_xiao_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 seeed_xiao_rp2040.menu.dbglvl.LWIP=LWIP
 seeed_xiao_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 seeed_xiao_rp2040.menu.dbglvl.All=All
-seeed_xiao_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+seeed_xiao_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 seeed_xiao_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 seeed_xiao_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 seeed_xiao_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -34374,10 +34602,12 @@ seeed_xiao_rp2350.menu.dbglvl.Wire=Wire
 seeed_xiao_rp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 seeed_xiao_rp2350.menu.dbglvl.Bluetooth=Bluetooth
 seeed_xiao_rp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+seeed_xiao_rp2350.menu.dbglvl.BLE=BLE
+seeed_xiao_rp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 seeed_xiao_rp2350.menu.dbglvl.LWIP=LWIP
 seeed_xiao_rp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 seeed_xiao_rp2350.menu.dbglvl.All=All
-seeed_xiao_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+seeed_xiao_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 seeed_xiao_rp2350.menu.dbglvl.NDEBUG=NDEBUG
 seeed_xiao_rp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 seeed_xiao_rp2350.menu.usbstack.picosdk=Pico SDK
@@ -34618,10 +34848,12 @@ upesy_rp2040_devkit.menu.dbglvl.Wire=Wire
 upesy_rp2040_devkit.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 upesy_rp2040_devkit.menu.dbglvl.Bluetooth=Bluetooth
 upesy_rp2040_devkit.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+upesy_rp2040_devkit.menu.dbglvl.BLE=BLE
+upesy_rp2040_devkit.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 upesy_rp2040_devkit.menu.dbglvl.LWIP=LWIP
 upesy_rp2040_devkit.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 upesy_rp2040_devkit.menu.dbglvl.All=All
-upesy_rp2040_devkit.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+upesy_rp2040_devkit.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 upesy_rp2040_devkit.menu.dbglvl.NDEBUG=NDEBUG
 upesy_rp2040_devkit.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 upesy_rp2040_devkit.menu.usbstack.picosdk=Pico SDK
@@ -34944,10 +35176,12 @@ vccgnd_yd_rp2040.menu.dbglvl.Wire=Wire
 vccgnd_yd_rp2040.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 vccgnd_yd_rp2040.menu.dbglvl.Bluetooth=Bluetooth
 vccgnd_yd_rp2040.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+vccgnd_yd_rp2040.menu.dbglvl.BLE=BLE
+vccgnd_yd_rp2040.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 vccgnd_yd_rp2040.menu.dbglvl.LWIP=LWIP
 vccgnd_yd_rp2040.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 vccgnd_yd_rp2040.menu.dbglvl.All=All
-vccgnd_yd_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+vccgnd_yd_rp2040.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 vccgnd_yd_rp2040.menu.dbglvl.NDEBUG=NDEBUG
 vccgnd_yd_rp2040.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 vccgnd_yd_rp2040.menu.usbstack.picosdk=Pico SDK
@@ -35178,10 +35412,12 @@ vicharak_shrike-lite.menu.dbglvl.Wire=Wire
 vicharak_shrike-lite.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 vicharak_shrike-lite.menu.dbglvl.Bluetooth=Bluetooth
 vicharak_shrike-lite.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+vicharak_shrike-lite.menu.dbglvl.BLE=BLE
+vicharak_shrike-lite.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 vicharak_shrike-lite.menu.dbglvl.LWIP=LWIP
 vicharak_shrike-lite.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 vicharak_shrike-lite.menu.dbglvl.All=All
-vicharak_shrike-lite.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+vicharak_shrike-lite.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 vicharak_shrike-lite.menu.dbglvl.NDEBUG=NDEBUG
 vicharak_shrike-lite.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 vicharak_shrike-lite.menu.usbstack.picosdk=Pico SDK
@@ -35464,10 +35700,12 @@ viyalab_mizu.menu.dbglvl.Wire=Wire
 viyalab_mizu.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 viyalab_mizu.menu.dbglvl.Bluetooth=Bluetooth
 viyalab_mizu.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+viyalab_mizu.menu.dbglvl.BLE=BLE
+viyalab_mizu.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 viyalab_mizu.menu.dbglvl.LWIP=LWIP
 viyalab_mizu.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 viyalab_mizu.menu.dbglvl.All=All
-viyalab_mizu.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+viyalab_mizu.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 viyalab_mizu.menu.dbglvl.NDEBUG=NDEBUG
 viyalab_mizu.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 viyalab_mizu.menu.usbstack.picosdk=Pico SDK
@@ -35708,10 +35946,12 @@ waveshare_rp2040_zero.menu.dbglvl.Wire=Wire
 waveshare_rp2040_zero.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_zero.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_zero.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_zero.menu.dbglvl.BLE=BLE
+waveshare_rp2040_zero.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_zero.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_zero.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_zero.menu.dbglvl.All=All
-waveshare_rp2040_zero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_zero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_zero.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_zero.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_zero.menu.usbstack.picosdk=Pico SDK
@@ -35966,10 +36206,12 @@ waveshare_rp2040_one.menu.dbglvl.Wire=Wire
 waveshare_rp2040_one.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_one.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_one.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_one.menu.dbglvl.BLE=BLE
+waveshare_rp2040_one.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_one.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_one.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_one.menu.dbglvl.All=All
-waveshare_rp2040_one.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_one.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_one.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_one.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_one.menu.usbstack.picosdk=Pico SDK
@@ -36210,10 +36452,12 @@ waveshare_rp2040_lora.menu.dbglvl.Wire=Wire
 waveshare_rp2040_lora.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_lora.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_lora.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_lora.menu.dbglvl.BLE=BLE
+waveshare_rp2040_lora.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_lora.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_lora.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_lora.menu.dbglvl.All=All
-waveshare_rp2040_lora.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_lora.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_lora.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_lora.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_lora.menu.usbstack.picosdk=Pico SDK
@@ -36454,10 +36698,12 @@ waveshare_rp2040_matrix.menu.dbglvl.Wire=Wire
 waveshare_rp2040_matrix.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_matrix.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_matrix.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_matrix.menu.dbglvl.BLE=BLE
+waveshare_rp2040_matrix.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_matrix.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_matrix.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_matrix.menu.dbglvl.All=All
-waveshare_rp2040_matrix.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_matrix.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_matrix.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_matrix.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_matrix.menu.usbstack.picosdk=Pico SDK
@@ -36796,10 +37042,12 @@ waveshare_rp2040_pizero.menu.dbglvl.Wire=Wire
 waveshare_rp2040_pizero.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_pizero.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_pizero.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_pizero.menu.dbglvl.BLE=BLE
+waveshare_rp2040_pizero.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_pizero.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_pizero.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_pizero.menu.dbglvl.All=All
-waveshare_rp2040_pizero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_pizero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_pizero.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_pizero.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_pizero.menu.usbstack.picosdk=Pico SDK
@@ -37103,10 +37351,12 @@ waveshare_rp2040_plus.menu.dbglvl.Wire=Wire
 waveshare_rp2040_plus.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_plus.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_plus.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_plus.menu.dbglvl.BLE=BLE
+waveshare_rp2040_plus.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_plus.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_plus.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_plus.menu.dbglvl.All=All
-waveshare_rp2040_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_plus.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_plus.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_plus.menu.usbstack.picosdk=Pico SDK
@@ -37347,10 +37597,12 @@ waveshare_rp2040_lcd_0_96.menu.dbglvl.Wire=Wire
 waveshare_rp2040_lcd_0_96.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_lcd_0_96.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_lcd_0_96.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_lcd_0_96.menu.dbglvl.BLE=BLE
+waveshare_rp2040_lcd_0_96.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_lcd_0_96.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_lcd_0_96.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_lcd_0_96.menu.dbglvl.All=All
-waveshare_rp2040_lcd_0_96.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_lcd_0_96.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_lcd_0_96.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_lcd_0_96.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_lcd_0_96.menu.usbstack.picosdk=Pico SDK
@@ -37591,10 +37843,12 @@ waveshare_rp2040_lcd_1_28.menu.dbglvl.Wire=Wire
 waveshare_rp2040_lcd_1_28.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2040_lcd_1_28.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2040_lcd_1_28.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2040_lcd_1_28.menu.dbglvl.BLE=BLE
+waveshare_rp2040_lcd_1_28.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2040_lcd_1_28.menu.dbglvl.LWIP=LWIP
 waveshare_rp2040_lcd_1_28.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2040_lcd_1_28.menu.dbglvl.All=All
-waveshare_rp2040_lcd_1_28.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2040_lcd_1_28.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2040_lcd_1_28.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2040_lcd_1_28.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2040_lcd_1_28.menu.usbstack.picosdk=Pico SDK
@@ -37858,10 +38112,12 @@ waveshare_rp2350_zero.menu.dbglvl.Wire=Wire
 waveshare_rp2350_zero.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2350_zero.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2350_zero.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2350_zero.menu.dbglvl.BLE=BLE
+waveshare_rp2350_zero.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2350_zero.menu.dbglvl.LWIP=LWIP
 waveshare_rp2350_zero.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2350_zero.menu.dbglvl.All=All
-waveshare_rp2350_zero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2350_zero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2350_zero.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2350_zero.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2350_zero.menu.usbstack.picosdk=Pico SDK
@@ -38209,10 +38465,12 @@ waveshare_rp2350_pizero.menu.dbglvl.Wire=Wire
 waveshare_rp2350_pizero.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2350_pizero.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2350_pizero.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2350_pizero.menu.dbglvl.BLE=BLE
+waveshare_rp2350_pizero.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2350_pizero.menu.dbglvl.LWIP=LWIP
 waveshare_rp2350_pizero.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2350_pizero.menu.dbglvl.All=All
-waveshare_rp2350_pizero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2350_pizero.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2350_pizero.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2350_pizero.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2350_pizero.menu.usbstack.picosdk=Pico SDK
@@ -38525,10 +38783,12 @@ waveshare_rp2350_plus.menu.dbglvl.Wire=Wire
 waveshare_rp2350_plus.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2350_plus.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2350_plus.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2350_plus.menu.dbglvl.BLE=BLE
+waveshare_rp2350_plus.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2350_plus.menu.dbglvl.LWIP=LWIP
 waveshare_rp2350_plus.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2350_plus.menu.dbglvl.All=All
-waveshare_rp2350_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2350_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2350_plus.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2350_plus.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2350_plus.menu.usbstack.picosdk=Pico SDK
@@ -38818,10 +39078,12 @@ waveshare_rp2350b_plus_w.menu.dbglvl.Wire=Wire
 waveshare_rp2350b_plus_w.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2350b_plus_w.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2350b_plus_w.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2350b_plus_w.menu.dbglvl.BLE=BLE
+waveshare_rp2350b_plus_w.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2350b_plus_w.menu.dbglvl.LWIP=LWIP
 waveshare_rp2350b_plus_w.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2350b_plus_w.menu.dbglvl.All=All
-waveshare_rp2350b_plus_w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2350b_plus_w.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2350b_plus_w.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2350b_plus_w.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2350b_plus_w.menu.usbstack.picosdk=Pico SDK
@@ -39189,10 +39451,12 @@ waveshare_rp2350_lcd_0_96.menu.dbglvl.Wire=Wire
 waveshare_rp2350_lcd_0_96.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 waveshare_rp2350_lcd_0_96.menu.dbglvl.Bluetooth=Bluetooth
 waveshare_rp2350_lcd_0_96.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+waveshare_rp2350_lcd_0_96.menu.dbglvl.BLE=BLE
+waveshare_rp2350_lcd_0_96.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 waveshare_rp2350_lcd_0_96.menu.dbglvl.LWIP=LWIP
 waveshare_rp2350_lcd_0_96.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 waveshare_rp2350_lcd_0_96.menu.dbglvl.All=All
-waveshare_rp2350_lcd_0_96.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+waveshare_rp2350_lcd_0_96.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 waveshare_rp2350_lcd_0_96.menu.dbglvl.NDEBUG=NDEBUG
 waveshare_rp2350_lcd_0_96.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 waveshare_rp2350_lcd_0_96.menu.usbstack.picosdk=Pico SDK
@@ -39433,10 +39697,12 @@ wiznet_5100s_evb_pico.menu.dbglvl.Wire=Wire
 wiznet_5100s_evb_pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_5100s_evb_pico.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_5100s_evb_pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_5100s_evb_pico.menu.dbglvl.BLE=BLE
+wiznet_5100s_evb_pico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_5100s_evb_pico.menu.dbglvl.LWIP=LWIP
 wiznet_5100s_evb_pico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_5100s_evb_pico.menu.dbglvl.All=All
-wiznet_5100s_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_5100s_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_5100s_evb_pico.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_5100s_evb_pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_5100s_evb_pico.menu.usbstack.picosdk=Pico SDK
@@ -39686,10 +39952,12 @@ wiznet_5100s_evb_pico2.menu.dbglvl.Wire=Wire
 wiznet_5100s_evb_pico2.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_5100s_evb_pico2.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_5100s_evb_pico2.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_5100s_evb_pico2.menu.dbglvl.BLE=BLE
+wiznet_5100s_evb_pico2.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_5100s_evb_pico2.menu.dbglvl.LWIP=LWIP
 wiznet_5100s_evb_pico2.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_5100s_evb_pico2.menu.dbglvl.All=All
-wiznet_5100s_evb_pico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_5100s_evb_pico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_5100s_evb_pico2.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_5100s_evb_pico2.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_5100s_evb_pico2.menu.usbstack.picosdk=Pico SDK
@@ -39930,10 +40198,12 @@ wiznet_wizfi360_evb_pico.menu.dbglvl.Wire=Wire
 wiznet_wizfi360_evb_pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_wizfi360_evb_pico.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_wizfi360_evb_pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_wizfi360_evb_pico.menu.dbglvl.BLE=BLE
+wiznet_wizfi360_evb_pico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_wizfi360_evb_pico.menu.dbglvl.LWIP=LWIP
 wiznet_wizfi360_evb_pico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_wizfi360_evb_pico.menu.dbglvl.All=All
-wiznet_wizfi360_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_wizfi360_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_wizfi360_evb_pico.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_wizfi360_evb_pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_wizfi360_evb_pico.menu.usbstack.picosdk=Pico SDK
@@ -40174,10 +40444,12 @@ wiznet_5500_evb_pico.menu.dbglvl.Wire=Wire
 wiznet_5500_evb_pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_5500_evb_pico.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_5500_evb_pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_5500_evb_pico.menu.dbglvl.BLE=BLE
+wiznet_5500_evb_pico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_5500_evb_pico.menu.dbglvl.LWIP=LWIP
 wiznet_5500_evb_pico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_5500_evb_pico.menu.dbglvl.All=All
-wiznet_5500_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_5500_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_5500_evb_pico.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_5500_evb_pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_5500_evb_pico.menu.usbstack.picosdk=Pico SDK
@@ -40427,10 +40699,12 @@ wiznet_5500_evb_pico2.menu.dbglvl.Wire=Wire
 wiznet_5500_evb_pico2.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_5500_evb_pico2.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_5500_evb_pico2.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_5500_evb_pico2.menu.dbglvl.BLE=BLE
+wiznet_5500_evb_pico2.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_5500_evb_pico2.menu.dbglvl.LWIP=LWIP
 wiznet_5500_evb_pico2.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_5500_evb_pico2.menu.dbglvl.All=All
-wiznet_5500_evb_pico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_5500_evb_pico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_5500_evb_pico2.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_5500_evb_pico2.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_5500_evb_pico2.menu.usbstack.picosdk=Pico SDK
@@ -40671,10 +40945,12 @@ wiznet_55rp20_evb_pico.menu.dbglvl.Wire=Wire
 wiznet_55rp20_evb_pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_55rp20_evb_pico.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_55rp20_evb_pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_55rp20_evb_pico.menu.dbglvl.BLE=BLE
+wiznet_55rp20_evb_pico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_55rp20_evb_pico.menu.dbglvl.LWIP=LWIP
 wiznet_55rp20_evb_pico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_55rp20_evb_pico.menu.dbglvl.All=All
-wiznet_55rp20_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_55rp20_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_55rp20_evb_pico.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_55rp20_evb_pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_55rp20_evb_pico.menu.usbstack.picosdk=Pico SDK
@@ -40915,10 +41191,12 @@ wiznet_6300_evb_pico.menu.dbglvl.Wire=Wire
 wiznet_6300_evb_pico.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_6300_evb_pico.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_6300_evb_pico.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_6300_evb_pico.menu.dbglvl.BLE=BLE
+wiznet_6300_evb_pico.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_6300_evb_pico.menu.dbglvl.LWIP=LWIP
 wiznet_6300_evb_pico.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_6300_evb_pico.menu.dbglvl.All=All
-wiznet_6300_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_6300_evb_pico.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_6300_evb_pico.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_6300_evb_pico.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_6300_evb_pico.menu.usbstack.picosdk=Pico SDK
@@ -41168,10 +41446,12 @@ wiznet_6300_evb_pico2.menu.dbglvl.Wire=Wire
 wiznet_6300_evb_pico2.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 wiznet_6300_evb_pico2.menu.dbglvl.Bluetooth=Bluetooth
 wiznet_6300_evb_pico2.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+wiznet_6300_evb_pico2.menu.dbglvl.BLE=BLE
+wiznet_6300_evb_pico2.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 wiznet_6300_evb_pico2.menu.dbglvl.LWIP=LWIP
 wiznet_6300_evb_pico2.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 wiznet_6300_evb_pico2.menu.dbglvl.All=All
-wiznet_6300_evb_pico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+wiznet_6300_evb_pico2.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 wiznet_6300_evb_pico2.menu.dbglvl.NDEBUG=NDEBUG
 wiznet_6300_evb_pico2.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 wiznet_6300_evb_pico2.menu.usbstack.picosdk=Pico SDK
@@ -41486,10 +41766,12 @@ generic.menu.dbglvl.Wire=Wire
 generic.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 generic.menu.dbglvl.Bluetooth=Bluetooth
 generic.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+generic.menu.dbglvl.BLE=BLE
+generic.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 generic.menu.dbglvl.LWIP=LWIP
 generic.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 generic.menu.dbglvl.All=All
-generic.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+generic.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 generic.menu.dbglvl.NDEBUG=NDEBUG
 generic.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 generic.menu.usbstack.picosdk=Pico SDK
@@ -41948,10 +42230,12 @@ generic_rp2350.menu.dbglvl.Wire=Wire
 generic_rp2350.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
 generic_rp2350.menu.dbglvl.Bluetooth=Bluetooth
 generic_rp2350.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+generic_rp2350.menu.dbglvl.BLE=BLE
+generic_rp2350.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
 generic_rp2350.menu.dbglvl.LWIP=LWIP
 generic_rp2350.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
 generic_rp2350.menu.dbglvl.All=All
-generic_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1
+generic_rp2350.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
 generic_rp2350.menu.dbglvl.NDEBUG=NDEBUG
 generic_rp2350.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
 generic_rp2350.menu.usbstack.picosdk=Pico SDK
