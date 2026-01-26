@@ -42,6 +42,10 @@ public:
     BLEClient();
     ~BLEClient();
 
+    // We canna copy this object, cap'n.  Handles/etc. for btstack are singletons
+    BLEClient(const BLEClient& x) = delete;
+    BLEClient operator=(const BLEClient& x) = delete;
+
     bool connect(BLEAddress a, uint32_t timeout = 10);
     bool connect(BLEAdvertising &device, uint32_t timeoutsec = 10);
     void disconnect();
