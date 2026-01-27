@@ -20,6 +20,7 @@
 
 #include "SerialBT.h"
 #include <CoreMutex.h>
+#include <BluetoothLock.h>
 #define CCALLBACKNAME _SERIALBTCB
 #include <ctocppcallback.h>
 
@@ -50,9 +51,7 @@ void SerialBT_::begin(unsigned long baud, uint16_t config) {
 
     _overflow = false;
 
-    _queue = new uint8_t[_fifoSize];
-    _writer = 0;
-    _reader = 0;
+    _queue = new LocklessQueue<uint8_t>(_fifoSize);
 
     // register for HCI events
     _hci_event_callback_registration.callback = PACKETHANDLERCB(SerialBT_, packetHandler);
@@ -94,20 +93,22 @@ void SerialBT_::end() {
     _running = false;
 
     hci_power_control(HCI_POWER_OFF);
-    __lockBluetooth();
-    delete[] _queue;
-    __unlockBluetooth();
+
+    BluetoothLock l;
+    delete _queue;
 }
 
 int SerialBT_::peek() {
     CoreMutex m(&_mutex);
+    uint8_t ret;
     if (!_running || !m) {
         return -1;
     }
-    if (_writer != _reader) {
-        return _queue[_reader];
+    if (_queue->peek(&ret)) {
+        return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int SerialBT_::read() {
@@ -115,15 +116,12 @@ int SerialBT_::read() {
     if (!_running || !m) {
         return -1;
     }
-    if (_writer != _reader) {
-        auto ret = _queue[_reader];
-        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
-        auto next_reader = (_reader + 1) % _fifoSize;
-        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
-        _reader = next_reader;
+    uint8_t ret;
+    if (_queue->read(&ret)) {
         return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 bool SerialBT_::overflow() {
@@ -131,10 +129,9 @@ bool SerialBT_::overflow() {
         return false;
     }
 
-    __lockBluetooth();
+    BluetoothLock l;
     bool ovf = _overflow;
     _overflow = false;
-    __unlockBluetooth();
 
     return ovf;
 }
@@ -144,7 +141,7 @@ int SerialBT_::available() {
     if (!_running || !m) {
         return 0;
     }
-    return (_fifoSize + _writer - _reader) % _fifoSize;
+    return _queue->available();
 }
 
 int SerialBT_::availableForWrite() {
@@ -170,9 +167,11 @@ size_t SerialBT_::write(const uint8_t *p, size_t len) {
     }
     _writeBuff = p;
     _writeLen = len;
-    __lockBluetooth();
-    rfcomm_request_can_send_now_event(_channelID);
-    __unlockBluetooth();
+    do {
+        BluetoothLock l;
+        rfcomm_request_can_send_now_event(_channelID);
+    } while (0);
+
     while (_connected && _writeLen) {
         /* noop busy wait */
     }
@@ -240,16 +239,7 @@ void SerialBT_::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
 
     case RFCOMM_DATA_PACKET:
         for (i = 0; i < size; i++) {
-            auto next_writer = _writer + 1;
-            if (next_writer == _fifoSize) {
-                next_writer = 0;
-            }
-            if (next_writer != _reader) {
-                _queue[_writer] = packet[i];
-                asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-                // Avoid using division or mod because the HW divider could be in use
-                _writer = next_writer;
-            } else {
+            if (!_queue->write(packet[i])) {
                 _overflow = true;
             }
         }
