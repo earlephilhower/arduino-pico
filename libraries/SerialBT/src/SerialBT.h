@@ -28,6 +28,7 @@
 #include <pico/cyw43_arch.h>
 #include <CoreMutex.h>
 #include <btstack.h>
+#include <LocklessQueue.h>
 
 class SerialBT_;
 extern SerialBT_ SerialBT;
@@ -76,11 +77,8 @@ private:
 
     void packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size);
 
-    // Lockless, IRQ-handled circular queue
-    uint32_t _writer;
-    uint32_t _reader;
+    LocklessQueue<uint8_t> *_queue;
     size_t   _fifoSize = 1024;
-    uint8_t *_queue;
 
     const int RFCOMM_SERVER_CHANNEL = 1;
 
