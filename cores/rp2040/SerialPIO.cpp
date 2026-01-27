@@ -305,7 +305,7 @@ int SerialPIO::read() {
     }
     uint8_t ret;
     if (_queue->read(&ret)) {
-         return ret;
+        return ret;
     } else {
         return -1;
     }
