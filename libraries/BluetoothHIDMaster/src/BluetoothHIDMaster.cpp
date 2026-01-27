@@ -720,9 +720,7 @@ void HIDKeyStream::begin() {
     if (_running) {
         end();
     }
-    _queue = new uint8_t[_fifoSize];
-    _writer = 0;
-    _reader = 0;
+    _queue = new LocklessQueue<uint8_t>(_fifoSize);
 
     _lshift = false;
     _rshift = false;
@@ -738,39 +736,38 @@ void HIDKeyStream::end() {
     }
     _running = false;
 
-    delete[] _queue;
+    delete _queue;
 }
 
 int HIDKeyStream::peek() {
     if (!_running) {
         return -1;
     }
-    if (_writer != _reader) {
-        return _queue[_reader];
+    uint8_t ret;
+    if (_queue->peek(&ret)) {
+        return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int HIDKeyStream::read() {
     if (!_running) {
         return -1;
     }
-    if (_writer != _reader) {
-        auto ret = _queue[_reader];
-        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
-        auto next_reader = (_reader + 1) % _fifoSize;
-        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
-        _reader = next_reader;
+    uint8_t ret;
+    if (_queue->read(&ret)) {
         return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int HIDKeyStream::available() {
     if (!_running) {
         return 0;
     }
-    return (_fifoSize + _writer - _reader) % _fifoSize;
+    return _queue->available();
 }
 
 int HIDKeyStream::availableForWrite() {
@@ -797,19 +794,11 @@ size_t HIDKeyStream::write(uint8_t c) {
         } else if (state) {
             auto ascii = (_lshift || _rshift) ? keytable_us_shift[_heldKey] : keytable_us_none[_heldKey];
             if (ascii != CHAR_ILLEGAL) {
-                auto next_writer = _writer + 1;
-                if (next_writer == _fifoSize) {
-                    next_writer = 0;
-                }
-                if (next_writer != _reader) {
-                    _queue[_writer] = ascii;
-                    asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-                    _writer = next_writer;
-                }
+                return _queue->write(ascii);
             }
-            return 1;
+            return 0;
         } else {
-            return 1;
+            return 0;
         }
     } else {
         if ((c < sizeof(keytable_us_shift)) || (c == 0xe1) || (c == 0xe6)) {
