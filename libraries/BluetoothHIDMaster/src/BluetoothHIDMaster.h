@@ -25,7 +25,7 @@
 #include <Arduino.h>
 #include <list>
 #include <memory>
-
+#include <LocklessQueue.h>
 #include <BluetoothHCI.h>
 #include <btstack.h>
 
@@ -58,11 +58,8 @@ private:
     bool _holding = false;
     uint8_t _heldKey;
 
-    // Lockless, IRQ-handled circular queue
-    uint32_t _writer;
-    uint32_t _reader;
+    LocklessQueue<uint8_t> *_queue;
     size_t   _fifoSize = 32;
-    uint8_t *_queue;
 };
 
 class BluetoothHIDMaster {
