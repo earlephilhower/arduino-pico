@@ -112,15 +112,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
             }
         }
 
-        auto next_writer = _writer + 1;
-        if (next_writer == _fifoSize) {
-            next_writer = 0;
-        }
-        if (next_writer != _reader) {
-            _queue[_writer] = val & ((1 << _bits) -  1);
-            asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            _writer = next_writer;
-        } else {
+        if (!_queue->write(val & ((1 << _bits) -  1))) {
             _overflow = true;
         }
     }
@@ -130,7 +122,7 @@ SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifoSize) {
     _tx = tx;
     _rx = rx;
     _fifoSize = fifoSize + 1; // Always one unused entry
-    _queue = new uint8_t[_fifoSize];
+    _queue = new LocklessQueue<uint8_t>(_fifoSize);
     mutex_init(&_mutex);
     _invertTX = false;
     _invertRX = false;
@@ -138,7 +130,7 @@ SerialPIO::SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifoSize) {
 
 SerialPIO::~SerialPIO() {
     end();
-    delete[] _queue;
+    delete _queue;
 }
 
 static int pio_irq_0(PIO p) {
@@ -224,8 +216,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         pio_sm_set_enabled(_txPIO, _txSM, true);
     }
     if (_rx != NOPIN) {
-        _writer = 0;
-        _reader = 0;
+        _queue->reset();
 
         _rxBits = _bits + (_parity != UART_PARITY_NONE ? 1 : 0);
         _rxPgm = _getRxProgram(_rxBits);
@@ -299,11 +290,12 @@ int SerialPIO::peek() {
     if (!_running || !m || (_rx == NOPIN)) {
         return -1;
     }
-    // If there's something in the FIFO now, just peek at it
-    if (_writer != _reader) {
-        return _queue[_reader];
+    uint8_t ret;
+    if (_queue->peek(&ret)) {
+        return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int SerialPIO::read() {
@@ -311,15 +303,12 @@ int SerialPIO::read() {
     if (!_running || !m || (_rx == NOPIN)) {
         return -1;
     }
-    if (_writer != _reader) {
-        auto ret = _queue[_reader];
-        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
-        auto next_reader = (_reader + 1) % _fifoSize;
-        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
-        _reader = next_reader;
-        return ret;
+    uint8_t ret;
+    if (_queue->read(&ret)) {
+         return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 bool SerialPIO::overflow() {
@@ -338,7 +327,7 @@ int SerialPIO::available() {
     if (!_running || !m || (_rx == NOPIN)) {
         return 0;
     }
-    return (_fifoSize + _writer - _reader) % _fifoSize;
+    return _queue->available();
 }
 
 int SerialPIO::availableForWrite() {
