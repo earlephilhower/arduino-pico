@@ -83,7 +83,6 @@ static void __not_in_flash_func(_fifoIRQ)() {
             SerialPIO *s = _pioSP[p][sm];
             if (s) {
                 s->_handleIRQ();
-                pio_interrupt_clear((p == 0) ? pio0 : pio1, sm);
             }
         }
     }
