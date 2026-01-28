@@ -219,7 +219,7 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         end();
     }
     _overflow = false;
-    _queue = new uint8_t[_fifoSize];
+    _queue = new LocklessQueue<uint8_t>(_fifoSize);
     _baud = baud;
 
     _fcnTx = gpio_get_function(_tx);
@@ -277,8 +277,6 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     }
     uart_set_format(_uart, bits, stop, parity);
     uart_set_hw_flow(_uart, _cts != UART_PIN_NOT_DEFINED, _rts != UART_PIN_NOT_DEFINED);
-    _writer = 0;
-    _reader = 0;
 
     if (!_polling) {
         if (_uart == uart0) {
@@ -314,7 +312,7 @@ void SerialUART::end() {
     mutex_enter_blocking(&_mutex);
     mutex_enter_blocking(&_fifoMutex);
     uart_deinit(_uart);
-    delete[] _queue;
+    delete _queue;
     // Reset the mutexes once all is off/cleaned up
     mutex_exit(&_fifoMutex);
     mutex_exit(&_mutex);
@@ -358,10 +356,13 @@ int SerialUART::peek() {
     } else {
         _pumpFIFO();
     }
-    if (_writer != _reader) {
-        return _queue[_reader];
+
+    uint8_t ret;
+    if (_queue->peek(&ret)) {
+        return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int SerialUART::read() {
@@ -374,15 +375,13 @@ int SerialUART::read() {
     } else {
         _pumpFIFO();
     }
-    if (_writer != _reader) {
-        auto ret = _queue[_reader];
-        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
-        auto next_reader = (_reader + 1) % _fifoSize;
-        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
-        _reader = next_reader;
+
+    uint8_t ret;
+    if (_queue->read(&ret)) {
         return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 bool SerialUART::overflow() {
@@ -414,7 +413,7 @@ int SerialUART::available() {
     } else {
         _pumpFIFO();
     }
-    return (_fifoSize + _writer - _reader) % _fifoSize;
+    return _queue->available();
 }
 
 int SerialUART::availableForWrite() {
@@ -526,16 +525,7 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
             continue;
         }
         uint8_t val = raw & 0xff;
-        auto next_writer = _writer + 1;
-        if (next_writer == _fifoSize) {
-            next_writer = 0;
-        }
-        if (next_writer != _reader) {
-            _queue[_writer] = val;
-            asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            // Avoid using division or mod because the HW divider could be in use
-            _writer = next_writer;
-        } else {
+        if (!_queue->write(val)) {
             _overflow = true;
         }
     }
