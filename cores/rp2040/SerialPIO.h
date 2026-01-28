@@ -93,6 +93,8 @@ protected:
 
     LocklessQueue<uint8_t> *_queue;
     size_t   _fifoSize;
+
+    uint _onCore;
 };
 
 #ifdef ARDUINO_NANO_RP2040_CONNECT
