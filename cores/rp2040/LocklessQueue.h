@@ -95,6 +95,11 @@ public:
         return true;
     }
 
+    void reset() {
+        _writer = 0;
+        _reader = 0;
+    }
+
 private:
     uint32_t _writer;   // Must be atomic writable, so 32b
     uint32_t _reader;   // Must be atomic writable, so 32b
