@@ -90,7 +90,7 @@ static void __not_in_flash_func(_fifoIRQ)() {
 }
 
 void __not_in_flash_func(SerialPIO::_handleIRQ)() {
-    if (_rx == NOPIN) {
+    if ((_rx == NOPIN) || (_onCore != get_core_num())) {
         return;
     }
     while (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM)) {
@@ -149,6 +149,7 @@ static int pio_irq_0(PIO p) {
 }
 
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
+    _onCore = get_core_num();
     _overflow = false;
     _baud = baud;
     switch (config & SERIAL_PARITY_MASK) {
