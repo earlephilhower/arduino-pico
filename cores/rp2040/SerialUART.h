@@ -23,6 +23,7 @@
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
 #include "CoreMutex.h"
+#include "LocklessQueue.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
 
@@ -112,11 +113,8 @@ private:
     bool _break;
     bool _invertTX, _invertRX, _invertControl;
 
-    // Lockless, IRQ-handled circular queue
-    uint32_t _writer;
-    uint32_t _reader;
+    LocklessQueue<uint8_t> *_queue;
     size_t   _fifoSize = 32;
-    uint8_t *_queue;
     mutex_t  _fifoMutex; // Only needed when non-IRQ updates _writer
     void _pumpFIFO(); // User space FIFO transfer
 };
