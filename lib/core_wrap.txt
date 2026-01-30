@@ -93,3 +93,14 @@
 -Wl,--wrap=cyw43_wifi_leave
 -Wl,--wrap=cyw43_arch_gpio_put
 -Wl,--wrap=btstack_run_loop_async_context_get_instance
+
+-Wl,--wrap=att_dispatch_register_client
+-Wl,--wrap=att_dispatch_register_server
+-Wl,--wrap=att_dispatch_classic_register_service
+-Wl,--wrap=att_dispatch_classic_connect
+-Wl,--wrap=att_dispatch_client_can_send_now
+-Wl,--wrap=att_dispatch_server_can_send_now
+-Wl,--wrap=att_dispatch_client_request_can_send_now_event
+-Wl,--wrap=att_dispatch_server_request_can_send_now_event
+-Wl,--wrap=att_dispatch_server_mtu_exchanged
+-Wl,--wrap=att_dispatch_client_mtu_exchanged
