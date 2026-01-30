@@ -23,25 +23,29 @@
 #include <BluetoothLock.h>
 
 extern "C" {
+#include "ble/att_dispatch.h"
+}
+
+extern "C" {
 
 // Forward declarations for wrapped functions
-extern void __real_att_dispatch_register_client(void *packet_handler);
-extern void __real_att_dispatch_register_server(void *packet_handler);
+extern void __real_att_dispatch_register_client(btstack_packet_handler_t packet_handler);
+extern void __real_att_dispatch_register_server(btstack_packet_handler_t packet_handler);
 extern void __real_att_dispatch_classic_register_service(void);
-extern uint8_t __real_att_dispatch_classic_connect(void *address, uint16_t l2cap_psm, uint16_t *out_cid);
-extern bool __real_att_dispatch_client_can_send_now(uint16_t con_handle);
-extern bool __real_att_dispatch_server_can_send_now(uint16_t con_handle);
-extern void __real_att_dispatch_client_request_can_send_now_event(uint16_t con_handle);
-extern void __real_att_dispatch_server_request_can_send_now_event(uint16_t con_handle);
-extern void __real_att_dispatch_server_mtu_exchanged(uint16_t con_handle, uint16_t new_mtu);
-extern void __real_att_dispatch_client_mtu_exchanged(uint16_t con_handle, uint16_t new_mtu);
+extern uint8_t __real_att_dispatch_classic_connect(bd_addr_t address, uint16_t l2cap_psm, uint16_t *out_cid);
+extern bool __real_att_dispatch_client_can_send_now(hci_con_handle_t con_handle);
+extern bool __real_att_dispatch_server_can_send_now(hci_con_handle_t con_handle);
+extern void __real_att_dispatch_client_request_can_send_now_event(hci_con_handle_t con_handle);
+extern void __real_att_dispatch_server_request_can_send_now_event(hci_con_handle_t con_handle);
+extern void __real_att_dispatch_server_mtu_exchanged(hci_con_handle_t con_handle, uint16_t new_mtu);
+extern void __real_att_dispatch_client_mtu_exchanged(hci_con_handle_t con_handle, uint16_t new_mtu);
 
-void __wrap_att_dispatch_register_client(void *packet_handler) {
+void __wrap_att_dispatch_register_client(btstack_packet_handler_t packet_handler) {
     BluetoothLock lock;
     __real_att_dispatch_register_client(packet_handler);
 }
 
-void __wrap_att_dispatch_register_server(void *packet_handler) {
+void __wrap_att_dispatch_register_server(btstack_packet_handler_t packet_handler) {
     BluetoothLock lock;
     __real_att_dispatch_register_server(packet_handler);
 }
@@ -51,37 +55,37 @@ void __wrap_att_dispatch_classic_register_service(void) {
     __real_att_dispatch_classic_register_service();
 }
 
-uint8_t __wrap_att_dispatch_classic_connect(void *address, uint16_t l2cap_psm, uint16_t *out_cid) {
+uint8_t __wrap_att_dispatch_classic_connect(bd_addr_t address, uint16_t l2cap_psm, uint16_t *out_cid) {
     BluetoothLock lock;
     return __real_att_dispatch_classic_connect(address, l2cap_psm, out_cid);
 }
 
-bool __wrap_att_dispatch_client_can_send_now(uint16_t con_handle) {
+bool __wrap_att_dispatch_client_can_send_now(hci_con_handle_t con_handle) {
     BluetoothLock lock;
     return __real_att_dispatch_client_can_send_now(con_handle);
 }
 
-bool __wrap_att_dispatch_server_can_send_now(uint16_t con_handle) {
+bool __wrap_att_dispatch_server_can_send_now(hci_con_handle_t con_handle) {
     BluetoothLock lock;
     return __real_att_dispatch_server_can_send_now(con_handle);
 }
 
-void __wrap_att_dispatch_client_request_can_send_now_event(uint16_t con_handle) {
+void __wrap_att_dispatch_client_request_can_send_now_event(hci_con_handle_t con_handle) {
     BluetoothLock lock;
     __real_att_dispatch_client_request_can_send_now_event(con_handle);
 }
 
-void __wrap_att_dispatch_server_request_can_send_now_event(uint16_t con_handle) {
+void __wrap_att_dispatch_server_request_can_send_now_event(hci_con_handle_t con_handle) {
     BluetoothLock lock;
     __real_att_dispatch_server_request_can_send_now_event(con_handle);
 }
 
-void __wrap_att_dispatch_server_mtu_exchanged(uint16_t con_handle, uint16_t new_mtu) {
+void __wrap_att_dispatch_server_mtu_exchanged(hci_con_handle_t con_handle, uint16_t new_mtu) {
     BluetoothLock lock;
     __real_att_dispatch_server_mtu_exchanged(con_handle, new_mtu);
 }
 
-void __wrap_att_dispatch_client_mtu_exchanged(uint16_t con_handle, uint16_t new_mtu) {
+void __wrap_att_dispatch_client_mtu_exchanged(hci_con_handle_t con_handle, uint16_t new_mtu) {
     BluetoothLock lock;
     __real_att_dispatch_client_mtu_exchanged(con_handle, new_mtu);
 }
