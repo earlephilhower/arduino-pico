@@ -75,8 +75,9 @@ public:
     */
     void transfer(const void *txbuf, void *rxbuf, size_t count) override;
 
-    // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
+    // DMA/asynchronous transfers.  Do not combine with synchronous runs or bad stuff will happen.
     // All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+    // Note: Async transfers are only available on hardware SPI (SPIClassRP2040), not SoftwareSPI (PIO-based).
     /**
         @brief Perform a transfer() using DMA in the background. Returns immediately, need to check for completion
 
@@ -105,6 +106,31 @@ public:
         ``send`` buffers
     */
     void abortAsync();
+
+    /**
+        @brief Register a callback to be invoked when an async transfer completes
+
+        @details
+        The callback will be called from interrupt context when the DMA transfer
+        finishes. Keep callback execution brief. Set to nullptr to disable callbacks.
+        Only available on hardware SPI (SPIClassRP2040), not SoftwareSPI (PIO-based).
+
+        @param [in] callback Function to call on completion, or nullptr to disable
+    */
+    void onTransferComplete(void (*callback)(void));
+
+    /**
+        @brief Register a callback with user context to be invoked when an async transfer completes
+
+        @details
+        The callback will be called from interrupt context when the DMA transfer
+        finishes. Keep callback execution brief. Set callback to nullptr to disable.
+        Only available on hardware SPI (SPIClassRP2040), not SoftwareSPI (PIO-based).
+
+        @param [in] callback Function to call on completion, or nullptr to disable
+        @param [in] context User-provided context pointer passed to callback
+    */
+    void onTransferComplete(void (*callback)(void*), void* context);
 
 
     /**
@@ -240,6 +266,9 @@ public:
     virtual void detachInterrupt() override  __attribute__((deprecated)) { /* noop */ }
 
 private:
+    friend void _spiDMAIRQ();
+    void _handleDMAComplete();
+
     void adjustBuffer(const void *s, void *d, size_t cnt, bool by16);
 
     spi_inst_t *_spi;
@@ -257,6 +286,12 @@ private:
     uint8_t *_rxFinalBuffer;
     uint32_t _dummy;
     SPIHelper _helper;
+
+    // Async callback
+    void (*_asyncCallback)(void) = nullptr;
+    void (*_asyncCallbackWithContext)(void*) = nullptr;
+    void* _asyncCallbackContext = nullptr;
+    volatile bool _asyncInProgress = false;
 };
 
 extern SPIClassRP2040 SPI;
