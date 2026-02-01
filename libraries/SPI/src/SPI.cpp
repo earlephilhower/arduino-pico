@@ -25,6 +25,19 @@
 #include <hardware/structs/iobank0.h>
 #include <hardware/irq.h>
 
+// Static channel map for DMA IRQ routing - maps DMA channel to SPI instance
+static SPIClassRP2040* __spiDMAChannelMap[12] = { nullptr };
+static bool __spiDMAIRQInstalled = false;
+
+// Shared DMA IRQ handler - must be in RAM for XIP safety
+void __not_in_flash_func(_spiDMAIRQ)() {
+    for (int i = 0; i < 12; i++) {
+        if (__spiDMAChannelMap[i] && dma_channel_get_irq0_status(i)) {
+            __spiDMAChannelMap[i]->_handleDMAComplete();
+        }
+    }
+}
+
 #ifdef USE_TINYUSB
 // For Serial when selecting TinyUSB.  Can't include in the core because Arduino IDE
 // will not link in libraries called from the core.  Instead, add the header to all
@@ -210,14 +223,32 @@ bool SPIClassRP2040::transferAsync(const void *send, void *recv, size_t bytes) {
     channel_config_set_irq_quiet(&c, true); // No need for IRQ
     dma_channel_configure(_channelSendDMA, &c, &spi_get_hw(_spi)->dr, !send ? (uint8_t *)&_dummy : (_spis.getBitOrder() != MSBFIRST ? _dmaBuffer : txbuff), bytes, false);
 
+    bool hasCallback = (_asyncCallback != nullptr) || (_asyncCallbackWithContext != nullptr);
+
     c = dma_channel_get_default_config(_channelDMA);
     channel_config_set_transfer_data_size(&c, DMA_SIZE_8); // 8b transfers into SPI FIFO
     channel_config_set_read_increment(&c, false); // Reading same FIFO address
     channel_config_set_write_increment(&c, recv ? true : false); // Writing to the buffer
     channel_config_set_dreq(&c, spi_get_dreq(_spi, false)); // Wait for the RX FIFO specified
     channel_config_set_chain_to(&c, _channelDMA); // No chaining
-    channel_config_set_irq_quiet(&c, true); // No need for IRQ
+    channel_config_set_irq_quiet(&c, !hasCallback); // Enable IRQ if callback registered
     dma_channel_configure(_channelDMA, &c, !recv ? (uint8_t *)&_dummy : rxbuff, &spi_get_hw(_spi)->dr, bytes, false);
+
+    // Set up IRQ handling if callback is registered
+    if (hasCallback) {
+        // Install shared IRQ handler if not already installed
+        if (!__spiDMAIRQInstalled) {
+            irq_add_shared_handler(DMA_IRQ_0, _spiDMAIRQ, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
+            irq_set_enabled(DMA_IRQ_0, true);
+            __spiDMAIRQInstalled = true;
+        }
+        // Register this instance in the channel map
+        __spiDMAChannelMap[_channelDMA] = this;
+        // Enable IRQ for this channel
+        dma_channel_set_irq0_enabled(_channelDMA, true);
+    }
+
+    _asyncInProgress = true;
 
     spi_get_hw(_spi)->dmacr = 1 | (1 << 1); // TDMAE | RDMAE
 
@@ -227,11 +258,16 @@ bool SPIClassRP2040::transferAsync(const void *send, void *recv, size_t bytes) {
 }
 
 bool SPIClassRP2040::finishedAsync() {
-    if (!_initted) {
+    if (!_initted || !_asyncInProgress) {
         return true;
     }
     if (dma_channel_is_busy(_channelDMA) || (spi_get_hw(_spi)->sr & SPI_SSPSR_BSY_BITS)) {
         return false;
+    }
+    // Remove from channel map if registered (callback mode)
+    if (__spiDMAChannelMap[_channelDMA] == this) {
+        dma_channel_set_irq0_enabled(_channelDMA, false);
+        __spiDMAChannelMap[_channelDMA] = nullptr;
     }
     dma_channel_cleanup(_channelDMA);
     dma_channel_unclaim(_channelDMA);
@@ -245,12 +281,18 @@ bool SPIClassRP2040::finishedAsync() {
         free(_dmaBuffer);
         _dmaBuffer = nullptr;
     }
+    _asyncInProgress = false;
     return true;
 }
 
 void SPIClassRP2040::abortAsync() {
-    if (!_initted) {
+    if (!_initted || !_asyncInProgress) {
         return;
+    }
+    // Disable IRQ for this channel before cleanup
+    if (__spiDMAChannelMap[_channelDMA] == this) {
+        dma_channel_set_irq0_enabled(_channelDMA, false);
+        __spiDMAChannelMap[_channelDMA] = nullptr;
     }
     dma_channel_cleanup(_channelDMA);
     dma_channel_unclaim(_channelDMA);
@@ -259,6 +301,58 @@ void SPIClassRP2040::abortAsync() {
     spi_get_hw(_spi)->dmacr = 0;
     free(_dmaBuffer);
     _dmaBuffer = nullptr;
+    _asyncInProgress = false;
+}
+
+void SPIClassRP2040::onTransferComplete(void (*callback)(void)) {
+    _asyncCallback = callback;
+    _asyncCallbackWithContext = nullptr;
+    _asyncCallbackContext = nullptr;
+}
+
+void SPIClassRP2040::onTransferComplete(void (*callback)(void*), void* context) {
+    _asyncCallback = nullptr;
+    _asyncCallbackWithContext = callback;
+    _asyncCallbackContext = context;
+}
+
+void __not_in_flash_func(SPIClassRP2040::_handleDMAComplete)() {
+    // Acknowledge the interrupt
+    dma_channel_acknowledge_irq0(_channelDMA);
+
+    // Remove from channel map
+    __spiDMAChannelMap[_channelDMA] = nullptr;
+
+    // Disable IRQ for this channel
+    dma_channel_set_irq0_enabled(_channelDMA, false);
+
+    // Cleanup DMA channels
+    dma_channel_cleanup(_channelDMA);
+    dma_channel_unclaim(_channelDMA);
+    dma_channel_cleanup(_channelSendDMA);
+    dma_channel_unclaim(_channelSendDMA);
+
+    // Disable SPI DMA
+    spi_get_hw(_spi)->dmacr = 0;
+
+    // Handle LSB bit reversal if needed
+    if (_spis.getBitOrder() != MSBFIRST) {
+        for (int i = 0; i < _dmaBytes; i++) {
+            _rxFinalBuffer[i] = _helper.reverseByte(_rxFinalBuffer[i]);
+        }
+        free(_dmaBuffer);
+        _dmaBuffer = nullptr;
+    }
+
+    // Mark transfer as complete
+    _asyncInProgress = false;
+
+    // Invoke user callback
+    if (_asyncCallbackWithContext) {
+        _asyncCallbackWithContext(_asyncCallbackContext);
+    } else if (_asyncCallback) {
+        _asyncCallback();
+    }
 }
 
 

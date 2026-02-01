@@ -2,6 +2,10 @@
 // Core0 runs as an SPI master and initiates a transmission to the slave
 // Core1 runs the SPI Slave mode and provides a unique reply to messages from the master
 //
+// This example demonstrates two modes:
+// 1. Callback-based async transfer (preferred) - uses onTransferComplete()
+// 2. Polling-based async transfer (legacy) - uses finishedAsync()
+//
 // Released to the public domain 2024 by Earle F. Philhower, III <earlephilhower@yahoo.com>
 
 #include <SPI.h>
@@ -15,6 +19,16 @@
 
 SPISettings spisettings(1000000, MSBFIRST, SPI_MODE0);
 
+// Set to true to use callback mode, false for polling mode
+#define USE_CALLBACK_MODE true
+
+// Callback mode variables
+volatile bool masterTransferDone = false;
+
+void masterTransferComplete() {
+  masterTransferDone = true;
+}
+
 // Core 0 will be SPI master
 void setup() {
   SPI.setRX(0);
@@ -23,23 +37,43 @@ void setup() {
   SPI.setTX(3);
   SPI.begin(true);
 
+#if USE_CALLBACK_MODE
+  // Register callback for async transfer completion
+  SPI.onTransferComplete(masterTransferComplete);
+#endif
+
   delay(5000);
 }
 
 int transmits = 0;
 void loop() {
   char msg[42];
-  int loops = 0;
   memset(msg, 0, sizeof(msg));
   sprintf(msg, "What's up? This is transmission %d", transmits);
   Serial.printf("\n\nM-SEND: '%s'\n", msg);
   SPI.beginTransaction(spisettings);
+
+#if USE_CALLBACK_MODE
+  // Callback mode: transfer completes in background, callback fires when done
+  masterTransferDone = false;
   SPI.transferAsync(msg, msg, sizeof(msg));
+  int loops = 0;
+  while (!masterTransferDone) {
+    loops++;
+    // Could do other work here while waiting for transfer
+  }
+  Serial.printf("M-RECV: '%s', idle loops %d (callback mode)\n", msg, loops);
+#else
+  // Polling mode: poll finishedAsync() until transfer completes
+  SPI.transferAsync(msg, msg, sizeof(msg));
+  int loops = 0;
   while (!SPI.finishedAsync()) {
     loops++;
   }
+  Serial.printf("M-RECV: '%s', idle loops %d (polling mode)\n", msg, loops);
+#endif
+
   SPI.endTransaction();
-  Serial.printf("M-RECV: '%s', idle loops %d\n", msg, loops);
   transmits++;
   delay(5000);
 }
