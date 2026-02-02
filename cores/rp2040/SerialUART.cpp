@@ -176,9 +176,6 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size
     _invertControl = false;
 }
 
-static void _uart0IRQ();
-static void _uart1IRQ();
-
 // Does the selected TX/RX need UART_AUX function (rp2350)
 static gpio_function_t __gpioFunction(int pin) {
     switch (pin) {
@@ -554,7 +551,7 @@ SerialUART Serial2(__SERIAL2_DEVICE, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
 #endif
 
 
-static void __not_in_flash_func(_uart0IRQ)() {
+void __not_in_flash_func(SerialUART::_uart0IRQ)() {
     if (__SERIAL1_DEVICE == uart0) {
         Serial1._handleIRQ();
     } else {
@@ -562,7 +559,7 @@ static void __not_in_flash_func(_uart0IRQ)() {
     }
 }
 
-static void __not_in_flash_func(_uart1IRQ)() {
+void __not_in_flash_func(SerialUART::_uart1IRQ)() {
     if (__SERIAL2_DEVICE == uart1) {
         Serial2._handleIRQ();
     } else {

@@ -87,9 +87,6 @@ public:
         (void) unused;
     }
 
-    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
-    void _handleIRQ(bool inIRQ = true);
-
     // Allows the user to sleep until a break is received (self-clears the flag
     // on read)
     bool getBreakReceived();
@@ -100,6 +97,10 @@ public:
     }
 
 private:
+    static void _uart0IRQ();
+    static void _uart1IRQ();
+    void _handleIRQ(bool inIRQ = true);
+
     bool _running = false;
     uart_inst_t *_uart;
     pin_size_t _tx, _rx;

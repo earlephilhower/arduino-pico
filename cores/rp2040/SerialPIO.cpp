@@ -77,7 +77,7 @@ static int __not_in_flash_func(_parity)(int data) {
 // We need to cache generated SerialPIOs so we can add data to them from
 // the shared handler
 static SerialPIO *_pioSP[3][4];
-static void __not_in_flash_func(_fifoIRQ)() {
+void __not_in_flash_func(SerialPIO::_fifoIRQ)() {
     for (int p = 0; p < 3; p++) {
         for (int sm = 0; sm < 4; sm++) {
             SerialPIO *s = _pioSP[p][sm];

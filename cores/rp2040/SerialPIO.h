@@ -66,10 +66,10 @@ public:
     using Print::write;
     operator bool() override;
 
-    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IRQ callback can access it
+protected:
+    static void _fifoIRQ();
     void _handleIRQ();
 
-protected:
     bool _running = false;
     pin_size_t _tx, _rx;
     int _baud;
