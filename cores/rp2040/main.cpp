@@ -191,7 +191,7 @@ extern "C" int main() {
 }
 
 extern "C" unsigned long ulMainGetRunTimeCounterValue() {
-    return rp2040.getCycleCount64();
+    return time_us_32();
 }
 
 extern "C" void __register_impure_ptr(struct _reent *p) {
