@@ -90,7 +90,7 @@ public:
     bool connectBLE(const uint8_t *addr, int addrType);
     bool connectBLE();
 
-    bool disconnect();
+    void disconnect();
     void clearPairing();
 
     void onMouseMove(void (*)(void *, int, int, int), void *cbData = nullptr);

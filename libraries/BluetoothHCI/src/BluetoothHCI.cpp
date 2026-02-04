@@ -418,6 +418,9 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         break;
 
     case HCI_EVENT_DISCONNECTION_COMPLETE:
+        if (_disconnectCB) {
+            _disconnectCB();
+        }
         _hciConn = HCI_CON_HANDLE_INVALID;
         DEBUGV("HCI Disconnected\n");
         break;
@@ -430,6 +433,7 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         DEBUGV("HCI Connected\n");
         _hciConn = hci_subevent_le_connection_complete_get_connection_handle(packet);
         if (_smPair) {
+            DEBUGV("requesting pairing\n");
             sm_request_pairing(_hciConn);
         } else {
             // query primary services - not used yet
