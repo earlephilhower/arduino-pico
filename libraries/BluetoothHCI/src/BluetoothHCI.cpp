@@ -218,7 +218,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
                 if (!_scanMask || (_scanMask == thisuuid)) {
                     uuid = thisuuid;
                 }
-                DEBUGV("uuid %02X ", thisuuid);
             }
             break;
         case BLUETOOTH_DATA_TYPE_INCOMPLETE_LIST_OF_32_BIT_SERVICE_CLASS_UUIDS:
@@ -229,7 +228,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
                 if (!_scanMask || (_scanMask == thisuuid)) {
                     uuid = thisuuid;
                 }
-                DEBUGV("%04" PRIX32, thisuuid);
             }
             break;
         case BLUETOOTH_DATA_TYPE_INCOMPLETE_LIST_OF_128_BIT_SERVICE_CLASS_UUIDS:
@@ -237,48 +235,34 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         case BLUETOOTH_DATA_TYPE_LIST_OF_128_BIT_SERVICE_SOLICITATION_UUIDS:
             // Unhandled yet
             reverse_128(data, uuid_128);
-            DEBUGV("%s", uuid128_to_str(uuid_128));
             break;
         case BLUETOOTH_DATA_TYPE_SHORTENED_LOCAL_NAME:
             if (!nameptr) {
                 nameptr = (const char *)data;
                 namelen = size;
             }
-            for (i = 0; i < size; i++) {
-                DEBUGV("%c", (char)(data[i]));
-            }
             break;
 
         case BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME:
             nameptr = (const char *)data;
             namelen = size;
-            for (i = 0; i < size; i++) {
-                DEBUGV("%c", (char)(data[i]));
-            }
             break;
         case BLUETOOTH_DATA_TYPE_TX_POWER_LEVEL:
-            DEBUGV("%d dBm", *(int8_t*)data);
             break;
         case BLUETOOTH_DATA_TYPE_SLAVE_CONNECTION_INTERVAL_RANGE:
-            DEBUGV("Connection Interval Min = %u ms, Max = %u ms", little_endian_read_16(data, 0) * 5 / 4, little_endian_read_16(data, 2) * 5 / 4);
             break;
         case BLUETOOTH_DATA_TYPE_SERVICE_DATA:
-            //printf_hexdump(data, size);
             break;
         case BLUETOOTH_DATA_TYPE_PUBLIC_TARGET_ADDRESS:
         case BLUETOOTH_DATA_TYPE_RANDOM_TARGET_ADDRESS:
             reverse_bd_addr(data, address);
-            DEBUGV("%s", bd_addr_to_str(address));
             break;
         case BLUETOOTH_DATA_TYPE_APPEARANCE:
             // https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.gap.appearance.xml
-            DEBUGV("%02X", little_endian_read_16(data, 0));
             break;
         case BLUETOOTH_DATA_TYPE_ADVERTISING_INTERVAL:
-            DEBUGV("%u ms", little_endian_read_16(data, 0) * 5 / 8);
             break;
         case BLUETOOTH_DATA_TYPE_3D_INFORMATION_DATA:
-            //printf_hexdump(data, size);
             break;
         case BLUETOOTH_DATA_TYPE_MANUFACTURER_SPECIFIC_DATA: // Manufacturer Specific Data
             break;
@@ -291,9 +275,7 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
             DEBUGV("Advertising Data Type 0x%2x not handled yet", data_type);
             break;
         }
-        DEBUGV("\n");
     }
-    DEBUGV("\n");
 
     if (uuid) {
         bool seen = false;
@@ -322,23 +304,11 @@ static void handle_gatt_client_event(uint8_t packet_type, uint16_t channel, uint
     switch (hci_event_packet_get_type(packet)) {
     case GATT_EVENT_SERVICE_QUERY_RESULT:
         gatt_event_service_query_result_get_service(packet, &service);
-        //            dump_service(&service);
-        //            services[service_count++] = service;
         break;
     case GATT_EVENT_CHARACTERISTIC_QUERY_RESULT:
         gatt_event_characteristic_query_result_get_characteristic(packet, &characteristic);
-        //            dump_characteristic(&characteristic);
         break;
     case GATT_EVENT_QUERY_COMPLETE:
-        // GATT_EVENT_QUERY_COMPLETE of search characteristics
-        //            if (service_index < service_count) {
-        //                service = services[service_index++];
-        //                printf("\nGATT browser - CHARACTERISTIC for SERVICE %s, [0x%04x-0x%04x]\n",
-        //                    uuid128_to_str(service.uuid128), service.start_group_handle, service.end_group_handle);
-        //                gatt_client_discover_characteristics_for_service(handle_gatt_client_event, connection_handle, &service);
-        //                break;
-        //            }
-        //            service_index = 0;
         break;
     default:
         break;
@@ -433,7 +403,7 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         DEBUGV("HCI Connected\n");
         _hciConn = hci_subevent_le_connection_complete_get_connection_handle(packet);
         if (_smPair) {
-            DEBUGV("requesting pairing\n");
+            DEBUGV("Requesting pairing\n");
             sm_request_pairing(_hciConn);
         } else {
             // query primary services - not used yet
