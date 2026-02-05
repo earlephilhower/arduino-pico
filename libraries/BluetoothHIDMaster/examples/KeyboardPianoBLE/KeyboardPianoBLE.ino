@@ -145,6 +145,7 @@ void kb(void *cbdata, int key) {
   }
   // The HIDKeyStream object converts a key and state into ASCII.  HID key IDs do not map 1:1 to ASCII!
   // Write the key and make/break state, then read 1 ASCII char back out.
+  keystream.flush();
   keystream.write((uint8_t)key);
   keystream.write((uint8_t)state);
   Serial.printf("Keyboard: %02x %s = '%c'\n", key, state ? "DOWN" : "UP", state ? keystream.read() : '-');

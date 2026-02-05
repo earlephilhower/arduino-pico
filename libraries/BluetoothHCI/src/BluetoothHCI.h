@@ -62,6 +62,9 @@ protected:
     void setPairOnMeta(bool v) {
         _smPair = v;
     }
+    void setDisconnectCB(void (*fn)()) {
+        _disconnectCB = fn;
+    }
 
 private:
     void hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
@@ -81,4 +84,5 @@ private:
     void parse_advertisement_data(uint8_t *packet);
     volatile hci_con_handle_t _hciConn = HCI_CON_HANDLE_INVALID;
     bool _smPair = false;
+    void (*_disconnectCB)() = nullptr;
 };
