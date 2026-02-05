@@ -212,10 +212,12 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
     clearPairing();
     auto l = scan(cod);
     for (auto e : l) {
-        DEBUGV("Scan connecting %s at %s ... ", e.name(), e.addressString());
+        DEBUGV("Scan connecting %s at %s ...\n ", e.name(), e.addressString());
         memcpy(a, e.address(), sizeof(a));
         if (ERROR_CODE_SUCCESS == hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid)) {
             DEBUGV("Connection established\n");
+            memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
+            _lastAddrType = e.addressType();
             return true;
         }
         DEBUGV("Failed\n");
@@ -230,6 +232,8 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
     while (!_hci.running()) {
         delay(10);
     }
+    memcpy(_lastAddr, addr, sizeof(_lastAddr));
+    _lastAddrType = addrType;
     uint8_t a[6];
     memcpy(a, addr, sizeof(a));
     auto ret = gap_connect(a, (bd_addr_type_t)addrType);
@@ -250,6 +254,8 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
     }
     if (!_hid_host_descriptor_available) {
         gap_connect_cancel();
+        memset(_lastAddr, 0, sizeof(_lastAddr));
+        _lastAddrType = 0;
         return false;
     }
     return _hci.connected();
@@ -269,10 +275,14 @@ bool BluetoothHIDMaster::connectBLE() {
         DEBUGV("Scan connecting %s at %s ... ", e.name(), e.addressString());
         if (connectBLE(e.address(), e.addressType())) {
             DEBUGV("Connection established\n");
+            memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
+            _lastAddrType = e.addressType();
             return true;
         }
         DEBUGV("Failed\n");
     }
+    memset(_lastAddr, 0, sizeof(_lastAddr));
+    _lastAddrType = 0;
     return false;
 }
 
