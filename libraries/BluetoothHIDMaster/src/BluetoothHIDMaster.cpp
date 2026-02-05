@@ -399,7 +399,7 @@ void BluetoothHIDMaster::hid_host_handle_interrupt_report(btstack_hid_parser_t *
             }
         } else if (usage_page == 0x07) {
             updKey = true;
-            if (value) {
+            if (value && (usage >= 0x04)) {
                 new_keys[new_keys_count++] = usage;
                 // check if usage was used last time (and ignore in that case)
                 int i;
@@ -815,6 +815,7 @@ int HIDKeyStream::availableForWrite() {
 
 void HIDKeyStream::flush() {
     // We always send blocking
+    _holding = false;
 }
 
 size_t HIDKeyStream::write(uint8_t c) {
