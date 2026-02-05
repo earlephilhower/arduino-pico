@@ -89,6 +89,12 @@ public:
 
     bool connectBLE(const uint8_t *addr, int addrType);
     bool connectBLE();
+    const uint8_t *lastConnectedAddress() {
+        return _lastAddr;
+    }
+    uint8_t lastConnectedAddressType() {
+        return _lastAddrType;
+    }
 
     void disconnect();
     void clearPairing();
@@ -105,6 +111,8 @@ private:
     bool _ble = false;
     bool connectCOD(uint32_t cod);
     BluetoothHCI _hci;
+    uint8_t _lastAddr[6] = {};
+    uint8_t _lastAddrType = 0;
     void hid_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     uint8_t lastMB = 0;
     enum { NUM_KEYS = 32 };

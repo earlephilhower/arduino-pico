@@ -10,6 +10,13 @@
 #include <BluetoothHIDMaster.h>
 #include <PWMAudio.h>
 
+// There are better ways to store data, but this lets us not require the user
+// to select a FS size in the IDE for it to work.  Please use LittleFS in your
+// own applications.
+#include <EEPROM.h>
+
+
+
 // We need the inverse map, borrow from the Keyboard library
 #include <HID_Keyboard.h>
 extern const uint8_t KeyboardLayout_en_US[128];
@@ -17,6 +24,96 @@ extern const uint8_t KeyboardLayout_en_US[128];
 BluetoothHIDMaster hid;
 PWMAudio pwm;
 HIDKeyStream keystream;
+
+const char *DATAHEADER = "Last BLE Address"; // exactly 16 chars + \0
+
+typedef struct {
+  char hdr[16];     // The header marker so we know this is our data
+  uint8_t addr[6];  // MAC of the peer we last connected to
+  uint8_t addrType; // Type of address (normal or randomized) of the last peer
+} EEPROMDATA;
+
+
+const char *macToString(const uint8_t *addr, uint8_t addrType) {
+  static char mac[32];
+  sprintf(mac, "%02x:%02x:%02x:%02x:%02x:%02x,%d\n", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5], addrType ? 1 : 0);
+  return mac;
+}
+
+uint8_t lastAddress[6] = {};
+uint8_t lastAddressType = 0;
+
+void loadEEPROM() {
+  EEPROMDATA data;
+  EEPROM.begin(sizeof(EEPROMDATA));
+  EEPROM.get(0, data);
+  EEPROM.end();
+  if (memcmp(data.hdr, DATAHEADER, sizeof(data.hdr))) {
+    // Not our data, just clear things
+    Serial.println("No previous paired device found in EEPROM");
+    bzero(lastAddress, 6);
+    lastAddressType = 0;
+  } else {
+    // Our baby, copy it to local storage
+    Serial.printf("Previoudly paired device found: %s\n", macToString(data.addr, data.addrType));
+    memcpy(lastAddress, data.addr, sizeof(lastAddress));
+    lastAddressType = data.addrType;
+  }
+}
+
+void saveEEPROM() {
+  EEPROMDATA data;
+  memcpy(data.hdr, DATAHEADER, sizeof(data.hdr));
+  memcpy(data.addr, lastAddress, sizeof(data.addr));
+  data.addrType = lastAddressType;
+  EEPROM.begin(sizeof(EEPROMDATA));
+  EEPROM.put(0, data);
+  EEPROM.commit();
+  EEPROM.end();
+  Serial.printf("Wrote paired device to EEPROM: %s\n", macToString(lastAddress, lastAddressType));
+}
+
+
+// Either try continually to reconnect to the last device connected,
+// or if it's invalid or user holds BOOTSEL then we'll start a new
+// pairing process (i.e. the peripheral will need to be put into
+// pairing mode to bond)
+void connectOrPair() {
+  uint8_t x = 0;
+  for (int i = 0; i < 6; i++) {
+    x |= lastAddress[i];
+  }
+  if (x) {
+    // There's a valid address, attempt to reconnect forever until connect or BOOTSEL
+    Serial.printf("Attempting to reconnect to %s...\n", macToString(lastAddress, lastAddressType));
+    do {
+      delay(10);
+      hid.connectBLE(lastAddress, lastAddressType);
+    } while (!hid.connected() && !BOOTSEL);
+    if (hid.connected()) {
+      Serial.println("Reconnected!\n");
+      return;
+    }
+    // Fall through to pair
+  }
+  pinMode(LED_BUILTIN, OUTPUT);
+  bool l = true;
+  Serial.println("Entering pairing mode.  Set the peripheral to pair state");
+  hid.clearPairing();
+  do {
+    digitalWrite(LED_BUILTIN, l);
+    l = !l;
+    delay(10);
+    hid.connectBLE();
+  } while (!hid.connected());
+  Serial.printf("Connected to device: %s\n", macToString(hid.lastConnectedAddress(), hid.lastConnectedAddressType()));
+  memcpy(lastAddress, hid.lastConnectedAddress(), sizeof(lastAddress));
+  lastAddressType = hid.lastConnectedAddressType();
+  // We've update the connection, store away
+  saveEEPROM();
+}
+
+
 
 
 int16_t sine[1000]; // One complete precalculated sine wave for oscillator use
@@ -175,7 +272,7 @@ void setup() {
   Serial.begin();
   delay(3000);
 
-  Serial.printf("Starting HID master, put your device in pairing mode now.\n");
+  Serial.println("Starting HID master");
 
   // Init the sound generator
   precalculateSine();
@@ -205,21 +302,13 @@ void setup() {
 
   hid.onJoystick(joy);
 
-  hid.begin(true);
+  loadEEPROM(); // See about reconnecting
 
-  do {
-    hid.connectBLE();
-  } while (!hid.connected());
+  hid.begin(true);
 }
 
 void loop() {
-  if (BOOTSEL) {
-    while (BOOTSEL) {
-      delay(1);
-    }
-    hid.disconnect();
-    hid.clearPairing();
-    Serial.printf("Restarting HID master, put your device in pairing mode now.\n");
-    hid.connectBLE();
+  if (!hid.connected()) {
+    connectOrPair();
   }
 }
