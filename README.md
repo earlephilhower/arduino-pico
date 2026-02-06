@@ -221,17 +221,25 @@ Type "pico" in the search box and select "Add":
 If Win32 long paths are not enabled, and `git` not configured to use them then there
 may be errors when attempting to clone the submodules.
 
-To install via GIT (for latest and greatest versions):
+To install via GIT (for latest and greatest versions) under Linux or Mac:
 ````
 mkdir -p ~/Arduino/hardware/pico
 git clone https://github.com/earlephilhower/arduino-pico.git ~/Arduino/hardware/pico/rp2040
 cd ~/Arduino/hardware/pico/rp2040
-git submodule update --init
-cd pico-sdk
-git submodule update --init
-cd ../tools
+git submodule update --init --recursive
+cd tools
 python3 ./get.py
 `````
+
+For Windows, you need have Python already installed and git clone in a different path:
+````
+mkdir %USERPROFILE%\Documents\Arduino\hardware\pico
+git clone https://github.com/earlephilhower/arduino-pico.git %USERPROFILE%\Documents\Arduino\hardware\pico\rp2040
+cd %USERPROFILE%\Documents\Arduino\hardware\pico\rp2040
+git submodule update --init --recursive
+cd tools
+python .\get.py
+````
 
 # Uploading Sketches
 To upload your first sketch, you will need to hold the BOOTSEL button down while plugging in the Pico to your computer.
