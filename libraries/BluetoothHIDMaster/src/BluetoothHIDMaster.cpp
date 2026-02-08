@@ -236,7 +236,11 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
     _lastAddrType = addrType;
     uint8_t a[6];
     memcpy(a, addr, sizeof(a));
-    auto ret = gap_connect(a, (bd_addr_type_t)addrType);
+    int ret;
+    do {
+        BluetoothLock l;
+        ret = gap_connect(a, (bd_addr_type_t)addrType);
+    } while (0);
     if (ERROR_CODE_SUCCESS != ret) {
         //        DEBUGV("gap_connect: %d\n", ret);
         return false;
@@ -249,11 +253,11 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
         }
         delay(25);
     }
-    if (millis() - now  >= 10000) {
-        DEBUGV("timeout\n");
-    }
     if (!_hid_host_descriptor_available) {
-        gap_connect_cancel();
+        do {
+            BluetoothLock l;
+            gap_connect_cancel();
+        } while (0);
         memset(_lastAddr, 0, sizeof(_lastAddr));
         _lastAddrType = 0;
         return false;
