@@ -293,7 +293,7 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
     }
 }
 
-
+#if 0
 static void handle_gatt_client_event(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(packet_type);
     UNUSED(channel);
@@ -314,7 +314,7 @@ static void handle_gatt_client_event(uint8_t packet_type, uint16_t channel, uint
         break;
     }
 }
-
+#endif
 
 void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     (void)channel;
@@ -395,8 +395,9 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         DEBUGV("HCI Disconnected\n");
         break;
 
+
+#if 0
     case HCI_EVENT_LE_META:
-//     case HCI_EVENT_META_GAP:
         // wait for connection complete
         if (hci_event_le_meta_get_subevent_code(packet) !=  HCI_SUBEVENT_LE_CONNECTION_COMPLETE) {
             break;
@@ -407,9 +408,22 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
             DEBUGV("Requesting pairing\n");
             sm_request_pairing(_hciConn);
         }// else {
-//            // query primary services - not used yet
-//            gatt_client_discover_primary_services(handle_gatt_client_event, _hciConn);
-//        }
+        //            // query primary services - not used yet
+        //            gatt_client_discover_primary_services(handle_gatt_client_event, _hciConn);
+        //        }
+#else
+    case HCI_EVENT_META_GAP:
+        // wait for connection complete
+        if (hci_event_gap_meta_get_subevent_code(packet) != GAP_SUBEVENT_LE_CONNECTION_COMPLETE) {
+            break;
+        }
+        DEBUGV("HCI Connected\n");
+        _hciConn =  gap_subevent_le_connection_complete_get_connection_handle(packet);
+        if (_smPair) {
+            DEBUGV("Requesting pairing\n");
+            sm_request_pairing(_hciConn);
+        }
+#endif
         break;
 
     default:
