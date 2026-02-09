@@ -101,7 +101,7 @@ void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
     }
     sm_init();
     sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
-    sm_set_authentication_requirements(SM_AUTHREQ_BONDING);
+    sm_set_authentication_requirements(SM_AUTHREQ_SECURE_CONNECTION | SM_AUTHREQ_BONDING);
 
     if (ble) {
         gatt_client_init();
