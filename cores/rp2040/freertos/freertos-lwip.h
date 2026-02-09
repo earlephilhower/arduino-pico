@@ -21,12 +21,16 @@
 #pragma once
 
 #ifdef __FREERTOS
+#include <functional>
 
 // Create the thread and work queue
 void __startLWIPThread();
 
 // Send an LWIP request to the task.  Will block unless fromISR==true
 extern "C" void __lwip(__lwip_op op, void *req, bool fromISR);
+
+// Call function cb in the task. Will block until finished. Intended to be called with lambdas.
+void __lwip(std::function<void(void)> *cb);
 
 // Return true if __real_LWIP ops are safe (i.e. this is the LWIP thread)
 extern "C" bool __isLWIPThread();
