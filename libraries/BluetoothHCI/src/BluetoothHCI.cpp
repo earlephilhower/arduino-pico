@@ -272,7 +272,7 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         case BLUETOOTH_DATA_TYPE_DEVICE_ID:
         case BLUETOOTH_DATA_TYPE_SECURITY_MANAGER_OUT_OF_BAND_FLAGS:
         default:
-            DEBUGV("Advertising Data Type 0x%2x not handled yet", data_type);
+            DEBUGV("Advertising Data Type 0x%2x not handled yet\n", data_type);
             break;
         }
     }
