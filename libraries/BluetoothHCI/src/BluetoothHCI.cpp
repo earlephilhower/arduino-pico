@@ -293,29 +293,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
     }
 }
 
-
-static void handle_gatt_client_event(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
-    UNUSED(packet_type);
-    UNUSED(channel);
-    UNUSED(size);
-
-    gatt_client_service_t service;
-    gatt_client_characteristic_t characteristic;
-    switch (hci_event_packet_get_type(packet)) {
-    case GATT_EVENT_SERVICE_QUERY_RESULT:
-        gatt_event_service_query_result_get_service(packet, &service);
-        break;
-    case GATT_EVENT_CHARACTERISTIC_QUERY_RESULT:
-        gatt_event_characteristic_query_result_get_characteristic(packet, &characteristic);
-        break;
-    case GATT_EVENT_QUERY_COMPLETE:
-        break;
-    default:
-        break;
-    }
-}
-
-
 void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     (void)channel;
     (void)size;
@@ -395,19 +372,16 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         DEBUGV("HCI Disconnected\n");
         break;
 
-    case HCI_EVENT_LE_META:
+    case HCI_EVENT_META_GAP:
         // wait for connection complete
-        if (hci_event_le_meta_get_subevent_code(packet) !=  HCI_SUBEVENT_LE_CONNECTION_COMPLETE) {
+        if (hci_event_gap_meta_get_subevent_code(packet) != GAP_SUBEVENT_LE_CONNECTION_COMPLETE) {
             break;
         }
         DEBUGV("HCI Connected\n");
-        _hciConn = hci_subevent_le_connection_complete_get_connection_handle(packet);
+        _hciConn =  gap_subevent_le_connection_complete_get_connection_handle(packet);
         if (_smPair) {
             DEBUGV("Requesting pairing\n");
             sm_request_pairing(_hciConn);
-        } else {
-            // query primary services - not used yet
-            gatt_client_discover_primary_services(handle_gatt_client_event, _hciConn);
         }
         break;
 

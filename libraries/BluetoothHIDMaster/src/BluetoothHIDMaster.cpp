@@ -84,9 +84,7 @@ void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
         hid_host_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
         hid_host_register_packet_handler(PACKETHANDLERCB(BluetoothHIDMaster, hid_packet_handler));
     } else {
-        if (bleName) {
-            _hci.setBLEName(bleName);
-        }
+        _hci.setBLEName(bleName ? bleName : "PICO");
         _hci.setPairOnMeta(true);
     }
 
