@@ -396,6 +396,7 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         break;
 
     case HCI_EVENT_LE_META:
+//     case HCI_EVENT_META_GAP:
         // wait for connection complete
         if (hci_event_le_meta_get_subevent_code(packet) !=  HCI_SUBEVENT_LE_CONNECTION_COMPLETE) {
             break;
@@ -405,10 +406,10 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         if (_smPair) {
             DEBUGV("Requesting pairing\n");
             sm_request_pairing(_hciConn);
-        } else {
-            // query primary services - not used yet
-            gatt_client_discover_primary_services(handle_gatt_client_event, _hciConn);
-        }
+        }// else {
+//            // query primary services - not used yet
+//            gatt_client_discover_primary_services(handle_gatt_client_event, _hciConn);
+//        }
         break;
 
     default:
