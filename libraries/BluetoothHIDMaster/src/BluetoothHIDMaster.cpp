@@ -195,7 +195,18 @@ bool BluetoothHIDMaster::connect(const uint8_t *addr) {
     }
     uint8_t a[6];
     memcpy(a, addr, sizeof(a));
-    return ERROR_CODE_SUCCESS == hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+    int ret;
+    do {
+        BluetoothLock l;
+        ret = hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+    } while (0);
+    if (ERROR_CODE_SUCCESS == ret) {
+        memcpy(_lastAddr, addr, sizeof(_lastAddr));
+        _lastAddrType = 0;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
@@ -245,7 +256,7 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
         ret = gap_connect(a, (bd_addr_type_t)addrType);
     } while (0);
     if (ERROR_CODE_SUCCESS != ret) {
-        //        DEBUGV("gap_connect: %d\n", ret);
+        DEBUGV("gap_connect failed %d\n", ret);
         return false;
     }
     // GAP connection running async.  Wait for HCI connect

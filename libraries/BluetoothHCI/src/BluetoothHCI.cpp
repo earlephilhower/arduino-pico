@@ -73,6 +73,7 @@ void BluetoothHCI::setBLEName(const char *name) {
 }
 
 void BluetoothHCI::install() {
+    BluetoothLock l;
     hci_set_inquiry_mode(INQUIRY_MODE_RSSI_AND_EIR);
 
     // Register for HCI events.
@@ -136,7 +137,10 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
     for (auto &e : _btdList) {
         if (!e.name()[0]) {
             _requested = &e;
-            gap_remote_name_request(e.address(), e.pageScanRepetitionMode(), e.clockOffset() | 0x8000);
+            do {
+                BluetoothLock l;
+                gap_remote_name_request(e.address(), e.pageScanRepetitionMode(), e.clockOffset() | 0x8000);
+            } while (0);
             while (_requested) {
                 delay(10);
                 asm volatile("" ::: "memory");
@@ -165,18 +169,21 @@ std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) 
     }
     DEBUGV("HCI::scan(): BLE advertise inquiry start\n");
     // Only need to lock around the inquiry start command, not the wait
-    {
+    do {
         BluetoothLock b;
         gap_set_scan_params(0, 75, 50, 0);  // TODO - anything better for these params?
         gap_start_scan();
-    }
+    } while (0);
     uint32_t scanStart = millis();
 
     while (_scanning && ((millis() - scanStart) < inquiryTime)) {
         delay(10);
     }
     DEBUGV("HCI::scanBLE(): inquiry end\n");
-    gap_stop_scan();
+    do {
+        BluetoothLock l;
+        gap_stop_scan();
+    } while (0);
 
     return _btdList;
 }
@@ -189,7 +196,6 @@ void BluetoothHCI::scanFree() {
 void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
     bd_addr_t address;
     gap_event_advertising_report_get_address(packet, address);
-    //int event_type = gap_event_advertising_report_get_advertising_event_type(packet);
     int address_type = gap_event_advertising_report_get_address_type(packet);
     int8_t rssi = gap_event_advertising_report_get_rssi(packet);
     uint8_t adv_size = gap_event_advertising_report_get_data_length(packet);
@@ -205,9 +211,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         uint8_t size         = ad_iterator_get_data_len(&context);
         const uint8_t * data = ad_iterator_get_data(&context);
 
-        //        if (data_type > 0 && data_type < 0x1B){
-        //            printf("    %s: ", ad_types[data_type]);
-        //        }
         int i;
         // Assigned Numbers GAP
 
