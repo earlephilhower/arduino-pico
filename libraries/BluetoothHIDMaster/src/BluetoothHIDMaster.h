@@ -87,8 +87,8 @@ public:
     bool connectJoystick();
     bool connectAny();
 
-    bool connectBLE(const uint8_t *addr, int addrType);
-    bool connectBLE();
+    bool connectBLE(const uint8_t *addr, int addrType, void (*idleFcn)(void *) = nullptr, void *idleFcnData = nullptr);
+    bool connectBLE(void (*idleFcn)(void *) = nullptr, void *idleFcnData = nullptr);
     const uint8_t *lastConnectedAddress() {
         return _lastAddr;
     }

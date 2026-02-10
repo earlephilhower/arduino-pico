@@ -104,7 +104,7 @@ bool BluetoothHCI::running() {
     return _hciRunning;
 }
 
-std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool async) {
+std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool async, void (*idleFcn)(void *), void *idleFcnData) {
     _scanMask = mask;
     _btdList.reserve(MAX_DEVICES_TO_DISCOVER);
     _btdList.clear();
@@ -131,6 +131,9 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
     }
 
     while (_scanning) {
+        if (idleFcn) {
+            idleFcn(idleFcnData);
+        }
         delay(10);
     }
     DEBUGV("HCI::scan(): inquiry end, start name requests\n");
@@ -151,7 +154,7 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
     return _btdList;
 }
 
-std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) {
+std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec, void (*idleFcn)(void *), void *idleFcnData) {
     _scanMask = uuid;
     _btdList.reserve(MAX_DEVICES_TO_DISCOVER);
     _btdList.clear();
@@ -177,6 +180,9 @@ std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) 
     uint32_t scanStart = millis();
 
     while (_scanning && ((millis() - scanStart) < inquiryTime)) {
+        if (idleFcn) {
+            idleFcn(idleFcnData);
+        }
         delay(10);
     }
     DEBUGV("HCI::scanBLE(): inquiry end\n");

@@ -41,11 +41,11 @@ public:
 
     static const uint32_t speaker_cod = 0x200000 | 0x040000 | 0x000400;  // Service Class: Rendering | Audio, Major Device Class: Audio
     static const uint32_t any_cod = 0;
-    std::vector<BTDeviceInfo> scan(uint32_t mask, int scanTimeSec = 5, bool async = false);
+    std::vector<BTDeviceInfo> scan(uint32_t mask, int scanTimeSec = 5, bool async = false, void (*idleFcn)(void *) = nullptr, void *idleFcnData = nullptr);
     bool scanAsyncDone();
     std::vector<BTDeviceInfo> scanAsyncResult();
 
-    std::vector<BTDeviceInfo> scanBLE(uint32_t uuid, int scanTimeSec = 5);
+    std::vector<BTDeviceInfo> scanBLE(uint32_t uuid, int scanTimeSec = 5, void (*idleFcn)(void *) = nullptr, void *idleFcnData = nullptr);
 
     void scanFree(); // Free allocated scan buffers
 
