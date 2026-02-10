@@ -1,8 +1,6 @@
 Bluetooth on PicoW Support
 ==========================
 
-As of the Pico-SDK version 1.5.0, the PicoW has **BETA** Bluetooth support.
-
 Enabling Bluetooth
 ------------------
 To enable Bluetooth (BT), use the ``Tools->IP/Bluetooth Stack`` menu.  It

@@ -73,6 +73,11 @@ void saveEEPROM() {
   Serial.printf("Wrote paired device to EEPROM: %s\n", macToString(lastAddress, lastAddressType));
 }
 
+void blinker(void *data) {
+  uint32_t divisor = (uint32_t)data;
+  digitalWrite(LED_BUILTIN, (millis() / divisor) & 1 ? HIGH : LOW);
+}
+
 
 // Either try continually to reconnect to the last device connected,
 // or if it's invalid or user holds BOOTSEL then we'll start a new
@@ -88,7 +93,7 @@ void connectOrPair() {
     Serial.printf("Attempting to reconnect to %s...\n", macToString(lastAddress, lastAddressType));
     do {
       delay(10);
-      hid.connectBLE(lastAddress, lastAddressType);
+      hid.connectBLE(lastAddress, lastAddressType, blinker, (void *)250); // Blink fast
     } while (!hid.connected() && !BOOTSEL);
     if (hid.connected()) {
       Serial.println("Reconnected!\n");
@@ -101,10 +106,9 @@ void connectOrPair() {
   Serial.println("Entering pairing mode.  Set the peripheral to pair state");
   hid.clearPairing();
   do {
-    digitalWrite(LED_BUILTIN, l);
     l = !l;
     delay(10);
-    hid.connectBLE();
+    hid.connectBLE(blinker, (void *)1000); // Blink slow
   } while (!hid.connected());
   Serial.printf("Connected to device: %s\n", macToString(hid.lastConnectedAddress(), hid.lastConnectedAddressType()));
   memcpy(lastAddress, hid.lastConnectedAddress(), sizeof(lastAddress));
