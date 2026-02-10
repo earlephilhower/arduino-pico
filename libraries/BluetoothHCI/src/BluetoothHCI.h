@@ -77,6 +77,7 @@ private:
     enum { MAX_DEVICES_TO_DISCOVER = 32 };
     std::vector<BTDeviceInfo> _btdList;
     volatile bool _scanning = false;
+    BTDeviceInfo *_requested; // BTClassic name request
     bool _running = false;
 
     // BLE specific
