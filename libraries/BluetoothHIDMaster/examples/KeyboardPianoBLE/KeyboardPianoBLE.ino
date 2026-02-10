@@ -36,7 +36,7 @@ typedef struct {
 
 const char *macToString(const uint8_t *addr, uint8_t addrType) {
   static char mac[32];
-  sprintf(mac, "%02x:%02x:%02x:%02x:%02x:%02x,%d\n", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5], addrType ? 1 : 0);
+  sprintf(mac, "%02x:%02x:%02x:%02x:%02x:%02x,%d", addr[0], addr[1], addr[2], addr[3], addr[4], addr[5], addrType ? 1 : 0);
   return mac;
 }
 
