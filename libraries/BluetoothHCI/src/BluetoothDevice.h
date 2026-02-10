@@ -25,7 +25,7 @@
 class BTDeviceInfo {
 public:
     // Classic Bluetooth Device
-    BTDeviceInfo(uint32_t dc, const uint8_t addr[6], int rssi, const char *name) {
+    BTDeviceInfo(uint32_t dc, const uint8_t addr[6], int rssi, const char *name, int psrm, int co) {
         _deviceClass = dc;
         memcpy(_address, addr, sizeof(_address));
         _addressType = -1;
@@ -33,6 +33,8 @@ public:
         _rssi = rssi;
         strncpy(_name, name, sizeof(_name));
         _name[sizeof(_name) - 1] = 0;
+        _pageScanRepetitionMode = psrm;
+        _clockOffset = co;
     }
 
     // Bluetooth BLE Device
@@ -73,11 +75,22 @@ public:
         return _addressType;
     }
 
+    int pageScanRepetitionMode() {
+        return _pageScanRepetitionMode;
+    }
+
+    int clockOffset() {
+        return _clockOffset;
+    }
+
 private:
+    friend class BluetoothHCI;
     uint32_t _deviceClass;
     uint8_t _address[6];
     int _addressType;
     char _addressString[18];
     int8_t _rssi;
     char _name[241];
+    int _pageScanRepetitionMode;
+    int _clockOffset;
 };

@@ -132,7 +132,18 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
     while (_scanning) {
         delay(10);
     }
-    DEBUGV("HCI::scan(): inquiry end\n");
+    DEBUGV("HCI::scan(): inquiry end, start name requests\n");
+    for (auto &e : _btdList) {
+        if (!e.name()[0]) {
+            _requested = &e;
+            gap_remote_name_request(e.address(), e.pageScanRepetitionMode(), e.clockOffset() | 0x8000);
+            while (_requested) {
+                delay(10);
+                asm volatile("" ::: "memory");
+            }
+        }
+    }
+    DEBUGV("HCI::scan() end name requests\n");
     return _btdList;
 }
 
@@ -306,15 +317,19 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
     int8_t rssi;
     const char *name;
     char name_buffer[241];
+    int pageScanRepetitionMode;
+    int clockOffset;
 
     switch (hci_event_packet_get_type(packet)) {
     case  BTSTACK_EVENT_STATE:
         _hciRunning = (btstack_event_state_get_state(packet) == HCI_STATE_WORKING);
         break;
+
     case HCI_EVENT_PIN_CODE_REQUEST:
         hci_event_pin_code_request_get_bd_addr(packet, address);
         gap_pin_code_response(address, "0000");
         break;
+
     case GAP_EVENT_INQUIRY_RESULT:
         if (!_scanning) {
             return;
@@ -334,6 +349,8 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         } else {
             name = "";
         }
+        pageScanRepetitionMode = gap_event_inquiry_result_get_page_scan_repetition_mode(packet);
+        clockOffset = gap_event_inquiry_result_get_clock_offset(packet);
         DEBUGV("HCI: Scan found '%s', COD 0x%08X, RSSI %d, MAC %02X:%02X:%02X:%02X:%02X:%02X\n", name, (unsigned int)cod, rssi, address[0], address[1], address[2], address[3], address[4], address[5]);
         if ((_scanMask & cod) == _scanMask) {
             // Sometimes we get multiple reports for the same MAC, so remove any old reports since newer will have newer RSSI
@@ -348,14 +365,34 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
                     updated = true;
                 }
             }
-            BTDeviceInfo btd(cod, address, rssi, name);
+            BTDeviceInfo btd(cod, address, rssi, name, pageScanRepetitionMode, clockOffset);
             if (_btdList.size() < MAX_DEVICES_TO_DISCOVER) {
                 _btdList.push_back(btd);
             }
         }
         break;
+
     case GAP_EVENT_INQUIRY_COMPLETE:
+        DEBUGV("GAP_EVENT_INQUIRY_COMPLETE\n");
         _scanning = false;
+        break;
+
+    case HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE:
+        if (!_requested) {
+            DEBUGV("Error: HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE without active request\n");
+            return; // How'd we get here?
+        }
+        reverse_bd_addr(&packet[3], address);
+        if (!memcmp(_requested->address(), address, 6)) {
+            if (packet[2] == 0) {
+                DEBUGV("Received name: '%s'\n", &packet[9]);
+                strcpy(_requested->_name, (char *)packet + 9);
+            } else {
+                DEBUGV("Failed to get name: page timeout\n");
+            }
+        }
+        _requested = nullptr;
+        asm volatile("" ::: "memory");
         break;
 
     case GAP_EVENT_ADVERTISING_REPORT:

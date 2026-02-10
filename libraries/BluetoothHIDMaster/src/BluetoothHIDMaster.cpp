@@ -210,15 +210,20 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
     clearPairing();
     auto l = scan(cod);
     for (auto e : l) {
-        DEBUGV("Scan connecting %s at %s ...\n ", e.name(), e.addressString());
+        DEBUGV("Scan connecting %s at %s ...\n", e.name(), e.addressString());
         memcpy(a, e.address(), sizeof(a));
-        if (ERROR_CODE_SUCCESS == hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid)) {
+        int ret;
+        do {
+            BluetoothLock l;
+            ret = hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+        } while (0);
+        if (ERROR_CODE_SUCCESS == ret) {
             DEBUGV("Connection established\n");
             memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
             _lastAddrType = e.addressType();
             return true;
         }
-        DEBUGV("Failed\n");
+        DEBUGV("Connection failed %02x\n", ret);
     }
     return false;
 }
