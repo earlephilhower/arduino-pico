@@ -195,7 +195,6 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
             cyw43_wifi_ap_set_channel(&cyw43_state, channel);
         }
         _wifiAP.setTimeout(_timeout);
-        
         _wifiAP.config(_apIP);
 
         IPAddress apGw = _apGW;
