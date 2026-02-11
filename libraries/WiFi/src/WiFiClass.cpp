@@ -195,16 +195,18 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
             cyw43_wifi_ap_set_channel(&cyw43_state, channel);
         }
         _wifiAP.setTimeout(_timeout);
+        
+        _wifiAP.config(_apIP);
 
-        IPAddress apGw = _apIP;
+        IPAddress apGw = _apGW;
         if (!apGw.isSet()) {
-            apGw = IPAddress(192, 168, 42, 1);
+            apGw = IPAddress(192, 168, 4, 1);
         }
         IPAddress apMask = _apMask;
         if (!apMask.isSet()) {
             apMask = IPAddress(255, 255, 255, 0);
         }
-        _wifiAP.config(apGw);
+
         if (!_wifiAP.begin()) {
             // Roll back AP+STA state on failure to start AP interface
             _wifiAP.end();
