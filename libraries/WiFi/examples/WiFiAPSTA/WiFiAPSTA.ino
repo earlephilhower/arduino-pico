@@ -81,9 +81,9 @@ void setup() {
 
   // Print mode confirmation
   Serial.printf("WiFi mode: %s\n",
-    WiFi.getMode() == WIFI_AP_STA ? "AP+STA" :
-    WiFi.getMode() == WIFI_AP     ? "AP" :
-    WiFi.getMode() == WIFI_STA    ? "STA" : "OFF");
+                WiFi.getMode() == WIFI_AP_STA ? "AP+STA" :
+                WiFi.getMode() == WIFI_AP     ? "AP" :
+                WiFi.getMode() == WIFI_STA    ? "STA" : "OFF");
 
   Serial.print("STA MAC: ");
   Serial.println(WiFi.macAddress());
