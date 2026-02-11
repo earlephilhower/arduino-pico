@@ -232,6 +232,10 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
             DEBUGV("Connection established\n");
             memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
             _lastAddrType = e.addressType();
+            while (!_hid_host_descriptor_available) {
+                DEBUGV("Waiting for HID descriptor\n");
+                delay(50);
+            }
             return true;
         }
         DEBUGV("Connection failed %02x\n", ret);
@@ -503,6 +507,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
     switch (hci_event_hid_meta_get_subevent_code(packet)) {
 
     case HID_SUBEVENT_INCOMING_CONNECTION:
+        DEBUGV("HID_SUBEVENT_INCOMING_CONNECTION\n");
         // There is an incoming connection: we can accept it or decline it.
         // The hid_host_report_mode in the hid_host_accept_connection function
         // allows the application to request a protocol mode.
@@ -511,6 +516,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
 
     case HID_SUBEVENT_CONNECTION_OPENED:
+        DEBUGV("HID_SUBEVENT_CONNECTION_OPENED\n");
         // The status field of this event indicates if the control and interrupt
         // connections were opened successfully.
         status = hid_subevent_connection_opened_get_status(packet);
@@ -527,6 +533,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
 
     case HID_SUBEVENT_DESCRIPTOR_AVAILABLE:
+        DEBUGV("HID_SUBEVENT_DESCRIPTOR_AVAILABLE\n");
         // This event will follows HID_SUBEVENT_CONNECTION_OPENED event.
         // For incoming connections, i.e. HID Device initiating the connection,
         // the HID_SUBEVENT_DESCRIPTOR_AVAILABLE is delayed, and some HID
@@ -582,6 +589,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
 
     case HID_SUBEVENT_CONNECTION_CLOSED:
+        DEBUGV("HID_SUBEVENT_CONNECTION_CLOSED\n");
         // The connection was closed.
         _hidConnected = false;
         _hid_host_cid = 0;
