@@ -213,7 +213,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
         if (!_dhcpServer) {
             return WL_IDLE_STATUS;
         }
-        dhcp_server_init(_dhcpServer, apGw, apMask);
+        dhcp_server_init(_dhcpServer, apGw, apMask, _wifiAP.getNetIf());
 
         _apHWInitted = true;
         return WL_CONNECTED;
@@ -253,7 +253,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
         // OOM
         return WL_IDLE_STATUS;
     }
-    dhcp_server_init(_dhcpServer, gw, mask);
+    dhcp_server_init(_dhcpServer, gw, mask, nullptr);
 
     _wifiHWInitted = true;
 
