@@ -174,14 +174,10 @@ public:
         return true;
     }
 
-#if defined(PICO_CYW43_SUPPORTED)
     // Disconnect only the AP side in AP_STA mode
     bool disconnectAP();
-#endif
 
-#if defined(PICO_CYW43_SUPPORTED)
     uint8_t softAPgetStationNum();
-#endif
 
     IPAddress softAPIP();
 

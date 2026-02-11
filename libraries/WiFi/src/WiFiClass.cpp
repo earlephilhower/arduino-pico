@@ -273,8 +273,8 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
     return WL_CONNECTED;
 }
 
-#if defined(PICO_CYW43_SUPPORTED)
 uint8_t WiFiClass::softAPgetStationNum() {
+#if defined(PICO_CYW43_SUPPORTED)
     if (!_apMode && !_apHWInitted) {
         return 0;
     }
@@ -287,8 +287,10 @@ uint8_t WiFiClass::softAPgetStationNum() {
     cyw43_wifi_ap_get_stas(&cyw43_state, &m, macs);
     free(macs);
     return m;
-}
+#else
+    return 0;
 #endif
+}
 
 bool WiFiClass::connected() {
     if (_apSTAMode) {
@@ -398,13 +400,14 @@ void WiFiClass::end(void) {
     }
 }
 
-#if defined(PICO_CYW43_SUPPORTED)
+
 bool WiFiClass::disconnectAP() {
     if (_dhcpServer) {
         dhcp_server_deinit(_dhcpServer);
         free(_dhcpServer);
         _dhcpServer = nullptr;
     }
+#if defined(PICO_CYW43_SUPPORTED)
     if (_apHWInitted) {
         _apHWInitted = false;
         _wifiAP.end();
@@ -412,9 +415,9 @@ bool WiFiClass::disconnectAP() {
     if (!_wifiHWInitted) {
         _apSTAMode = false;
     }
+#endif
     return true;
 }
-#endif
 
 IPAddress WiFiClass::softAPIP() {
 #if defined(PICO_CYW43_SUPPORTED)
