@@ -64,6 +64,7 @@ public:
     }
 
     err_t abort() {
+        LWIPMutex m;
         if (_pcb) {
             DEBUGV(":abort\r\n");
             tcp_arg(_pcb, nullptr);
@@ -78,6 +79,7 @@ public:
     }
 
     err_t close() {
+        LWIPMutex m;
         err_t err = ERR_OK;
         if (_pcb) {
             DEBUGV(":close\r\n");
