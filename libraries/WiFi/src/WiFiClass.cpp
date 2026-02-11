@@ -206,11 +206,23 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
         }
         _wifiAP.config(apGw);
         if (!_wifiAP.begin()) {
+            // Roll back AP+STA state on failure to start AP interface
+            _wifiAP.end();
+            _apSTAMode = false;
+            _apHWInitted = false;
+            if (_dhcpServer) {
+                free(_dhcpServer);
+                _dhcpServer = nullptr;
+            }
             return WL_IDLE_STATUS;
         }
         noLowPowerMode();
         _dhcpServer = (dhcp_server_t *)malloc(sizeof(dhcp_server_t));
         if (!_dhcpServer) {
+            // Roll back AP+STA state on DHCP server allocation failure
+            _wifiAP.end();
+            _apSTAMode = false;
+            _apHWInitted = false;
             return WL_IDLE_STATUS;
         }
         dhcp_server_init(_dhcpServer, apGw, apMask, _wifiAP.getNetIf());

@@ -52,6 +52,10 @@ struct netif *__getCYW43Netif() {
 
 extern struct netif *__getCYW43NetifByItf(int itf) __attribute__((weak));
 struct netif *__getCYW43NetifByItf(int itf) {
+    if (itf == 0) {
+        // Backward-compatible default: use the single-interface getter
+        return __getCYW43Netif();
+    }
     (void) itf;
     return nullptr;
 }
