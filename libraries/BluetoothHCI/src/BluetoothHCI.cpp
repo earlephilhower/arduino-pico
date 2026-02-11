@@ -76,6 +76,9 @@ void BluetoothHCI::install() {
     BluetoothLock l;
     hci_set_inquiry_mode(INQUIRY_MODE_RSSI_AND_EIR);
 
+    //    hci_set_master_slave_policy(1);
+    //    gap_discoverable_control(1);
+
     // Register for HCI events.
     hci_event_callback_registration.callback = PACKETHANDLERCB(BluetoothHCI, hci_packet_handler);
     hci_add_event_handler(&hci_event_callback_registration);
