@@ -435,7 +435,7 @@ uint8_t* WiFiClass::softAPmacAddress(uint8_t* mac) {
 }
 
 String WiFiClass::softAPmacAddress(void) {
-    uint8_t mac[6];
+    uint8_t mac[6] = {0};
     softAPmacAddress(mac);
     char buff[32];
     sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
