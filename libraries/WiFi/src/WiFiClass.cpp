@@ -363,17 +363,7 @@ const char *WiFiClass::getHostname() {
     return: one value of wl_status_t enum
 */
 int WiFiClass::disconnect(bool wifi_off __unused) {
-    if (_dhcpServer) {
-        dhcp_server_deinit(_dhcpServer);
-        free(_dhcpServer);
-        _dhcpServer = nullptr;
-    }
-#if defined(PICO_CYW43_SUPPORTED)
-    if (_apHWInitted) {
-        _apHWInitted = false;
-        _wifiAP.end();
-    }
-#endif
+    // Only tear down STA interface, leave AP running if active
     if (_wifiHWInitted) {
         _wifiHWInitted = false;
         _wifi.end();
