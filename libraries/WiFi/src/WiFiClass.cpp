@@ -366,14 +366,14 @@ int WiFiClass::disconnect(bool wifi_off __unused) {
         _wifiHWInitted = false;
         _wifi.end();
     }
-    
+
     // If we were in AP_STA mode, we're now in AP-only mode
     if (_mode == WIFI_AP_STA) {
         _mode = WIFI_AP;
     } else if (_mode == WIFI_STA) {
         _mode = WIFI_OFF;
     }
-    
+
     return WL_DISCONNECTED;
 }
 
