@@ -183,7 +183,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
 #if defined(PICO_CYW43_SUPPORTED)
     // Determine if we're running in AP_STA mode
     bool isAPSTAMode = (_modeESP == WIFI_AP_STA || (_wifiHWInitted && !_apMode));
-    
+
     if (isAPSTAMode) {
         // AP_STA mode: keep STA running, start AP on _wifiAP
         _apSTAMode = true;
@@ -201,11 +201,11 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
     _wifiAP.setAP();
     _wifiAP.setSSID(ssid);
     _wifiAP.setPassword(passphrase);
-    
+
     if (channel > 0) {
         cyw43_wifi_ap_set_channel(&cyw43_state, channel);
     }
-    
+
     _wifiAP.setTimeout(_timeout);
 
     // Set AP IP configuration
@@ -219,7 +219,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
     if (!apGw.isSet()) {
         apGw = apIP;
     }
-    
+
     IPAddress apMask = _apMask;
     if (!apMask.isSet()) {
         apMask = IPAddress(255, 255, 255, 0);
@@ -238,7 +238,7 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t cha
         }
         return WL_IDLE_STATUS;
     }
-    
+
     noLowPowerMode();
 
     // Initialize DHCP server for AP
