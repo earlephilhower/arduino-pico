@@ -457,9 +457,9 @@ private:
     bool _apHWInitted = false;
     String _apSSID;
     String _apPassword;
-    IPAddress _apIP;
-    IPAddress _apGW;
-    IPAddress _apMask;
+    IPAddress _apIP = IPAddress(192, 168, 4, 1);
+    IPAddress _apGW = IPAddress(192, 168, 4, 1);
+    IPAddress _apMask = IPAddress(255, 255, 255, 0);
 
     // DHCP for AP mode
     dhcp_server_t *_dhcpServer = nullptr;
