@@ -57,17 +57,7 @@ public:
     void mode(WiFiMode_t m); // For ESP8266 compatibility
 
     WiFiMode_t getMode() {
-        if (_apSTAMode && (_wifiHWInitted || _apHWInitted)) {
-            return WiFiMode_t::WIFI_AP_STA;
-        }
-        if (_wifiHWInitted) {
-            if (_apMode) {
-                return WiFiMode_t::WIFI_AP;
-            } else {
-                return WiFiMode_t::WIFI_STA;
-            }
-        }
-        return WiFiMode_t::WIFI_OFF;
+        return _mode;
     };
 
     /*  Start WiFi connection for OPEN networks
@@ -151,8 +141,8 @@ public:
     }
 
     bool softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet) {
-        if (_apSTAMode || _modeESP == WIFI_AP_STA) {
-            // In AP_STA mode, store AP-specific config
+        if (_mode == WIFI_AP_STA || _mode == WIFI_AP) {
+            // In AP mode, store AP-specific config
             _apIP = local_ip;
             _apGW = gateway;
             _apMask = subnet;
@@ -165,7 +155,7 @@ public:
     bool softAPdisconnect(bool wifioff = false) {
         (void) wifioff;
 #if defined(PICO_CYW43_SUPPORTED)
-        if (_apSTAMode) {
+        if (_mode == WIFI_AP_STA) {
             // Only tear down AP, keep STA
             return disconnectAP();
         }
@@ -186,7 +176,7 @@ public:
     String softAPmacAddress(void);
 
     String softAPSSID() {
-        if (_apSTAMode) {
+        if (_mode == WIFI_AP_STA || _mode == WIFI_AP) {
             return _apSSID;
         }
         return SSID();
@@ -450,10 +440,8 @@ private:
     uint8_t _bssid[6];
     String _password;
     bool _wifiHWInitted = false;
-    bool _apMode = false;
 
-    // AP_STA mode support
-    bool _apSTAMode = false;
+    // AP hardware and credentials
     bool _apHWInitted = false;
     String _apSSID;
     String _apPassword;
@@ -464,9 +452,9 @@ private:
     // DHCP for AP mode
     dhcp_server_t *_dhcpServer = nullptr;
 
-    // ESP compat
+    // ESP compat and mode tracking
     bool _calledESP = false; // Should we behave like the ESP8266 for connect?
-    WiFiMode_t _modeESP = WIFI_STA;
+    WiFiMode_t _mode = WIFI_OFF;
 };
 
 extern WiFiClass WiFi;
