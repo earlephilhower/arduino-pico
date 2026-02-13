@@ -150,7 +150,9 @@ static void lwipThread(void *params) {
             }
             case __tcp_arg: {
                 __tcp_arg_req *r = (__tcp_arg_req *)w.req;
-                __real_tcp_arg(r->pcb, r->arg);
+				if (r->pcb != NULL) {
+					__real_tcp_arg(r->pcb, r->arg);
+				}
                 break;
             }
             case __tcp_new: {
@@ -165,99 +167,157 @@ static void lwipThread(void *params) {
             }
             case __tcp_bind: {
                 __tcp_bind_req *r = (__tcp_bind_req *)w.req;
-                *(r->ret) = __real_tcp_bind(r->pcb, r->ipaddr, r->port);
+				if (r->pcb != NULL) {
+                	*(r->ret) = __real_tcp_bind(r->pcb, r->ipaddr, r->port);
+				} else {
+					*(r->ret) = ERR_PCB_IS_NULLPTR;
+				}
                 break;
             }
             case __tcp_bind_netif: {
                 __tcp_bind_netif_req *r = (__tcp_bind_netif_req *)w.req;
-                *(r->ret) = __real_tcp_bind_netif(r->pcb, r->netif);
+
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_bind_netif(r->pcb, r->netif);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __tcp_listen_with_backlog: {
                 __tcp_listen_with_backlog_req *r = (__tcp_listen_with_backlog_req *)w.req;
-                *(r->ret) = __real_tcp_listen_with_backlog(r->pcb, r->backlog);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_listen_with_backlog(r->pcb, r->backlog);
+                } else {
+                    *(r->ret) = NULL;
+                }
                 break;
             }
 #if 0
             case __tcp_listen_with_backlog_and_err: {
                 __tcp_listen_with_backlog_and_err_req *r = (__tcp_listen_with_backlog_and_err_req *)w.req;
-                *(r->ret) = __real_tcp_listen_with_backlog_and_err(r->pcb, r->backlog, r->err);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_listen_with_backlog_and_err(r->pcb, r->backlog, r->err);
+                } else {
+                    *(r->ret) = NULL;
+                    *(r->err) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
 #endif
             case __tcp_accept: {
                 __tcp_accept_req *r = (__tcp_accept_req *)w.req;
-                __real_tcp_accept(r->pcb, r->accept);
+                if (r->pcb != NULL) {
+                    __real_tcp_accept(r->pcb, r->accept);
+                }
                 break;
             }
             case __tcp_connect: {
                 __tcp_connect_req *r = (__tcp_connect_req *)w.req;
-                *(r->ret) = __real_tcp_connect(r->pcb, r->ipaddr, r->port, r->connected);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_connect(r->pcb, r->ipaddr, r->port, r->connected);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __tcp_write: {
                 __tcp_write_req *r = (__tcp_write_req *)w.req;
-                *(r->ret) = __real_tcp_write(r->pcb, r->dataptr, r->len, r->apiflags);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_write(r->pcb, r->dataptr, r->len, r->apiflags);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __tcp_sent: {
                 __tcp_sent_req *r = (__tcp_sent_req *)w.req;
-                __real_tcp_sent(r->pcb, r->sent);
+                if (r->pcb != NULL) {
+                    __real_tcp_sent(r->pcb, r->sent);
+                }
                 break;
             }
             case __tcp_recv: {
                 __tcp_recv_req *r = (__tcp_recv_req *)w.req;
-                __real_tcp_recv(r->pcb, r->recv);
+                if (r->pcb != NULL) {
+                    __real_tcp_recv(r->pcb, r->recv);
+                }
                 break;
             }
             case __tcp_recved: {
                 __tcp_recved_req *r = (__tcp_recved_req *)w.req;
-                __real_tcp_recved(r->pcb, r->len);
+                if (r->pcb != NULL) {
+                    __real_tcp_recved(r->pcb, r->len);
+                }
                 break;
             }
             case __tcp_poll: {
                 __tcp_poll_req *r = (__tcp_poll_req *)w.req;
-                __real_tcp_poll(r->pcb, r->poll, r->interval);
+                if (r->pcb != NULL) {
+                    __real_tcp_poll(r->pcb, r->poll, r->interval);
+                }
                 break;
             }
             case __tcp_close: {
                 __tcp_close_req *r = (__tcp_close_req *)w.req;
-                *(r->ret) = __real_tcp_close(r->pcb);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_close(r->pcb);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __tcp_abort: {
                 __tcp_abort_req *r = (__tcp_abort_req *)w.req;
-                __real_tcp_abort(r->pcb);
+                if (r->pcb != NULL) {
+                    __real_tcp_abort(r->pcb);
+                }
                 break;
             }
             case __tcp_err: {
                 __tcp_err_req *r = (__tcp_err_req *)w.req;
-                __real_tcp_err(r->pcb, r->err);
+                if (r->pcb != NULL) {
+                    __real_tcp_err(r->pcb, r->err);
+                }
                 break;
             }
             case __tcp_output: {
                 __tcp_output_req *r = (__tcp_output_req *)w.req;
-                *(r->ret) = __real_tcp_output(r->pcb);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_output(r->pcb);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __tcp_setprio: {
                 __tcp_setprio_req *r = (__tcp_setprio_req *)w.req;
-                __real_tcp_setprio(r->pcb, r->prio);
+                if (r->pcb != NULL) {
+                    __real_tcp_setprio(r->pcb, r->prio);
+                }
                 break;
             }
             case __tcp_shutdown: {
                 __tcp_shutdown_req *r = (__tcp_shutdown_req *)w.req;
-                *(r->ret) = __real_tcp_shutdown(r->pcb, r->shut_rx, r->shut_tx);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_shutdown(r->pcb, r->shut_rx, r->shut_tx);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __tcp_backlog_delayed: {
                 __tcp_backlog_delayed_req *r = (__tcp_backlog_delayed_req *)w.req;
-                __real_tcp_backlog_delayed(r->pcb);
+                if (r->pcb != NULL) {
+                    __real_tcp_backlog_delayed(r->pcb);
+                }
                 break;
             }
             case __tcp_backlog_accepted: {
                 __tcp_backlog_accepted_req *r = (__tcp_backlog_accepted_req *)w.req;
-                __real_tcp_backlog_accepted(r->pcb);
+                if (r->pcb != NULL) {
+                    __real_tcp_backlog_accepted(r->pcb);
+                }
                 break;
             }
             case __udp_new: {
@@ -272,47 +332,77 @@ static void lwipThread(void *params) {
             }
             case  __udp_remove: {
                 __udp_remove_req *r = (__udp_remove_req *)w.req;
-                __real_udp_remove(r->pcb);
+                if (r->pcb != NULL) {
+                    __real_udp_remove(r->pcb);
+                }
                 break;
             }
             case __udp_bind: {
                 __udp_bind_req *r = (__udp_bind_req *)w.req;
-                *(r->ret) = __real_udp_bind(r->pcb, r->ipaddr, r->port);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_udp_bind(r->pcb, r->ipaddr, r->port);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __udp_connect: {
                 __udp_connect_req *r = (__udp_connect_req *)w.req;
-                *(r->ret) = __real_udp_connect(r->pcb, r->ipaddr, r->port);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_udp_connect(r->pcb, r->ipaddr, r->port);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __udp_disconnect: {
                 __udp_disconnect_req *r = (__udp_disconnect_req *)w.req;
-                *(r->ret) = __real_udp_disconnect(r->pcb);
+                if (r->pcb != NULL) {                
+                    *(r->ret) = __real_udp_disconnect(r->pcb);
+                }
                 break;
             }
             case __udp_send: {
                 __udp_send_req *r = (__udp_send_req *)w.req;
-                *(r->ret) = __real_udp_send(r->pcb, r->p);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_udp_send(r->pcb, r->p);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __udp_recv: {
                 __udp_recv_req *r = (__udp_recv_req *)w.req;
-                __real_udp_recv(r->pcb, r->recv, r->recv_arg);
+                if (r->pcb != NULL) {
+                    __real_udp_recv(r->pcb, r->recv, r->recv_arg);
+                }
                 break;
             }
             case __udp_sendto: {
                 __udp_sendto_req *r = (__udp_sendto_req *)w.req;
-                *(r->ret) = __real_udp_sendto(r->pcb, r->p, r->dst_ip, r->dst_port);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_udp_sendto(r->pcb, r->p, r->dst_ip, r->dst_port);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __udp_sendto_if: {
                 __udp_sendto_if_req *r = (__udp_sendto_if_req *)w.req;
-                *(r->ret) = __real_udp_sendto_if(r->pcb, r->p, r->dst_ip, r->dst_port, r->netif);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_udp_sendto_if(r->pcb, r->p, r->dst_ip, r->dst_port, r->netif);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __udp_sendto_if_src: {
                 __udp_sendto_if_src_req *r = (__udp_sendto_if_src_req *)w.req;
-                *(r->ret) = __real_udp_sendto_if_src(r->pcb, r->p, r->dst_ip, r->dst_port, r->netif, r->src_ip);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_udp_sendto_if_src(r->pcb, r->p, r->dst_ip, r->dst_port, r->netif, r->src_ip);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __sys_check_timeouts: {
@@ -341,32 +431,52 @@ static void lwipThread(void *params) {
             }
             case __raw_connect: {
                 __raw_connect_req *r = (__raw_connect_req *)w.req;
-                *(r->ret) = __real_raw_connect(r->pcb, r->ipaddr);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_raw_connect(r->pcb, r->ipaddr);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __raw_recv: {
                 __raw_recv_req *r = (__raw_recv_req *)w.req;
-                __real_raw_recv(r->pcb, r->recv, r->recv_arg);
+                if (r->pcb != NULL) {
+                    __real_raw_recv(r->pcb, r->recv, r->recv_arg);
+                }
                 break;
             }
             case __raw_bind: {
                 __raw_bind_req *r = (__raw_bind_req *)w.req;
-                *(r->ret) = __real_raw_bind(r->pcb, r->ipaddr);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_raw_bind(r->pcb, r->ipaddr);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __raw_sendto: {
                 __raw_sendto_req *r = (__raw_sendto_req *)w.req;
-                *(r->ret) = __real_raw_sendto(r->pcb, r->p, r->ipaddr);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_raw_sendto(r->pcb, r->p, r->ipaddr);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __raw_send: {
                 __raw_send_req *r = (__raw_send_req *)w.req;
-                *(r->ret) = __real_raw_send(r->pcb, r->p);
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_raw_send(r->pcb, r->p);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __raw_remove: {
                 __raw_remove_req *r = (__raw_remove_req *)w.req;
-                __real_raw_remove(r->pcb);
+                if (r->pcb != NULL) {
+                    __real_raw_remove(r->pcb);
+                }
                 break;
             }
             case __netif_add: {
