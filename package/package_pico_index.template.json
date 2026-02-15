@@ -264,6 +264,9 @@
                      "name": "Olimex RP2040-Pico30"
                   },
                   {
+                     "name": "PicoLume Transceiver"
+                  },
+                  {
                      "name": "Pimoroni PGA2040"
                   },
                   {
