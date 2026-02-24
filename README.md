@@ -80,6 +80,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Olimex Pico2XL
 * Olimex Pico2XXL
 * Olimex RP2040-Pico30
+* PicoLume Transceiver
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
 * Pimoroni Pico Plus 2W
