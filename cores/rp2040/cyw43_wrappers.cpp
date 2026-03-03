@@ -50,11 +50,20 @@ struct netif *__getCYW43Netif() {
     return nullptr;
 }
 
+extern struct netif *__getCYW43NetifByItf(int itf) __attribute__((weak));
+struct netif *__getCYW43NetifByItf(int itf) {
+    if (itf == 0) {
+        // Backward-compatible default: use the single-interface getter
+        return __getCYW43Netif();
+    }
+    (void) itf;
+    return nullptr;
+}
+
 // CB from the cyw43 driver
 extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
     (void) cb_data;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif && (netif->flags & NETIF_FLAG_LINK_UP)) {
         struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
         if (p != nullptr) {
@@ -69,8 +78,7 @@ extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t 
 
 extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
     (void) self;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif) {
         netif_set_link_up(netif);
     }
@@ -78,12 +86,13 @@ extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
 
 extern "C" void __wrap_cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     (void) self;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif) {
         netif_set_link_down(netif);
     }
-    self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
+    if (itf == 0) {
+        self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
+    }
 }
 
 // CBs from the SDK, not needed here as we do TCP later in the game

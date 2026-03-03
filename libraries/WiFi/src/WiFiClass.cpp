@@ -32,6 +32,7 @@
 #if defined(PICO_CYW43_SUPPORTED)
 #include <pico/cyw43_arch.h>
 static CYW43lwIP _wifi(1);
+static CYW43lwIP _wifiAP(2);  // Second instance for AP in AP_STA mode
 #elif defined(ESPHOSTSPI)
 static ESPHostLwIP _wifi;
 #elif defined(WINC1501_SPI)
@@ -58,25 +59,34 @@ void WiFiClass::mode(WiFiMode_t m) {
         end();
         break;
     case WiFiMode_t::WIFI_AP:
-        _modeESP = WiFiMode_t::WIFI_AP;
+        _mode = WiFiMode_t::WIFI_AP;
         break;
     case WiFiMode_t::WIFI_STA:
-        _modeESP = WiFiMode_t::WIFI_STA;
+        _mode = WiFiMode_t::WIFI_STA;
         break;
     case WiFiMode_t::WIFI_AP_STA:
-        _modeESP = WiFiMode_t::WIFI_STA;
+        _mode = WiFiMode_t::WIFI_AP_STA;
         break;
     }
 }
 
 bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid) {
     // Simple ESP8266 compatibility hack
-    if (_modeESP == WIFI_AP) {
+    if (_mode == WIFI_AP) {
         // When beginAP was a success, it returns WL_CONNECTED and we return true as success.
         return beginAP(ssid, passphrase) == WL_CONNECTED;
     }
 
-    end();
+    // In AP_STA mode, don't tear down the AP side
+    if (_mode != WIFI_AP_STA) {
+        end();
+    } else {
+        // Only tear down STA side if it was running
+        if (_wifiHWInitted) {
+            _wifiHWInitted = false;
+            _wifi.end();
+        }
+    }
 
     _ssid = ssid;
     _password = passphrase;
@@ -90,7 +100,7 @@ bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const u
     _wifi.setBSSID(_bssid);
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
-    _apMode = false;
+    _mode = WIFI_STA;
     _wifiHWInitted = true;
 
     // Internal wifi.begin returns false when failed, therefore we return false as error
@@ -169,48 +179,89 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 
 uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
     (void) channel; // May not be used on non-CYW32 WiFi implementations
-    end();
 
-    _ssid = ssid;
-    _password = passphrase;
-    _wifi.setAP();
-    _wifi.setSSID(_ssid.c_str());
-    _wifi.setPassword(passphrase);
 #if defined(PICO_CYW43_SUPPORTED)
+    // Determine if we're running in AP_STA mode
+    bool isAPSTAMode = (_mode == WIFI_AP_STA || (_wifiHWInitted && _mode == WIFI_STA));
+
+    if (isAPSTAMode) {
+        // AP_STA mode: keep STA running, start AP on _wifiAP
+        _mode = WIFI_AP_STA;
+    } else {
+        // AP-only mode: tear down any existing connection
+        end();
+        _mode = WIFI_AP;
+    }
+
+    // Store AP credentials
+    _apSSID = ssid;
+    _apPassword = passphrase;
+
+    // Configure AP interface using _wifiAP for all AP operations
+    _wifiAP.setAP();
+    _wifiAP.setSSID(ssid);
+    _wifiAP.setPassword(passphrase);
+
     if (channel > 0) {
         cyw43_wifi_ap_set_channel(&cyw43_state, channel);
     }
-#endif
-    _wifi.setTimeout(_timeout);
-    _apMode = true;
-    IPAddress gw = _wifi.gatewayIP();
-    if (!gw.isSet()) {
-        gw = IPAddress(192, 168, 42, 1);
+
+    _wifiAP.setTimeout(_timeout);
+
+    // Set AP IP configuration
+    IPAddress apIP = _apIP;
+    if (!apIP.isSet()) {
+        apIP = isAPSTAMode ? IPAddress(192, 168, 4, 1) : IPAddress(192, 168, 42, 1);
     }
-    IPAddress mask = _wifi.subnetMask();
-    if (!mask.isSet()) {
-        mask = IPAddress(255, 255, 255, 0);
+    _wifiAP.config(apIP);
+
+    IPAddress apGw = _apGW;
+    if (!apGw.isSet()) {
+        apGw = apIP;
     }
-    config(gw);
-    if (!_wifi.begin()) {
+
+    IPAddress apMask = _apMask;
+    if (!apMask.isSet()) {
+        apMask = IPAddress(255, 255, 255, 0);
+    }
+
+    // Start AP interface
+    if (!_wifiAP.begin()) {
+        // Roll back on failure
+        _wifiAP.end();
+        _mode = _wifiHWInitted ? WIFI_STA : WIFI_OFF;
+        _apHWInitted = false;
+        if (_dhcpServer) {
+            free(_dhcpServer);
+            _dhcpServer = nullptr;
+        }
         return WL_IDLE_STATUS;
     }
+
     noLowPowerMode();
+
+    // Initialize DHCP server for AP
     _dhcpServer = (dhcp_server_t *)malloc(sizeof(dhcp_server_t));
     if (!_dhcpServer) {
-        // OOM
+        // Roll back on DHCP server allocation failure
+        _wifiAP.end();
+        _mode = _wifiHWInitted ? WIFI_STA : WIFI_OFF;
+        _apHWInitted = false;
         return WL_IDLE_STATUS;
     }
-    dhcp_server_init(_dhcpServer, gw, mask);
+    dhcp_server_init(_dhcpServer, apGw, apMask, _wifiAP.getNetIf());
 
-    _wifiHWInitted = true;
-
+    _apHWInitted = true;
     return WL_CONNECTED;
+#else
+    // Non-CYW43 platforms: AP mode not supported
+    return WL_IDLE_STATUS;
+#endif
 }
 
-#if defined(PICO_CYW43_SUPPORTED)
 uint8_t WiFiClass::softAPgetStationNum() {
-    if (!_apMode || !_wifiHWInitted) {
+#if defined(PICO_CYW43_SUPPORTED)
+    if (!_apHWInitted) {
         return 0;
     }
     int m;
@@ -222,11 +273,17 @@ uint8_t WiFiClass::softAPgetStationNum() {
     cyw43_wifi_ap_get_stas(&cyw43_state, &m, macs);
     free(macs);
     return m;
-}
+#else
+    return 0;
 #endif
+}
 
 bool WiFiClass::connected() {
-    return (_apMode && _wifiHWInitted) || (_wifi.connected() && localIP().isSet());
+    if (_mode == WIFI_AP_STA) {
+        // In AP_STA mode, STA connected means we have a link and IP
+        return _wifi.connected() && localIP().isSet();
+    }
+    return (_mode == WIFI_AP && _apHWInitted) || (_wifi.connected() && localIP().isSet());
 }
 
 /*  Change Ip configuration settings disabling the dhcp client
@@ -299,42 +356,112 @@ const char *WiFiClass::getHostname() {
 }
 
 /*
-    Disconnect from the network
+    Disconnect from the STA network (does not affect AP mode)
 
     return: one value of wl_status_t enum
 */
 int WiFiClass::disconnect(bool wifi_off __unused) {
+    // Only tear down STA interface, leave AP running if active
+    if (_wifiHWInitted) {
+        _wifiHWInitted = false;
+        _wifi.end();
+    }
+
+    // If we were in AP_STA mode, we're now in AP-only mode
+    if (_mode == WIFI_AP_STA) {
+        _mode = WIFI_AP;
+    } else if (_mode == WIFI_STA) {
+        _mode = WIFI_OFF;
+    }
+
+    return WL_DISCONNECTED;
+}
+
+void WiFiClass::end(void) {
+    if (_wifiHWInitted || _apHWInitted || _mode != WIFI_OFF) {
+        disconnect();
+    }
+}
+
+
+bool WiFiClass::disconnectAP() {
+#if defined(PICO_CYW43_SUPPORTED)
+    // Only disconnect AP if it's running
+    if (!_apHWInitted) {
+        return false;
+    }
+
+    // Cleanup DHCP server
     if (_dhcpServer) {
         dhcp_server_deinit(_dhcpServer);
         free(_dhcpServer);
         _dhcpServer = nullptr;
     }
-    if (_wifiHWInitted) {
-        _wifiHWInitted = false;
-        _wifi.end();
+
+    // Stop AP interface
+    _wifiAP.end();
+    _apHWInitted = false;
+
+    // Clear AP credentials
+    _apSSID = "";
+    _apPassword = "";
+
+    // Update mode based on what's still running
+    if (_mode == WIFI_AP_STA) {
+        _mode = WIFI_STA;
+    } else if (_mode == WIFI_AP) {
+        _mode = WIFI_OFF;
     }
-    return WL_DISCONNECTED;
+
+    return true;
+#else
+    return false;
+#endif
 }
 
-void WiFiClass::end(void) {
-    if (_wifiHWInitted) {
-        disconnect();
+IPAddress WiFiClass::softAPIP() {
+#if defined(PICO_CYW43_SUPPORTED)
+    if (_apHWInitted) {
+        return _wifiAP.localIP();
     }
+#endif
+    return IPAddress();
+}
+
+uint8_t* WiFiClass::softAPmacAddress(uint8_t* mac) {
+#if defined(PICO_CYW43_SUPPORTED)
+    if (_apHWInitted) {
+        cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_AP, mac);
+        return mac;
+    }
+#endif
+    // Return zero MAC if AP not initialized
+    memset(mac, 0, 6);
+    return mac;
+}
+
+String WiFiClass::softAPmacAddress(void) {
+    uint8_t mac[6] = {0};
+    softAPmacAddress(mac);
+    char buff[32];
+    sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    return String(buff);
 }
 
 /*
-    Get the interface MAC address.
+    Get the STA interface MAC address.
 
     return: pointer to uint8_t array with length WL_MAC_ADDR_LENGTH
 */
 uint8_t* WiFiClass::macAddress(uint8_t* mac) {
 #if defined(PICO_CYW43_SUPPORTED)
-    if (!_wifiHWInitted) {
-        _apMode = false;
-        cyw43_wifi_set_up(&cyw43_state, _apMode ? 1 : 0, true, CYW43_COUNTRY_WORLDWIDE);
+    if (!_wifiHWInitted && !_apHWInitted) {
+        // Initialize WiFi hardware in STA mode to read MAC
+        cyw43_wifi_set_up(&cyw43_state, CYW43_ITF_STA, true, CYW43_COUNTRY_WORLDWIDE);
     }
 #endif
-    return _wifi.macAddress(_apMode, mac);
+    // Always return STA MAC address (use softAPmacAddress() for AP MAC)
+    return _wifi.macAddress(false, mac);
 }
 
 /*
@@ -426,7 +553,6 @@ uint8_t WiFiClass::encryptionType() {
 */
 int8_t WiFiClass::scanNetworks(bool async) {
     if (!_wifiHWInitted) {
-        _apMode = false;
 #if defined(PICO_CYW43_SUPPORTED)
         cyw43_arch_enable_sta_mode();
 #endif
@@ -490,9 +616,12 @@ int32_t WiFiClass::RSSI(uint8_t networkItem) {
     return: one of the value defined in wl_status_t
 */
 uint8_t WiFiClass::status() {
-    if (_apMode && _wifiHWInitted) {
+    if (_mode == WIFI_AP && _apHWInitted) {
         return WL_CONNECTED;
     }
+    // Return STA status for both AP_STA and STA modes,
+    // since AP_STA mode is primarily about maintaining a STA connection
+    // while also running an AP
     return _wifi.status();
 }
 
