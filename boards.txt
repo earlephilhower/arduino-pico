@@ -30540,6 +30540,18 @@ solderparty_rp2350_stamp_xl.menu.freq.276=276 MHz (Overclock)
 solderparty_rp2350_stamp_xl.menu.freq.276.build.f_cpu=276000000L
 solderparty_rp2350_stamp_xl.menu.freq.300=300 MHz (Overclock)
 solderparty_rp2350_stamp_xl.menu.freq.300.build.f_cpu=300000000L
+solderparty_rp2350_stamp_xl.menu.psram.0mb=0MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.0mb.build.psram_length=0x000000
+solderparty_rp2350_stamp_xl.menu.psram.2mb=2MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.2mb.build.psram_length=0x200000
+solderparty_rp2350_stamp_xl.menu.psram.4mb=4MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.4mb.build.psram_length=0x400000
+solderparty_rp2350_stamp_xl.menu.psram.8mb=8MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.8mb.build.psram_length=0x800000
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq109=109 MHz
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq133=133 MHz
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
 solderparty_rp2350_stamp_xl.menu.opt.Small=Small (-Os) (standard)
 solderparty_rp2350_stamp_xl.menu.opt.Small.build.flags.optimize=-Os
 solderparty_rp2350_stamp_xl.menu.opt.Optimize=Optimize (-O)

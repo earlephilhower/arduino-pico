@@ -2,8 +2,10 @@
 
 // Pin definitions taken from:
 //    https://rp2xxx-stamp-carrier-xl.solder.party/
+//    https://www.solder.party/docs/rp2xxx-stamp-related/rp2350-stamp-xl/downloads/
 
 #define PICO_RP2350A 0 // RP2350B
+#define RP2350_PSRAM_CS (8u)
 
 // LEDs
 #define PIN_LED        (3u)
@@ -43,5 +45,15 @@
 #define SERIAL_HOWMANY (2u)
 #define SPI_HOWMANY    (2u)
 #define WIRE_HOWMANY   (2u)
+
+// DVI connector
+#define PIN_CKN (15u)
+#define PIN_CKP (14u)
+#define PIN_D0N (13u)
+#define PIN_D0P (12u)
+#define PIN_D1N (19u)
+#define PIN_D1P (18u)
+#define PIN_D2N (17u)
+#define PIN_D2P (16u)
 
 #include "../generic/common.h"

@@ -376,7 +376,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMCS(name)
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
-        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48"):
+        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48") or (name == "solderparty_rp2350_stamp_xl"):
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
