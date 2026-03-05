@@ -29,6 +29,7 @@
 #include <lwip/raw.h>
 #include <lwip/timeouts.h>
 
+#define ERR_PCB_IS_NULLPTR -200
 
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
 extern void ethernet_arch_lwip_end() __attribute__((weak));

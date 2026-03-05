@@ -27,6 +27,7 @@ class WiFiClient;
 typedef void (*discard_cb_t)(void*, ClientContext*);
 
 #include <assert.h>
+#include "lwip_wrap.h"
 #include "lwip/timeouts.h"
 
 //#include <esp_priv.h>
@@ -66,13 +67,8 @@ public:
     err_t abort() {
         if (_pcb) {
             DEBUGV(":abort\r\n");
-            tcp_arg(_pcb, nullptr);
-            tcp_sent(_pcb, nullptr);
-            tcp_recv(_pcb, nullptr);
-            tcp_err(_pcb, nullptr);
-            tcp_poll(_pcb, nullptr, 0);
             tcp_abort(_pcb);
-            _pcb = nullptr;
+            _pcb = nullptr; // callback should have done this already
         }
         return ERR_ABRT;
     }
@@ -81,18 +77,13 @@ public:
         err_t err = ERR_OK;
         if (_pcb) {
             DEBUGV(":close\r\n");
-            tcp_arg(_pcb, nullptr);
-            tcp_sent(_pcb, nullptr);
-            tcp_recv(_pcb, nullptr);
-            tcp_err(_pcb, nullptr);
-            tcp_poll(_pcb, nullptr, 0);
             err = tcp_close(_pcb);
             if (err != ERR_OK) {
                 DEBUGV(":tc err %d\r\n", (int) err);
                 tcp_abort(_pcb);
                 err = ERR_ABRT;
             }
-            _pcb = nullptr;
+            _pcb = nullptr;  // callback should have done this already
         }
         return err;
     }
@@ -162,6 +153,7 @@ public:
     }
 
     size_t availableForWrite() const {
+		// unsafe! _pcb can become NULL at any point
         return _pcb ? tcp_sndbuf(_pcb) : 0;
     }
 
@@ -170,8 +162,10 @@ public:
             return;
         }
         if (nodelay) {
+			// unsafe! _pcb can become NULL at any point
             tcp_nagle_disable(_pcb);
         } else {
+			// unsafe! _pcb can become NULL at any point
             tcp_nagle_enable(_pcb);
         }
     }
@@ -180,6 +174,7 @@ public:
         if (!_pcb) {
             return false;
         }
+		// unsafe! _pcb can become NULL at any point
         return tcp_nagle_disabled(_pcb);
     }
 
@@ -200,6 +195,7 @@ public:
             return 0;
         }
 
+		// extra unsafe: we are giving out a pointer into _pcb!
         return &_pcb->remote_ip;
     }
 
@@ -208,6 +204,7 @@ public:
             return 0;
         }
 
+		// unsafe! _pcb can become NULL at any point
         return _pcb->remote_port;
     }
 
@@ -216,6 +213,7 @@ public:
             return 0;
         }
 
+		// extra unsafe: we are giving out a pointer into _pcb!
         return &_pcb->local_ip;
     }
 
@@ -224,6 +222,7 @@ public:
             return 0;
         }
 
+		// unsafe! _pcb can become NULL at any point
         return _pcb->local_port;
     }
 
@@ -356,6 +355,7 @@ public:
     }
 
     uint8_t state() const {
+		// unsafe! _pcb can become NULL between NULL check and ->state read
         if (!_pcb || _pcb->state == CLOSE_WAIT || _pcb->state == CLOSING) {
             // CLOSED for WiFIClient::status() means nothing more can be written
             return CLOSED;
@@ -410,18 +410,22 @@ public:
     }
 
     bool isKeepAliveEnabled() const {
+		// unsafe! _pcb can become NULL without warning
         return !!(_pcb->so_options & SOF_KEEPALIVE);
     }
 
     uint16_t getKeepAliveIdle() const {
+		// unsafe! _pcb can become NULL without warning
         return isKeepAliveEnabled() ? (_pcb->keep_idle + 500) / 1000 : 0;
     }
 
     uint16_t getKeepAliveInterval() const {
+		// unsafe! _pcb can become NULL without warning
         return isKeepAliveEnabled() ? (_pcb->keep_intvl + 500) / 1000 : 0;
     }
 
     uint8_t getKeepAliveCount() const {
+		// unsafe! _pcb can become NULL without warning
         return isKeepAliveEnabled() ? _pcb->keep_cnt : 0;
     }
 
@@ -524,10 +528,17 @@ protected:
             const auto remaining = _datalen - _written;
             size_t next_chunk_size;
             {
+				// trick to read safely maybe?
+				// should be safe against interrupts in single core
+				// but with dual core this may be problematic unless reads are atomic
+                volatile tcp_pcb *pcb = _pcb;
+                if(!pcb) {
+                    return false;
+                }
+                next_chunk_size = std::min((size_t)tcp_sndbuf(pcb), remaining);
                 if (!_pcb) {
                     return false;
                 }
-                next_chunk_size = std::min((size_t)tcp_sndbuf(_pcb), remaining);
                 // Potentially reduce transmit size if we are tight on memory, but only if it doesn't return a 0 chunk size
                 if (next_chunk_size > (size_t)(1 << scale)) {
                     next_chunk_size >>= scale;
@@ -555,9 +566,6 @@ protected:
                 flags |= TCP_WRITE_FLAG_COPY;
             }
 
-            if (!_pcb) {
-                return false;
-            }
             err_t err = tcp_write(_pcb, buf, next_chunk_size, flags);
 
             DEBUGV(":wrc %d %d %d\r\n", next_chunk_size, remaining, (int)err);
@@ -572,6 +580,9 @@ protected:
                 } else {
                     break;
                 }
+            } else if(err == ERR_PCB_IS_NULLPTR) {
+                // is sent by lwip_wrap.cpp when _pcb==NULL
+                return false;
             } else {
                 // ERR_MEM(-1) is a valid error meaning
                 // "come back later". It leaves state() opened
@@ -579,7 +590,7 @@ protected:
             }
         }
 
-        if (has_written && _pcb) {
+        if (has_written) {
             // lwIP's tcp_output doc: "Find out what we can send and send it"
             // *with respect to Nagle*
             // more info: https://lists.gnu.org/archive/html/lwip-users/2017-11/msg00134.html
@@ -623,9 +634,8 @@ protected:
             pbuf_ref(_rx_buf);
             pbuf_free(head);
         }
-        if (_pcb) {
-            tcp_recved(_pcb, size);
-        }
+        // _pcb may be NULL, which is checked for in lwip_wrap.c
+        tcp_recved(_pcb, size);
     }
 
     err_t _recv(tcp_pcb* pcb, pbuf* pb, err_t err) {
