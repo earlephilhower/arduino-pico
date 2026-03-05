@@ -18,6 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <functional>
 #include <Arduino.h>
 #include <pico/mutex.h>
 #include <lwip/pbuf.h>
@@ -943,3 +944,12 @@ extern "C" {
 #endif
 
 }; // extern "C"
+
+void lwip_callback(std::function<void(void)> cb) {
+#ifdef __FREERTOS
+    if(!__isLWIPThread()) {
+        __lwip(&cb);
+    }
+#endif
+    cb();
+}

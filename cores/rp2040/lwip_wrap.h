@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <functional>
 #include <Arduino.h>
 #include <pico/cyw43_arch.h>
 #include <lwip/pbuf.h>
@@ -163,6 +164,7 @@ typedef enum {
 #endif
 
     __callback = 10000,
+    __function,
 } __lwip_op;
 
 // Set up a local request buffer and call this to add to lwip work queue.  Will only return once lwip operation completed
@@ -595,4 +597,7 @@ extern void lwip_callback(void (*cb)(void *), void *cbData, __callback_req *buff
 
 #ifdef __cplusplus
 };
+
+extern void lwip_callback(std::function<void(void)> cb);
+
 #endif
