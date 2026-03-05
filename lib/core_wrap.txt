@@ -68,6 +68,9 @@
 
 -Wl,--wrap=netif_add
 -Wl,--wrap=netif_remove
+-Wl,--wrap=netif_set_link_up
+-Wl,--wrap=netif_set_up
+-Wl,--wrap=netif_create_ip6_linklocal_address
 
 -Wl,--wrap=ethernet_input
 

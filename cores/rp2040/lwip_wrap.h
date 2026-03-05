@@ -154,6 +154,10 @@ typedef enum {
 
     __netif_add = 8000,
     __netif_remove,
+	__netif_set_link_up,
+	__netif_set_up,
+	__netif_create_ip6_linklocal_address,
+
 
     __ethernet_input = 9000,
 
@@ -224,6 +228,9 @@ extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
 extern void __real_raw_remove(struct raw_pcb *pcb);
 extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
 extern void __real_netif_remove(struct netif *netif);
+extern void __real_netif_set_link_up(struct netif *netif);
+extern void __real_netif_set_up(struct netif *netif);
+extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
@@ -558,6 +565,22 @@ typedef struct {
 typedef struct {
     struct netif *netif;
 } __netif_remove_req;
+
+typedef struct {
+	struct netif *netif;
+} __netif_set_link_up_req;
+
+typedef struct {
+	struct netif *netif;
+} __netif_set_up_req;
+
+
+#if LWIP_IPV6
+typedef struct {
+	struct netif *netif;
+	uint8_t from_mac_48bit;
+} __netif_create_ip6_linklocal_address_req;
+#endif
 
 typedef struct {
     struct pbuf *p;

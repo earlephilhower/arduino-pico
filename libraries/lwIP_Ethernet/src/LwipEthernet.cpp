@@ -247,6 +247,11 @@ static void ethernet_timeout_reached(__unused async_context_t *context, __unused
     ethernet_arch_lwip_gpio_unmask();
 }
 
+// The when pending worker that's always pending and scheduling the actual ethernet_timeout_worker seems redundant
+// but actually has interesting behaviour:
+// It causes ethernet_timeout_reached to not be called when user code does frequent lwip calls.
+// This happens because user code leaving _context (see lwip_wrap.h) causes this worker to run,
+// which reschedules ethernet_timeout_worker.
 static void update_next_timeout(async_context_t *context, async_when_pending_worker_t *worker) {
     assert(worker == &always_pending_update_timeout_worker);
     worker->work_pending = true;
