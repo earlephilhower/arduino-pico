@@ -19,6 +19,8 @@
 
 
 #pragma once
+
+#include <_needsbt.h>
 #include <Arduino.h>
 #include <list>
 #include "BLEUUID.h"
