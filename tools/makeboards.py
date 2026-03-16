@@ -68,7 +68,7 @@ def BuildArch(name):
     print("%s.menu.arch.riscv.build.mcu=rv32imac" % (name))
 
 def BuildPSRAM(name):
-    for s in [ 0, 2, 4, 8]:
+    for s in [ 0, 2, 4, 8, 16]:
         print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
         print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
 
@@ -80,7 +80,7 @@ def BuildPSRAMCS(name):
         print("%s.menu.psramcs.GPIO%d.build.psram_cs=-DRP2350_PSRAM_CS=%d" % (name, s, s))
 
 def BuildPSRAMFreq(name):
-    for s in [ 109, 133 ]:
+    for s in [ 104, 109, 133 ]:
         print("%s.menu.psramfreq.freq%d=%d MHz" % (name, s, s))
         print("%s.menu.psramfreq.freq%d.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=%d" % (name, s, s * 1000000))
 

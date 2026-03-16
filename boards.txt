@@ -6342,6 +6342,8 @@ adafruit_feather_rp2350_hstx.menu.psram.4mb=4MByte PSRAM
 adafruit_feather_rp2350_hstx.menu.psram.4mb.build.psram_length=0x400000
 adafruit_feather_rp2350_hstx.menu.psram.8mb=8MByte PSRAM
 adafruit_feather_rp2350_hstx.menu.psram.8mb.build.psram_length=0x800000
+adafruit_feather_rp2350_hstx.menu.psram.16mb=16MByte PSRAM
+adafruit_feather_rp2350_hstx.menu.psram.16mb.build.psram_length=0x1600000
 adafruit_feather_rp2350_hstx.menu.opt.Small=Small (-Os) (standard)
 adafruit_feather_rp2350_hstx.menu.opt.Small.build.flags.optimize=-Os
 adafruit_feather_rp2350_hstx.menu.opt.Optimize=Optimize (-O)
@@ -7003,6 +7005,8 @@ adafruit_metro_rp2350.menu.psram.4mb=4MByte PSRAM
 adafruit_metro_rp2350.menu.psram.4mb.build.psram_length=0x400000
 adafruit_metro_rp2350.menu.psram.8mb=8MByte PSRAM
 adafruit_metro_rp2350.menu.psram.8mb.build.psram_length=0x800000
+adafruit_metro_rp2350.menu.psram.16mb=16MByte PSRAM
+adafruit_metro_rp2350.menu.psram.16mb.build.psram_length=0x1600000
 adafruit_metro_rp2350.menu.opt.Small=Small (-Os) (standard)
 adafruit_metro_rp2350.menu.opt.Small.build.flags.optimize=-Os
 adafruit_metro_rp2350.menu.opt.Optimize=Optimize (-O)
@@ -13740,6 +13744,10 @@ datanoisetv_picoadk_v2.menu.psram.4mb=4MByte PSRAM
 datanoisetv_picoadk_v2.menu.psram.4mb.build.psram_length=0x400000
 datanoisetv_picoadk_v2.menu.psram.8mb=8MByte PSRAM
 datanoisetv_picoadk_v2.menu.psram.8mb.build.psram_length=0x800000
+datanoisetv_picoadk_v2.menu.psram.16mb=16MByte PSRAM
+datanoisetv_picoadk_v2.menu.psram.16mb.build.psram_length=0x1600000
+datanoisetv_picoadk_v2.menu.psramfreq.freq104=104 MHz
+datanoisetv_picoadk_v2.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
 datanoisetv_picoadk_v2.menu.psramfreq.freq109=109 MHz
 datanoisetv_picoadk_v2.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
 datanoisetv_picoadk_v2.menu.psramfreq.freq133=133 MHz
@@ -23480,6 +23488,10 @@ olimex_pico2bb48.menu.psram.4mb=4MByte PSRAM
 olimex_pico2bb48.menu.psram.4mb.build.psram_length=0x400000
 olimex_pico2bb48.menu.psram.8mb=8MByte PSRAM
 olimex_pico2bb48.menu.psram.8mb.build.psram_length=0x800000
+olimex_pico2bb48.menu.psram.16mb=16MByte PSRAM
+olimex_pico2bb48.menu.psram.16mb.build.psram_length=0x1600000
+olimex_pico2bb48.menu.psramfreq.freq104=104 MHz
+olimex_pico2bb48.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
 olimex_pico2bb48.menu.psramfreq.freq109=109 MHz
 olimex_pico2bb48.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
 olimex_pico2bb48.menu.psramfreq.freq133=133 MHz
@@ -30548,6 +30560,10 @@ solderparty_rp2350_stamp_xl.menu.psram.4mb=4MByte PSRAM
 solderparty_rp2350_stamp_xl.menu.psram.4mb.build.psram_length=0x400000
 solderparty_rp2350_stamp_xl.menu.psram.8mb=8MByte PSRAM
 solderparty_rp2350_stamp_xl.menu.psram.8mb.build.psram_length=0x800000
+solderparty_rp2350_stamp_xl.menu.psram.16mb=16MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.16mb.build.psram_length=0x1600000
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq104=104 MHz
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
 solderparty_rp2350_stamp_xl.menu.psramfreq.freq109=109 MHz
 solderparty_rp2350_stamp_xl.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
 solderparty_rp2350_stamp_xl.menu.psramfreq.freq133=133 MHz
@@ -42428,6 +42444,10 @@ generic_rp2350.menu.psram.4mb=4MByte PSRAM
 generic_rp2350.menu.psram.4mb.build.psram_length=0x400000
 generic_rp2350.menu.psram.8mb=8MByte PSRAM
 generic_rp2350.menu.psram.8mb.build.psram_length=0x800000
+generic_rp2350.menu.psram.16mb=16MByte PSRAM
+generic_rp2350.menu.psram.16mb.build.psram_length=0x1600000
+generic_rp2350.menu.psramfreq.freq104=104 MHz
+generic_rp2350.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
 generic_rp2350.menu.psramfreq.freq109=109 MHz
 generic_rp2350.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
 generic_rp2350.menu.psramfreq.freq133=133 MHz
