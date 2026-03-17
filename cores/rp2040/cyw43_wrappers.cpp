@@ -32,6 +32,9 @@ extern "C" {
 #include <hardware/adc.h>
 #include <hardware/clocks.h>
 #include <Arduino.h>
+#ifdef __FREERTOS
+extern void __startLWIPThread();
+#endif
 
 // From cyw43_ctrl.c
 #define WIFI_JOIN_STATE_KIND_MASK (0x000f)
@@ -148,6 +151,9 @@ bool __isPicoW = true;
 extern "C" void init_cyw43_wifi() {
     __isPicoW = CheckPicoW();
     if (__isPicoW) {
+#ifdef __FREERTOS
+        __startLWIPThread(); // CYW43 async object does work with lwip_callbacks, need to make sure this is available before beginning
+#endif
         // Fix for overclocked CPU: SPI communication breaks down with default "div by 2" speed
         // So, divide clock by 4 for anything including and above 250MHz CPU frequency.
         if (clock_get_hz(clk_sys) >= 250000000) {
