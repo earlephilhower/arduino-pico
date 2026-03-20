@@ -91,10 +91,10 @@ bitloop2:
 
     in pins, 1
     jmp x-- bitloop
-    push
+    ; push // Autopush
 
 % c-sdk {
-static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) {
+static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin, uint bits) {
     pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, false);
     pio_gpio_init(pio, pin);
     gpio_pull_up(pin);
@@ -102,8 +102,8 @@ static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) 
     pio_sm_config c = pio_rx_program_get_default_config(offset);
     sm_config_set_in_pins(&c, pin); // for WAIT, IN
     sm_config_set_jmp_pin(&c, pin); // for JMP
-    // Shift to right, autopull disabled
-    sm_config_set_in_shift(&c, true, false, 32);
+    // Shift to right, autopush on
+    sm_config_set_in_shift(&c, true, true, bits);
 
     pio_sm_init(pio, sm, offset, &c);
 }
