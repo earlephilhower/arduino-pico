@@ -107,15 +107,17 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
             }
             continue; // Framing or BREAK
         }
+        // Mask off only data bits for parity calculation
+        int dval = val & ((1 << (_rxBits - 1)) - 1);
         if (_parity == UART_PARITY_EVEN) {
-            int p = ::_parity(val);
+            int p = ::_parity(dval);
             int r = (val & (1 << _bits)) ? 1 : 0;
             if (p != r) {
                 // TODO - parity error
                 continue;
             }
         } else if (_parity == UART_PARITY_ODD) {
-            int p = ::_parity(val);
+            int p = ::_parity(dval);
             int r = (val & (1 << _bits)) ? 1 : 0;
             if (p == r) {
                 // TODO - parity error
