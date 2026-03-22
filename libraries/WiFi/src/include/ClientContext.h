@@ -572,6 +572,7 @@ protected:
             const auto remaining = _datalen - _written;
             size_t next_chunk_size = 0;
             lwip_callback([this, &next_chunk_size, &remaining, &scale](){
+                LWIPMutex m;
                 if (!_pcb) {
                     return;
                 }
@@ -605,6 +606,8 @@ protected:
 
             err_t err;
             lwip_callback([this, &err, &buf, &next_chunk_size, &flags]() {
+
+                LWIPMutex m;
                 if (!_pcb || state() == CLOSED) {
                     err = ERR_CLSD;
                 }
@@ -633,6 +636,7 @@ protected:
 
         if (has_written) {
             lwip_callback([this]() {
+                LWIPMutex m;
                 if(_pcb) {
                     // lwIP's tcp_output doc: "Find out what we can send and send it"
                     // *with respect to Nagle*
@@ -680,6 +684,7 @@ protected:
             pbuf_free(head);
         }
         lwip_callback([this, size]() {
+            LWIPMutex m;
             if (_pcb) {
                 tcp_recved(_pcb, size);
             }
