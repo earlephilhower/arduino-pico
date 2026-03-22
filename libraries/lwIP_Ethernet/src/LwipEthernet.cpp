@@ -279,6 +279,18 @@ void __startEthernetContext() {
     __ethernetContextInitted = true;
 }
 
+#ifndef __FREERTOS
+extern "C" {
+    async_context_t *__getEthernetContext() {
+        if (!__ethernetContextInitted) {
+            __startEthernetContext();
+        }
+        return _context;
+    }
+}
+
+#endif
+
 void lwipPollingPeriod(int ms) {
     if (ms > 0) {
         // No need for mutexes, this is an atomic 32b write
