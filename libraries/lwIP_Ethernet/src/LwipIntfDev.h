@@ -522,7 +522,7 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     ethernet_arch_lwip_begin();
 #endif
 
-    uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
+    uint16_t len = lid->sendFrame(pbuf);
 
 #ifdef __FREERTOS
     xSemaphoreGive(lid->_hwMutex);

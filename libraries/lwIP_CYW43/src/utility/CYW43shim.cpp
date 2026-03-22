@@ -140,8 +140,8 @@ void CYW43::end() {
     }
 }
 
-uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {
-    if (0 == cyw43_send_ethernet(_self, _itf, datalen, data, false)) {
+uint16_t CYW43::sendFrame(struct pbuf *p) {
+    if (0 == cyw43_send_ethernet(_self, _itf, p->payload, p->len, false)) {
         return datalen;
     }
     return 0;

@@ -522,7 +522,7 @@ void ENC28J60::end() {
 
 /*---------------------------------------------------------------------------*/
 
-uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen) {
+uint16_t ENC28J60::sendFrame(struct pbuf *p) {
     uint16_t dataend;
 
     ethernet_arch_lwip_gpio_mask(); // So we don't fire an IRQ and interrupt the send w/a receive!
@@ -560,10 +560,10 @@ uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen) {
         configuration (the values in MACON3) will be used.  */
     writedatabyte(0x00); /* MACON3 */
 
-    writedata(data, datalen);
+    writedata((const uint8_t*)p->payload, p->len);
 
     /* Write a pointer to the last data byte. */
-    dataend = TX_BUF_START + datalen;
+    dataend = TX_BUF_START + p->len;
     writereg(ETXNDL, dataend & 0xff);
     writereg(ETXNDH, dataend >> 8);
 
@@ -602,7 +602,7 @@ uint16_t ENC28J60::sendFrame(const uint8_t* data, uint16_t datalen) {
 
     // sent_packets++;
     // PRINTF("enc28j60: sent_packets %d\n", sent_packets);
-    return datalen;
+    return p->len;
 }
 
 /*---------------------------------------------------------------------------*/
