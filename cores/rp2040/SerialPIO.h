@@ -66,10 +66,6 @@ public:
     using Print::write;
     operator bool() override;
 
-    // Allows the user to sleep until a break is received (self-clears the flag
-    // on read)
-    bool getBreakReceived();
-
 protected:
     static void _fifoIRQ();
     void _handleIRQ();
@@ -81,7 +77,6 @@ protected:
     uart_parity_t _parity;
     int _stop;
     bool _overflow;
-    bool _break;
     mutex_t _mutex;
     bool _invertTX;
     bool _invertRX;
