@@ -103,7 +103,7 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
         }
         if (!stop) {
             if (val == 0) {
-                _break = 1;
+                _break = true;
             }
             continue; // Framing or BREAK
         }
