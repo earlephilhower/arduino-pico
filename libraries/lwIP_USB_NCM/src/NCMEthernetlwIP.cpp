@@ -86,7 +86,16 @@ void NCMEthernetlwIP::_call_irq(async_context_t *context, async_when_pending_wor
 }
 
 void NCMEthernetlwIP::_call_handlepackets() {
-    // We can not call _irq(), because that includes a __inLWIP check.
+    // We get called by tud_network_recv_cb only when _holding_both_mutexes==1.
+    // Therefore it is safe to call lwip functions.
+
+    // We can not call this->_irq(), because that includes a __inLWIP check.
     // When __inLWIP>0, it drops the packet. Okay for real pin-based irq, not ok for NCM.
-    this->_lwipCallback(this);
+
+    // We can also not call this->_lwipCallback, as that includes ethernet_arch_lwip_gpio_unmask().
+    // Unmasking without having masked first will screw up any gpio interrupts the sketch may have set up.
+
+    // So we call the contents of _lwipCallback
+    this->handlePackets();
+    sys_check_timeouts();
 }
