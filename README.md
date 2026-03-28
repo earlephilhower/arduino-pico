@@ -288,6 +288,21 @@ Once Picoprobe permissions are set up properly, then select the board "Raspberry
 # Debugging with Picoprobe, OpenOCD, and GDB
 The installed tools include a version of OpenOCD (in the pqt-openocd directory) and GDB (in the pqt-gcc directory).  These may be used to run GDB in an interactive window as documented in the Pico Getting Started manuals from the Raspberry Pi Foundation.  Use the command line `./system/openocd/bin/openocd -f ./lib/rp2040/picoprobe_cmsis_dap.tcl` or `./system/openocd/bin/openocd -f ./lib/rp2350/picoprobe_cmsis_dap.tcl` from the `git` installation directory.
 
+# Compatibility Notes
+
+## NTP Namespace Conflicts
+
+If using a third-party NTP library that defines its own `NTP` symbol, you may see a compiler error such as `error: redefinition of 'NTPClass NTP'`.  Define `NTP_LIBRARY_COMPAT` before any WiFi `#include` to rename the built-in NTP instance to `PicoNTP` and resolve the conflict:
+
+```cpp
+#define NTP_LIBRARY_COMPAT
+#include <WiFi.h>
+// Use PicoNTP.begin(...) / PicoNTP.waitSet() instead of NTP.*
+```
+
+See the [WiFiNTP documentation](https://arduino-pico.readthedocs.io/en/latest/wifintp.html)
+for full details.
+
 # Licensing and Credits
 * The [Arduino IDE and ArduinoCore-API](https://arduino.cc) are developed and maintained by the Arduino team. The IDE is licensed under GPL.
 * The [RP2040 GCC-based toolchain](https://github.com/earlephilhower/pico-quick-toolchain) is licensed under under the GPL.
