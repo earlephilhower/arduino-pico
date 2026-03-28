@@ -19,4 +19,8 @@
 
 #include "WiFi.h"
 
+#ifdef NTP_LIBRARY_COMPAT
+NTPClass PicoNTP;
+#else
 NTPClass NTP;
+#endif
