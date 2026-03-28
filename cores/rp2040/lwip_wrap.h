@@ -170,9 +170,9 @@ typedef enum {
 
     __netif_add = 8000,
     __netif_remove,
-	__netif_set_link_up,
-	__netif_set_up,
-	__netif_create_ip6_linklocal_address,
+    __netif_set_link_up,
+    __netif_set_up,
+    __netif_create_ip6_linklocal_address,
     __netif_set_default,
 
 
@@ -687,18 +687,18 @@ typedef struct {
 } __netif_remove_req;
 
 typedef struct {
-	struct netif *netif;
+    struct netif *netif;
 } __netif_set_link_up_req;
 
 typedef struct {
-	struct netif *netif;
+    struct netif *netif;
 } __netif_set_up_req;
 
 
 #if LWIP_IPV6
 typedef struct {
-	struct netif *netif;
-	uint8_t from_mac_48bit;
+    struct netif *netif;
+    uint8_t from_mac_48bit;
 } __netif_create_ip6_linklocal_address_req;
 #endif
 

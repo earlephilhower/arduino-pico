@@ -1038,43 +1038,43 @@ extern "C" {
 
     extern void __real_netif_set_link_up(struct netif *netif);
     void __wrap_netif_set_link_up(struct netif *netif) {
-        #ifdef __FREERTOS
-            if (!__isLWIPThread()) {
-                __netif_set_link_up_req req = { netif };
-                __lwip(__netif_set_link_up, &req);
-				return;
-            }
-        #endif
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_up_req req = { netif };
+            __lwip(__netif_set_link_up, &req);
+            return;
+        }
+#endif
         LWIPMutex m;
         __real_netif_set_link_up(netif);
     }
 
     extern void __real_netif_set_up(struct netif *netif);
     void __wrap_netif_set_up(struct netif *netif) {
-        #ifdef __FREERTOS
-            if (!__isLWIPThread()) {
-                __netif_set_up_req req = { netif };
-                __lwip(__netif_set_up, &req);
-				return;
-            }
-        #endif
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_up_req req = { netif };
+            __lwip(__netif_set_up, &req);
+            return;
+        }
+#endif
         LWIPMutex m;
         __real_netif_set_up(netif);
     }
 
 #if LWIP_IPV6
-	extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
-	void __wrap_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit) {
-        #ifdef __FREERTOS
-            if (!__isLWIPThread()) {
-                __netif_create_ip6_linklocal_address_req req = { netif, from_mac_48bit };
-                __lwip(__netif_create_ip6_linklocal_address, &req);
-				return;
-            }
-        #endif
-		LWIPMutex m;
+    extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
+    void __wrap_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_create_ip6_linklocal_address_req req = { netif, from_mac_48bit };
+            __lwip(__netif_create_ip6_linklocal_address, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
         __real_netif_create_ip6_linklocal_address(netif, from_mac_48bit);
-	}
+    }
 #endif
 
     extern void __real_netif_set_default(struct netif *netif);
