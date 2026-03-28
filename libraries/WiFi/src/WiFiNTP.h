@@ -102,7 +102,14 @@ private:
     bool _running = false;
 };
 
+// If another library already defines a global called NTP, define
+// NTP_LIBRARY_COMPAT before including this header to use WiFiNTP instead.
+#ifdef NTP_LIBRARY_COMPAT
+extern NTPClass PicoNTP;
+// ESP8266 compat
+#define configTime(timeout, tzoffsec, server1, server2) PicoNTP.begin(server1, server2, timeout)
+#else
+extern NTPClass NTP;
 // ESP8266 compat
 #define configTime(timeout, tzoffsec, server1, server2) NTP.begin(server1, server2, timeout)
-
-extern NTPClass NTP;
+#endif
