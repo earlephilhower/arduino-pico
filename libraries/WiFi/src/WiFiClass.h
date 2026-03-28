@@ -57,14 +57,7 @@ public:
     void mode(WiFiMode_t m); // For ESP8266 compatibility
 
     WiFiMode_t getMode() {
-        if (_wifiHWInitted) {
-            if (_apMode) {
-                return WiFiMode_t::WIFI_AP;
-            } else {
-                return WiFiMode_t::WIFI_STA;
-            }
-        }
-        return WiFiMode_t::WIFI_OFF;
+        return _mode;
     };
 
     /*  Start WiFi connection for OPEN networks
@@ -148,37 +141,44 @@ public:
     }
 
     bool softAPConfig(IPAddress local_ip, IPAddress gateway, IPAddress subnet) {
+        if (_mode == WIFI_AP_STA || _mode == WIFI_AP) {
+            // In AP mode, store AP-specific config
+            _apIP = local_ip;
+            _apGW = gateway;
+            _apMask = subnet;
+            return true;
+        }
         config(local_ip, local_ip, gateway, subnet);
         return true;
     }
 
     bool softAPdisconnect(bool wifioff = false) {
         (void) wifioff;
+#if defined(PICO_CYW43_SUPPORTED)
+        if (_mode == WIFI_AP_STA) {
+            // Only tear down AP, keep STA
+            return disconnectAP();
+        }
+#endif
         disconnect();
         return true;
     }
 
-#if defined(PICO_CYW43_SUPPORTED)
+    // Disconnect only the AP side in AP_STA mode
+    bool disconnectAP();
+
     uint8_t softAPgetStationNum();
-#endif
 
-    IPAddress softAPIP() {
-        return localIP();
-    }
+    IPAddress softAPIP();
 
-    uint8_t* softAPmacAddress(uint8_t* mac) {
-        return macAddress(mac);
-    }
+    uint8_t* softAPmacAddress(uint8_t* mac);
 
-    String softAPmacAddress(void) {
-        uint8_t mac[6];
-        macAddress(mac);
-        char buff[32];
-        sprintf(buff, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-        return String(buff);
-    }
+    String softAPmacAddress(void);
 
     String softAPSSID() {
+        if (_mode == WIFI_AP_STA || _mode == WIFI_AP) {
+            return _apSSID;
+        }
         return SSID();
     }
 
@@ -440,14 +440,21 @@ private:
     uint8_t _bssid[6];
     String _password;
     bool _wifiHWInitted = false;
-    bool _apMode = false;
+
+    // AP hardware and credentials
+    bool _apHWInitted = false;
+    String _apSSID;
+    String _apPassword;
+    IPAddress _apIP = IPAddress(192, 168, 4, 1);
+    IPAddress _apGW = IPAddress(192, 168, 4, 1);
+    IPAddress _apMask = IPAddress(255, 255, 255, 0);
 
     // DHCP for AP mode
     dhcp_server_t *_dhcpServer = nullptr;
 
-    // ESP compat
+    // ESP compat and mode tracking
     bool _calledESP = false; // Should we behave like the ESP8266 for connect?
-    WiFiMode_t _modeESP = WIFI_STA;
+    WiFiMode_t _mode = WIFI_OFF;
 };
 
 extern WiFiClass WiFi;

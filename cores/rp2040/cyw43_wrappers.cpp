@@ -32,6 +32,9 @@ extern "C" {
 #include <hardware/adc.h>
 #include <hardware/clocks.h>
 #include <Arduino.h>
+#ifdef __FREERTOS
+extern void __startLWIPThread();
+#endif
 
 // From cyw43_ctrl.c
 #define WIFI_JOIN_STATE_KIND_MASK (0x000f)
@@ -50,11 +53,20 @@ struct netif *__getCYW43Netif() {
     return nullptr;
 }
 
+extern struct netif *__getCYW43NetifByItf(int itf) __attribute__((weak));
+struct netif *__getCYW43NetifByItf(int itf) {
+    if (itf == 0) {
+        // Backward-compatible default: use the single-interface getter
+        return __getCYW43Netif();
+    }
+    (void) itf;
+    return nullptr;
+}
+
 // CB from the cyw43 driver
 extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
     (void) cb_data;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif && (netif->flags & NETIF_FLAG_LINK_UP)) {
         struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
         if (p != nullptr) {
@@ -69,8 +81,7 @@ extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t 
 
 extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
     (void) self;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif) {
         netif_set_link_up(netif);
     }
@@ -78,12 +89,13 @@ extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
 
 extern "C" void __wrap_cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     (void) self;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif) {
         netif_set_link_down(netif);
     }
-    self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
+    if (itf == 0) {
+        self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
+    }
 }
 
 // CBs from the SDK, not needed here as we do TCP later in the game
@@ -139,6 +151,9 @@ bool __isPicoW = true;
 extern "C" void init_cyw43_wifi() {
     __isPicoW = CheckPicoW();
     if (__isPicoW) {
+#ifdef __FREERTOS
+        __startLWIPThread(); // CYW43 async object does work with lwip_callbacks, need to make sure this is available before beginning
+#endif
         // Fix for overclocked CPU: SPI communication breaks down with default "div by 2" speed
         // So, divide clock by 4 for anything including and above 250MHz CPU frequency.
         if (clock_get_hz(clk_sys) >= 250000000) {

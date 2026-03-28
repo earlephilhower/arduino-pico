@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <_needsbt.h>
 #include <Arduino.h>
 #include "BLEService.h"
 #include "BLECharacteristic.h"

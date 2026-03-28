@@ -33,6 +33,7 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_rtc/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pio/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pll/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_powman/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pwm/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_resets/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_spi/include

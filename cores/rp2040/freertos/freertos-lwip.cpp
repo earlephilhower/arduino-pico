@@ -47,6 +47,10 @@ static TaskHandle_t __lwipTask;
 static QueueHandle_t __lwipQueue;
 
 void __startLWIPThread() {
+    static bool initted = false;
+    if (initted) {
+        return;
+    }
     __lwipQueue = xQueueCreate(LWIP_WORK_ENTRIES, sizeof(LWIPWork));
     if (!__lwipQueue) {
         panic("Unable to allocate LWIP work queue");

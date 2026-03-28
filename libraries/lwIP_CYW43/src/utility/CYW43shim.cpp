@@ -38,8 +38,16 @@ extern "C" {
 #define WIFI_JOIN_STATE_ALL     (0x0e01)
 
 netif *CYW43::_netif = nullptr;
+netif *CYW43::_netifAP = nullptr;
 
 struct netif *__getCYW43Netif() {
+    return CYW43::_netif;
+}
+
+struct netif *__getCYW43NetifByItf(int itf) {
+    if (itf == 1) {
+        return CYW43::_netifAP;
+    }
     return CYW43::_netif;
 }
 
@@ -47,16 +55,17 @@ CYW43::CYW43(int8_t cs, arduino::SPIClass& spi, int8_t intrpin) {
     (void) cs;
     (void) spi;
     (void) intrpin;
-    _netif = nullptr;
+    // Static _netif and _netifAP are initialized at file scope; don't reset here
+    // to avoid clobbering a pointer already set by another instance.
     bzero(_bssid, sizeof(_bssid));
 }
 
 bool CYW43::begin(const uint8_t* address, netif* netif) {
     (void) address;
-    _netif = netif;
     _self = &cyw43_state;
 
     if (!_ap) {
+        _netif = netif;
         _itf = 0;
         cyw43_arch_enable_sta_mode();
         cyw43_wifi_get_mac(_self, _itf, netif->hwaddr);
@@ -112,6 +121,7 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
         }
         return false; // We ended above with a failure
     } else {
+        _netifAP = netif;
         _itf = 1;
         cyw43_arch_enable_ap_mode(_ssid, _password, _password ? CYW43_AUTH_WPA2_AES_PSK : CYW43_AUTH_OPEN);
         cyw43_wifi_get_mac(_self, _itf, netif->hwaddr);
@@ -120,8 +130,14 @@ bool CYW43::begin(const uint8_t* address, netif* netif) {
 }
 
 void CYW43::end() {
-    _netif = nullptr;
-    cyw43_wifi_leave(&cyw43_state, _itf);
+    if (_ap) {
+        _netifAP = nullptr;
+        cyw43_wifi_leave(&cyw43_state, CYW43_ITF_AP);
+        cyw43_arch_disable_ap_mode();
+    } else {
+        _netif = nullptr;
+        cyw43_wifi_leave(&cyw43_state, CYW43_ITF_STA);
+    }
 }
 
 uint16_t CYW43::sendFrame(const uint8_t* data, uint16_t datalen) {

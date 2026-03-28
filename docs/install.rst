@@ -28,6 +28,19 @@ boards.  Use the "Windows ZIP" or plain "Windows" executable (EXE) download
 direct from https://arduino.cc. and allow it to install any device drivers
 it suggests.  Otherwise the Pico board may not be detected.
 
+.. note::
+
+   **Windows users with non-ASCII characters in their username** (e.g., accented
+   letters like ``Í``, umlauts like ``ü``, or characters like ``ñ``): The ARM GCC
+   toolchain (pqt-gcc) used by this core does not handle non-ASCII characters in
+   Windows file paths. If your Windows username contains such characters (e.g.,
+   ``C:\Users\Íñigo`` instead of ``C:\Users\Inigo``), compilation will fail with
+   linker errors like ``cannot open linker script file ... Invalid argument``.
+   The recommended workaround is to create an additional local Windows user with
+   an ASCII-only name and use that profile for RP2040/RP2350 development.
+   See `issue #2689 <https://github.com/earlephilhower/arduino-pico/issues/2689>`_
+   for more details.
+
 **Note for Linux Users**: If you installed the Arduino IDE using Flatpak, which 
 is common in Pop!_OS, Fedora, and Mint, among others, you may need to configure 
 Flatpak to allow the IDE access to files outside your home folder. The RP2040 

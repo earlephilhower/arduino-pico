@@ -65,8 +65,9 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Invector Labs Challenger RP2040 SubGHz
 * Invector Labs Challenger RP2040 SD/RTC
 * Invector Labs Challenger RP2040 UWB
-* Invector Labs Challenger RP2350 BConnect
-* Invector Labs Challenger RP2350 WiFi/BLE
+* Invector Labs Challenger+ RP2350 BConnect
+* Invector Labs Challenger+ RP2350 WiFi/BLE
+* Invector Labs Challenger+ RP2350 NB-IoT
 * Invector Labs RPICO32
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
@@ -80,6 +81,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Olimex Pico2XL
 * Olimex Pico2XXL
 * Olimex RP2040-Pico30
+* PicoLume Transceiver
 * Pimoroni PGA2040
 * Pimoroni Pico Plus 2
 * Pimoroni Pico Plus 2W

@@ -95,15 +95,29 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
     while (!pio_sm_is_rx_fifo_empty(_rxPIO, _rxSM)) {
         uint32_t decode = _rxPIO->rxf[_rxSM];
         uint32_t val = decode >> (32 - _rxBits - 1);
+        bool stop;
+        if ((_parity == UART_PARITY_EVEN) || (_parity == UART_PARITY_ODD)) {
+            stop = val & (1 << (_bits + 1));
+        } else {
+            stop = val & (1 << (_bits + 0));
+        }
+        if (!stop) {
+            if (val == 0) {
+                _break = true;
+            }
+            continue; // Framing or BREAK
+        }
+        // Mask off only data bits for parity calculation
+        int dval = val & ((1 << (_rxBits - 1)) - 1);
         if (_parity == UART_PARITY_EVEN) {
-            int p = ::_parity(val);
+            int p = ::_parity(dval);
             int r = (val & (1 << _bits)) ? 1 : 0;
             if (p != r) {
                 // TODO - parity error
                 continue;
             }
         } else if (_parity == UART_PARITY_ODD) {
-            int p = ::_parity(val);
+            int p = ::_parity(dval);
             int r = (val & (1 << _bits)) ? 1 : 0;
             if (p == r) {
                 // TODO - parity error
@@ -150,6 +164,7 @@ static int pio_irq_0(PIO p) {
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
     _onCore = get_core_num();
     _overflow = false;
+    _break = false;
     _baud = baud;
     switch (config & SERIAL_PARITY_MASK) {
     case SERIAL_PARITY_EVEN:
@@ -229,7 +244,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _pioSP[pio_get_index(_rxPIO)][_rxSM] = this;
 
         pinMode(_rx, INPUT);
-        pio_rx_program_init(_rxPIO, _rxSM, off, _rx);
+        pio_rx_program_init(_rxPIO, _rxSM, off, _rx, _rxBits + 1 /* grab stop, too */);
         pio_sm_clear_fifos(_rxPIO, _rxSM); // Remove any existing data
 
         // Put phase divider into OSR w/o using add'l program memory
@@ -321,6 +336,18 @@ bool SerialPIO::overflow() {
     _overflow = false;
     return hold;
 }
+
+bool SerialPIO::getBreakReceived() {
+    CoreMutex m(&_mutex);
+    if (!_running || !m || (_rx == NOPIN)) {
+        return false;
+    }
+
+    bool break_received = _break;
+    _break = false;
+    return break_received;
+}
+
 
 int SerialPIO::available() {
     CoreMutex m(&_mutex);

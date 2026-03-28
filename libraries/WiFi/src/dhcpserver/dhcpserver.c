@@ -291,14 +291,18 @@ ignore_request:
     pbuf_free(p);
 }
 
-void dhcp_server_init(dhcp_server_t *d, ip_addr_t *ip, ip_addr_t *nm) {
+void dhcp_server_init(dhcp_server_t *d, ip_addr_t *ip, ip_addr_t *nm, struct netif *netif) {
     ip_addr_copy(d->ip, *ip);
     ip_addr_copy(d->nm, *nm);
+    d->netif = netif;
     memset(d->lease, 0, sizeof(d->lease));
     if (dhcp_socket_new_dgram(&d->udp, d, dhcp_server_process) != 0) {
         return;
     }
     dhcp_socket_bind(&d->udp, 0, PORT_DHCP_SERVER);
+    if (netif) {
+        udp_bind_netif(d->udp, netif);
+    }
 }
 
 void dhcp_server_deinit(dhcp_server_t *d) {

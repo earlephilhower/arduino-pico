@@ -123,8 +123,14 @@ public:
         return false;
     }
 
-    // LWIP netif for the IRQ packet processing
-    static netif   *_netif;
+    // LWIP netif for the IRQ packet processing (STA = itf 0, AP = itf 1)
+    static netif   *_netif;      // STA netif
+    static netif   *_netifAP;    // AP netif
+
+    int getItf() const {
+        return _itf;
+    }
+
 protected:
     int _timeout = 10000;
     bool     _ap = false;
