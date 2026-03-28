@@ -74,3 +74,39 @@ NTP sync.  For example, using lambdas you can simply print "."s:"
       Serial.print("Current time: ");
       Serial.print(asctime(&timeinfo));
     }
+
+NTP_LIBRARY_COMPAT — Resolving Namespace Conflicts
+---------------------------------------------------
+Some third-party libraries define their own ``NTP`` global object or symbol, which conflicts
+with the ``NTPClass NTP`` global provided by this library.  The conflict will typically
+surface at compile time as one of:
+
+* ``error: redefinition of 'NTPClass NTP'``
+* ``error: conflicting declaration 'NTPClass NTP'``
+* Ambiguous symbol errors referencing ``NTP``
+
+Defining ``NTP_LIBRARY_COMPAT`` renames the arduino-pico NTP instance from ``NTP`` to
+``PicoNTP``, eliminating the collision.  Add the ``#define`` **before** any ``#include``
+that pulls in WiFi headers:
+
+.. code :: cpp
+
+    #define NTP_LIBRARY_COMPAT
+    #include <WiFi.h>
+
+NTP calls that previously used ``NTP.`` must then be changed to ``PicoNTP.`` for access to the Pico NTP library features:
+
+.. code :: cpp
+
+    #define NTP_LIBRARY_COMPAT
+    #include <WiFi.h>
+
+    void setClock() {
+      PicoNTP.begin("pool.ntp.org", "time.nist.gov");
+      PicoNTP.waitSet([]() { Serial.print("."); });
+      time_t now = time(nullptr);
+      struct tm timeinfo;
+      gmtime_r(&now, &timeinfo);
+      Serial.print("Current time: ");
+      Serial.print(asctime(&timeinfo));
+    }
