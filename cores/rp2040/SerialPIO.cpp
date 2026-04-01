@@ -102,9 +102,6 @@ void __not_in_flash_func(SerialPIO::_handleIRQ)() {
             stop = val & (1 << (_bits + 0));
         }
         if (!stop) {
-            if (val == 0) {
-                _break = true;
-            }
             continue; // Framing or BREAK
         }
         // Mask off only data bits for parity calculation
@@ -164,7 +161,6 @@ static int pio_irq_0(PIO p) {
 void SerialPIO::begin(unsigned long baud, uint16_t config) {
     _onCore = get_core_num();
     _overflow = false;
-    _break = false;
     _baud = baud;
     switch (config & SERIAL_PARITY_MASK) {
     case SERIAL_PARITY_EVEN:
@@ -336,18 +332,6 @@ bool SerialPIO::overflow() {
     _overflow = false;
     return hold;
 }
-
-bool SerialPIO::getBreakReceived() {
-    CoreMutex m(&_mutex);
-    if (!_running || !m || (_rx == NOPIN)) {
-        return false;
-    }
-
-    bool break_received = _break;
-    _break = false;
-    return break_received;
-}
-
 
 int SerialPIO::available() {
     CoreMutex m(&_mutex);

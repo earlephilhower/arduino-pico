@@ -121,6 +121,7 @@ void TwoWire::begin() {
         // ERROR
         return;
     }
+
     _slave = false;
     i2c_init(_i2c, _clkHz);
     i2c_set_slave_mode(_i2c, false, 0);
@@ -163,15 +164,6 @@ void TwoWire::begin(uint8_t addr) {
     if (_running) {
         // ERROR
         return;
-    }
-
-    // allocate buffer if necessary
-    if (!_buff) {
-        _buff = (uint8_t *)malloc(_buffSize);
-        if (!_buff) {
-            // ERROR
-            return;
-        }
     }
 
     _slave = true;
@@ -762,16 +754,20 @@ void TwoWire::clearTimeoutFlag() {
 }
 
 size_t TwoWire::setBufferSize(size_t bSize) {
-    if (_running) {
-        // ERROR - transmission already running. Report back current buffer size
+    if (_running || (_buffSize == bSize)) {
+        // Transmission already running or no change. Report back current buffer size
         return _buffSize;
     }
-    // only free the buffer, if it already exists and the new size differs from the current one
-    if (_buff && (bSize != _buffSize)) {
-        free(_buff);
-        _buff = nullptr;
+    // Try and resize the buffer to the new size and handle failure
+    auto newSize = max(WIRE_BUFFER_SIZE_MIN, (int)bSize);
+    auto save = _buff;
+    _buff = (uint8_t *)realloc(_buff, newSize);
+    if (!_buff) {
+        // Can't allocate size requested, keep old size
+        _buff = save;
+    } else {
+        _buffSize = newSize;
     }
-    _buffSize = max(WIRE_BUFFER_SIZE_MIN, int(bSize)); // enforce minimum buffer size
     return _buffSize;
 }
 

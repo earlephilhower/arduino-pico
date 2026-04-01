@@ -74,6 +74,7 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 
 start:
     set x, 18           ; Preload bit counter...overwritten by the app
+    wait 1 pin 0        ; Wait for 1->0 transition for start bit
     wait 0 pin 0        ; Stall until start bit is asserted
 
    ; Delay until 1/2 way into the bit time
@@ -91,7 +92,6 @@ bitloop2:
 
     in pins, 1
     jmp x-- bitloop
-    ; push // Autopush
 
 % c-sdk {
 static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin, uint bits) {
