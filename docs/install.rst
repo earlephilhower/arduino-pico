@@ -183,7 +183,7 @@ For Ubuntu and other Linux operating systems you may need to add the following l
         echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="f00f", MODE="660", GROUP="plugdev"' | sudo tee -a /etc/udev/rules.d/98-Picotool.rules
         sudo udevadm control --reload
 
-Note, that in some Linux distributions the ``plugdev`` above needs to be ``dialout`` and for boards other than the Raspberry Pi Pico line you may need to manually add their USB ``VID`` and ``PID`` to the list above.
+Note that in some Linux distributions the ``plugdev`` above needs to be ``dialout`` and for boards other than the Raspberry Pi Pico line you may need to manually add their USB ``VID`` and ``PID`` to the list above.
 
 Uploading Sketches with Picoprobe
 ---------------------------------
