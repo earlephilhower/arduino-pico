@@ -45,7 +45,6 @@ void setup() {
   // Start the Ethernet port
   // This starts DHCP in case config() was not called before
   bool ok = eth.begin();
-  rp2040.wdt_reset();
   if (!ok) {
     while (1) {
       SER.println("Failed to initialize NCM Ethernet.");
