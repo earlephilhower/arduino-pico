@@ -11,6 +11,9 @@ extern void interrupts();
 #define SYS_ARCH_PROTECT(lev) {(void) lev; noInterrupts();}
 #define SYS_ARCH_UNPROTECT(lev) {(void) lev; interrupts();}
 
+extern void lwip_assert_core_locked();
+#define LWIP_ASSERT_CORE_LOCKED() {lwip_assert_core_locked();}
+
 #ifndef DEBUG_RP2040_PORT
 extern void panic(const char *fmt, ...);
 #define LWIP_PLATFORM_ASSERT(x) panic("lwip")

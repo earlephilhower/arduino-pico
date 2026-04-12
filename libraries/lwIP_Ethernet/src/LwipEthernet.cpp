@@ -284,6 +284,12 @@ void __startEthernetContext() {
     __ethernetContextInitted = true;
 }
 
+void lwip_assert_core_locked() {
+#ifndef __FREERTOS
+    async_context_lock_check(__getEthernetContext());
+#endif
+}
+
 void lwipPollingPeriod(int ms) {
     if (ms > 0) {
         // No need for mutexes, this is an atomic 32b write

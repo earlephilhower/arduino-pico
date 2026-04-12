@@ -36,6 +36,8 @@ void __removeEthernetGPIO(int pin);
 // Internal Ethernet helper functions
 void __startEthernetContext();
 
+void lwip_assert_core_locked();
+
 int __addEthernetPacketHandler(std::function<void(void)> _packetHandler);
 void __removeEthernetPacketHandler(int id);
 
