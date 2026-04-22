@@ -106,9 +106,9 @@ BLEAdvertising *BLEClass::advertising() {
     return &_advertising;
 }
 
-void BLEClass::startAdvertising() {
+void BLEClass::startAdvertising(bool advertiseServiceUUID) {
     if (_server) {
-        _server->prepareAdvertising(&_advertising);
+        _server->prepareAdvertising(&_advertising, advertiseServiceUUID);
     } else {
         // Build ATT with only the name
         att_db_util_init();

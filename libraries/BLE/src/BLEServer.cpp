@@ -40,7 +40,7 @@ void BLEServer::addService(BLEService *s) {
     _svc.push_back(s);
 }
 
-void BLEServer::prepareAdvertising(BLEAdvertising *adv) {
+void BLEServer::prepareAdvertising(BLEAdvertising *adv, bool advertiseServiceUUID) {
     att_db_util_init();
     att_db_util_hash_init();
 
@@ -56,7 +56,7 @@ void BLEServer::prepareAdvertising(BLEAdvertising *adv) {
         uuid = s->_svc;
         //        }
     }
-    if (uuid) {
+    if (uuid && advertiseServiceUUID) {
         adv->setPartialUUID(uuid);
     }
 

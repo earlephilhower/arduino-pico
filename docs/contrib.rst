@@ -89,7 +89,7 @@ code that only runs on this core, use the following define.
         ~~~ your changes ~~~
         #endif
 
-Identifying RP2040, RP2530A, or RP2350B
+Identifying RP2040, RP2350A, or RP2350B
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To check if a board is an original RP2040
