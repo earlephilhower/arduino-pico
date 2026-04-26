@@ -61,6 +61,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
 
    WiFi (Pico-W Support) <wifi>
    Ethernet (Wired) <ethernet>
+   Ethernet over USB <usbethernet>
    WiFiClient <wificlient>
    WiFiServer <wifiserver>
    WiFiUDP <wifiudp>

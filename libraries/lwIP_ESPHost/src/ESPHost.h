@@ -22,6 +22,7 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include "lwip/pbuf.h"
 
 class ESPHost {
 public:
@@ -33,7 +34,7 @@ public:
     bool begin(const uint8_t *address, netif *netif);
     void end();
 
-    uint16_t sendFrame(const uint8_t *data, uint16_t datalen);
+    uint16_t sendFrame(struct pbuf *p);
 
     uint16_t readFrameData(uint8_t *buffer, uint16_t bufsize);
 

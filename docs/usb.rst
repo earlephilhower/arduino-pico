@@ -102,6 +102,11 @@ to the polling period:
         ....
     }
 
+Ethernet over USB
+-----------------
+
+See :doc:`Ethernet over USB <usbethernet>`
+
 Native TinyUSB Sketches
 -----------------------
 Sketches or libraries which want to implement their own low-level TinyUSB

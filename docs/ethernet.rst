@@ -19,6 +19,8 @@ Supported Wired Ethernet Modules
 
 * ENC28J60
 
+* USB (see :doc:`Ethernet over USB <usbethernet>`)
+
 
 Enabling Wired Ethernet
 -----------------------
