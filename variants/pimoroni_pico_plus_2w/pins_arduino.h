@@ -51,7 +51,7 @@
 #define RP2350_PSRAM_CS         (47u)
 #define RP2350_PSRAM_MAX_SCK_HZ (109*1000*1000)
 
-#define PICO_RP2350A 0 // RP2530B
+#define PICO_RP2350A 0 // RP2350B
 
 // DVI connector
 #define PIN_CKN (15u)

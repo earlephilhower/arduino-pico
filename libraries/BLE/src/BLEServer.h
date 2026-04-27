@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <_needsbt.h>
 #include <Arduino.h>
 #include "BLEService.h"
 #include "BLEAdvertising.h"
@@ -60,7 +61,7 @@ protected:
 
     // Only BLEClass can make me
     BLEServer();
-    void prepareAdvertising(BLEAdvertising *adv);
+    void prepareAdvertising(BLEAdvertising *adv, bool advertiseServiceUUID = true);
     void setSecurity(BLESecurityMode m);
 
     uint16_t readHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);

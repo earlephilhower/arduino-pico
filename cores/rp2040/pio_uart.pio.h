@@ -77,16 +77,16 @@ static inline void pio_tx_program_init(PIO pio, uint sm, uint offset, uint pin_t
 static const uint16_t pio_rx_program_instructions[] = {
     //     .wrap_target
     0xe032, //  0: set    x, 18
-    0x2020, //  1: wait   0 pin, 0
-    0xa047, //  2: mov    y, osr
-    0x0083, //  3: jmp    y--, 3
-    0xa047, //  4: mov    y, osr
-    0x0085, //  5: jmp    y--, 5
-    0xa047, //  6: mov    y, osr
-    0x0087, //  7: jmp    y--, 7
-    0x4001, //  8: in     pins, 1
-    0x0044, //  9: jmp    x--, 4
-    0x8020, // 10: push   block
+    0x20a0, //  1: wait   1 pin, 0
+    0x2020, //  2: wait   0 pin, 0
+    0xa047, //  3: mov    y, osr
+    0x0084, //  4: jmp    y--, 4
+    0xa047, //  5: mov    y, osr
+    0x0086, //  6: jmp    y--, 6
+    0xa047, //  7: mov    y, osr
+    0x0088, //  8: jmp    y--, 8
+    0x4001, //  9: in     pins, 1
+    0x0045, // 10: jmp    x--, 5
     //     .wrap
 };
 
@@ -107,15 +107,15 @@ static inline pio_sm_config pio_rx_program_get_default_config(uint offset) {
     return c;
 }
 
-static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin) {
+static inline void pio_rx_program_init(PIO pio, uint sm, uint offset, uint pin, uint bits) {
     pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, false);
     pio_gpio_init(pio, pin);
     gpio_pull_up(pin);
     pio_sm_config c = pio_rx_program_get_default_config(offset);
     sm_config_set_in_pins(&c, pin); // for WAIT, IN
     sm_config_set_jmp_pin(&c, pin); // for JMP
-    // Shift to right, autopull disabled
-    sm_config_set_in_shift(&c, true, false, 32);
+    // Shift to right, autopush on
+    sm_config_set_in_shift(&c, true, true, bits);
     pio_sm_init(pio, sm, offset, &c);
 }
 

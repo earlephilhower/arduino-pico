@@ -135,7 +135,9 @@ size_t __no_inline_not_in_flash_func(psram_detect)(void) {
     if (kgd == 0x5D) {
         psram_size = 1024 * 1024; // 1 MiB
         uint8_t size_id = eid >> 5;
-        if (eid == 0x26 || size_id == 2) {
+        if (size_id == 4) { // == 4 is for ISSI PSRAM
+            psram_size *= 16; // 16 MiB
+        } else if (eid == 0x26 || size_id == 2 || size_id == 3) { // == 3 is for ISSI PSRAM
             psram_size *= 8; // 8 MiB
         } else if (size_id == 0) {
             psram_size *= 2; // 2 MiB

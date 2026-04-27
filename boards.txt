@@ -6342,6 +6342,8 @@ adafruit_feather_rp2350_hstx.menu.psram.4mb=4MByte PSRAM
 adafruit_feather_rp2350_hstx.menu.psram.4mb.build.psram_length=0x400000
 adafruit_feather_rp2350_hstx.menu.psram.8mb=8MByte PSRAM
 adafruit_feather_rp2350_hstx.menu.psram.8mb.build.psram_length=0x800000
+adafruit_feather_rp2350_hstx.menu.psram.16mb=16MByte PSRAM
+adafruit_feather_rp2350_hstx.menu.psram.16mb.build.psram_length=0x1600000
 adafruit_feather_rp2350_hstx.menu.opt.Small=Small (-Os) (standard)
 adafruit_feather_rp2350_hstx.menu.opt.Small.build.flags.optimize=-Os
 adafruit_feather_rp2350_hstx.menu.opt.Optimize=Optimize (-O)
@@ -7003,6 +7005,8 @@ adafruit_metro_rp2350.menu.psram.4mb=4MByte PSRAM
 adafruit_metro_rp2350.menu.psram.4mb.build.psram_length=0x400000
 adafruit_metro_rp2350.menu.psram.8mb=8MByte PSRAM
 adafruit_metro_rp2350.menu.psram.8mb.build.psram_length=0x800000
+adafruit_metro_rp2350.menu.psram.16mb=16MByte PSRAM
+adafruit_metro_rp2350.menu.psram.16mb.build.psram_length=0x1600000
 adafruit_metro_rp2350.menu.opt.Small=Small (-Os) (standard)
 adafruit_metro_rp2350.menu.opt.Small.build.flags.optimize=-Os
 adafruit_metro_rp2350.menu.opt.Optimize=Optimize (-O)
@@ -13740,6 +13744,10 @@ datanoisetv_picoadk_v2.menu.psram.4mb=4MByte PSRAM
 datanoisetv_picoadk_v2.menu.psram.4mb.build.psram_length=0x400000
 datanoisetv_picoadk_v2.menu.psram.8mb=8MByte PSRAM
 datanoisetv_picoadk_v2.menu.psram.8mb.build.psram_length=0x800000
+datanoisetv_picoadk_v2.menu.psram.16mb=16MByte PSRAM
+datanoisetv_picoadk_v2.menu.psram.16mb.build.psram_length=0x1600000
+datanoisetv_picoadk_v2.menu.psramfreq.freq104=104 MHz
+datanoisetv_picoadk_v2.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
 datanoisetv_picoadk_v2.menu.psramfreq.freq109=109 MHz
 datanoisetv_picoadk_v2.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
 datanoisetv_picoadk_v2.menu.psramfreq.freq133=133 MHz
@@ -20525,6 +20533,287 @@ challenger_2350_bconnect.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picop
 challenger_2350_bconnect.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
+# iLabs Challenger 2350 NB-IoT
+# -----------------------------------
+challenger_2350_nbiot.name=iLabs Challenger 2350 NB-IoT
+challenger_2350_nbiot.vid.0=0x2e8a
+challenger_2350_nbiot.pid.0=0x110d
+challenger_2350_nbiot.vid.1=0x2e8a
+challenger_2350_nbiot.pid.1=0x510d
+challenger_2350_nbiot.vid.2=0x2e8a
+challenger_2350_nbiot.pid.2=0x910d
+challenger_2350_nbiot.vid.3=0x2e8a
+challenger_2350_nbiot.pid.3=0xd10d
+challenger_2350_nbiot.upload_port.0.vid=0x2e8a
+challenger_2350_nbiot.upload_port.0.pid=0x110d
+challenger_2350_nbiot.upload_port.1.vid=0x2e8a
+challenger_2350_nbiot.upload_port.1.pid=0x510d
+challenger_2350_nbiot.upload_port.2.vid=0x2e8a
+challenger_2350_nbiot.upload_port.2.pid=0x910d
+challenger_2350_nbiot.upload_port.3.vid=0x2e8a
+challenger_2350_nbiot.upload_port.3.pid=0xd10d
+challenger_2350_nbiot.build.usbvid=-DUSBD_VID=0x2e8a
+challenger_2350_nbiot.build.usbpid=-DUSBD_PID=0x110d
+challenger_2350_nbiot.build.usbpwr=-DUSBD_MAX_POWER_MA=500
+challenger_2350_nbiot.build.board=CHALLENGER_2350_NBIOT_RP2350
+challenger_2350_nbiot.build.variant=challenger_2350_nbiot
+challenger_2350_nbiot.upload.maximum_size=8388608
+challenger_2350_nbiot.upload.wait_for_upload_port=true
+challenger_2350_nbiot.upload.erase_cmd=
+challenger_2350_nbiot.serial.disableDTR=false
+challenger_2350_nbiot.serial.disableRTS=false
+challenger_2350_nbiot.build.f_cpu=125000000
+challenger_2350_nbiot.build.led=
+challenger_2350_nbiot.build.core=rp2040
+challenger_2350_nbiot.build.ldscript=memmap_default.ld
+challenger_2350_nbiot.build.boot2=none
+challenger_2350_nbiot.build.usb_manufacturer="iLabs"
+challenger_2350_nbiot.build.usb_product="Challenger 2350 NB-IoT"
+challenger_2350_nbiot.build.psram_length=0x000000
+challenger_2350_nbiot.menu.flash.8388608_0=8MB (no FS)
+challenger_2350_nbiot.menu.flash.8388608_0.upload.maximum_size=8380416
+challenger_2350_nbiot.menu.flash.8388608_0.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_0.build.flash_length=8380416
+challenger_2350_nbiot.menu.flash.8388608_0.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_0.build.fs_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_0.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_65536=8MB (Sketch: 8128KB, FS: 64KB)
+challenger_2350_nbiot.menu.flash.8388608_65536.upload.maximum_size=8314880
+challenger_2350_nbiot.menu.flash.8388608_65536.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_65536.build.flash_length=8314880
+challenger_2350_nbiot.menu.flash.8388608_65536.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_65536.build.fs_start=276750336
+challenger_2350_nbiot.menu.flash.8388608_65536.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_131072=8MB (Sketch: 8064KB, FS: 128KB)
+challenger_2350_nbiot.menu.flash.8388608_131072.upload.maximum_size=8249344
+challenger_2350_nbiot.menu.flash.8388608_131072.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_131072.build.flash_length=8249344
+challenger_2350_nbiot.menu.flash.8388608_131072.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_131072.build.fs_start=276684800
+challenger_2350_nbiot.menu.flash.8388608_131072.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_262144=8MB (Sketch: 7936KB, FS: 256KB)
+challenger_2350_nbiot.menu.flash.8388608_262144.upload.maximum_size=8118272
+challenger_2350_nbiot.menu.flash.8388608_262144.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_262144.build.flash_length=8118272
+challenger_2350_nbiot.menu.flash.8388608_262144.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_262144.build.fs_start=276553728
+challenger_2350_nbiot.menu.flash.8388608_262144.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_524288=8MB (Sketch: 7680KB, FS: 512KB)
+challenger_2350_nbiot.menu.flash.8388608_524288.upload.maximum_size=7856128
+challenger_2350_nbiot.menu.flash.8388608_524288.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_524288.build.flash_length=7856128
+challenger_2350_nbiot.menu.flash.8388608_524288.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_524288.build.fs_start=276291584
+challenger_2350_nbiot.menu.flash.8388608_524288.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_1048576=8MB (Sketch: 7MB, FS: 1MB)
+challenger_2350_nbiot.menu.flash.8388608_1048576.upload.maximum_size=7331840
+challenger_2350_nbiot.menu.flash.8388608_1048576.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_1048576.build.flash_length=7331840
+challenger_2350_nbiot.menu.flash.8388608_1048576.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_1048576.build.fs_start=275767296
+challenger_2350_nbiot.menu.flash.8388608_1048576.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_2097152=8MB (Sketch: 6MB, FS: 2MB)
+challenger_2350_nbiot.menu.flash.8388608_2097152.upload.maximum_size=6283264
+challenger_2350_nbiot.menu.flash.8388608_2097152.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_2097152.build.flash_length=6283264
+challenger_2350_nbiot.menu.flash.8388608_2097152.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_2097152.build.fs_start=274718720
+challenger_2350_nbiot.menu.flash.8388608_2097152.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_3145728=8MB (Sketch: 5MB, FS: 3MB)
+challenger_2350_nbiot.menu.flash.8388608_3145728.upload.maximum_size=5234688
+challenger_2350_nbiot.menu.flash.8388608_3145728.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_3145728.build.flash_length=5234688
+challenger_2350_nbiot.menu.flash.8388608_3145728.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_3145728.build.fs_start=273670144
+challenger_2350_nbiot.menu.flash.8388608_3145728.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_4194304=8MB (Sketch: 4MB, FS: 4MB)
+challenger_2350_nbiot.menu.flash.8388608_4194304.upload.maximum_size=4186112
+challenger_2350_nbiot.menu.flash.8388608_4194304.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_4194304.build.flash_length=4186112
+challenger_2350_nbiot.menu.flash.8388608_4194304.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_4194304.build.fs_start=272621568
+challenger_2350_nbiot.menu.flash.8388608_4194304.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_5242880=8MB (Sketch: 3MB, FS: 5MB)
+challenger_2350_nbiot.menu.flash.8388608_5242880.upload.maximum_size=3137536
+challenger_2350_nbiot.menu.flash.8388608_5242880.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_5242880.build.flash_length=3137536
+challenger_2350_nbiot.menu.flash.8388608_5242880.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_5242880.build.fs_start=271572992
+challenger_2350_nbiot.menu.flash.8388608_5242880.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_6291456=8MB (Sketch: 2MB, FS: 6MB)
+challenger_2350_nbiot.menu.flash.8388608_6291456.upload.maximum_size=2088960
+challenger_2350_nbiot.menu.flash.8388608_6291456.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_6291456.build.flash_length=2088960
+challenger_2350_nbiot.menu.flash.8388608_6291456.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_6291456.build.fs_start=270524416
+challenger_2350_nbiot.menu.flash.8388608_6291456.build.fs_end=276815872
+challenger_2350_nbiot.menu.flash.8388608_7340032=8MB (Sketch: 1MB, FS: 7MB)
+challenger_2350_nbiot.menu.flash.8388608_7340032.upload.maximum_size=1040384
+challenger_2350_nbiot.menu.flash.8388608_7340032.build.flash_total=8388608
+challenger_2350_nbiot.menu.flash.8388608_7340032.build.flash_length=1040384
+challenger_2350_nbiot.menu.flash.8388608_7340032.build.eeprom_start=276815872
+challenger_2350_nbiot.menu.flash.8388608_7340032.build.fs_start=269475840
+challenger_2350_nbiot.menu.flash.8388608_7340032.build.fs_end=276815872
+challenger_2350_nbiot.menu.arch.arm=ARM
+challenger_2350_nbiot.menu.arch.arm.build.chip=rp2350
+challenger_2350_nbiot.menu.arch.arm.build.toolchain=arm-none-eabi
+challenger_2350_nbiot.menu.arch.arm.build.toolchainpkg=pqt-gcc
+challenger_2350_nbiot.menu.arch.arm.build.toolchainopts=-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse
+challenger_2350_nbiot.menu.arch.arm.build.uf2family=--family rp2350-arm-s --abs-block
+challenger_2350_nbiot.menu.arch.arm.build.mcu=cortex-m33
+challenger_2350_nbiot.menu.arch.riscv=RISC-V
+challenger_2350_nbiot.menu.arch.riscv.build.chip=rp2350-riscv
+challenger_2350_nbiot.menu.arch.riscv.build.toolchain=riscv32-unknown-elf
+challenger_2350_nbiot.menu.arch.riscv.build.toolchainpkg=pqt-gcc-riscv
+challenger_2350_nbiot.menu.arch.riscv.build.toolchainopts=-march=rv32imac_zicsr_zifencei_zba_zbb_zbs_zbkb -mabi=ilp32
+challenger_2350_nbiot.menu.arch.riscv.build.uf2family=--family rp2350-riscv --abs-block
+challenger_2350_nbiot.menu.arch.riscv.build.mcu=rv32imac
+challenger_2350_nbiot.menu.freq.150=150 MHz
+challenger_2350_nbiot.menu.freq.150.build.f_cpu=150000000L
+challenger_2350_nbiot.menu.freq.50=50 MHz
+challenger_2350_nbiot.menu.freq.50.build.f_cpu=50000000L
+challenger_2350_nbiot.menu.freq.100=100 MHz
+challenger_2350_nbiot.menu.freq.100.build.f_cpu=100000000L
+challenger_2350_nbiot.menu.freq.120=120 MHz
+challenger_2350_nbiot.menu.freq.120.build.f_cpu=120000000L
+challenger_2350_nbiot.menu.freq.125=125 MHz
+challenger_2350_nbiot.menu.freq.125.build.f_cpu=125000000L
+challenger_2350_nbiot.menu.freq.128=128 MHz
+challenger_2350_nbiot.menu.freq.128.build.f_cpu=128000000L
+challenger_2350_nbiot.menu.freq.133=133 MHz
+challenger_2350_nbiot.menu.freq.133.build.f_cpu=133000000L
+challenger_2350_nbiot.menu.freq.176=176 MHz (Overclock)
+challenger_2350_nbiot.menu.freq.176.build.f_cpu=176000000L
+challenger_2350_nbiot.menu.freq.200=200 MHz (Overclock)
+challenger_2350_nbiot.menu.freq.200.build.f_cpu=200000000L
+challenger_2350_nbiot.menu.freq.225=225 MHz (Overclock)
+challenger_2350_nbiot.menu.freq.225.build.f_cpu=225000000L
+challenger_2350_nbiot.menu.freq.240=240 MHz (Overclock)
+challenger_2350_nbiot.menu.freq.240.build.f_cpu=240000000L
+challenger_2350_nbiot.menu.freq.250=250 MHz (Overclock)
+challenger_2350_nbiot.menu.freq.250.build.f_cpu=250000000L
+challenger_2350_nbiot.menu.freq.276=276 MHz (Overclock)
+challenger_2350_nbiot.menu.freq.276.build.f_cpu=276000000L
+challenger_2350_nbiot.menu.freq.300=300 MHz (Overclock)
+challenger_2350_nbiot.menu.freq.300.build.f_cpu=300000000L
+challenger_2350_nbiot.menu.opt.Small=Small (-Os) (standard)
+challenger_2350_nbiot.menu.opt.Small.build.flags.optimize=-Os
+challenger_2350_nbiot.menu.opt.Optimize=Optimize (-O)
+challenger_2350_nbiot.menu.opt.Optimize.build.flags.optimize=-O
+challenger_2350_nbiot.menu.opt.Optimize2=Optimize More (-O2)
+challenger_2350_nbiot.menu.opt.Optimize2.build.flags.optimize=-O2
+challenger_2350_nbiot.menu.opt.Optimize3=Optimize Even More (-O3)
+challenger_2350_nbiot.menu.opt.Optimize3.build.flags.optimize=-O3
+challenger_2350_nbiot.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+challenger_2350_nbiot.menu.opt.Fast.build.flags.optimize=-Ofast
+challenger_2350_nbiot.menu.opt.Debug=Debug (-Og)
+challenger_2350_nbiot.menu.opt.Debug.build.flags.optimize=-Og
+challenger_2350_nbiot.menu.opt.Disabled=Disabled (-O0)
+challenger_2350_nbiot.menu.opt.Disabled.build.flags.optimize=-O0
+challenger_2350_nbiot.menu.os.none=None
+challenger_2350_nbiot.menu.os.none.build.os=
+challenger_2350_nbiot.menu.os.freertos=FreeRTOS SMP
+challenger_2350_nbiot.menu.os.freertos.build.os=-D__FREERTOS
+challenger_2350_nbiot.menu.profile.Disabled=Disabled
+challenger_2350_nbiot.menu.profile.Disabled.build.flags.profile=
+challenger_2350_nbiot.menu.profile.Enabled=Enabled
+challenger_2350_nbiot.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+challenger_2350_nbiot.menu.rtti.Disabled=Disabled
+challenger_2350_nbiot.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+challenger_2350_nbiot.menu.rtti.Enabled=Enabled
+challenger_2350_nbiot.menu.rtti.Enabled.build.flags.rtti=
+challenger_2350_nbiot.menu.stackprotect.Disabled=Disabled
+challenger_2350_nbiot.menu.stackprotect.Disabled.build.flags.stackprotect=
+challenger_2350_nbiot.menu.stackprotect.Enabled=Enabled
+challenger_2350_nbiot.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+challenger_2350_nbiot.menu.exceptions.Disabled=Disabled
+challenger_2350_nbiot.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+challenger_2350_nbiot.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+challenger_2350_nbiot.menu.exceptions.Enabled=Enabled
+challenger_2350_nbiot.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+challenger_2350_nbiot.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+challenger_2350_nbiot.menu.dbgport.Disabled=Disabled
+challenger_2350_nbiot.menu.dbgport.Disabled.build.debug_port=
+challenger_2350_nbiot.menu.dbgport.Serial=Serial
+challenger_2350_nbiot.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+challenger_2350_nbiot.menu.dbgport.Serial1=Serial1
+challenger_2350_nbiot.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+challenger_2350_nbiot.menu.dbgport.Serial2=Serial2
+challenger_2350_nbiot.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+challenger_2350_nbiot.menu.dbgport.SerialSemi=SerialSemi
+challenger_2350_nbiot.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+challenger_2350_nbiot.menu.dbglvl.None=None
+challenger_2350_nbiot.menu.dbglvl.None.build.debug_level=
+challenger_2350_nbiot.menu.dbglvl.Core=Core
+challenger_2350_nbiot.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+challenger_2350_nbiot.menu.dbglvl.SPI=SPI
+challenger_2350_nbiot.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+challenger_2350_nbiot.menu.dbglvl.Wire=Wire
+challenger_2350_nbiot.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+challenger_2350_nbiot.menu.dbglvl.Bluetooth=Bluetooth
+challenger_2350_nbiot.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+challenger_2350_nbiot.menu.dbglvl.BLE=BLE
+challenger_2350_nbiot.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
+challenger_2350_nbiot.menu.dbglvl.LWIP=LWIP
+challenger_2350_nbiot.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
+challenger_2350_nbiot.menu.dbglvl.All=All
+challenger_2350_nbiot.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
+challenger_2350_nbiot.menu.dbglvl.NDEBUG=NDEBUG
+challenger_2350_nbiot.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+challenger_2350_nbiot.menu.usbstack.picosdk=Pico SDK
+challenger_2350_nbiot.menu.usbstack.picosdk.build.usbstack_flags=
+challenger_2350_nbiot.menu.usbstack.tinyusb=Adafruit TinyUSB
+challenger_2350_nbiot.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2350_nbiot.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+challenger_2350_nbiot.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+challenger_2350_nbiot.menu.usbstack.nousb=No USB
+challenger_2350_nbiot.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+challenger_2350_nbiot.menu.ipbtstack.ipv4only=IPv4 Only
+challenger_2350_nbiot.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6.build.libpicow=liblwip.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+challenger_2350_nbiot.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+challenger_2350_nbiot.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+challenger_2350_nbiot.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+challenger_2350_nbiot.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6big.build.libpicow=liblwip.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+challenger_2350_nbiot.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+challenger_2350_nbiot.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a
+challenger_2350_nbiot.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+challenger_2350_nbiot.menu.uploadmethod.default=Default (UF2)
+challenger_2350_nbiot.menu.uploadmethod.default.build.ram_length=512k
+challenger_2350_nbiot.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+challenger_2350_nbiot.menu.uploadmethod.default.upload.maximum_data_size=524288
+challenger_2350_nbiot.menu.uploadmethod.default.upload.tool=uf2conv
+challenger_2350_nbiot.menu.uploadmethod.default.upload.tool.default=uf2conv
+challenger_2350_nbiot.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+challenger_2350_nbiot.menu.uploadmethod.picotool=Picotool
+challenger_2350_nbiot.menu.uploadmethod.picotool.build.ram_length=512k
+challenger_2350_nbiot.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+challenger_2350_nbiot.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+challenger_2350_nbiot.menu.uploadmethod.picotool.upload.maximum_data_size=524288
+challenger_2350_nbiot.menu.uploadmethod.picotool.upload.tool=picotool
+challenger_2350_nbiot.menu.uploadmethod.picotool.upload.tool.default=picotool
+challenger_2350_nbiot.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+challenger_2350_nbiot.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=512k
+challenger_2350_nbiot.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+challenger_2350_nbiot.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=524288
+challenger_2350_nbiot.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+challenger_2350_nbiot.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Makerbase MKS THR36
 # -----------------------------------
 mksthr36.name=Makerbase MKS THR36
@@ -23480,6 +23769,10 @@ olimex_pico2bb48.menu.psram.4mb=4MByte PSRAM
 olimex_pico2bb48.menu.psram.4mb.build.psram_length=0x400000
 olimex_pico2bb48.menu.psram.8mb=8MByte PSRAM
 olimex_pico2bb48.menu.psram.8mb.build.psram_length=0x800000
+olimex_pico2bb48.menu.psram.16mb=16MByte PSRAM
+olimex_pico2bb48.menu.psram.16mb.build.psram_length=0x1600000
+olimex_pico2bb48.menu.psramfreq.freq104=104 MHz
+olimex_pico2bb48.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
 olimex_pico2bb48.menu.psramfreq.freq109=109 MHz
 olimex_pico2bb48.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
 olimex_pico2bb48.menu.psramfreq.freq133=133 MHz
@@ -24503,6 +24796,252 @@ olimex_rp2040pico30.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=pico
 olimex_rp2040pico30.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
 olimex_rp2040pico30.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
 olimex_rp2040pico30.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
+# PicoLume Transceiver
+# -----------------------------------
+picolume.name=PicoLume Transceiver
+picolume.vid.0=0x1209
+picolume.pid.0=0x2008
+picolume.vid.1=0x1209
+picolume.pid.1=0x2108
+picolume.vid.2=0x1209
+picolume.pid.2=0x6008
+picolume.vid.3=0x1209
+picolume.pid.3=0x6108
+picolume.vid.4=0x1209
+picolume.pid.4=0xa008
+picolume.vid.5=0x1209
+picolume.pid.5=0xa108
+picolume.vid.6=0x1209
+picolume.pid.6=0xe008
+picolume.vid.7=0x1209
+picolume.pid.7=0xe108
+picolume.upload_port.0.vid=0x1209
+picolume.upload_port.0.pid=0x2008
+picolume.upload_port.1.vid=0x1209
+picolume.upload_port.1.pid=0x2108
+picolume.upload_port.2.vid=0x1209
+picolume.upload_port.2.pid=0x6008
+picolume.upload_port.3.vid=0x1209
+picolume.upload_port.3.pid=0x6108
+picolume.upload_port.4.vid=0x1209
+picolume.upload_port.4.pid=0xa008
+picolume.upload_port.5.vid=0x1209
+picolume.upload_port.5.pid=0xa108
+picolume.upload_port.6.vid=0x1209
+picolume.upload_port.6.pid=0xe008
+picolume.upload_port.7.vid=0x1209
+picolume.upload_port.7.pid=0xe108
+picolume.build.usbvid=-DUSBD_VID=0x1209
+picolume.build.usbpid=-DUSBD_PID=0x2008
+picolume.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+picolume.build.board=PICOLUME
+picolume.build.mcu=cortex-m0plus
+picolume.build.chip=rp2040
+picolume.build.toolchain=arm-none-eabi
+picolume.build.toolchainpkg=pqt-gcc
+picolume.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+picolume.build.uf2family=--family rp2040
+picolume.build.variant=picolume
+picolume.upload.maximum_size=2097152
+picolume.upload.wait_for_upload_port=true
+picolume.upload.erase_cmd=
+picolume.serial.disableDTR=false
+picolume.serial.disableRTS=false
+picolume.build.f_cpu=125000000
+picolume.build.led=
+picolume.build.core=rp2040
+picolume.build.ldscript=memmap_default.ld
+picolume.build.boot2=boot2_w25q080_2_padded_checksum
+picolume.build.usb_manufacturer="PicoLume"
+picolume.build.usb_product="Transceiver"
+picolume.menu.flash.2097152_0=2MB (no FS)
+picolume.menu.flash.2097152_0.upload.maximum_size=2093056
+picolume.menu.flash.2097152_0.build.flash_total=2097152
+picolume.menu.flash.2097152_0.build.flash_length=2093056
+picolume.menu.flash.2097152_0.build.eeprom_start=270528512
+picolume.menu.flash.2097152_0.build.fs_start=270528512
+picolume.menu.flash.2097152_0.build.fs_end=270528512
+picolume.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+picolume.menu.flash.2097152_65536.upload.maximum_size=2027520
+picolume.menu.flash.2097152_65536.build.flash_total=2097152
+picolume.menu.flash.2097152_65536.build.flash_length=2027520
+picolume.menu.flash.2097152_65536.build.eeprom_start=270528512
+picolume.menu.flash.2097152_65536.build.fs_start=270462976
+picolume.menu.flash.2097152_65536.build.fs_end=270528512
+picolume.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+picolume.menu.flash.2097152_131072.upload.maximum_size=1961984
+picolume.menu.flash.2097152_131072.build.flash_total=2097152
+picolume.menu.flash.2097152_131072.build.flash_length=1961984
+picolume.menu.flash.2097152_131072.build.eeprom_start=270528512
+picolume.menu.flash.2097152_131072.build.fs_start=270397440
+picolume.menu.flash.2097152_131072.build.fs_end=270528512
+picolume.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+picolume.menu.flash.2097152_262144.upload.maximum_size=1830912
+picolume.menu.flash.2097152_262144.build.flash_total=2097152
+picolume.menu.flash.2097152_262144.build.flash_length=1830912
+picolume.menu.flash.2097152_262144.build.eeprom_start=270528512
+picolume.menu.flash.2097152_262144.build.fs_start=270266368
+picolume.menu.flash.2097152_262144.build.fs_end=270528512
+picolume.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+picolume.menu.flash.2097152_524288.upload.maximum_size=1568768
+picolume.menu.flash.2097152_524288.build.flash_total=2097152
+picolume.menu.flash.2097152_524288.build.flash_length=1568768
+picolume.menu.flash.2097152_524288.build.eeprom_start=270528512
+picolume.menu.flash.2097152_524288.build.fs_start=270004224
+picolume.menu.flash.2097152_524288.build.fs_end=270528512
+picolume.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+picolume.menu.flash.2097152_1048576.upload.maximum_size=1044480
+picolume.menu.flash.2097152_1048576.build.flash_total=2097152
+picolume.menu.flash.2097152_1048576.build.flash_length=1044480
+picolume.menu.flash.2097152_1048576.build.eeprom_start=270528512
+picolume.menu.flash.2097152_1048576.build.fs_start=269479936
+picolume.menu.flash.2097152_1048576.build.fs_end=270528512
+picolume.menu.freq.200=200 MHz
+picolume.menu.freq.200.build.f_cpu=200000000L
+picolume.menu.freq.50=50 MHz
+picolume.menu.freq.50.build.f_cpu=50000000L
+picolume.menu.freq.100=100 MHz
+picolume.menu.freq.100.build.f_cpu=100000000L
+picolume.menu.freq.120=120 MHz
+picolume.menu.freq.120.build.f_cpu=120000000L
+picolume.menu.freq.125=125 MHz
+picolume.menu.freq.125.build.f_cpu=125000000L
+picolume.menu.freq.128=128 MHz
+picolume.menu.freq.128.build.f_cpu=128000000L
+picolume.menu.freq.133=133 MHz
+picolume.menu.freq.133.build.f_cpu=133000000L
+picolume.menu.freq.150=150 MHz
+picolume.menu.freq.150.build.f_cpu=150000000L
+picolume.menu.freq.176=176 MHz
+picolume.menu.freq.176.build.f_cpu=176000000L
+picolume.menu.freq.225=225 MHz (Overclock)
+picolume.menu.freq.225.build.f_cpu=225000000L
+picolume.menu.freq.240=240 MHz (Overclock)
+picolume.menu.freq.240.build.f_cpu=240000000L
+picolume.menu.freq.250=250 MHz (Overclock)
+picolume.menu.freq.250.build.f_cpu=250000000L
+picolume.menu.freq.276=276 MHz (Overclock)
+picolume.menu.freq.276.build.f_cpu=276000000L
+picolume.menu.freq.300=300 MHz (Overclock)
+picolume.menu.freq.300.build.f_cpu=300000000L
+picolume.menu.opt.Small=Small (-Os) (standard)
+picolume.menu.opt.Small.build.flags.optimize=-Os
+picolume.menu.opt.Optimize=Optimize (-O)
+picolume.menu.opt.Optimize.build.flags.optimize=-O
+picolume.menu.opt.Optimize2=Optimize More (-O2)
+picolume.menu.opt.Optimize2.build.flags.optimize=-O2
+picolume.menu.opt.Optimize3=Optimize Even More (-O3)
+picolume.menu.opt.Optimize3.build.flags.optimize=-O3
+picolume.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+picolume.menu.opt.Fast.build.flags.optimize=-Ofast
+picolume.menu.opt.Debug=Debug (-Og)
+picolume.menu.opt.Debug.build.flags.optimize=-Og
+picolume.menu.opt.Disabled=Disabled (-O0)
+picolume.menu.opt.Disabled.build.flags.optimize=-O0
+picolume.menu.os.none=None
+picolume.menu.os.none.build.os=
+picolume.menu.os.freertos=FreeRTOS SMP
+picolume.menu.os.freertos.build.os=-D__FREERTOS
+picolume.menu.profile.Disabled=Disabled
+picolume.menu.profile.Disabled.build.flags.profile=
+picolume.menu.profile.Enabled=Enabled
+picolume.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+picolume.menu.rtti.Disabled=Disabled
+picolume.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+picolume.menu.rtti.Enabled=Enabled
+picolume.menu.rtti.Enabled.build.flags.rtti=
+picolume.menu.stackprotect.Disabled=Disabled
+picolume.menu.stackprotect.Disabled.build.flags.stackprotect=
+picolume.menu.stackprotect.Enabled=Enabled
+picolume.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+picolume.menu.exceptions.Disabled=Disabled
+picolume.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+picolume.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+picolume.menu.exceptions.Enabled=Enabled
+picolume.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+picolume.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+picolume.menu.dbgport.Disabled=Disabled
+picolume.menu.dbgport.Disabled.build.debug_port=
+picolume.menu.dbgport.Serial=Serial
+picolume.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+picolume.menu.dbgport.Serial1=Serial1
+picolume.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+picolume.menu.dbgport.Serial2=Serial2
+picolume.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+picolume.menu.dbgport.SerialSemi=SerialSemi
+picolume.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+picolume.menu.dbglvl.None=None
+picolume.menu.dbglvl.None.build.debug_level=
+picolume.menu.dbglvl.Core=Core
+picolume.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+picolume.menu.dbglvl.SPI=SPI
+picolume.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+picolume.menu.dbglvl.Wire=Wire
+picolume.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+picolume.menu.dbglvl.Bluetooth=Bluetooth
+picolume.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+picolume.menu.dbglvl.BLE=BLE
+picolume.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
+picolume.menu.dbglvl.LWIP=LWIP
+picolume.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
+picolume.menu.dbglvl.All=All
+picolume.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
+picolume.menu.dbglvl.NDEBUG=NDEBUG
+picolume.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+picolume.menu.usbstack.picosdk=Pico SDK
+picolume.menu.usbstack.picosdk.build.usbstack_flags=
+picolume.menu.usbstack.tinyusb=Adafruit TinyUSB
+picolume.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+picolume.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+picolume.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+picolume.menu.usbstack.nousb=No USB
+picolume.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+picolume.menu.ipbtstack.ipv4only=IPv4 Only
+picolume.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a
+picolume.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+picolume.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+picolume.menu.ipbtstack.ipv4ipv6.build.libpicow=liblwip.a
+picolume.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+picolume.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+picolume.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a
+picolume.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+picolume.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+picolume.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a
+picolume.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+picolume.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+picolume.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a
+picolume.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+picolume.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+picolume.menu.ipbtstack.ipv4ipv6big.build.libpicow=liblwip.a
+picolume.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+picolume.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+picolume.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a
+picolume.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+picolume.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+picolume.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a
+picolume.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+picolume.menu.uploadmethod.default=Default (UF2)
+picolume.menu.uploadmethod.default.build.ram_length=256k
+picolume.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+picolume.menu.uploadmethod.default.upload.maximum_data_size=262144
+picolume.menu.uploadmethod.default.upload.tool=uf2conv
+picolume.menu.uploadmethod.default.upload.tool.default=uf2conv
+picolume.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+picolume.menu.uploadmethod.picotool=Picotool
+picolume.menu.uploadmethod.picotool.build.ram_length=256k
+picolume.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+picolume.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+picolume.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+picolume.menu.uploadmethod.picotool.upload.tool=picotool
+picolume.menu.uploadmethod.picotool.upload.tool.default=picotool
+picolume.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+picolume.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+picolume.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+picolume.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+picolume.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+picolume.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
 # Pimoroni PGA2040
@@ -30294,6 +30833,22 @@ solderparty_rp2350_stamp_xl.menu.freq.276=276 MHz (Overclock)
 solderparty_rp2350_stamp_xl.menu.freq.276.build.f_cpu=276000000L
 solderparty_rp2350_stamp_xl.menu.freq.300=300 MHz (Overclock)
 solderparty_rp2350_stamp_xl.menu.freq.300.build.f_cpu=300000000L
+solderparty_rp2350_stamp_xl.menu.psram.0mb=0MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.0mb.build.psram_length=0x000000
+solderparty_rp2350_stamp_xl.menu.psram.2mb=2MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.2mb.build.psram_length=0x200000
+solderparty_rp2350_stamp_xl.menu.psram.4mb=4MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.4mb.build.psram_length=0x400000
+solderparty_rp2350_stamp_xl.menu.psram.8mb=8MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.8mb.build.psram_length=0x800000
+solderparty_rp2350_stamp_xl.menu.psram.16mb=16MByte PSRAM
+solderparty_rp2350_stamp_xl.menu.psram.16mb.build.psram_length=0x1600000
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq104=104 MHz
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq109=109 MHz
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq133=133 MHz
+solderparty_rp2350_stamp_xl.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
 solderparty_rp2350_stamp_xl.menu.opt.Small=Small (-Os) (standard)
 solderparty_rp2350_stamp_xl.menu.opt.Small.build.flags.optimize=-Os
 solderparty_rp2350_stamp_xl.menu.opt.Optimize=Optimize (-O)
@@ -42062,8 +42617,8 @@ generic_rp2350.menu.freq.300=300 MHz (Overclock)
 generic_rp2350.menu.freq.300.build.f_cpu=300000000L
 generic_rp2350.menu.variantchip.RP2350A=RP2350A
 generic_rp2350.menu.variantchip.RP2350A.build.variantdefines=-D__PICO_RP2350A=1
-generic_rp2350.menu.variantchip.RP2530B=RP2530B
-generic_rp2350.menu.variantchip.RP2530B.build.variantdefines=-D__PICO_RP2350A=0
+generic_rp2350.menu.variantchip.RP2350B=RP2350B
+generic_rp2350.menu.variantchip.RP2350B.build.variantdefines=-D__PICO_RP2350A=0
 generic_rp2350.menu.psramcs.GPIOnone=None
 generic_rp2350.menu.psramcs.GPIOnone.build.psram_cs=
 generic_rp2350.menu.psramcs.GPIO0=GPIO 0
@@ -42170,6 +42725,10 @@ generic_rp2350.menu.psram.4mb=4MByte PSRAM
 generic_rp2350.menu.psram.4mb.build.psram_length=0x400000
 generic_rp2350.menu.psram.8mb=8MByte PSRAM
 generic_rp2350.menu.psram.8mb.build.psram_length=0x800000
+generic_rp2350.menu.psram.16mb=16MByte PSRAM
+generic_rp2350.menu.psram.16mb.build.psram_length=0x1600000
+generic_rp2350.menu.psramfreq.freq104=104 MHz
+generic_rp2350.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
 generic_rp2350.menu.psramfreq.freq109=109 MHz
 generic_rp2350.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
 generic_rp2350.menu.psramfreq.freq133=133 MHz

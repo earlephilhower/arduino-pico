@@ -46,11 +46,11 @@ void WINC1500::end() {
     // WiFi is ended in WINC1500LwIP
 }
 
-uint16_t WINC1500::sendFrame(const uint8_t *data, uint16_t datalen) {
+uint16_t WINC1500::sendFrame(struct pbuf *p) {
     ethernet_arch_lwip_gpio_mask();
-    int res = m2m_wifi_send_ethernet_pkt((uint8_t *) data, datalen);
+    int res = m2m_wifi_send_ethernet_pkt((uint8_t *) p->payload, p->len);
     ethernet_arch_lwip_gpio_unmask();
-    return (res == M2M_SUCCESS) ? datalen : 0;
+    return (res == M2M_SUCCESS) ? p->len : 0;
 }
 
 uint16_t WINC1500::readFrameSize() {

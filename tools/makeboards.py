@@ -68,7 +68,7 @@ def BuildArch(name):
     print("%s.menu.arch.riscv.build.mcu=rv32imac" % (name))
 
 def BuildPSRAM(name):
-    for s in [ 0, 2, 4, 8]:
+    for s in [ 0, 2, 4, 8, 16]:
         print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
         print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
 
@@ -80,12 +80,12 @@ def BuildPSRAMCS(name):
         print("%s.menu.psramcs.GPIO%d.build.psram_cs=-DRP2350_PSRAM_CS=%d" % (name, s, s))
 
 def BuildPSRAMFreq(name):
-    for s in [ 109, 133 ]:
+    for s in [ 104, 109, 133 ]:
         print("%s.menu.psramfreq.freq%d=%d MHz" % (name, s, s))
         print("%s.menu.psramfreq.freq%d.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=%d" % (name, s, s * 1000000))
 
 def BuildRP2350Variant(name):
-    for l in [ ("RP2350A", "-D__PICO_RP2350A=1"), ("RP2530B", "-D__PICO_RP2350A=0") ]:
+    for l in [ ("RP2350A", "-D__PICO_RP2350A=1"), ("RP2350B", "-D__PICO_RP2350A=0") ]:
         print("%s.menu.variantchip.%s=%s" % (name, l[0], l[0]))
         print("%s.menu.variantchip.%s.build.variantdefines=%s" % (name, l[0], l[1]))
 
@@ -376,7 +376,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMCS(name)
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
-        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48"):
+        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48") or (name == "solderparty_rp2350_stamp_xl"):
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
@@ -621,6 +621,7 @@ MakeBoard("connectivity_2040_lte_wifi_ble", "rp2040", "iLabs", "Connectivity 204
 MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
 MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "none")
 MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "none")
+MakeBoard("challenger_2350_nbiot", "rp2350", "iLabs", "Challenger 2350 NB-IoT", "0x2e8a", "0x110d", 500, "CHALLENGER_2350_NBIOT_RP2350", 8, 0, "none")
 
 # Makerbase
 MakeBoard("mksthr36", "rp2040", "Makerbase", "MKS THR36", "0x2e8a", "0x000a", 250, "MAKERBASE_MKSTHR36", 1, 0, "boot2_w25q080_2_padded_checksum")
@@ -651,6 +652,9 @@ MakeBoard("olimex_pico2bb48", "rp2350", "Olimex", "Pico2BB48", "0x15ba", "0x0026
 MakeBoard("olimex_pico2xl", "rp2350", "Olimex", "Pico2XL", "0x15ba", "0x0026", 250, "OLIMEX_PICO2XL", 2, 0, "none")
 MakeBoard("olimex_pico2xxl", "rp2350", "Olimex", "Pico2XXL", "0x15ba", "0x0026", 500, "OLIMEX_PICO2XXL", 16, 8, "none")
 MakeBoard("olimex_rp2040pico30", "rp2040", "Olimex", "RP2040-Pico30", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30", 2, 0, "boot2_w25q080_2_padded_checksum")
+
+# PicoLume
+MakeBoard("picolume", "rp2040", "PicoLume", "Transceiver", "0x1209", "0x2008", 250, "PICOLUME", 2, 0, "boot2_w25q080_2_padded_checksum", None, "https://picolume.com")
 
 # Pimoroni
 MakeBoard("pimoroni_pga2040", "rp2040", "Pimoroni", "PGA2040", "0x2e8a", "0x1008", 250, "PIMORONI_PGA2040", 8, 0, "boot2_w25q64jv_4_padded_checksum")

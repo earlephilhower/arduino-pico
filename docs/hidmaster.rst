@@ -82,7 +82,7 @@ each time an individual button is reported changed by the mouse.
     }
 
 
-Meyboard Callbacks
+Keyboard Callbacks
 ~~~~~~~~~~~~~~~~~~
 The `BluetoothHIDMaster::onKeyDown`` callback receives the raw HID key (**NOT ASCII**) sent by the device on a key press
 while `BluetoothHIDMaster::onKeyUp`` gets the same when a key is released.  Note that up to 6 keys can be pressed at any

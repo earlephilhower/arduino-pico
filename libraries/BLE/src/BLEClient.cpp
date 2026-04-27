@@ -135,7 +135,7 @@ bool BLEClient::connect(BLEAddress a, uint32_t timeout) {
 }
 
 bool BLEClient::connect(BLEAdvertising &device, uint32_t timeoutsec) {
-    return connect(device.getAddress());
+    return connect(device.getAddress(), timeoutsec);
 }
 
 void BLEClient::disconnect() {
