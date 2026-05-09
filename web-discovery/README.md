@@ -1,16 +1,27 @@
-# React + Vite
+# UDP discovery page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This standalone project uses React for the UI and a small Node server for the UDP work that browsers cannot perform directly.
 
-Currently, two official plugins are available:
+## Available scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `npm install` - install dependencies
+- `npm run server` - start the Node API on port `3001`
+- `npm run dev` - start the Vite client with `/api` proxied to `http://127.0.0.1:3001`
+- `npm run build` - build the React client into `dist/`
+- `npm run start` - serve the built client and the discovery API from the Node server
+- `npm run lint` - lint the project
 
-## React Compiler
+## Discovery behavior
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The API sends one 8-byte UDP broadcast packet:
 
-## Expanding the ESLint configuration
+1. bytes `0-3`: the selected local IPv4 address
+2. bytes `4-5`: ASCII `FS`
+3. bytes `6-7`: `0x00 0x00`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The first UDP response received within five seconds is decoded as:
+
+- `NAME`: null-terminated string starting at byte `0`
+- `SN`: null-terminated string starting at byte `0xbc`
+
+Because the target UDP port was not specified in the request, the UI asks for it before sending the broadcast.
