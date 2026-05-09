@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
+const DISCOVERY_PORT = 48899
+
 const initialResult = {
   name: '',
   responderAddress: '',
@@ -12,7 +14,6 @@ function App() {
   const [interfaces, setInterfaces] = useState([])
   const [serverIp, setServerIp] = useState('')
   const [broadcastAddress, setBroadcastAddress] = useState('255.255.255.255')
-  const [port, setPort] = useState('')
   const [result, setResult] = useState(initialResult)
   const [error, setError] = useState('')
   const [status, setStatus] = useState('Loading local network interfaces…')
@@ -46,8 +47,8 @@ function App() {
   }, [])
 
   const canDiscover = useMemo(
-    () => Boolean(serverIp) && Boolean(port) && !isDiscovering,
-    [isDiscovering, port, serverIp],
+    () => Boolean(serverIp) && !isDiscovering,
+    [isDiscovering, serverIp],
   )
 
   const handleDiscover = async (event) => {
@@ -65,7 +66,6 @@ function App() {
         },
         body: JSON.stringify({
           broadcastAddress,
-          port: Number(port),
           serverIp,
         }),
       })
@@ -92,9 +92,9 @@ function App() {
         <h1>UDP discovery page</h1>
         <p className="description">
           The browser UI asks the local Node server to broadcast an 8-byte UDP packet made from the
-          selected server IP, the ASCII characters <code>FS</code>, and two zero bytes. The first
-          response received within five seconds is decoded into <strong>NAME</strong> and
-          <strong> SN</strong>.
+          selected server IP, the ASCII characters <code>FS</code>, and two zero bytes to UDP port{' '}
+          <code>{DISCOVERY_PORT}</code>. The first response received within five seconds is decoded
+          into <strong>NAME</strong> and <strong>SN</strong>.
         </p>
       </section>
 
@@ -128,18 +128,6 @@ function App() {
               value={broadcastAddress}
               onChange={(event) => setBroadcastAddress(event.target.value)}
               placeholder="255.255.255.255"
-            />
-          </label>
-
-          <label>
-            <span>UDP port</span>
-            <input
-              type="number"
-              min="1"
-              max="65535"
-              value={port}
-              onChange={(event) => setPort(event.target.value)}
-              placeholder="Enter the target UDP port"
             />
           </label>
 

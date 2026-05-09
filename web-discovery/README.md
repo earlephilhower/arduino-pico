@@ -18,10 +18,9 @@ The API sends one 8-byte UDP broadcast packet:
 1. bytes `0-3`: the selected local IPv4 address
 2. bytes `4-5`: ASCII `FS`
 3. bytes `6-7`: `0x00 0x00`
+4. destination UDP port: `48899`
 
-The first UDP response received within five seconds is decoded as:
+The first UDP response received on port `48899` within five seconds is decoded as:
 
 - `NAME`: null-terminated string starting at byte `0`
 - `SN`: null-terminated string starting at byte `0xbc`
-
-Because the target UDP port was not specified in the request, the UI asks for it before sending the broadcast.

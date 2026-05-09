@@ -10,6 +10,7 @@ const HOST = process.env.HOST ?? '0.0.0.0'
 const PORT = Number(process.env.PORT ?? 3001)
 const BROADCAST_TIMEOUT_MS = 5_000
 const DEFAULT_BROADCAST_ADDRESS = '255.255.255.255'
+const DISCOVERY_PORT = 48899
 const SERIAL_NUMBER_OFFSET = 0xbc
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -176,7 +177,6 @@ const server = createServer(async (request, response) => {
   if (request.method === 'POST' && url.pathname === '/api/discover') {
     try {
       const body = await parseJsonBody(request)
-      const port = Number(body.port)
       const serverIp = body.serverIp
       const broadcastAddress = body.broadcastAddress ?? DEFAULT_BROADCAST_ADDRESS
       const interfaces = getIPv4Addresses()
@@ -186,17 +186,12 @@ const server = createServer(async (request, response) => {
         return
       }
 
-      if (!Number.isInteger(port) || port < 1 || port > 65535) {
-        sendJson(response, 400, { error: 'Enter a UDP port between 1 and 65535.' })
-        return
-      }
-
       if (!isValidIPv4(broadcastAddress)) {
         sendJson(response, 400, { error: 'Enter a valid IPv4 broadcast address.' })
         return
       }
 
-      const result = await discoverDevice({ serverIp, port, broadcastAddress })
+      const result = await discoverDevice({ serverIp, port: DISCOVERY_PORT, broadcastAddress })
       sendJson(response, 200, result)
     } catch (error) {
       const message = error instanceof SyntaxError
