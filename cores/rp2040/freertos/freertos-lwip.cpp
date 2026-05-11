@@ -150,9 +150,9 @@ static void lwipThread(void *params) {
             }
             case __tcp_arg: {
                 __tcp_arg_req *r = (__tcp_arg_req *)w.req;
-				if (r->pcb != NULL) {
-					__real_tcp_arg(r->pcb, r->arg);
-				}
+                if (r->pcb != NULL) {
+                    __real_tcp_arg(r->pcb, r->arg);
+                }
                 break;
             }
             case __tcp_new: {
@@ -167,11 +167,11 @@ static void lwipThread(void *params) {
             }
             case __tcp_bind: {
                 __tcp_bind_req *r = (__tcp_bind_req *)w.req;
-				if (r->pcb != NULL) {
-                	*(r->ret) = __real_tcp_bind(r->pcb, r->ipaddr, r->port);
-				} else {
-					*(r->ret) = ERR_PCB_IS_NULLPTR;
-				}
+                if (r->pcb != NULL) {
+                    *(r->ret) = __real_tcp_bind(r->pcb, r->ipaddr, r->port);
+                } else {
+                    *(r->ret) = ERR_PCB_IS_NULLPTR;
+                }
                 break;
             }
             case __tcp_bind_netif: {
