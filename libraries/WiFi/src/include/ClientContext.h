@@ -153,28 +153,27 @@ public:
     }
 
     size_t availableForWrite() const {
-		// unsafe! _pcb can become NULL at any point
+        LwipMutexOrVTaskSuspendAll m;
         return _pcb ? tcp_sndbuf(_pcb) : 0;
     }
 
     void setNoDelay(bool nodelay) {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return;
         }
         if (nodelay) {
-			// unsafe! _pcb can become NULL at any point
             tcp_nagle_disable(_pcb);
         } else {
-			// unsafe! _pcb can become NULL at any point
             tcp_nagle_enable(_pcb);
         }
     }
 
     bool getNoDelay() const {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return false;
         }
-		// unsafe! _pcb can become NULL at any point
         return tcp_nagle_disabled(_pcb);
     }
 
@@ -195,16 +194,16 @@ public:
             return 0;
         }
 
-		// extra unsafe: we are giving out a pointer into _pcb!
+        // extra unsafe: we are giving out a pointer into _pcb!
         return &_pcb->remote_ip;
     }
 
     uint16_t getRemotePort() const {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return 0;
         }
 
-		// unsafe! _pcb can become NULL at any point
         return _pcb->remote_port;
     }
 
@@ -213,16 +212,16 @@ public:
             return 0;
         }
 
-		// extra unsafe: we are giving out a pointer into _pcb!
+        // extra unsafe: we are giving out a pointer into _pcb!
         return &_pcb->local_ip;
     }
 
     uint16_t getLocalPort() const {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return 0;
         }
 
-		// unsafe! _pcb can become NULL at any point
         return _pcb->local_port;
     }
 
@@ -355,7 +354,7 @@ public:
     }
 
     uint8_t state() const {
-		// unsafe! _pcb can become NULL between NULL check and ->state read
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb || _pcb->state == CLOSE_WAIT || _pcb->state == CLOSING) {
             // CLOSED for WiFIClient::status() means nothing more can be written
             return CLOSED;
@@ -399,6 +398,7 @@ public:
     }
 
     void keepAlive(uint16_t idle_sec = TCP_DEFAULT_KEEPALIVE_IDLE_SEC, uint16_t intv_sec = TCP_DEFAULT_KEEPALIVE_INTERVAL_SEC, uint8_t count = TCP_DEFAULT_KEEPALIVE_COUNT) {
+        LwipMutexOrVTaskSuspendAll m;
         if (idle_sec && intv_sec && count) {
             _pcb->so_options |= SOF_KEEPALIVE;
             _pcb->keep_idle = (uint32_t)1000 * idle_sec;
@@ -410,22 +410,22 @@ public:
     }
 
     bool isKeepAliveEnabled() const {
-		// unsafe! _pcb can become NULL without warning
+        LwipMutexOrVTaskSuspendAll m;
         return !!(_pcb->so_options & SOF_KEEPALIVE);
     }
 
     uint16_t getKeepAliveIdle() const {
-		// unsafe! _pcb can become NULL without warning
+        LwipMutexOrVTaskSuspendAll m;
         return isKeepAliveEnabled() ? (_pcb->keep_idle + 500) / 1000 : 0;
     }
 
     uint16_t getKeepAliveInterval() const {
-		// unsafe! _pcb can become NULL without warning
+        LwipMutexOrVTaskSuspendAll m;
         return isKeepAliveEnabled() ? (_pcb->keep_intvl + 500) / 1000 : 0;
     }
 
     uint8_t getKeepAliveCount() const {
-		// unsafe! _pcb can become NULL without warning
+        LwipMutexOrVTaskSuspendAll m;
         return isKeepAliveEnabled() ? _pcb->keep_cnt : 0;
     }
 
@@ -528,9 +528,9 @@ protected:
             const auto remaining = _datalen - _written;
             size_t next_chunk_size;
             {
-				// trick to read safely maybe?
-				// should be safe against interrupts in single core
-				// but with dual core this may be problematic unless reads are atomic
+                // trick to read safely maybe?
+                // should be safe against interrupts in single core
+                // but with dual core this may be problematic unless reads are atomic
                 volatile tcp_pcb *pcb = _pcb;
                 if(!pcb) {
                     return false;
@@ -757,4 +757,27 @@ private:
     ClientContext* _next;
 
     bool _sync;
+
+    class LwipMutexOrVTaskSuspendAll:public LWIPMutex {
+        // When using IRQ-driven Ethernet, an interrupt can cause lwIP to free _pcb and call _error() at any time.
+        // So ClientContext can never assume _pcb != nullptr unless lwIP is blocked from running.
+
+        // On baremetal, we can simply use LwipMutex.
+
+        // On freeRTOS, that is solved by null checks in lwip_wrap.cpp, which happen after switching to the lwIP task.
+        // However, that does not work for macros like tcp_sndbuf or tcp_nagle_disable.
+        // Since they are extremely simple and fast, we just disable all task switching for those.
+    public:
+        LwipMutexOrVTaskSuspendAll() {
+#if defined(__FREERTOS)
+            vTaskSuspendAll();
+#endif
+        }
+
+        ~LwipMutexOrVTaskSuspendAll() {
+#if defined(__FREERTOS)
+            xTaskResumeAll();
+#endif
+        }
+    };
 };
