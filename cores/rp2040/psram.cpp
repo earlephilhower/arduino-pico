@@ -165,7 +165,7 @@ size_t __no_inline_not_in_flash_func(psram_init)(uint cs_pin) {
     // unavailable while QMI direct mode is enabled)
     const int max_psram_freq = RP2350_PSRAM_MAX_SCK_HZ;
     const int clock_hz = clock_get_hz(clk_sys);
-    
+
     // Enable direct mode, PSRAM CS, clkdiv of 10.
     qmi_hw->direct_csr = 10 << QMI_DIRECT_CSR_CLKDIV_LSB | \
                          QMI_DIRECT_CSR_EN_BITS | \
