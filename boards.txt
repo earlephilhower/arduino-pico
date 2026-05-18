@@ -34964,6 +34964,252 @@ seeed_xiao_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cm
 seeed_xiao_rp2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
+# Seeed XIAO RP2040 Plus
+# -----------------------------------
+seeed_xiao_rp2040_plus.name=Seeed XIAO RP2040 Plus
+seeed_xiao_rp2040_plus.vid.0=0x2e8a
+seeed_xiao_rp2040_plus.pid.0=0x000a
+seeed_xiao_rp2040_plus.vid.1=0x2e8a
+seeed_xiao_rp2040_plus.pid.1=0x010a
+seeed_xiao_rp2040_plus.vid.2=0x2e8a
+seeed_xiao_rp2040_plus.pid.2=0x400a
+seeed_xiao_rp2040_plus.vid.3=0x2e8a
+seeed_xiao_rp2040_plus.pid.3=0x410a
+seeed_xiao_rp2040_plus.vid.4=0x2e8a
+seeed_xiao_rp2040_plus.pid.4=0x800a
+seeed_xiao_rp2040_plus.vid.5=0x2e8a
+seeed_xiao_rp2040_plus.pid.5=0x810a
+seeed_xiao_rp2040_plus.vid.6=0x2e8a
+seeed_xiao_rp2040_plus.pid.6=0xc00a
+seeed_xiao_rp2040_plus.vid.7=0x2e8a
+seeed_xiao_rp2040_plus.pid.7=0xc10a
+seeed_xiao_rp2040_plus.upload_port.0.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.0.pid=0x000a
+seeed_xiao_rp2040_plus.upload_port.1.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.1.pid=0x010a
+seeed_xiao_rp2040_plus.upload_port.2.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.2.pid=0x400a
+seeed_xiao_rp2040_plus.upload_port.3.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.3.pid=0x410a
+seeed_xiao_rp2040_plus.upload_port.4.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.4.pid=0x800a
+seeed_xiao_rp2040_plus.upload_port.5.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.5.pid=0x810a
+seeed_xiao_rp2040_plus.upload_port.6.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.6.pid=0xc00a
+seeed_xiao_rp2040_plus.upload_port.7.vid=0x2e8a
+seeed_xiao_rp2040_plus.upload_port.7.pid=0xc10a
+seeed_xiao_rp2040_plus.build.usbvid=-DUSBD_VID=0x2e8a
+seeed_xiao_rp2040_plus.build.usbpid=-DUSBD_PID=0x000a
+seeed_xiao_rp2040_plus.build.usbpwr=-DUSBD_MAX_POWER_MA=250
+seeed_xiao_rp2040_plus.build.board=SEEED_XIAO_RP2040_PLUS
+seeed_xiao_rp2040_plus.build.mcu=cortex-m0plus
+seeed_xiao_rp2040_plus.build.chip=rp2040
+seeed_xiao_rp2040_plus.build.toolchain=arm-none-eabi
+seeed_xiao_rp2040_plus.build.toolchainpkg=pqt-gcc
+seeed_xiao_rp2040_plus.build.toolchainopts=-march=armv6-m -mcpu=cortex-m0plus -mthumb
+seeed_xiao_rp2040_plus.build.uf2family=--family rp2040
+seeed_xiao_rp2040_plus.build.variant=seeed_xiao_rp2040_plus
+seeed_xiao_rp2040_plus.upload.maximum_size=2097152
+seeed_xiao_rp2040_plus.upload.wait_for_upload_port=true
+seeed_xiao_rp2040_plus.upload.erase_cmd=
+seeed_xiao_rp2040_plus.serial.disableDTR=false
+seeed_xiao_rp2040_plus.serial.disableRTS=false
+seeed_xiao_rp2040_plus.build.f_cpu=125000000
+seeed_xiao_rp2040_plus.build.led=
+seeed_xiao_rp2040_plus.build.core=rp2040
+seeed_xiao_rp2040_plus.build.ldscript=memmap_default.ld
+seeed_xiao_rp2040_plus.build.boot2=boot2_w25q080_2_padded_checksum
+seeed_xiao_rp2040_plus.build.usb_manufacturer="Seeed"
+seeed_xiao_rp2040_plus.build.usb_product="XIAO RP2040 Plus"
+seeed_xiao_rp2040_plus.menu.flash.2097152_0=2MB (no FS)
+seeed_xiao_rp2040_plus.menu.flash.2097152_0.upload.maximum_size=2093056
+seeed_xiao_rp2040_plus.menu.flash.2097152_0.build.flash_total=2097152
+seeed_xiao_rp2040_plus.menu.flash.2097152_0.build.flash_length=2093056
+seeed_xiao_rp2040_plus.menu.flash.2097152_0.build.eeprom_start=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_0.build.fs_start=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_0.build.fs_end=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_65536=2MB (Sketch: 1984KB, FS: 64KB)
+seeed_xiao_rp2040_plus.menu.flash.2097152_65536.upload.maximum_size=2027520
+seeed_xiao_rp2040_plus.menu.flash.2097152_65536.build.flash_total=2097152
+seeed_xiao_rp2040_plus.menu.flash.2097152_65536.build.flash_length=2027520
+seeed_xiao_rp2040_plus.menu.flash.2097152_65536.build.eeprom_start=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_65536.build.fs_start=270462976
+seeed_xiao_rp2040_plus.menu.flash.2097152_65536.build.fs_end=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_131072=2MB (Sketch: 1920KB, FS: 128KB)
+seeed_xiao_rp2040_plus.menu.flash.2097152_131072.upload.maximum_size=1961984
+seeed_xiao_rp2040_plus.menu.flash.2097152_131072.build.flash_total=2097152
+seeed_xiao_rp2040_plus.menu.flash.2097152_131072.build.flash_length=1961984
+seeed_xiao_rp2040_plus.menu.flash.2097152_131072.build.eeprom_start=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_131072.build.fs_start=270397440
+seeed_xiao_rp2040_plus.menu.flash.2097152_131072.build.fs_end=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_262144=2MB (Sketch: 1792KB, FS: 256KB)
+seeed_xiao_rp2040_plus.menu.flash.2097152_262144.upload.maximum_size=1830912
+seeed_xiao_rp2040_plus.menu.flash.2097152_262144.build.flash_total=2097152
+seeed_xiao_rp2040_plus.menu.flash.2097152_262144.build.flash_length=1830912
+seeed_xiao_rp2040_plus.menu.flash.2097152_262144.build.eeprom_start=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_262144.build.fs_start=270266368
+seeed_xiao_rp2040_plus.menu.flash.2097152_262144.build.fs_end=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_524288=2MB (Sketch: 1536KB, FS: 512KB)
+seeed_xiao_rp2040_plus.menu.flash.2097152_524288.upload.maximum_size=1568768
+seeed_xiao_rp2040_plus.menu.flash.2097152_524288.build.flash_total=2097152
+seeed_xiao_rp2040_plus.menu.flash.2097152_524288.build.flash_length=1568768
+seeed_xiao_rp2040_plus.menu.flash.2097152_524288.build.eeprom_start=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_524288.build.fs_start=270004224
+seeed_xiao_rp2040_plus.menu.flash.2097152_524288.build.fs_end=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_1048576=2MB (Sketch: 1MB, FS: 1MB)
+seeed_xiao_rp2040_plus.menu.flash.2097152_1048576.upload.maximum_size=1044480
+seeed_xiao_rp2040_plus.menu.flash.2097152_1048576.build.flash_total=2097152
+seeed_xiao_rp2040_plus.menu.flash.2097152_1048576.build.flash_length=1044480
+seeed_xiao_rp2040_plus.menu.flash.2097152_1048576.build.eeprom_start=270528512
+seeed_xiao_rp2040_plus.menu.flash.2097152_1048576.build.fs_start=269479936
+seeed_xiao_rp2040_plus.menu.flash.2097152_1048576.build.fs_end=270528512
+seeed_xiao_rp2040_plus.menu.freq.200=200 MHz
+seeed_xiao_rp2040_plus.menu.freq.200.build.f_cpu=200000000L
+seeed_xiao_rp2040_plus.menu.freq.50=50 MHz
+seeed_xiao_rp2040_plus.menu.freq.50.build.f_cpu=50000000L
+seeed_xiao_rp2040_plus.menu.freq.100=100 MHz
+seeed_xiao_rp2040_plus.menu.freq.100.build.f_cpu=100000000L
+seeed_xiao_rp2040_plus.menu.freq.120=120 MHz
+seeed_xiao_rp2040_plus.menu.freq.120.build.f_cpu=120000000L
+seeed_xiao_rp2040_plus.menu.freq.125=125 MHz
+seeed_xiao_rp2040_plus.menu.freq.125.build.f_cpu=125000000L
+seeed_xiao_rp2040_plus.menu.freq.128=128 MHz
+seeed_xiao_rp2040_plus.menu.freq.128.build.f_cpu=128000000L
+seeed_xiao_rp2040_plus.menu.freq.133=133 MHz
+seeed_xiao_rp2040_plus.menu.freq.133.build.f_cpu=133000000L
+seeed_xiao_rp2040_plus.menu.freq.150=150 MHz
+seeed_xiao_rp2040_plus.menu.freq.150.build.f_cpu=150000000L
+seeed_xiao_rp2040_plus.menu.freq.176=176 MHz
+seeed_xiao_rp2040_plus.menu.freq.176.build.f_cpu=176000000L
+seeed_xiao_rp2040_plus.menu.freq.225=225 MHz (Overclock)
+seeed_xiao_rp2040_plus.menu.freq.225.build.f_cpu=225000000L
+seeed_xiao_rp2040_plus.menu.freq.240=240 MHz (Overclock)
+seeed_xiao_rp2040_plus.menu.freq.240.build.f_cpu=240000000L
+seeed_xiao_rp2040_plus.menu.freq.250=250 MHz (Overclock)
+seeed_xiao_rp2040_plus.menu.freq.250.build.f_cpu=250000000L
+seeed_xiao_rp2040_plus.menu.freq.276=276 MHz (Overclock)
+seeed_xiao_rp2040_plus.menu.freq.276.build.f_cpu=276000000L
+seeed_xiao_rp2040_plus.menu.freq.300=300 MHz (Overclock)
+seeed_xiao_rp2040_plus.menu.freq.300.build.f_cpu=300000000L
+seeed_xiao_rp2040_plus.menu.opt.Small=Small (-Os) (standard)
+seeed_xiao_rp2040_plus.menu.opt.Small.build.flags.optimize=-Os
+seeed_xiao_rp2040_plus.menu.opt.Optimize=Optimize (-O)
+seeed_xiao_rp2040_plus.menu.opt.Optimize.build.flags.optimize=-O
+seeed_xiao_rp2040_plus.menu.opt.Optimize2=Optimize More (-O2)
+seeed_xiao_rp2040_plus.menu.opt.Optimize2.build.flags.optimize=-O2
+seeed_xiao_rp2040_plus.menu.opt.Optimize3=Optimize Even More (-O3)
+seeed_xiao_rp2040_plus.menu.opt.Optimize3.build.flags.optimize=-O3
+seeed_xiao_rp2040_plus.menu.opt.Fast=Fast (-Ofast) (maybe slower)
+seeed_xiao_rp2040_plus.menu.opt.Fast.build.flags.optimize=-Ofast
+seeed_xiao_rp2040_plus.menu.opt.Debug=Debug (-Og)
+seeed_xiao_rp2040_plus.menu.opt.Debug.build.flags.optimize=-Og
+seeed_xiao_rp2040_plus.menu.opt.Disabled=Disabled (-O0)
+seeed_xiao_rp2040_plus.menu.opt.Disabled.build.flags.optimize=-O0
+seeed_xiao_rp2040_plus.menu.os.none=None
+seeed_xiao_rp2040_plus.menu.os.none.build.os=
+seeed_xiao_rp2040_plus.menu.os.freertos=FreeRTOS SMP
+seeed_xiao_rp2040_plus.menu.os.freertos.build.os=-D__FREERTOS
+seeed_xiao_rp2040_plus.menu.profile.Disabled=Disabled
+seeed_xiao_rp2040_plus.menu.profile.Disabled.build.flags.profile=
+seeed_xiao_rp2040_plus.menu.profile.Enabled=Enabled
+seeed_xiao_rp2040_plus.menu.profile.Enabled.build.flags.profile=-pg -D__PROFILE
+seeed_xiao_rp2040_plus.menu.rtti.Disabled=Disabled
+seeed_xiao_rp2040_plus.menu.rtti.Disabled.build.flags.rtti=-fno-rtti
+seeed_xiao_rp2040_plus.menu.rtti.Enabled=Enabled
+seeed_xiao_rp2040_plus.menu.rtti.Enabled.build.flags.rtti=
+seeed_xiao_rp2040_plus.menu.stackprotect.Disabled=Disabled
+seeed_xiao_rp2040_plus.menu.stackprotect.Disabled.build.flags.stackprotect=
+seeed_xiao_rp2040_plus.menu.stackprotect.Enabled=Enabled
+seeed_xiao_rp2040_plus.menu.stackprotect.Enabled.build.flags.stackprotect=-fstack-protector-all
+seeed_xiao_rp2040_plus.menu.exceptions.Disabled=Disabled
+seeed_xiao_rp2040_plus.menu.exceptions.Disabled.build.flags.exceptions=-fno-exceptions
+seeed_xiao_rp2040_plus.menu.exceptions.Disabled.build.flags.libstdcpp=-lstdc++
+seeed_xiao_rp2040_plus.menu.exceptions.Enabled=Enabled
+seeed_xiao_rp2040_plus.menu.exceptions.Enabled.build.flags.exceptions=-fexceptions
+seeed_xiao_rp2040_plus.menu.exceptions.Enabled.build.flags.libstdcpp=-lstdc++-exc
+seeed_xiao_rp2040_plus.menu.dbgport.Disabled=Disabled
+seeed_xiao_rp2040_plus.menu.dbgport.Disabled.build.debug_port=
+seeed_xiao_rp2040_plus.menu.dbgport.Serial=Serial
+seeed_xiao_rp2040_plus.menu.dbgport.Serial.build.debug_port=-DDEBUG_RP2040_PORT=Serial
+seeed_xiao_rp2040_plus.menu.dbgport.Serial1=Serial1
+seeed_xiao_rp2040_plus.menu.dbgport.Serial1.build.debug_port=-DDEBUG_RP2040_PORT=Serial1
+seeed_xiao_rp2040_plus.menu.dbgport.Serial2=Serial2
+seeed_xiao_rp2040_plus.menu.dbgport.Serial2.build.debug_port=-DDEBUG_RP2040_PORT=Serial2
+seeed_xiao_rp2040_plus.menu.dbgport.SerialSemi=SerialSemi
+seeed_xiao_rp2040_plus.menu.dbgport.SerialSemi.build.debug_port=-DDEBUG_RP2040_PORT=SerialSemi
+seeed_xiao_rp2040_plus.menu.dbglvl.None=None
+seeed_xiao_rp2040_plus.menu.dbglvl.None.build.debug_level=
+seeed_xiao_rp2040_plus.menu.dbglvl.Core=Core
+seeed_xiao_rp2040_plus.menu.dbglvl.Core.build.debug_level=-DDEBUG_RP2040_CORE
+seeed_xiao_rp2040_plus.menu.dbglvl.SPI=SPI
+seeed_xiao_rp2040_plus.menu.dbglvl.SPI.build.debug_level=-DDEBUG_RP2040_SPI
+seeed_xiao_rp2040_plus.menu.dbglvl.Wire=Wire
+seeed_xiao_rp2040_plus.menu.dbglvl.Wire.build.debug_level=-DDEBUG_RP2040_WIRE
+seeed_xiao_rp2040_plus.menu.dbglvl.Bluetooth=Bluetooth
+seeed_xiao_rp2040_plus.menu.dbglvl.Bluetooth.build.debug_level=-DDEBUG_RP2040_BLUETOOTH
+seeed_xiao_rp2040_plus.menu.dbglvl.BLE=BLE
+seeed_xiao_rp2040_plus.menu.dbglvl.BLE.build.debug_level=-DDEBUG_RP2040_BLE
+seeed_xiao_rp2040_plus.menu.dbglvl.LWIP=LWIP
+seeed_xiao_rp2040_plus.menu.dbglvl.LWIP.build.debug_level=-DLWIP_DEBUG=1
+seeed_xiao_rp2040_plus.menu.dbglvl.All=All
+seeed_xiao_rp2040_plus.menu.dbglvl.All.build.debug_level=-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1
+seeed_xiao_rp2040_plus.menu.dbglvl.NDEBUG=NDEBUG
+seeed_xiao_rp2040_plus.menu.dbglvl.NDEBUG.build.debug_level=-DNDEBUG
+seeed_xiao_rp2040_plus.menu.usbstack.picosdk=Pico SDK
+seeed_xiao_rp2040_plus.menu.usbstack.picosdk.build.usbstack_flags=
+seeed_xiao_rp2040_plus.menu.usbstack.tinyusb=Adafruit TinyUSB
+seeed_xiao_rp2040_plus.menu.usbstack.tinyusb.build.usbstack_flags=-DUSE_TINYUSB "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+seeed_xiao_rp2040_plus.menu.usbstack.tinyusb_host=Adafruit TinyUSB Host (native)
+seeed_xiao_rp2040_plus.menu.usbstack.tinyusb_host.build.usbstack_flags=-DUSE_TINYUSB -DUSE_TINYUSB_HOST "-I{runtime.platform.path}/libraries/Adafruit_TinyUSB_Arduino/src/arduino"
+seeed_xiao_rp2040_plus.menu.usbstack.nousb=No USB
+seeed_xiao_rp2040_plus.menu.usbstack.nousb.build.usbstack_flags="-DNO_USB -DDISABLE_USB_SERIAL -I{runtime.platform.path}/tools/libpico"
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4only=IPv4 Only
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4only.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6=IPv4 + IPv6
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6.build.libpicow=liblwip.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4btcble=IPv4 + Bluetooth
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4btcble.build.libpicow=liblwip-bt.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4btcble.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6btcble=IPv4 + IPv6 + Bluetooth
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6btcble.build.libpicow=liblwip-bt.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6btcble.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4onlybig=IPv4 Only - 32K
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4onlybig.build.libpicow=liblwip.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4onlybig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6big=IPv4 + IPv6 - 32K
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6big.build.libpicow=liblwip.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6big.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -D__LWIP_MEMMULT=2
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4btcblebig=IPv4 + Bluetooth - 32K
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4btcblebig.build.libpicow=liblwip-bt.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4btcblebig.build.libpicowdefs=-DLWIP_IPV6=0 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6btcblebig=IPv4 + IPv6 + Bluetooth - 32K
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicow=liblwip-bt.a
+seeed_xiao_rp2040_plus.menu.ipbtstack.ipv4ipv6btcblebig.build.libpicowdefs=-DLWIP_IPV6=1 -DLWIP_IPV4=1 -DENABLE_CLASSIC=1 -DENABLE_BLE=1 -DCYW43_ENABLE_BLUETOOTH=1 -D__LWIP_MEMMULT=2
+seeed_xiao_rp2040_plus.menu.uploadmethod.default=Default (UF2)
+seeed_xiao_rp2040_plus.menu.uploadmethod.default.build.ram_length=256k
+seeed_xiao_rp2040_plus.menu.uploadmethod.default.build.debugscript=picoprobe_cmsis_dap.tcl
+seeed_xiao_rp2040_plus.menu.uploadmethod.default.upload.maximum_data_size=262144
+seeed_xiao_rp2040_plus.menu.uploadmethod.default.upload.tool=uf2conv
+seeed_xiao_rp2040_plus.menu.uploadmethod.default.upload.tool.default=uf2conv
+seeed_xiao_rp2040_plus.menu.uploadmethod.default.upload.tool.network=uf2conv-network
+seeed_xiao_rp2040_plus.menu.uploadmethod.picotool=Picotool
+seeed_xiao_rp2040_plus.menu.uploadmethod.picotool.build.ram_length=256k
+seeed_xiao_rp2040_plus.menu.uploadmethod.picotool.build.debugscript=picoprobe.tcl
+seeed_xiao_rp2040_plus.menu.uploadmethod.picotool.build.picodebugflags=-DENABLE_PICOTOOL_USB
+seeed_xiao_rp2040_plus.menu.uploadmethod.picotool.upload.maximum_data_size=262144
+seeed_xiao_rp2040_plus.menu.uploadmethod.picotool.upload.tool=picotool
+seeed_xiao_rp2040_plus.menu.uploadmethod.picotool.upload.tool.default=picotool
+seeed_xiao_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap=Picoprobe/Debugprobe (CMSIS-DAP)
+seeed_xiao_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.build.ram_length=256k
+seeed_xiao_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.build.debugscript=picoprobe_cmsis_dap.tcl
+seeed_xiao_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.maximum_data_size=262144
+seeed_xiao_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cmsis_dap
+seeed_xiao_rp2040_plus.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
+
+# -----------------------------------
 # Seeed XIAO RP2350
 # -----------------------------------
 seeed_xiao_rp2350.name=Seeed XIAO RP2350
