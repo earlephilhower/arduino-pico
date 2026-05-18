@@ -34,9 +34,9 @@ static const uint8_t D10 = (3u);   // GPIO3  / MOSI
 // D11: not pinned out as GPIO (used internally)
 
 // D12-D27: new pins on XIAO RP2040 Plus
-static const uint8_t D12 = (18u);  // GPIO18
+static const uint8_t D12 = (18u);  // GPIO18 / SDA1
 static const uint8_t D13 = (19u);  // GPIO19 / SCL1
-static const uint8_t D14 = (20u);  // GPIO20 / SDA1
+static const uint8_t D14 = (20u);  // GPIO20
 static const uint8_t D15 = (21u);  // GPIO21
 static const uint8_t D16 = (22u);  // GPIO22
 static const uint8_t D17 = (23u);  // GPIO23
@@ -102,7 +102,7 @@ static const uint8_t SCK  = PIN_SPI0_SCK;
 // ------------------------------------
 #define __WIRE1_DEVICE  (i2c0)
 #define PIN_WIRE1_SDA   (20u)  // GPIO20 / D14
-#define PIN_WIRE1_SCL   (19u)  // GPIO19 / D13
+#define PIN_WIRE1_SCL   (21u)  // GPIO21 / D15
 
 // Interface counts
 #define SERIAL_HOWMANY  (1u)
