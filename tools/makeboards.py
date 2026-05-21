@@ -692,6 +692,7 @@ MakeBoard("solderparty_rp2350_stamp_xl", "rp2350", "Solder Party", "RP2350 Stamp
 
 # Soldered Electronics
 MakeBoard("soldered_nula_rp2350", "rp2350", "Soldered Electronics", "NULA RP2350", "0x2e8a", "0x10ec", 500, "SOLDERED_NULA_RP2350", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
+MakeBoard("soldered_nula_ethernet_w55rp20", "rp2040", "Soldered Electronics", "NULA Ethernet W55RP20", "0x2e8a", "0x1122", 250, "SOLDERED_NULA_ETHERNET", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # SparkFun
 MakeBoard("sparkfun_iotredboard_rp2350", "rp2350", "SparkFun", "IoT RedBoard RP2350", "0x1b4f", "0x0047", 250, "SPARKFUN_IOTREDBOARD_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"], "https://www.sparkfun.com/sparkfun-iot-redboard-rp2350.html")
