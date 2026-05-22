@@ -146,6 +146,11 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
         return 0;
     }
 
+    // If the remote has gone to sleep (laptop), tickle it so they will get the message
+    if (tud_suspended()) {
+        tud_remote_wakeup();
+    }
+
     static uint64_t last_avail_time;
     int written = 0;
     if (tud_cdc_connected() || _ss.ignoreFlowControl) {
