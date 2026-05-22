@@ -12,9 +12,9 @@
 #define PIN_SERIAL2_RX (5u)
 
 // SPI
-#define PIN_SPI0_MISO  (4u) 
-#define PIN_SPI0_MOSI  (7u) 
-#define PIN_SPI0_SCK   (6u) 
+#define PIN_SPI0_MISO  (4u)
+#define PIN_SPI0_MOSI  (7u)
+#define PIN_SPI0_SCK   (6u)
 #define PIN_SPI0_SS    (5u)
 
 // SD Card SPI
