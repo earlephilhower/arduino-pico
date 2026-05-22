@@ -14,7 +14,10 @@
 #define PIN_NEOPIXEL         (12u)
 
 // RGB LED power enable (active high)
-#define NEOPIXEL_POWER       (24u)
+#define NEOPIXEL_POWER       (11u)
+
+// Battery charge enable (active high)
+#define BAT_EN               (24u)
 
 // Digital pins
 // ------------
