@@ -4,7 +4,7 @@
 // https://www.waveshare.com/wiki/RP2350-PiZero
 // https://files.waveshare.com/wiki/RP2350-PiZero/RP2350-PiZero.pdf
 
-#define PICO_RP2350A 1
+#define PICO_RP2350A 0 // RP2350B
 
 // Serial
 #define PIN_SERIAL1_TX (0u)
