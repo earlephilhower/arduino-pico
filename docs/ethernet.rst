@@ -17,6 +17,12 @@ Supported Wired Ethernet Modules
 
 * Wiznet W5500
 
+* Wiznet W55RP20
+
+* Wiznet W6100
+
+* Wiznet W6300
+
 * ENC28J60
 
 * USB (see :doc:`Ethernet over USB <usbethernet>`)
@@ -170,5 +176,5 @@ Special Thanks
 
 * LWIPEthernet classes come from the ESP8266 Arduino team
 
-* Individual Ethernet drivers were written by Nicholas Humfrey
+* Some individual Ethernet drivers were written by Nicholas Humfrey, others submitted by users.
 
