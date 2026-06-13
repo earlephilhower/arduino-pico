@@ -24,6 +24,9 @@ Configure their pins using the ``setXXX`` calls prior to calling ``begin()``
         Serial1.setTX(pin);
         Serial1.begin(baud);
 
+Pass in ``-1`` to ``setRX`` or ``setTX`` to disable that pin, freeing it for
+use by your application.
+
 The size of the receive FIFO may also be adjusted from the default 32 bytes by
 using the ``setFIFOSize`` call prior to calling ``begin()``
 
