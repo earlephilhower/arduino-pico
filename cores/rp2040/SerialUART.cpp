@@ -46,9 +46,11 @@ bool SerialUART::setRX(pin_size_t pin) {
                                   };
 #endif
 
-    if ((!_running) && ((1LL << pin) & valid[uart_get_index(_uart)])) {
-        _rx = pin;
-        return true;
+    if (!_running) {
+        if (((1LL << pin) & valid[uart_get_index(_uart)]) || (pin == UART_PIN_NOT_DEFINED)) {
+            _rx = pin;
+            return true;
+        }
     }
 
     if (_rx == pin) {
@@ -77,9 +79,11 @@ bool SerialUART::setTX(pin_size_t pin) {
                                     __bitset({4, 8, 20, 24})  /* UART1 */
                                   };
 #endif
-    if ((!_running) && ((1LL << pin) & valid[uart_get_index(_uart)])) {
-        _tx = pin;
-        return true;
+    if (!_running) {
+        if (((1LL << pin) & valid[uart_get_index(_uart)]) || (pin == UART_PIN_NOT_DEFINED)) {
+            _tx = pin;
+            return true;
+        }
     }
 
     if (_tx == pin) {
@@ -219,12 +223,16 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     _queue = new LocklessQueue<uint8_t>(_fifoSize);
     _baud = baud;
 
-    _fcnTx = gpio_get_function(_tx);
-    _fcnRx = gpio_get_function(_rx);
-    gpio_set_function(_tx, __gpioFunction(_tx));
-    gpio_set_outover(_tx, _invertTX ? 1 : 0);
-    gpio_set_function(_rx, __gpioFunction(_rx));
-    gpio_set_inover(_rx, _invertRX ? 1 : 0);
+    if (_tx != UART_PIN_NOT_DEFINED) {
+        _fcnTx = gpio_get_function(_tx);
+        gpio_set_function(_tx, __gpioFunction(_tx));
+        gpio_set_outover(_tx, _invertTX ? 1 : 0);
+    }
+    if (_rx != UART_PIN_NOT_DEFINED) {
+        _fcnRx = gpio_get_function(_rx);
+        gpio_set_function(_rx, __gpioFunction(_rx));
+        gpio_set_inover(_rx, _invertRX ? 1 : 0);
+    }
     if (_rts != UART_PIN_NOT_DEFINED) {
         _fcnRts = gpio_get_function(_rts);
         gpio_set_function(_rts, GPIO_FUNC_UART);
@@ -315,10 +323,14 @@ void SerialUART::end() {
     mutex_exit(&_mutex);
 
     // Restore pin functions
-    gpio_set_function(_tx, _fcnTx);
-    gpio_set_outover(_tx, 0);
-    gpio_set_function(_rx, _fcnRx);
-    gpio_set_inover(_rx, 0);
+    if (_tx != UART_PIN_NOT_DEFINED) {
+        gpio_set_function(_tx, _fcnTx);
+        gpio_set_outover(_tx, 0);
+    }
+    if (_rx != UART_PIN_NOT_DEFINED) {
+        gpio_set_function(_rx, _fcnRx);
+        gpio_set_inover(_rx, 0);
+    }
     if (_rts != UART_PIN_NOT_DEFINED) {
         gpio_set_function(_rts, _fcnRts);
         gpio_set_outover(_rts, 0);
