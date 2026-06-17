@@ -92,6 +92,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
 * Pintronix PinMax
+* PCBCupid Glyph Mini 2040
 * RAKwireless RAK11300
 * Redscorp RP2040-Eins
 * Redscorp RP2040-ProMini
