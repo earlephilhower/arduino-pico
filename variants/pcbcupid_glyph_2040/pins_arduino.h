@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2024 PCBCupid
- * SPDX-License-Identifier: MIT
- */
+    Copyright (c) 2024 PCBCupid
+    SPDX-License-Identifier: MIT
+*/
 #pragma once
 
 // LED
