@@ -1,15 +1,15 @@
 /*
- * pins_arduino.h - PCBCupid GLYPH Mini 2040
- * RP2040, W25Q64 8MB external flash
- *
- * Available GPIOs: GP0–GP15, GP26–GP29
- * Not broken out: GP16 (LED, internal), GP17, GP18, GP19, GP20, GP21, GP22, GP23, GP24, GP25
- *
- * Pin overlap notice:
- *   GP4/GP5  — shared between SPI0 (MISO/SS) and UART1 (TX/RX) and I2C0 (SDA/SCL)
- *   GP8/GP9  — shared between SPI1 (RX/CSn) and UART1 alt (TX/RX) and I2C0 (SDA/SCL)
- *   Use either UART1 or I2C0 on GP4/GP5 or GP8/GP9 — not both simultaneously.
- */
+    pins_arduino.h - PCBCupid GLYPH Mini 2040
+    RP2040, W25Q64 8MB external flash
+
+    Available GPIOs: GP0–GP15, GP26–GP29
+    Not broken out: GP16 (LED, internal), GP17, GP18, GP19, GP20, GP21, GP22, GP23, GP24, GP25
+
+    Pin overlap notice:
+     GP4/GP5  — shared between SPI0 (MISO/SS) and UART1 (TX/RX) and I2C0 (SDA/SCL)
+     GP8/GP9  — shared between SPI1 (RX/CSn) and UART1 alt (TX/RX) and I2C0 (SDA/SCL)
+     Use either UART1 or I2C0 on GP4/GP5 or GP8/GP9 — not both simultaneously.
+*/
 
 #pragma once
 
