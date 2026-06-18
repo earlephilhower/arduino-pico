@@ -673,6 +673,9 @@ MakeBoard("pimoroni_explorer", "rp2350", "Pimoroni", "Explorer", "0x2e8a", "0x10
 MakeBoard("pintronix_pinmax", "rp2040", "Pintronix", "PinMax", "0x2e8a", "0x9101", 250, "PINTRONIX_PINMAX", 4, 0, "boot2_w25q080_2_padded_checksum")
 
 # PCBCupid
+MakeBoard("pcbcupid_glyph_2040", "rp2040", "PCBCupid", "Glyph 2040", "0x2e8a", "0x1128", 250, "PCBCUPID_GLYPH_2040", 8, 0, "boot2_w25q64jv_4_padded_checksum", None, "https://pcbcupid.com")
+
+# PCBCupid
 MakeBoard("pcbcupid_glyph_mini_2040", "rp2040", "PCBCupid", "Glyph Mini 2040", "0x2e8a", "0x1123", 250, "PCBCUPID_GLYPH_MINI_2040", 8, 0, "boot2_w25q64jv_4_padded_checksum", None, "https://pcbcupid.com")
 
 # RAKwireless
