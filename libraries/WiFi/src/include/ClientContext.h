@@ -27,6 +27,7 @@ class WiFiClient;
 typedef void (*discard_cb_t)(void*, ClientContext*);
 
 #include <assert.h>
+#include "lwip_wrap.h"
 #include "lwip/timeouts.h"
 
 //#include <esp_priv.h>
@@ -66,13 +67,8 @@ public:
     err_t abort() {
         if (_pcb) {
             DEBUGV(":abort\r\n");
-            tcp_arg(_pcb, nullptr);
-            tcp_sent(_pcb, nullptr);
-            tcp_recv(_pcb, nullptr);
-            tcp_err(_pcb, nullptr);
-            tcp_poll(_pcb, nullptr, 0);
             tcp_abort(_pcb);
-            _pcb = nullptr;
+            _pcb = nullptr; // callback should have done this already
         }
         return ERR_ABRT;
     }
@@ -81,18 +77,13 @@ public:
         err_t err = ERR_OK;
         if (_pcb) {
             DEBUGV(":close\r\n");
-            tcp_arg(_pcb, nullptr);
-            tcp_sent(_pcb, nullptr);
-            tcp_recv(_pcb, nullptr);
-            tcp_err(_pcb, nullptr);
-            tcp_poll(_pcb, nullptr, 0);
             err = tcp_close(_pcb);
             if (err != ERR_OK) {
                 DEBUGV(":tc err %d\r\n", (int) err);
                 tcp_abort(_pcb);
                 err = ERR_ABRT;
             }
-            _pcb = nullptr;
+            _pcb = nullptr;  // callback should have done this already
         }
         return err;
     }
@@ -162,10 +153,12 @@ public:
     }
 
     size_t availableForWrite() const {
+        LwipMutexOrVTaskSuspendAll m;
         return _pcb ? tcp_sndbuf(_pcb) : 0;
     }
 
     void setNoDelay(bool nodelay) {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return;
         }
@@ -177,6 +170,7 @@ public:
     }
 
     bool getNoDelay() const {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return false;
         }
@@ -200,10 +194,12 @@ public:
             return 0;
         }
 
+        // extra unsafe: we are giving out a pointer into _pcb!
         return &_pcb->remote_ip;
     }
 
     uint16_t getRemotePort() const {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return 0;
         }
@@ -216,10 +212,12 @@ public:
             return 0;
         }
 
+        // extra unsafe: we are giving out a pointer into _pcb!
         return &_pcb->local_ip;
     }
 
     uint16_t getLocalPort() const {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb) {
             return 0;
         }
@@ -356,6 +354,7 @@ public:
     }
 
     uint8_t state() const {
+        LwipMutexOrVTaskSuspendAll m;
         if (!_pcb || _pcb->state == CLOSE_WAIT || _pcb->state == CLOSING) {
             // CLOSED for WiFIClient::status() means nothing more can be written
             return CLOSED;
@@ -399,6 +398,7 @@ public:
     }
 
     void keepAlive(uint16_t idle_sec = TCP_DEFAULT_KEEPALIVE_IDLE_SEC, uint16_t intv_sec = TCP_DEFAULT_KEEPALIVE_INTERVAL_SEC, uint8_t count = TCP_DEFAULT_KEEPALIVE_COUNT) {
+        LwipMutexOrVTaskSuspendAll m;
         if (idle_sec && intv_sec && count) {
             _pcb->so_options |= SOF_KEEPALIVE;
             _pcb->keep_idle = (uint32_t)1000 * idle_sec;
@@ -410,18 +410,22 @@ public:
     }
 
     bool isKeepAliveEnabled() const {
+        LwipMutexOrVTaskSuspendAll m;
         return !!(_pcb->so_options & SOF_KEEPALIVE);
     }
 
     uint16_t getKeepAliveIdle() const {
+        LwipMutexOrVTaskSuspendAll m;
         return isKeepAliveEnabled() ? (_pcb->keep_idle + 500) / 1000 : 0;
     }
 
     uint16_t getKeepAliveInterval() const {
+        LwipMutexOrVTaskSuspendAll m;
         return isKeepAliveEnabled() ? (_pcb->keep_intvl + 500) / 1000 : 0;
     }
 
     uint8_t getKeepAliveCount() const {
+        LwipMutexOrVTaskSuspendAll m;
         return isKeepAliveEnabled() ? _pcb->keep_cnt : 0;
     }
 
@@ -524,10 +528,17 @@ protected:
             const auto remaining = _datalen - _written;
             size_t next_chunk_size;
             {
+                // trick to read safely maybe?
+                // should be safe against interrupts in single core
+                // but with dual core this may be problematic unless reads are atomic
+                volatile tcp_pcb *pcb = _pcb;
+                if(!pcb) {
+                    return false;
+                }
+                next_chunk_size = std::min((size_t)tcp_sndbuf(pcb), remaining);
                 if (!_pcb) {
                     return false;
                 }
-                next_chunk_size = std::min((size_t)tcp_sndbuf(_pcb), remaining);
                 // Potentially reduce transmit size if we are tight on memory, but only if it doesn't return a 0 chunk size
                 if (next_chunk_size > (size_t)(1 << scale)) {
                     next_chunk_size >>= scale;
@@ -555,9 +566,6 @@ protected:
                 flags |= TCP_WRITE_FLAG_COPY;
             }
 
-            if (!_pcb) {
-                return false;
-            }
             err_t err = tcp_write(_pcb, buf, next_chunk_size, flags);
 
             DEBUGV(":wrc %d %d %d\r\n", next_chunk_size, remaining, (int)err);
@@ -572,6 +580,9 @@ protected:
                 } else {
                     break;
                 }
+            } else if(err == ERR_PCB_IS_NULLPTR) {
+                // is sent by lwip_wrap.cpp when _pcb==NULL
+                return false;
             } else {
                 // ERR_MEM(-1) is a valid error meaning
                 // "come back later". It leaves state() opened
@@ -579,7 +590,7 @@ protected:
             }
         }
 
-        if (has_written && _pcb) {
+        if (has_written) {
             // lwIP's tcp_output doc: "Find out what we can send and send it"
             // *with respect to Nagle*
             // more info: https://lists.gnu.org/archive/html/lwip-users/2017-11/msg00134.html
@@ -623,9 +634,8 @@ protected:
             pbuf_ref(_rx_buf);
             pbuf_free(head);
         }
-        if (_pcb) {
-            tcp_recved(_pcb, size);
-        }
+        // _pcb may be NULL, which is checked for in lwip_wrap.c
+        tcp_recved(_pcb, size);
     }
 
     err_t _recv(tcp_pcb* pcb, pbuf* pb, err_t err) {
@@ -747,4 +757,27 @@ private:
     ClientContext* _next;
 
     bool _sync;
+
+    class LwipMutexOrVTaskSuspendAll:public LWIPMutex {
+        // When using IRQ-driven Ethernet, an interrupt can cause lwIP to free _pcb and call _error() at any time.
+        // So ClientContext can never assume _pcb != nullptr unless lwIP is blocked from running.
+
+        // On baremetal, we can simply use LwipMutex.
+
+        // On freeRTOS, that is solved by null checks in lwip_wrap.cpp, which happen after switching to the lwIP task.
+        // However, that does not work for macros like tcp_sndbuf or tcp_nagle_disable.
+        // Since they are extremely simple and fast, we just disable all task switching for those.
+    public:
+        LwipMutexOrVTaskSuspendAll() {
+#if defined(__FREERTOS)
+            vTaskSuspendAll();
+#endif
+        }
+
+        ~LwipMutexOrVTaskSuspendAll() {
+#if defined(__FREERTOS)
+            xTaskResumeAll();
+#endif
+        }
+    };
 };

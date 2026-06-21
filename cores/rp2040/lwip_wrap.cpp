@@ -34,6 +34,7 @@
 #include <pico/btstack_run_loop_async_context.h>
 #ifdef __FREERTOS
 #include "freertos/freertos-lwip.h"
+
 #endif
 
 //auto_init_recursive_mutex(__lwipMutex); // Only for case with no Ethernet or PicoW, but still doing LWIP (PPP?)
@@ -205,7 +206,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_arg(pcb, arg);
+        if (pcb != nullptr) {
+            __real_tcp_arg(pcb, arg);
+        }
     }
 
     extern struct tcp_pcb *__real_tcp_new(void);
@@ -248,7 +251,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_bind(pcb, ipaddr, port);
+        if (pcb != nullptr) {
+            return __real_tcp_bind(pcb, ipaddr, port);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_tcp_bind_netif(struct tcp_pcb *pcb, const struct netif *netif);
@@ -262,7 +269,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_bind_netif(pcb, netif);
+        if (pcb != nullptr) {
+            return __real_tcp_bind_netif(pcb, netif);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern struct tcp_pcb *__real_tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog);
@@ -276,7 +287,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_listen_with_backlog(pcb, backlog);
+        if (pcb != nullptr) {
+            return __real_tcp_listen_with_backlog(pcb, backlog);
+        } else {
+            return nullptr;
+        }
     }
 
 #if 0
@@ -291,7 +306,12 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_listen_with_backlog_and_err(pcb, backlog, err);
+        if (pcb != nullptr) {
+            return __real_tcp_listen_with_backlog_and_err(pcb, backlog, err);
+        } else {
+            (*err) = ERR_PCB_IS_NULLPTR;
+            return nullptr;
+        }
     }
 #endif
 
@@ -306,7 +326,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_accept(pcb, accept);
+        if (pcb != nullptr) {
+            __real_tcp_accept(pcb, accept);
+        }
     }
 
     extern err_t __real_tcp_connect(struct tcp_pcb *pcb, ip_addr_t *ipaddr, u16_t port, err_t (* connected)(void *arg, struct tcp_pcb *tpcb, err_t err));
@@ -320,7 +342,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_connect(pcb, ipaddr, port, connected);
+        if (pcb != nullptr) {
+            return __real_tcp_connect(pcb, ipaddr, port, connected);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_tcp_write(struct tcp_pcb *pcb, const void *dataptr, u16_t len, u8_t apiflags);
@@ -334,7 +360,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_write(pcb, dataptr, len, apiflags);
+        if (pcb != nullptr) {
+            return __real_tcp_write(pcb, dataptr, len, apiflags);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern void __real_tcp_sent(struct tcp_pcb *pcb, err_t (* sent)(void *arg, struct tcp_pcb *tpcb, u16_t len));
@@ -347,7 +377,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_sent(pcb, sent);
+        if (pcb != nullptr) {
+            __real_tcp_sent(pcb, sent);
+        }
     }
 
     extern void __real_tcp_recv(struct tcp_pcb *pcb, err_t (* recv)(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err));
@@ -360,7 +392,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_recv(pcb, recv);
+        if (pcb != nullptr) {
+            __real_tcp_recv(pcb, recv);
+        }
     }
 
     extern void __real_tcp_recved(struct tcp_pcb *pcb, u16_t len);
@@ -373,7 +407,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_recved(pcb, len);
+        if (pcb != nullptr) {
+            __real_tcp_recved(pcb, len);
+        }
     }
 
     extern void __real_tcp_poll(struct tcp_pcb *pcb, err_t (* poll)(void *arg, struct tcp_pcb *tpcb), u8_t interval);
@@ -386,7 +422,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_poll(pcb, poll, interval);
+        if (pcb != nullptr) {
+            __real_tcp_poll(pcb, poll, interval);
+        }
     }
 
     extern err_t __real_tcp_close(struct tcp_pcb *pcb);
@@ -400,7 +438,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_close(pcb);
+        if (pcb != nullptr) {
+            return __real_tcp_close(pcb);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern void __real_tcp_abort(struct tcp_pcb *pcb);
@@ -413,7 +455,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_abort(pcb);
+        if (pcb != nullptr) {
+            __real_tcp_abort(pcb);
+        }
     }
 
     extern void __real_tcp_err(struct tcp_pcb *pcb, void (* err)(void *arg, err_t err));
@@ -426,7 +470,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_err(pcb, err);
+        if (pcb != nullptr) {
+            __real_tcp_err(pcb, err);
+        }
     }
 
     extern err_t __real_tcp_output(struct tcp_pcb *pcb);
@@ -440,7 +486,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_output(pcb);
+        if (pcb != nullptr) {
+            return __real_tcp_output(pcb);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern void __real_tcp_setprio(struct tcp_pcb *pcb, u8_t prio);
@@ -453,7 +503,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_setprio(pcb, prio);
+        if (pcb != nullptr) {
+            __real_tcp_setprio(pcb, prio);
+        }
     }
 
     extern err_t __real_tcp_shutdown(struct tcp_pcb *pcb, int shut_rx, int shut_tx);
@@ -467,7 +519,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_tcp_shutdown(pcb, shut_rx, shut_tx);
+        if (pcb != nullptr) {
+            return __real_tcp_shutdown(pcb, shut_rx, shut_tx);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
 
@@ -481,7 +537,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_backlog_delayed(pcb);
+        if (pcb != nullptr) {
+            __real_tcp_backlog_delayed(pcb);
+        }
     }
 
     extern void __real_tcp_backlog_accepted(struct tcp_pcb* pcb);
@@ -494,8 +552,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_tcp_backlog_accepted(pcb);
+        if (pcb != nullptr) {
+            __real_tcp_backlog_accepted(pcb);
+        }
     }
+
     extern struct udp_pcb *__real_udp_new(void);
     struct udp_pcb *__wrap_udp_new(void) {
 #ifdef __FREERTOS
@@ -534,7 +595,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_udp_remove(pcb);
+        if (pcb != nullptr) {
+            __real_udp_remove(pcb);
+        }
     }
 
     extern err_t __real_udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
@@ -548,7 +611,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_udp_bind(pcb, ipaddr, port);
+        if (pcb != nullptr) {
+            return __real_udp_bind(pcb, ipaddr, port);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
@@ -562,7 +629,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_udp_connect(pcb, ipaddr, port);
+        if (pcb != nullptr) {
+            return __real_udp_connect(pcb, ipaddr, port);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_udp_disconnect(struct udp_pcb *pcb);
@@ -576,7 +647,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_udp_disconnect(pcb);
+        if (pcb != nullptr) {
+            return __real_udp_disconnect(pcb);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_udp_send(struct udp_pcb *pcb, struct pbuf *p);
@@ -590,7 +665,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_udp_send(pcb, p);
+        if (pcb != nullptr) {
+            return __real_udp_send(pcb, p);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern void __real_udp_recv(struct udp_pcb *pcb, void (* recv)(void *arg, struct udp_pcb *upcb, struct pbuf *p, ip_addr_t *addr, u16_t port), void *recv_arg);
@@ -603,7 +682,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_udp_recv(pcb, recv, recv_arg);
+        if (pcb != nullptr) {
+            __real_udp_recv(pcb, recv, recv_arg);
+        }
     }
 
     extern err_t __real_udp_sendto(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port);
@@ -617,7 +698,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_udp_sendto(pcb, p, dst_ip, dst_port);
+        if (pcb != nullptr) {
+            return __real_udp_sendto(pcb, p, dst_ip, dst_port);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif);
@@ -631,7 +716,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_udp_sendto_if(pcb, p, dst_ip, dst_port, netif);
+        if (pcb != nullptr) {
+            return __real_udp_sendto_if(pcb, p, dst_ip, dst_port, netif);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif, const ip_addr_t *src_ip);
@@ -645,7 +734,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_udp_sendto_if_src(pcb, p, dst_ip, dst_port, netif, src_ip);
+        if (pcb != nullptr) {
+            return __real_udp_sendto_if_src(pcb, p, dst_ip, dst_port, netif, src_ip);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     // sys_check_timeouts is special case because the async process will call it.  If we're already in a timeout check, just do a noop
@@ -938,7 +1031,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_raw_connect(pcb, ipaddr);
+        if (pcb != nullptr) {
+            return __real_raw_connect(pcb, ipaddr);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern void __real_raw_recv(struct raw_pcb *pcb, raw_recv_fn recv, void *recv_arg);
@@ -951,7 +1048,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_raw_recv(pcb, recv, recv_arg);
+        if (pcb != nullptr) {
+            __real_raw_recv(pcb, recv, recv_arg);
+        }
     }
 
     extern err_t __real_raw_bind(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
@@ -965,7 +1064,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_raw_bind(pcb, ipaddr);
+        if (pcb != nullptr) {
+            return __real_raw_bind(pcb, ipaddr);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *ipaddr);
@@ -979,7 +1082,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_raw_sendto(pcb, p, ipaddr);
+        if (pcb != nullptr) {
+            return __real_raw_sendto(pcb, p, ipaddr);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern err_t __real_raw_send(struct raw_pcb *pcb, struct pbuf *p);
@@ -993,7 +1100,11 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        return __real_raw_send(pcb, p);
+        if (pcb != nullptr) {
+            return __real_raw_send(pcb, p);
+        } else {
+            return ERR_PCB_IS_NULLPTR;
+        }
     }
 
     extern void __real_raw_remove(struct raw_pcb *pcb);
@@ -1006,7 +1117,9 @@ extern "C" {
         }
 #endif
         LWIPMutex m;
-        __real_raw_remove(pcb);
+        if (pcb != nullptr) {
+            __real_raw_remove(pcb);
+        }
     }
 
     extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
