@@ -28631,9 +28631,9 @@ pintronix_pinmax.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_cms
 pintronix_pinmax.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
-# PCBCupid Glyph 2040
+# PCBCupid Pcbcupid GLYPH 2040
 # -----------------------------------
-pcbcupid_glyph_2040.name=PCBCupid Glyph 2040
+pcbcupid_glyph_2040.name=PCBCupid Pcbcupid GLYPH 2040
 pcbcupid_glyph_2040.vid.0=0x2e8a
 pcbcupid_glyph_2040.pid.0=0x1128
 pcbcupid_glyph_2040.vid.1=0x2e8a
@@ -28672,7 +28672,7 @@ pcbcupid_glyph_2040.build.core=rp2040
 pcbcupid_glyph_2040.build.ldscript=memmap_default.ld
 pcbcupid_glyph_2040.build.boot2=boot2_w25q64jv_4_padded_checksum
 pcbcupid_glyph_2040.build.usb_manufacturer="PCBCupid"
-pcbcupid_glyph_2040.build.usb_product="Glyph 2040"
+pcbcupid_glyph_2040.build.usb_product="Pcbcupid GLYPH 2040"
 pcbcupid_glyph_2040.menu.flash.8388608_0=8MB (no FS)
 pcbcupid_glyph_2040.menu.flash.8388608_0.upload.maximum_size=8384512
 pcbcupid_glyph_2040.menu.flash.8388608_0.build.flash_total=8388608
@@ -28903,9 +28903,9 @@ pcbcupid_glyph_2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool=picoprobe_
 pcbcupid_glyph_2040.menu.uploadmethod.picoprobe_cmsis_dap.upload.tool.default=picoprobe_cmsis_dap
 
 # -----------------------------------
-# PCBCupid Glyph Mini 2040
+# PCBCupid Pcbcupid GLYPH MINI 2040
 # -----------------------------------
-pcbcupid_glyph_mini_2040.name=PCBCupid Glyph Mini 2040
+pcbcupid_glyph_mini_2040.name=PCBCupid Pcbcupid GLYPH MINI 2040
 pcbcupid_glyph_mini_2040.vid.0=0x2e8a
 pcbcupid_glyph_mini_2040.pid.0=0x1123
 pcbcupid_glyph_mini_2040.vid.1=0x2e8a
@@ -28944,7 +28944,7 @@ pcbcupid_glyph_mini_2040.build.core=rp2040
 pcbcupid_glyph_mini_2040.build.ldscript=memmap_default.ld
 pcbcupid_glyph_mini_2040.build.boot2=boot2_w25q64jv_4_padded_checksum
 pcbcupid_glyph_mini_2040.build.usb_manufacturer="PCBCupid"
-pcbcupid_glyph_mini_2040.build.usb_product="Glyph Mini 2040"
+pcbcupid_glyph_mini_2040.build.usb_product="Pcbcupid GLYPH MINI 2040"
 pcbcupid_glyph_mini_2040.menu.flash.8388608_0=8MB (no FS)
 pcbcupid_glyph_mini_2040.menu.flash.8388608_0.upload.maximum_size=8384512
 pcbcupid_glyph_mini_2040.menu.flash.8388608_0.build.flash_total=8388608
