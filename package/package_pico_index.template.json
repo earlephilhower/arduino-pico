@@ -267,6 +267,12 @@
                      "name": "Olimex RP2040-Pico30"
                   },
                   {
+                     "name": "Pcbcupid GLYPH 2040"
+                  },
+                  {
+                     "name": "Pcbcupid GLYPH MINI 2040"
+                  },
+                  {
                      "name": "PicoLume Transceiver"
                   },
                   {
@@ -304,12 +310,6 @@
                   },
                   {
                      "name": "Pintronix PinMax"
-                  },
-                  {
-                     "name": "Pcbcupid GLYPH 2040"
-                  },
-                  {
-                     "name": "Pcbcupid GLYPH MINI 2040"
                   },
                   {
                      "name": "RAKwireless RAK11300"
