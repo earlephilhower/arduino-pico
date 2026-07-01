@@ -33,7 +33,7 @@
         "arduino",
         "picosdk"
     ],
-    "name": "Glyph Mini 2040",
+    "name": "GLYPH MINI 2040",
     "upload": {
         "maximum_ram_size": 262144,
         "maximum_size": 8388608,
@@ -52,5 +52,5 @@
         ]
     },
     "url": "https://pcbcupid.com",
-    "vendor": "PCBCupid"
+    "vendor": "Pcbcupid"
 }
