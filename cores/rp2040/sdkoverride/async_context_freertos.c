@@ -8,10 +8,10 @@
 
 
 /*
- * Copyright (c) 2022 Raspberry Pi (Trading) Ltd.
- *
- * SPDX-License-Identifier: BSD-3-Clause
- */
+    Copyright (c) 2022 Raspberry Pi (Trading) Ltd.
+
+    SPDX-License-Identifier: BSD-3-Clause
+*/
 
 #include <string.h>
 #include "pico/async_context_freertos.h"
@@ -39,7 +39,7 @@ static TickType_t sensible_ticks_until(absolute_time_t until) {
     } else {
         static const uint32_t max_delay = 60000000;
         uint32_t delay_us_32 = delay_us > max_delay ? max_delay : (uint32_t) delay_us;
-        ticks = pdMS_TO_TICKS((delay_us_32+999)/1000);
+        ticks = pdMS_TO_TICKS((delay_us_32 + 999) / 1000);
         // we want to round up, as both rounding down to zero is wrong (may produce no delays
         // where delays are needed), but also we don't want to wake up, and then realize there
         // is no work to do yet!
@@ -76,7 +76,9 @@ static void async_context_task(__unused void *vself) {
     async_context_freertos_t *self = (async_context_freertos_t *)vself;
     do {
         ulTaskNotifyTake(pdFALSE, portMAX_DELAY);
-        if (self->task_should_exit) break;
+        if (self->task_should_exit) {
+            break;
+        }
         async_context_freertos_acquire_lock_blocking(&self->core);
         process_under_lock(self);
         async_context_freertos_release_lock(&self->core);
@@ -108,8 +110,7 @@ static void async_context_freertos_wake_up(async_context_t *self_base) {
     }
 }
 
-static void timer_handler(__unused TimerHandle_t handle)
-{
+static void timer_handler(__unused TimerHandle_t handle) {
     async_context_freertos_t *self = (async_context_freertos_t *)pvTimerGetTimerID(handle);
     async_context_freertos_wake_up(&self->core);
 }
@@ -124,46 +125,46 @@ bool async_context_freertos_init(async_context_freertos_t *self, async_context_f
     self->lock_mutex = xSemaphoreCreateRecursiveMutexStatic(&self->lock_mutex_buf);
     self->work_needed_sem = xSemaphoreCreateBinaryStatic(&self->work_needed_sem_buf);
     self->task_complete_sem = xSemaphoreCreateBinaryStatic(&self->task_complete_sem_buf);
-    self->timer_handle = xTimerCreateStatic( "async_context_timer",       // Just a text name, not used by the kernel.
-                                             portMAX_DELAY,
-                                             pdFALSE,        // The timers will auto-reload themselves when they expire.
-                                             self,
-                                             timer_handler,
-                                             &self->timer_buf);
-    self->task_handle = xTaskCreateStatic( async_context_task,
-                                           "async_context_task",
-                                           config->task_stack_size,
-                                           self,
-                                           config->task_priority,
-                                           config->task_stack,
-                                           &self->task_buf);
+    self->timer_handle = xTimerCreateStatic("async_context_timer",        // Just a text name, not used by the kernel.
+                                            portMAX_DELAY,
+                                            pdFALSE,        // The timers will auto-reload themselves when they expire.
+                                            self,
+                                            timer_handler,
+                                            &self->timer_buf);
+    self->task_handle = xTaskCreateStatic(async_context_task,
+                                          "async_context_task",
+                                          config->task_stack_size,
+                                          self,
+                                          config->task_priority,
+                                          config->task_stack,
+                                          &self->task_buf);
 #else
     self->lock_mutex = xSemaphoreCreateRecursiveMutex();
     self->work_needed_sem = xSemaphoreCreateBinary();
     self->task_complete_sem = xSemaphoreCreateBinary();
-    self->timer_handle = xTimerCreate( "async_context_timer",       // Just a text name, not used by the kernel.
-                                    portMAX_DELAY,
-                                    pdFALSE,        // The timers will auto-reload themselves when they expire.
-                                    self,
-                                    timer_handler);
+    self->timer_handle = xTimerCreate("async_context_timer",        // Just a text name, not used by the kernel.
+                                      portMAX_DELAY,
+                                      pdFALSE,        // The timers will auto-reload themselves when they expire.
+                                      self,
+                                      timer_handler);
 #endif
 
     if (!self->lock_mutex ||
-        !self->work_needed_sem ||
-        !self->timer_handle ||
+            !self->work_needed_sem ||
+            !self->timer_handle ||
 #if configSUPPORT_STATIC_ALLOCATION
-        !self->task_handle
+            !self->task_handle
 #else
-        pdPASS != xTaskCreate(async_context_task, "async_context_task", config->task_stack_size, self,
-                config->task_priority, &self->task_handle)
+            pdPASS != xTaskCreate(async_context_task, "async_context_task", config->task_stack_size, self,
+                                  config->task_priority, &self->task_handle)
 #endif
-    ) {
+       ) {
         async_context_deinit(&self->core);
         return false;
     }
 #if configNUMBER_OF_CORES > 1
     UBaseType_t core_id = config->task_core_id;
-    if (core_id == (UBaseType_t)-1) {
+    if (core_id == (UBaseType_t) -1) {
         core_id = portGET_CORE_ID();
     }
     // we must run on a single core
@@ -232,7 +233,7 @@ void async_context_freertos_lock_check(__unused async_context_t *self_base) {
 #endif
 }
 
-typedef struct sync_func_call{
+typedef struct sync_func_call {
     async_when_pending_worker_t worker;
     SemaphoreHandle_t sem;
 #if configSUPPORT_STATIC_ALLOCATION
@@ -337,25 +338,27 @@ static void async_context_freertos_wait_for_work_until(async_context_t *self_bas
     assert(!portCHECK_IF_IN_ISR());
     while (!time_reached(until)) {
         TickType_t ticks = sensible_ticks_until(until);
-        if (!ticks || xSemaphoreTake(self->work_needed_sem, ticks)) return;
+        if (!ticks || xSemaphoreTake(self->work_needed_sem, ticks)) {
+            return;
+        }
     }
 }
 
 static const async_context_type_t template = {
-        .type = ASYNC_CONTEXT_FREERTOS,
-        .acquire_lock_blocking = async_context_freertos_acquire_lock_blocking,
-        .release_lock = async_context_freertos_release_lock,
-        .lock_check = async_context_freertos_lock_check,
-        .execute_sync = async_context_freertos_execute_sync,
-        .add_at_time_worker = async_context_freertos_add_at_time_worker,
-        .remove_at_time_worker = async_context_freertos_remove_at_time_worker,
-        .add_when_pending_worker = async_context_freertos_add_when_pending_worker,
-        .remove_when_pending_worker = async_context_freertos_remove_when_pending_worker,
-        .set_work_pending = async_context_freertos_set_work_pending,
-        .poll = 0,
-        .wait_until = async_context_freertos_wait_until,
-        .wait_for_work_until = async_context_freertos_wait_for_work_until,
-        .deinit = async_context_freertos_deinit,
+    .type = ASYNC_CONTEXT_FREERTOS,
+    .acquire_lock_blocking = async_context_freertos_acquire_lock_blocking,
+    .release_lock = async_context_freertos_release_lock,
+    .lock_check = async_context_freertos_lock_check,
+    .execute_sync = async_context_freertos_execute_sync,
+    .add_at_time_worker = async_context_freertos_add_at_time_worker,
+    .remove_at_time_worker = async_context_freertos_remove_at_time_worker,
+    .add_when_pending_worker = async_context_freertos_add_when_pending_worker,
+    .remove_when_pending_worker = async_context_freertos_remove_when_pending_worker,
+    .set_work_pending = async_context_freertos_set_work_pending,
+    .poll = 0,
+    .wait_until = async_context_freertos_wait_until,
+    .wait_for_work_until = async_context_freertos_wait_for_work_until,
+    .deinit = async_context_freertos_deinit,
 };
 
 #endif

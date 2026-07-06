@@ -61,15 +61,15 @@ void BLERemoteService::scanCharacteristics(volatile bool *flag) {
 
 void BLERemoteService::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
     (void channel;
-    (void) size;
-    gatt_client_characteristic_t characteristic;
+     (void) size;
+     gatt_client_characteristic_t characteristic;
 
     if (type != HCI_EVENT_PACKET) {
-        return;
-    }
-    switch (hci_event_packet_get_type(packet)) {
-    case GATT_EVENT_CHARACTERISTIC_QUERY_RESULT:
-        gatt_event_characteristic_query_result_get_characteristic(packet, &characteristic);
+    return;
+}
+switch (hci_event_packet_get_type(packet)) {
+case GATT_EVENT_CHARACTERISTIC_QUERY_RESULT:
+    gatt_event_characteristic_query_result_get_characteristic(packet, &characteristic);
         _characteristic.push_back(new BLERemoteCharacteristic(con_handle, &characteristic));
         break;
     case GATT_EVENT_QUERY_COMPLETE:
