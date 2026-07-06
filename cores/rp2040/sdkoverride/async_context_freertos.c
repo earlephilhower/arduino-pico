@@ -6,7 +6,7 @@
 #endif
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include "../../../pico-sdk/src/rp2_common/pico_async_context/async_context_freertos.c"
 #pragma GCC diagnostic pop
 
