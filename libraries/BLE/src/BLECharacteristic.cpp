@@ -202,6 +202,8 @@ int BLECharacteristic::handleRead(uint16_t attribute_handle, uint16_t offset, ui
 }
 
 int BLECharacteristic::handleWrite(uint16_t attribute_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size) {
+    (void) transaction_mode;
+    (void) offset;
     // Will be running in BT ctx already
     if (attribute_handle == _configHandle) {
         _notificationEnabled = little_endian_read_16(buffer, 0);

@@ -47,6 +47,7 @@ void NCMEthernetlwIP::ncmTaskFunction(void *param) {
 void NCMEthernetlwIP::_call_irq(void *cbData) {
 #else
 void NCMEthernetlwIP::_call_irq(async_context_t *context, async_when_pending_worker_t *worker) {
+    (void) context;
 #endif
 #ifdef __FREERTOS
     // In freertos we can afford to block, as long as no other code uses tinyUSB and lwIP at the same time.
