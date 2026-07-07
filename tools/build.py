@@ -63,7 +63,7 @@ def compile(tmp_dir, sketch, cache, tools_dir, hardware_dir, ide_path, f, args):
     else:
         # Debug=Serial,DebugLevel=Core____
         fqbn = '-fqbn=pico:rp2040:rpipico:' \
-                   'flash=2097152_65536,' \
+                   'flash=2097152_131072,' \
                    'freq={freq},' \
                    'dbgport={dbgport},' \
                    'dbglvl={dbglvl},' \

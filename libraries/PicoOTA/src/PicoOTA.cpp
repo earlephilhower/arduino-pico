@@ -19,4 +19,7 @@
 
 #include <PicoOTA.h>
 
+// Ensure OTA is possible, requires a FS
+static_assert(FS_END - FS_START > 127 * 1024, "Need to define a 128K or larger filesystem to use OTA");
+
 PicoOTA picoOTA;
