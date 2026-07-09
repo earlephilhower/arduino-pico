@@ -201,6 +201,7 @@ target_link_libraries(pico-${cpu}
     pico_fix
     pico_float
     pico_int64_ops
+    pico_low_power
     pico_malloc
     pico_mem_ops
     pico_multicore

@@ -244,3 +244,8 @@ extern "C" void __attribute__((__noreturn__)) __wrap___stack_chk_fail() {
     }
 }
 
+
+// Pico_Low_Power needs stdio_flush...
+extern "C" void stdio_flush() {
+    Serial.flush();
+}
