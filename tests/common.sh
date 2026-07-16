@@ -236,8 +236,9 @@ function install_ide()
         debug_flags="-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_PORT=Serial"
     fi
     # Set custom warnings for all builds (i.e. could add -Wextra at some point)
-    echo "compiler.c.extra_flags=-Wall -Wextra -Werror -Wdouble-promotion -Wno-ignored-qualifiers $debug_flags" > rp2040/platform.local.txt
-    echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror -Wdouble-promotion -Wno-ignored-qualifiers -Wno-overloaded-virtual $debug_flags" >> rp2040/platform.local.txt
+    # TODO - drop the WARN_EXTRA when https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/586
+    echo "compiler.c.extra_flags=-Wall -Wextra -Werror -Wdouble-promotion -Wno-ignored-qualifiers $debug_flags $WARN_EXTRA" > rp2040/platform.local.txt
+    echo "compiler.cpp.extra_flags=-Wall -Wextra -Werror -Wdouble-promotion -Wno-ignored-qualifiers -Wno-overloaded-virtual $debug_flags $WARN_EXTRA" >> rp2040/platform.local.txt
     echo -e "\n----platform.local.txt----"
     cat rp2040/platform.local.txt
     echo -e "\n----\n"
