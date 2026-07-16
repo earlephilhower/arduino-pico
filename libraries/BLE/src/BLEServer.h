@@ -31,9 +31,11 @@ class BLEServer;
 class BLEServerCallbacks {
 public:
     virtual void onConnect(BLEServer *p) {
+        (void) p;
         DEBUGBLE("BLEServer connect: %p\n", p);
     }
     virtual void onDisconnect(BLEServer *p) {
+        (void) p;
         DEBUGBLE("BLEServer disconnect: %p\n", p);
     }
 };

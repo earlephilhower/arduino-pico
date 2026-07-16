@@ -59,6 +59,8 @@ void BLERemoteCharacteristic::scanDescriptors(volatile bool *flag) {
 }
 
 void BLERemoteCharacteristic::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
+    (void) channel;
+    (void) size;
     if (type != HCI_EVENT_PACKET) {
         return;
     }

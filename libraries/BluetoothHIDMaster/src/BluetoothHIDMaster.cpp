@@ -103,7 +103,7 @@ void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
 
     if (ble) {
         gatt_client_init();
-        hids_client_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
+        hids_host_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
         _hci.setDisconnectCB(NOPARAMCB(BluetoothHIDMaster, disconnect));
     } else {
         // Allow sniff mode requests by HID device and support role switch
@@ -335,7 +335,7 @@ void BluetoothHIDMaster::disconnect() {
     if (!_ble && connected()) {
         hid_host_disconnect(_hid_host_cid);
     } else if (_ble && connected()) {
-        hids_client_disconnect(_hci.getHCIConn());
+        hids_host_disconnect(_hci.getHCIConn());
         gap_disconnect(_hci.getHCIConn());
     }
     _hid_host_descriptor_available = false;
@@ -631,7 +631,7 @@ void BluetoothHIDMaster::sm_packet_handler(uint8_t packet_type, uint16_t channel
             // continue - query primary services
             DEBUGV("Search for HID service.\n");
             //app_state = W4_HID_CLIENT_CONNECTED;
-            hids_client_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+            hids_host_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
             break;
         case ERROR_CODE_CONNECTION_TIMEOUT:
             DEBUGV("Pairing failed, timeout\n");
@@ -669,7 +669,7 @@ void BluetoothHIDMaster::sm_packet_handler(uint8_t packet_type, uint16_t channel
         DEBUGV("Re-encryption complete, success, searching for HID\n");
         if (!_hid_host_descriptor_available) {
             DEBUGV("Connecting to HID service\n");
-            hids_client_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+            hids_host_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
         }
         break;
     default:
@@ -711,7 +711,7 @@ void BluetoothHIDMaster::handle_gatt_client_event(uint8_t packet_type, uint16_t 
     case GATTSERVICE_SUBEVENT_HID_REPORT:
         idx = gattservice_subevent_hid_report_get_service_index(packet);
         btstack_hid_parser_t parser;
-        btstack_hid_parser_init(&parser, hids_client_descriptor_storage_get_descriptor_data(_hid_host_cid, idx), hids_client_descriptor_storage_get_descriptor_len(_hid_host_cid, idx), HID_REPORT_TYPE_INPUT, gattservice_subevent_hid_report_get_report(packet), gattservice_subevent_hid_report_get_report_len(packet));
+        btstack_hid_parser_init(&parser, hids_host_descriptor_storage_get_descriptor_data(_hid_host_cid, idx), hids_host_descriptor_storage_get_descriptor_len(_hid_host_cid, idx), HID_REPORT_TYPE_INPUT, gattservice_subevent_hid_report_get_report(packet), gattservice_subevent_hid_report_get_report_len(packet));
         hid_host_handle_interrupt_report(&parser);
         //hid_handle_input_report(
         //                gattservice_subevent_hid_report_get_service_index(packet),

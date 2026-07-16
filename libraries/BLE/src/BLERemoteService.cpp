@@ -60,6 +60,8 @@ void BLERemoteService::scanCharacteristics(volatile bool *flag) {
 }
 
 void BLERemoteService::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
+    (void) channel;
+    (void) size;
     gatt_client_characteristic_t characteristic;
 
     if (type != HCI_EVENT_PACKET) {

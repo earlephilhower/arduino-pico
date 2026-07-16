@@ -60,6 +60,7 @@ public:
 private:
     async_at_time_worker_t _flushwork;
     static void _flushWorkCB(async_context_t *context, struct async_work_on_timeout *timeout) {
+        (void) context;
         ((BLEServiceUART *)(timeout->user_data))->flush();
     }
 

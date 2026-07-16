@@ -103,6 +103,7 @@ static int64_t cb_cyw43_sleep_timeout_reached(alarm_id_t id, void *ptr) {
 
 // By construction, this will only be called from the LWIP thread on core 0
 static void cb_cyw43_do_poll(void *context) { //, __unused async_when_pending_worker_t *worker) {
+    (void) context;
 #ifndef NDEBUG
     assert(get_core_num() == 0);
 #endif
@@ -124,6 +125,7 @@ static void cb_cyw43_do_poll(void *context) { //, __unused async_when_pending_wo
 }
 
 extern "C" bool __wrap_cyw43_driver_init(async_context_t *context) {
+    (void) context;
     assert(get_core_num() == 0);
     _cyw43_arch_mutex = xSemaphoreCreateRecursiveMutex();
     _cyw43_irq_called_binary = xSemaphoreCreateBinary();
@@ -135,6 +137,7 @@ extern "C" bool __wrap_cyw43_driver_init(async_context_t *context) {
 }
 
 extern "C" void __wrap_cyw43_driver_deinit(async_context_t *context) {
+    (void) context;
     panic("unsipported");
 }
 
