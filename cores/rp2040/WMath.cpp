@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <Arduino.h>
 
 void randomSeed(uint32_t dwSeed) {
     if (dwSeed != 0) {

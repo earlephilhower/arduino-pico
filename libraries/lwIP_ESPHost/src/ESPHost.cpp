@@ -42,12 +42,12 @@ void ESPHost::end() {
     // WiFi is ended in ESPHostLwIP
 }
 
-uint16_t ESPHost::sendFrame(const uint8_t *data, uint16_t datalen) {
+uint16_t ESPHost::sendFrame(struct pbuf *p) {
     ethernet_arch_lwip_gpio_mask();
-    int res = CEspControl::getInstance().sendBuffer(apMode ? ESP_AP_IF : ESP_STA_IF, 0, (uint8_t*) data, datalen);
+    int res = CEspControl::getInstance().sendBuffer(apMode ? ESP_AP_IF : ESP_STA_IF, 0, (uint8_t*) p->payload, p->len);
     CEspControl::getInstance().communicateWithEsp();
     ethernet_arch_lwip_gpio_unmask();
-    return (res == ESP_CONTROL_OK) ? datalen : 0;
+    return (res == ESP_CONTROL_OK) ? p->len : 0;
 }
 
 uint16_t ESPHost::readFrameData(uint8_t *buffer, uint16_t bufsize) {

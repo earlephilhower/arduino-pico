@@ -6,6 +6,6 @@ void setup() {
 }
 
 void loop() {
-  Serial.printf("Core temperature: %2.1fC\n", analogReadTemp());
+  Serial.printf("Core temperature: %2.1fC\n", (double)analogReadTemp());
   delay(1000);
 }

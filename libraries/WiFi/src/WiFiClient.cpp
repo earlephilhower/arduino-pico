@@ -57,7 +57,12 @@ bool WiFiClient::getDefaultSync() {
 
 template<>
 WiFiClient* SList<WiFiClient>::_s_first = 0;
-
+#ifdef __FREERTOS
+template<>
+SemaphoreHandle_t SList<WiFiClient>::_s_first_lock = 0;
+template<>
+bool SList<WiFiClient>::_s_first_lock_created = false;
+#endif
 
 WiFiClient::WiFiClient()
     : _client(0), _owned(0) {

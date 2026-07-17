@@ -1,10 +1,11 @@
 .DS_Store
 system
-tools/dist
 docs/_build
 ota/build
 ota/build-rp2350
 ota/build-rp2350-riscv
+tools/__pycache__
+tools/dist
 tools/libpico/boot
 tools/libpico/build-rp2040
 tools/libpico/build-rp2350

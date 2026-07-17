@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include <lwip/pbuf.h>
 
 class NoDriver {
 public:
@@ -18,9 +19,8 @@ public:
         return false;
     }
 
-    uint16_t sendFrame(const uint8_t* data, uint16_t datalen) {
-        (void) data;
-        (void) datalen;
+    uint16_t sendFrame(struct pbuf *p) {
+        (void) p;
         return 0;
     }
 

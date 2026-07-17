@@ -2,6 +2,8 @@
 // Core0 runs as an SPI master and initiates a transmission to the slave
 // Core1 runs the SPI Slave mode and provides a unique reply to messages from the master
 //
+// Demonstrates async SPI with completion callback using onTransferComplete()
+//
 // Released to the public domain 2024 by Earle F. Philhower, III <earlephilhower@yahoo.com>
 
 #include <SPI.h>
@@ -15,6 +17,12 @@
 
 SPISettings spisettings(1000000, MSBFIRST, SPI_MODE0);
 
+volatile bool masterTransferDone = false;
+
+void masterTransferComplete() {
+  masterTransferDone = true;
+}
+
 // Core 0 will be SPI master
 void setup() {
   SPI.setRX(0);
@@ -23,21 +31,30 @@ void setup() {
   SPI.setTX(3);
   SPI.begin(true);
 
+  // Register callback for async transfer completion
+  SPI.onTransferComplete(masterTransferComplete);
+
   delay(5000);
 }
 
 int transmits = 0;
 void loop() {
   char msg[42];
-  int loops = 0;
   memset(msg, 0, sizeof(msg));
   sprintf(msg, "What's up? This is transmission %d", transmits);
   Serial.printf("\n\nM-SEND: '%s'\n", msg);
   SPI.beginTransaction(spisettings);
+
+  // Start async transfer - callback fires when complete
+  masterTransferDone = false;
   SPI.transferAsync(msg, msg, sizeof(msg));
-  while (!SPI.finishedAsync()) {
+
+  int loops = 0;
+  while (!masterTransferDone) {
     loops++;
+    // Could do other work here while waiting for transfer
   }
+
   SPI.endTransaction();
   Serial.printf("M-RECV: '%s', idle loops %d\n", msg, loops);
   transmits++;

@@ -32,6 +32,9 @@ extern "C" {
 #include <hardware/adc.h>
 #include <hardware/clocks.h>
 #include <Arduino.h>
+#ifdef __FREERTOS
+extern void __startLWIPThread();
+#endif
 
 // From cyw43_ctrl.c
 #define WIFI_JOIN_STATE_KIND_MASK (0x000f)
@@ -50,11 +53,20 @@ struct netif *__getCYW43Netif() {
     return nullptr;
 }
 
+extern struct netif *__getCYW43NetifByItf(int itf) __attribute__((weak));
+struct netif *__getCYW43NetifByItf(int itf) {
+    if (itf == 0) {
+        // Backward-compatible default: use the single-interface getter
+        return __getCYW43Netif();
+    }
+    (void) itf;
+    return nullptr;
+}
+
 // CB from the cyw43 driver
 extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t len, const uint8_t *buf) {
     (void) cb_data;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif && (netif->flags & NETIF_FLAG_LINK_UP)) {
         struct pbuf *p = pbuf_alloc(PBUF_RAW, len, PBUF_POOL);
         if (p != nullptr) {
@@ -69,8 +81,7 @@ extern "C" void __wrap_cyw43_cb_process_ethernet(void *cb_data, int itf, size_t 
 
 extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
     (void) self;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif) {
         netif_set_link_up(netif);
     }
@@ -78,22 +89,12 @@ extern "C" void __wrap_cyw43_cb_tcpip_set_link_up(cyw43_t *self, int itf) {
 
 extern "C" void __wrap_cyw43_cb_tcpip_set_link_down(cyw43_t *self, int itf) {
     (void) self;
-    (void) itf;
-    struct netif *netif = __getCYW43Netif();
+    struct netif *netif = __getCYW43NetifByItf(itf);
     if (netif) {
         netif_set_link_down(netif);
     }
-    self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
-}
-
-extern "C" int __wrap_cyw43_tcpip_link_status(cyw43_t *self, int itf) {
-    struct netif *netif = __getCYW43Netif();
-    //if ((CYW43::_netif->flags & (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP))
-    //  Fake this since it's only used in the SDK
-    if (netif && ((netif->flags & (NETIF_FLAG_LINK_UP)) == (NETIF_FLAG_LINK_UP))) {
-        return CYW43_LINK_UP;
-    } else {
-        return cyw43_wifi_link_status(self, itf);
+    if (itf == 0) {
+        self->wifi_join_state &= ~WIFI_JOIN_STATE_ACTIVE;
     }
 }
 
@@ -102,6 +103,7 @@ extern "C" void __wrap_cyw43_cb_tcpip_init(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
 }
+
 extern "C" void __wrap_cyw43_cb_tcpip_deinit(cyw43_t *self, int itf) {
     (void) self;
     (void) itf;
@@ -149,6 +151,9 @@ bool __isPicoW = true;
 extern "C" void init_cyw43_wifi() {
     __isPicoW = CheckPicoW();
     if (__isPicoW) {
+#ifdef __FREERTOS
+        __startLWIPThread(); // CYW43 async object does work with lwip_callbacks, need to make sure this is available before beginning
+#endif
         // Fix for overclocked CPU: SPI communication breaks down with default "div by 2" speed
         // So, divide clock by 4 for anything including and above 250MHz CPU frequency.
         if (clock_get_hz(clk_sys) >= 250000000) {
@@ -158,22 +163,17 @@ extern "C" void init_cyw43_wifi() {
     }
 }
 
-extern "C" void __lockBluetooth() {
-    async_context_acquire_lock_blocking(cyw43_arch_async_context());
-}
-
-extern "C" void __unlockBluetooth() {
-    async_context_release_lock(cyw43_arch_async_context());
-}
 
 extern "C" void __pinMode(pin_size_t pin, PinMode mode);
 extern "C" void __digitalWrite(pin_size_t pin, PinStatus val);
 extern "C" PinStatus __digitalRead(pin_size_t pin);
 
 extern "C" void cyw43_pinMode(pin_size_t pin, PinMode mode) {
+#if defined PIN_LED
     if (!__isPicoW && (pin == PIN_LED)) {
         pin = 25;  // Silently swap in the Pico's LED
     }
+#endif
     if (pin < 64) {
         __pinMode(pin, mode);
     } else {
@@ -182,9 +182,11 @@ extern "C" void cyw43_pinMode(pin_size_t pin, PinMode mode) {
 }
 
 extern "C" void cyw43_digitalWrite(pin_size_t pin, PinStatus val) {
+#if defined PIN_LED
     if (!__isPicoW && (pin == PIN_LED)) {
         pin = 25;  // Silently swap in the Pico's LED
     }
+#endif
     if (pin < 64) {
         __digitalWrite(pin, val);
     } else {
@@ -193,9 +195,11 @@ extern "C" void cyw43_digitalWrite(pin_size_t pin, PinStatus val) {
 }
 
 extern "C" PinStatus cyw43_digitalRead(pin_size_t pin) {
+#ifdef PIN_LED
     if (!__isPicoW && (pin == PIN_LED)) {
         pin = 25;  // Silently swap in the Pico's LED
     }
+#endif
     if (pin < 64) {
         return __digitalRead(pin);
     } else {

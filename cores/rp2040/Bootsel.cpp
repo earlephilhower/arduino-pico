@@ -26,9 +26,9 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
 
     // Must disable interrupts, as interrupt handlers may be in flash, and we
     // are about to temporarily disable flash access!
-    if (!__isFreeRTOS) {
-        noInterrupts();
-    }
+#ifndef __FREERTOS
+    noInterrupts();
+#endif
     rp2040.idleOtherCore();
 
     // Set chip select to Hi-Z
@@ -55,9 +55,9 @@ static bool __no_inline_not_in_flash_func(get_bootsel_button)() {
                     IO_QSPI_GPIO_QSPI_SS_CTRL_OEOVER_BITS);
 
     rp2040.resumeOtherCore();
-    if (!__isFreeRTOS) {
-        interrupts();
-    }
+#ifndef __FREERTOS
+    interrupts();
+#endif
 
     return button_state;
 }

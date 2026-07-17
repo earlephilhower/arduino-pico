@@ -46,9 +46,11 @@ bool SerialUART::setRX(pin_size_t pin) {
                                   };
 #endif
 
-    if ((!_running) && ((1LL << pin) & valid[uart_get_index(_uart)])) {
-        _rx = pin;
-        return true;
+    if (!_running) {
+        if (((1LL << pin) & valid[uart_get_index(_uart)]) || (pin == UART_PIN_NOT_DEFINED)) {
+            _rx = pin;
+            return true;
+        }
     }
 
     if (_rx == pin) {
@@ -77,9 +79,11 @@ bool SerialUART::setTX(pin_size_t pin) {
                                     __bitset({4, 8, 20, 24})  /* UART1 */
                                   };
 #endif
-    if ((!_running) && ((1LL << pin) & valid[uart_get_index(_uart)])) {
-        _tx = pin;
-        return true;
+    if (!_running) {
+        if (((1LL << pin) & valid[uart_get_index(_uart)]) || (pin == UART_PIN_NOT_DEFINED)) {
+            _tx = pin;
+            return true;
+        }
     }
 
     if (_tx == pin) {
@@ -176,13 +180,10 @@ SerialUART::SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size
     _invertControl = false;
 }
 
-static void _uart0IRQ();
-static void _uart1IRQ();
-
 // Does the selected TX/RX need UART_AUX function (rp2350)
 static gpio_function_t __gpioFunction(int pin) {
     switch (pin) {
-#if defined(PICO_RP2350) && !PICO_RP2350A
+#if defined(PICO_RP2350)
     case 2:
     case 3:
     case 6:
@@ -219,15 +220,19 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         end();
     }
     _overflow = false;
-    _queue = new uint8_t[_fifoSize];
+    _queue = new LocklessQueue<uint8_t>(_fifoSize);
     _baud = baud;
 
-    _fcnTx = gpio_get_function(_tx);
-    _fcnRx = gpio_get_function(_rx);
-    gpio_set_function(_tx, __gpioFunction(_tx));
-    gpio_set_outover(_tx, _invertTX ? 1 : 0);
-    gpio_set_function(_rx, __gpioFunction(_rx));
-    gpio_set_inover(_rx, _invertRX ? 1 : 0);
+    if (_tx != UART_PIN_NOT_DEFINED) {
+        _fcnTx = gpio_get_function(_tx);
+        gpio_set_function(_tx, __gpioFunction(_tx));
+        gpio_set_outover(_tx, _invertTX ? 1 : 0);
+    }
+    if (_rx != UART_PIN_NOT_DEFINED) {
+        _fcnRx = gpio_get_function(_rx);
+        gpio_set_function(_rx, __gpioFunction(_rx));
+        gpio_set_inover(_rx, _invertRX ? 1 : 0);
+    }
     if (_rts != UART_PIN_NOT_DEFINED) {
         _fcnRts = gpio_get_function(_rts);
         gpio_set_function(_rts, GPIO_FUNC_UART);
@@ -239,7 +244,7 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
         gpio_set_inover(_cts, _invertControl ? 1 : 0);
     }
 
-    uart_init(_uart, baud);
+    _actualBaud = uart_init(_uart, baud);
     int bits, stop;
     uart_parity_t parity;
     switch (config & SERIAL_PARITY_MASK) {
@@ -277,8 +282,6 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
     }
     uart_set_format(_uart, bits, stop, parity);
     uart_set_hw_flow(_uart, _cts != UART_PIN_NOT_DEFINED, _rts != UART_PIN_NOT_DEFINED);
-    _writer = 0;
-    _reader = 0;
 
     if (!_polling) {
         if (_uart == uart0) {
@@ -314,16 +317,20 @@ void SerialUART::end() {
     mutex_enter_blocking(&_mutex);
     mutex_enter_blocking(&_fifoMutex);
     uart_deinit(_uart);
-    delete[] _queue;
+    delete _queue;
     // Reset the mutexes once all is off/cleaned up
     mutex_exit(&_fifoMutex);
     mutex_exit(&_mutex);
 
     // Restore pin functions
-    gpio_set_function(_tx, _fcnTx);
-    gpio_set_outover(_tx, 0);
-    gpio_set_function(_rx, _fcnRx);
-    gpio_set_inover(_rx, 0);
+    if (_tx != UART_PIN_NOT_DEFINED) {
+        gpio_set_function(_tx, _fcnTx);
+        gpio_set_outover(_tx, 0);
+    }
+    if (_rx != UART_PIN_NOT_DEFINED) {
+        gpio_set_function(_rx, _fcnRx);
+        gpio_set_inover(_rx, 0);
+    }
     if (_rts != UART_PIN_NOT_DEFINED) {
         gpio_set_function(_rts, _fcnRts);
         gpio_set_outover(_rts, 0);
@@ -358,10 +365,13 @@ int SerialUART::peek() {
     } else {
         _pumpFIFO();
     }
-    if (_writer != _reader) {
-        return _queue[_reader];
+
+    uint8_t ret;
+    if (_queue->peek(&ret)) {
+        return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int SerialUART::read() {
@@ -374,15 +384,13 @@ int SerialUART::read() {
     } else {
         _pumpFIFO();
     }
-    if (_writer != _reader) {
-        auto ret = _queue[_reader];
-        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
-        auto next_reader = (_reader + 1) % _fifoSize;
-        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
-        _reader = next_reader;
+
+    uint8_t ret;
+    if (_queue->read(&ret)) {
         return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 bool SerialUART::overflow() {
@@ -414,7 +422,7 @@ int SerialUART::available() {
     } else {
         _pumpFIFO();
     }
-    return (_fifoSize + _writer - _reader) % _fifoSize;
+    return _queue->available();
 }
 
 int SerialUART::availableForWrite() {
@@ -526,16 +534,7 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
             continue;
         }
         uint8_t val = raw & 0xff;
-        auto next_writer = _writer + 1;
-        if (next_writer == _fifoSize) {
-            next_writer = 0;
-        }
-        if (next_writer != _reader) {
-            _queue[_writer] = val;
-            asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-            // Avoid using division or mod because the HW divider could be in use
-            _writer = next_writer;
-        } else {
+        if (!_queue->write(val)) {
             _overflow = true;
         }
     }
@@ -564,7 +563,7 @@ SerialUART Serial2(__SERIAL2_DEVICE, PIN_SERIAL2_TX, PIN_SERIAL2_RX);
 #endif
 
 
-static void __not_in_flash_func(_uart0IRQ)() {
+void __not_in_flash_func(SerialUART::_uart0IRQ)() {
     if (__SERIAL1_DEVICE == uart0) {
         Serial1._handleIRQ();
     } else {
@@ -572,7 +571,7 @@ static void __not_in_flash_func(_uart0IRQ)() {
     }
 }
 
-static void __not_in_flash_func(_uart1IRQ)() {
+void __not_in_flash_func(SerialUART::_uart1IRQ)() {
     if (__SERIAL2_DEVICE == uart1) {
         Serial2._handleIRQ();
     } else {

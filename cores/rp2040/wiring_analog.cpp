@@ -87,14 +87,14 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
     if (!scaleInitted) {
         // For low frequencies, we need to scale the output max value up to achieve lower periods
         analogWritePseudoScale = 1;
-        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0) && (analogScale < 32678)) {
+        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0f) && (analogScale < 32678)) {
             analogWritePseudoScale++;
             analogScale *= 2;
             DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%lu\n", analogWritePseudoScale, analogScale);
         }
         // For high frequencies, we need to scale the output max value down to actually hit the frequency target
         analogWriteSlowScale = 1;
-        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) < 1.0) && (analogScale >= 6)) {
+        while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) < 1.0f) && (analogScale >= 6)) {
             analogWriteSlowScale++;
             analogScale /= 2;
             DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%lu\n", analogWriteSlowScale, analogScale);

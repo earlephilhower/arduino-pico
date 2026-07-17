@@ -1,5 +1,5 @@
-Serial Ports (USB and UART)
-===========================
+Serial Ports (USB, UART, and BLE "Nordic SPP Service")
+======================================================
 
 The Arduino-Pico core implements a software-based Serial-over-USB port
 using the USB ACM-CDC model to support a wide variety of operating
@@ -23,6 +23,9 @@ Configure their pins using the ``setXXX`` calls prior to calling ``begin()``
         Serial1.setRX(pin);
         Serial1.setTX(pin);
         Serial1.begin(baud);
+
+Pass in ``-1`` to ``setRX`` or ``setTX`` to disable that pin, freeing it for
+use by your application.
 
 The size of the receive FIFO may also be adjusted from the default 32 bytes by
 using the ``setFIFOSize`` call prior to calling ``begin()``
@@ -53,6 +56,12 @@ Inversion
 ``Serial1`` and ``Serial2`` can both support inverted input and/or outputs via the methods
 ``Serial1/2::setInvertRX(bool invert)`` and ``Serial1/2::setInvertTX(bool invert)`` and
 ``Serial1/2::serInvertControl(bool invert)``.
+
+
+Nordic SPP Serial Service
+-------------------------
+
+Please see the ``File->Examples->BLE->SerialBLE.ino`` example for use over BLE.
 
 
 RP2040 Specific SerialUSB methods

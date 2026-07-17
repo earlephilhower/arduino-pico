@@ -27,8 +27,6 @@ extern bool __isPicoW;
 extern "C" {
 #endif
 void init_cyw43_wifi();
-void __lockBluetooth();
-void __unlockBluetooth();
 void cyw43_pinMode(pin_size_t pin, PinMode mode);
 void cyw43_digitalWrite(pin_size_t pin, PinStatus val);
 PinStatus cyw43_digitalRead(pin_size_t pin);

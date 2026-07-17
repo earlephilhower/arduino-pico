@@ -45,7 +45,7 @@ void loop() {
     Serial.print("[HTTPS] begin...\n");
 
     // configure server and url
-    const char *fp = "41:FA:FD:B6:96:5F:33:09:F4:ED:09:28:BF:66:4D:5B:A2:88:03:65";
+    const char *fp = "e5:e8:05:7d:85:70:b0:db:d9:5a:b6:a6:bb:2b:29:ae:d9:b1:b7:f9";
 
     HTTPClient https;
     https.setFingerprint(fp);

@@ -15,6 +15,12 @@ timeval	KEYWORD1
 time_t	KEYWORD1
 SoftwareSerial	KEYWORD1
 AudioOutputBase	KEYWORD1
+USB	KEYWORD1
+SerialSemi	KEYWORD1
+SemiFS	KEYWORD1
+PIOProgram	KEYWORD1
+SerialPIO	KEYWORD1
+RP2040	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -39,7 +45,6 @@ pop_nb	KEYWORD2
 rp2040	KEYWORD2
 reboot	KEYWORD2
 restart	KEYWORD2
-RP2040	KEYWORD2
 usToPIOCycles	KEYWORD2
 f_cpu	KEYWORD2
 getCycleCount	KEYWORD2
@@ -73,9 +78,7 @@ getChipID	KEYWORD2
 
 hwrand32	KEYWORD2
 
-PIOProgram	KEYWORD2
 prepare	KEYWORD2
-SerialPIO	KEYWORD2
 setFIFOSize	KEYWORD2
 setPollingMode	KEYWORD2
 setInvertTX	KEYWORD2
@@ -87,8 +90,24 @@ digitalReadFast	KEYWORD2
 
 enableDoubleResetBootloader	KEYWORD2
 
-SerialSemi	KEYWORD2
-SemiFS	KEYWORD2
+registerHIDDevice	KEYWORD2
+unregisterHIDDevice	KEYWORD2
+registerInterface	KEYWORD2
+unregisterInterface	KEYWORD2
+findHIDReportID	KEYWORD2
+findInterfaceID	KEYWORD2
+registerString	KEYWORD2
+registerEndpointIn	KEYWORD2
+registerEndpointOut	KEYWORD2
+unregisterEndpointIn	KEYWORD2
+unregisterEndpointOut	KEYWORD2
+disconnect	KEYWORD2
+connect	KEYWORD2
+setVIDPID	KEYWORD2
+setManufacturer	KEYWORD2
+setProduct	KEYWORD2
+setSerialNumber	KEYWORD2
+
 
 openDir	KEYWORD2
 next	KEYWORD2

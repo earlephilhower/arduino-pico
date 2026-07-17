@@ -46,3 +46,6 @@ and the version header.   Run from root of the repo.
 ## libpico/make-libpico.sh
 Builds the libpico.a file as well as the bootloader stage2 binaries.
 Run whenever the pico-sdk is updated.
+
+## format-tzdata.py
+Rebuilds cores/rp2040/TZ.h file using latest tzdata file.

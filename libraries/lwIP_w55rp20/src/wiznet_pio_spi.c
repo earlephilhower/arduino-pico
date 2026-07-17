@@ -307,6 +307,7 @@ static uint8_t wiznet_pio_spi_read_byte(void) {
 
 // This is not used when the burst functions are provided
 static void wiznet_pio_spi_write_byte(uint8_t wb) {
+    (void) wb;
     panic_unsupported(); // shouldn't be used
 }
 

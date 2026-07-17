@@ -43,6 +43,8 @@ uint8_t *desc_joystickBT;
 uint16_t desc_joystickBT_length;
 
 void JoystickBT_::begin(const char *localName, const char *hidName) {
+    HID_Joystick::begin();
+
     if (!localName) {
         localName = "PicoW BT Joystick";
     }

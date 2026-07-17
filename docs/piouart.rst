@@ -12,13 +12,13 @@ are supported, as well as data sizes from 5- to 8-bits.  Fifosize, if not
 specified, defaults to 32 bytes.
 
 To instantiate only a serial transmit or receive unit, pass in
-``SerialPIO::NOPIN`` as the ``txpin`` or ``rxpin``.
+``NOPIN`` as the ``txpin`` or ``rxpin``.
 
 For example, to make a transmit-only port on GP16
 
 .. code:: cpp
 
-        SerialPIO transmitter( 16, SerialPIO::NOPIN );
+        SerialPIO transmitter( 16, NOPIN );
 
 For detailed information about the Serial ports, see the
 Arduino `Serial Reference <https://www.arduino.cc/reference/en/language/functions/communication/serial/>`_ .

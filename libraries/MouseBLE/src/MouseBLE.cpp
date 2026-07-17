@@ -34,6 +34,8 @@ uint8_t *desc_mouseBLE;
 uint16_t desc_mouseBLE_length;
 
 void MouseBLE_::begin(const char *localName, const char *hidName) {
+    HID_Mouse::begin();
+
     if (!localName) {
         localName = "PicoW BLE Mouse";
     }
@@ -44,7 +46,6 @@ void MouseBLE_::begin(const char *localName, const char *hidName) {
     __SetupHIDreportmap(__BLEInstallMouse, __BLEInstallKeyboard, __BLEInstallJoystick, _absolute, &desc_mouseBLE_length, &desc_mouseBLE);
 
     PicoBluetoothBLEHID.startHID(localName, hidName, __BLEGetAppearance(), desc_mouseBLE, desc_mouseBLE_length);
-    _running = true;
 }
 
 void MouseBLE_::end(void) {

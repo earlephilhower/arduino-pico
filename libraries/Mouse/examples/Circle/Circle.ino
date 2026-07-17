@@ -17,7 +17,7 @@ void loop() {
     float r = 100;
     float ox = 0.0;
     float oy = 0.0;
-    for (float a = 0; a < 2.0 * 3.14159; a += 0.1) {
+    for (float a = 0.0f; a < 2.0f * 3.14159f; a += 0.1f) {
       float ax = r * cos(a);
       float ay = r * sin(a);
       float dx = ax - ox;

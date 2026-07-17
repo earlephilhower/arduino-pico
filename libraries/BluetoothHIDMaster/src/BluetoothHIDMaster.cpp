@@ -72,6 +72,10 @@
   (CCALLBACKNAME<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__>::func = std::bind(&class::cbFcn, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4), \
    static_cast<btstack_packet_handler_t>(CCALLBACKNAME<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__ - 1>::callback))
 
+#define NOPARAMCB(class, cbFcn) \
+  (CCALLBACKNAME<void(void), __COUNTER__>::func = std::bind(&class::cbFcn, this), \
+   static_cast<void (*)(void)>(CCALLBACKNAME<void(void), __COUNTER__ - 1>::callback))
+
 
 void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
     _ble = ble;
@@ -80,9 +84,7 @@ void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
         hid_host_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
         hid_host_register_packet_handler(PACKETHANDLERCB(BluetoothHIDMaster, hid_packet_handler));
     } else {
-        if (bleName) {
-            _hci.setBLEName(bleName);
-        }
+        _hci.setBLEName(bleName ? bleName : "PICO");
         _hci.setPairOnMeta(true);
     }
 
@@ -96,10 +98,13 @@ void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
         sm_add_event_handler(&_sm_event_callback_registration);
     }
     sm_init();
+    sm_set_io_capabilities(IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
+    sm_set_authentication_requirements(SM_AUTHREQ_BONDING);
 
     if (ble) {
         gatt_client_init();
-        hids_client_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
+        hids_host_init(_hid_descriptor_storage, sizeof(_hid_descriptor_storage));
+        _hci.setDisconnectCB(NOPARAMCB(BluetoothHIDMaster, disconnect));
     } else {
         // Allow sniff mode requests by HID device and support role switch
         gap_set_default_link_policy_settings(LM_LINK_POLICY_ENABLE_SNIFF_MODE | LM_LINK_POLICY_ENABLE_ROLE_SWITCH);
@@ -190,7 +195,18 @@ bool BluetoothHIDMaster::connect(const uint8_t *addr) {
     }
     uint8_t a[6];
     memcpy(a, addr, sizeof(a));
-    return ERROR_CODE_SUCCESS == hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+    int ret;
+    do {
+        BluetoothLock l;
+        ret = hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+    } while (0);
+    if (ERROR_CODE_SUCCESS == ret) {
+        memcpy(_lastAddr, addr, sizeof(_lastAddr));
+        _lastAddrType = 0;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
@@ -205,30 +221,72 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
     clearPairing();
     auto l = scan(cod);
     for (auto e : l) {
-        DEBUGV("Scan connecting %s at %s ... ", e.name(), e.addressString());
+        DEBUGV("Scan connecting %s at %s ...\n", e.name(), e.addressString());
         memcpy(a, e.address(), sizeof(a));
-        if (ERROR_CODE_SUCCESS == hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid)) {
+        int ret;
+        do {
+            BluetoothLock l;
+            ret = hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+        } while (0);
+        if (ERROR_CODE_SUCCESS == ret) {
             DEBUGV("Connection established\n");
+            memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
+            _lastAddrType = e.addressType();
+            while (!_hid_host_descriptor_available) {
+                DEBUGV("Waiting for HID descriptor\n");
+                delay(50);
+            }
             return true;
         }
-        DEBUGV("Failed\n");
+        DEBUGV("Connection failed %02x\n", ret);
     }
     return false;
 }
 
-bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType) {
+bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType, void (*idleFcn)(void *), void *idleFcnData) {
     if (!_running || !_ble) {
         return false;
     }
     while (!_hci.running()) {
         delay(10);
     }
+    memcpy(_lastAddr, addr, sizeof(_lastAddr));
+    _lastAddrType = addrType;
     uint8_t a[6];
     memcpy(a, addr, sizeof(a));
-    return ERROR_CODE_SUCCESS == gap_connect(a, (bd_addr_type_t)addrType);
+    int ret;
+    do {
+        BluetoothLock l;
+        ret = gap_connect(a, (bd_addr_type_t)addrType);
+    } while (0);
+    if (ERROR_CODE_SUCCESS != ret) {
+        DEBUGV("gap_connect failed %d\n", ret);
+        return false;
+    }
+    // GAP connection running async.  Wait for HCI connect
+    uint32_t now = millis();
+    while (millis() - now < 5000) {
+        if (_hid_host_descriptor_available) {
+            break;
+        }
+        if (idleFcn) {
+            idleFcn(idleFcnData);
+        }
+        delay(25);
+    }
+    if (!_hid_host_descriptor_available) {
+        do {
+            BluetoothLock l;
+            gap_connect_cancel();
+        } while (0);
+        memset(_lastAddr, 0, sizeof(_lastAddr));
+        _lastAddrType = 0;
+        return false;
+    }
+    return _hci.connected();
 }
 
-bool BluetoothHIDMaster::connectBLE() {
+bool BluetoothHIDMaster::connectBLE(void (*idleFcn)(void *), void *idleFcnData) {
     if (!_running || !_ble) {
         return false;
     }
@@ -237,15 +295,19 @@ bool BluetoothHIDMaster::connectBLE() {
     }
 
     clearPairing();
-    auto l = _hci.scanBLE(0x1812 /* HID */);
+    auto l = _hci.scanBLE(0x1812 /* HID */, 5, idleFcn, idleFcnData);
     for (auto e : l) {
         DEBUGV("Scan connecting %s at %s ... ", e.name(), e.addressString());
-        if (connectBLE(e.address(), e.addressType())) {
+        if (connectBLE(e.address(), e.addressType(), idleFcn, idleFcnData)) {
             DEBUGV("Connection established\n");
+            memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
+            _lastAddrType = e.addressType();
             return true;
         }
         DEBUGV("Failed\n");
     }
+    memset(_lastAddr, 0, sizeof(_lastAddr));
+    _lastAddrType = 0;
     return false;
 }
 
@@ -265,18 +327,18 @@ bool BluetoothHIDMaster::connectAny() {
     return connectCOD(0x2500);
 }
 
-bool BluetoothHIDMaster::disconnect() {
+void BluetoothHIDMaster::disconnect() {
     BluetoothLock b;
     if (!_running || !connected()) {
-        return false;
+        return;
     }
     if (!_ble && connected()) {
         hid_host_disconnect(_hid_host_cid);
     } else if (_ble && connected()) {
+        hids_host_disconnect(_hci.getHCIConn());
         gap_disconnect(_hci.getHCIConn());
     }
     _hid_host_descriptor_available = false;
-    return true;
 }
 
 void BluetoothHIDMaster::clearPairing() {
@@ -372,7 +434,7 @@ void BluetoothHIDMaster::hid_host_handle_interrupt_report(btstack_hid_parser_t *
             }
         } else if (usage_page == 0x07) {
             updKey = true;
-            if (value) {
+            if (value && (usage >= 0x04)) {
                 new_keys[new_keys_count++] = usage;
                 // check if usage was used last time (and ignore in that case)
                 int i;
@@ -445,6 +507,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
     switch (hci_event_hid_meta_get_subevent_code(packet)) {
 
     case HID_SUBEVENT_INCOMING_CONNECTION:
+        DEBUGV("HID_SUBEVENT_INCOMING_CONNECTION\n");
         // There is an incoming connection: we can accept it or decline it.
         // The hid_host_report_mode in the hid_host_accept_connection function
         // allows the application to request a protocol mode.
@@ -453,6 +516,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
 
     case HID_SUBEVENT_CONNECTION_OPENED:
+        DEBUGV("HID_SUBEVENT_CONNECTION_OPENED\n");
         // The status field of this event indicates if the control and interrupt
         // connections were opened successfully.
         status = hid_subevent_connection_opened_get_status(packet);
@@ -469,6 +533,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
 
     case HID_SUBEVENT_DESCRIPTOR_AVAILABLE:
+        DEBUGV("HID_SUBEVENT_DESCRIPTOR_AVAILABLE\n");
         // This event will follows HID_SUBEVENT_CONNECTION_OPENED event.
         // For incoming connections, i.e. HID Device initiating the connection,
         // the HID_SUBEVENT_DESCRIPTOR_AVAILABLE is delayed, and some HID
@@ -524,6 +589,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
 
     case HID_SUBEVENT_CONNECTION_CLOSED:
+        DEBUGV("HID_SUBEVENT_CONNECTION_CLOSED\n");
         // The connection was closed.
         _hidConnected = false;
         _hid_host_cid = 0;
@@ -565,7 +631,7 @@ void BluetoothHIDMaster::sm_packet_handler(uint8_t packet_type, uint16_t channel
             // continue - query primary services
             DEBUGV("Search for HID service.\n");
             //app_state = W4_HID_CLIENT_CONNECTED;
-            hids_client_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+            hids_host_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
             break;
         case ERROR_CODE_CONNECTION_TIMEOUT:
             DEBUGV("Pairing failed, timeout\n");
@@ -577,10 +643,37 @@ void BluetoothHIDMaster::sm_packet_handler(uint8_t packet_type, uint16_t channel
             DEBUGV("Pairing failed, reason = %u\n", sm_event_pairing_complete_get_reason(packet));
             break;
         default:
+            DEBUGV("Unknown sm_event_pairing_complete_get_status: %02x\n", sm_event_pairing_complete_get_status(packet));
             break;
         }
         break;
+    case SM_EVENT_IDENTITY_RESOLVING_STARTED:
+        DEBUGV("Starting search of TLV for precious connection\n");
+        break;
+    case SM_EVENT_IDENTITY_RESOLVING_FAILED:
+        DEBUGV("Peer not found in TLV\n");
+        break;
+    case SM_EVENT_IDENTITY_RESOLVING_SUCCEEDED:
+        DEBUGV("Peer found in TLV\n");
+        break;
+    case SM_EVENT_IDENTITY_CREATED:
+        DEBUGV("Storing peer in TLV\n");
+        break;
+    case SM_EVENT_PAIRING_STARTED:
+        DEBUGV("Pairing started\n");
+        break;
+    case SM_EVENT_REENCRYPTION_STARTED:
+        DEBUGV("Starting re-encryption\n");
+        break;
+    case SM_EVENT_REENCRYPTION_COMPLETE:
+        DEBUGV("Re-encryption complete, success, searching for HID\n");
+        if (!_hid_host_descriptor_available) {
+            DEBUGV("Connecting to HID service\n");
+            hids_host_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
+        }
+        break;
     default:
+        DEBUGV("Unknown hci_event_packet_get_type %02x\n", hci_event_packet_get_type(packet));
         break;
     }
 }
@@ -618,7 +711,7 @@ void BluetoothHIDMaster::handle_gatt_client_event(uint8_t packet_type, uint16_t 
     case GATTSERVICE_SUBEVENT_HID_REPORT:
         idx = gattservice_subevent_hid_report_get_service_index(packet);
         btstack_hid_parser_t parser;
-        btstack_hid_parser_init(&parser, hids_client_descriptor_storage_get_descriptor_data(_hid_host_cid, idx), hids_client_descriptor_storage_get_descriptor_len(_hid_host_cid, idx), HID_REPORT_TYPE_INPUT, gattservice_subevent_hid_report_get_report(packet), gattservice_subevent_hid_report_get_report_len(packet));
+        btstack_hid_parser_init(&parser, hids_host_descriptor_storage_get_descriptor_data(_hid_host_cid, idx), hids_host_descriptor_storage_get_descriptor_len(_hid_host_cid, idx), HID_REPORT_TYPE_INPUT, gattservice_subevent_hid_report_get_report(packet), gattservice_subevent_hid_report_get_report_len(packet));
         hid_host_handle_interrupt_report(&parser);
         //hid_handle_input_report(
         //                gattservice_subevent_hid_report_get_service_index(packet),
@@ -705,9 +798,7 @@ void HIDKeyStream::begin() {
     if (_running) {
         end();
     }
-    _queue = new uint8_t[_fifoSize];
-    _writer = 0;
-    _reader = 0;
+    _queue = new LocklessQueue<uint8_t>(_fifoSize);
 
     _lshift = false;
     _rshift = false;
@@ -723,39 +814,38 @@ void HIDKeyStream::end() {
     }
     _running = false;
 
-    delete[] _queue;
+    delete _queue;
 }
 
 int HIDKeyStream::peek() {
     if (!_running) {
         return -1;
     }
-    if (_writer != _reader) {
-        return _queue[_reader];
+    uint8_t ret;
+    if (_queue->peek(&ret)) {
+        return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int HIDKeyStream::read() {
     if (!_running) {
         return -1;
     }
-    if (_writer != _reader) {
-        auto ret = _queue[_reader];
-        asm volatile("" ::: "memory"); // Ensure the value is read before advancing
-        auto next_reader = (_reader + 1) % _fifoSize;
-        asm volatile("" ::: "memory"); // Ensure the reader value is only written once, correctly
-        _reader = next_reader;
+    uint8_t ret;
+    if (_queue->read(&ret)) {
         return ret;
+    } else {
+        return -1;
     }
-    return -1;
 }
 
 int HIDKeyStream::available() {
     if (!_running) {
         return 0;
     }
-    return (_fifoSize + _writer - _reader) % _fifoSize;
+    return _queue->available();
 }
 
 int HIDKeyStream::availableForWrite() {
@@ -764,6 +854,7 @@ int HIDKeyStream::availableForWrite() {
 
 void HIDKeyStream::flush() {
     // We always send blocking
+    _holding = false;
 }
 
 size_t HIDKeyStream::write(uint8_t c) {
@@ -782,19 +873,11 @@ size_t HIDKeyStream::write(uint8_t c) {
         } else if (state) {
             auto ascii = (_lshift || _rshift) ? keytable_us_shift[_heldKey] : keytable_us_none[_heldKey];
             if (ascii != CHAR_ILLEGAL) {
-                auto next_writer = _writer + 1;
-                if (next_writer == _fifoSize) {
-                    next_writer = 0;
-                }
-                if (next_writer != _reader) {
-                    _queue[_writer] = ascii;
-                    asm volatile("" ::: "memory"); // Ensure the queue is written before the written count advances
-                    _writer = next_writer;
-                }
+                return _queue->write(ascii);
             }
-            return 1;
+            return 0;
         } else {
-            return 1;
+            return 0;
         }
     } else {
         if ((c < sizeof(keytable_us_shift)) || (c == 0xe1) || (c == 0xe6)) {

@@ -17,13 +17,19 @@ make -j
 rm -rf boot
 mkdir boot
 cd boot
-mkdir -p pico 
+mkdir -p pico
 touch pico/config.h
+cp ../generated/pico_base/pico/*.h pico/.
 for type in boot2_generic_03h boot2_is25lp080 boot2_w25q080 boot2_w25x10cl; do
     for div in 2 4; do
         arm-none-eabi-gcc -march=armv6-m -mcpu=cortex-m0plus -mthumb -O3 \
                          -DNDEBUG -DPICO_FLASH_SPI_CLKDIV=$div \
                          -c "$PICO_SDK_PATH/src/rp2040/boot_stage2/$type.S" \
+                         -I "$PICO_SDK_PATH/src/common/pico_base_headers/include/" \
+                         -I "$PICO_SDK_PATH/src/rp2_common/pico_platform_compiler/include/" \
+                         -I "$PICO_SDK_PATH/src/rp2_common/pico_platform_sections/include/" \
+                         -I "$PICO_SDK_PATH/src/rp2_common/pico_platform_panic/include/" \
+                         -I "$PICO_SDK_PATH/src/rp2_common/pico_platform_common/include/" \
                          -I "$PICO_SDK_PATH/src/boards/include/boards/" \
                          -I "$PICO_SDK_PATH/src/rp2040/hardware_regs/include/" \
                          -I "$PICO_SDK_PATH/src/rp2_common/pico_platform/include/" \
@@ -47,8 +53,9 @@ for type in boot2_generic_03h boot2_is25lp080 boot2_w25q080 boot2_w25x10cl; do
     done
 done
 mv *.S ../../../../boot2/rp2040/.
+cd ..
 
-cd ../..
+cd ..
 rm -rf build-rp2350
 mkdir build-rp2350
 cd build-rp2350

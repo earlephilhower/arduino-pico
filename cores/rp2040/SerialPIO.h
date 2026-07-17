@@ -22,16 +22,14 @@
 
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
-#include <stdarg.h>
-#include <queue>
 #include <hardware/uart.h>
 #include "CoreMutex.h"
+#include "LocklessQueue.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
 
 class SerialPIO : public arduino::HardwareSerial {
 public:
-    static const pin_size_t NOPIN = 0xff; // Use in constructor to disable RX or TX unit
     SerialPIO(pin_size_t tx, pin_size_t rx, size_t fifoSize = 32);
     ~SerialPIO();
 
@@ -68,10 +66,10 @@ public:
     using Print::write;
     operator bool() override;
 
-    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IRQ callback can access it
+protected:
+    static void _fifoIRQ();
     void _handleIRQ();
 
-protected:
     bool _running = false;
     pin_size_t _tx, _rx;
     int _baud;
@@ -93,11 +91,10 @@ protected:
     int _rxSM;
     int _rxBits;
 
-    // Lockless, IRQ-handled circular queue
+    LocklessQueue<uint8_t> *_queue;
     size_t   _fifoSize;
-    uint32_t _writer;
-    uint32_t _reader;
-    uint8_t  *_queue;
+
+    uint _onCore;
 };
 
 #ifdef ARDUINO_NANO_RP2040_CONNECT

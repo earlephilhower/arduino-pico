@@ -128,7 +128,7 @@ extern "C" int _lseek(int fd, int ptr, int dir) {
     } else if (dir == SEEK_END) {
         d = SeekEnd;
     }
-    return f->second.seek(ptr, d) ? 0 : 1;
+    return f->second.seek(ptr, d) ? f->second.position() : -1;
 }
 
 extern "C" int _read(int fd, char *buf, int size) {

@@ -16,16 +16,18 @@ SPI pinouts can be set **before SPI.begin()** using the following calls:
 Note that the ``CS`` pin can be hardware or software controlled by the sketch.
 When software controlled, the ``setCS()`` call is ignored.
 
-The Arduino `SPI documentation <https://www.arduino.cc/en/reference/SPI>`_ gives
+Passing in ``NOPIN`` to either ``setRX`` or ``setTX`` will disable SPI on that
+interface, making it behave as a unidirectional (output- or input-only SPI interface.
+
+The Arduino `SPI documentation <https://docs.arduino.cc/language-reference/en/functions/communication/SPI/>`_ gives
 a detailed overview of the library, except for the following RP2040-specific
 changes:
 
 * ``SPI.begin(bool hwCS)`` can take an options ``hwCS`` parameter.
-By passing in ``true`` for ``hwCS`` the sketch does not need to worry
-about asserting and deasserting the ``CS`` pin between transactions.
-The default is ``false`` and requires the sketch to handle the CS
-pin itself, as is the standard way in Arduino.
-
+    By passing in ``true`` for ``hwCS`` the sketch does not need to worry
+    about asserting and deasserting the ``CS`` pin between transactions.
+    The default is ``false`` and requires the sketch to handle the CS
+    pin itself, as is the standard way in Arduino.
 * The interrupt calls (``attachInterrupt``, and ``detachInterrpt``) are not implemented.
 
 Software SPI (Master Only)

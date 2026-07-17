@@ -18,6 +18,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <Arduino.h>
 #include <pico.h>
 #include <pico/time.h>
 
@@ -59,7 +60,7 @@ extern "C"
     }
 
     uint32_t micros() {
-        return to_us_since_boot(get_absolute_time());
+        return time_us_32();
     }
 
 } // extern C

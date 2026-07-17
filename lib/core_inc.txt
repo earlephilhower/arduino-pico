@@ -33,6 +33,7 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_rtc/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pio/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pll/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/hardware_powman/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_pwm/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_resets/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/hardware_spi/include
@@ -51,9 +52,11 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_flash/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_float/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_int64_ops/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_low_power/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_lwip/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_multicore/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform/include
+-iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_common/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_compiler/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_sections/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_platform_panic/include
@@ -65,3 +68,5 @@
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_stdio_uart/include
 -iwithprefixbefore/pico-sdk/src/rp2_common/pico_unique_id/include
 -iwithprefixbefore/pico-sdk/lib/lwip/src/include
+
+-iwithprefixbefore/cores/rp2040/freertos

@@ -20,6 +20,15 @@
 #define PIN_SPI0_SCK   (18u)
 #define PIN_SPI0_SS    (23u)
 
+// SDIO
+#define PIN_SD_CLK       (18u)
+#define PIN_SD_CMD_MOSI  (19u)
+#define PIN_SD_DAT0_MISO (20u)
+#define PIN_SD_DAT1      (21u)
+#define PIN_SD_DAT2      (22u)
+#define PIN_SD_DAT3_CS   (23u)
+#define PIN_SD_DETECT    (15u)
+
 // Not pinned out
 #define PIN_SPI1_MISO  (31u)
 #define PIN_SPI1_MOSI  (31u)

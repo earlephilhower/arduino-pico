@@ -26,7 +26,6 @@ CYW43lwIP::CYW43lwIP(int8_t cs) : LwipIntfDev<CYW43>(cs) {
 }
 
 void CYW43lwIP::end() {
-    cyw43_wifi_leave(&cyw43_state, _ap ? 1 : 0);
     LwipIntfDev<CYW43>::end();
 }
 

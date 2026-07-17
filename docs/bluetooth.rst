@@ -1,8 +1,6 @@
 Bluetooth on PicoW Support
 ==========================
 
-As of the Pico-SDK version 1.5.0, the PicoW has **BETA** Bluetooth support.
-
 Enabling Bluetooth
 ------------------
 To enable Bluetooth (BT), use the ``Tools->IP/Bluetooth Stack`` menu.  It
@@ -34,18 +32,29 @@ interrupt-driven version of the BT execute loop, so there is no need
 to actually call ``btstack_run_loop_execute`` because the ``async_context``
 handler will do it for you.
 
-There is no need to call ``cyw43_arch_init`` in your code, either, as that
+**Do not call ``cyw43_arch_init``** in your code, either, as that
 is part of the PicoW variant booting process.
 
 For many BTStack examples, you simply need call the included
 ``btstack_main()`` and make sure that ``hci_power_control(HCI_POWER_ON);`` is
 called afterwards to start processing (in the background).
 
+Locking Requirements
+--------------------
+
 You will also need to acquire the BT ``async_context`` system lock before
-calling any BTStack APIs.  ``__lockBluetooth`` and ``unlockBluetooth`` are
-provided in the PicoW variant code.
+calling any BTStack APIs.  The proper way to do this is using the
+RAII locking object ``BluetoothLock`` which handles FreeRTOS and non-OS
+cases
+
+.. code :: c++
+
+  {
+      BluetoothLock lock;  // Creating this object on the stack grabs the lock and ensures it's released on exit of this block
+      ... Call BTStack APIs ...
+  } // The lock is automatically released
 
 Note that if you need to modify the system ``btstack_config.h`` file, do so
-in the ``tools/libpico`` directory and rebuild the Pico SDK static library.
+in the ``include`` directory and rebuild the Pico SDK static library.
 Otherwise the change will not take effect in the precompiled code, leading
 to really bad behavior.

@@ -95,6 +95,7 @@ public:
     }
 
     virtual bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0) override {
+        (void) silenceSample;
         return setBufferSize(buffers * bufferWords * sizeof(int32_t));
     }
 

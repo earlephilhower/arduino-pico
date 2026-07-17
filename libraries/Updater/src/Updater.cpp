@@ -256,6 +256,10 @@ bool UpdaterClass::end(bool evenIfRemaining) {
         free(sig);
         _size = binSize; // Adjust size to remove signature, not part of bin payload
 
+        // Remove the signature from being flashed
+        _fp.seek(0);
+        _fp.truncate(_size);
+
 #ifdef DEBUG_UPDATER
         DEBUG_UPDATER.printf_P(PSTR("[Updater] Signature matches\n"));
 #endif
@@ -298,16 +302,16 @@ bool UpdaterClass::_writeBuffer() {
             return false;
         }
     } else {
-        if (!__isFreeRTOS) {
-            noInterrupts();
-        }
+#ifndef __FREERTOS
+        noInterrupts();
+#endif
         rp2040.idleOtherCore();
         flash_range_erase((intptr_t)_currentAddress - (intptr_t)XIP_BASE, 4096);
         flash_range_program((intptr_t)_currentAddress - (intptr_t)XIP_BASE, _buffer, 4096);
         rp2040.resumeOtherCore();
-        if (!__isFreeRTOS) {
-            interrupts();
-        }
+#ifndef __FREERTOS
+        interrupts();
+#endif
     }
     if (!_verify) {
         _md5.add(_buffer, _bufferLen);

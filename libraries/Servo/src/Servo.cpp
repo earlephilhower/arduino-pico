@@ -117,7 +117,6 @@ void Servo::detach() {
         pio_sm_set_enabled(_pio, _smIdx, false);
         pio_sm_unclaim(_pio, _smIdx);
         _attached = false;
-        _valueUs = DEFAULT_NEUTRAL_PULSE_WIDTH;
     }
 }
 

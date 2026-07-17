@@ -34,6 +34,8 @@ uint8_t *desc_mouseBT;
 uint16_t desc_mouseBT_length;
 
 void MouseBT_::begin(const char *localName, const char *hidName) {
+    HID_Mouse::begin();
+
     if (!localName) {
         localName = "PicoW Mouse 00:00:00:00:00:00";
     }
@@ -44,7 +46,6 @@ void MouseBT_::begin(const char *localName, const char *hidName) {
     __SetupHIDreportmap(__BTInstallMouse, __BTInstallKeyboard, __BTInstallJoystick, _absolute, &desc_mouseBT_length, &desc_mouseBT);
 
     PicoBluetoothHID.startHID(localName, hidName, __BTGetCOD(), 33, desc_mouseBT, desc_mouseBT_length);
-    _running = true;
 }
 
 void MouseBT_::end(void) {

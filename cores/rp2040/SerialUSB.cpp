@@ -23,22 +23,10 @@
 #if !defined(USE_TINYUSB) && !defined(NO_USB)
 
 #include <Arduino.h>
-#include "CoreMutex.h"
-
 #include <tusb.h>
-#include <pico/time.h>
-#include <pico/binary_info.h>
-#include <pico/bootrom.h>
-#include <hardware/irq.h>
-#include <pico/mutex.h>
-#include <hardware/watchdog.h>
-#include <pico/unique_id.h>
-#include <hardware/resets.h>
+#include "CoreMutex.h"
+#include "USB.h"
 
-#ifndef DISABLE_USB_SERIAL
-// Ensure we are installed in the USB chain
-void __USBInstallSerial() { /* noop */ }
-#endif
 
 // SerialEvent functions are weak, so when the user doesn't define them,
 // the linker just sets their address to 0 (which is checked below).
@@ -47,8 +35,13 @@ void __USBInstallSerial() { /* noop */ }
 // HardwareSerial instance if the user doesn't also refer to it.
 extern void serialEvent() __attribute__((weak));
 
+#define USBD_CDC_CMD_MAX_SIZE (8)
+#define USBD_CDC_IN_OUT_MAX_SIZE (64)
 
-extern mutex_t __usb_mutex;
+
+
+SerialUSB::SerialUSB() {
+}
 
 void SerialUSB::begin(unsigned long baud) {
     (void) baud; //ignored
@@ -57,15 +50,40 @@ void SerialUSB::begin(unsigned long baud) {
         return;
     }
 
+    USB.disconnect();
+
+    _epIn = USB.registerEndpointIn();
+    _epOut = USB.registerEndpointOut();
+    _epIn2 = USB.registerEndpointIn();
+    _strID = USB.registerString("Pico Serial");
+
+    _id = USB.registerInterface(2, _cb, (void *)this, TUD_CDC_DESC_LEN, 1, 0);
+
+    USB.connect();
     _running = true;
 }
 
+// Need to define here so we don't have to include tusb.h in global header (causes problemw w/BT redefining things)
+void SerialUSB::interfaceCB(int itf, uint8_t *dst, int len) {
+    uint8_t desc[TUD_CDC_DESC_LEN] = {
+        TUD_CDC_DESCRIPTOR((uint8_t)itf, _strID, _epIn, USBD_CDC_CMD_MAX_SIZE, _epOut, _epIn2, USBD_CDC_IN_OUT_MAX_SIZE)
+    };
+    memcpy(dst, desc, len);
+};
+
 void SerialUSB::end() {
-    // TODO
+    if (_running) {
+        USB.disconnect();
+        USB.unregisterInterface(_id);
+        USB.unregisterEndpointIn(_epIn);
+        USB.unregisterEndpointOut(_epOut);
+        _running = false;
+        USB.connect();
+    }
 }
 
 int SerialUSB::peek() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -76,7 +94,7 @@ int SerialUSB::peek() {
 }
 
 int SerialUSB::read() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return -1;
     }
@@ -89,7 +107,7 @@ int SerialUSB::read() {
 }
 
 int SerialUSB::available() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -99,7 +117,7 @@ int SerialUSB::available() {
 }
 
 int SerialUSB::availableForWrite() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
@@ -109,7 +127,7 @@ int SerialUSB::availableForWrite() {
 }
 
 void SerialUSB::flush() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return;
     }
@@ -123,14 +141,19 @@ size_t SerialUSB::write(uint8_t c) {
 }
 
 size_t SerialUSB::write(const uint8_t *buf, size_t length) {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return 0;
     }
 
+    // If the remote has gone to sleep (laptop), tickle it so they will get the message
+    if (tud_suspended()) {
+        tud_remote_wakeup();
+    }
+
     static uint64_t last_avail_time;
     int written = 0;
-    if (tud_cdc_connected() || _ignoreFlowControl) {
+    if (tud_cdc_connected() || _ss.ignoreFlowControl) {
         for (size_t i = 0; i < length;) {
             int n = length - i;
             int avail = tud_cdc_write_available();
@@ -162,7 +185,7 @@ size_t SerialUSB::write(const uint8_t *buf, size_t length) {
 }
 
 SerialUSB::operator bool() {
-    CoreMutex m(&__usb_mutex, false);
+    CoreMutex m(&USB.mutex, false);
     if (!_running || !m) {
         return false;
     }
@@ -172,19 +195,15 @@ SerialUSB::operator bool() {
 }
 
 void SerialUSB::ignoreFlowControl(bool ignore) {
-    _ignoreFlowControl = ignore;
+    _ss.ignoreFlowControl = ignore;
 }
 
-static bool _dtr = false;
-static bool _rts = false;
-static int _bps = 115200;
-static bool _rebooting = false;
-static void CheckSerialReset() {
-    if (!_rebooting && (_bps == 1200) && (!_dtr)) {
-        if (__isFreeRTOS) {
-            __freertos_idle_other_core();
-        }
-        _rebooting = true;
+void SerialUSB::checkSerialReset() {
+    if (!_ss.rebooting && (_ss.bps == 1200) && (!_ss.dtr)) {
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#endif
+        _ss.rebooting = true;
         // Disable NVIC IRQ, so that we don't get bothered anymore
         irq_set_enabled(USBCTRL_IRQ, false);
         // Reset the whole USB hardware block
@@ -198,24 +217,33 @@ static void CheckSerialReset() {
 }
 
 bool SerialUSB::dtr() {
-    return _dtr;
+    return _ss.dtr;
 }
 
 bool SerialUSB::rts() {
-    return _rts;
+    return _ss.rts;
 }
 
 extern "C" void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
+    Serial.tud_cdc_line_state_cb(itf, dtr, rts);
+}
+
+void SerialUSB::tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
     (void) itf;
-    _dtr = dtr ? true : false;
-    _rts = rts ? true : false;
-    CheckSerialReset();
+    _ss.dtr = dtr ? 1 : 0;
+    _ss.rts = rts ? 1 : 0;
+    checkSerialReset();
 }
 
 extern "C" void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding) {
+    Serial.tud_cdc_line_coding_cb(itf, (void const *)p_line_coding);
+}
+
+void SerialUSB::tud_cdc_line_coding_cb(uint8_t itf, void const *p) {
     (void) itf;
-    _bps = p_line_coding->bit_rate;
-    CheckSerialReset();
+    cdc_line_coding_t const* p_line_coding = (cdc_line_coding_t const*)p;
+    _ss.bps = p_line_coding->bit_rate;
+    checkSerialReset();
 }
 
 SerialUSB Serial;

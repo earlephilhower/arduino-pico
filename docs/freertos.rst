@@ -15,17 +15,31 @@ To enable FreeRTOS, simply add
 
     #include <FreeRTOS.h>
 
-to your sketch and it will be included and enabled automatically.
+to your sketch and select ``Tools->Operating System->FreeRTOS SMP`` to enable it.
+
+When using Platform.IO you need to add the following define to your .ini file:
+
+.. code:: ini
+
+    ; Enable FreeRTOS Support
+    build_flags = -DPIO_FRAMEWORK_ARDUINO_ENABLE_FREERTOS
+
 
 Configuration and Predefined Tasks
 ----------------------------------
 
 FreeRTOS is configured with 8 priority levels (0 through 7) and a process for
-``setup()/loop()``, ``setup1()/loop1()``, and the USB port will be created.  The task
+``setup()/loop()``, ``setup1()/loop1()``, LWIP, and the USB port will be created.  The task
 quantum is 1 millisecond (i.e. 1,000 switches per second).
 
 ``setup()`` and ``loop()`` are assigned to only run on core 0, while ``setup1()`` and ``loop1()``
 only run in core 1 in this mode, the same as the default multithreading mode.
+
+There is an LWIP worker thread running on core 0 at priority ``(configMAX_PRIORITIES - 2)``
+This should allow for LWIP to always make progress even with applications that don't
+``yield`` or ``delay``, while leaving the highest priority available for hard
+real time processes.  This setting can be changed by defining ``LWIP_TASK_PRIORITY``
+in your build process.
 
 You can launch and manage additional processes using the standard FreeRTOS routines.
 

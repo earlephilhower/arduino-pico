@@ -21,12 +21,18 @@
 #pragma once
 
 #include <Arduino.h>
+#include <SPI.h> // For SPIHelper
 #include <api/HardwareSPI.h>
 #include <hardware/spi.h>
 #include <functional>
 
+#ifdef __FREERTOS
+typedef std::function<void(uint8_t *data, size_t len, int32_t *hptw)> SPISlaveRecvHandler;
+typedef std::function<void(int32_t *hptw)> SPISlaveSentHandler;
+#else
 typedef std::function<void(uint8_t *data, size_t len)> SPISlaveRecvHandler;
 typedef std::function<void(void)> SPISlaveSentHandler;
+#endif
 
 class SPISlaveClass {
 public:
@@ -69,10 +75,6 @@ public:
     void _handleIRQ();
 
 private:
-    spi_cpol_t cpol(SPISettings _spis);
-    spi_cpha_t cpha(SPISettings _spis);
-    uint8_t reverseByte(uint8_t b);
-    uint16_t reverse16Bit(uint16_t w);
     void adjustBuffer(const void *s, void *d, size_t cnt, bool by16);
 
     spi_inst_t *_spi;
@@ -89,6 +91,8 @@ private:
     size_t _dataLeft;
 
     // Received data will be returned in small chunks directly from a local buffer in _handleIRQ()
+
+    SPIHelper _helper;
 };
 
 extern SPISlaveClass SPISlave;

@@ -146,7 +146,7 @@ public:
         if ((rc == 0) && _timeCallback) {
             time_t now = _timeCallback();
             // Add metadata with creation time to the directory marker
-            int rc = lfs_setattr(&_lfs, path, 'c', (const void *)&now, sizeof(now));
+            rc = lfs_setattr(&_lfs, path, 'c', (const void *)&now, sizeof(now));
             if (rc < 0) {
                 DEBUGV("Unable to set creation time on '%s' to %ld\n", path, (long)now);
             }
@@ -389,7 +389,7 @@ public:
     }
 
     int read(uint8_t* buf, size_t size) override {
-        if (!_opened || !_fd | !buf) {
+        if (!_opened || !_fd || !buf) {
             return 0;
         }
         int result = lfs_file_read(_fs->getFS(), _getFD(), (void*) buf, size);
@@ -416,9 +416,6 @@ public:
             return false;
         }
         int32_t offset = static_cast<int32_t>(pos);
-        if (mode == SeekEnd) {
-            offset = -offset; // TODO - this seems like its plain wrong vs. POSIX
-        }
         auto lastPos = position();
         int rc = lfs_file_seek(_fs->getFS(), _getFD(), offset, (int)mode); // NB. SeekMode === LFS_SEEK_TYPES
         if (rc < 0) {

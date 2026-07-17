@@ -42,7 +42,6 @@
 #include "PIOProgram.h"
 #include "ccount.pio.h"
 #include <malloc.h>
-
 #include "_freertos.h"
 
 extern "C" volatile bool __otherCoreIdled;
@@ -54,6 +53,109 @@ extern "C" {
 #endif
 }
 
+
+#ifdef PICO_RP2350
+class _MFIFO {
+public:
+    _MFIFO() { /* noop */ };
+    ~_MFIFO() { /* noop */ };
+
+    void begin(int cores) {
+        if (cores == 1) {
+            _multicore = false;
+            return;
+        }
+        _doorbell = multicore_doorbell_claim_unused(0b11, true);
+        _multicore = true;
+        __otherCoreIdled = false;
+    }
+
+    void registerCore() {
+#ifndef __FREERTOS
+        uint32_t irq = multicore_doorbell_irq_num(_doorbell);
+        irq_add_shared_handler(irq, _irq, 128);
+        irq_set_enabled(irq, true);
+#else
+        // FreeRTOS port.c will handle the IRQ hooking
+#endif
+    }
+
+    void push(uint32_t val) {
+        multicore_fifo_push_blocking_inline(val);
+    }
+
+    bool push_nb(uint32_t val) {
+        if (multicore_fifo_wready()) {
+            multicore_fifo_push_blocking_inline(val);
+            return true;
+        }
+        return false;
+    }
+
+    uint32_t pop() {
+        return multicore_fifo_pop_blocking_inline();
+    }
+
+    bool pop_nb(uint32_t *val) {
+        if (multicore_fifo_rvalid()) {
+            *val = multicore_fifo_pop_blocking_inline();
+            return true;
+        }
+        return false;
+    }
+
+    int available() {
+        return multicore_fifo_rvalid() ? 1 : 0; // Can't really say how many, but at least one is there
+    }
+
+    void clear() {
+        multicore_fifo_drain();
+    }
+
+    void idleOtherCore() {
+        if (!_multicore) {
+            return;
+        }
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#else
+        __otherCoreIdled = false;
+        multicore_doorbell_set_other_core(_doorbell);
+        while (!__otherCoreIdled) { /* noop */ }
+#endif
+    }
+
+    void resumeOtherCore() {
+        if (!_multicore) {
+            return;
+        }
+        __otherCoreIdled = false;
+#ifdef __FREERTOS
+        __freertos_resume_other_core();
+#endif
+        // Other core will exit busy-loop and return to operation
+        // once __otherCoreIdled == false.
+    }
+
+    static uint8_t _doorbell;
+
+private:
+    static void __no_inline_not_in_flash_func(_irq)() {
+#ifndef __FREERTOS
+        if (multicore_doorbell_is_set_current_core(_doorbell)) {
+            noInterrupts(); // We need total control, can't run anything
+            __otherCoreIdled = true;
+            while (__otherCoreIdled) { /* noop */ }
+            interrupts();
+            multicore_doorbell_clear_current_core(_doorbell);
+        }
+#endif
+    }
+
+    bool _multicore = false;
+};
+
+#else
 class _MFIFO {
 public:
     _MFIFO() { /* noop */ };
@@ -66,23 +168,20 @@ public:
             return;
         }
         mutex_init(&_idleMutex);
+        _queue = (queue_t *)calloc(2, sizeof(queue_t));
         queue_init(&_queue[0], sizeof(uint32_t), FIFOCNT);
         queue_init(&_queue[1], sizeof(uint32_t), FIFOCNT);
         _multicore = true;
     }
 
     void registerCore() {
-        if (!__isFreeRTOS) {
-            multicore_fifo_clear_irq();
-#ifdef PICO_RP2350
-            irq_set_exclusive_handler(SIO_IRQ_FIFO, _irq);
-            irq_set_enabled(SIO_IRQ_FIFO, true);
+#ifndef __FREERTOS
+        multicore_fifo_clear_irq();
+        irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
+        irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
 #else
-            irq_set_exclusive_handler(SIO_IRQ_PROC0 + get_core_num(), _irq);
-            irq_set_enabled(SIO_IRQ_PROC0 + get_core_num(), true);
-#endif
-        }
         // FreeRTOS port.c will handle the IRQ hooking
+#endif
     }
 
     void push(uint32_t val) {
@@ -113,14 +212,14 @@ public:
         if (!_multicore) {
             return;
         }
-        if (__isFreeRTOS) {
-            __freertos_idle_other_core();
-        } else {
-            mutex_enter_blocking(&_idleMutex);
-            __otherCoreIdled = false;
-            multicore_fifo_push_blocking(_GOTOSLEEP);
-            while (!__otherCoreIdled) { /* noop */ }
-        }
+#ifdef __FREERTOS
+        __freertos_idle_other_core();
+#else
+        mutex_enter_blocking(&_idleMutex);
+        __otherCoreIdled = false;
+        multicore_fifo_push_blocking(_GOTOSLEEP);
+        while (!__otherCoreIdled) { /* noop */ }
+#endif
     }
 
     void resumeOtherCore() {
@@ -129,9 +228,9 @@ public:
         }
         mutex_exit(&_idleMutex);
         __otherCoreIdled = false;
-        if (__isFreeRTOS) {
-            __freertos_resume_other_core();
-        }
+#ifdef __FREERTOS
+        __freertos_resume_other_core();
+#endif
 
         // Other core will exit busy-loop and return to operation
         // once __otherCoreIdled == false.
@@ -151,32 +250,34 @@ public:
 
 private:
     static void __no_inline_not_in_flash_func(_irq)() {
-        if (!__isFreeRTOS) {
-            multicore_fifo_clear_irq();
-            noInterrupts(); // We need total control, can't run anything
-            while (multicore_fifo_rvalid()) {
-                if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
-                    __otherCoreIdled = true;
-                    while (__otherCoreIdled) { /* noop */ }
-                    break;
-                }
+#ifndef __FREERTOS
+        multicore_fifo_clear_irq();
+        noInterrupts(); // We need total control, can't run anything
+        while (multicore_fifo_rvalid()) {
+            if (_GOTOSLEEP == multicore_fifo_pop_blocking()) {
+                __otherCoreIdled = true;
+                while (__otherCoreIdled) { /* noop */ }
+                break;
             }
-            interrupts();
         }
+        interrupts();
+#endif
     }
 
     bool _multicore = false;
     mutex_t _idleMutex;
-    queue_t _queue[2];
+    queue_t *_queue; // Only allocated as [2] if multicore
     static constexpr uint32_t _GOTOSLEEP = 0xC0DED02E;
 };
-
+#endif
 
 class RP2040;
 extern RP2040 rp2040;
-extern "C" void main1();
+extern void main1();
 extern "C" char __StackLimit;
 extern "C" char __bss_end__;
+extern "C" uint32_t __scratch_x_start__;
+extern "C" uint32_t __scratch_y_start__;
 extern "C" void setup1() __attribute__((weak));
 extern "C" void loop1() __attribute__((weak));
 extern "C" bool core1_separate_stack;
@@ -192,23 +293,19 @@ public:
 
     void begin(int cpuid) {
         _epoch[cpuid] = 0;
-#if !defined(__riscv) && !defined(__PROFILE)
-        if (!__isFreeRTOS) {
-            // Enable SYSTICK exception
-            exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
-            systick_hw->csr = 0x7;
-            systick_hw->rvr = 0x00FFFFFF;
-        } else {
-#endif
-            // Only start 1 instance of the PIO SM
-            if (cpuid == 0) {
-                int off = 0;
-                _ccountPgm = new PIOProgram(&ccount_program);
-                _ccountPgm->prepare(&_pio, &_sm, &off);
-                ccount_program_init(_pio, _sm, off);
-                pio_sm_set_enabled(_pio, _sm, true);
-            }
-#if !defined(__riscv) && !defined(__PROFILE)
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
+        // Enable SYSTICK exception
+        exception_set_exclusive_handler(SYSTICK_EXCEPTION, _SystickHandler);
+        systick_hw->csr = 0x7;
+        systick_hw->rvr = 0x00FFFFFF;
+#else
+        // Only start 1 instance of the PIO SM
+        if (cpuid == 0) {
+            int off = 0;
+            _ccountPgm = new PIOProgram(&ccount_program);
+            _ccountPgm->prepare(&_pio, &_sm, &off);
+            ccount_program_init(_pio, _sm, off);
+            pio_sm_set_enabled(_pio, _sm, true);
         }
 #endif
     }
@@ -255,21 +352,17 @@ public:
         @returns CPU clock cycles since power up
     */
     inline uint32_t getCycleCount() {
-#if !defined(__riscv) && !defined(__PROFILE)
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
         // Get CPU cycle count.  Needs to do magic to extend 24b HW to something longer
-        if (!__isFreeRTOS) {
-            uint32_t epoch;
-            uint32_t ctr;
-            do {
-                epoch = (uint32_t)_epoch[sio_hw->cpuid];
-                ctr = systick_hw->cvr;
-            } while (epoch != (uint32_t)_epoch[sio_hw->cpuid]);
-            return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
-        } else {
-#endif
-            return ccount_read(_pio, _sm);
-#if !defined(__riscv) && !defined(__PROFILE)
-        }
+        uint32_t epoch;
+        uint32_t ctr;
+        do {
+            epoch = (uint32_t)_epoch[sio_hw->cpuid];
+            ctr = systick_hw->cvr;
+        } while (epoch != (uint32_t)_epoch[sio_hw->cpuid]);
+        return epoch + (1 << 24) - ctr; /* CTR counts down from 1<<24-1 */
+#else
+        return ccount_read(_pio, _sm);
 #endif
     }
     /**
@@ -278,20 +371,16 @@ public:
         @returns CPU clock cycles since power up
     */
     inline uint64_t getCycleCount64() {
-#if !defined(__riscv) && !defined(__PROFILE)
-        if (!__isFreeRTOS) {
-            uint64_t epoch;
-            uint64_t ctr;
-            do {
-                epoch = _epoch[sio_hw->cpuid];
-                ctr = systick_hw->cvr;
-            } while (epoch != _epoch[sio_hw->cpuid]);
-            return epoch + (1LL << 24) - ctr;
-        } else {
-#endif
-            return ccount_read(_pio, _sm);
-#if !defined(__riscv) && !defined(__PROFILE)
-        }
+#if !defined(__riscv) && !defined(__PROFILE) && !defined(__FREERTOS)
+        uint64_t epoch;
+        uint64_t ctr;
+        do {
+            epoch = _epoch[sio_hw->cpuid];
+            ctr = systick_hw->cvr;
+        } while (epoch != _epoch[sio_hw->cpuid]);
+        return epoch + (1LL << 24) - ctr;
+#else
+        return ccount_read(_pio, _sm);
 #endif
     }
 
@@ -390,12 +479,12 @@ public:
     */
     inline int getFreeStack() {
         const unsigned int sp = getStackPointer();
-        uint32_t ref = 0x20040000;
+        uint32_t ref = (uint32_t)&__scratch_x_start__;
         if (setup1 || loop1) {
             if (core1_separate_stack) {
-                ref = cpuid() ? (unsigned int)core1_separate_stack_address : 0x20040000;
+                ref = (uint32_t)(cpuid() ? core1_separate_stack_address : &__scratch_x_start__);
             } else {
-                ref = cpuid() ? 0x20040000 : 0x20041000;
+                ref = (uint32_t)(cpuid() ? &__scratch_x_start__ : &__scratch_y_start__);
             }
         }
         return sp - ref;

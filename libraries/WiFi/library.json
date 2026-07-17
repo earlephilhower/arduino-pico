@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+  "name": "WiFi",
+  "version": "1.0.0",
+  "build": {
+    "libLDFMode": "chain+"
+  }
+}

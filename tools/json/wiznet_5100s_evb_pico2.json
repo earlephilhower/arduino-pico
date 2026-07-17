@@ -25,12 +25,13 @@
         "variant": "wiznet_5100s_evb_pico2"
     },
     "debug": {
-        "jlink_device": "RP2350_0",
+        "jlink_device": "RP2350_M33_0",
         "openocd_target": "rp2350.cfg",
         "svd_path": "rp2350.svd"
     },
     "frameworks": [
-        "arduino"
+        "arduino",
+        "picosdk"
     ],
     "name": "W5100S-EVB-Pico2",
     "upload": {

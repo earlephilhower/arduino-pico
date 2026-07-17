@@ -18,8 +18,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include <Arduino.h>
-#include "RP2040USB.h"
+#include "Arduino.h"
+#include "USB.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 #include <hardware/vreg.h>
@@ -37,11 +37,12 @@ extern "C" {
 extern void setup();
 extern void loop();
 
+#ifdef __FREERTOS
 // FreeRTOS potential includes
-extern void initFreeRTOS() __attribute__((weak));
-extern void startFreeRTOS() __attribute__((weak));
-bool __isFreeRTOS;
-volatile bool __freeRTOSinitted;
+extern void initFreeRTOS();
+extern void startFreeRTOS();
+volatile bool __freeRTOSinitted = false;
+#endif
 
 extern void __EnableBluetoothDebug(Print &);
 
@@ -54,7 +55,7 @@ bool core1_separate_stack __attribute__((weak)) = false;
 bool core1_disable_systick __attribute__((weak)) = false;
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
-extern "C" void main1() {
+void __attribute__((__noreturn__)) main1() {
     if (!core1_disable_systick) {
         // Don't install the SYSTICK exception handler. rp2040.getCycleCount will not work properly on core1
         rp2040.begin(1);
@@ -124,81 +125,73 @@ extern "C" int main() {
 
 #endif // over/underclock
 
-    // Let rest of core know if we're using FreeRTOS
-    __isFreeRTOS = initFreeRTOS ? true : false;
-
+#ifndef __FREERTOS
     // Allocate impure_ptr (newlib temps) if there is a 2nd core running
-    if (!__isFreeRTOS && (setup1 || loop1)) {
+    if (setup1 || loop1) {
         _impure_ptr1 = (struct _reent*)calloc(1, sizeof(struct _reent));
         _REENT_INIT_PTR(_impure_ptr1);
     }
+#endif
 
     rp2040.begin(0);
 
+#ifdef __FREERTOS
+    initFreeRTOS();
+    // initVariant will be done in the freertos task
+#else
     initVariant();
+#endif
 
-    if (__isFreeRTOS) {
-        initFreeRTOS();
-    }
 
 #ifndef NO_USB
 #ifdef USE_TINYUSB
     TinyUSB_Device_Init(0);
-
 #else
-    __USBStart();
-
-#ifndef DISABLE_USB_SERIAL
-
-    if (!__isFreeRTOS) {
-        // Enable serial port for reset/upload always
-        Serial.begin(115200);
-    }
+    USB.begin();
+#if !defined(DISABLE_USB_SERIAL) && !defined(__FREERTOS)
+    // Enable serial port for reset/upload always
+    Serial.begin(115200);
 #endif
 #endif
 #endif
 
-#if defined DEBUG_RP2040_PORT
-    if (!__isFreeRTOS) {
-        DEBUG_RP2040_PORT.begin(115200);
+#if defined DEBUG_RP2040_PORT && !defined(__FREERTOS)
+    DEBUG_RP2040_PORT.begin(115200);
 #if (defined(ENABLE_BLUETOOTH) || defined(ENABLE_BLE)) && defined(DEBUG_RP2040_BLUETOOTH)
-        __EnableBluetoothDebug(DEBUG_RP2040_PORT);
+    __EnableBluetoothDebug(DEBUG_RP2040_PORT);
 #endif
-    }
 #endif
 
-    if (!__isFreeRTOS) {
-        if (setup1 || loop1) {
-            rp2040.fifo.begin(2);
-        } else {
-            rp2040.fifo.begin(1);
-        }
-        rp2040.fifo.registerCore();
-    }
-    if (!__isFreeRTOS) {
-        if (setup1 || loop1) {
-            delay(1); // Needed to make Picoprobe upload start 2nd core
-            if (core1_separate_stack) {
-                core1_separate_stack_address = (uint32_t*)malloc(0x2000);
-                multicore_launch_core1_with_stack(main1, core1_separate_stack_address, 0x2000);
-            } else {
-                multicore_launch_core1(main1);
-            }
-        }
-        setup();
-        while (true) {
-            loop();
-            __loop();
-        }
-    } else {
+#ifndef __FREERTOS
+    if (setup1 || loop1) {
         rp2040.fifo.begin(2);
-        startFreeRTOS();
+    } else {
+        rp2040.fifo.begin(1);
     }
+    rp2040.fifo.registerCore();
+    if (setup1 || loop1) {
+        delay(1); // Needed to make Picoprobe upload start 2nd core
+        if (core1_separate_stack) {
+            core1_separate_stack_address = (uint32_t*)malloc(0x2000);
+            multicore_launch_core1_with_stack(main1, core1_separate_stack_address, 0x2000);
+        } else {
+            multicore_launch_core1(main1);
+        }
+    }
+    setup();
+    while (true) {
+        loop();
+        __loop();
+    }
+#else // __FREERTOS
+    rp2040.fifo.begin(2);
+    startFreeRTOS();
+#endif
     return 0;
 }
 
 extern "C" unsigned long ulMainGetRunTimeCounterValue() {
-    return rp2040.getCycleCount64();
+    return time_us_32();
 }
 
 extern "C" void __register_impure_ptr(struct _reent *p) {
@@ -251,3 +244,8 @@ extern "C" void __attribute__((__noreturn__)) __wrap___stack_chk_fail() {
     }
 }
 
+
+// Pico_Low_Power needs stdio_flush...
+extern "C" void stdio_flush() {
+    Serial.flush();
+}

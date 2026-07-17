@@ -51,6 +51,7 @@ void setup() {
   singleFileDrive.onPlug(plug);
   singleFileDrive.onUnplug(unplug);
   singleFileDrive.begin("data.csv", "Recorded data from the Raspberry Pi Pico.csv");
+  delay(2000); // TinyUSB seems to have a race condition, see https://github.com/hathach/tinyusb/discussions/1764
 
   // Find the last written data
   File f = LittleFS.open("data.csv", "r");
@@ -82,7 +83,7 @@ void loop() {
     // Don't want the USB to connect during an update!
     File f = LittleFS.open("data.csv", "a");
     if (f) {
-      f.printf("%lu,%lu,%f,%lu\n", cnt++, millis(), temp, hwrand);
+      f.printf("%lu,%lu,%f,%lu\n", cnt++, millis(), (double)temp, hwrand);
       f.close();
     }
   }

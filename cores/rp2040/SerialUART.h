@@ -22,9 +22,8 @@
 
 #include <Arduino.h>
 #include "api/HardwareSerial.h"
-#include <stdarg.h>
-#include <queue>
 #include "CoreMutex.h"
+#include "LocklessQueue.h"
 
 extern "C" typedef struct uart_inst uart_inst_t;
 
@@ -33,7 +32,7 @@ class SerialUART : public arduino::HardwareSerial {
 public:
     SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size_t rts = UART_PIN_NOT_DEFINED, pin_size_t cts = UART_PIN_NOT_DEFINED);
 
-    // Select the pinout.  Call before .begin()
+    // Select the pinout.  Call before .begin().  Pass in -1 (UART_PIN_NOT_DEFINED) to disable
     bool setRX(pin_size_t pin);
     bool setTX(pin_size_t pin);
     bool setRTS(pin_size_t pin);
@@ -88,31 +87,35 @@ public:
         (void) unused;
     }
 
-    // Not to be called by users, only from the IRQ handler.  In public so that the C-language IQR callback can access it
-    void _handleIRQ(bool inIRQ = true);
-
     // Allows the user to sleep until a break is received (self-clears the flag
     // on read)
     bool getBreakReceived();
 
+    // Returns the baud rate the uart is actually operating at vs the desired baud rate specified to begin()
+    int getActualBaud() {
+        return _running ? _actualBaud : 0;
+    }
+
 private:
+    static void _uart0IRQ();
+    static void _uart1IRQ();
+    void _handleIRQ(bool inIRQ = true);
+
     bool _running = false;
     uart_inst_t *_uart;
     pin_size_t _tx, _rx;
     pin_size_t _rts, _cts;
     gpio_function_t _fcnTx, _fcnRx, _fcnRts, _fcnCts;
     int _baud;
+    int _actualBaud;
     mutex_t _mutex;
     bool _polling = false;
     bool _overflow;
     bool _break;
     bool _invertTX, _invertRX, _invertControl;
 
-    // Lockless, IRQ-handled circular queue
-    uint32_t _writer;
-    uint32_t _reader;
+    LocklessQueue<uint8_t> *_queue;
     size_t   _fifoSize = 32;
-    uint8_t *_queue;
     mutex_t  _fifoMutex; // Only needed when non-IRQ updates _writer
     void _pumpFIFO(); // User space FIFO transfer
 };

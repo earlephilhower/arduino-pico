@@ -97,7 +97,7 @@ void *pcalloc(size_t count, size_t size);
 // ADC RP2040-specific calls
 void analogReadResolution(int bits);
 #ifdef __cplusplus
-float analogReadTemp(float vref = 3.3);  // Returns core temp in Centigrade
+float analogReadTemp(float vref = 3.3f);  // Returns core temp in Centigrade
 #endif
 
 // PWM RP2040-specific calls
@@ -108,9 +108,6 @@ void analogWriteResolution(int res);
 #ifdef __cplusplus
 } // extern "C"
 #endif
-
-// FreeRTOS potential calls
-extern bool __isFreeRTOS;
 
 // Ancient AVR defines
 #define HAVE_HWSERIAL0
@@ -172,6 +169,9 @@ constexpr uint64_t __bitset(const int (&a)[N], size_t i = 0U) {
 #define __GPIOCNT 30
 #define __FIRSTANALOGGPIO 26
 #endif
+
+// For peripherals where a pin may be not used
+#define NOPIN ((pin_size_t) 0xff)
 
 #ifdef __cplusplus
 using namespace arduino;

@@ -170,7 +170,7 @@ bool AudioBufferManager::write(uint32_t v, bool sync) {
     if (!_running || !_isOutput) {
         return false;
     }
-    AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_empty;
+    AudioBuffer ** volatile p = &_empty;
     if (!*p) {
         if (!sync) {
             return false;
@@ -195,7 +195,7 @@ size_t AudioBufferManager::write(const uint32_t *v, size_t words, bool sync) {
         return 0;
     }
     while (words) {
-        AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_empty;
+        AudioBuffer ** volatile p = &_empty;
         if (!*p) {
             if (!sync) {
                 return written;
@@ -225,7 +225,7 @@ bool AudioBufferManager::read(uint32_t *v, bool sync) {
         return false;
     }
 
-    AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_filled;
+    AudioBuffer ** volatile p = &_filled;
     if (!*p) {
         if (!sync) {
             return false;
@@ -251,7 +251,7 @@ size_t AudioBufferManager::read(uint32_t *v, size_t words, bool sync) {
         return 0;
     }
     while (words) {
-        AudioBuffer ** volatile p = (AudioBuffer ** volatile)&_filled;
+        AudioBuffer ** volatile p = &_filled;
         if (!*p) {
             if (!sync) {
                 return read;
@@ -302,10 +302,10 @@ int AudioBufferManager::available() {
 }
 
 void AudioBufferManager::flush() {
-    AudioBuffer ** volatile a = (AudioBuffer ** volatile)&_active[0];
-    AudioBuffer ** volatile b = (AudioBuffer ** volatile)&_active[1];
-    AudioBuffer ** volatile c = (AudioBuffer ** volatile)&_filled;
-    while (*c && (*b != (AudioBuffer * volatile)_silence) && (*a != (AudioBuffer * volatile)_silence)) {
+    AudioBuffer ** volatile a = &_active[0];
+    AudioBuffer ** volatile b = &_active[1];
+    AudioBuffer ** volatile c = &_filled;
+    while (*c && (*b != _silence) && (*a != _silence)) {
         // busy wait until all user written data enroute
     }
 }

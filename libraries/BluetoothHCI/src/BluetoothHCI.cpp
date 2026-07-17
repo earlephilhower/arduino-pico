@@ -73,7 +73,11 @@ void BluetoothHCI::setBLEName(const char *name) {
 }
 
 void BluetoothHCI::install() {
+    BluetoothLock l;
     hci_set_inquiry_mode(INQUIRY_MODE_RSSI_AND_EIR);
+
+    //    hci_set_master_slave_policy(1);
+    //    gap_discoverable_control(1);
 
     // Register for HCI events.
     hci_event_callback_registration.callback = PACKETHANDLERCB(BluetoothHCI, hci_packet_handler);
@@ -103,7 +107,7 @@ bool BluetoothHCI::running() {
     return _hciRunning;
 }
 
-std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool async) {
+std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, bool async, void (*idleFcn)(void *), void *idleFcnData) {
     _scanMask = mask;
     _btdList.reserve(MAX_DEVICES_TO_DISCOVER);
     _btdList.clear();
@@ -130,13 +134,30 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
     }
 
     while (_scanning) {
+        if (idleFcn) {
+            idleFcn(idleFcnData);
+        }
         delay(10);
     }
-    DEBUGV("HCI::scan(): inquiry end\n");
+    DEBUGV("HCI::scan(): inquiry end, start name requests\n");
+    for (auto &e : _btdList) {
+        if (!e.name()[0]) {
+            _requested = &e;
+            do {
+                BluetoothLock l;
+                gap_remote_name_request(e.address(), e.pageScanRepetitionMode(), e.clockOffset() | 0x8000);
+            } while (0);
+            while (_requested) {
+                delay(10);
+                asm volatile("" ::: "memory");
+            }
+        }
+    }
+    DEBUGV("HCI::scan() end name requests\n");
     return _btdList;
 }
 
-std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) {
+std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec, void (*idleFcn)(void *), void *idleFcnData) {
     _scanMask = uuid;
     _btdList.reserve(MAX_DEVICES_TO_DISCOVER);
     _btdList.clear();
@@ -154,18 +175,24 @@ std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec) 
     }
     DEBUGV("HCI::scan(): BLE advertise inquiry start\n");
     // Only need to lock around the inquiry start command, not the wait
-    {
+    do {
         BluetoothLock b;
         gap_set_scan_params(0, 75, 50, 0);  // TODO - anything better for these params?
         gap_start_scan();
-    }
+    } while (0);
     uint32_t scanStart = millis();
 
     while (_scanning && ((millis() - scanStart) < inquiryTime)) {
+        if (idleFcn) {
+            idleFcn(idleFcnData);
+        }
         delay(10);
     }
     DEBUGV("HCI::scanBLE(): inquiry end\n");
-    gap_stop_scan();
+    do {
+        BluetoothLock l;
+        gap_stop_scan();
+    } while (0);
 
     return _btdList;
 }
@@ -178,7 +205,6 @@ void BluetoothHCI::scanFree() {
 void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
     bd_addr_t address;
     gap_event_advertising_report_get_address(packet, address);
-    //int event_type = gap_event_advertising_report_get_advertising_event_type(packet);
     int address_type = gap_event_advertising_report_get_address_type(packet);
     int8_t rssi = gap_event_advertising_report_get_rssi(packet);
     uint8_t adv_size = gap_event_advertising_report_get_data_length(packet);
@@ -194,9 +220,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         uint8_t size         = ad_iterator_get_data_len(&context);
         const uint8_t * data = ad_iterator_get_data(&context);
 
-        //        if (data_type > 0 && data_type < 0x1B){
-        //            printf("    %s: ", ad_types[data_type]);
-        //        }
         int i;
         // Assigned Numbers GAP
 
@@ -218,7 +241,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
                 if (!_scanMask || (_scanMask == thisuuid)) {
                     uuid = thisuuid;
                 }
-                DEBUGV("uuid %02X ", thisuuid);
             }
             break;
         case BLUETOOTH_DATA_TYPE_INCOMPLETE_LIST_OF_32_BIT_SERVICE_CLASS_UUIDS:
@@ -229,7 +251,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
                 if (!_scanMask || (_scanMask == thisuuid)) {
                     uuid = thisuuid;
                 }
-                DEBUGV("%04" PRIX32, thisuuid);
             }
             break;
         case BLUETOOTH_DATA_TYPE_INCOMPLETE_LIST_OF_128_BIT_SERVICE_CLASS_UUIDS:
@@ -237,48 +258,34 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         case BLUETOOTH_DATA_TYPE_LIST_OF_128_BIT_SERVICE_SOLICITATION_UUIDS:
             // Unhandled yet
             reverse_128(data, uuid_128);
-            DEBUGV("%s", uuid128_to_str(uuid_128));
             break;
         case BLUETOOTH_DATA_TYPE_SHORTENED_LOCAL_NAME:
             if (!nameptr) {
                 nameptr = (const char *)data;
                 namelen = size;
             }
-            for (i = 0; i < size; i++) {
-                DEBUGV("%c", (char)(data[i]));
-            }
             break;
 
         case BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME:
             nameptr = (const char *)data;
             namelen = size;
-            for (i = 0; i < size; i++) {
-                DEBUGV("%c", (char)(data[i]));
-            }
             break;
         case BLUETOOTH_DATA_TYPE_TX_POWER_LEVEL:
-            DEBUGV("%d dBm", *(int8_t*)data);
             break;
         case BLUETOOTH_DATA_TYPE_SLAVE_CONNECTION_INTERVAL_RANGE:
-            DEBUGV("Connection Interval Min = %u ms, Max = %u ms", little_endian_read_16(data, 0) * 5 / 4, little_endian_read_16(data, 2) * 5 / 4);
             break;
         case BLUETOOTH_DATA_TYPE_SERVICE_DATA:
-            //printf_hexdump(data, size);
             break;
         case BLUETOOTH_DATA_TYPE_PUBLIC_TARGET_ADDRESS:
         case BLUETOOTH_DATA_TYPE_RANDOM_TARGET_ADDRESS:
             reverse_bd_addr(data, address);
-            DEBUGV("%s", bd_addr_to_str(address));
             break;
         case BLUETOOTH_DATA_TYPE_APPEARANCE:
             // https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.gap.appearance.xml
-            DEBUGV("%02X", little_endian_read_16(data, 0));
             break;
         case BLUETOOTH_DATA_TYPE_ADVERTISING_INTERVAL:
-            DEBUGV("%u ms", little_endian_read_16(data, 0) * 5 / 8);
             break;
         case BLUETOOTH_DATA_TYPE_3D_INFORMATION_DATA:
-            //printf_hexdump(data, size);
             break;
         case BLUETOOTH_DATA_TYPE_MANUFACTURER_SPECIFIC_DATA: // Manufacturer Specific Data
             break;
@@ -288,12 +295,10 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         case BLUETOOTH_DATA_TYPE_DEVICE_ID:
         case BLUETOOTH_DATA_TYPE_SECURITY_MANAGER_OUT_OF_BAND_FLAGS:
         default:
-            DEBUGV("Advertising Data Type 0x%2x not handled yet", data_type);
+            DEBUGV("Advertising Data Type 0x%2x not handled yet\n", data_type);
             break;
         }
-        DEBUGV("\n");
     }
-    DEBUGV("\n");
 
     if (uuid) {
         bool seen = false;
@@ -311,41 +316,6 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
     }
 }
 
-
-static void handle_gatt_client_event(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
-    UNUSED(packet_type);
-    UNUSED(channel);
-    UNUSED(size);
-
-    gatt_client_service_t service;
-    gatt_client_characteristic_t characteristic;
-    switch (hci_event_packet_get_type(packet)) {
-    case GATT_EVENT_SERVICE_QUERY_RESULT:
-        gatt_event_service_query_result_get_service(packet, &service);
-        //            dump_service(&service);
-        //            services[service_count++] = service;
-        break;
-    case GATT_EVENT_CHARACTERISTIC_QUERY_RESULT:
-        gatt_event_characteristic_query_result_get_characteristic(packet, &characteristic);
-        //            dump_characteristic(&characteristic);
-        break;
-    case GATT_EVENT_QUERY_COMPLETE:
-        // GATT_EVENT_QUERY_COMPLETE of search characteristics
-        //            if (service_index < service_count) {
-        //                service = services[service_index++];
-        //                printf("\nGATT browser - CHARACTERISTIC for SERVICE %s, [0x%04x-0x%04x]\n",
-        //                    uuid128_to_str(service.uuid128), service.start_group_handle, service.end_group_handle);
-        //                gatt_client_discover_characteristics_for_service(handle_gatt_client_event, connection_handle, &service);
-        //                break;
-        //            }
-        //            service_index = 0;
-        break;
-    default:
-        break;
-    }
-}
-
-
 void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     (void)channel;
     (void)size;
@@ -359,15 +329,19 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
     int8_t rssi;
     const char *name;
     char name_buffer[241];
+    int pageScanRepetitionMode;
+    int clockOffset;
 
     switch (hci_event_packet_get_type(packet)) {
     case  BTSTACK_EVENT_STATE:
         _hciRunning = (btstack_event_state_get_state(packet) == HCI_STATE_WORKING);
         break;
+
     case HCI_EVENT_PIN_CODE_REQUEST:
         hci_event_pin_code_request_get_bd_addr(packet, address);
         gap_pin_code_response(address, "0000");
         break;
+
     case GAP_EVENT_INQUIRY_RESULT:
         if (!_scanning) {
             return;
@@ -387,6 +361,8 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         } else {
             name = "";
         }
+        pageScanRepetitionMode = gap_event_inquiry_result_get_page_scan_repetition_mode(packet);
+        clockOffset = gap_event_inquiry_result_get_clock_offset(packet);
         DEBUGV("HCI: Scan found '%s', COD 0x%08X, RSSI %d, MAC %02X:%02X:%02X:%02X:%02X:%02X\n", name, (unsigned int)cod, rssi, address[0], address[1], address[2], address[3], address[4], address[5]);
         if ((_scanMask & cod) == _scanMask) {
             // Sometimes we get multiple reports for the same MAC, so remove any old reports since newer will have newer RSSI
@@ -401,14 +377,34 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
                     updated = true;
                 }
             }
-            BTDeviceInfo btd(cod, address, rssi, name);
+            BTDeviceInfo btd(cod, address, rssi, name, pageScanRepetitionMode, clockOffset);
             if (_btdList.size() < MAX_DEVICES_TO_DISCOVER) {
                 _btdList.push_back(btd);
             }
         }
         break;
+
     case GAP_EVENT_INQUIRY_COMPLETE:
+        DEBUGV("GAP_EVENT_INQUIRY_COMPLETE\n");
         _scanning = false;
+        break;
+
+    case HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE:
+        if (!_requested) {
+            DEBUGV("Error: HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE without active request\n");
+            return; // How'd we get here?
+        }
+        reverse_bd_addr(&packet[3], address);
+        if (!memcmp(_requested->address(), address, 6)) {
+            if (packet[2] == 0) {
+                DEBUGV("Received name: '%s'\n", &packet[9]);
+                strcpy(_requested->_name, (char *)packet + 9);
+            } else {
+                DEBUGV("Failed to get name: page timeout\n");
+            }
+        }
+        _requested = nullptr;
+        asm volatile("" ::: "memory");
         break;
 
     case GAP_EVENT_ADVERTISING_REPORT:
@@ -418,22 +414,23 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         break;
 
     case HCI_EVENT_DISCONNECTION_COMPLETE:
+        if (_disconnectCB) {
+            _disconnectCB();
+        }
         _hciConn = HCI_CON_HANDLE_INVALID;
         DEBUGV("HCI Disconnected\n");
         break;
 
-    case HCI_EVENT_LE_META:
+    case HCI_EVENT_META_GAP:
         // wait for connection complete
-        if (hci_event_le_meta_get_subevent_code(packet) !=  HCI_SUBEVENT_LE_CONNECTION_COMPLETE) {
+        if (hci_event_gap_meta_get_subevent_code(packet) != GAP_SUBEVENT_LE_CONNECTION_COMPLETE) {
             break;
         }
         DEBUGV("HCI Connected\n");
-        _hciConn = hci_subevent_le_connection_complete_get_connection_handle(packet);
+        _hciConn =  gap_subevent_le_connection_complete_get_connection_handle(packet);
         if (_smPair) {
+            DEBUGV("Requesting pairing\n");
             sm_request_pairing(_hciConn);
-        } else {
-            // query primary services - not used yet
-            gatt_client_discover_primary_services(handle_gatt_client_event, _hciConn);
         }
         break;
 

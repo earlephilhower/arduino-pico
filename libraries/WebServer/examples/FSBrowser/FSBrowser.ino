@@ -508,7 +508,7 @@ void handleNotFound() {
   message += F("\nArguments: ");
   message += server.args();
   message += '\n';
-  for (uint8_t i = 0; i < server.args(); i++) {
+  for (int i = 0; i < server.args(); i++) {
     message += F(" NAME:");
     message += server.argName(i);
     message += F("\n VALUE:");

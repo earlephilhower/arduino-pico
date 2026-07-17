@@ -34,6 +34,7 @@ public:
     bool setDOUT(pin_size_t pin);
     bool setDIN(pin_size_t pin);
     bool setMCLK(pin_size_t pin);
+    bool setSlave();
     virtual bool setBitsPerSample(int bps) override;
     virtual bool setBuffers(size_t buffers, size_t bufferWords, int32_t silenceSample = 0) override;
     virtual bool setFrequency(int newFreq) override;
@@ -155,6 +156,7 @@ private:
     bool _isOutput;
     bool _swapClocks;
     bool _MCLKenabled;
+    bool _isSlave;
 
     bool _running;
 
@@ -180,6 +182,8 @@ private:
 
     AudioBufferManager *_arbInput;
     AudioBufferManager *_arbOutput;
+    pio_program_t *swap2SideSet(const pio_program_t *src);
+    pio_program_t *_pgm;
     PIOProgram *_i2s;
     PIOProgram *_i2sMCLK;
     PIO _pio, _pioMCLK;
@@ -187,4 +191,5 @@ private:
 
     static const int I2SSYSCLK_44_1 = 135600; // 44.1, 88.2 kHz sample rates
     static const int I2SSYSCLK_8 = 153600;  // 8k, 16, 32, 48, 96, 192 kHz
+
 };

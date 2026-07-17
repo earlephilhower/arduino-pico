@@ -77,8 +77,8 @@ void WiFiServer::begin(uint16_t port, uint8_t backlog) {
     }
     _listen_pcb = listen_pcb;
     _port = _listen_pcb->local_port;
-    tcp_accept(listen_pcb, &WiFiServer::_s_accept);
     tcp_arg(listen_pcb, (void*) this);
+    tcp_accept(listen_pcb, &WiFiServer::_s_accept);
 }
 
 void WiFiServer::setNoDelay(bool nodelay) {
@@ -215,9 +215,15 @@ void WiFiServer::_discard(ClientContext* client) {
 }
 
 err_t WiFiServer::_s_accept(void *arg, tcp_pcb* newpcb, err_t err) {
-    return reinterpret_cast<WiFiServer*>(arg)->_accept(newpcb, err);
+    if (arg) {
+        return reinterpret_cast<WiFiServer*>(arg)->_accept(newpcb, err);
+    } else {
+        return ERR_OK;
+    }
 }
 
 void WiFiServer::_s_discard(void* server, ClientContext* ctx) {
-    reinterpret_cast<WiFiServer*>(server)->_discard(ctx);
+    if (server) {
+        reinterpret_cast<WiFiServer*>(server)->_discard(ctx);
+    }
 }

@@ -25,12 +25,15 @@
 #endif
 
 #include <HID_Joystick.h>
-#include <class/hid/hid.h>
 
 //======================================================================
 class Joystick_ : public HID_Joystick {
 public:
-    Joystick_(void);
-    virtual void send_now(void) override;
+    Joystick_();
+    void begin() override;
+    void end() override;
+    virtual void send_now() override;
+private:
+    uint8_t _id;
 };
 extern Joystick_ Joystick;

@@ -1,0 +1,56 @@
+{
+    "build": {
+        "arduino": {
+            "earlephilhower": {
+                "boot2_source": "none.S",
+                "usb_vid": "0x2E8A",
+                "usb_pid": "0x10B7"
+            }
+        },
+        "core": "earlephilhower",
+        "cpu": "cortex-m33",
+        "extra_flags": "-DARDUINO_WAVESHARE_RP2350_LCD_0_96 -DARDUINO_ARCH_RP2040 -DUSBD_MAX_POWER_MA=500 ",
+        "f_cpu": "150000000L",
+        "hwids": [
+            [
+                "0x2E8A",
+                "0x00C0"
+            ],
+            [
+                "0x2E8A",
+                "0x10B7"
+            ]
+        ],
+        "mcu": "rp2350",
+        "variant": "waveshare_rp2350_lcd_0_96"
+    },
+    "debug": {
+        "jlink_device": "RP2350_M33_0",
+        "openocd_target": "rp2350.cfg",
+        "svd_path": "rp2350.svd"
+    },
+    "frameworks": [
+        "arduino",
+        "picosdk"
+    ],
+    "name": "RP2350 LCD 0.96",
+    "upload": {
+        "maximum_ram_size": 524288,
+        "maximum_size": 4194304,
+        "require_upload_port": true,
+        "native_usb": true,
+        "use_1200bps_touch": true,
+        "wait_for_upload_port": false,
+        "protocol": "picotool",
+        "protocols": [
+            "blackmagic",
+            "cmsis-dap",
+            "jlink",
+            "raspberrypi-swd",
+            "picotool",
+            "picoprobe"
+        ]
+    },
+    "url": "https://www.raspberrypi.org/products/raspberry-pi-pico/",
+    "vendor": "Waveshare"
+}

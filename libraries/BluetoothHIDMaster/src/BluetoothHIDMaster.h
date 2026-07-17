@@ -25,7 +25,7 @@
 #include <Arduino.h>
 #include <list>
 #include <memory>
-
+#include <LocklessQueue.h>
 #include <BluetoothHCI.h>
 #include <btstack.h>
 
@@ -58,11 +58,8 @@ private:
     bool _holding = false;
     uint8_t _heldKey;
 
-    // Lockless, IRQ-handled circular queue
-    uint32_t _writer;
-    uint32_t _reader;
+    LocklessQueue<uint8_t> *_queue;
     size_t   _fifoSize = 32;
-    uint8_t *_queue;
 };
 
 class BluetoothHIDMaster {
@@ -90,10 +87,16 @@ public:
     bool connectJoystick();
     bool connectAny();
 
-    bool connectBLE(const uint8_t *addr, int addrType);
-    bool connectBLE();
+    bool connectBLE(const uint8_t *addr, int addrType, void (*idleFcn)(void *) = nullptr, void *idleFcnData = nullptr);
+    bool connectBLE(void (*idleFcn)(void *) = nullptr, void *idleFcnData = nullptr);
+    const uint8_t *lastConnectedAddress() {
+        return _lastAddr;
+    }
+    uint8_t lastConnectedAddressType() {
+        return _lastAddrType;
+    }
 
-    bool disconnect();
+    void disconnect();
     void clearPairing();
 
     void onMouseMove(void (*)(void *, int, int, int), void *cbData = nullptr);
@@ -108,9 +111,11 @@ private:
     bool _ble = false;
     bool connectCOD(uint32_t cod);
     BluetoothHCI _hci;
+    uint8_t _lastAddr[6] = {};
+    uint8_t _lastAddrType = 0;
     void hid_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
     uint8_t lastMB = 0;
-    enum { NUM_KEYS = 6 };
+    enum { NUM_KEYS = 32 };
     uint8_t last_keys[NUM_KEYS] = { 0 };
     uint16_t last_consumer_key = 0;
     void hid_host_handle_interrupt_report(btstack_hid_parser_t * parser);

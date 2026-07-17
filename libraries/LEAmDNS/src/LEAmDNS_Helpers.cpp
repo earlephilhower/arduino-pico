@@ -451,6 +451,13 @@ MDNSResponder::_findService(const MDNSResponder::hMDNSService p_hService) {
     SERVICE TXT
 */
 
+// There are many strncpy()s here that immediately set the terminating \0, but GCC
+// doesn't notice that and emits a warning at -O3 -Wall -Wextra.  After inspection,
+// disable that specific warning since it's not a real problem
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 /*
     MDNSResponder::_allocServiceTxt
 */
@@ -488,6 +495,8 @@ MDNSResponder::_allocServiceTxt(MDNSResponder::stcMDNSService* p_pService, const
     }
     return pTxt;
 }
+
+#pragma GCC diagnostic pop
 
 /*
     MDNSResponder::_releaseServiceTxt

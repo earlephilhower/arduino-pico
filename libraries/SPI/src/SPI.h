@@ -31,21 +31,21 @@
 class SPIClassRP2040 : public arduino::HardwareSPI {
 public:
     /**
-            @brief Create a PIO-based SPI instance, pins can be changed before begin() call
+        @brief Create a PIO-based SPI instance, pins can be changed before begin() call
 
-            @param [in] spi SPI hardware instance (spi0/spi1)
-            @param [in] rx MISO GPIO
-            @param [in] cs CS GPIO
-            @param [in] sck SCK GPIO
-            @param [in] tx MOSI GPIO
+        @param [in] spi SPI hardware instance (spi0/spi1)
+        @param [in] rx MISO GPIO
+        @param [in] cs CS GPIO
+        @param [in] sck SCK GPIO
+        @param [in] tx MOSI GPIO
     */
     SPIClassRP2040(spi_inst_t *spi, pin_size_t rx, pin_size_t cs, pin_size_t sck, pin_size_t tx);
 
     /**
-           @brief Send an 8-bit byte of data and return read-back 8-bit value
+        @brief Send an 8-bit byte of data and return read-back 8-bit value
 
-           @param [in] data Data to send
-           @returns Read back byte from SPI interface
+        @param [in] data Data to send
+        @returns Read back byte from SPI interface
     */
     byte transfer(uint8_t data) override;
 
@@ -67,16 +67,17 @@ public:
     void transfer(void *buf, size_t count) override;
 
     /**
-            @brief Sends one buffer and receives into another under a single CS. Can set rx or txbuf to nullptr
+        @brief Sends one buffer and receives into another under a single CS. Can set rx or txbuf to nullptr
 
-            @param [in] txbuf Buffer to transmit or nullptr to send 0s
-            @param [out] rxbuf Buffer to read back into or nullptr to ignore returned data
-            @param [in] count Numbner of bytes to transmit/receive
+        @param [in] txbuf Buffer to transmit or nullptr to send 0s
+        @param [out] rxbuf Buffer to read back into or nullptr to ignore returned data
+        @param [in] count Numbner of bytes to transmit/receive
     */
     void transfer(const void *txbuf, void *rxbuf, size_t count) override;
 
-    // DMA/asynchronous transfers.  Do not combime with synchronous runs or bad stuff will happen
+    // DMA/asynchronous transfers.  Do not combine with synchronous runs or bad stuff will happen.
     // All buffers must be valid for entire DMA and not touched until `finished()` returns true.
+    // Note: Async transfers are only available on hardware SPI (SPIClassRP2040), not SoftwareSPI (PIO-based).
     /**
         @brief Perform a transfer() using DMA in the background. Returns immediately, need to check for completion
 
@@ -106,140 +107,168 @@ public:
     */
     void abortAsync();
 
+    /**
+        @brief Register a callback to be invoked when an async transfer completes
+
+        @details
+        The callback will be called from interrupt context when the DMA transfer
+        finishes. Keep callback execution brief. Set to nullptr to disable callbacks.
+        Only available on hardware SPI (SPIClassRP2040), not SoftwareSPI (PIO-based).
+
+        @param [in] callback Function to call on completion, or nullptr to disable
+    */
+    void onTransferComplete(void (*callback)(void));
 
     /**
-           @brief Begin an SPI transaction, sets SPI speed and masks necessary interrupts
+        @brief Register a callback with user context to be invoked when an async transfer completes
 
-           @param [in] SPISettings SPI configuration parameters, including the clock speed
+        @details
+        The callback will be called from interrupt context when the DMA transfer
+        finishes. Keep callback execution brief. Set callback to nullptr to disable.
+        Only available on hardware SPI (SPIClassRP2040), not SoftwareSPI (PIO-based).
+
+        @param [in] callback Function to call on completion, or nullptr to disable
+        @param [in] context User-provided context pointer passed to callback
+    */
+    void onTransferComplete(void (*callback)(void*), void* context);
+
+
+    /**
+        @brief Begin an SPI transaction, sets SPI speed and masks necessary interrupts
+
+        @param [in] SPISettings SPI configuration parameters, including the clock speed
     */
     void beginTransaction(SPISettings settings) override;
 
     /**
-            @brief Ends an SPI transaction, unmasks and masked GPIO interrupts
+        @brief Ends an SPI transaction, unmasks and masked GPIO interrupts
     */
     void endTransaction(void) override;
 
     /**
-           @brief Sets the MISO(RX) pin. Call before begin()
+        @brief Sets the MISO(RX) pin. Call before begin()
 
-           @param [in] pin The GPIO number to assign to
-           @returns True on success
+        @param [in] pin The GPIO number to assign to or NOPIN
+        @returns True on success
     */
     bool setRX(pin_size_t pin);
 
     /**
-            @brief Sets the MISO(RX) pin. Call before begin()
+        @brief Sets the MISO(RX) pin. Call before begin()
 
-            @param [in] pin The GPIO number to assign to
-            @returns True on success
+        @param [in] pin The GPIO number to assign to
+        @returns True on success
     */
     inline bool setMISO(pin_size_t pin) {
         return setRX(pin);
     }
 
     /**
-            @brief Sets the CS pin. Call before begin()
+        @brief Sets the CS pin. Call before begin()
 
-            @param [in] pin The GPIO number to assign to
-            @returns True on success
+        @param [in] pin The GPIO number to assign to
+        @returns True on success
     */
     bool setCS(pin_size_t pin);
 
     /**
-            @brief Sets the SCK pin. Call before begin()
+        @brief Sets the SCK pin. Call before begin()
 
-            @param [in] pin The GPIO number to assign to
-            @returns True on success
+        @param [in] pin The GPIO number to assign to
+        @returns True on success
     */
     bool setSCK(pin_size_t pin);
 
     /**
-          @brief Sets the MOSI(TX) pin. Call before begin()
+        @brief Sets the MOSI(TX) pin. Call before begin()
 
-          @param [in] pin The GPIO number to assign to
-          @returns True on success
+        @param [in] pin The GPIO number to assign to
+        @returns True on success
     */
     bool setTX(pin_size_t pin);
 
     /**
-          @brief Sets the MOSI(TX) pin. Call before begin()
+        @brief Sets the MOSI(TX) pin. Call before begin()
 
-          @param [in] pin The GPIO number to assign to
-          @returns True on success
+        @param [in] pin The GPIO number to assign to or NOPIN
+        @returns True on success
     */
     inline bool setMOSI(pin_size_t pin) {
         return setTX(pin);
     }
 
     /**
-            @brief Call once to init/deinit SPI class, select pins, etc.
+        @brief Call once to init/deinit SPI class, select pins, etc.
     */
     virtual void begin() override {
         begin(false);
     }
 
     /**
-           @brief Call once to init/deinit SPI class, select pins, etc.
+        @brief Call once to init/deinit SPI class, select pins, etc.
 
-           @param [in] hwCS Pass in true to enable HW-controlled CS.  Otherwise application needs to assert/deassert CS.
+        @param [in] hwCS Pass in true to enable HW-controlled CS.  Otherwise application needs to assert/deassert CS.
     */
     void begin(bool hwCS);
 
     /**
-           @brief Call to deinit and disable the SPI interface.
+        @brief Call to deinit and disable the SPI interface.
     */
     void end() override;
 
     /**
-            @brief Deprecated, do not use
+        @brief Deprecated, do not use
 
-            @param [in] order Deprecated
+        @param [in] order Deprecated
     */
     void setBitOrder(BitOrder order) __attribute__((deprecated));
 
     /**
-            @brief Deprecated, do not use
+        @brief Deprecated, do not use
 
-            @param [in] order Deprecated
+        @param [in] order Deprecated
     */
     void setDataMode(uint8_t uc_mode) __attribute__((deprecated));
 
     /**
-            @brief Deprecated, do not use
+        @brief Deprecated, do not use
 
-            @param [in] order Deprecated
+        @param [in] order Deprecated
     */
     void setClockDivider(uint8_t uc_div) __attribute__((deprecated));
 
     /**
-            @brief Ensure specific GPIO interrupt is disabled during and SPI transaction to protect against re-entrancy.  Multiple GPIOs supported by multiple calls.
+        @brief Ensure specific GPIO interrupt is disabled during and SPI transaction to protect against re-entrancy.  Multiple GPIOs supported by multiple calls.
 
-            @param [in] interruptNumber GPIO pin to mask
+        @param [in] interruptNumber GPIO pin to mask
     */
     virtual void usingInterrupt(int interruptNumber) override {
         _helper.usingInterrupt(interruptNumber);
     }
 
     /**
-            @brief Remove a GPIO from the masked-during-transaction list.
+        @brief Remove a GPIO from the masked-during-transaction list.
 
-            @param [in] interruptNumber GPIO pin to unmask
+        @param [in] interruptNumber GPIO pin to unmask
     */
     virtual void notUsingInterrupt(int interruptNumber) override {
         _helper.notUsingInterrupt(interruptNumber);
     }
 
     /**
-           @brief Deprecated, do not use
+        @brief Deprecated, do not use
     */
     virtual void attachInterrupt() override  __attribute__((deprecated)) { /* noop */ }
 
     /**
-           @brief Deprecated, do not use
+        @brief Deprecated, do not use
     */
     virtual void detachInterrupt() override  __attribute__((deprecated)) { /* noop */ }
 
 private:
+    friend void _spiDMAIRQ();
+    void _handleDMAComplete();
+
     void adjustBuffer(const void *s, void *d, size_t cnt, bool by16);
 
     spi_inst_t *_spi;
@@ -257,6 +286,12 @@ private:
     uint8_t *_rxFinalBuffer;
     uint32_t _dummy;
     SPIHelper _helper;
+
+    // Async callback
+    void (*_asyncCallback)(void) = nullptr;
+    void (*_asyncCallbackWithContext)(void*) = nullptr;
+    void* _asyncCallbackContext = nullptr;
+    volatile bool _asyncInProgress = false;
 };
 
 extern SPIClassRP2040 SPI;

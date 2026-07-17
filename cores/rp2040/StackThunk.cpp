@@ -29,7 +29,7 @@ extern "C" {
     uint32_t *stack_thunk_save = nullptr;  /* Saved A1 while in BearSSL */
     uint32_t stack_thunk_refcnt = 0;
 
-    /* Largest stack usage seen in the wild at  6120 */
+    /* Largest stack usage seen in the wild at 6120 */
 #define _stackSize (6400/4)
 #define _stackPaint 0xdeadbeef
 
@@ -37,10 +37,6 @@ extern "C" {
     void stack_thunk_add_ref() {
         stack_thunk_refcnt++;
         if (stack_thunk_refcnt == 1) {
-            // The stack must be in DRAM, or an Soft WDT will follow. Not sure why,
-            // maybe too much time is consumed with the non32-bit exception handler.
-            // Also, interrupt handling on an IRAM stack would be very slow.
-            // Strings on the stack would be very slow to access as well.
             stack_thunk_ptr = (uint32_t *)malloc(_stackSize * sizeof(uint32_t));
             if (!stack_thunk_ptr) {
                 // This is a fatal error, stop the sketch

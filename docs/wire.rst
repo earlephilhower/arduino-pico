@@ -63,8 +63,9 @@ bool finishedAsync()
 ~~~~~~~~~~~~~~~~~~~~
 Call to check if the asynchronous operations is completed.
 
-void onFinishedAsync(void(*function)(void))
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void onFinishedAsync(void(\*function)(void))
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Set a (optional) callback for async operation.  The ``function`` will be called when the asynchronous
 operation finishes.
 
