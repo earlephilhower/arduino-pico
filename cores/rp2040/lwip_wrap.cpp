@@ -61,7 +61,10 @@ extern "C" {
         if (!_lwip_rng) {
             recursive_mutex_init(&__lwipMutex);
             _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros());
-            __real_lwip_init();
+            {
+                LWIPMutex m;
+                __real_lwip_init();
+            }
 #ifdef __FREERTOS
             __startLWIPThread();
 #endif
@@ -686,6 +689,216 @@ extern "C" {
         return __real_dns_gethostbyname_addrtype(hostname, addr, found, callback_arg, dns_addrtype);
     }
 
+    extern err_t __real_igmp_start(struct netif *netif);
+    err_t __wrap_igmp_start(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __igmp_start_req req = { netif, &ret };
+            __lwip(__igmp_start, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_igmp_start(netif);
+    }
+
+    extern err_t __real_igmp_stop(struct netif *netif);
+    err_t __wrap_igmp_stop(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __igmp_stop_req req = { netif, &ret };
+            __lwip(__igmp_stop, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_igmp_stop(netif);
+    }
+
+    extern void __real_igmp_report_groups(struct netif *netif);
+    void __wrap_igmp_report_groups(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __igmp_report_groups_req req = { netif };
+            __lwip(__igmp_report_groups, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_igmp_report_groups(netif);
+    }
+
+    extern struct igmp_group *__real_igmp_lookfor_group(struct netif *ifp, const ip4_addr_t *addr);
+    struct igmp_group *__wrap_igmp_lookfor_group(struct netif *ifp, const ip4_addr_t *addr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct igmp_group *ret;
+            __igmp_lookfor_group_req req = { ifp, addr, &ret };
+            __lwip(__igmp_lookfor_group, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_igmp_lookfor_group(ifp, addr);
+    }
+
+    extern err_t __real_igmp_joingroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr);
+    err_t __wrap_igmp_joingroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __igmp_joingroup_req req = { ifaddr, groupaddr, &ret };
+            __lwip(__igmp_joingroup, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_igmp_joingroup(ifaddr, groupaddr);
+    }
+
+    extern err_t __real_igmp_joingroup_netif(struct netif *netif, const ip4_addr_t *groupaddr);
+    err_t __wrap_igmp_joingroup_netif(struct netif *netif, const ip4_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __igmp_joingroup_netif_req req = { netif, groupaddr, &ret };
+            __lwip(__igmp_joingroup_netif, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_igmp_joingroup_netif(netif, groupaddr);
+    }
+
+    extern err_t __real_igmp_leavegroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr);
+    err_t __wrap_igmp_leavegroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __igmp_leavegroup_req req = { ifaddr, groupaddr, &ret };
+            __lwip(__igmp_leavegroup, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_igmp_leavegroup(ifaddr, groupaddr);
+    }
+
+    extern err_t __real_igmp_leavegroup_netif(struct netif *netif, const ip4_addr_t *groupaddr);
+    err_t __wrap_igmp_leavegroup_netif(struct netif *netif, const ip4_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __igmp_leavegroup_netif_req req = { netif, groupaddr, &ret };
+            __lwip(__igmp_leavegroup, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_igmp_leavegroup_netif(netif, groupaddr);
+    }
+
+#if LWIP_IPV6
+    extern err_t __real_mld6_stop(struct netif *netif);
+    err_t __wrap_mld6_stop(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mld6_stop_req req = { netif, &ret };
+            __lwip(__mld6_stop, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mld6_stop(netif);
+    }
+
+    extern void __real_mld6_report_groups(struct netif *netif);
+    void __wrap_mld6_report_groups(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __mld6_report_groups_req req = { netif };
+            __lwip(__mld6_report_groups, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mld6_report_groups(netif);
+    }
+
+    extern struct mld_group *__real_mld6_lookfor_group(struct netif *ifp, const ip6_addr_t *addr);
+    struct mld_group *__wrap_mld6_lookfor_group(struct netif *ifp, const ip6_addr_t *addr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct mld_group *ret;
+            __mld6_lookfor_group_req req = { ifp, addr, &ret };
+            __lwip(__mld6_lookfor_group, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mld6_lookfor_group(ifp, addr);
+    }
+
+    extern err_t __real_mld6_joingroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr);
+    err_t __wrap_mld6_joingroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mld6_joingroup_req req = { srcaddr, groupaddr, &ret };
+            __lwip(__mld6_joingroup, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mld6_joingroup(srcaddr, groupaddr);
+    }
+
+    extern err_t __real_mld6_joingroup_netif(struct netif *netif, const ip6_addr_t *groupaddr);
+    err_t __wrap_mld6_joingroup_netif(struct netif *netif, const ip6_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mld6_joingroup_netif_req req = { netif, groupaddr, &ret };
+            __lwip(__mld6_joingroup_netif, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mld6_joingroup_netif(netif, groupaddr);
+    }
+
+    extern err_t __real_mld6_leavegroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr);
+    err_t __wrap_mld6_leavegroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mld6_leavegroup_req req = { srcaddr, groupaddr, &ret };
+            __lwip(__mld6_leavegroup, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mld6_leavegroup(srcaddr, groupaddr);
+    }
+
+    extern err_t __real_mld6_leavegroup_netif(struct netif *netif, const ip6_addr_t *groupaddr);
+    err_t __wrap_mld6_leavegroup_netif(struct netif *netif, const ip6_addr_t *groupaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mld6_leavegroup_netif_req req = { netif, groupaddr, &ret };
+            __lwip(__mld6_leavegroup_netif, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mld6_leavegroup_netif(netif, groupaddr);
+    }
+#endif
+
     extern struct raw_pcb *__real_raw_new(u8_t proto);
     struct raw_pcb *__wrap_raw_new(u8_t proto) {
 #ifdef __FREERTOS
@@ -821,6 +1034,60 @@ extern "C" {
 #endif
         LWIPMutex m;
         __real_netif_remove(netif);
+    }
+
+    extern void __real_netif_set_link_up(struct netif *netif);
+    void __wrap_netif_set_link_up(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_up_req req = { netif };
+            __lwip(__netif_set_link_up, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_link_up(netif);
+    }
+
+    extern void __real_netif_set_up(struct netif *netif);
+    void __wrap_netif_set_up(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_up_req req = { netif };
+            __lwip(__netif_set_up, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_up(netif);
+    }
+
+#if LWIP_IPV6
+    extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
+    void __wrap_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_create_ip6_linklocal_address_req req = { netif, from_mac_48bit };
+            __lwip(__netif_create_ip6_linklocal_address, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_create_ip6_linklocal_address(netif, from_mac_48bit);
+    }
+#endif
+
+    extern void __real_netif_set_default(struct netif *netif);
+    void __wrap_netif_set_default(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_default_req req = { netif };
+            __lwip(__netif_set_default, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_default(netif);
     }
 
     extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);

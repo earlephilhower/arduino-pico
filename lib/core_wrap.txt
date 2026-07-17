@@ -57,6 +57,22 @@
 -Wl,--wrap=dns_gethostbyname
 -Wl,--wrap=dns_gethostbyname_addrtype
 
+-Wl,--wrap=igmp_start
+-Wl,--wrap=igmp_stop
+-Wl,--wrap=igmp_report_groups
+-Wl,--wrap=igmp_lookfor_group
+-Wl,--wrap=igmp_joingroup
+-Wl,--wrap=igmp_joingroup_netif
+-Wl,--wrap=igmp_leavegroup
+-Wl,--wrap=igmp_leavegroup_netif
+-Wl,--wrap=mld6_stop
+-Wl,--wrap=mld6_report_groups
+-Wl,--wrap=mld6_lookfor_group
+-Wl,--wrap=mld6_joingroup
+-Wl,--wrap=mld6_joingroup_netif
+-Wl,--wrap=mld6_leavegroup
+-Wl,--wrap=mld6_leavegroup_netif
+
 -Wl,--wrap=raw_bind
 -Wl,--wrap=raw_connect
 -Wl,--wrap=raw_recv
@@ -68,6 +84,10 @@
 
 -Wl,--wrap=netif_add
 -Wl,--wrap=netif_remove
+-Wl,--wrap=netif_set_link_up
+-Wl,--wrap=netif_set_up
+-Wl,--wrap=netif_create_ip6_linklocal_address
+-Wl,--wrap=netif_set_default
 
 -Wl,--wrap=ethernet_input
 

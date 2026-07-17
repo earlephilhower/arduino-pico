@@ -232,6 +232,7 @@ int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, i
 
 template<class RawDev>
 u8_t LwipIntfDev<RawDev>::_pingCB(void *arg, struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *addr) {
+    (void) pcb;
     (void) addr;
     LwipIntfDev<RawDev> *w = (LwipIntfDev<RawDev> *)arg;
     struct icmp_echo_hdr *iecho;
@@ -522,7 +523,7 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     ethernet_arch_lwip_begin();
 #endif
 
-    uint16_t len = lid->sendFrame((const uint8_t*)pbuf->payload, pbuf->len);
+    uint16_t len = lid->sendFrame(pbuf);
 
 #ifdef __FREERTOS
     xSemaphoreGive(lid->_hwMutex);

@@ -224,12 +224,13 @@ This call returns the current advertising object for any defined servers.  In ge
 sketches do not need to work with this call or ``BLEAdvertising`` at all, but this
 call lets you do things like add URLs or appearance information.
 
-BLE.startAdvertising()
+BLE.startAdvertising(bool advertiseServiceUUID)
 ----------------------
 
 After all services are created (see below) the sketch needs to use this call to start broadcasting
 for BLE clients to find it.  Call this after all services are defined, or after ``BLE.stopAdvertising()``
-and changing services or characteristics.  Without this call, your Pico won't be discoverable.
+and changing services or characteristics.  Without this call, your Pico won't be discoverable. The Boolean
+flag ``advertiseServiceUUID`` controls inclusion of the service UUID in the advertising data.
 
 BLE.stopAdvertising()
 ---------------------

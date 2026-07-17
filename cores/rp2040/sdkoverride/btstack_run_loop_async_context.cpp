@@ -18,6 +18,7 @@ static void btstack_work_pending(async_context_t *context, async_when_pending_wo
 static SemaphoreHandle_t _run_loop_exit_binary;
 
 static void do_btstack_work_pending(void *data) {
+    (void) data;
     btstack_work_pending(NULL, NULL);
 }
 
@@ -121,6 +122,8 @@ static const btstack_run_loop_t btstack_run_loop_freertos_native = {
 
 static alarm_id_t _timeout = -1;
 static int64_t cb_btstack_timeout_worker(alarm_id_t id, void *user_data) {
+    (void) id;
+    (void) user_data;
     static __callback_req _timeoutIRQBuffer;
     // This will be in IRQ context, so do a lwip callback.  Only one at a time can be outstanding so this single struct is good enough
     _timeout = -1;
@@ -153,6 +156,7 @@ static void btstack_work_pending(__unused async_context_t *context, __unused asy
 
 // The only exported function here...
 extern "C" const btstack_run_loop_t *__wrap_btstack_run_loop_async_context_get_instance(async_context_t *freertos_native) {
+    (void) freertos_native;
     return &btstack_run_loop_freertos_native;
 }
 #endif

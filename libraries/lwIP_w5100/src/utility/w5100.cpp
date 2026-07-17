@@ -277,7 +277,7 @@ uint16_t Wiznet5100::readFrameData(uint8_t* buffer, uint16_t framesize) {
     return framesize;
 }
 
-uint16_t Wiznet5100::sendFrame(const uint8_t* buf, uint16_t len) {
+uint16_t Wiznet5100::sendFrame(struct pbuf *p) {
     ethernet_arch_lwip_gpio_mask(); // So we don't fire an IRQ and interrupt the send w/a receive!
 
     // Wait for space in the transmit buffer
@@ -287,12 +287,12 @@ uint16_t Wiznet5100::sendFrame(const uint8_t* buf, uint16_t len) {
             ethernet_arch_lwip_gpio_unmask();
             return -1;
         }
-        if (len <= freesize) {
+        if (p->len <= freesize) {
             break;
         }
     };
 
-    wizchip_send_data(buf, len);
+    wizchip_send_data((const uint8_t*)p->payload, p->len);
     setSn_CR(Sn_CR_SEND);
 
     while (1) {
@@ -310,5 +310,5 @@ uint16_t Wiznet5100::sendFrame(const uint8_t* buf, uint16_t len) {
     }
 
     ethernet_arch_lwip_gpio_unmask();
-    return len;
+    return p->len;
 }

@@ -135,7 +135,7 @@ bool BLEClient::connect(BLEAddress a, uint32_t timeout) {
 }
 
 bool BLEClient::connect(BLEAdvertising &device, uint32_t timeoutsec) {
-    return connect(device.getAddress());
+    return connect(device.getAddress(), timeoutsec);
 }
 
 void BLEClient::disconnect() {
@@ -182,6 +182,8 @@ BLERemoteService *BLEClient::service(BLEUUID uuid) {
 
 // Called by BLE class, from the BTStack hci packet callback
 void BLEClient::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
+    (void) channel;
+    (void) size;
     gatt_client_service_t service;
     gatt_client_characteristic_t characteristic;
 

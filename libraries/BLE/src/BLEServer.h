@@ -31,9 +31,11 @@ class BLEServer;
 class BLEServerCallbacks {
 public:
     virtual void onConnect(BLEServer *p) {
+        (void) p;
         DEBUGBLE("BLEServer connect: %p\n", p);
     }
     virtual void onDisconnect(BLEServer *p) {
+        (void) p;
         DEBUGBLE("BLEServer disconnect: %p\n", p);
     }
 };
@@ -61,7 +63,7 @@ protected:
 
     // Only BLEClass can make me
     BLEServer();
-    void prepareAdvertising(BLEAdvertising *adv);
+    void prepareAdvertising(BLEAdvertising *adv, bool advertiseServiceUUID = true);
     void setSecurity(BLESecurityMode m);
 
     uint16_t readHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);

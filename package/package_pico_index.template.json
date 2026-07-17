@@ -267,6 +267,12 @@
                      "name": "Olimex RP2040-Pico30"
                   },
                   {
+                     "name": "Pcbcupid GLYPH 2040"
+                  },
+                  {
+                     "name": "Pcbcupid GLYPH MINI 2040"
+                  },
+                  {
                      "name": "PicoLume Transceiver"
                   },
                   {
@@ -333,6 +339,9 @@
                      "name": "Soldered Electronics NULA RP2350"
                   },
                   {
+                     "name": "Soldered Electronics NULA Ethernet W55RP20"
+                  },
+                  {
                      "name": "SparkFun IoT RedBoard RP2350"
                   },
                   {
@@ -364,6 +373,9 @@
                   },
                   {
                      "name": "Seeed XIAO RP2040"
+                  },
+                  {
+                     "name": "Seeed XIAO RP2040 Plus"
                   },
                   {
                      "name": "Seeed XIAO RP2350"

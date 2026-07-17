@@ -50,10 +50,12 @@ class BLECustomService : public BLEService, public BLECharacteristicCallbacks, p
 
     // BLEServerCallbacks
     void onConnect(BLEServer *s) {
+      (void) s;
       connected = true;
     }
 
     void onDisconnect(BLEServer *s) {
+      (void) s;
       connected = false;
     }
 

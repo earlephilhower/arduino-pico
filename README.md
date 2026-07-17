@@ -92,17 +92,21 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
 * Pintronix PinMax
+* PCBCupid Glyph 2040
+* PCBCupid Glyph Mini 2040
 * RAKwireless RAK11300
 * Redscorp RP2040-Eins
 * Redscorp RP2040-ProMini
 * Sea-Picro
 * Seeed Indicator RP2040
 * Seeed XIAO RP2040
+* Seeed XIAO RP2040 Plus
 * Seeed XIAO RP2350
 * Silicognition RP2040-Shim
 * Solder Party RP2040 Stamp
 * Solder Party RP2350 Stamp
 * Solder Party RP2350 Stamp XL
+* Soldered Electronics NULA Ethernet W55RP20
 * Soldered Electronics NULA RP2350
 * SparkFun IoT RedBoard RP2350
 * SparkFun MicroMod RP2040

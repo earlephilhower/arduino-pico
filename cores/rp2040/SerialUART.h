@@ -32,7 +32,7 @@ class SerialUART : public arduino::HardwareSerial {
 public:
     SerialUART(uart_inst_t *uart, pin_size_t tx, pin_size_t rx, pin_size_t rts = UART_PIN_NOT_DEFINED, pin_size_t cts = UART_PIN_NOT_DEFINED);
 
-    // Select the pinout.  Call before .begin()
+    // Select the pinout.  Call before .begin().  Pass in -1 (UART_PIN_NOT_DEFINED) to disable
     bool setRX(pin_size_t pin);
     bool setTX(pin_size_t pin);
     bool setRTS(pin_size_t pin);

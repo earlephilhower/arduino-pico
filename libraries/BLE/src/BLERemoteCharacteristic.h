@@ -40,6 +40,9 @@ public:
     }
 
     virtual void onNotify(BLERemoteCharacteristic *p, const uint8_t *data, uint32_t len) {
+        (void) p;
+        (void) data;
+        (void) len;
         DEBUGBLE("onNotify %p\n", p);
     }
 };

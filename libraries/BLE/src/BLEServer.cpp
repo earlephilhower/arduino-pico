@@ -40,7 +40,7 @@ void BLEServer::addService(BLEService *s) {
     _svc.push_back(s);
 }
 
-void BLEServer::prepareAdvertising(BLEAdvertising *adv) {
+void BLEServer::prepareAdvertising(BLEAdvertising *adv, bool advertiseServiceUUID) {
     att_db_util_init();
     att_db_util_hash_init();
 
@@ -56,7 +56,7 @@ void BLEServer::prepareAdvertising(BLEAdvertising *adv) {
         uuid = s->_svc;
         //        }
     }
-    if (uuid) {
+    if (uuid && advertiseServiceUUID) {
         adv->setPartialUUID(uuid);
     }
 
@@ -110,6 +110,7 @@ uint16_t BLEServer::readHandler(uint16_t con_handle, uint16_t attribute_handle, 
 }
 
 int BLEServer::writeHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size) {
+    (void) con_handle;
     // Will be running in BT ctx already
     for (auto s : _svc) {
         int ret = s->handleWrite(attribute_handle, transaction_mode, offset, buffer, buffer_size);
@@ -121,6 +122,8 @@ int BLEServer::writeHandler(uint16_t con_handle, uint16_t attribute_handle, uint
 }
 
 void BLEServer::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
+    (void) channel;
+    (void) size;
     // Will be running in BT ctx already
     if (type != HCI_EVENT_PACKET) {
         return;

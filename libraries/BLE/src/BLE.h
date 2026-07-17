@@ -52,7 +52,7 @@ public:
     BLEAddress address();
 
     // Advertising (31-byte broadcast)
-    void startAdvertising();
+    void startAdvertising(bool advertiseServiceUUID = true);
     void stopAdvertising();
 
     // All real work happens in a BLEServer or BLEClient

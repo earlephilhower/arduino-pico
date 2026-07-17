@@ -68,7 +68,7 @@ def BuildArch(name):
     print("%s.menu.arch.riscv.build.mcu=rv32imac" % (name))
 
 def BuildPSRAM(name):
-    for s in [ 0, 2, 4, 8]:
+    for s in [ 0, 2, 4, 8, 16]:
         print("%s.menu.psram.%dmb=%dMByte PSRAM" % (name, s, s))
         print("%s.menu.psram.%dmb.build.psram_length=0x%d00000" % (name, s, s))
 
@@ -80,12 +80,12 @@ def BuildPSRAMCS(name):
         print("%s.menu.psramcs.GPIO%d.build.psram_cs=-DRP2350_PSRAM_CS=%d" % (name, s, s))
 
 def BuildPSRAMFreq(name):
-    for s in [ 109, 133 ]:
+    for s in [ 104, 109, 133 ]:
         print("%s.menu.psramfreq.freq%d=%d MHz" % (name, s, s))
         print("%s.menu.psramfreq.freq%d.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=%d" % (name, s, s * 1000000))
 
 def BuildRP2350Variant(name):
-    for l in [ ("RP2350A", "-D__PICO_RP2350A=1"), ("RP2530B", "-D__PICO_RP2350A=0") ]:
+    for l in [ ("RP2350A", "-D__PICO_RP2350A=1"), ("RP2350B", "-D__PICO_RP2350A=0") ]:
         print("%s.menu.variantchip.%s=%s" % (name, l[0], l[0]))
         print("%s.menu.variantchip.%s.build.variantdefines=%s" % (name, l[0], l[1]))
 
@@ -653,6 +653,10 @@ MakeBoard("olimex_pico2xl", "rp2350", "Olimex", "Pico2XL", "0x15ba", "0x0026", 2
 MakeBoard("olimex_pico2xxl", "rp2350", "Olimex", "Pico2XXL", "0x15ba", "0x0026", 500, "OLIMEX_PICO2XXL", 16, 8, "none")
 MakeBoard("olimex_rp2040pico30", "rp2040", "Olimex", "RP2040-Pico30", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30", 2, 0, "boot2_w25q080_2_padded_checksum")
 
+# PCBCupid
+MakeBoard("pcbcupid_glyph_2040", "rp2040", "Pcbcupid", "GLYPH 2040", "0x2e8a", "0x1128", 250, "PCBCUPID_GLYPH_2040", 8, 0, "boot2_w25q64jv_4_padded_checksum", None, "https://pcbcupid.com")
+MakeBoard("pcbcupid_glyph_mini_2040", "rp2040", "Pcbcupid", "GLYPH MINI 2040", "0x2e8a", "0x1123", 250, "PCBCUPID_GLYPH_MINI_2040", 8, 0, "boot2_w25q64jv_4_padded_checksum", None, "https://pcbcupid.com")
+
 # PicoLume
 MakeBoard("picolume", "rp2040", "PicoLume", "Transceiver", "0x1209", "0x2008", 250, "PICOLUME", 2, 0, "boot2_w25q080_2_padded_checksum", None, "https://picolume.com")
 
@@ -692,6 +696,7 @@ MakeBoard("solderparty_rp2350_stamp_xl", "rp2350", "Solder Party", "RP2350 Stamp
 
 # Soldered Electronics
 MakeBoard("soldered_nula_rp2350", "rp2350", "Soldered Electronics", "NULA RP2350", "0x2e8a", "0x10ec", 500, "SOLDERED_NULA_RP2350", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
+MakeBoard("soldered_nula_ethernet_w55rp20", "rp2040", "Soldered Electronics", "NULA Ethernet W55RP20", "0x2e8a", "0x1122", 250, "SOLDERED_NULA_ETHERNET", 2, 0, "boot2_w25q080_2_padded_checksum")
 
 # SparkFun
 MakeBoard("sparkfun_iotredboard_rp2350", "rp2350", "SparkFun", "IoT RedBoard RP2350", "0x1b4f", "0x0047", 250, "SPARKFUN_IOTREDBOARD_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"], "https://www.sparkfun.com/sparkfun-iot-redboard-rp2350.html")
@@ -707,6 +712,7 @@ MakeBoard("sparkfun_xrp_controller", "rp2350", "SparkFun", "XRP Controller", "0x
 # Seeed
 MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("seeed_xiao_rp2040", "rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("seeed_xiao_rp2040_plus", "rp2040", "Seeed", "XIAO RP2040 Plus", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040_PLUS", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("seeed_xiao_rp2350", "rp2350", "Seeed", "XIAO RP2350", "0x2886", "0x0058", 250, "SEEED_XIAO_RP2350", 2, 0, "none", None, "https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html")
 
 # Upesy

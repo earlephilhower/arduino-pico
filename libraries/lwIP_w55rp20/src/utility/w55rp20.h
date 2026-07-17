@@ -39,6 +39,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 #include <LwipEthernet.h>
+#include "lwip/pbuf.h"
 
 #define WIZNET_PIO_SPI_MOSI_PIN 23
 #define WIZNET_PIO_SPI_MISO_PIN 22
@@ -70,11 +71,10 @@ public:
 
     /**
         Send an Ethernet frame
-        @param data a pointer to the data to send
-        @param datalen the length of the data in the packet
+        @param p pointer to the pbuf to send
         @return the number of bytes transmitted
     */
-    uint16_t sendFrame(const uint8_t* data, uint16_t datalen);
+    uint16_t sendFrame(struct pbuf *p);
 
     /**
         Read an Ethernet frame

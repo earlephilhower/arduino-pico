@@ -143,6 +143,22 @@ typedef enum {
     __dns_gethostbyname = 6000,
     __dns_gethostbyname_addrtype,
 
+    __igmp_start,
+    __igmp_stop,
+    __igmp_report_groups,
+    __igmp_lookfor_group,
+    __igmp_joingroup,
+    __igmp_joingroup_netif,
+    __igmp_leavegroup,
+    __igmp_leavegroup_netif,
+    __mld6_stop,
+    __mld6_report_groups,
+    __mld6_lookfor_group,
+    __mld6_joingroup,
+    __mld6_joingroup_netif,
+    __mld6_leavegroup,
+    __mld6_leavegroup_netif,
+
     __raw_bind = 7000,
     __raw_connect,
     __raw_recv,
@@ -154,6 +170,11 @@ typedef enum {
 
     __netif_add = 8000,
     __netif_remove,
+    __netif_set_link_up,
+    __netif_set_up,
+    __netif_create_ip6_linklocal_address,
+    __netif_set_default,
+
 
     __ethernet_input = 9000,
 
@@ -214,6 +235,23 @@ extern err_t __real_udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p, const
 extern void __real_sys_check_timeouts();
 extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);
 extern err_t __real_dns_gethostbyname_addrtype(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg, u8_t dns_addrtype);
+extern err_t __real_igmp_start(struct netif *netif);
+extern err_t __real_igmp_stop(struct netif *netif);
+extern void __real_igmp_report_groups(struct netif *netif);
+extern struct igmp_group *__real_igmp_lookfor_group(struct netif *ifp, const ip4_addr_t *addr);
+extern err_t __real_igmp_joingroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr);
+extern err_t __real_igmp_joingroup_netif(struct netif *netif, const ip4_addr_t *groupaddr);
+extern err_t __real_igmp_leavegroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr);
+extern err_t __real_igmp_leavegroup_netif(struct netif *netif, const ip4_addr_t *groupaddr);
+#if LWIP_IPV6
+extern err_t __real_mld6_stop(struct netif *netif);
+extern void __real_mld6_report_groups(struct netif *netif);
+extern struct mld_group *__real_mld6_lookfor_group(struct netif *ifp, const ip6_addr_t *addr);
+extern err_t __real_mld6_joingroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr);
+extern err_t __real_mld6_joingroup_netif(struct netif *netif, const ip6_addr_t *groupaddr);
+extern err_t __real_mld6_leavegroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr);
+extern err_t __real_mld6_leavegroup_netif(struct netif *netif, const ip6_addr_t *groupaddr);
+#endif
 extern struct raw_pcb *__real_raw_new(u8_t proto);
 extern struct raw_pcb *__real_raw_new_ip_type(u8_t type, u8_t proto);
 extern void __real_raw_recv(struct raw_pcb *pcb, raw_recv_fn recv, void *recv_arg);
@@ -224,6 +262,10 @@ extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
 extern void __real_raw_remove(struct raw_pcb *pcb);
 extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
 extern void __real_netif_remove(struct netif *netif);
+extern void __real_netif_set_link_up(struct netif *netif);
+extern void __real_netif_set_up(struct netif *netif);
+extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
+extern void __real_netif_set_default(struct netif *netif);
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
@@ -499,6 +541,91 @@ typedef struct {
 } __dns_gethostbyname_addrtype_req;
 
 typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __igmp_start_req;
+
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __igmp_stop_req;
+
+typedef struct {
+    struct netif *netif;
+} __igmp_report_groups_req;
+
+typedef struct {
+    struct netif *ifp;
+    const ip4_addr_t *addr;
+    struct igmp_group **ret;
+} __igmp_lookfor_group_req;
+
+typedef struct {
+    const ip4_addr_t *ifaddr;
+    const ip4_addr_t *groupaddr;
+    err_t *ret;
+} __igmp_joingroup_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *groupaddr;
+    err_t *ret;
+} __igmp_joingroup_netif_req;
+
+typedef struct {
+    const ip4_addr_t *ifaddr;
+    const ip4_addr_t *groupaddr;
+    err_t *ret;
+} __igmp_leavegroup_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *groupaddr;
+    err_t *ret;
+} __igmp_leavegroup_netif_req;
+
+#if LWIP_IPV6
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __mld6_stop_req;
+
+typedef struct {
+    struct netif *netif;
+} __mld6_report_groups_req;
+
+typedef struct {
+    struct netif *ifp;
+    const ip6_addr_t *addr;
+    struct mld_group **ret;
+} __mld6_lookfor_group_req;
+
+typedef struct {
+    const ip6_addr_t *srcaddr;
+    const ip6_addr_t *groupaddr;
+    err_t *ret;
+} __mld6_joingroup_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip6_addr_t *groupaddr;
+    err_t *ret;
+} __mld6_joingroup_netif_req;
+
+typedef struct {
+    const ip6_addr_t *srcaddr;
+    const ip6_addr_t *groupaddr;
+    err_t *ret;
+} __mld6_leavegroup_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip6_addr_t *groupaddr;
+    err_t *ret;
+} __mld6_leavegroup_netif_req;
+#endif
+
+typedef struct {
     u8_t proto;
     struct raw_pcb **ret;
 } __raw_new_req;
@@ -558,6 +685,26 @@ typedef struct {
 typedef struct {
     struct netif *netif;
 } __netif_remove_req;
+
+typedef struct {
+    struct netif *netif;
+} __netif_set_link_up_req;
+
+typedef struct {
+    struct netif *netif;
+} __netif_set_up_req;
+
+
+#if LWIP_IPV6
+typedef struct {
+    struct netif *netif;
+    uint8_t from_mac_48bit;
+} __netif_create_ip6_linklocal_address_req;
+#endif
+
+typedef struct {
+    struct netif *netif;
+} __netif_set_default_req;
 
 typedef struct {
     struct pbuf *p;

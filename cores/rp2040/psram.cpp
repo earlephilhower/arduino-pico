@@ -135,7 +135,9 @@ size_t __no_inline_not_in_flash_func(psram_detect)(void) {
     if (kgd == 0x5D) {
         psram_size = 1024 * 1024; // 1 MiB
         uint8_t size_id = eid >> 5;
-        if (eid == 0x26 || size_id == 2) {
+        if (size_id == 4) { // == 4 is for ISSI PSRAM
+            psram_size *= 16; // 16 MiB
+        } else if (eid == 0x26 || size_id == 2 || size_id == 3) { // == 3 is for ISSI PSRAM
             psram_size *= 8; // 8 MiB
         } else if (size_id == 0) {
             psram_size *= 2; // 2 MiB
@@ -159,6 +161,11 @@ size_t __no_inline_not_in_flash_func(psram_init)(uint cs_pin) {
         return 0;
     }
 
+    // Read clock speed before entering direct mode (flash access is
+    // unavailable while QMI direct mode is enabled)
+    const int max_psram_freq = RP2350_PSRAM_MAX_SCK_HZ;
+    const int clock_hz = clock_get_hz(clk_sys);
+
     // Enable direct mode, PSRAM CS, clkdiv of 10.
     qmi_hw->direct_csr = 10 << QMI_DIRECT_CSR_CLKDIV_LSB | \
                          QMI_DIRECT_CSR_EN_BITS | \
@@ -178,8 +185,6 @@ size_t __no_inline_not_in_flash_func(psram_init)(uint cs_pin) {
     // Using an rxdelay equal to the divisor isn't enough when running the APS6404 close to 133MHz.
     // So: don't allow running at divisor 1 above 100MHz (because delay of 2 would be too late),
     // and add an extra 1 to the rxdelay if the divided clock is > 100MHz (i.e. sys clock > 200MHz).
-    const int max_psram_freq = RP2350_PSRAM_MAX_SCK_HZ;
-    const int clock_hz = clock_get_hz(clk_sys);
     int divisor = (clock_hz + max_psram_freq - 1) / max_psram_freq;
     if (divisor == 1 && clock_hz > 100000000) {
         divisor = 2;

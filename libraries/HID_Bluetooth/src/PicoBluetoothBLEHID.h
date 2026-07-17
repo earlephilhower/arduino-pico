@@ -25,7 +25,7 @@
 #include <_needsbt.h>
 #include <Arduino.h>
 #include <functional>
-#include <pico/cyw43_arch.h>
+#include <BluetoothLock.h>
 #include <class/hid/hid_device.h>
 
 #include "HID_Bluetooth.h"
@@ -178,14 +178,17 @@ public:
         while (connected() && _needToSend) {
             /* noop busy wait */
         }
-        __lockBluetooth();
-        if (connected()) {
-            _needToSend = true;
-            _sendReport = rpt;
-            _sendReportLen = len;
-            hids_device_request_can_send_now_event(_con_handle);
-        }
-        __unlockBluetooth();
+
+        do {
+            BluetoothLock l;
+            if (connected()) {
+                _needToSend = true;
+                _sendReport = rpt;
+                _sendReportLen = len;
+                hids_device_request_can_send_now_event(_con_handle);
+            }
+        } while (0);
+
         while (connected() && _needToSend) {
             /* noop busy wait */
         }
