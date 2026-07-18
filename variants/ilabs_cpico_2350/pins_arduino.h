@@ -41,4 +41,7 @@
 // Enables external PSRAM
 #define RP2350_PSRAM_CS    0
 
+// Specific debug output compatible with the iProbe
+#define PIN_DBG_TX     (24u)
+
 #include "../generic/common.h"
