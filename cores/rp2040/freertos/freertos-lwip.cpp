@@ -85,6 +85,21 @@ extern "C" void __lwip(__lwip_op op, void *req, bool fromISR) {
     }
 }
 
+void __lwip(std::function<void(void)> *cb) {
+    LWIPWork w;
+
+    TaskStatus_t t;
+    vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
+
+    w.op = __function;
+    w.req = cb;
+    w.wakeup = t.xHandle;
+    if (!xQueueSend(__lwipQueue, &w, portMAX_DELAY)) {
+        panic("LWIP task send failed");
+    }
+    ulTaskNotifyTakeIndexed(TASK_NOTIFY_LWIP_WAKEUP, pdTRUE, portMAX_DELAY);
+}
+
 extern "C" bool __isLWIPThread() {
     TaskStatus_t t;
     vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
@@ -499,6 +514,13 @@ static void lwipThread(void *params) {
                 r->cb(r->cbData);
                 break;
             }
+
+            case __function: {
+                std::function<void(void)> *cb = (std::function<void(void)> *)w.req;
+                (*cb)();
+                break;
+            }
+
             default: {
                 // Any new unimplemented calls = ERROR!!!
                 panic("Unimplemented LWIP thread action");
