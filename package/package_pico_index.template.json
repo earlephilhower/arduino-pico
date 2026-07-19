@@ -516,8 +516,8 @@
                      "host": "x86_64-pc-linux-gnu",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/5.0.0/x86_64-linux-gnu.arm-none-eabi-d016269.260718.tar.gz",
                      "archiveFileName": "x86_64-linux-gnu.arm-none-eabi-d016269.260718.tar.gz",
-                     "checksum": "SHA-256:ca0d612fef2db6ea1800e68df5b1da0f229139a6d514d1bddcf8addaa3a12874",
-                     "size": "127257727"
+                     "checksum": "SHA-256:cd9b0bf0895353df451f4b6e6117ee7414da89994e263b3273e0bb950bba00f3",
+                     "size": "115966559"
                   }
                ]
             },
@@ -529,8 +529,8 @@
                      "host": "x86_64-pc-linux-gnu",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/5.0.0/x86_64-linux-gnu.picotool-6f6458d.260718.tar.gz",
                      "archiveFileName": "x86_64-linux-gnu.picotool-6f6458d.260718.tar.gz",
-                     "checksum": "SHA-256:afa2a4dafc12ec560829e7b7347cda79a83da49e44bd41796cbd24d23df8290e",
-                     "size": "1021713"
+                     "checksum": "SHA-256:8fcf4cd9010c66d93b36168c930f52a8bf5e876fa74f0be6820f4de18ea5de31",
+                     "size": "1021711"
                   }
                ]
             },
@@ -542,8 +542,8 @@
                      "host": "x86_64-pc-linux-gnu",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/5.0.0/x86_64-linux-gnu.openocd-acff23ffd.260718.tar.gz",
                      "archiveFileName": "x86_64-linux-gnu.openocd-acff23ffd.260718.tar.gz",
-                     "checksum": "SHA-256:6c0b60d6725740cd99462e568586dd546a62ab76201471c01726cd96b1fafe49",
-                     "size": "7476478"
+                     "checksum": "SHA-256:8385d728ace35a97cb9f1c38c0b9d48485c5c2af1b7343be3460b40c2a3ad713",
+                     "size": "7476368"
                   }
                ]
             },
@@ -624,8 +624,8 @@
                      "host": "x86_64-pc-linux-gnu",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/5.0.0/x86_64-linux-gnu.riscv32-unknown-elf-d016269.260718.tar.gz",
                      "archiveFileName": "x86_64-linux-gnu.riscv32-unknown-elf-d016269.260718.tar.gz",
-                     "checksum": "SHA-256:436c3cb02c2f134980572303c37f362058e981566130989cd19d80cc42732699",
-                     "size": "209954308"
+                     "checksum": "SHA-256:04a9763ab984681584830aa6dc96207da746901de5f62b6a81d8456757ac4bc9",
+                     "size": "187082559"
                   }
                ]
             },
@@ -637,8 +637,8 @@
                      "host": "x86_64-pc-linux-gnu",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/5.0.0/x86_64-linux-gnu.pioasm-98a542c1.260718.tar.gz",
                      "archiveFileName": "x86_64-linux-gnu.pioasm-98a542c1.260718.tar.gz",
-                     "checksum": "SHA-256:56c47e469fff67292b60372afff398fd75f09be2eccfae37dd3aaf5a0768f30a",
-                     "size": "651511"
+                     "checksum": "SHA-256:3114cff592c8ef8b02c7cb7125e06274b30c4c1102d87b987acdd786b65f3892",
+                     "size": "651514"
                   }
                ]
             },
@@ -650,8 +650,8 @@
                      "host": "x86_64-pc-linux-gnu",
                      "url": "https://github.com/earlephilhower/pico-quick-toolchain/releases/download/5.0.0/x86_64-linux-gnu.mklittlefs-db0513a.260718.tar.gz",
                      "archiveFileName": "x86_64-linux-gnu.mklittlefs-db0513a.260718.tar.gz",
-                     "checksum": "SHA-256:4ed0094561fc385afd4eaa53f0dd7a5cf5a93d424208becc75ef0899160b0373",
-                     "size": "661498"
+                     "checksum": "SHA-256:57f50963e7d4c7fc3ab6e9c71ffe99047aafa7375c7bad895231814461712841",
+                     "size": "661496"
                   }
                ]
             }
