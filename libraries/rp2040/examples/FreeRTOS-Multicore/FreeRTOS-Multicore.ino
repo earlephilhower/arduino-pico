@@ -77,7 +77,7 @@ void setup1() {
 void loop1() {
   static int x = 0;
   Serial.printf("C1: Stay on target...\n");
-  val++;
+  val = val + 1;
   if (++x < 10) {
     EEPROM.begin(512);
     EEPROM.write(0, x);

@@ -23,7 +23,7 @@ void setup() {
   rp2040.resumeOtherCore();
   Serial.printf("Core0: %d, Core1 now %d, Core1 delta while stopped: %d\n", c0, c1, end - start);
   for (int i = 0; i < 200; i++) {
-    c0 = c0 +1;
+    c0 = c0 + 1;
     Serial.printf("%d %d\n", c0, c1);
     delay(1);
   }
@@ -36,7 +36,7 @@ void loop() {
 void setup1() {
   delay(5000);
   while (1) {
-    c1 = c1 +1;
+    c1 = c1 + 1;
     delay(1);
   }
 }
