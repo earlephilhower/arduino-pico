@@ -743,6 +743,9 @@ MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a
 MakeBoard("waveshare_rp2350b_plus_w", "rp2350", "Waveshare", "RP2350B Plus W", "0x2e8a", "0xf00a", 500, "WAVESHARE_RP2350B_PLUS_W", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
 
+# WeAct
+MakeBoard("weact_rp2350b", "rp2350", "WeAct", "Studio RP2350B Core Board", "0x2e8a", "0x000f", 250, "WEACT_RP2350B", 16, 0, "none")
+
 # WIZnet
 MakeBoard("wiznet_5100s_evb_pico", "rp2040", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("wiznet_5100s_evb_pico2", "rp2350", "WIZnet", "W5100S-EVB-Pico2", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO2", 2, 0, "none")
