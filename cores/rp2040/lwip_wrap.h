@@ -53,7 +53,7 @@ class LWIPMutex {
 public:
     LWIPMutex() {
 #if !defined(__FREERTOS)
-        __inLWIP++;
+        __inLWIP = __inLWIP + 1;
         if (ethernet_arch_lwip_begin) {
             ethernet_arch_lwip_begin();
         } else {
@@ -69,7 +69,7 @@ public:
         } else {
             recursive_mutex_exit(&__lwipMutex);
         }
-        __inLWIP--;
+        __inLWIP = __inLWIP - 1;
         if (__needsIRQEN && !__inLWIP) {
             __needsIRQEN = false;
             ethernet_arch_lwip_gpio_unmask();
