@@ -66,7 +66,7 @@ BLEAddress::operator bool() {
     return false;
 }
 
-bool BLEAddress::operator==(const BLEAddress &a) {
+bool BLEAddress::operator==(const BLEAddress &a) const {
     return !memcmp(a._addr, _addr, sizeof(_addr));
 }
 
