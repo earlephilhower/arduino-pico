@@ -156,7 +156,11 @@ typedef std::unique_ptr<TransportTraits> TransportTraitsPtr;
 
 
 // cookie jar support
-typedef struct  {
+class Cookie {
+public:
+    Cookie() {};
+    ~Cookie() {};
+
     String host;       // host which tries to set the cookie
     time_t date;       // timestamp of the response that set the cookie
     String name;
@@ -173,7 +177,7 @@ typedef struct  {
     } max_age;
     bool http_only = false;
     bool secure = false;
-} Cookie;
+};
 typedef std::vector<Cookie> CookieJar;
 
 class HTTPStream : public WiFiClient {

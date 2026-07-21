@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.12)
 set(cpu $ENV{CPU})
 message("Building for CPU ${cpu}")
 
+# SDK 2.3.0 introduces TLS.  We don't want any here...
+set(PICO_DEFAULT_THREAD_LOCAL_IMPL none)
+
 if (${cpu} MATCHES "rp2040")
     set(PICO_BOARD pico)
     set(PICO_PLATFORM rp2040)

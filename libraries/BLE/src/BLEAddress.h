@@ -37,7 +37,7 @@ public:
     BLEAddress(String a, BLEAddressType type = BLEPublicAddress);
 
     operator bool();
-    bool operator==(const BLEAddress &o);
+    bool operator==(const BLEAddress &o) const;
 
     String toString();
 

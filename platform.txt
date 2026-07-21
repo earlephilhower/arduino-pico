@@ -58,13 +58,14 @@ compiler.wrap="@{runtime.platform.path}/lib/{build.chip}/platform_wrap.txt" "@{r
 compiler.libbearssl="{runtime.platform.path}/lib/{build.chip}/libbearssl.a"
 
 compiler.c.cmd={build.toolchain}-gcc
-compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} -std=gnu17 -g -pipe
+compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} -std=gnu23 -g -pipe
 compiler.c.elf.cmd={build.toolchain}-g++
-compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize}
+compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize} -u _printf_float -u _scanf_float
 compiler.S.cmd={build.toolchain}-gcc
 compiler.S.flags=-c {compiler.warning_flags} {compiler.defines} -g -x assembler-with-cpp -MMD {compiler.includes} {build.toolchainopts} -g
 compiler.cpp.cmd={build.toolchain}-g++
-compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} {build.flags.profile} -std=gnu++17 -g -pipe
+# TODO - When SDK and FreeRTOS RP2350 go to C23, remove -Wno-volatile
+compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} {build.flags.profile} -std=gnu++23 -g -pipe -Wno-volatile
 
 compiler.ar.cmd={build.toolchain}-ar
 compiler.ar.flags=rcs

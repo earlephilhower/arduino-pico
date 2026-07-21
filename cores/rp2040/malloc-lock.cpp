@@ -39,6 +39,8 @@ extern "C" {
 }
 #endif
 
+extern "C" struct _reent *__getreent();
+
 extern "C" void *__wrap_malloc(size_t size) {
     noInterrupts();
     void *rc = __real_malloc(size);
