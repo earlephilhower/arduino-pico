@@ -55,3 +55,6 @@
 [submodule "libraries/MIDIUSB"]
 	path = libraries/MIDIUSB
 	url = https://github.com/earlephilhower/MIDIUSB.git
+[submodule "libraries/iLabs_ESP-NOW"]
+	path = libraries/iLabs_ESP-NOW
+	url = https://github.com/PontusO/iLabs_ESP-NOW.git

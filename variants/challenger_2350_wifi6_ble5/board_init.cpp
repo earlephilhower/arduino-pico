@@ -22,5 +22,9 @@
 
 /* Reset the ESP device before the user starts using the device. */
 void initVariant() {
+    // When the ESP32 co-processor is running ESP-NOW firmware the iLabs_ESP-NOW
+    // library owns the reset sequence (see ESP_NOW.setLink()), so skip the AT reset.
+#ifndef ILABS_ESPNOW
     Challenger2040WiFi.reset();
+#endif
 }
