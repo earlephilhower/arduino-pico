@@ -23,6 +23,7 @@ function skip_ino()
 /HID_Bluetooth/
 /lwIP_ESPHost/
 /lwIP_WINC1500/
+/iLabs_ESP-NOW/
 /BLE/
 EOL
     fi
