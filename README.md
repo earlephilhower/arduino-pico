@@ -314,6 +314,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * [FatFS low-level filesystem](http://elm-chan.org/fsw/ff/) code is Copyright (C) 2024, ChaN, all rights reserved.
 * [TLSF memory manager for PSRAM from Espressif fork](https://github.com/espressif/tlsf) of [original](https://github.com/mattconte/tlsf) by Matthew Conte is copyright Matthew Conte and licensed under the MIT license.
 * [ESPHost library](https://github.com/Networking-for-Arduino/ESPHost) is LGPL licensed by its maintainers.
+* [iLabs_ESP-NOW library](https://github.com/PontusO/iLabs_ESP-NOW) is licensed under the MIT license by iLabs Electronics.
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com

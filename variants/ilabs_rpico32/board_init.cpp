@@ -1,5 +1,5 @@
 /*
-    ESP8285/ESP32C3 helper class for the Challenger RP2040 WiFi enabled boards
+    ESP8285/ESP32C3 helper class for the iLabs RPICO32 WiFi enabled board
 
     Copyright (c) 2021,2022 P. Oldberg <pontus@ilabs.se>
 
@@ -18,16 +18,13 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <Arduino.h>
-#include <ChallengerWiFi.h>
+#include <Ilabs2040WiFiClass.h>
 
-/**
-    Just make sure we try to reset the ESP device before the user starts
-    using the device.
-*/
+/* Reset the ESP device before the user starts using the device. */
 void initVariant() {
     // When the ESP32 co-processor is running ESP-NOW firmware the iLabs_ESP-NOW
     // library owns the reset sequence (see ESP_NOW.setLink()), so skip the AT reset.
 #ifndef ILABS_ESPNOW
-    Challenger2040WiFi.reset();
+    Ilabs2040WiFi.reset();
 #endif
 }
