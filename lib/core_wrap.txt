@@ -5,6 +5,8 @@
 -Wl,--wrap=realloc
 -Wl,--wrap=free
 -Wl,--wrap=mallinfo
+-Wl,--wrap=exit
+-Wl,--wrap=atexit
 
 -Wl,--wrap=lwip_init
 
