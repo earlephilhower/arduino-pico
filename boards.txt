@@ -32434,7 +32434,7 @@ soldered_nula_node_rp2040.build.f_cpu=125000000
 soldered_nula_node_rp2040.build.led=
 soldered_nula_node_rp2040.build.core=rp2040
 soldered_nula_node_rp2040.build.ldscript=memmap_default.ld
-soldered_nula_node_rp2040.build.boot2=none
+soldered_nula_node_rp2040.build.boot2=boot2_w25q080_2_padded_checksum
 soldered_nula_node_rp2040.build.usb_manufacturer="Soldered Electronics"
 soldered_nula_node_rp2040.build.usb_product="NULA Node"
 soldered_nula_node_rp2040.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
