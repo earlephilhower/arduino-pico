@@ -504,6 +504,10 @@ void SPIClassRP2040::setClockDivider(uint8_t uc_div) {
     (void) uc_div; // no-op
 }
 
+#if (!defined(__SPI0_DEVICE) && defined(__SPI1_DEVICE)) || (defined(__SPI0_DEVICE) && !defined(__SPI1_DEVICE))
+#error "Need to define both __SPI0_DEVICE and __SPI1_DEVICE"
+#endif
+
 #ifndef __SPI0_DEVICE
 #define __SPI0_DEVICE spi0
 #endif

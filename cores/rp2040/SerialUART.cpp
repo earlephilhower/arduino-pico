@@ -543,6 +543,10 @@ void __not_in_flash_func(SerialUART::_handleIRQ)(bool inIRQ) {
     }
 }
 
+#if (!defined(__SERIAL1_DEVICE) && defined(__SERIAL2_DEVICE)) || (defined(__SERIAL1_DEVICE) && !defined(__SERIAL2_DEVICE))
+#error "Need to define both __SERIAL1_DEVICE and __SERIAL2_DEVICE"
+#endif
+
 #ifndef __SERIAL1_DEVICE
 #define __SERIAL1_DEVICE uart0
 #endif

@@ -249,3 +249,15 @@ extern "C" void __attribute__((__noreturn__)) __wrap___stack_chk_fail() {
 extern "C" void stdio_flush() {
     Serial.flush();
 }
+
+// exit/atexist have no meaning here
+extern "C" void __wrap_exit(int status) {
+    (void) status;
+    panic("exit");
+}
+
+extern "C" int __wrap_atexit(void (*function)(void)) {
+    (void) function;
+    return 0; // We lie, sorry!
+}
+
