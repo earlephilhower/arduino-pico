@@ -216,7 +216,10 @@ tools.hearthfw.path=
 tools.hearthfw.cmd={runtime.platform.path}/system/python3/python3
 tools.hearthfw.bootloader.params.verbose=
 tools.hearthfw.bootloader.params.quiet=
-tools.hearthfw.bootloader.pattern="{cmd}" -I "{runtime.platform.path}/tools/hearthfw.py" --variant "{bootloader.variant}" --port "{serial.port}"
+tools.hearthfw.bootloader.pattern="{cmd}" -I "{runtime.platform.path}/tools/hearthfw.py" "--variant={bootloader.variant}" "--port={serial.port}"
+tools.hearthfw.erase.params.verbose=
+tools.hearthfw.erase.params.quiet=
+tools.hearthfw.erase.pattern=
 
 #tools.picotool.cmd={runtime.tools.pqt-picotool.path}
 tools.picotool.cmd={runtime.platform.path}/system/picotool

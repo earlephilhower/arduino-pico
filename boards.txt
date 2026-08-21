@@ -17979,6 +17979,7 @@ challenger_2040_wifi6_ble.menu.espwifitype.matter_combined=Hearth (Matter, WiFi+
 challenger_2040_wifi6_ble.menu.espwifitype.matter_combined.build.espwifitype=-DILABS_HEARTH
 challenger_2040_wifi6_ble.menu.espwifitype.matter_combined.bootloader.variant=combined
 challenger_2040_wifi6_ble.bootloader.tool=hearthfw
+challenger_2040_wifi6_ble.bootloader.tool.default=hearthfw
 challenger_2040_wifi6_ble.bootloader.variant=
 challenger_2040_wifi6_ble.menu.freq.200=200 MHz
 challenger_2040_wifi6_ble.menu.freq.200.build.f_cpu=200000000L
@@ -19935,6 +19936,7 @@ challenger_2350_wifi6_ble5.menu.espwifitype.matter_combined=Hearth (Matter, WiFi
 challenger_2350_wifi6_ble5.menu.espwifitype.matter_combined.build.espwifitype=-DILABS_HEARTH
 challenger_2350_wifi6_ble5.menu.espwifitype.matter_combined.bootloader.variant=combined
 challenger_2350_wifi6_ble5.bootloader.tool=hearthfw
+challenger_2350_wifi6_ble5.bootloader.tool.default=hearthfw
 challenger_2350_wifi6_ble5.bootloader.variant=
 challenger_2350_wifi6_ble5.menu.wificountry.worldwide=Worldwide
 challenger_2350_wifi6_ble5.menu.wificountry.worldwide.build.wificc=-DWIFICC=CYW43_COUNTRY_WORLDWIDE

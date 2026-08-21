@@ -373,6 +373,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         # the ESP32-C6 instead. bootloader.variant comes from the menu; with
         # no Hearth option selected it is empty and the shim says so.
         print("%s.bootloader.tool=hearthfw" % (name))
+        print("%s.bootloader.tool.default=hearthfw" % (name))
         print("%s.bootloader.variant=" % (name))
         BuildCountry(name)
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
@@ -403,6 +404,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         # the ESP32-C6 instead. bootloader.variant comes from the menu; with
         # no Hearth option selected it is empty and the shim says so.
         print("%s.bootloader.tool=hearthfw" % (name))
+        print("%s.bootloader.tool.default=hearthfw" % (name))
         print("%s.bootloader.variant=" % (name))
     elif name in ["challenger_2040_wifi", "challenger_nb_2040_wifi",
                   "connectivity_2040_lte_wifi_ble", "ilabs_rpico32"]:

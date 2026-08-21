@@ -22,8 +22,12 @@ ap.add_argument("--port", default="", help="serial port of the board")
 args, extra = ap.parse_known_args()
 
 if args.variant not in ("wifi", "thread", "combined"):
+    if args.variant:
+        why = '"' + args.variant + '" is not a Hearth firmware variant.\n'
+    else:
+        why = "No Hearth firmware variant is selected, so there is nothing to burn.\n"
     sys.stderr.write(
-        "No Hearth firmware variant is selected, so there is nothing to burn.\n"
+        why +
         "Pick one under Tools, ESP Wifi Type:\n"
         "  Hearth (Matter, WiFi)         the usual choice\n"
         "  Hearth (Matter, Thread)       if you have a Thread border router\n"
@@ -53,6 +57,9 @@ for dep in ("pyserial", "esptool", "intelhex"):
     sys.path.insert(0, path)
 
 sys.argv = [flasher, "--variant", args.variant]
+# arduino-cli refuses to run the bootloader recipe at all without a
+# Programmer and a selected serial port, so args.port is always set on that
+# path; this branch is reached only when the shim is run from a shell.
 if args.port:
     sys.argv += ["--port", args.port]
 sys.argv += extra
