@@ -368,6 +368,12 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     elif name == "challenger_2350_wifi6_ble5":
         BuildWifiType(name, hosted = True, matter = True)
+        # Burn Bootloader is inert on an RP2040/RP2350, whose boot ROM is in
+        # silicon, so the hook is free. Here it writes the Hearth firmware to
+        # the ESP32-C6 instead. bootloader.variant comes from the menu; with
+        # no Hearth option selected it is empty and the shim says so.
+        print("%s.bootloader.tool=hearthfw" % (name))
+        print("%s.bootloader.variant=" % (name))
         BuildCountry(name)
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
@@ -392,6 +398,12 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         # challenger_nb_2040_wifi carry an ESP8285, and the other two an
         # ESP32-C3, so none of them can run Hearth.
         BuildWifiType(name, matter = True)
+        # Burn Bootloader is inert on an RP2040/RP2350, whose boot ROM is in
+        # silicon, so the hook is free. Here it writes the Hearth firmware to
+        # the ESP32-C6 instead. bootloader.variant comes from the menu; with
+        # no Hearth option selected it is empty and the shim says so.
+        print("%s.bootloader.tool=hearthfw" % (name))
+        print("%s.bootloader.variant=" % (name))
     elif name in ["challenger_2040_wifi", "challenger_nb_2040_wifi",
                   "connectivity_2040_lte_wifi_ble", "ilabs_rpico32"]:
         BuildWifiType(name)

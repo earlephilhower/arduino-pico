@@ -208,6 +208,16 @@ tools.uf2conv-network.upload.params.quiet=
 tools.uf2conv-network.upload.field.password=Password
 tools.uf2conv-network.upload.pattern="{cmd}" -I "{runtime.platform.path}/tools/espota.py" -i "{upload.port.address}" -p "{upload.port.properties.port}" "--auth={upload.field.password}" -f "{build.path}/{build.project_name}.bin"
 
+tools.hearthfw.path=
+# Same reason as uf2conv above: variable expansion cannot let one tool find
+# another, so the GIT and board-manager forms are kept side by side and the
+# release process swaps the comment.
+#tools.hearthfw.cmd={runtime.tools.pqt-python3.path}/python3
+tools.hearthfw.cmd={runtime.platform.path}/system/python3/python3
+tools.hearthfw.bootloader.params.verbose=
+tools.hearthfw.bootloader.params.quiet=
+tools.hearthfw.bootloader.pattern="{cmd}" -I "{runtime.platform.path}/tools/hearthfw.py" --variant "{bootloader.variant}" --port "{serial.port}"
+
 #tools.picotool.cmd={runtime.tools.pqt-picotool.path}
 tools.picotool.cmd={runtime.platform.path}/system/picotool
 tools.picotool.upload.protocol=picotool
