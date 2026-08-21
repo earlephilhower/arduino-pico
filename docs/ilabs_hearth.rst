@@ -86,6 +86,16 @@ place of whatever was there, so that the host can talk to the C6 over USB
 during the flash. Upload your sketch again afterwards; it does not survive
 the Burn Bootloader step.
 
+**Burn Bootloader for the Hearth firmware works on Linux and macOS only.**
+Two things in the flasher are platform-specific: it finds the RP2350's
+mass-storage mount only on those two platforms (``fw/flash.py``,
+``SUPPORTED_MOUNT_PLATFORMS``), and the esptool reset profile for the
+RP2040/RP2350 bridge is skipped on Windows (``loader.py`` guards the
+USB-to-serial bridge path with a check for ``os.name != "nt"``). On
+Windows, Burn Bootloader for a Hearth option is not available. Flash the
+co-processor from a Linux or macOS machine instead, or run
+``fw/flash.py`` by hand; its README documents the manual invocation.
+
 Writing a sketch
 ------------------
 
