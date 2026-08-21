@@ -66,35 +66,45 @@ Flashing the co-processor
 ---------------------------
 
 Building a sketch with a Hearth option selected only builds the sketch. The
-co-processor needs its own firmware, written separately with **Tools, Burn
-Bootloader**.
+co-processor needs its own firmware, and it is written from a terminal with
+the flasher the library ships, the same way the iLabs ESP-NOW firmware is.
+The IDE has no menu item for it: the Arduino platform offers a core no
+action hook that fits, so the flasher is a command line tool on purpose.
 
-**Burn Bootloader requires a programmer to be selected first.** Under
-**Tools, Programmer**, choose **iLabs Hearth firmware (ESP32-C6)**, the
-only entry the menu offers, and make sure a serial port is selected under
-**Tools, Port**. With **ESP AT**, **ESP Hosted** or **ESP-NOW** selected
-under ESP Wifi Type instead of one of the three Hearth options, Burn
-Bootloader refuses and names the three Hearth options in its error rather
-than doing something unexpected.
+The library's ``fw/`` directory holds the three prebuilt images, the
+USB-to-serial bridge for the RP2040/RP2350 host, and ``flash.py``. From the
+core's ``libraries/iLabs_Hearth/fw`` directory:
 
-With a Hearth option selected, Burn Bootloader writes the image matching
-that selection (WiFi, Thread or WiFi+Thread) to the ESP32-C6.
+.. code:: sh
 
-**Burn Bootloader overwrites the sketch on the host.** Flashing the C6
-runs through a bridge sketch that is written onto the RP2040/RP2350 in
-place of whatever was there, so that the host can talk to the C6 over USB
-during the flash. Upload your sketch again afterwards; it does not survive
-the Burn Bootloader step.
+    python3 flash.py                  # interactive: pick WiFi, Thread or WiFi+Thread
+    python3 flash.py --variant wifi   # non-interactive
+    python3 flash.py --list           # verify esptool, list the variants, exit
+    python3 flash.py --dry-run        # show what would happen, write nothing
 
-**Burn Bootloader for the Hearth firmware works on Linux and macOS only.**
-Two things in the flasher are platform-specific: it finds the RP2350's
-mass-storage mount only on those two platforms (``fw/flash.py``,
-``SUPPORTED_MOUNT_PLATFORMS``), and the esptool reset profile for the
-RP2040/RP2350 bridge is skipped on Windows (``loader.py`` guards the
-USB-to-serial bridge path with a check for ``os.name != "nt"``). On
-Windows, Burn Bootloader for a Hearth option is not available. Flash the
-co-processor from a Linux or macOS machine instead, or run
-``fw/flash.py`` by hand; its README documents the manual invocation.
+Pick the variant that matches the **ESP Wifi Type** option you build the
+sketch with. The flasher resets the host into its USB boot mode on its own
+(no BOOTSEL press needed when exactly one board is attached, or with
+``--port``), copies the bridge, flashes the C6 through it with a progress
+bar, and verifies every file it wrote against ``fw/manifest.json``.
+
+Requirements, the same as for the ESP-NOW flasher:
+
+- **The iLabs fork of esptool.** It adds the reset profile that holds the
+  C6 in its download bootloader while the RP2040/RP2350 bridges; stock
+  esptool cannot flash these boards and ``flash.py`` refuses to run without
+  the fork. Clone https://github.com/PontusO/esptool and point the flasher
+  at it with ``ILABS_ESPTOOL_PATH`` or ``--esptool-path``.
+- **pyserial** (``pip install pyserial``).
+- **rich** is optional (``pip install rich``) for nicer output.
+
+**Flashing the C6 overwrites the sketch on the host.** The bridge is a
+sketch written onto the RP2040/RP2350 in place of whatever was there, so
+upload your sketch again afterwards.
+
+**The flasher works on Linux and macOS only.** It finds the host's
+mass-storage mount only on those platforms, and the esptool fork skips the
+bridge reset profile on Windows. Flash from a Linux or macOS machine.
 
 Writing a sketch
 ------------------

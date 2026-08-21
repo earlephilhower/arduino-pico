@@ -14,10 +14,3 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-# Not a real programmer: arduino-cli refuses to run Burn Bootloader with no
-# Programmer selected, and this core has none, so this name-only row exists
-# to give it one. There is no mechanism to scope a programmer entry to a
-# board, so it shows under every board in the core; picking it anywhere but
-# a Challenger with a Hearth-capable C6 just reaches the shim's own message.
-hearthfw.name=iLabs Hearth firmware (ESP32-C6)
-

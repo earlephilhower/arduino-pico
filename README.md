@@ -317,8 +317,6 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * [ESPHost library](https://github.com/Networking-for-Arduino/ESPHost) is LGPL licensed by its maintainers.
 * [iLabs_ESP-NOW library](https://github.com/PontusO/iLabs_ESP-NOW) is licensed under the MIT license by iLabs Electronics.
 * [iLabs_Hearth library](https://github.com/PontusO/iLabs_Hearth) is licensed under the MIT license by iLabs Electronics.
-* [esptool](https://github.com/PontusO/esptool), used by Burn Bootloader on the iLabs C6 boards, is licensed GPL-2.0-or-later by Espressif Systems and contributors.
-* [IntelHex](https://github.com/python-intelhex/intelhex) is copyright (c) Alexander Belchenko and distributed under the BSD license.
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com
