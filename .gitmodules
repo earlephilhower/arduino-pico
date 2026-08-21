@@ -58,3 +58,12 @@
 [submodule "libraries/iLabs_ESP-NOW"]
 	path = libraries/iLabs_ESP-NOW
 	url = https://github.com/PontusO/iLabs_ESP-NOW.git
+[submodule "libraries/iLabs_Hearth"]
+	path = libraries/iLabs_Hearth
+	url = https://github.com/PontusO/iLabs_Hearth.git
+[submodule "tools/esptool"]
+	path = tools/esptool
+	url = https://github.com/PontusO/esptool.git
+[submodule "tools/intelhex"]
+	path = tools/intelhex
+	url = https://github.com/python-intelhex/intelhex.git
