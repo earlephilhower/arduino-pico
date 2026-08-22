@@ -50,6 +50,7 @@ EOL
 /PDMSerialPlotter/
 /debug/
 /BackwardCompatibility/
+/iLabs_Hearth/
 $skiplistrp2350
 EOL
     echo $ino | grep -q -F "$skiplist"

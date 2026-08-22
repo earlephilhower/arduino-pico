@@ -313,19 +313,25 @@ def BuildGlobalMenuList():
     print("menu.ipbtstack=IP/Bluetooth Stack")
     print("menu.uploadmethod=Upload Method")
 
-def BuildWifiType(name):
+def BuildWifiType(name, hosted = False, matter = False):
     print("%s.menu.espwifitype.esp_at=ESP AT" % (name))
     print("%s.menu.espwifitype.esp_at.build.espwifitype=-DWIFIESPAT2" % (name))
-    print("%s.menu.espwifitype.esp_hosted=ESP Hosted" % (name))
-    print("%s.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1" % (name))
+    if hosted:
+        print("%s.menu.espwifitype.esp_hosted=ESP Hosted" % (name))
+        print("%s.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1" % (name))
     print("%s.menu.espwifitype.esp_now=ESP-NOW" % (name))
     print("%s.menu.espwifitype.esp_now.build.espwifitype=-DILABS_ESPNOW" % (name))
-
-def BuildWifiTypeAT(name):
-    print("%s.menu.espwifitype.esp_at=ESP AT" % (name))
-    print("%s.menu.espwifitype.esp_at.build.espwifitype=-DWIFIESPAT2" % (name))
-    print("%s.menu.espwifitype.esp_now=ESP-NOW" % (name))
-    print("%s.menu.espwifitype.esp_now.build.espwifitype=-DILABS_ESPNOW" % (name))
+    # Hearth speaks Matter over a UART to an ESP32-C6, so it is offered only on
+    # the boards that have one. The three options differ to the flasher, never
+    # to the compiler: the library is transport-agnostic, and on the combined
+    # image AT+MTTRANSPORT picks the stack at runtime.
+    if matter:
+        for (mid, label, variant) in [("matter_wifi", "Hearth (Matter, WiFi)", "wifi"),
+                                      ("matter_thread", "Hearth (Matter, Thread)", "thread"),
+                                      ("matter_combined", "Hearth (Matter, WiFi+Thread)", "combined")]:
+            print("%s.menu.espwifitype.%s=%s" % (name, mid, label))
+            print("%s.menu.espwifitype.%s.build.espwifitype=-DILABS_HEARTH" % (name, mid))
+            print("%s.menu.espwifitype.%s.bootloader.variant=%s" % (name, mid, variant))
 
 def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra = None, board_url = None):
     smallfs = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
@@ -360,8 +366,13 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     elif name == "olimex_rp2040pico30":
         BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
-    elif (name == "challenger_2350_wifi6_ble5") or (name == "challenger_2040_wifi_ble"):
-        BuildWifiType(name)
+    elif name == "challenger_2350_wifi6_ble5":
+        BuildWifiType(name, hosted = True, matter = True)
+        BuildCountry(name)
+        BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
+    elif name == "challenger_2040_wifi_ble":
+        BuildWifiType(name, hosted = True)
         BuildCountry(name)
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
@@ -376,10 +387,14 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
-    if name in ["challenger_2040_wifi", "challenger_2040_wifi6_ble",
-                "challenger_nb_2040_wifi", "connectivity_2040_lte_wifi_ble",
-                "ilabs_rpico32"]:
-        BuildWifiTypeAT(name)
+    if name == "challenger_2040_wifi6_ble":
+        # The only C6 in this group. challenger_2040_wifi and
+        # challenger_nb_2040_wifi carry an ESP8285, and the other two an
+        # ESP32-C3, so none of them can run Hearth.
+        BuildWifiType(name, matter = True)
+    elif name in ["challenger_2040_wifi", "challenger_nb_2040_wifi",
+                  "connectivity_2040_lte_wifi_ble", "ilabs_rpico32"]:
+        BuildWifiType(name)
     if (chip == "rp2350") or (chip == "rp2350-riscv"):
         BuildArch(name)
         BuildFreq(name, 150)

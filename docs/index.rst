@@ -67,6 +67,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    WiFiUDP <wifiudp>
    NTP client <wifintp>
    ESP-NOW (iLabs Boards) <ilabs_espnow>
+   Matter (iLabs Boards) <ilabs_hearth>
    BearSSL Encrypted TLS <bearssl>
    WiFiClientSecure (TLS/SSL/HTTPS) <bearssl-client-secure-class>
    WiFiServerSecure (TLS/SSL/HTTPS) <bearssl-server-secure-class>
