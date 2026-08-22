@@ -41,8 +41,6 @@ carry an ESP32-C6 co-processor and offer the menu described below:
 * Challenger RP2350 WiFi6/BLE5 (``challenger_2350_wifi6_ble5``)
 * Challenger RP2040 WiFi6/BLE (``challenger_2040_wifi6_ble``)
 
-See `Status and limitations`_ below before relying on the second one.
-
 Choosing a firmware
 --------------------
 
@@ -165,7 +163,3 @@ before its vendor pays for certification, not a defect in this firmware or
 this library. A verified path to commissioning it is the NXP Matter
 Chip-tool Android app, or the CLI ``chip-tool``.
 
-Matter on ``challenger_2040_wifi6_ble`` has been compiled but never run.
-The menu options and the build are offered on that board, but no hardware
-run has exercised them; treat an RP2040 host as untested rather than
-assuming it works the way the RP2350 does.
