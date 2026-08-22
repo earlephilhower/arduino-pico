@@ -27,18 +27,18 @@ void setup() {
       float v = (khz * 1000) / edgerate;
       float e = v - floor(v);
       e /= v;
-      e *= 100.0;
+      e *= 100.0f;
       if (e < err) {
         err = e;
         bestMatch = khz;
-        Serial.printf("%d %f\n", bestMatch, err);
+        Serial.printf("%d %f\n", bestMatch, (double)err);
         if (err == 0) {
           break;
         }
       }
       khz--;
     }
-    Serial.printf("%d: %d, err=%1.6f%%\n", f, bestMatch, err);
+    Serial.printf("%d: %d, err=%1.6f%%\n", f, bestMatch, (double)err);
   }
 }
 
