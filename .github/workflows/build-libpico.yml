@@ -19,7 +19,7 @@ jobs:
         name: Build libpico precompiled libraries
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v7
           with:
             submodules: false
         - name: Get submodules for pico-sdk
@@ -37,7 +37,7 @@ jobs:
           run: |
             cd tools/libpico
             ./make-libpico.sh
-        - uses: actions/upload-artifact@v4
+        - uses: actions/upload-artifact@v7
           with:
             name: libpico
             path: |
