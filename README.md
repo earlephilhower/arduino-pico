@@ -317,6 +317,7 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * [ESPHost library](https://github.com/Networking-for-Arduino/ESPHost) is LGPL licensed by its maintainers.
 * [iLabs_ESP-NOW library](https://github.com/PontusO/iLabs_ESP-NOW) is licensed under the MIT license by iLabs Electronics.
 * [iLabs_Hearth library](https://github.com/PontusO/iLabs_Hearth) is licensed under the MIT license by iLabs Electronics.
+* [PicoCamera](https://github.com/umeiko/PicoCamera) camera library is licensed under the MIT license by umeko.
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com

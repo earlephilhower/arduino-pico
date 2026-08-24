@@ -61,3 +61,6 @@
 [submodule "libraries/iLabs_Hearth"]
 	path = libraries/iLabs_Hearth
 	url = https://github.com/PontusO/iLabs_Hearth.git
+[submodule "libraries/PicoCamera"]
+	path = libraries/PicoCamera
+	url = https://github.com/umeiko/PicoCamera.git
