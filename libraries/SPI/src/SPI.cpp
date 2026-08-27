@@ -77,7 +77,7 @@ void SPIClassRP2040::adjustBuffer(const void *s, void *d, size_t cnt, bool by16)
     }
 }
 
-byte SPIClassRP2040::transfer(uint8_t data) {
+uint8_t SPIClassRP2040::transfer(uint8_t data) {
     uint8_t ret;
     if (!_initted) {
         return 0;
