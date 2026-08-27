@@ -65,7 +65,7 @@ void SoftwareSPI::_adjustPIO(int bits) {
     _bits = bits;
 }
 
-byte SoftwareSPI::transfer(uint8_t data) {
+uint8_t SoftwareSPI::transfer(uint8_t data) {
     uint8_t ret;
     if (!_initted) {
         return 0;
