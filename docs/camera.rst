@@ -2,7 +2,8 @@ Camera (PicoCamera) Library
 ===========================
 
 The ``PicoCamera`` library adds support for camera sensors with a parallel
-(DVP) interface, such as the Omnivision OV2640, OV3660, and OV7670.  While
+(DVP) interface, such as the Omnivision OV2640, OV3660, and OV7670, and the
+Galaxycore GC2145 and GC0308.  While
 the RP2040/RP2350 chips do not include a dedicated camera peripheral, the
 library uses a PIO (Programmable I/O) state machine together with DMA to
 capture frames in the background with almost no CPU involvement.
@@ -13,8 +14,9 @@ library: the camera is configured once at init time through a
 buffers which the application borrows and returns, and the sensor can be
 adjusted at runtime through a set of control function pointers.
 
-Both RGB565 raw frames and JPEG frames (from sensors with an on-chip JPEG
-encoder, such as the OV2640 and OV3660) are supported.
+RGB565, YUV422 (packed YUYV) and grayscale raw frames are supported, as
+well as JPEG frames from sensors with an on-chip JPEG encoder, such as
+the OV2640 and OV3660.
 
 Include the library header and define the configuration before use:
 
@@ -79,8 +81,12 @@ The most important fields are:
   In shared-bus mode (``pin_sccb_sda = -1``) it selects which already
   initialized bus to reuse.
 
-* ``pixel_format`` - ``PIXFORMAT_RGB565`` or ``PIXFORMAT_JPEG``.  JPEG
-  requires a sensor with an on-chip encoder (OV2640/OV3660 yes, OV7670 no).
+* ``pixel_format`` - ``PIXFORMAT_RGB565``, ``PIXFORMAT_YUV422``,
+  ``PIXFORMAT_GRAYSCALE`` or ``PIXFORMAT_JPEG``.  YUV422 streams packed
+  YUYV (2 bytes per pixel, supported on OV2640/OV3660/OV7670/GC2145/
+  GC0308); grayscale is Y-only (1 byte per pixel, GC0308).  JPEG
+  requires a sensor with an on-chip encoder (OV2640/OV3660 yes, the
+  others no).
 
 * ``frame_size`` - a ``FRAMESIZE_*`` value.  Sizes beyond the sensor
   maximum are clamped with a warning instead of failing.  Available sizes
@@ -115,7 +121,8 @@ worth planning ahead.  The RP2040 has 264 KB of on-chip SRAM, while the
 RP2350 has 520 KB; the frame buffers, the rest of your sketch, and the
 Arduino core itself all share this space.
 
-For RGB565 frames each buffer needs ``width * height * 2`` bytes:
+For RGB565 and YUV422 frames each buffer needs ``width * height * 2``
+bytes (grayscale needs half of that):
 
 * QQVGA (160x120) - about 38 KB per buffer.
 * QVGA (320x240) - about 150 KB per buffer, near the practical ceiling
@@ -169,12 +176,14 @@ Captured frames are delivered in a ``camera_fb_t`` structure:
         size_t   len;        // used bytes in buf
         size_t   width;      // pixels
         size_t   height;     // pixels
-        pixformat_t format;  // PIXFORMAT_RGB565 or PIXFORMAT_JPEG
+        pixformat_t format;  // PIXFORMAT_RGB565 / YUV422 / GRAYSCALE / JPEG
         struct timeval timestamp;  // capture time since boot
     } camera_fb_t;
 
-For RGB565 frames, ``len == width * height * 2``, one 16-bit pixel per 2
-bytes.  For JPEG frames, ``buf`` holds a complete, standalone JPEG file
+For RGB565 and YUV422 frames, ``len == width * height * 2`` (YUV422 is
+packed YUYV: one luminance byte per pixel, chroma shared per pixel pair).
+For grayscale frames, ``len == width * height``.  For JPEG frames, ``buf``
+holds a complete, standalone JPEG file
 (starting with ``0xFF 0xD8`` and ending with ``0xFF 0xD9``) and ``len``
 varies per frame; it can be written straight to a file or socket.
 
@@ -239,7 +248,8 @@ implements a subset of them, so always NULL-check before calling**:
 
 Available operations include:
 
-* ``set_pixformat(fmt)`` - switch between RGB565 and JPEG at runtime.
+* ``set_pixformat(fmt)`` - switch between RGB565, YUV422, grayscale and
+  JPEG at runtime (whichever the sensor supports).
 * ``set_framesize(size)`` - change resolution at runtime.
 * ``set_brightness(level)`` / ``set_contrast(level)`` /
   ``set_saturation(level)`` / ``set_sharpness(level)`` - image tuning,
@@ -267,7 +277,9 @@ Available operations include:
 
 Not every sensor implements every operation.  The OV2640 implements the
 full set; the OV7670 has no JPEG encoder and lacks the image-tuning
-controls; the OV3660 falls in between.  Always check the function pointer
+controls; the OV3660 falls in between; the Galaxycore sensors (GC2145,
+GC0308) have no JPEG encoder and expose the basics (pixformat, framesize,
+hmirror, vflip, raw register access).  Always check the function pointer
 for ``NULL`` before calling, as shown above.
 
 Shutting Down the Camera
@@ -325,11 +337,17 @@ Returns static information about the detected sensor model: ``name``,
 ``sccb_addr``, ``pid``, ``max_size`` (largest ``framesize_t`` supported),
 and ``support_jpeg``.  Useful for adapting the configuration at runtime.
 
+const char \*pico_camera_err_str(int err)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Maps an error code to a human-readable string, handy for logging:
+``Serial.printf("init failed: %s\n", pico_camera_err_str(err));``
+
 Error Codes
 -----------
 
 ``pico_camera_init()`` and ``pico_camera_deinit()`` return one of the
-following:
+following (pass the code to ``pico_camera_err_str()`` for a printable
+description):
 
 * ``PICO_CAMERA_OK`` (0) - success.
 * ``PICO_CAMERA_ERR_NOT_DETECTED`` - no sensor answered on SCCB.
@@ -378,7 +396,8 @@ frame size over the serial port:
         Serial.begin(115200);
         int err = pico_camera_init(&config);
         if (err != PICO_CAMERA_OK) {
-            Serial.printf("Camera init failed, error %d\n", err);
+            Serial.printf("Camera init failed: %s (%d)\n",
+                          pico_camera_err_str(err), err);
             while (true) { /* halt */ }
         }
     }
