@@ -37,11 +37,10 @@
 
 #ifdef DEBUG_RP2040_CORE
 #ifdef DEBUG_RP2040_PORT
-#define DEBUG_HTTPCLIENT(fmt, ...) DEBUG_RP2040_PORT.printf_P( (PGM_P)PSTR(fmt), ## __VA_ARGS__ )
+#define DEBUG_HTTPCLIENT(fmt, ...) DEBUG_RP2040_PORT.printf(fmt "\r\n", ## __VA_ARGS__ )
 #endif
 #endif
 
-//#define DEBUG_HTTPCLIENT(fmt, ...) Serial.printf(fmt, ## __VA_ARGS__ )
 #ifndef DEBUG_HTTPCLIENT
 #define DEBUG_HTTPCLIENT(...) do { (void)0; } while (0)
 #endif
