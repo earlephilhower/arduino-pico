@@ -65,11 +65,15 @@ void BluetoothHCI::setBLEName(const char *name) {
     *ptr++ = 0x00;
     *ptr++ = 0x00;
 
-    DEBUGV("ATTDB: ");
+#if defined(DEBUG_RP2040_PORT)
+    String attHex;
     for (size_t i = 0; i < 1 + 0x0a + 0x0d + 0x08 + strlen(name) + 0x02; i++) {
-        DEBUGV("%02X ", _att[i]);
+        char hex[4];
+        snprintf(hex, sizeof(hex), "%02X ", _att[i]);
+        attHex += hex;
     }
-    DEBUGV("\n");
+    DEBUGV("ATTDB: %s", attHex.c_str());
+#endif
 }
 
 void BluetoothHCI::install() {
@@ -116,14 +120,14 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
     }
     _scanning = true;
     while (!_hciRunning) {
-        DEBUGV("HCI::scan(): Waiting for HCI to come up\n");
+        DEBUGV("HCI::scan(): Waiting for HCI to come up");
         delay(10);
     }
     int inquiryTime = (scanTimeSec * 1000) / 1280; // divide by 1.280
     if (!inquiryTime) {
         inquiryTime = 1;
     }
-    DEBUGV("HCI::scan(): inquiry start\n");
+    DEBUGV("HCI::scan(): inquiry start");
     // Only need to lock around the inquiry start command, not the wait
     {
         BluetoothLock b;
@@ -139,7 +143,7 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
         }
         delay(10);
     }
-    DEBUGV("HCI::scan(): inquiry end, start name requests\n");
+    DEBUGV("HCI::scan(): inquiry end, start name requests");
     for (auto &e : _btdList) {
         if (!e.name()[0]) {
             _requested = &e;
@@ -153,7 +157,7 @@ std::vector<BTDeviceInfo> BluetoothHCI::scan(uint32_t mask, int scanTimeSec, boo
             }
         }
     }
-    DEBUGV("HCI::scan() end name requests\n");
+    DEBUGV("HCI::scan() end name requests");
     return _btdList;
 }
 
@@ -166,14 +170,14 @@ std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec, 
     }
     _scanning = true;
     while (!_hciRunning) {
-        DEBUGV("HCI::scanBLE(): Waiting for HCI to come up\n");
+        DEBUGV("HCI::scanBLE(): Waiting for HCI to come up");
         delay(10);
     }
     uint32_t inquiryTime = scanTimeSec * 1000;
     if (!inquiryTime) {
         inquiryTime = 1000;
     }
-    DEBUGV("HCI::scan(): BLE advertise inquiry start\n");
+    DEBUGV("HCI::scan(): BLE advertise inquiry start");
     // Only need to lock around the inquiry start command, not the wait
     do {
         BluetoothLock b;
@@ -188,7 +192,7 @@ std::vector<BTDeviceInfo> BluetoothHCI::scanBLE(uint32_t uuid, int scanTimeSec, 
         }
         delay(10);
     }
-    DEBUGV("HCI::scanBLE(): inquiry end\n");
+    DEBUGV("HCI::scanBLE(): inquiry end");
     do {
         BluetoothLock l;
         gap_stop_scan();
@@ -295,7 +299,7 @@ void BluetoothHCI::parse_advertisement_data(uint8_t *packet) {
         case BLUETOOTH_DATA_TYPE_DEVICE_ID:
         case BLUETOOTH_DATA_TYPE_SECURITY_MANAGER_OUT_OF_BAND_FLAGS:
         default:
-            DEBUGV("Advertising Data Type 0x%2x not handled yet\n", data_type);
+            DEBUGV("Advertising Data Type 0x%2x not handled yet", data_type);
             break;
         }
     }
@@ -363,7 +367,7 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         }
         pageScanRepetitionMode = gap_event_inquiry_result_get_page_scan_repetition_mode(packet);
         clockOffset = gap_event_inquiry_result_get_clock_offset(packet);
-        DEBUGV("HCI: Scan found '%s', COD 0x%08X, RSSI %d, MAC %02X:%02X:%02X:%02X:%02X:%02X\n", name, (unsigned int)cod, rssi, address[0], address[1], address[2], address[3], address[4], address[5]);
+        DEBUGV("HCI: Scan found '%s', COD 0x%08X, RSSI %d, MAC %02X:%02X:%02X:%02X:%02X:%02X", name, (unsigned int)cod, rssi, address[0], address[1], address[2], address[3], address[4], address[5]);
         if ((_scanMask & cod) == _scanMask) {
             // Sometimes we get multiple reports for the same MAC, so remove any old reports since newer will have newer RSSI
             bool updated = false;
@@ -385,22 +389,22 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         break;
 
     case GAP_EVENT_INQUIRY_COMPLETE:
-        DEBUGV("GAP_EVENT_INQUIRY_COMPLETE\n");
+        DEBUGV("GAP_EVENT_INQUIRY_COMPLETE");
         _scanning = false;
         break;
 
     case HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE:
         if (!_requested) {
-            DEBUGV("Error: HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE without active request\n");
+            DEBUGV("Error: HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE without active request");
             return; // How'd we get here?
         }
         reverse_bd_addr(&packet[3], address);
         if (!memcmp(_requested->address(), address, 6)) {
             if (packet[2] == 0) {
-                DEBUGV("Received name: '%s'\n", &packet[9]);
+                DEBUGV("Received name: '%s'", &packet[9]);
                 strcpy(_requested->_name, (char *)packet + 9);
             } else {
-                DEBUGV("Failed to get name: page timeout\n");
+                DEBUGV("Failed to get name: page timeout");
             }
         }
         _requested = nullptr;
@@ -418,7 +422,7 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
             _disconnectCB();
         }
         _hciConn = HCI_CON_HANDLE_INVALID;
-        DEBUGV("HCI Disconnected\n");
+        DEBUGV("HCI Disconnected");
         break;
 
     case HCI_EVENT_META_GAP:
@@ -426,10 +430,10 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         if (hci_event_gap_meta_get_subevent_code(packet) != GAP_SUBEVENT_LE_CONNECTION_COMPLETE) {
             break;
         }
-        DEBUGV("HCI Connected\n");
+        DEBUGV("HCI Connected");
         _hciConn =  gap_subevent_le_connection_complete_get_connection_handle(packet);
         if (_smPair) {
-            DEBUGV("Requesting pairing\n");
+            DEBUGV("Requesting pairing");
             sm_request_pairing(_hciConn);
         }
         break;

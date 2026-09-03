@@ -43,15 +43,15 @@ namespace littlefs_impl {
 
 FileImplPtr LittleFSImpl::open(const char* path, OpenMode openMode, AccessMode accessMode) {
     if (!_mounted) {
-        DEBUGV("LittleFSImpl::open() called on unmounted FS\n");
+        DEBUGV("LittleFSImpl::open() called on unmounted FS");
         return FileImplPtr();
     }
     if (!path || !path[0]) {
-        DEBUGV("LittleFSImpl::open() called with invalid filename\n");
+        DEBUGV("LittleFSImpl::open() called with invalid filename");
         return FileImplPtr();
     }
     if (!LittleFSImpl::pathValid(path)) {
-        DEBUGV("LittleFSImpl::open() called with too long filename\n");
+        DEBUGV("LittleFSImpl::open() called with too long filename");
         return FileImplPtr();
     }
 
@@ -96,7 +96,7 @@ FileImplPtr LittleFSImpl::open(const char* path, OpenMode openMode, AccessMode a
         lfs_file_sync(&_lfs, fd.get());
         return std::make_shared<LittleFSFileImpl>(this, path, fd, flags, creation);
     } else {
-        DEBUGV("LittleFSDirImpl::openFile: rc=%d fd=%p path=`%s` openMode=%d accessMode=%d err=%d\n",
+        DEBUGV("LittleFSDirImpl::openFile: rc=%d fd=%p path=`%s` openMode=%d accessMode=%d err=%d",
                rc, fd.get(), path, openMode, accessMode, rc);
         return FileImplPtr();
     }
@@ -156,7 +156,7 @@ DirImplPtr LittleFSImpl::openDir(const char *path) {
         }
     }
     if (rc < 0) {
-        DEBUGV("LittleFSImpl::openDir: path=`%s` err=%d\n", path, rc);
+        DEBUGV("LittleFSImpl::openDir: path=`%s` err=%d", path, rc);
         free(pathStr);
         return DirImplPtr();
     }

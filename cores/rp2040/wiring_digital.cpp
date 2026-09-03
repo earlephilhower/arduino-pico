@@ -28,7 +28,7 @@ static PinMode _pm[__GPIOCNT];
 extern "C" void pinMode(pin_size_t ulPin, PinMode ulMode) __attribute__((weak, alias("__pinMode")));
 extern "C" void __pinMode(pin_size_t ulPin, PinMode ulMode) {
     if (ulPin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
+        DEBUGCORE("ERROR: Illegal pin in pinMode (%d)", ulPin);
         return;
     }
 
@@ -72,7 +72,7 @@ extern "C" void __pinMode(pin_size_t ulPin, PinMode ulMode) {
         gpio_set_dir(ulPin, true);
         break;
     default:
-        DEBUGCORE("ERROR: Illegal pinMode mode (%d)\n", ulMode);
+        DEBUGCORE("ERROR: Illegal pinMode mode (%d)", ulMode);
         // Error
         return;
     }
@@ -87,7 +87,7 @@ extern "C" void __pinMode(pin_size_t ulPin, PinMode ulMode) {
 extern "C" void digitalWrite(pin_size_t ulPin, PinStatus ulVal) __attribute__((weak, alias("__digitalWrite")));
 extern "C" void __digitalWrite(pin_size_t ulPin, PinStatus ulVal) {
     if (ulPin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal pin in pinMode (%d)\n", ulPin);
+        DEBUGCORE("ERROR: Illegal pin in pinMode (%d)", ulPin);
         return;
     }
     gpio_set_function(ulPin, GPIO_FUNC_SIO);
@@ -111,7 +111,7 @@ extern "C" void __digitalWrite(pin_size_t ulPin, PinStatus ulVal) {
 extern "C" PinStatus digitalRead(pin_size_t ulPin) __attribute__((weak, alias("__digitalRead")));
 extern "C" PinStatus __digitalRead(pin_size_t ulPin) {
     if (ulPin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal pin in digitalRead (%d)\n", ulPin);
+        DEBUGCORE("ERROR: Illegal pin in digitalRead (%d)", ulPin);
         return LOW;
     }
     return gpio_get(ulPin) ? HIGH : LOW;

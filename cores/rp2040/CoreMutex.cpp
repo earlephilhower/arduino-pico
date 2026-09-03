@@ -46,7 +46,7 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     if (!mutex_try_enter(_mutex, &owner)) {
         if (owner == get_core_num()) { // Deadlock!
             if (_option & DebugEnable) {
-                DEBUGCORE("CoreMutex - Deadlock detected!\n");
+                DEBUGCORE("CoreMutex - Deadlock detected!");
             }
             return;
         }

@@ -43,10 +43,10 @@ extern "C" void analogWriteFreq(uint32_t freq) {
         return;
     }
     if (freq < 100) {
-        DEBUGCORE("ERROR: analogWriteFreq too low (%lu)\n", freq);
+        DEBUGCORE("ERROR: analogWriteFreq too low (%lu)", freq);
         analogFreq = 100;
     } else if (freq > 10'000'000) {
-        DEBUGCORE("ERROR: analogWriteFreq too high (%lu)\n", freq);
+        DEBUGCORE("ERROR: analogWriteFreq too high (%lu)", freq);
         analogFreq = 10'000'000;
     } else {
         analogFreq = freq;
@@ -64,7 +64,7 @@ extern "C" void analogWriteRange(uint32_t range) {
         pwmInitted = 0;
         scaleInitted = false;
     } else {
-        DEBUGCORE("ERROR: analogWriteRange out of range (%lu)\n", range);
+        DEBUGCORE("ERROR: analogWriteRange out of range (%lu)", range);
     }
 }
 
@@ -72,7 +72,7 @@ extern "C" void analogWriteResolution(int res) {
     if ((res >= 2) && (res <= 16)) {
         analogWriteRange((1 << res) - 1);
     } else {
-        DEBUGCORE("ERROR: analogWriteResolution out of range (%d)\n", res);
+        DEBUGCORE("ERROR: analogWriteResolution out of range (%d)", res);
     }
 }
 
@@ -80,7 +80,7 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
     CoreMutex m(&_dacMutex);
 
     if ((pin >= __GPIOCNT) || !m) {
-        DEBUGCORE("ERROR: Illegal analogWrite pin (%d)\n", pin);
+        DEBUGCORE("ERROR: Illegal analogWrite pin (%d)", pin);
         return;
     }
     __clearADCPin(pin);
@@ -90,14 +90,14 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
         while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0f) && (analogScale < 32678)) {
             analogWritePseudoScale++;
             analogScale *= 2;
-            DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%lu\n", analogWritePseudoScale, analogScale);
+            DEBUGCORE("Adjusting analogWrite values PS=%d, scale=%lu", analogWritePseudoScale, analogScale);
         }
         // For high frequencies, we need to scale the output max value down to actually hit the frequency target
         analogWriteSlowScale = 1;
         while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) < 1.0f) && (analogScale >= 6)) {
             analogWriteSlowScale++;
             analogScale /= 2;
-            DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%lu\n", analogWriteSlowScale, analogScale);
+            DEBUGCORE("Adjusting analogWrite values SS=%d, scale=%lu", analogWriteSlowScale, analogScale);
         }
         scaleInitted = true;
     }
@@ -138,7 +138,7 @@ extern "C" int analogRead(pin_size_t pin) {
     pin_size_t minPin = __FIRSTANALOGGPIO;
 
     if ((pin < minPin) || (pin > maxPin) || !m) {
-        DEBUGCORE("ERROR: Illegal analogRead pin (%d)\n", pin);
+        DEBUGCORE("ERROR: Illegal analogRead pin (%d)", pin);
         return 0;
     }
     if (!adcInitted) {

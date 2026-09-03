@@ -138,7 +138,7 @@ WiFiClient WiFiServer::accept() {
 
         _unclaimed = _unclaimed->next();
         result.setNoDelay(getNoDelay());
-        DEBUGV("WS:av status=%d WCav=%d\r\n", result.status(), result.available());
+        DEBUGV("WS:av status=%d WCav=%d", result.status(), result.available());
         return result;
     }
     return WiFiClient();
@@ -190,7 +190,7 @@ T* slist_append_tail(T* head, T* item) {
 
 err_t WiFiServer::_accept(tcp_pcb* apcb, err_t err) {
     (void) err;
-    DEBUGV("WS:ac\r\n");
+    DEBUGV("WS:ac");
 
     // always accept new PCB so incoming data can be stored in our buffers even before
     // user calls ::available()
@@ -211,7 +211,7 @@ err_t WiFiServer::_accept(tcp_pcb* apcb, err_t err) {
 void WiFiServer::_discard(ClientContext* client) {
     (void) client;
     // _discarded = slist_append_tail(_discarded, client);
-    DEBUGV("WS:dis\r\n");
+    DEBUGV("WS:dis");
 }
 
 err_t WiFiServer::_s_accept(void *arg, tcp_pcb* newpcb, err_t err) {

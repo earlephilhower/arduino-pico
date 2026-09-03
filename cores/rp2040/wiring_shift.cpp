@@ -25,11 +25,11 @@ extern "C" uint8_t shiftIn(pin_size_t dataPin, pin_size_t clockPin, BitOrder bit
     uint8_t value = 0;
     uint8_t i;
     if (dataPin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal dataPin in shiftIn (%d)\n", dataPin);
+        DEBUGCORE("ERROR: Illegal dataPin in shiftIn (%d)", dataPin);
         return 0;
     }
     if (clockPin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal clockPin in shiftIn (%d)\n", clockPin);
+        DEBUGCORE("ERROR: Illegal clockPin in shiftIn (%d)", clockPin);
         return 0;
     }
     for (i = 0; i < 8; ++i) {
@@ -47,11 +47,11 @@ extern "C" uint8_t shiftIn(pin_size_t dataPin, pin_size_t clockPin, BitOrder bit
 extern "C" void shiftOut(pin_size_t dataPin, pin_size_t clockPin, BitOrder bitOrder, uint8_t val) {
     uint8_t i;
     if (dataPin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal dataPin in shiftOut (%d)\n", dataPin);
+        DEBUGCORE("ERROR: Illegal dataPin in shiftOut (%d)", dataPin);
         return;
     }
     if (clockPin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal clockPin in shiftOut (%d)\n", clockPin);
+        DEBUGCORE("ERROR: Illegal clockPin in shiftOut (%d)", clockPin);
         return;
     }
     for (i = 0; i < 8; i++)  {

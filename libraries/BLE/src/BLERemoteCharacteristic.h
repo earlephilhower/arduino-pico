@@ -43,7 +43,7 @@ public:
         (void) p;
         (void) data;
         (void) len;
-        DEBUGBLE("onNotify %p\n", p);
+        DEBUGBLE("onNotify %p", p);
     }
 };
 

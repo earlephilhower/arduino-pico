@@ -83,11 +83,11 @@ uint8_t SPIClassRP2040::transfer(uint8_t data) {
         return 0;
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : _helper.reverseByte(data);
-    DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d\n", data, _helper.cpol(_spis), _helper.cpha(_spis));
+    DEBUGSPI("SPI::transfer(%02x), cpol=%d, cpha=%d", data, _helper.cpol(_spis), _helper.cpha(_spis));
     hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
     spi_write_read_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : _helper.reverseByte(ret);
-    DEBUGSPI("SPI: read back %02x\n", ret);
+    DEBUGSPI("SPI: read back %02x", ret);
     return ret;
 }
 
@@ -97,22 +97,22 @@ uint16_t SPIClassRP2040::transfer16(uint16_t data) {
         return 0;
     }
     data = (_spis.getBitOrder() == MSBFIRST) ? data : _helper.reverse16Bit(data);
-    DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d\n", data, _helper.cpol(_spis), _helper.cpha(_spis));
+    DEBUGSPI("SPI::transfer16(%04x), cpol=%d, cpha=%d", data, _helper.cpol(_spis), _helper.cpha(_spis));
     hw_write_masked(&spi_get_hw(_spi)->cr0, (16 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 16-bits
     spi_write16_read16_blocking(_spi, &data, &ret, 1);
     ret = (_spis.getBitOrder() == MSBFIRST) ? ret : _helper.reverse16Bit(ret);
-    DEBUGSPI("SPI: read back %02x\n", ret);
+    DEBUGSPI("SPI: read back %02x", ret);
     return ret;
 }
 
 void SPIClassRP2040::transfer(void *buf, size_t count) {
-    DEBUGSPI("SPI::transfer(%p, %d)\n", buf, count);
+    DEBUGSPI("SPI::transfer(%p, %d)", buf, count);
     uint8_t *buff = reinterpret_cast<uint8_t *>(buf);
     for (size_t i = 0; i < count; i++) {
         *buff = transfer(*buff);
         buff++;
     }
-    DEBUGSPI("SPI::transfer completed\n");
+    DEBUGSPI("SPI::transfer completed");
 }
 
 void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
@@ -122,7 +122,7 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
 
     hw_write_masked(&spi_get_hw(_spi)->cr0, (8 - 1) << SPI_SSPCR0_DSS_LSB, SPI_SSPCR0_DSS_BITS); // Fast set to 8-bits
 
-    DEBUGSPI("SPI::transfer(%p, %p, %d)\n", txbuf, rxbuf, count);
+    DEBUGSPI("SPI::transfer(%p, %p, %d)", txbuf, rxbuf, count);
     const uint8_t *txbuff = reinterpret_cast<const uint8_t *>(txbuf);
     uint8_t *rxbuff = reinterpret_cast<uint8_t *>(rxbuf);
 
@@ -148,23 +148,23 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
         txbuff++;
         rxbuff++;
     }
-    DEBUGSPI("SPI::transfer completed\n");
+    DEBUGSPI("SPI::transfer completed");
 }
 
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
-    DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)\n", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
+    DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
     if (_initted && settings == _spis) {
-        DEBUGSPI("SPI: Reusing existing initted SPI\n");
+        DEBUGSPI("SPI: Reusing existing initted SPI");
     } else {
         /* Only de-init if the clock changes frequency */
         if (settings.getClockFreq() != _spis.getClockFreq()) {
             if (_initted) {
-                DEBUGSPI("SPI: deinitting currently active SPI\n");
+                DEBUGSPI("SPI: deinitting currently active SPI");
                 spi_deinit(_spi);
             }
-            DEBUGSPI("SPI: initting SPI\n");
+            DEBUGSPI("SPI: initting SPI");
             spi_init(_spi, settings.getClockFreq());
-            DEBUGSPI("SPI: actual baudrate=%u\n", spi_get_baudrate(_spi));
+            DEBUGSPI("SPI: actual baudrate=%u", spi_get_baudrate(_spi));
         }
         _spis = settings;
         spi_set_format(_spi, 8, _helper.cpol(_spis), _helper.cpha(_spis), SPI_MSB_FIRST);
@@ -174,12 +174,12 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
 }
 
 void SPIClassRP2040::endTransaction(void) {
-    DEBUGSPI("SPI::endTransaction()\n");
+    DEBUGSPI("SPI::endTransaction()");
     _helper.unmaskInterrupts();
 }
 
 bool SPIClassRP2040::transferAsync(const void *send, void *recv, size_t bytes) {
-    DEBUGSPI("SPI::transferAsync(%p, %p, %d)\n", send, recv, bytes);
+    DEBUGSPI("SPI::transferAsync(%p, %p, %d)", send, recv, bytes);
     const uint8_t *txbuff = reinterpret_cast<const uint8_t *>(send);
     uint8_t *rxbuff = reinterpret_cast<uint8_t *>(recv);
     _dummy = 0xffffffff;
@@ -446,7 +446,7 @@ bool SPIClassRP2040::setTX(pin_size_t pin) {
 }
 
 void SPIClassRP2040::begin(bool hwCS) {
-    DEBUGSPI("SPI::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d\n", hwCS, _RX, _CS, _SCK, _TX);
+    DEBUGSPI("SPI::begin(%d), rx=%d, cs=%d, sck=%d, tx=%d", hwCS, _RX, _CS, _SCK, _TX);
 
     if ((_RX == NOPIN) && (_TX == NOPIN)) {
         panic("SPI%s: TX and RX assigned to NOPIN", spi_get_index(_spi) ? "1" : "");
@@ -469,9 +469,9 @@ void SPIClassRP2040::begin(bool hwCS) {
 }
 
 void SPIClassRP2040::end() {
-    DEBUGSPI("SPI::end()\n");
+    DEBUGSPI("SPI::end()");
     if (_initted) {
-        DEBUGSPI("SPI: deinitting currently active SPI\n");
+        DEBUGSPI("SPI: deinitting currently active SPI");
         _initted = false;
         spi_deinit(_spi);
     }

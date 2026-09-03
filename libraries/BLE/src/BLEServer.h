@@ -32,11 +32,11 @@ class BLEServerCallbacks {
 public:
     virtual void onConnect(BLEServer *p) {
         (void) p;
-        DEBUGBLE("BLEServer connect: %p\n", p);
+        DEBUGBLE("BLEServer connect: %p", p);
     }
     virtual void onDisconnect(BLEServer *p) {
         (void) p;
-        DEBUGBLE("BLEServer disconnect: %p\n", p);
+        DEBUGBLE("BLEServer disconnect: %p", p);
     }
 };
 

@@ -51,12 +51,12 @@ public:
 
     virtual void onRead(BLECharacteristic *pCharacteristic) {
         (void) pCharacteristic;
-        DEBUGBLE("onRead %p\n", pCharacteristic);
+        DEBUGBLE("onRead %p", pCharacteristic);
     }
 
     virtual void onWrite(BLECharacteristic *pCharacteristic) {
         (void) pCharacteristic;
-        DEBUGBLE("onWrite %p\n", pCharacteristic);
+        DEBUGBLE("onWrite %p", pCharacteristic);
     }
 };
 
