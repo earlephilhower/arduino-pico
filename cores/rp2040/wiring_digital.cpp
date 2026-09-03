@@ -34,40 +34,40 @@ extern "C" void __pinMode(pin_size_t ulPin, PinMode ulMode) {
 
     switch (ulMode) {
     case INPUT:
-        gpio_init(ulPin);
         gpio_set_dir(ulPin, false);
+        gpio_set_function(ulPin, GPIO_FUNC_SIO);
         gpio_disable_pulls(ulPin);
         break;
     case INPUT_PULLUP:
-        gpio_init(ulPin);
         gpio_set_dir(ulPin, false);
+        gpio_set_function(ulPin, GPIO_FUNC_SIO);
         gpio_pull_up(ulPin);
         gpio_put(ulPin, 0);
         break;
     case INPUT_PULLDOWN:
-        gpio_init(ulPin);
         gpio_set_dir(ulPin, false);
+        gpio_set_function(ulPin, GPIO_FUNC_SIO);
         gpio_pull_down(ulPin);
         gpio_put(ulPin, 1);
         break;
     case OUTPUT:
     case OUTPUT_4MA:
-        gpio_init(ulPin);
+        gpio_set_function(ulPin, GPIO_FUNC_SIO);
         gpio_set_drive_strength(ulPin, GPIO_DRIVE_STRENGTH_4MA);
         gpio_set_dir(ulPin, true);
         break;
     case OUTPUT_2MA:
-        gpio_init(ulPin);
+        gpio_set_function(ulPin, GPIO_FUNC_SIO);
         gpio_set_drive_strength(ulPin, GPIO_DRIVE_STRENGTH_2MA);
         gpio_set_dir(ulPin, true);
         break;
     case OUTPUT_8MA:
-        gpio_init(ulPin);
+        gpio_set_function(ulPin, GPIO_FUNC_SIO);
         gpio_set_drive_strength(ulPin, GPIO_DRIVE_STRENGTH_8MA);
         gpio_set_dir(ulPin, true);
         break;
     case OUTPUT_12MA:
-        gpio_init(ulPin);
+        gpio_set_function(ulPin, GPIO_FUNC_SIO);
         gpio_set_drive_strength(ulPin, GPIO_DRIVE_STRENGTH_12MA);
         gpio_set_dir(ulPin, true);
         break;
