@@ -1,10 +1,12 @@
 -Wl,--wrap=__getreent
 
--Wl,--wrap=malloc
--Wl,--wrap=calloc
--Wl,--wrap=realloc
--Wl,--wrap=free
--Wl,--wrap=mallinfo
+-Wl,--wrap=_malloc_r
+-Wl,--wrap=_calloc_r
+-Wl,--wrap=_realloc_r
+-Wl,--wrap=_free_r
+-Wl,--wrap=_mallinfo_r
+-Wl,--wrap=_memalign_r
+
 -Wl,--wrap=exit
 -Wl,--wrap=atexit
 
