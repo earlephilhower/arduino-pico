@@ -80,7 +80,7 @@ bool A2DPSource::begin() {
 
     _pcmBuffer = (int16_t *)malloc(_pcmBufferSize * sizeof(int16_t));
     if (!_pcmBuffer) {
-        DEBUGV("A2DPSource: OOM for pcm buffer\n");
+        DEBUGV("A2DPSource: OOM for pcm buffer");
         return false;
     }
     _pcmWriter = 0;
@@ -105,7 +105,7 @@ bool A2DPSource::begin() {
     // Create stream endpoint
     avdtp_stream_endpoint_t * local_stream_endpoint = a2dp_source_create_stream_endpoint(AVDTP_AUDIO, AVDTP_CODEC_SBC, media_sbc_codec_capabilities, sizeof(media_sbc_codec_capabilities), media_sbc_codec_configuration, sizeof(media_sbc_codec_configuration));
     if (!local_stream_endpoint) {
-        DEBUGV("A2DP Source: not enough memory to create local stream endpoint\n");
+        DEBUGV("A2DP Source: not enough memory to create local stream endpoint");
         return false;
     }
 
@@ -185,13 +185,13 @@ bool A2DPSource::connect(const uint8_t *addr) {
         clearPairing();
         auto l = scan();
         for (auto e : l) {
-            DEBUGV("Scan connecting %s at %s ... ", e.name(), e.addressString());
+            DEBUGV("Scan connecting %s at %s ...", e.name(), e.addressString());
             memcpy(a, e.address(), sizeof(a));
             if (!a2dp_source_establish_stream(a, &media_tracker.a2dp_cid)) {
-                DEBUGV("Connection established\n");
+                DEBUGV("Connection established");
                 return true;
             }
-            DEBUGV("Failed\n");
+            DEBUGV("Connection failed");
         }
         return false;
     }
@@ -399,14 +399,14 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         status = a2dp_subevent_signaling_connection_established_get_status(packet);
 
         if (status != ERROR_CODE_SUCCESS) {
-            DEBUGV("A2DP Source: Connection failed, status 0x%02x, cid 0x%02x, a2dp_cid 0x%02x \n", status, cid, media_tracker.a2dp_cid);
+            DEBUGV("A2DP Source: Connection failed, status 0x%02x, cid 0x%02x, a2dp_cid 0x%02x", status, cid, media_tracker.a2dp_cid);
             media_tracker.a2dp_cid = 0;
             break;
         }
         media_tracker.a2dp_cid = cid;
         media_tracker.volume = 32;
         memcpy(_sinkAddress, address, sizeof(_sinkAddress));
-        DEBUGV("A2DP Source: Connected to address %s, a2dp cid 0x%02x, local seid 0x%02x.\n", bd_addr_to_str(address), media_tracker.a2dp_cid, media_tracker.local_seid);
+        DEBUGV("A2DP Source: Connected to address %s, a2dp cid 0x%02x, local seid 0x%02x.", bd_addr_to_str(address), media_tracker.a2dp_cid, media_tracker.local_seid);
         break;
 
     case A2DP_SUBEVENT_SIGNALING_MEDIA_CODEC_SBC_CONFIGURATION: {
@@ -428,7 +428,7 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         channel_mode = (avdtp_channel_mode_t) a2dp_subevent_signaling_media_codec_sbc_configuration_get_channel_mode(packet);
         allocation_method = a2dp_subevent_signaling_media_codec_sbc_configuration_get_allocation_method(packet);
 
-        DEBUGV("A2DP Source: Received SBC codec configuration, sampling frequency %u, a2dp_cid 0x%02x, local seid 0x%02x, remote seid 0x%02x.\n",
+        DEBUGV("A2DP Source: Received SBC codec configuration, sampling frequency %u, a2dp_cid 0x%02x, local seid 0x%02x, remote seid 0x%02x.",
                sbc_configuration.sampling_frequency, cid,
                a2dp_subevent_signaling_media_codec_sbc_configuration_get_local_seid(packet),
                a2dp_subevent_signaling_media_codec_sbc_configuration_get_remote_seid(packet));
@@ -463,16 +463,16 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
     }
 
     case A2DP_SUBEVENT_SIGNALING_DELAY_REPORTING_CAPABILITY:
-        DEBUGV("A2DP Source: remote supports delay report, remote seid %d\n",
+        DEBUGV("A2DP Source: remote supports delay report, remote seid %d",
                avdtp_subevent_signaling_delay_reporting_capability_get_remote_seid(packet));
         break;
     case A2DP_SUBEVENT_SIGNALING_CAPABILITIES_DONE:
-        DEBUGV("A2DP Source: All capabilities reported, remote seid %d\n",
+        DEBUGV("A2DP Source: All capabilities reported, remote seid %d",
                avdtp_subevent_signaling_capabilities_done_get_remote_seid(packet));
         break;
 
     case A2DP_SUBEVENT_SIGNALING_DELAY_REPORT:
-        DEBUGV("A2DP Source: Received delay report of %d.%0d ms, local seid %d\n",
+        DEBUGV("A2DP Source: Received delay report of %d.%0d ms, local seid %d",
                avdtp_subevent_signaling_delay_report_get_delay_100us(packet) / 10, avdtp_subevent_signaling_delay_report_get_delay_100us(packet) % 10,
                avdtp_subevent_signaling_delay_report_get_local_seid(packet));
         break;
@@ -481,14 +481,14 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         a2dp_subevent_stream_established_get_bd_addr(packet, address);
         status = a2dp_subevent_stream_established_get_status(packet);
         if (status != ERROR_CODE_SUCCESS) {
-            DEBUGV("A2DP Source: Stream failed, status 0x%02x.\n", status);
+            DEBUGV("A2DP Source: Stream failed, status 0x%02x.", status);
             break;
         }
 
         local_seid = a2dp_subevent_stream_established_get_local_seid(packet);
         cid = a2dp_subevent_stream_established_get_a2dp_cid(packet);
         (void) local_seid;
-        DEBUGV("A2DP Source: Stream established a2dp_cid 0x%02x, local_seid 0x%02x, remote_seid 0x%02x\n", cid, local_seid, a2dp_subevent_stream_established_get_remote_seid(packet));
+        DEBUGV("A2DP Source: Stream established a2dp_cid 0x%02x, local_seid 0x%02x, remote_seid 0x%02x", cid, local_seid, a2dp_subevent_stream_established_get_remote_seid(packet));
 
         media_tracker.stream_opened = 1;
         status = a2dp_source_start_stream(media_tracker.a2dp_cid, media_tracker.local_seid);
@@ -500,11 +500,11 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         cid = a2dp_subevent_stream_reconfigured_get_a2dp_cid(packet);
 
         if (status != ERROR_CODE_SUCCESS) {
-            DEBUGV("A2DP Source: Stream reconfiguration failed, status 0x%02x\n", status);
+            DEBUGV("A2DP Source: Stream reconfiguration failed, status 0x%02x", status);
             break;
         }
 
-        DEBUGV("A2DP Source: Stream reconfigured a2dp_cid 0x%02x, local_seid 0x%02x\n", cid, local_seid);
+        DEBUGV("A2DP Source: Stream reconfigured a2dp_cid 0x%02x, local_seid 0x%02x", cid, local_seid);
         status = a2dp_source_start_stream(media_tracker.a2dp_cid, media_tracker.local_seid);
         break;
 
@@ -518,7 +518,7 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
             avrcp_target_set_playback_status(media_tracker.avrcp_cid, AVRCP_PLAYBACK_STATUS_PLAYING);
         }
         a2dp_timer_start(&media_tracker);
-        DEBUGV("A2DP Source: Stream started, a2dp_cid 0x%02x, local_seid 0x%02x\n", cid, local_seid);
+        DEBUGV("A2DP Source: Stream started, a2dp_cid 0x%02x, local_seid 0x%02x", cid, local_seid);
         _connected = true;
         if (_connectCB) {
             _connectCB(_connectData, true);
@@ -539,7 +539,7 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         if (media_tracker.avrcp_cid) {
             avrcp_target_set_playback_status(media_tracker.avrcp_cid, AVRCP_PLAYBACK_STATUS_PAUSED);
         }
-        DEBUGV("A2DP Source: Stream paused, a2dp_cid 0x%02x, local_seid 0x%02x\n", cid, local_seid);
+        DEBUGV("A2DP Source: Stream paused, a2dp_cid 0x%02x, local_seid 0x%02x", cid, local_seid);
 
         a2dp_timer_stop(&media_tracker);
         break;
@@ -549,11 +549,11 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         cid = a2dp_subevent_stream_released_get_a2dp_cid(packet);
         local_seid = a2dp_subevent_stream_released_get_local_seid(packet);
 
-        DEBUGV("A2DP Source: Stream released, a2dp_cid 0x%02x, local_seid 0x%02x\n", cid, local_seid);
+        DEBUGV("A2DP Source: Stream released, a2dp_cid 0x%02x, local_seid 0x%02x", cid, local_seid);
 
         if (cid == media_tracker.a2dp_cid) {
             media_tracker.stream_opened = 0;
-            DEBUGV("A2DP Source: Stream released.\n");
+            DEBUGV("A2DP Source: Stream released.");
         }
         if (media_tracker.avrcp_cid) {
             avrcp_target_set_now_playing_info(media_tracker.avrcp_cid, NULL, _tracks);
@@ -566,7 +566,7 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         if (cid == media_tracker.a2dp_cid) {
             media_tracker.avrcp_cid = 0;
             media_tracker.a2dp_cid = 0;
-            DEBUGV("A2DP Source: Signaling released.\n\n");
+            DEBUGV("A2DP Source: Signaling released.");
             _connected = false;
             if (_connectCB) {
                 _connectCB(_connectData, false);
@@ -597,27 +597,27 @@ void A2DPSource::avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uin
         local_cid = avrcp_subevent_connection_established_get_avrcp_cid(packet);
         status = avrcp_subevent_connection_established_get_status(packet);
         if (status != ERROR_CODE_SUCCESS) {
-            DEBUGV("AVRCP: Connection failed, local cid 0x%02x, status 0x%02x\n", local_cid, status);
+            DEBUGV("AVRCP: Connection failed, local cid 0x%02x, status 0x%02x", local_cid, status);
             return;
         }
         media_tracker.avrcp_cid = local_cid;
         avrcp_subevent_connection_established_get_bd_addr(packet, event_addr);
 
-        DEBUGV("AVRCP: Channel to %s successfully opened, avrcp_cid 0x%02x\n", bd_addr_to_str(event_addr), media_tracker.avrcp_cid);
+        DEBUGV("AVRCP: Channel to %s successfully opened, avrcp_cid 0x%02x", bd_addr_to_str(event_addr), media_tracker.avrcp_cid);
 
         avrcp_target_support_event(media_tracker.avrcp_cid, AVRCP_NOTIFICATION_EVENT_PLAYBACK_STATUS_CHANGED);
         avrcp_target_support_event(media_tracker.avrcp_cid, AVRCP_NOTIFICATION_EVENT_TRACK_CHANGED);
         avrcp_target_support_event(media_tracker.avrcp_cid, AVRCP_NOTIFICATION_EVENT_NOW_PLAYING_CONTENT_CHANGED);
         avrcp_target_set_now_playing_info(media_tracker.avrcp_cid, NULL, _tracks);
 
-        DEBUGV("Enable Volume Change notification\n");
+        DEBUGV("Enable Volume Change notification");
         avrcp_controller_enable_notification(media_tracker.avrcp_cid, AVRCP_NOTIFICATION_EVENT_VOLUME_CHANGED);
-        DEBUGV("Enable Battery Status Change notification\n");
+        DEBUGV("Enable Battery Status Change notification");
         avrcp_controller_enable_notification(media_tracker.avrcp_cid, AVRCP_NOTIFICATION_EVENT_BATT_STATUS_CHANGED);
         return;
 
     case AVRCP_SUBEVENT_CONNECTION_RELEASED:
-        DEBUGV("AVRCP Target: Disconnected, avrcp_cid 0x%02x\n", avrcp_subevent_connection_released_get_avrcp_cid(packet));
+        DEBUGV("AVRCP Target: Disconnected, avrcp_cid 0x%02x", avrcp_subevent_connection_released_get_avrcp_cid(packet));
         media_tracker.avrcp_cid = 0;
         return;
     default:
@@ -625,7 +625,7 @@ void A2DPSource::avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uin
     }
 
     if (status != ERROR_CODE_SUCCESS) {
-        DEBUGV("Responding to event 0x%02x failed, status 0x%02x\n", packet[2], status);
+        DEBUGV("Responding to event 0x%02x failed, status 0x%02x", packet[2], status);
     }
 }
 
@@ -657,7 +657,7 @@ void A2DPSource::avrcp_target_packet_handler(uint8_t packet_type, uint16_t chann
         button_pressed = avrcp_subevent_operation_get_button_pressed(packet) > 0;
         button_state = button_pressed ? "PRESS" : "RELEASE";
         (void) button_state;
-        DEBUGV("AVRCP Target: operation %s (%s)\n", avrcp_operation2str(operation_id), button_state);
+        DEBUGV("AVRCP Target: operation %s (%s)", avrcp_operation2str(operation_id), button_state);
         if (_avrcpCB) {
             _avrcpCB(_avrcpData, operation_id, button_pressed);
         }
@@ -683,7 +683,7 @@ void A2DPSource::avrcp_target_packet_handler(uint8_t packet_type, uint16_t chann
     }
 
     if (status != ERROR_CODE_SUCCESS) {
-        DEBUGV("Responding to event 0x%02x failed, status 0x%02x\n", packet[2], status);
+        DEBUGV("Responding to event 0x%02x failed, status 0x%02x", packet[2], status);
     }
 }
 
@@ -703,20 +703,20 @@ void A2DPSource::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t c
 
     switch (packet[2]) {
     case AVRCP_SUBEVENT_NOTIFICATION_VOLUME_CHANGED:
-        DEBUGV("AVRCP Controller: Notification Absolute Volume %d %%\n", avrcp_subevent_notification_volume_changed_get_absolute_volume(packet) * 100 / 127);
+        DEBUGV("AVRCP Controller: Notification Absolute Volume %d %%", avrcp_subevent_notification_volume_changed_get_absolute_volume(packet) * 100 / 127);
         if (_volumeCB) {
             _volumeCB(_volumeData, avrcp_subevent_notification_volume_changed_get_absolute_volume(packet) * 100 / 127);
         }
         break;
     case AVRCP_SUBEVENT_NOTIFICATION_EVENT_BATT_STATUS_CHANGED:
         // see avrcp_battery_status_t
-        DEBUGV("AVRCP Controller: Notification Battery Status 0x%02x\n", avrcp_subevent_notification_event_batt_status_changed_get_battery_status(packet));
+        DEBUGV("AVRCP Controller: Notification Battery Status 0x%02x", avrcp_subevent_notification_event_batt_status_changed_get_battery_status(packet));
         if (_batteryCB) {
             _batteryCB(_batteryData, (avrcp_battery_status_t)avrcp_subevent_notification_event_batt_status_changed_get_battery_status(packet));
         }
         break;
     case AVRCP_SUBEVENT_NOTIFICATION_STATE:
-        DEBUGV("AVRCP Controller: Notification %s - %s\n",
+        DEBUGV("AVRCP Controller: Notification %s - %s",
                avrcp_event2str(avrcp_subevent_notification_state_get_event_id(packet)),
                avrcp_subevent_notification_state_get_enabled(packet) != 0 ? "enabled" : "disabled");
         break;

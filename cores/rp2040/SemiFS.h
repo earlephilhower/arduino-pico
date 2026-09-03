@@ -127,7 +127,7 @@ public:
 
     const char* name() const override {
         if (!_opened) {
-            DEBUGV("SemiFSFileImpl::name: file not opened\n");
+            DEBUGV("SemiFSFileImpl::name: file not opened");
             return nullptr;
         } else {
             const char *p = _name.get();
@@ -177,7 +177,7 @@ public:
 
     FileImplPtr open(const char* path, OpenMode openMode, AccessMode accessMode) override {
         if (!path || !path[0]) {
-            DEBUGV("SemiFSImpl::open() called with invalid filename\n");
+            DEBUGV("SemiFSImpl::open() called with invalid filename");
             return FileImplPtr();
         }
         // Mode conversion https://developer.arm.com/documentation/dui0471/m/what-is-semihosting-/sys-open--0x01-?lang=en

@@ -137,7 +137,7 @@ void BLEServer::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
         switch (hci_event_gap_meta_get_subevent_code(packet)) {
         case GAP_SUBEVENT_LE_CONNECTION_COMPLETE:
             con_handle = gap_subevent_le_connection_complete_get_connection_handle(packet);
-            DEBUGV("Connection complete %04x\n", con_handle);
+            DEBUGV("Connection complete %04x", con_handle);
             for (auto s : _svc) {
                 s->setConHandle(con_handle);
             }

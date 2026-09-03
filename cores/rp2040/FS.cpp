@@ -248,7 +248,7 @@ File Dir::openFile(const char* mode) {
     OpenMode om;
     AccessMode am;
     if (!sflags(mode, om, am)) {
-        DEBUGV("Dir::openFile: invalid mode `%s`\r\n", mode);
+        DEBUGV("Dir::openFile: invalid mode `%s`", mode);
         return File();
     }
 
@@ -343,7 +343,7 @@ bool FS::begin() {
     }
     _impl->setTimeCallback(_timeCallback);
     bool ret = _impl->begin();
-    DEBUGV("%s\n", ret ? "" : "#error: FS could not start");
+    DEBUGV("%s", ret ? "" : "#error: FS could not start");
     return ret;
 }
 
@@ -393,7 +393,7 @@ File FS::open(const char* path, const char* mode) {
     OpenMode om;
     AccessMode am;
     if (!sflags(mode, om, am)) {
-        DEBUGV("FS::open: invalid mode `%s`\r\n", mode);
+        DEBUGV("FS::open: invalid mode `%s`", mode);
         return File();
     }
     File f(_impl->open(path, om, am), this);
@@ -556,7 +556,7 @@ template<>
 bool mount<FS>(FS& fs, const char* mountPoint) {
     FSImplPtr p = fs._impl;
     if (!p || !p->mount()) {
-        DEBUGV("FSImpl mount failed\r\n");
+        DEBUGV("FSImpl mount failed");
         return false;
     }
 
@@ -578,7 +578,7 @@ File open(const char* path, const char* mode) {
     OpenMode om;
     AccessMode am;
     if (!sflags(mode, om, am)) {
-        DEBUGV("open: invalid mode `%s`\r\n", mode);
+        DEBUGV("open: invalid mode `%s`", mode);
         return File();
     }
 

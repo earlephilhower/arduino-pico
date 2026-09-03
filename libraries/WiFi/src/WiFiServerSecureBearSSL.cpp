@@ -85,17 +85,17 @@ WiFiClientSecure WiFiServerSecure::accept() {
             WiFiClientSecure result(_unclaimed, _chain, _sk, _iobuf_in_size, _iobuf_out_size, _cache, _client_CA_ta, _tls_min, _tls_max);
             _unclaimed = _unclaimed->next();
             result.setNoDelay(_noDelay);
-            DEBUGV("WS:av\r\n");
+            DEBUGV("WS:av");
             return result;
         } else if (_sk && _sk->isEC()) {
             WiFiClientSecure result(_unclaimed, _chain, _cert_issuer_key_type, _sk, _iobuf_in_size, _iobuf_out_size, _cache, _client_CA_ta, _tls_min, _tls_max);
             _unclaimed = _unclaimed->next();
             result.setNoDelay(_noDelay);
-            DEBUGV("WS:av\r\n");
+            DEBUGV("WS:av");
             return result;
         } else {
             // No key was defined, so we can't actually accept and attempt accept() and SSL handshake.
-            DEBUGV("WS:nokey\r\n");
+            DEBUGV("WS:nokey");
         }
     }
 

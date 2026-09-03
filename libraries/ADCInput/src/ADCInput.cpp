@@ -131,7 +131,7 @@ bool ADCInput::begin() {
     // For 4 inputs we need to have a multiple of 2 words, same reason.  See #2991
     // Data = [ADC0:ADC1, ADC2:ADC3] [ADC0:ADC1, ADC2:ADC3]
     if (((cnt == 3) && (_bufferWords % 3)) || ((cnt == 4) && (_bufferWords % 2))) {
-        DEBUGV("ADCInput: bufferWords needs to be a multiple of 3 for 3 inputs, 2 for 4 inputs\n");
+        DEBUGV("ADCInput: bufferWords needs to be a multiple of 3 for 3 inputs, 2 for 4 inputs");
         return false;
     }
 

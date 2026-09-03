@@ -135,7 +135,7 @@ bool PWMAudio::begin() {
 
     if (_stereo && (_pin & 1)) {
         // Illegal, need to have consecutive pins on the same PWM slice
-        DEBUGV("ERROR: PWMAudio stereo mode requires pin be even\n");
+        DEBUGV("ERROR: PWMAudio stereo mode requires pin be even");
         return false;
     }
 

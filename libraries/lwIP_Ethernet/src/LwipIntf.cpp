@@ -141,7 +141,7 @@ bool LwipIntf::hostname(const char* aHostname) {
     if (len == 0 || len > 32) {
         // nonos-sdk limit is 32
         // (dhcp hostname option minimum size is ~60)
-        //        DEBUGV("WiFi.(set)hostname(): empty or large(>32) name\n");
+        //        DEBUGV("WiFi.(set)hostname(): empty or large(>32) name");
         return false;
     }
 
@@ -156,7 +156,7 @@ bool LwipIntf::hostname(const char* aHostname) {
     }
 
     if (!compliant) {
-        //       DEBUGV("hostname '%s' is not compliant with RFC952\n", aHostname);
+        //       DEBUGV("hostname '%s' is not compliant with RFC952", aHostname);
     }
 
     bool ret = true;
@@ -174,7 +174,7 @@ bool LwipIntf::hostname(const char* aHostname) {
             // renew already started DHCP leases
             err_t lwipret = dhcp_renew(intf);
             if (lwipret != ERR_OK) {
-                //                DEBUGV("WiFi.hostname(%s): lwIP error %d on interface %c%c (index %d)\n",
+                //                DEBUGV("WiFi.hostname(%s): lwIP error %d on interface %c%c (index %d)",
                 //                       intf->hostname, (int)lwipret, intf->name[0], intf->name[1], intf->num);
                 ret = false;
             }

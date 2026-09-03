@@ -41,11 +41,11 @@ time_t (*__sdfs_timeCallback)(void) = nullptr;
 
 FileImplPtr SDFSImpl::open(const char* path, OpenMode openMode, AccessMode accessMode) {
     if (!_mounted) {
-        DEBUGV("SDFSImpl::open() called on unmounted FS\n");
+        DEBUGV("SDFSImpl::open() called on unmounted FS");
         return FileImplPtr();
     }
     if (!path || !path[0]) {
-        DEBUGV("SDFSImpl::open() called with invalid filename\n");
+        DEBUGV("SDFSImpl::open() called with invalid filename");
         return FileImplPtr();
     }
     int flags = _getFlags(openMode, accessMode);
@@ -130,7 +130,7 @@ DirImplPtr SDFSImpl::openDir(const char* path) {
         }
     }
     if (!dirFile) {
-        DEBUGV("SDFSImpl::openDir: path=`%s`\n", path);
+        DEBUGV("SDFSImpl::openDir: path=`%s`", path);
         return DirImplPtr();
     }
     auto sharedDir = std::make_shared<FsFile>(dirFile);

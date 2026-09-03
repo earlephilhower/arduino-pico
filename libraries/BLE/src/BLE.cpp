@@ -237,44 +237,44 @@ void BLEClass::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, ui
             break;
 
         case SM_EVENT_JUST_WORKS_REQUEST:
-            DEBUGBLE("Just Works requested\n");
+            DEBUGBLE("Just Works requested");
             sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
             break;
         case SM_EVENT_NUMERIC_COMPARISON_REQUEST:
-            DEBUGBLE("Confirming numeric comparison: %" PRIu32 "\n", sm_event_numeric_comparison_request_get_passkey(packet));
+            DEBUGBLE("Confirming numeric comparison: %" PRIu32 "", sm_event_numeric_comparison_request_get_passkey(packet));
             sm_numeric_comparison_confirm(sm_event_passkey_display_number_get_handle(packet));
             break;
         case SM_EVENT_PASSKEY_DISPLAY_NUMBER:
-            DEBUGBLE("Display Passkey: %" PRIu32 "\n", sm_event_passkey_display_number_get_passkey(packet));
+            DEBUGBLE("Display Passkey: %" PRIu32 "", sm_event_passkey_display_number_get_passkey(packet));
             break;
         case SM_EVENT_IDENTITY_CREATED:
             sm_event_identity_created_get_identity_address(packet, addr);
-            DEBUGBLE("Identity created: type %u address %s\n", sm_event_identity_created_get_identity_addr_type(packet), bd_addr_to_str(addr));
+            DEBUGBLE("Identity created: type %u address %s", sm_event_identity_created_get_identity_addr_type(packet), bd_addr_to_str(addr));
             break;
         case SM_EVENT_IDENTITY_RESOLVING_SUCCEEDED:
             sm_event_identity_resolving_succeeded_get_identity_address(packet, addr);
-            DEBUGBLE("Identity resolved: type %u address %s\n", sm_event_identity_resolving_succeeded_get_identity_addr_type(packet), bd_addr_to_str(addr));
+            DEBUGBLE("Identity resolved: type %u address %s", sm_event_identity_resolving_succeeded_get_identity_addr_type(packet), bd_addr_to_str(addr));
             break;
         case SM_EVENT_IDENTITY_RESOLVING_FAILED:
             sm_event_identity_created_get_address(packet, addr);
-            DEBUGBLE("Identity resolving failed\n");
+            DEBUGBLE("Identity resolving failed");
             break;
         case SM_EVENT_PAIRING_STARTED:
-            DEBUGBLE("Pairing started\n");
+            DEBUGBLE("Pairing started");
             break;
         case SM_EVENT_PAIRING_COMPLETE:
             switch (sm_event_pairing_complete_get_status(packet)) {
             case ERROR_CODE_SUCCESS:
-                DEBUGBLE("Pairing complete, success\n");
+                DEBUGBLE("Pairing complete, success");
                 break;
             case ERROR_CODE_CONNECTION_TIMEOUT:
-                DEBUGBLE("Pairing failed, timeout\n");
+                DEBUGBLE("Pairing failed, timeout");
                 break;
             case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
-                DEBUGBLE("Pairing failed, disconnected\n");
+                DEBUGBLE("Pairing failed, disconnected");
                 break;
             case ERROR_CODE_AUTHENTICATION_FAILURE:
-                DEBUGBLE("Pairing failed, authentication failure with reason = %u\n", sm_event_pairing_complete_get_reason(packet));
+                DEBUGBLE("Pairing failed, authentication failure with reason = %u", sm_event_pairing_complete_get_reason(packet));
                 break;
             default:
                 break;
@@ -381,7 +381,7 @@ void BLEClass::advertisementHandler(uint8_t *packet) {
             break;
 
         default:
-            // DEBUGV("Advertising Data Type 0x%02x not handled yet\n", data_type);
+            // DEBUGV("Advertising Data Type 0x%02x not handled yet", data_type);
             break;
         }
     }

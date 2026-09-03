@@ -197,7 +197,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
     }
 
     if ((_tx == NOPIN) && (_rx == NOPIN)) {
-        DEBUGCORE("ERROR: No pins specified for SerialPIO\n");
+        DEBUGCORE("ERROR: No pins specified for SerialPIO");
         return;
     }
 
@@ -206,7 +206,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _txPgm = _getTxProgram(_txBits);
         int off;
         if (!_txPgm->prepare(&_txPIO, &_txSM, &off, _tx, 1)) {
-            DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources\n");
+            DEBUGCORE("ERROR: Unable to allocate PIO TX UART, out of PIO resources");
             // ERROR, no free slots
             return;
         }
@@ -233,7 +233,7 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
         _rxPgm = _getRxProgram(_rxBits);
         int off;
         if (!_rxPgm->prepare(&_rxPIO, &_rxSM, &off, _rx, 1)) {
-            DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources\n");
+            DEBUGCORE("ERROR: Unable to allocate PIO RX UART, out of PIO resources");
             return;
         }
         // Stash away the created RX port for the IRQ handler

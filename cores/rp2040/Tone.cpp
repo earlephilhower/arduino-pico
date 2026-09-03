@@ -57,7 +57,7 @@ static int64_t _stopTonePIO(alarm_id_t id, void *user_data) {
 
 void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
     if (pin >= __GPIOCNT) {
-        DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
+        DEBUGCORE("ERROR: Illegal pin in tone (%d)", pin);
         return;
     }
     if (!frequency) {
@@ -79,7 +79,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         newTone->pin = pin;
         pinMode(pin, OUTPUT);
         if (!_tone2Pgm.prepare(&newTone->pio, &newTone->sm, &newTone->off, pin, 1)) {
-            DEBUGCORE("ERROR: tone unable to start, out of PIO resources\n");
+            DEBUGCORE("ERROR: tone unable to start, out of PIO resources");
             // ERROR, no free slots
             delete newTone;
             return;
@@ -108,7 +108,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
         if (ret > 0) {
             newTone->alarm = ret;
         } else {
-            DEBUGCORE("ERROR: Unable to allocate timer for tone(%d, %d, %lu)\n",
+            DEBUGCORE("ERROR: Unable to allocate timer for tone(%d, %d, %lu)",
                       pin, frequency, duration);
         }
     }
@@ -118,7 +118,7 @@ void noTone(uint8_t pin) {
     CoreMutex m(&_toneMutex);
 
     if ((pin > __GPIOCNT) || !m) {
-        DEBUGCORE("ERROR: Illegal pin in tone (%d)\n", pin);
+        DEBUGCORE("ERROR: Illegal pin in tone (%d)", pin);
         return;
     }
     auto entry = _toneMap.find(pin);

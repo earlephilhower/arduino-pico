@@ -90,7 +90,7 @@ public:
 
     bool info(FSInfo& info) override {
         if (!_mounted) {
-            DEBUGV("FatFS::info: FS not mounted\n");
+            DEBUGV("FatFS::info: FS not mounted");
             return false;
         }
         FATFS *fs = nullptr;
@@ -139,7 +139,7 @@ public:
 
     bool setConfig(const FSConfig &cfg) override {
         if ((cfg._type != FatFSConfig::FSId) || _mounted) {
-            DEBUGV("FatFS::setConfig: invalid config or already mounted\n");
+            DEBUGV("FatFS::setConfig: invalid config or already mounted");
             return false;
         }
         _cfg = *static_cast<const FatFSConfig *>(&cfg);
@@ -267,7 +267,7 @@ public:
             return FR_OK == f_lseek(_fd.get(), f_tell(_fd.get()) + pos);
         default:
             // Should not be hit, we've got an invalid seek mode
-            DEBUGV("FatFSFileImpl::seek: invalid seek mode %d\n", mode);
+            DEBUGV("FatFSFileImpl::seek: invalid seek mode %d", mode);
             assert((mode == SeekSet) || (mode == SeekEnd) || (mode == SeekCur)); // Will fail and give meaningful assert message
             return false;
         }
@@ -283,7 +283,7 @@ public:
 
     bool truncate(uint32_t size) override {
         if (!_opened) {
-            DEBUGV("FatFSFileImpl::truncate: file not opened\n");
+            DEBUGV("FatFSFileImpl::truncate: file not opened");
             return false;
         }
         if (FR_OK == f_lseek(_fd.get(), size)) {
@@ -302,7 +302,7 @@ public:
 
     const char* name() const override {
         if (!_opened) {
-            DEBUGV("FatFSFileImpl::name: file not opened\n");
+            DEBUGV("FatFSFileImpl::name: file not opened");
             return nullptr;
         } else {
             const char *p = _name.get();
@@ -391,7 +391,7 @@ public:
 
     const char* fileName() override {
         if (!_valid) {
-            DEBUGV("FatFSDirImpl::fileName: directory not valid\n");
+            DEBUGV("FatFSDirImpl::fileName: directory not valid");
             return nullptr;
         }
         return (const char*) _lfn; //_dirent.name;

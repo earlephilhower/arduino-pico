@@ -218,18 +218,18 @@ void SPISlaveClass::setData(const uint8_t *data, size_t len) {
 
 
 void SPISlaveClass::begin(SPISettings spis) {
-    DEBUGSPI("SPISlave::begin(), rx=%d, cs=%d, sck=%d, tx=%d\n", _RX, _CS, _SCK, _TX);
+    DEBUGSPI("SPISlave::begin(), rx=%d, cs=%d, sck=%d, tx=%d", _RX, _CS, _SCK, _TX);
     gpio_set_function(_RX, GPIO_FUNC_SPI);
     gpio_set_function(_CS, GPIO_FUNC_SPI);
     gpio_set_function(_SCK, GPIO_FUNC_SPI);
     gpio_set_function(_TX, GPIO_FUNC_SPI);
     if (_initted) {
-        DEBUGSPI("SPISlave: deinitting currently active SPI\n");
+        DEBUGSPI("SPISlave: deinitting currently active SPI");
         spi_deinit(_spi);
     }
-    DEBUGSPI("SPISlave: initting SPI\n");
+    DEBUGSPI("SPISlave: initting SPI");
     spi_init(_spi, _spis.getClockFreq());
-    DEBUGSPI("SPISlave: actual baudrate=%u\n", spi_get_baudrate(_spi));
+    DEBUGSPI("SPISlave: actual baudrate=%u", spi_get_baudrate(_spi));
     spi_set_slave(_spi, true);
     spi_set_format(_spi, 8, _helper.cpol(spis),	_helper.cpha(spis), SPI_MSB_FIRST);
 
@@ -247,9 +247,9 @@ void SPISlaveClass::begin(SPISettings spis) {
 }
 
 void SPISlaveClass::end() {
-    DEBUGSPI("SPISlave::end()\n");
+    DEBUGSPI("SPISlave::end()");
     if (_initted) {
-        DEBUGSPI("SPISlave: deinitting currently active SPI\n");
+        DEBUGSPI("SPISlave: deinitting currently active SPI");
         if (_spi == spi0) {
             irq_remove_handler(SPI0_IRQ, _irq0);
         } else {

@@ -113,7 +113,7 @@ bool A2DPSink::begin() {
             AVDTP_CODEC_SBC, media_sbc_codec_capabilities, sizeof(media_sbc_codec_capabilities),
             stream_endpoint->media_sbc_codec_configuration, sizeof(stream_endpoint->media_sbc_codec_configuration));
     if (!local_stream_endpoint) {
-        DEBUGV("A2DP Source: not enough memory to create local stream endpoint\n");
+        DEBUGV("A2DP Source: not enough memory to create local stream endpoint");
         return false;
     }
     // - Store stream enpoint's SEP ID, as it is used by A2DP API to identify the stream endpoint
@@ -261,7 +261,7 @@ void A2DPSink::handle_pcm_data(int16_t * data, int num_audio_frames, int num_cha
     if (frames_to_store) {
         int status = btstack_ring_buffer_write(&decoded_audio_ring_buffer, (uint8_t *)&output_buffer[frames_to_copy * NUM_CHANNELS], frames_to_store * BYTES_PER_FRAME);
         if (status) {
-            DEBUGV("Error storing samples in PCM ring buffer!!!\n");
+            DEBUGV("Error storing samples in PCM ring buffer!!!");
         }
     }
 
@@ -351,7 +351,7 @@ void A2DPSink::handle_l2cap_media_data_packet(uint8_t seid, uint8_t *packet, uin
     sbc_frame_size = packet_length / sbc_header.num_frames;
     int status = btstack_ring_buffer_write(&sbc_frame_ring_buffer, packet_begin, packet_length);
     if (status != ERROR_CODE_SUCCESS) {
-        DEBUGV("Error storing samples in SBC ring buffer!!!\n");
+        DEBUGV("Error storing samples in SBC ring buffer!!!");
     }
 
     // decide on audio sync drift based on number of sbc frames in queue
@@ -384,7 +384,7 @@ int A2DPSink::read_sbc_header(uint8_t * packet, int size, int * offset, avdtp_sb
     int pos = *offset;
 
     if (size - pos < sbc_header_len) {
-        DEBUGV("Not enough data to read SBC header, expected %d, received %d\n", sbc_header_len, size - pos);
+        DEBUGV("Not enough data to read SBC header, expected %d, received %d", sbc_header_len, size - pos);
         return 0;
     }
 
@@ -402,7 +402,7 @@ int A2DPSink::read_media_data_header(uint8_t *packet, int size, int *offset, avd
     int pos = *offset;
 
     if (size - pos < media_header_len) {
-        DEBUGV("Not enough data to read media packet header, expected %d, received %d\n", media_header_len, size - pos);
+        DEBUGV("Not enough data to read media packet header, expected %d, received %d", media_header_len, size - pos);
         return 0;
     }
 
@@ -448,14 +448,14 @@ void A2DPSink::avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uint8
         local_cid = avrcp_subevent_connection_established_get_avrcp_cid(packet);
         status = avrcp_subevent_connection_established_get_status(packet);
         if (status != ERROR_CODE_SUCCESS) {
-            DEBUGV("AVRCP: Connection failed, status 0x%02x\n", status);
+            DEBUGV("AVRCP: Connection failed, status 0x%02x", status);
             connection->avrcp_cid = 0;
             return;
         }
 
         connection->avrcp_cid = local_cid;
         avrcp_subevent_connection_established_get_bd_addr(packet, address);
-        DEBUGV("AVRCP: Connected to %s, cid 0x%02x\n", bd_addr_to_str(address), connection->avrcp_cid);
+        DEBUGV("AVRCP: Connected to %s, cid 0x%02x", bd_addr_to_str(address), connection->avrcp_cid);
 
         avrcp_target_support_event(connection->avrcp_cid, AVRCP_NOTIFICATION_EVENT_VOLUME_CHANGED);
         avrcp_target_support_event(connection->avrcp_cid, AVRCP_NOTIFICATION_EVENT_BATT_STATUS_CHANGED);
@@ -467,7 +467,7 @@ void A2DPSink::avrcp_packet_handler(uint8_t packet_type, uint16_t channel, uint8
     }
 
     case AVRCP_SUBEVENT_CONNECTION_RELEASED:
-        DEBUGV("AVRCP: Channel released: cid 0x%02x\n", avrcp_subevent_connection_released_get_avrcp_cid(packet));
+        DEBUGV("AVRCP: Channel released: cid 0x%02x", avrcp_subevent_connection_released_get_avrcp_cid(packet));
         connection->avrcp_cid = 0;
         connection->notifications_supported_by_target = 0;
         return;
@@ -504,13 +504,13 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
         break;
     case AVRCP_SUBEVENT_GET_CAPABILITY_EVENT_ID_DONE:
 
-        DEBUGV("AVRCP Controller: supported notifications by target:\n");
+        DEBUGV("AVRCP Controller: supported notifications by target:");
         for (event_id = (uint8_t) AVRCP_NOTIFICATION_EVENT_FIRST_INDEX; event_id < (uint8_t) AVRCP_NOTIFICATION_EVENT_LAST_INDEX; event_id++) {
-            DEBUGV("   - [%s] %s\n",
+            DEBUGV("   - [%s] %s",
                    (avrcp_connection->notifications_supported_by_target & (1 << event_id)) != 0 ? "X" : " ",
                    avrcp_notification2str((avrcp_notification_event_id_t)event_id));
         }
-        DEBUGV("\n\n");
+        DEBUGV("");
 
         // automatically enable notifications
         avrcp_controller_enable_notification(avrcp_connection->avrcp_cid, AVRCP_NOTIFICATION_EVENT_PLAYBACK_STATUS_CHANGED);
@@ -520,14 +520,14 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
 
     case AVRCP_SUBEVENT_NOTIFICATION_STATE:
         event_id = (avrcp_notification_event_id_t)avrcp_subevent_notification_state_get_event_id(packet);
-        DEBUGV("AVRCP Controller: %s notification registered\n", avrcp_notification2str((avrcp_notification_event_id_t)event_id));
+        DEBUGV("AVRCP Controller: %s notification registered", avrcp_notification2str((avrcp_notification_event_id_t)event_id));
         break;
 
     case AVRCP_SUBEVENT_NOTIFICATION_PLAYBACK_POS_CHANGED:
-        DEBUGV("AVRCP Controller: Playback position changed, position %d ms\n", (unsigned int) avrcp_subevent_notification_playback_pos_changed_get_playback_position_ms(packet));
+        DEBUGV("AVRCP Controller: Playback position changed, position %d ms", (unsigned int) avrcp_subevent_notification_playback_pos_changed_get_playback_position_ms(packet));
         break;
     case AVRCP_SUBEVENT_NOTIFICATION_PLAYBACK_STATUS_CHANGED:
-        DEBUGV("AVRCP Controller: Playback status changed %s\n", avrcp_play_status2str(avrcp_subevent_notification_playback_status_changed_get_play_status(packet)));
+        DEBUGV("AVRCP Controller: Playback status changed %s", avrcp_play_status2str(avrcp_subevent_notification_playback_status_changed_get_play_status(packet)));
         play_status = avrcp_subevent_notification_playback_status_changed_get_play_status(packet);
         switch (play_status) {
         case AVRCP_PLAYBACK_STATUS_PLAYING:
@@ -555,7 +555,7 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
         break;
 
     case AVRCP_SUBEVENT_NOTIFICATION_NOW_PLAYING_CONTENT_CHANGED:
-        DEBUGV("AVRCP Controller: Playing content changed\n");
+        DEBUGV("AVRCP Controller: Playing content changed");
         break;
 
     case AVRCP_SUBEVENT_NOTIFICATION_TRACK_CHANGED:
@@ -567,11 +567,11 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
         if (_trackChangedCB) {
             _trackChangedCB(_trackChangedData);
         }
-        DEBUGV("AVRCP Controller: Track changed\n");
+        DEBUGV("AVRCP Controller: Track changed");
         break;
 
     case AVRCP_SUBEVENT_NOTIFICATION_AVAILABLE_PLAYERS_CHANGED:
-        DEBUGV("AVRCP Controller: Available Players Changed\n");
+        DEBUGV("AVRCP Controller: Available Players Changed");
         break;
 
     case AVRCP_SUBEVENT_SHUFFLE_AND_REPEAT_MODE: {
@@ -579,15 +579,15 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
         uint8_t repeat_mode  = avrcp_subevent_shuffle_and_repeat_mode_get_repeat_mode(packet);
         (void) shuffle_mode;
         (void) repeat_mode;
-        DEBUGV("AVRCP Controller: %s, %s\n", avrcp_shuffle2str(shuffle_mode), avrcp_repeat2str(repeat_mode));
+        DEBUGV("AVRCP Controller: %s, %s", avrcp_shuffle2str(shuffle_mode), avrcp_repeat2str(repeat_mode));
         break;
     }
     case AVRCP_SUBEVENT_NOW_PLAYING_TRACK_INFO:
-        DEBUGV("AVRCP Controller: Track %d\n", avrcp_subevent_now_playing_track_info_get_track(packet));
+        DEBUGV("AVRCP Controller: Track %d", avrcp_subevent_now_playing_track_info_get_track(packet));
         break;
 
     case AVRCP_SUBEVENT_NOW_PLAYING_TOTAL_TRACKS_INFO:
-        DEBUGV("AVRCP Controller: Total Tracks %d\n", avrcp_subevent_now_playing_total_tracks_info_get_total_tracks(packet));
+        DEBUGV("AVRCP Controller: Total Tracks %d", avrcp_subevent_now_playing_total_tracks_info_get_total_tracks(packet));
         break;
 
     case AVRCP_SUBEVENT_NOW_PLAYING_TITLE_INFO:
@@ -595,7 +595,7 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_title_info_get_value(packet), avrcp_subevent_now_playing_title_info_get_value_len(packet));
             strncpy(_title, (char *)avrcp_subevent_value, sizeof(_title));
             _title[sizeof(_title) - 1] = 0;
-            DEBUGV("AVRCP Controller: Title %s\n", avrcp_subevent_value);
+            DEBUGV("AVRCP Controller: Title %s", avrcp_subevent_value);
         }
         break;
 
@@ -604,7 +604,7 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_artist_info_get_value(packet), avrcp_subevent_now_playing_artist_info_get_value_len(packet));
             strncpy(_artist, (char *)avrcp_subevent_value, sizeof(_artist));
             _artist[sizeof(_artist) - 1] = 0;
-            DEBUGV("AVRCP Controller: Artist %s\n", avrcp_subevent_value);
+            DEBUGV("AVRCP Controller: Artist %s", avrcp_subevent_value);
         }
         break;
 
@@ -613,7 +613,7 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_album_info_get_value(packet), avrcp_subevent_now_playing_album_info_get_value_len(packet));
             strncpy(_album, (char *)avrcp_subevent_value, sizeof(_album));
             _album[sizeof(_album) - 1] = 0;
-            DEBUGV("AVRCP Controller: Album %s\n", avrcp_subevent_value);
+            DEBUGV("AVRCP Controller: Album %s", avrcp_subevent_value);
         }
         break;
 
@@ -622,31 +622,31 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
             memcpy(avrcp_subevent_value, avrcp_subevent_now_playing_genre_info_get_value(packet), avrcp_subevent_now_playing_genre_info_get_value_len(packet));
             strncpy(_genre, (char *)avrcp_subevent_value, sizeof(_genre));
             _genre[sizeof(_genre) - 1] = 0;
-            DEBUGV("AVRCP Controller: Genre %s\n", avrcp_subevent_value);
+            DEBUGV("AVRCP Controller: Genre %s", avrcp_subevent_value);
         }
         break;
 
     case AVRCP_SUBEVENT_PLAY_STATUS:
-        DEBUGV("AVRCP Controller: Song length %" PRIu32 " ms, Song position %" PRIu32 " ms, Play status %s\n",
+        DEBUGV("AVRCP Controller: Song length %" PRIu32 " ms, Song position %" PRIu32 " ms, Play status %s",
                avrcp_subevent_play_status_get_song_length(packet),
                avrcp_subevent_play_status_get_song_position(packet),
                avrcp_play_status2str(avrcp_subevent_play_status_get_play_status(packet)));
         break;
 
     case AVRCP_SUBEVENT_OPERATION_COMPLETE:
-        DEBUGV("AVRCP Controller: %s complete\n", avrcp_operation2str(avrcp_subevent_operation_complete_get_operation_id(packet)));
+        DEBUGV("AVRCP Controller: %s complete", avrcp_operation2str(avrcp_subevent_operation_complete_get_operation_id(packet)));
         break;
 
     case AVRCP_SUBEVENT_OPERATION_START:
-        DEBUGV("AVRCP Controller: %s start\n", avrcp_operation2str(avrcp_subevent_operation_start_get_operation_id(packet)));
+        DEBUGV("AVRCP Controller: %s start", avrcp_operation2str(avrcp_subevent_operation_start_get_operation_id(packet)));
         break;
 
     case AVRCP_SUBEVENT_NOTIFICATION_EVENT_TRACK_REACHED_END:
-        DEBUGV("AVRCP Controller: Track reached end\n");
+        DEBUGV("AVRCP Controller: Track reached end");
         break;
 
     case AVRCP_SUBEVENT_PLAYER_APPLICATION_VALUE_RESPONSE:
-        DEBUGV("AVRCP Controller: Set Player App Value %s\n", avrcp_ctype2str(avrcp_subevent_player_application_value_response_get_command_type(packet)));
+        DEBUGV("AVRCP Controller: Set Player App Value %s", avrcp_ctype2str(avrcp_subevent_player_application_value_response_get_command_type(packet)));
         break;
 
     default:
@@ -674,7 +674,7 @@ void A2DPSink::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel
     case AVRCP_SUBEVENT_NOTIFICATION_VOLUME_CHANGED:
         volume = avrcp_subevent_notification_volume_changed_get_absolute_volume(packet);
         volume_percentage = volume * 100 / 127;
-        DEBUGV("AVRCP Target    : Volume set to %d%% (%d)\n", volume_percentage, volume);
+        DEBUGV("AVRCP Target    : Volume set to %d%% (%d)", volume_percentage, volume);
         _consumer->setVolume(volume);
         if (_volumeCB) {
             _volumeCB(_volumeData, volume);
@@ -684,23 +684,23 @@ void A2DPSink::avrcp_target_packet_handler(uint8_t packet_type, uint16_t channel
     case AVRCP_SUBEVENT_OPERATION:
         operation_id = (avrcp_operation_id_t)avrcp_subevent_operation_get_operation_id(packet);
         button_state = avrcp_subevent_operation_get_button_pressed(packet) > 0 ? "PRESS" : "RELEASE";
-        DEBUGV("AVRCP Target: operation %s (%s)\n", avrcp_operation2str(operation_id), button_state);
+        DEBUGV("AVRCP Target: operation %s (%s)", avrcp_operation2str(operation_id), button_state);
         if (_avrcpCB) {
             _avrcpCB(_avrcpData, operation_id, avrcp_subevent_operation_get_button_pressed(packet) > 0);
         }
         switch (operation_id) {
         case AVRCP_OPERATION_ID_VOLUME_UP:
-            DEBUGV("AVRCP Target    : VOLUME UP (%s)\n", button_state);
+            DEBUGV("AVRCP Target    : VOLUME UP (%s)", button_state);
             break;
         case AVRCP_OPERATION_ID_VOLUME_DOWN:
-            DEBUGV("AVRCP Target    : VOLUME DOWN (%s)\n", button_state);
+            DEBUGV("AVRCP Target    : VOLUME DOWN (%s)", button_state);
             break;
         default:
             return;
         }
         break;
     default:
-        DEBUGV("AVRCP Target    : Event 0x%02x is not parsed\n", packet[2]);
+        DEBUGV("AVRCP Target    : Event 0x%02x is not parsed", packet[2]);
         break;
     }
 }
@@ -723,10 +723,10 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
 
     switch (packet[2]) {
     case A2DP_SUBEVENT_SIGNALING_MEDIA_CODEC_OTHER_CONFIGURATION:
-        DEBUGV("A2DP  Sink      : Received non SBC codec - not implemented\n");
+        DEBUGV("A2DP  Sink      : Received non SBC codec - not implemented");
         break;
     case A2DP_SUBEVENT_SIGNALING_MEDIA_CODEC_SBC_CONFIGURATION: {
-        DEBUGV("A2DP  Sink      : Received SBC codec configuration\n");
+        DEBUGV("A2DP  Sink      : Received SBC codec configuration");
         a2dp_conn->sbc_configuration.reconfigure = a2dp_subevent_signaling_media_codec_sbc_configuration_get_reconfigure(packet);
         a2dp_conn->sbc_configuration.num_channels = a2dp_subevent_signaling_media_codec_sbc_configuration_get_num_channels(packet);
         a2dp_conn->sbc_configuration.sampling_frequency = a2dp_subevent_signaling_media_codec_sbc_configuration_get_sampling_frequency(packet);
@@ -764,7 +764,7 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
     case A2DP_SUBEVENT_STREAM_ESTABLISHED:
         status = a2dp_subevent_stream_established_get_status(packet);
         if (status != ERROR_CODE_SUCCESS) {
-            DEBUGV("A2DP  Sink      : Streaming connection failed, status 0x%02x\n", status);
+            DEBUGV("A2DP  Sink      : Streaming connection failed, status 0x%02x", status);
             break;
         }
 
@@ -773,7 +773,7 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
         a2dp_conn->a2dp_local_seid = a2dp_subevent_stream_established_get_local_seid(packet);
         a2dp_conn->stream_state = STREAM_STATE_OPEN;
 
-        DEBUGV("A2DP  Sink      : Streaming connection is established, address %s, cid 0x%02x, local seid %d\n",
+        DEBUGV("A2DP  Sink      : Streaming connection is established, address %s, cid 0x%02x, local seid %d",
                bd_addr_to_str(a2dp_conn->addr), a2dp_conn->a2dp_cid, a2dp_conn->a2dp_local_seid);
         memcpy(_sourceAddress, a2dp_conn->addr, sizeof(_sourceAddress));
 
@@ -784,7 +784,7 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
         break;
 
     case A2DP_SUBEVENT_STREAM_STARTED:
-        DEBUGV("A2DP  Sink      : Stream started\n");
+        DEBUGV("A2DP  Sink      : Stream started");
         a2dp_conn->stream_state = STREAM_STATE_PLAYING;
         if (a2dp_conn->sbc_configuration.reconfigure) {
             media_processing_close();
@@ -795,19 +795,19 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
         break;
 
     case A2DP_SUBEVENT_STREAM_SUSPENDED:
-        DEBUGV("A2DP  Sink      : Stream paused\n");
+        DEBUGV("A2DP  Sink      : Stream paused");
         a2dp_conn->stream_state = STREAM_STATE_PAUSED;
         media_processing_pause();
         break;
 
     case A2DP_SUBEVENT_STREAM_RELEASED:
-        DEBUGV("A2DP  Sink      : Stream released\n");
+        DEBUGV("A2DP  Sink      : Stream released");
         a2dp_conn->stream_state = STREAM_STATE_CLOSED;
         media_processing_close();
         break;
 
     case A2DP_SUBEVENT_SIGNALING_CONNECTION_RELEASED:
-        DEBUGV("A2DP  Sink      : Signaling connection released\n");
+        DEBUGV("A2DP  Sink      : Signaling connection released");
         a2dp_conn->a2dp_cid = 0;
         media_processing_close();
         _connected = false;
