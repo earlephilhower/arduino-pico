@@ -1056,7 +1056,10 @@ bool HTTPClient::sendHeader(const char * type) {
     header += _headers;
     header += "\r\n";
 
-    DEBUG_HTTPCLIENT("[HTTP-Client] sending request header\n-----\n%s-----", header.c_str());
+    DEBUG_HTTPCLIENT("[HTTP-Client] sending request header");
+    DEBUG_HTTPCLIENT("-----");
+    DEBUG_HTTPCLIENT("%s", header.c_str());
+    DEBUG_HTTPCLIENT("-----");
 
     // transfer all of it, with timeout
     return StreamConstPtr(header).sendAll(_client()) == header.length();
