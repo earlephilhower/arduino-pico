@@ -272,8 +272,13 @@ def get_drives():
             rpidisk = glob.glob(globexpr)
             if len(rpidisk) > 0:
                 try:
-                    cmd = ["udisksctl", "mount", "--block-device", os.path.realpath(rpidisk[0])]
-                    proc_out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    # this runs deep in the Arduino build framework; use
+                    # --no-user-interaction to avoid getting stuck at a prompt
+                    cmd = ["udisksctl", "mount", "--no-user-interaction",
+                           "--block-device", os.path.realpath(rpidisk[0])]
+                    proc_out = subprocess.run(cmd, stdin=subprocess.DEVNULL,
+                                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                              timeout=30)
                     if proc_out.returncode == 0:
                         stdoutput = proc_out.stdout.decode("UTF-8")
                         match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
