@@ -305,6 +305,8 @@ def get_drives():
             possibly_any("/var/run/media", drives, u)
             # Add from udisksctl info?
             # Add from /proc/mounts?
+            # avoid uploading twice due to symlinks (eg. /var/run => /run)
+            drives = list(set(os.path.realpath(d) for d in drives))
 
     def has_info(d):
         try:
