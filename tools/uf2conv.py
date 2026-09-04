@@ -433,9 +433,10 @@ def main():
             sys.stdout.flush()
             write_file(d + "/NEW.UF2", outbuf)
 
-        # Wait until serial port (if defined) re-appears, or 2s timeout unless UF2 drive direct upload
+        # Wait until serial port (if defined) re-appears, or 2s timeout.
+        # Skip the special value "UF2_Board" (see pluggable_discovery.py).
         try:
-            if args.serial != "UF2 Board":
+            if args.serial and args.serial != "UF2_Board":
                 timeout = time.time() + 2.0
                 while time.time() < timeout:
                     if os.access(args.serial, os.W_OK):
