@@ -202,6 +202,10 @@ def BuildUploadMethodMenu(name, ram):
         print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
         if a == "picotool":
             print("%s.menu.uploadmethod.%s.build.picodebugflags=-DENABLE_PICOTOOL_USB" % (name, a))
+        if a != "default":
+            # No serial port is involved in these upload methods (picotool/openocd find
+            # the device themselves), so don't make arduino-cli wait for one to reappear.
+            print("%s.menu.uploadmethod.%s.upload.wait_for_upload_port=false" % (name, a))
         print("%s.menu.uploadmethod.%s.upload.maximum_data_size=%d" % (name, a, c * 1024))
         print("%s.menu.uploadmethod.%s.upload.tool=%s" % (name, a, e))
         print("%s.menu.uploadmethod.%s.upload.tool.default=%s" % (name, a, e))
