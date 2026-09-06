@@ -40164,7 +40164,7 @@ waveshare_rp2350_core.upload_port.7.vid=0x2e8a
 waveshare_rp2350_core.upload_port.7.pid=0xd1b2
 waveshare_rp2350_core.build.usbvid=-DUSBD_VID=0x2e8a
 waveshare_rp2350_core.build.usbpid=-DUSBD_PID=0x10b2
-waveshare_rp2350_core.build.usbpwr=-DUSBD_MAX_POWER_MA=800
+waveshare_rp2350_core.build.usbpwr=-DUSBD_MAX_POWER_MA=500
 waveshare_rp2350_core.build.board=WAVESHARE_RP2350_CORE
 waveshare_rp2350_core.build.variant=waveshare_rp2350_core
 waveshare_rp2350_core.upload.maximum_size=16777216
