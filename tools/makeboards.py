@@ -770,6 +770,7 @@ MakeBoard("waveshare_rp2350_pizero", "rp2350", "Waveshare", "RP2350 PiZero", "0x
 MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a", "0x10B1", 500, "WAVESHARE_RP2350_PLUS", 4, 0, "none")
 MakeBoard("waveshare_rp2350b_plus_w", "rp2350", "Waveshare", "RP2350B Plus W", "0x2e8a", "0xf00a", 500, "WAVESHARE_RP2350B_PLUS_W", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
+MakeBoard("waveshare_rp2350_poe_eth", "rp2350", "Waveshare", "RP2350-POE-ETH", "0x2e8a", "0x10B8", 500, "WAVESHARE_RP2350_POE_ETH", 16, 0, "none")
 
 # WeAct
 MakeBoard("weact_rp2350b", "rp2350", "WeAct", "Studio RP2350B Core Board", "0x2e8a", "0x000f", 250, "WEACT_RP2350B", 16, 0, "none")
