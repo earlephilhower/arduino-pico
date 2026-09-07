@@ -423,6 +423,9 @@
                      "name": "Waveshare RP2040 LCD 1.28"
                   },
                   {
+                     "name": "Waveshare RP2350 Core"
+                  },
+                  {
                      "name": "Waveshare RP2350 Zero"
                   },
                   {
