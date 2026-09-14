@@ -91,6 +91,23 @@ bool MDNSResponder::_restart(void) {
             (_allocUDPContext()));                    // Restart UDP
 }
 
+/*
+    MDNSResponder::_drainDeferredRx
+
+    Ends a user call: packets that arrived while it ran are parsed here, on the user thread.
+    Repeats if one was deferred after the last next() but before the flag was cleared.
+*/
+void MDNSResponder::_drainDeferredRx(void) {
+    do {
+        m_bUserCallActive = true;
+        m_bRxDeferred     = false;
+        while ((m_pUDPContext) && (m_pUDPContext->next())) {
+            _parseMessage();
+        }
+        m_bUserCallActive = false;
+    } while (m_bRxDeferred);
+}
+
 /**
     RECEIVING
 */

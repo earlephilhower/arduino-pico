@@ -137,6 +137,10 @@ bool MDNSResponder::_callProcess(void) {
         DEBUG_OUTPUT.printf("[MDNSResponder] _callProcess (%lu, triggered by: %s)\n", millis(),
                             IPAddress(m_pUDPContext->getRemoteAddress()).toString().c_str()););
 
+    if (m_bUserCallActive) {
+        m_bRxDeferred = true;  // drained by the active user call
+        return true;
+    }
     return _process(false);
 }
 
