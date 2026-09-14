@@ -181,6 +181,8 @@ typedef enum {
 #if defined(PICO_CYW43_SUPPORTED)
     __cyw43_wifi_join = 9500,
     __cyw43_wifi_leave,
+    __cyw43_ioctl,
+    __cyw43_wifi_update_multicast_filter,
 #endif
 
     __callback = 10000,
@@ -269,6 +271,8 @@ extern void __real_netif_set_default(struct netif *netif);
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
+extern int __real_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface);
+extern int __real_cyw43_wifi_update_multicast_filter(cyw43_t *self, uint8_t *addr, bool add);
 
 
 typedef struct {
@@ -730,6 +734,22 @@ typedef struct {
     int itf;
     int *ret;
 } __cyw43_wifi_leave_req;
+
+typedef struct {
+    cyw43_t *self;
+    uint32_t cmd;
+    size_t len;
+    uint8_t *buf;
+    uint32_t iface;
+    int *ret;
+} __cyw43_ioctl_req;
+
+typedef struct {
+    cyw43_t *self;
+    uint8_t *addr;
+    bool add;
+    int *ret;
+} __cyw43_wifi_update_multicast_filter_req;
 #endif
 
 // Run a callback in the LWIP thread (i.e. for Ethernet device polling and packet reception)
