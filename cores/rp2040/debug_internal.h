@@ -45,7 +45,16 @@
 #else
 #define DEBUGSPI(...) do { } while(0)
 #endif
+
+#if defined (DEBUG_RP2040_BLUETOOTH)
+#define DEBUGBT(fmt, ...) do { DEBUG_RP2040_PORT.printf(fmt "\r\n", ## __VA_ARGS__); DEBUG_RP2040_PORT.flush(); } while (0)
+#else
+#define DEBUGBT(...) do { } while(0)
 #endif
+
+#endif
+
+
 
 #ifdef __cplusplus
 extern void hexdump(const void* mem, uint32_t len, uint8_t cols = 16);
