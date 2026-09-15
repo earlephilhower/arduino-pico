@@ -28,6 +28,12 @@
   (CCALLBACKNAME<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__>::func = std::bind(&class::cbFcn, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4), \
    static_cast<btstack_packet_handler_t>(CCALLBACKNAME<void(uint8_t, uint16_t, uint8_t*, uint16_t), __COUNTER__ - 1>::callback))
 
+#if defined (DEBUG_RP2040_BLUETOOTH) && defined (DEBUG_RP2040_PORT)
+#define BTDEBUG(fmt, ...) do { DEBUG_RP2040_PORT.printf( "SERIALBT: " fmt "\r\n", ## __VA_ARGS__); DEBUG_RP2040_PORT.flush(); } while (0)
+#else
+#define BTDEBUG(...)      do { } while(0)
+#endif
+
 
 bool SerialBT_::setFIFOSize(size_t size) {
     if (!size || _running) {
@@ -70,15 +76,16 @@ void SerialBT_::begin(unsigned long baud, uint16_t config) {
     // init SDP, create record for SPP and register with SDP
     sdp_init();
     bzero(_spp_service_buffer, sizeof(_spp_service_buffer));
-    spp_create_sdp_record(_spp_service_buffer, 0x10001, RFCOMM_SERVER_CHANNEL, "PicoW Serial");
+    spp_create_sdp_record(_spp_service_buffer, sdp_create_service_record_handle(), RFCOMM_SERVER_CHANNEL, "PicoW Serial");
     sdp_register_service(_spp_service_buffer);
 
     gap_discoverable_control(1);
-    gap_ssp_set_io_capability(SSP_IO_CAPABILITY_DISPLAY_YES_NO);
+    gap_ssp_set_io_capability(SSP_IO_CAPABILITY_NO_INPUT_NO_OUTPUT);
     if (!_name) {
         setName("PicoW Serial 00:00:00:00:00:00");
     }
     gap_set_local_name(_name);
+    gap_ssp_set_auto_accept(true);
 
     // Turn on!
     hci_power_control(HCI_POWER_ON);
@@ -185,40 +192,30 @@ SerialBT_::operator bool() {
 void SerialBT_::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(channel);
     bd_addr_t event_addr;
-    //uint8_t   rfcomm_channel_nr;
-    //uint16_t  mtu;
+    uint8_t   rfcomm_channel_nr;
+    (void) rfcomm_channel_nr; // Only used in debug mode
+    uint16_t  mtu;
+    (void) mtu; // Only used in debug mode
     int i;
 
     switch (type) {
     case HCI_EVENT_PACKET:
         switch (hci_event_packet_get_type(packet)) {
-        case HCI_EVENT_PIN_CODE_REQUEST:
-            //Serial.printf("Pin code request - using '0000'\n");
-            hci_event_pin_code_request_get_bd_addr(packet, event_addr);
-            gap_pin_code_response(event_addr, "0000");
-            break;
-
-        case HCI_EVENT_USER_CONFIRMATION_REQUEST:
-            // ssp: inform about user confirmation request
-            //Serial.printf("SSP User Confirmation Request with numeric value '%06" PRIu32 "'\n", little_endian_read_32(packet, 8));
-            //Serial.printf("SSP User Confirmation Auto accept\n");
-            break;
-
         case RFCOMM_EVENT_INCOMING_CONNECTION:
             rfcomm_event_incoming_connection_get_bd_addr(packet, event_addr);
-            //rfcomm_channel_nr = rfcomm_event_incoming_connection_get_server_channel(packet);
+            rfcomm_channel_nr = rfcomm_event_incoming_connection_get_server_channel(packet);
             _channelID = rfcomm_event_incoming_connection_get_rfcomm_cid(packet);
-            //Serial.printf("RFCOMM channel %u requested for %s\n", rfcomm_channel_nr, bd_addr_to_str(event_addr));
+            BTDEBUG("RFCOMM channel %u requested for %s", rfcomm_channel_nr, bd_addr_to_str(event_addr));
             rfcomm_accept_connection(_channelID);
             break;
 
         case RFCOMM_EVENT_CHANNEL_OPENED:
             if (rfcomm_event_channel_opened_get_status(packet)) {
-                //Serial.printf("RFCOMM channel open failed, status 0x%02x\n", rfcomm_event_channel_opened_get_status(packet));
+                BTDEBUG("RFCOMM channel open failed, status 0x%02x", rfcomm_event_channel_opened_get_status(packet));
             } else {
                 _channelID = rfcomm_event_channel_opened_get_rfcomm_cid(packet);
-                //mtu = rfcomm_event_channel_opened_get_max_frame_size(packet);
-                //Serial.printf("RFCOMM channel open succeeded. New RFCOMM Channel ID %u, max frame size %u\n", rfcomm_channel_id, mtu);
+                mtu = rfcomm_event_channel_opened_get_max_frame_size(packet);
+                BTDEBUG("RFCOMM channel open succeeded. New RFCOMM Channel ID %u, max frame size %u", _channelID, mtu);
                 _connected = true;
             }
             break;
@@ -227,7 +224,7 @@ void SerialBT_::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
             _writeLen = 0;
             break;
         case RFCOMM_EVENT_CHANNEL_CLOSED:
-            //Serial.printf("RFCOMM channel closed\n");
+            BTDEBUG("RFCOMM channel closed");
             _channelID = 0;
             _connected = false;
             break;

@@ -129,7 +129,7 @@ bool A2DPSource::begin() {
 
     // Create A2DP Source service record and register it with SDP
     memset(sdp_a2dp_source_service_buffer, 0, sizeof(sdp_a2dp_source_service_buffer));
-    a2dp_source_create_sdp_record(sdp_a2dp_source_service_buffer, 0x10001, AVDTP_SOURCE_FEATURE_MASK_PLAYER, NULL, NULL);
+    a2dp_source_create_sdp_record(sdp_a2dp_source_service_buffer, sdp_create_service_record_handle(), AVDTP_SOURCE_FEATURE_MASK_PLAYER, NULL, NULL);
     sdp_register_service(sdp_a2dp_source_service_buffer);
 
     // Create AVRCP Target service record and register it with SDP. We receive Category 1 commands from the headphone, e.g. play/pause
@@ -159,6 +159,7 @@ bool A2DPSource::begin() {
         setName("PicoW A2DP 00:00:00:00:00:00");
     }
     gap_set_local_name(_name);
+    gap_ssp_set_auto_accept(true);
     gap_discoverable_control(1);
     gap_set_class_of_device(0x200408);
 

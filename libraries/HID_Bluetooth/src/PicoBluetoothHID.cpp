@@ -42,6 +42,9 @@ bool PicoBluetoothHID_::startHID(const char *localName, const char *hidName, uin
     gap_set_default_link_policy_settings(LM_LINK_POLICY_ENABLE_ROLE_SWITCH | LM_LINK_POLICY_ENABLE_SNIFF_MODE);
     // Allow for role switch on outgoing connections - this allow HID Host to become master when we re-connect to it
     gap_set_allow_role_switch(true);
+    // Automatically pair
+    gap_ssp_set_auto_accept(true);
+
 
     // L2CAP
     l2cap_init();
@@ -75,7 +78,7 @@ bool PicoBluetoothHID_::startHID(const char *localName, const char *hidName, uin
         hidName
     };
 
-    hid_create_sdp_record(_hid_service_buffer, 0x10001, &hid_params);
+    hid_create_sdp_record(_hid_service_buffer, sdp_create_service_record_handle(), &hid_params);
     sdp_register_service(_hid_service_buffer);
 
     // See https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers if you don't have a USB Vendor ID and need a Bluetooth Vendor ID
