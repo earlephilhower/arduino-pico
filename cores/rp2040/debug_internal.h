@@ -25,6 +25,7 @@
 #define DEBUGCORE(...) do { } while(0)
 #define DEBUGWIRE(...) do { } while(0)
 #define DEBUGSPI(...) do { } while(0)
+#define DEBUGBT(...) do { } while(0)
 #else
 #define DEBUGV(fmt, ...) do { DEBUG_RP2040_PORT.printf(fmt "\r\n", ## __VA_ARGS__); DEBUG_RP2040_PORT.flush(); } while (0)
 
