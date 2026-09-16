@@ -166,6 +166,9 @@ bool A2DPSink::begin() {
     }
     gap_set_local_name(_name);
 
+    // Allow all connections
+    gap_ssp_set_auto_accept(true);
+
     // - Allow to show up in Bluetooth inquiry
     gap_discoverable_control(1);
 
