@@ -26,6 +26,7 @@
 #include <tusb.h>
 #include "CoreMutex.h"
 #include "USB.h"
+#include <hardware/watchdog.h>
 
 
 // SerialEvent functions are weak, so when the user doesn't define them,
@@ -211,6 +212,23 @@ void SerialUSB::checkSerialReset() {
         unreset_block(RESETS_RESET_USBCTRL_BITS);
         // Delay a bit, so the PC can figure out that we have disconnected.
         busy_wait_ms(3);
+        // "WDT will fire here" is only true if something armed a watchdog, and a
+        // sketch that never calls rp2040.wdt_begin() has not. That is survivable on
+        // RP2040, where reset_usb_boot() is the ROM entry point and does not come
+        // back, but on RP2350 the SDK maps it to
+        //   rom_reboot(REBOOT2_FLAG_REBOOT_TYPE_BOOTSEL |
+        //              REBOOT2_FLAG_NO_RETURN_ON_SUCCESS, 10, ...)
+        // whose result is discarded because the wrapper is declared noreturn. When
+        // that reboot does not take, USB has already been torn down above and the
+        // loop below is permanent: the board stays enumerated, is mute at every
+        // baud, answers no control transfer (so the host sees ETIMEDOUT on the very
+        // SET_CONTROL_LINE_STATE that got us here), and only the RESET button
+        // recovers it.
+        //
+        // Arming the watchdog first makes the comment true in every case. It costs
+        // nothing on the working path: a successful reset_usb_boot() reprograms the
+        // watchdog for its own 10 ms reboot long before this one could fire.
+        watchdog_enable(1000, 1);
         reset_usb_boot(0, 0);
         while (1); // WDT will fire here
     }
