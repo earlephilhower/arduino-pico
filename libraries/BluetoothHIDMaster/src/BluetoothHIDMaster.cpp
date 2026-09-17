@@ -221,7 +221,7 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
     clearPairing();
     auto l = scan(cod);
     for (auto e : l) {
-        DEBUGV("Scan connecting %s at %s ...", e.name(), e.addressString());
+        DEBUGBT("Scan connecting %s at %s ...", e.name(), e.addressString());
         memcpy(a, e.address(), sizeof(a));
         int ret;
         do {
@@ -229,16 +229,16 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
             ret = hid_host_connect(a, HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
         } while (0);
         if (ERROR_CODE_SUCCESS == ret) {
-            DEBUGV("Connection established");
+            DEBUGBT("Connection established");
             memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
             _lastAddrType = e.addressType();
             while (!_hid_host_descriptor_available) {
-                DEBUGV("Waiting for HID descriptor");
+                DEBUGBT("Waiting for HID descriptor");
                 delay(50);
             }
             return true;
         }
-        DEBUGV("Connection failed %02x", ret);
+        DEBUGBT("Connection failed %02x", ret);
     }
     return false;
 }
@@ -260,7 +260,7 @@ bool BluetoothHIDMaster::connectBLE(const uint8_t *addr, int addrType, void (*id
         ret = gap_connect(a, (bd_addr_type_t)addrType);
     } while (0);
     if (ERROR_CODE_SUCCESS != ret) {
-        DEBUGV("gap_connect failed %d", ret);
+        DEBUGBT("gap_connect failed %d", ret);
         return false;
     }
     // GAP connection running async.  Wait for HCI connect
@@ -297,14 +297,14 @@ bool BluetoothHIDMaster::connectBLE(void (*idleFcn)(void *), void *idleFcnData) 
     clearPairing();
     auto l = _hci.scanBLE(0x1812 /* HID */, 5, idleFcn, idleFcnData);
     for (auto e : l) {
-        DEBUGV("Scan connecting %s at %s ...", e.name(), e.addressString());
+        DEBUGBT("Scan connecting %s at %s ...", e.name(), e.addressString());
         if (connectBLE(e.address(), e.addressType(), idleFcn, idleFcnData)) {
-            DEBUGV("Connection established");
+            DEBUGBT("Connection established");
             memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
             _lastAddrType = e.addressType();
             return true;
         }
-        DEBUGV("Connection failed");
+        DEBUGBT("Connection failed");
     }
     memset(_lastAddr, 0, sizeof(_lastAddr));
     _lastAddrType = 0;
@@ -507,7 +507,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
     switch (hci_event_hid_meta_get_subevent_code(packet)) {
 
     case HID_SUBEVENT_INCOMING_CONNECTION:
-        DEBUGV("HID_SUBEVENT_INCOMING_CONNECTION");
+        DEBUGBT("HID_SUBEVENT_INCOMING_CONNECTION");
         // There is an incoming connection: we can accept it or decline it.
         // The hid_host_report_mode in the hid_host_accept_connection function
         // allows the application to request a protocol mode.
@@ -516,12 +516,12 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         break;
 
     case HID_SUBEVENT_CONNECTION_OPENED:
-        DEBUGV("HID_SUBEVENT_CONNECTION_OPENED");
+        DEBUGBT("HID_SUBEVENT_CONNECTION_OPENED");
         // The status field of this event indicates if the control and interrupt
         // connections were opened successfully.
         status = hid_subevent_connection_opened_get_status(packet);
         if (status != ERROR_CODE_SUCCESS) {
-            DEBUGV("Connection failed, status 0x%02x", status);
+            DEBUGBT("Connection failed, status 0x%02x", status);
             _hidConnected = false;
             _hid_host_cid = 0;
             return;
@@ -529,11 +529,11 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         _hidConnected = true;
         _hid_host_descriptor_available = false;
         _hid_host_cid = hid_subevent_connection_opened_get_hid_cid(packet);
-        DEBUGV("HID Host connected.");
+        DEBUGBT("HID Host connected.");
         break;
 
     case HID_SUBEVENT_DESCRIPTOR_AVAILABLE:
-        DEBUGV("HID_SUBEVENT_DESCRIPTOR_AVAILABLE");
+        DEBUGBT("HID_SUBEVENT_DESCRIPTOR_AVAILABLE");
         // This event will follows HID_SUBEVENT_CONNECTION_OPENED event.
         // For incoming connections, i.e. HID Device initiating the connection,
         // the HID_SUBEVENT_DESCRIPTOR_AVAILABLE is delayed, and some HID
@@ -544,7 +544,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         if (status == ERROR_CODE_SUCCESS) {
             _hid_host_descriptor_available = true;
         } else {
-            DEBUGV("Cannot handle input report, HID Descriptor is not available, status 0x%02x", status);
+            DEBUGBT("Cannot handle input report, HID Descriptor is not available, status 0x%02x", status);
         }
         break;
 
@@ -572,29 +572,29 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
         // this event will occur only if the established report mode is boot mode.
         status = hid_subevent_set_protocol_response_get_handshake_status(packet);
         if (status != HID_HANDSHAKE_PARAM_TYPE_SUCCESSFUL) {
-            DEBUGV("Error set protocol, status 0x%02x", status);
+            DEBUGBT("Error set protocol, status 0x%02x", status);
             break;
         }
         switch ((hid_protocol_mode_t)hid_subevent_set_protocol_response_get_protocol_mode(packet)) {
         case HID_PROTOCOL_MODE_BOOT:
-            DEBUGV("Protocol mode set: BOOT.");
+            DEBUGBT("Protocol mode set: BOOT.");
             break;
         case HID_PROTOCOL_MODE_REPORT:
-            DEBUGV("Protocol mode set: REPORT.");
+            DEBUGBT("Protocol mode set: REPORT.");
             break;
         default:
-            DEBUGV("Unknown protocol mode.");
+            DEBUGBT("Unknown protocol mode.");
             break;
         }
         break;
 
     case HID_SUBEVENT_CONNECTION_CLOSED:
-        DEBUGV("HID_SUBEVENT_CONNECTION_CLOSED");
+        DEBUGBT("HID_SUBEVENT_CONNECTION_CLOSED");
         // The connection was closed.
         _hidConnected = false;
         _hid_host_cid = 0;
         _hid_host_descriptor_available = false;
-        DEBUGV("HID Host disconnected.");
+        DEBUGBT("HID Host disconnected.");
         break;
 
     default:
@@ -614,66 +614,66 @@ void BluetoothHIDMaster::sm_packet_handler(uint8_t packet_type, uint16_t channel
 
     switch (hci_event_packet_get_type(packet)) {
     case SM_EVENT_JUST_WORKS_REQUEST:
-        DEBUGV("Just works requested");
+        DEBUGBT("Just works requested");
         sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
         break;
     case SM_EVENT_NUMERIC_COMPARISON_REQUEST:
-        DEBUGV("Confirming numeric comparison: %" PRIu32 "", sm_event_numeric_comparison_request_get_passkey(packet));
+        DEBUGBT("Confirming numeric comparison: %" PRIu32 "", sm_event_numeric_comparison_request_get_passkey(packet));
         sm_numeric_comparison_confirm(sm_event_passkey_display_number_get_handle(packet));
         break;
     case SM_EVENT_PASSKEY_DISPLAY_NUMBER:
-        DEBUGV("Display Passkey: %" PRIu32 "", sm_event_passkey_display_number_get_passkey(packet));
+        DEBUGBT("Display Passkey: %" PRIu32 "", sm_event_passkey_display_number_get_passkey(packet));
         break;
     case SM_EVENT_PAIRING_COMPLETE:
         switch (sm_event_pairing_complete_get_status(packet)) {
         case ERROR_CODE_SUCCESS:
-            DEBUGV("Pairing complete, success");
+            DEBUGBT("Pairing complete, success");
             // continue - query primary services
-            DEBUGV("Search for HID service.");
+            DEBUGBT("Search for HID service.");
             //app_state = W4_HID_CLIENT_CONNECTED;
             hids_host_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
             break;
         case ERROR_CODE_CONNECTION_TIMEOUT:
-            DEBUGV("Pairing failed, timeout");
+            DEBUGBT("Pairing failed, timeout");
             break;
         case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
-            DEBUGV("Pairing failed, disconnected");
+            DEBUGBT("Pairing failed, disconnected");
             break;
         case ERROR_CODE_AUTHENTICATION_FAILURE:
-            DEBUGV("Pairing failed, reason = %u", sm_event_pairing_complete_get_reason(packet));
+            DEBUGBT("Pairing failed, reason = %u", sm_event_pairing_complete_get_reason(packet));
             break;
         default:
-            DEBUGV("Unknown sm_event_pairing_complete_get_status: %02x", sm_event_pairing_complete_get_status(packet));
+            DEBUGBT("Unknown sm_event_pairing_complete_get_status: %02x", sm_event_pairing_complete_get_status(packet));
             break;
         }
         break;
     case SM_EVENT_IDENTITY_RESOLVING_STARTED:
-        DEBUGV("Starting search of TLV for precious connection");
+        DEBUGBT("Starting search of TLV for precious connection");
         break;
     case SM_EVENT_IDENTITY_RESOLVING_FAILED:
-        DEBUGV("Peer not found in TLV");
+        DEBUGBT("Peer not found in TLV");
         break;
     case SM_EVENT_IDENTITY_RESOLVING_SUCCEEDED:
-        DEBUGV("Peer found in TLV");
+        DEBUGBT("Peer found in TLV");
         break;
     case SM_EVENT_IDENTITY_CREATED:
-        DEBUGV("Storing peer in TLV");
+        DEBUGBT("Storing peer in TLV");
         break;
     case SM_EVENT_PAIRING_STARTED:
-        DEBUGV("Pairing started");
+        DEBUGBT("Pairing started");
         break;
     case SM_EVENT_REENCRYPTION_STARTED:
-        DEBUGV("Starting re-encryption");
+        DEBUGBT("Starting re-encryption");
         break;
     case SM_EVENT_REENCRYPTION_COMPLETE:
-        DEBUGV("Re-encryption complete, success, searching for HID");
+        DEBUGBT("Re-encryption complete, success, searching for HID");
         if (!_hid_host_descriptor_available) {
-            DEBUGV("Connecting to HID service");
+            DEBUGBT("Connecting to HID service");
             hids_host_connect(_hci.getHCIConn(), PACKETHANDLERCB(BluetoothHIDMaster, handle_gatt_client_event), HID_PROTOCOL_MODE_REPORT, &_hid_host_cid);
         }
         break;
     default:
-        DEBUGV("Unknown hci_event_packet_get_type %02x", hci_event_packet_get_type(packet));
+        DEBUGBT("Unknown hci_event_packet_get_type %02x", hci_event_packet_get_type(packet));
         break;
     }
 }
@@ -696,12 +696,12 @@ void BluetoothHIDMaster::handle_gatt_client_event(uint8_t packet_type, uint16_t 
         status = gattservice_subevent_hid_service_connected_get_status(packet);
         switch (status) {
         case ERROR_CODE_SUCCESS:
-            DEBUGV("HID service client connected, found %d services", gattservice_subevent_hid_service_connected_get_num_instances(packet));
+            DEBUGBT("HID service client connected, found %d services", gattservice_subevent_hid_service_connected_get_num_instances(packet));
             _hidConnected = true;
             _hid_host_descriptor_available = true;
             break;
         default:
-            DEBUGV("HID service client connection failed, status 0x%02x.", status);
+            DEBUGBT("HID service client connection failed, status 0x%02x.", status);
             gap_disconnect(_hci.getHCIConn());
             //handle_outgoing_connection_error();
             break;

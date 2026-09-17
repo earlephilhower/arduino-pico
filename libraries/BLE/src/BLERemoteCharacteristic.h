@@ -26,7 +26,6 @@
 
 #include "BLEAdvertising.h"
 #include "BLEUUID.h"
-#include "BLEDebug.h"
 
 class BLERemoteCharacteristic;
 
@@ -43,7 +42,7 @@ public:
         (void) p;
         (void) data;
         (void) len;
-        DEBUGBLE("onNotify %p", p);
+        DEBUGBT("onNotify %p", p);
     }
 };
 
