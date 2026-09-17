@@ -430,9 +430,9 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
         allocation_method = a2dp_subevent_signaling_media_codec_sbc_configuration_get_allocation_method(packet);
 
         DEBUGBT("A2DP Source: Received SBC codec configuration, sampling frequency %u, a2dp_cid 0x%02x, local seid 0x%02x, remote seid 0x%02x.",
-               sbc_configuration.sampling_frequency, cid,
-               a2dp_subevent_signaling_media_codec_sbc_configuration_get_local_seid(packet),
-               a2dp_subevent_signaling_media_codec_sbc_configuration_get_remote_seid(packet));
+                sbc_configuration.sampling_frequency, cid,
+                a2dp_subevent_signaling_media_codec_sbc_configuration_get_local_seid(packet),
+                a2dp_subevent_signaling_media_codec_sbc_configuration_get_remote_seid(packet));
 
         // Adapt Bluetooth spec definition to SBC Encoder expected input
         sbc_configuration.allocation_method = (btstack_sbc_allocation_method_t)(allocation_method - 1);
@@ -465,17 +465,17 @@ void A2DPSource::a2dp_source_packet_handler(uint8_t packet_type, uint16_t channe
 
     case A2DP_SUBEVENT_SIGNALING_DELAY_REPORTING_CAPABILITY:
         DEBUGBT("A2DP Source: remote supports delay report, remote seid %d",
-               avdtp_subevent_signaling_delay_reporting_capability_get_remote_seid(packet));
+                avdtp_subevent_signaling_delay_reporting_capability_get_remote_seid(packet));
         break;
     case A2DP_SUBEVENT_SIGNALING_CAPABILITIES_DONE:
         DEBUGBT("A2DP Source: All capabilities reported, remote seid %d",
-               avdtp_subevent_signaling_capabilities_done_get_remote_seid(packet));
+                avdtp_subevent_signaling_capabilities_done_get_remote_seid(packet));
         break;
 
     case A2DP_SUBEVENT_SIGNALING_DELAY_REPORT:
         DEBUGBT("A2DP Source: Received delay report of %d.%0d ms, local seid %d",
-               avdtp_subevent_signaling_delay_report_get_delay_100us(packet) / 10, avdtp_subevent_signaling_delay_report_get_delay_100us(packet) % 10,
-               avdtp_subevent_signaling_delay_report_get_local_seid(packet));
+                avdtp_subevent_signaling_delay_report_get_delay_100us(packet) / 10, avdtp_subevent_signaling_delay_report_get_delay_100us(packet) % 10,
+                avdtp_subevent_signaling_delay_report_get_local_seid(packet));
         break;
 
     case A2DP_SUBEVENT_STREAM_ESTABLISHED:
@@ -718,8 +718,8 @@ void A2DPSource::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t c
         break;
     case AVRCP_SUBEVENT_NOTIFICATION_STATE:
         DEBUGBT("AVRCP Controller: Notification %s - %s",
-               avrcp_event2str(avrcp_subevent_notification_state_get_event_id(packet)),
-               avrcp_subevent_notification_state_get_enabled(packet) != 0 ? "enabled" : "disabled");
+                avrcp_event2str(avrcp_subevent_notification_state_get_event_id(packet)),
+                avrcp_subevent_notification_state_get_enabled(packet) != 0 ? "enabled" : "disabled");
         break;
     default:
         break;

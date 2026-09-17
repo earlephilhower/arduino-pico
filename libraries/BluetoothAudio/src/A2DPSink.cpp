@@ -510,8 +510,8 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
         DEBUGBT("AVRCP Controller: supported notifications by target:");
         for (event_id = (uint8_t) AVRCP_NOTIFICATION_EVENT_FIRST_INDEX; event_id < (uint8_t) AVRCP_NOTIFICATION_EVENT_LAST_INDEX; event_id++) {
             DEBUGBT("   - [%s] %s",
-                   (avrcp_connection->notifications_supported_by_target & (1 << event_id)) != 0 ? "X" : " ",
-                   avrcp_notification2str((avrcp_notification_event_id_t)event_id));
+                    (avrcp_connection->notifications_supported_by_target & (1 << event_id)) != 0 ? "X" : " ",
+                    avrcp_notification2str((avrcp_notification_event_id_t)event_id));
         }
         DEBUGBT("");
 
@@ -631,9 +631,9 @@ void A2DPSink::avrcp_controller_packet_handler(uint8_t packet_type, uint16_t cha
 
     case AVRCP_SUBEVENT_PLAY_STATUS:
         DEBUGBT("AVRCP Controller: Song length %" PRIu32 " ms, Song position %" PRIu32 " ms, Play status %s",
-               avrcp_subevent_play_status_get_song_length(packet),
-               avrcp_subevent_play_status_get_song_position(packet),
-               avrcp_play_status2str(avrcp_subevent_play_status_get_play_status(packet)));
+                avrcp_subevent_play_status_get_song_length(packet),
+                avrcp_subevent_play_status_get_song_position(packet),
+                avrcp_play_status2str(avrcp_subevent_play_status_get_play_status(packet)));
         break;
 
     case AVRCP_SUBEVENT_OPERATION_COMPLETE:
@@ -777,7 +777,7 @@ void A2DPSink::a2dp_sink_packet_handler(uint8_t packet_type, uint16_t channel, u
         a2dp_conn->stream_state = STREAM_STATE_OPEN;
 
         DEBUGBT("A2DP  Sink      : Streaming connection is established, address %s, cid 0x%02x, local seid %d",
-               bd_addr_to_str(a2dp_conn->addr), a2dp_conn->a2dp_cid, a2dp_conn->a2dp_local_seid);
+                bd_addr_to_str(a2dp_conn->addr), a2dp_conn->a2dp_cid, a2dp_conn->a2dp_local_seid);
         memcpy(_sourceAddress, a2dp_conn->addr, sizeof(_sourceAddress));
 
         _connected = true;
