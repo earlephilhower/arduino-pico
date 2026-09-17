@@ -1130,6 +1130,32 @@ extern "C" {
 #endif
         return __real_cyw43_wifi_leave(self, itf);
     }
+
+    int __real_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface);
+    int __wrap_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            int ret;
+            __cyw43_ioctl_req req = { self, cmd, len, buf, iface, &ret };
+            __lwip(__cyw43_ioctl, &req);
+            return ret;
+        }
+#endif
+        return __real_cyw43_ioctl(self, cmd, len, buf, iface);
+    }
+
+    int __real_cyw43_wifi_update_multicast_filter(cyw43_t *self, uint8_t *addr, bool add);
+    int __wrap_cyw43_wifi_update_multicast_filter(cyw43_t *self, uint8_t *addr, bool add) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            int ret;
+            __cyw43_wifi_update_multicast_filter_req req = { self, addr, add, &ret };
+            __lwip(__cyw43_wifi_update_multicast_filter, &req);
+            return ret;
+        }
+#endif
+        return __real_cyw43_wifi_update_multicast_filter(self, addr, add);
+    }
 #endif
 
 
