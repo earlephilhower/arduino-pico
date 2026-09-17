@@ -35,13 +35,13 @@ public:
     btstack_sbc_allocation_method_t allocation_method;
 
     void dump() {
-        DEBUGV("    - num_channels: %d", num_channels);
-        DEBUGV("    - sampling_frequency: %d", sampling_frequency);
-        DEBUGV("    - channel_mode: %d", channel_mode);
-        DEBUGV("    - block_length: %d", block_length);
-        DEBUGV("    - subbands: %d", subbands);
-        DEBUGV("    - allocation_method: %d", allocation_method);
-        DEBUGV("    - bitpool_value [%d, %d]", min_bitpool_value, max_bitpool_value);
-        DEBUGV("");
+        DEBUGBT("    - num_channels: %d", num_channels);
+        DEBUGBT("    - sampling_frequency: %d", sampling_frequency);
+        DEBUGBT("    - channel_mode: %d", channel_mode);
+        DEBUGBT("    - block_length: %d", block_length);
+        DEBUGBT("    - subbands: %d", subbands);
+        DEBUGBT("    - allocation_method: %d", allocation_method);
+        DEBUGBT("    - bitpool_value [%d, %d]", min_bitpool_value, max_bitpool_value);
+        DEBUGBT("");
     }
 };
