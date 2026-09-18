@@ -206,3 +206,8 @@ Shuts down the connection to the currently connected device.
 void BluetoothHIDMaster::clearPairing()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Erases all Bluetooth keys from memory.  This effectively "forgets" all pairing between devices and can help avoid issues with the beta Bluetooth stack in the SDK.
+
+void BluetoothHIDMaster::setPasskeyCB(void (\*fn)(uint32_t passkey)) 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sets the callback function to display a passkey for the user to enter on their keyboard to complete pairing.
+If none specified, the passkey will be printed on ``Serial``.
