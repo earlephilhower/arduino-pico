@@ -1,5 +1,5 @@
 /*
-    A1DP Source (Bluetooth audio sender)
+    A2DP Source (Bluetooth audio sender)
 
     Copyright (c) 2024 Earle F. Philhower, III <earlephilhower@yahoo.com>
 

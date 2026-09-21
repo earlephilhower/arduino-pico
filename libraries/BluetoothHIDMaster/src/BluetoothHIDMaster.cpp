@@ -111,6 +111,19 @@ void BluetoothHIDMaster::begin(bool ble, const char *bleName) {
 
         // try to become master on incoming connections
         hci_set_master_slave_policy(HCI_ROLE_MASTER);
+
+        // Keyboards (e.g. Logitech K380) are KeyboardOnly for SSP; pairing with
+        // us as NoInputNoOutput forces Just Works (unauthenticated), which some
+        // keyboards' HID service refuses. Declaring DisplayYesNo triggers the
+        // Passkey Entry association model instead: a 6-digit code is shown here
+        // (HCI_EVENT_USER_PASSKEY_NOTIFICATION) for the user to type on the
+        // keyboard, producing an authenticated (MITM-protected) link.
+        // MITM must also be explicitly requested -- BTstack defaults to "MITM
+        // not required", and per the SSP spec that forces Just Works regardless
+        // of IO capability, so without this the capability change above is a no-op.
+        gap_ssp_set_io_capability(SSP_IO_CAPABILITY_DISPLAY_YES_NO);
+        gap_ssp_set_authentication_requirement(SSP_IO_AUTHREQ_MITM_PROTECTION_REQUIRED_GENERAL_BONDING);
+
     }
 
     // enabled EIR
@@ -232,11 +245,16 @@ bool BluetoothHIDMaster::connectCOD(uint32_t cod) {
             DEBUGBT("Connection established");
             memcpy(_lastAddr, e.address(), sizeof(_lastAddr));
             _lastAddrType = e.addressType();
-            while (!_hid_host_descriptor_available) {
+            // Set a long timeout for HID reception because we may need user to type a passcode on the keyboard
+            uint32_t descriptorWaitStart = millis();
+            while (!_hid_host_descriptor_available && (millis() - descriptorWaitStart < 60000) && !_hid_connection_failed) {
                 DEBUGBT("Waiting for HID descriptor");
                 delay(50);
             }
-            return true;
+            if (_hid_host_descriptor_available && _hidConnected) {
+                return true;
+            }
+            // OTW fall thru, the connection failed
         }
         DEBUGBT("Connection failed %02x", ret);
     }
@@ -524,6 +542,7 @@ void BluetoothHIDMaster::hid_packet_handler(uint8_t packet_type, uint16_t channe
             DEBUGBT("Connection failed, status 0x%02x", status);
             _hidConnected = false;
             _hid_host_cid = 0;
+            _hid_connection_failed = true;
             return;
         }
         _hidConnected = true;
