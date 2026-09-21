@@ -362,11 +362,11 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
         break;
 
     case HCI_EVENT_AUTHENTICATION_COMPLETE:
-        DEBUGBT("HCI_EVENT_AUTHENTICATION_COMPLETE status=0x%02X", packet[2]);
+        DEBUGBT("HCI_EVENT_AUTHENTICATION_COMPLETE status=0x%02X", hci_event_authentication_complete_get_status(packet));
         break;
 
     case HCI_EVENT_LINK_KEY_NOTIFICATION:
-        DEBUGBT("HCI_EVENT_LINK_KEY_NOTIFICATION link_key_type=%d", packet[24]);
+        DEBUGBT("HCI_EVENT_LINK_KEY_NOTIFICATION link_key_type=%d", packet[24]); // TODO - this doesn't seem to be broken out in BTStack, verify
         break;
 
     case HCI_EVENT_ENCRYPTION_CHANGE:
@@ -434,11 +434,11 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
             DEBUGBT("Error: HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE without active request");
             return; // How'd we get here?
         }
-        reverse_bd_addr(&packet[3], address);
+        hci_event_remote_name_request_complete_get_bd_addr(packet, address);
         if (!memcmp(_requested->address(), address, 6)) {
-            if (packet[2] == 0) {
-                DEBUGBT("Received name: '%s'", &packet[9]);
-                strcpy(_requested->_name, (char *)packet + 9);
+            if (hci_event_remote_name_request_complete_get_status(packet) == 0) {
+                DEBUGBT("Received name: '%s'", hci_event_remote_name_request_complete_get_remote_name(packet));
+                strcpy(_requested->_name, hci_event_remote_name_request_complete_get_remote_name(packet));
             } else {
                 DEBUGBT("Failed to get name: page timeout");
             }
