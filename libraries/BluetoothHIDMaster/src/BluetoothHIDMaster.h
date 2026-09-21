@@ -98,6 +98,9 @@ public:
 
     void disconnect();
     void clearPairing();
+    void setPasskeyCB(void (*fn)(uint32_t)) {
+        _hci.setPasskeyCB(fn);
+    }
 
     void onMouseMove(void (*)(void *, int, int, int), void *cbData = nullptr);
     void onMouseButton(void (*)(void *, int, bool), void *cbData = nullptr);
@@ -121,6 +124,7 @@ private:
     void hid_host_handle_interrupt_report(btstack_hid_parser_t * parser);
     bool _running = false;
     volatile bool _hidConnected = false;
+    volatile bool _hid_connection_failed = false;  // set by CONNECTION_OPENED failure status
     uint16_t _hid_host_cid = 0;
     bool _hid_host_descriptor_available = false;
     uint8_t _hid_descriptor_storage[300];
@@ -142,7 +146,6 @@ private:
 
     void (*_joystickCB)(void *, int, int, int, int, uint8_t, uint32_t) = nullptr;
     void *_joystickData;
-
 
     btstack_packet_callback_registration_t _sm_event_callback_registration;
     void sm_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);

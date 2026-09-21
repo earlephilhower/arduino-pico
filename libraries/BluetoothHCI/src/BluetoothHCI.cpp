@@ -335,6 +335,7 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
     char name_buffer[241];
     int pageScanRepetitionMode;
     int clockOffset;
+    uint32_t passkey;
 
     switch (hci_event_packet_get_type(packet)) {
     case  BTSTACK_EVENT_STATE:
@@ -343,7 +344,42 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
 
     case HCI_EVENT_PIN_CODE_REQUEST:
         hci_event_pin_code_request_get_bd_addr(packet, address);
+        DEBUGBT("HCI_EVENT_PIN_CODE_REQUEST from %02X:%02X:%02X:%02X:%02X:%02X, replying with fixed PIN 0000", address[0], address[1], address[2], address[3], address[4], address[5]);
+        // Fixed PIN for legacy pairing (SSP disabled for classic HID keyboards
+        // that require authenticated security, e.g. Logitech K380).
         gap_pin_code_response(address, "0000");
+        break;
+
+    case HCI_EVENT_USER_PASSKEY_NOTIFICATION:
+        passkey = hci_event_user_passkey_notification_get_numeric_value(packet);
+        DEBUGBT("Bluetooth pairing passkey: %06lu", (unsigned long)passkey);
+        if (_passkeyCB) {
+            _passkeyCB(passkey);
+        } else {
+            // Default, print to Serial...something needs to be done!
+            Serial.printf("\r\n********\r\nType %lu and press ENTER on your keyboard to pair\r\n", passkey);
+        }
+        break;
+
+    case HCI_EVENT_AUTHENTICATION_COMPLETE:
+        DEBUGBT("HCI_EVENT_AUTHENTICATION_COMPLETE status=0x%02X", hci_event_authentication_complete_get_status(packet));
+        break;
+
+    case HCI_EVENT_LINK_KEY_NOTIFICATION:
+        DEBUGBT("HCI_EVENT_LINK_KEY_NOTIFICATION link_key_type=%d", packet[24]); // TODO - this doesn't seem to be broken out in BTStack, verify
+        break;
+
+    case HCI_EVENT_ENCRYPTION_CHANGE:
+        DEBUGBT("HCI_EVENT_ENCRYPTION_CHANGE status=0x%02X enabled=%d", hci_event_encryption_change_get_status(packet), hci_event_encryption_change_get_encryption_enabled(packet));
+        // TODO - This should be handled by BTStack internals!
+        // hci.c is supposed to auto-send this once encryption comes up -- its response
+        // is what unblocks any L2CAP channel waiting on GAP_EVENT_SECURITY_LEVEL (e.g.
+        // HID control/interrupt PSMs). On this precompiled classic stack it sometimes
+        // never gets sent, stalling the connection ~20s until the peer disconnects us.
+        // Request it ourselves as a workaround.
+        if (hci_event_encryption_change_get_status(packet) == 0 && hci_event_encryption_change_get_encryption_enabled(packet)) {
+            hci_send_cmd(&hci_read_encryption_key_size, hci_event_encryption_change_get_connection_handle(packet));
+        }
         break;
 
     case GAP_EVENT_INQUIRY_RESULT:
@@ -398,11 +434,11 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
             DEBUGBT("Error: HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE without active request");
             return; // How'd we get here?
         }
-        reverse_bd_addr(&packet[3], address);
+        hci_event_remote_name_request_complete_get_bd_addr(packet, address);
         if (!memcmp(_requested->address(), address, 6)) {
-            if (packet[2] == 0) {
-                DEBUGBT("Received name: '%s'", &packet[9]);
-                strcpy(_requested->_name, (char *)packet + 9);
+            if (hci_event_remote_name_request_complete_get_status(packet) == 0) {
+                DEBUGBT("Received name: '%s'", hci_event_remote_name_request_complete_get_remote_name(packet));
+                strcpy(_requested->_name, hci_event_remote_name_request_complete_get_remote_name(packet));
             } else {
                 DEBUGBT("Failed to get name: page timeout");
             }
