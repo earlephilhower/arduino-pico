@@ -352,7 +352,7 @@ void BluetoothHCI::hci_packet_handler(uint8_t packet_type, uint16_t channel, uin
 
     case HCI_EVENT_USER_PASSKEY_NOTIFICATION:
         passkey = hci_event_user_passkey_notification_get_numeric_value(packet);
-        DEBUGBT("\r\n*** Bluetooth pairing passkey: %06lu -- type this on the keyboard and press Enter ***", (unsigned long)passkey);
+        DEBUGBT("Bluetooth pairing passkey: %06lu", (unsigned long)passkey);
         if (_passkeyCB) {
             _passkeyCB(passkey);
         } else {
