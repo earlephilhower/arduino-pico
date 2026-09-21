@@ -493,6 +493,16 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_cyw43_wifi_leave(r->self, r->itf);
                 break;
             }
+            case __cyw43_ioctl: {
+                __cyw43_ioctl_req *r = (__cyw43_ioctl_req *)w.req;
+                *(r->ret) = __real_cyw43_ioctl(r->self, r->cmd, r->len, r->buf, r->iface);
+                break;
+            }
+            case __cyw43_wifi_update_multicast_filter: {
+                __cyw43_wifi_update_multicast_filter_req *r = (__cyw43_wifi_update_multicast_filter_req *)w.req;
+                *(r->ret) = __real_cyw43_wifi_update_multicast_filter(r->self, r->addr, r->add);
+                break;
+            }
 #endif
             case __callback: {
                 __callback_req *r = (__callback_req *)w.req;

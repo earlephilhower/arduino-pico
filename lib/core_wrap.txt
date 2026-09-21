@@ -115,5 +115,7 @@
 -Wl,--wrap=cyw43_schedule_internal_poll_dispatch
 -Wl,--wrap=cyw43_wifi_join
 -Wl,--wrap=cyw43_wifi_leave
+-Wl,--wrap=cyw43_ioctl
+-Wl,--wrap=cyw43_wifi_update_multicast_filter
 -Wl,--wrap=cyw43_arch_gpio_put
 -Wl,--wrap=btstack_run_loop_async_context_get_instance
