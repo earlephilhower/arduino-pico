@@ -1,7 +1,7 @@
 #ifdef __FREERTOS
 #include <pico.h>
 
-#if (PICO_SDK_VERSION_MAJOR * 100) + (PICO_SDK_VERSION_MINOR * 10) + PICO_SDK_VERSION_REVISION != 230
+#if (PICO_SDK_VERSION_MAJOR * 100) + (PICO_SDK_VERSION_MINOR * 10) + PICO_SDK_VERSION_REVISION != 231
 #error Check that this override warning is still needed
 #endif
 
