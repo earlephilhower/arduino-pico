@@ -59,6 +59,7 @@ void __startLWIPThread() {
         panic("Unable to create LWIP task");
     }
     vTaskCoreAffinitySet(__lwipTask, 1 << 0);
+    initted = true;
 }
 
 extern "C" void __lwip(__lwip_op op, void *req, bool fromISR) {
