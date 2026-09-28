@@ -16,6 +16,9 @@ extern void panic(const char *fmt, ...);
 #define LWIP_PLATFORM_ASSERT(x) panic("lwip")
 #endif
 
+extern void __lwip_assert_core_locked();
+#define LWIP_ASSERT_CORE_LOCKED() {__lwip_assert_core_locked();}
+
 extern unsigned long __lwip_rand(void);
 #define LWIP_RAND() __lwip_rand()
 

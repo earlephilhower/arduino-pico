@@ -324,6 +324,11 @@ static void lwipThread(void *params) {
                 __real_sys_check_timeouts();
                 break;
             }
+            case __sys_timeouts_sleeptime: {
+                __sys_timeouts_sleeptime_req *r = (__sys_timeouts_sleeptime_req *)w.req;
+                *(r->ret) = __real_sys_timeouts_sleeptime();
+                break;
+            }
             case __dns_gethostbyname: {
                 __dns_gethostbyname_req *r = (__dns_gethostbyname_req *)w.req;
                 *(r->ret) = __real_dns_gethostbyname(r->hostname, r->addr, r->found, r->callback_arg);
@@ -334,6 +339,47 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_dns_gethostbyname_addrtype(r->hostname, r->addr, r->found, r->callback_arg, r->dns_addrtype);
                 break;
             }
+            case __dhcp_set_struct: {
+                __dhcp_set_struct_req *r = (__dhcp_set_struct_req *)w.req;
+                __real_dhcp_set_struct(r->netif, r->dhcp);
+                break;
+            }
+            case __dhcp_cleanup: {
+                __dhcp_cleanup_req *r = (__dhcp_cleanup_req *)w.req;
+                __real_dhcp_cleanup(r->netif);
+                break;
+            }
+            case __dhcp_start: {
+                __dhcp_start_req *r = (__dhcp_start_req *)w.req;
+                *(r->ret) = __real_dhcp_start(r->netif);
+                break;
+            }
+            case __dhcp_inform: {
+                __dhcp_inform_req *r = (__dhcp_inform_req *)w.req;
+                __real_dhcp_inform(r->netif);
+                break;
+            }
+            case __dhcp_renew: {
+                __dhcp_renew_req *r = (__dhcp_renew_req *)w.req;
+                *(r->ret) = __real_dhcp_renew(r->netif);
+                break;
+            }
+            case __dhcp_release_and_stop: {
+                __dhcp_release_and_stop_req *r = (__dhcp_release_and_stop_req *)w.req;
+                __real_dhcp_release_and_stop(r->netif);
+                break;
+            }
+            case __dhcp_release: {
+                __dhcp_release_req *r = (__dhcp_release_req *)w.req;
+                *(r->ret) = __real_dhcp_release(r->netif);
+                break;
+            }
+            case __dhcp_stop: {
+                __dhcp_stop_req *r = (__dhcp_stop_req *)w.req;
+                __real_dhcp_stop(r->netif);
+                break;
+            }
+
             case __igmp_start: {
                 __igmp_start_req *r = (__igmp_start_req *)w.req;
                 *(r->ret) = __real_igmp_start(r->netif);

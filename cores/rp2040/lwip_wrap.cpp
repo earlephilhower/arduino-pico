@@ -48,6 +48,22 @@ extern "C" {
 
     extern void __lwip(__lwip_op op, void *req, bool fromISR = false);
     extern bool __isLWIPThread();
+    extern async_context_t *__getEthernetContext();
+
+    void __lwip_assert_core_locked() {
+ #ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            panic("LWIP_ASSERT_CORE_LOCKED failed");
+        }
+#else
+#if defined(PICO_CYW43_SUPPORTED)
+        if (rp2040.isPicoW()) {
+            async_context_lock_check(cyw43_arch_async_context());
+        }
+#endif
+        async_context_lock_check(__getEthernetContext());
+#endif
+    }
 
     static XoshiroCpp::Xoshiro256PlusPlus *_lwip_rng = nullptr;
     // Random number generator for LWIP
@@ -661,6 +677,20 @@ extern "C" {
         __real_sys_check_timeouts();
     }
 
+    u32_t __wrap_sys_timeouts_sleeptime() {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            u32_t ret;
+            __sys_timeouts_sleeptime_req req = { &ret };
+            __lwip(__sys_timeouts_sleeptime, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_sys_timeouts_sleeptime();
+    }
+
+
     extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);
     err_t __wrap_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg) {
 #ifdef __FREERTOS
@@ -689,6 +719,107 @@ extern "C" {
         return __real_dns_gethostbyname_addrtype(hostname, addr, found, callback_arg, dns_addrtype);
     }
 
+
+    void __wrap_dhcp_set_struct(struct netif *netif, struct dhcp *dhcp) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_set_struct_req req = { netif, dhcp };
+            __lwip(__dhcp_set_struct, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_set_struct(netif, dhcp);
+    }
+ 
+    void  __wrap_dhcp_cleanup(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_cleanup_req req = { netif };
+            __lwip(__dhcp_cleanup, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_cleanup(netif);
+    }
+
+    err_t __wrap_dhcp_start(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __dhcp_start_req req = { netif, &ret };
+            __lwip(__dhcp_start, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dhcp_start(netif);
+    }
+ 
+    void  __wrap_dhcp_inform(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_inform_req req = { netif };
+            __lwip(__dhcp_inform, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_inform(netif);
+    }
+
+    err_t __wrap_dhcp_renew(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __dhcp_renew_req req = { netif, &ret };
+            __lwip(__dhcp_renew, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dhcp_renew(netif);
+    }
+
+    void  __wrap_dhcp_release_and_stop(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_release_and_stop_req req = { netif };
+            __lwip(__dhcp_release_and_stop, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_release_and_stop(netif);
+    }
+
+ 
+    err_t __wrap_dhcp_release(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __dhcp_release_req req = { netif, &ret };
+            __lwip(__dhcp_release, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dhcp_release(netif);
+    }
+
+    void  __wrap_dhcp_stop(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_stop_req req = { netif };
+            __lwip(__dhcp_stop, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_stop(netif);
+    }
+ 
     extern err_t __real_igmp_start(struct netif *netif);
     err_t __wrap_igmp_start(struct netif *netif) {
 #ifdef __FREERTOS

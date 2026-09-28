@@ -139,9 +139,19 @@ typedef enum {
     __udp_new_ip_type,
 
     __sys_check_timeouts = 5000,
+    __sys_timeouts_sleeptime,
 
     __dns_gethostbyname = 6000,
     __dns_gethostbyname_addrtype,
+
+    __dhcp_set_struct,
+    __dhcp_cleanup,
+    __dhcp_start,
+    __dhcp_inform,
+    __dhcp_renew,
+    __dhcp_release_and_stop,
+    __dhcp_release,
+    __dhcp_stop,
 
     __igmp_start,
     __igmp_stop,
@@ -235,8 +245,17 @@ extern err_t __real_udp_sendto(struct udp_pcb *pcb, struct pbuf *p, const ip_add
 extern err_t __real_udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif);
 extern err_t __real_udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif, const ip_addr_t *src_ip);
 extern void __real_sys_check_timeouts();
+extern u32_t __real_sys_timeouts_sleeptime();
 extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);
 extern err_t __real_dns_gethostbyname_addrtype(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg, u8_t dns_addrtype);
+extern void __real_dhcp_set_struct(struct netif *netif, struct dhcp *dhcp);
+extern void __real_dhcp_cleanup (struct netif *netif);
+extern err_t __real_dhcp_start (struct netif *netif);
+extern void __real_dhcp_inform (struct netif *netif);
+extern err_t __real_dhcp_renew (struct netif *netif);
+extern void __real_dhcp_release_and_stop (struct netif *netif);
+extern err_t __real_dhcp_release (struct netif *netif);
+extern void __real_dhcp_stop (struct netif *netif);
 extern err_t __real_igmp_start(struct netif *netif);
 extern err_t __real_igmp_stop(struct netif *netif);
 extern void __real_igmp_report_groups(struct netif *netif);
@@ -528,6 +547,10 @@ typedef struct {
 } __udp_sendto_if_src_req;
 
 typedef struct {
+    u32_t *ret;
+} __sys_timeouts_sleeptime_req;
+
+typedef struct {
     const char *hostname;
     ip_addr_t *addr;
     dns_found_callback found;
@@ -543,6 +566,42 @@ typedef struct {
     u8_t dns_addrtype;
     err_t *ret;
 } __dns_gethostbyname_addrtype_req;
+
+typedef struct {
+    struct netif *netif;
+    struct dhcp *dhcp;
+} __dhcp_set_struct_req;
+
+typedef struct {
+    struct netif *netif;
+} __dhcp_cleanup_req;
+ 
+typedef struct {
+    struct netif *netif;
+    err_t *ret;   
+} __dhcp_start_req;
+
+typedef struct {
+    struct netif *netif;
+} __dhcp_inform_req;
+ 
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __dhcp_renew_req;
+
+typedef struct {
+    struct netif *netif;
+} __dhcp_release_and_stop_req;
+ 
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __dhcp_release_req;
+ 
+typedef struct {
+    struct netif *netif;
+} __dhcp_stop_req;
 
 typedef struct {
     struct netif *netif;
