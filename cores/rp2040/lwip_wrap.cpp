@@ -48,7 +48,7 @@ extern "C" {
 
     extern void __lwip(__lwip_op op, void *req, bool fromISR = false);
     extern bool __isLWIPThread();
-    extern async_context_t *__getEthernetContext();
+    extern async_context_t *__getEthernetContext() __attribute__((weak));;
 
     void __lwip_assert_core_locked() {
 #ifdef __FREERTOS
@@ -56,12 +56,9 @@ extern "C" {
             panic("LWIP_ASSERT_CORE_LOCKED failed");
         }
 #else
-#if defined(PICO_CYW43_SUPPORTED)
-        if (rp2040.isPicoW()) {
-            async_context_lock_check(cyw43_arch_async_context());
+        if (__getEthernetContext) {
+            async_context_lock_check(__getEthernetContext());
         }
-#endif
-        async_context_lock_check(__getEthernetContext());
 #endif
     }
 
