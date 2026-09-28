@@ -567,6 +567,18 @@ extern "C" {
         return __real_udp_bind(pcb, ipaddr, port);
     }
 
+    void __wrap_udp_bind_netif(struct udp_pcb *pcb, const struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __udp_bind_netif_req req = { pcb, netif };
+            __lwip(__udp_bind_netif, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_udp_bind_netif(pcb, netif);
+    }
+
     extern err_t __real_udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
     err_t __wrap_udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port) {
 #ifdef __FREERTOS

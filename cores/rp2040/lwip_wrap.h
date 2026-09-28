@@ -131,6 +131,7 @@ typedef enum {
     __udp_sendto_if,
     __udp_sendto_if_src,
     __udp_bind,
+    __udp_bind_netif,
     __udp_connect,
     __udp_disconnect,
     __udp_recv,
@@ -237,6 +238,7 @@ extern struct udp_pcb *__real_udp_new(void);
 extern struct udp_pcb *__real_udp_new_ip_type(u8_t type);
 extern void __real_udp_remove(struct udp_pcb *pcb);
 extern err_t __real_udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
+extern void __real_udp_bind_netif(struct udp_pcb *pcb, const struct netif *netif);
 extern err_t __real_udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
 extern err_t __real_udp_disconnect(struct udp_pcb *pcb);
 extern err_t __real_udp_send(struct udp_pcb *pcb, struct pbuf *p);
@@ -494,6 +496,11 @@ typedef struct {
     u16_t port;
     err_t *ret;
 } __udp_bind_req;
+
+typedef struct {
+    struct udp_pcb *pcb;
+    const struct netif *netif;
+} __udp_bind_netif_req;
 
 typedef struct {
     struct udp_pcb *pcb;

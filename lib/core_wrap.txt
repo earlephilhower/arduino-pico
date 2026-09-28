@@ -48,6 +48,7 @@
 -Wl,--wrap=udp_new_ip_type
 -Wl,--wrap=udp_remove
 -Wl,--wrap=udp_bind
+-Wl,--wrap=udp_bind_netif
 -Wl,--wrap=udp_connect
 -Wl,--wrap=udp_disconnect
 -Wl,--wrap=udp_send
