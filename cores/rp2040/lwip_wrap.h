@@ -251,13 +251,13 @@ extern u32_t __real_sys_timeouts_sleeptime();
 extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);
 extern err_t __real_dns_gethostbyname_addrtype(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg, u8_t dns_addrtype);
 extern void __real_dhcp_set_struct(struct netif *netif, struct dhcp *dhcp);
-extern void __real_dhcp_cleanup (struct netif *netif);
-extern err_t __real_dhcp_start (struct netif *netif);
-extern void __real_dhcp_inform (struct netif *netif);
-extern err_t __real_dhcp_renew (struct netif *netif);
-extern void __real_dhcp_release_and_stop (struct netif *netif);
-extern err_t __real_dhcp_release (struct netif *netif);
-extern void __real_dhcp_stop (struct netif *netif);
+extern void __real_dhcp_cleanup(struct netif *netif);
+extern err_t __real_dhcp_start(struct netif *netif);
+extern void __real_dhcp_inform(struct netif *netif);
+extern err_t __real_dhcp_renew(struct netif *netif);
+extern void __real_dhcp_release_and_stop(struct netif *netif);
+extern err_t __real_dhcp_release(struct netif *netif);
+extern void __real_dhcp_stop(struct netif *netif);
 extern err_t __real_igmp_start(struct netif *netif);
 extern err_t __real_igmp_stop(struct netif *netif);
 extern void __real_igmp_report_groups(struct netif *netif);
@@ -294,7 +294,18 @@ extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t 
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
 extern int __real_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface);
 extern int __real_cyw43_wifi_update_multicast_filter(cyw43_t *self, uint8_t *addr, bool add);
-
+extern bool __real_cyw43_driver_init(async_context_t *context);
+extern void __real_cyw43_driver_deinit(async_context_t *context);
+extern void __real_cyw43_thread_enter();
+extern void __real_cyw43_thread_exit();
+extern void __real_cyw43_thread_lock_check();
+extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
+extern void __real_cyw43_delay_ms(uint32_t ms);
+extern void __real_cyw43_delay_us(uint32_t us);
+extern void __real_cyw43_post_poll_hook();
+extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
+extern void __real_cyw43_schedule_internal_poll_dispatch(void (*func)());
+extern void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
 
 typedef struct {
     struct pbuf *p;
@@ -582,16 +593,16 @@ typedef struct {
 typedef struct {
     struct netif *netif;
 } __dhcp_cleanup_req;
- 
+
 typedef struct {
     struct netif *netif;
-    err_t *ret;   
+    err_t *ret;
 } __dhcp_start_req;
 
 typedef struct {
     struct netif *netif;
 } __dhcp_inform_req;
- 
+
 typedef struct {
     struct netif *netif;
     err_t *ret;
@@ -600,12 +611,12 @@ typedef struct {
 typedef struct {
     struct netif *netif;
 } __dhcp_release_and_stop_req;
- 
+
 typedef struct {
     struct netif *netif;
     err_t *ret;
 } __dhcp_release_req;
- 
+
 typedef struct {
     struct netif *netif;
 } __dhcp_stop_req;

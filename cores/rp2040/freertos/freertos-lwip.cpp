@@ -285,7 +285,7 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_udp_bind(r->pcb, r->ipaddr, r->port);
                 break;
             }
-            case __udp_bind_netif {
+            case __udp_bind_netif: {
                 __udp_bind_netif_req *r = (__udp_bind_netif_req *)w.req;
                 __real_udp_bind_netif(r->pcb, r->netif);
                 break;
