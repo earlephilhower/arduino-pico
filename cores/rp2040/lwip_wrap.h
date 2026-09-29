@@ -142,7 +142,9 @@ typedef enum {
     __sys_check_timeouts = 5000,
     __sys_timeouts_sleeptime,
 
-    __dns_gethostbyname = 6000,
+    __dns_setserver = 6000,
+    __dns_getserver,
+    __dns_gethostbyname,
     __dns_gethostbyname_addrtype,
 
     __dhcp_set_struct,
@@ -248,6 +250,8 @@ extern err_t __real_udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p, const ip_
 extern err_t __real_udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif, const ip_addr_t *src_ip);
 extern void __real_sys_check_timeouts();
 extern u32_t __real_sys_timeouts_sleeptime();
+extern void __real_dns_setserver(u8_t numdns, const ip_addr_t *dnsserver);
+extern const ip_addr_t *__real_dns_getserver(u8_t numdns);
 extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);
 extern err_t __real_dns_gethostbyname_addrtype(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg, u8_t dns_addrtype);
 extern void __real_dhcp_set_struct(struct netif *netif, struct dhcp *dhcp);
@@ -567,6 +571,16 @@ typedef struct {
 typedef struct {
     u32_t *ret;
 } __sys_timeouts_sleeptime_req;
+
+typedef struct {
+    u8_t numdns;
+    const ip_addr_t *dnsserver;
+} __dns_setserver_req;
+
+typedef struct {
+    u8_t numdns;
+    const ip_addr_t **ret;
+} __dns_getserver_req;
 
 typedef struct {
     const char *hostname;

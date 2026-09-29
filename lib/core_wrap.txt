@@ -60,6 +60,8 @@
 -Wl,--wrap=sys_check_timeouts
 -Wl,--wrap=sys_timeouts_sleeptime
 
+-Wl,--wrap=dns_setserver
+-Wl,--wrap=dns_getserver
 -Wl,--wrap=dns_gethostbyname
 -Wl,--wrap=dns_gethostbyname_addrtype
 

@@ -655,6 +655,31 @@ extern "C" {
         return __real_sys_timeouts_sleeptime();
     }
 
+    void __wrap_dns_setserver(u8_t numdns, const ip_addr_t *dnsserver) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dns_setserver_req req = { numdns, dnsserver };
+            __lwip(__dns_setserver, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dns_setserver(numdns, dnsserver);
+    }
+
+    const ip_addr_t *__wrap_dns_getserver(u8_t numdns) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            const ip_addr_t *ret;
+            __dns_getserver_req req = { numdns, &ret };
+            __lwip(__dns_getserver, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dns_getserver(numdns);
+    }
+
 
     err_t __wrap_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg) {
 #ifdef __FREERTOS

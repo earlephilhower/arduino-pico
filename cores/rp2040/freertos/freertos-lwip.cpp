@@ -334,6 +334,16 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_sys_timeouts_sleeptime();
                 break;
             }
+            case __dns_setserver: {
+                __dns_setserver_req *r = (__dns_setserver_req *)w.req;
+                __real_dns_setserver(r->numdns, r->dnsserver);
+                break;
+            }
+            case __dns_getserver: {
+                __dns_getserver_req *r = (__dns_getserver_req *)w.req;
+                *(r->ret) = __real_dns_getserver(r->numdns);
+                break;
+            }
             case __dns_gethostbyname: {
                 __dns_gethostbyname_req *r = (__dns_gethostbyname_req *)w.req;
                 *(r->ret) = __real_dns_gethostbyname(r->hostname, r->addr, r->found, r->callback_arg);
