@@ -818,7 +818,7 @@ typedef struct {
     struct netif *netif;
 } __netif_remove_req;
 
-typedef struct { 
+typedef struct {
     struct netif *netif;
 } __netif_set_default_req;
 

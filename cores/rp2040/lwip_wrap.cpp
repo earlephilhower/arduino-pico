@@ -1106,7 +1106,7 @@ extern "C" {
     }
 
 
-struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_init_fn init, netif_input_fn input) {
+    struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_init_fn init, netif_input_fn input) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
             struct netif *ret;
@@ -1117,7 +1117,7 @@ struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_in
 #endif
         LWIPMutex m;
         return __real_netif_add_noaddr(netif, state, init, input);
-}
+    }
 
     struct netif *__wrap_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input) {
 #ifdef __FREERTOS
@@ -1192,17 +1192,17 @@ struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_in
         __real_netif_set_status_callback(netif, status_callback);
     }
 
-//    void __wrap_netif_set_remove_callback(struct netif *netif, netif_status_callback_fn remove_callback) {
-//#ifdef __FREERTOS
-//        if (!__isLWIPThread()) {
-//            __netif_set_remove_callback_req req = { netif, remove_callback };
-//            __lwip(__netif_set_remove_callback, &req);
-//            return;
-//        }
-//#endif
-//        LWIPMutex m;
-//        __real_netif_set_remove_callback(netif, remove_callback);
-//    }
+    //    void __wrap_netif_set_remove_callback(struct netif *netif, netif_status_callback_fn remove_callback) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            __netif_set_remove_callback_req req = { netif, remove_callback };
+    //            __lwip(__netif_set_remove_callback, &req);
+    //            return;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        __real_netif_set_remove_callback(netif, remove_callback);
+    //    }
 
     void __wrap_netif_set_link_up(struct netif *netif) {
 #ifdef __FREERTOS
@@ -1228,7 +1228,7 @@ struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_in
         __real_netif_set_link_down(netif);
     }
 
- 
+
     void __wrap_netif_set_link_callback(struct netif *netif, netif_status_callback_fn link_callback) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1240,21 +1240,21 @@ struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_in
         LWIPMutex m;
         __real_netif_set_link_callback(netif, link_callback);
     }
- 
-//    err_t __wrap_netif_loop_output(struct netif *netif, struct pbuf *p) {
-//#ifdef __FREERTOS
-//        if (!__isLWIPThread()) {
-//            err_t ret;
-//            __netif_loop_output_req req = { netif, p, &ret };
-//            __lwip(__netif_loop_output, &req);
-//            return ret;
-//        }
-//#endif
-//        LWIPMutex m;
-//        return __real_netif_loop_output(netif, p);
-//    }
 
- 
+    //    err_t __wrap_netif_loop_output(struct netif *netif, struct pbuf *p) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            err_t ret;
+    //            __netif_loop_output_req req = { netif, p, &ret };
+    //            __lwip(__netif_loop_output, &req);
+    //            return ret;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        return __real_netif_loop_output(netif, p);
+    //    }
+
+
     u8_t __wrap_netif_name_to_index(const char *name) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1268,7 +1268,7 @@ struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_in
         return __real_netif_name_to_index(name);
     }
 
- 
+
     char *__wrap_netif_index_to_name(u8_t idx, char *name) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1308,29 +1308,29 @@ struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_in
         return __real_netif_find(name);
     }
 
-//    void __wrap_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn) {
-//#ifdef __FREERTOS
-//        if (!__isLWIPThread()) {
-//            __netif_add_ext_callback_req req = { callback, fn };
-//            __lwip(__netif_add_ext_callback, &req);
-//            return;
-//        }
-//#endif
-//        LWIPMutex m;
-//        __real_netif_add_ext_callback(callback, fn);
-//    }
+    //    void __wrap_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            __netif_add_ext_callback_req req = { callback, fn };
+    //            __lwip(__netif_add_ext_callback, &req);
+    //            return;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        __real_netif_add_ext_callback(callback, fn);
+    //    }
 
-//    void __wrap_netif_remove_ext_callback(netif_ext_callback_t *callback) {
-//#ifdef __FREERTOS
-//        if (!__isLWIPThread()) {
-//            __netif_remove_ext_callback_req req = { callback };
-//            __lwip(__netif_remove_ext_callback, &req);
-//            return;
-//        }
-//#endif
-//        LWIPMutex m;
-//        __real_netif_remove_ext_callback(callback);
-//    }
+    //    void __wrap_netif_remove_ext_callback(netif_ext_callback_t *callback) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            __netif_remove_ext_callback_req req = { callback };
+    //            __lwip(__netif_remove_ext_callback, &req);
+    //            return;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        __real_netif_remove_ext_callback(callback);
+    //    }
 
 
 
