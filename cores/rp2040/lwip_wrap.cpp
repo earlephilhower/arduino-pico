@@ -903,7 +903,7 @@ extern "C" {
         if (!__isLWIPThread()) {
             err_t ret;
             __igmp_leavegroup_netif_req req = { netif, groupaddr, &ret };
-            __lwip(__igmp_leavegroup, &req);
+            __lwip(__igmp_leavegroup_netif, &req);
             return ret;
         }
 #endif
