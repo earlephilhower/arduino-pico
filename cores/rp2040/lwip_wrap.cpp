@@ -1370,8 +1370,82 @@ extern "C" {
     //    }
 
 
+    void __wrap_netif_set_ipaddr(struct netif *netif, const ip4_addr_t *ipaddr) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_ipaddr_req req = { netif, ipaddr };
+            __lwip(__netif_set_ipaddr, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_set_ipaddr(netif, ipaddr);
+    }
+
+    void __wrap_netif_set_netmask(struct netif *netif, const ip4_addr_t *netmask) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_netmask_req req = { netif, netmask };
+            __lwip(__netif_set_netmask, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_set_netmask(netif, netmask);
+    }
+
+    void __wrap_netif_set_gw(struct netif *netif, const ip4_addr_t *gw) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_gw_req req = { netif, gw };
+            __lwip(__netif_set_gw, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_set_gw(netif, gw);
+    }
+
+
+    void __wrap_netif_set_addr(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_addr_req req = { netif, ipaddr, netmask, gw };
+            __lwip(__netif_set_addr, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_set_addr(netif, ipaddr, netmask, gw);
+    }
+
 
 #if LWIP_IPV6
+    void __wrap_netif_ip6_addr_set(struct netif *netif, s8_t addr_idx, const ip6_addr_t *addr6) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_ip6_addr_set_req req = { netif, addr_idx, addr6 };
+            __lwip(__netif_ip6_addr_set, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_ip6_addr_set(netif, addr_idx, addr6);
+    }
+
+    void __wrap_netif_ip6_addr_set_state(struct netif *netif, s8_t addr_idx, u8_t state) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_ip6_addr_set_state_req req = { netif, addr_idx, state};
+            __lwip(__netif_ip6_addr_set_state, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_ip6_addr_set_state(netif, addr_idx, state);
+    }
+
+
     void __wrap_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1382,6 +1456,19 @@ extern "C" {
 #endif
         LWIPMutex m;
         __real_netif_create_ip6_linklocal_address(netif, from_mac_48bit);
+    }
+
+    err_t __wrap_netif_add_ip6_address(struct netif *netif, const ip6_addr_t *ip6addr, s8_t *chosen_idx) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __netif_add_ip6_address_req req = { netif, ip6addr, chosen_idx, &ret };
+            __lwip(__netif_add_ip6_address, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_add_ip6_address(netif, ip6addr, chosen_idx);
     }
 #endif
 

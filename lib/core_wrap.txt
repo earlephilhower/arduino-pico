@@ -117,7 +117,15 @@
 -Wl,--wrap=netif_get_by_index
 -Wl,--wrap=netif_find
 
+-Wl,--wrap=netif_set_ipaddr
+-Wl,--wrap=netif_set_netmask
+-Wl,--wrap=netif_set_gw
+-Wl,--wrap=netif_set_addr
+
+-Wl,--wrap=netif_ip6_addr_set
+-Wl,--wrap=netif_ip6_addr_set_state
 -Wl,--wrap=netif_create_ip6_linklocal_address
+-Wl,--wrap=netif_add_ip6_address
 
 -Wl,--wrap=ethernet_input
 

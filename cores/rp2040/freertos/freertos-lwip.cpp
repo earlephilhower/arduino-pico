@@ -610,13 +610,51 @@ static void lwipThread(void *params) {
                 break;
             }
 
+
+            case __netif_set_ipaddr: {
+                __netif_set_ipaddr_req *r = (__netif_set_ipaddr_req *)w.req;
+                __real_netif_set_ipaddr(r->netif, r->ipaddr);
+                break;
+            }
+            case __netif_set_netmask: {
+                __netif_set_netmask_req *r = (__netif_set_netmask_req *)w.req;
+                __real_netif_set_netmask(r->netif, r->netmask);
+                break;
+            }
+            case __netif_set_gw: {
+                __netif_set_gw_req *r = (__netif_set_gw_req *)w.req;
+                __real_netif_set_gw(r->netif, r->gw);
+                break;
+            }
+            case __netif_set_addr: {
+                __netif_set_addr_req *r = (__netif_set_addr_req *)w.req;
+                __real_netif_set_addr(r->netif, r->ipaddr, r->netmask, r->gw);
+                break;
+            }
+
 #if LWIP_IPV6
+            case __netif_ip6_addr_set: {
+                __netif_ip6_addr_set_req *r = (__netif_ip6_addr_set_req *)w.req;
+                __real_netif_ip6_addr_set(r->netif, r->addr_idx, r->addr6);
+                break;
+            }
+            case __netif_ip6_addr_set_state: {
+                __netif_ip6_addr_set_state_req *r = (__netif_ip6_addr_set_state_req *)w.req;
+                __real_netif_ip6_addr_set_state(r->netif, r->addr_idx, r->state);
+                break;
+            }
             case __netif_create_ip6_linklocal_address: {
                 __netif_create_ip6_linklocal_address_req *r = (__netif_create_ip6_linklocal_address_req *)w.req;
                 __real_netif_create_ip6_linklocal_address(r->netif, r->from_mac_48bit);
                 break;
             }
+            case __netif_add_ip6_address: {
+                __netif_add_ip6_address_req *r = (__netif_add_ip6_address_req *)w.req;
+                __real_netif_add_ip6_address(r->netif, r->ip6addr, r->chosen_idx);
+                break;
+            }
 #endif
+
             case __ethernet_input: {
                 __ethernet_input_req *r = (__ethernet_input_req *)w.req;
                 *(r->ret) = __real_ethernet_input(r->p, r->netif);

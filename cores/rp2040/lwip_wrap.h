@@ -202,7 +202,18 @@ typedef enum {
     __netif_find,
     __netif_add_ext_callback,
     __netif_remove_ext_callback,
+
+    __netif_set_ipaddr = 8100,
+    __netif_set_netmask,
+    __netif_set_gw,
+    __netif_set_addr,
+
+#if LWIP_IPV6
+    __netif_ip6_addr_set = 8200,
+    __netif_ip6_addr_set_state,
     __netif_create_ip6_linklocal_address,
+    __netif_add_ip6_address,
+#endif
 
     __ethernet_input = 9000,
 
@@ -326,7 +337,17 @@ extern struct netif *__real_netif_find(const char *name);
 //extern void __real_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn);
 //extern void __real_netif_remove_ext_callback(netif_ext_callback_t *callback);
 
-extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
+extern void __real_netif_set_ipaddr(struct netif *netif, const ip4_addr_t *ipaddr);
+extern void __real_netif_set_netmask(struct netif *netif, const ip4_addr_t *netmask);
+extern void __real_netif_set_gw(struct netif *netif, const ip4_addr_t *gw);
+extern void __real_netif_set_addr(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw);
+
+#if LWIP_IPV6
+extern void __real_netif_ip6_addr_set(struct netif *netif, s8_t addr_idx, const ip6_addr_t *addr6);
+extern void __real_netif_ip6_addr_set_state(struct netif *netif, s8_t addr_idx, u8_t state);
+extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, u8_t from_mac_48bit);
+extern err_t __real_netif_add_ip6_address(struct netif *netif, const ip6_addr_t *ip6addr, s8_t *chosen_idx);
+#endif
 
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
@@ -914,11 +935,54 @@ typedef struct {
 //    netif_ext_callback_t *callback;
 //} __netif_remove_ext_callback_req;
 
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *ipaddr;
+} __netif_set_ipaddr_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *netmask;
+} __netif_set_netmask_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *gw;
+} __netif_set_gw_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *ipaddr;
+    const ip4_addr_t *netmask;
+    const ip4_addr_t *gw;
+} __netif_set_addr_req;
+
+
 #if LWIP_IPV6
+typedef struct {
+    struct netif *netif;
+    s8_t addr_idx;
+    const ip6_addr_t *addr6;
+} __netif_ip6_addr_set_req;
+
+typedef struct {
+    struct netif *netif;
+    s8_t addr_idx;
+    u8_t state;
+} __netif_ip6_addr_set_state_req;
+
 typedef struct {
     struct netif *netif;
     uint8_t from_mac_48bit;
 } __netif_create_ip6_linklocal_address_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip6_addr_t *ip6addr;
+    s8_t *chosen_idx;
+    err_t *ret;
+} __netif_add_ip6_address_req;
 #endif
 
 typedef struct {
