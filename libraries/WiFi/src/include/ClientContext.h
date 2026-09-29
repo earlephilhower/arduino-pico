@@ -48,7 +48,7 @@ public:
     ClientContext(tcp_pcb* pcb, discard_cb_t discard_cb, void* discard_cb_arg) :
         _pcb(pcb), _rx_buf(0), _rx_buf_offset(0), _discard_cb(discard_cb), _discard_cb_arg(discard_cb_arg), _refcnt(0), _next(0),
         _sync(::getDefaultPrivateGlobalSyncValue()) {
-        lwip_callback([this](){
+        lwip_callback([this]() {
             LWIPMutex m;
             tcp_setprio(_pcb, TCP_PRIO_MIN);
             tcp_arg(_pcb, this);
@@ -67,7 +67,7 @@ public:
     }
 
     err_t abort() {
-        lwip_callback([this](){
+        lwip_callback([this]() {
             LWIPMutex m;
             if (_pcb) {
                 DEBUGV(":abort\r\n");
@@ -85,7 +85,7 @@ public:
 
     err_t close() {
         err_t ret = ERR_OK;
-        lwip_callback([this, &ret](){
+        lwip_callback([this, &ret]() {
             LWIPMutex m;
             if (_pcb) {
                 DEBUGV(":close\r\n");
@@ -182,7 +182,7 @@ public:
     }
 
     void setNoDelay(bool nodelay) {
-        lwip_callback([this, nodelay](){
+        lwip_callback([this, nodelay]() {
             LWIPMutex m;
             if (!_pcb) {
                 return;
@@ -197,7 +197,7 @@ public:
 
     bool getNoDelay() const {
         bool ret = false;
-        lwip_callback([this, &ret](){
+        lwip_callback([this, &ret]() {
             LWIPMutex m;
             if (!_pcb) {
                 return;
@@ -221,7 +221,7 @@ public:
 
     const ip_addr_t* getRemoteAddress() const {
         ip_addr_t* ret = 0;
-        lwip_callback([this, &ret](){
+        lwip_callback([this, &ret]() {
             LWIPMutex m;
             if (!_pcb) {
                 return;
@@ -234,7 +234,7 @@ public:
 
     uint16_t getRemotePort() const {
         uint16_t ret = 0;
-        lwip_callback([this, &ret](){
+        lwip_callback([this, &ret]() {
             LWIPMutex m;
             if (!_pcb) {
                 return;
@@ -247,7 +247,7 @@ public:
 
     const ip_addr_t* getLocalAddress() const {
         ip_addr_t *ret = 0;
-        lwip_callback([this, &ret](){
+        lwip_callback([this, &ret]() {
             LWIPMutex m;
             if (!_pcb) {
                 return;
@@ -368,7 +368,7 @@ public:
             }
 
             int sndbuf = -1;
-            lwip_callback([this, &prevsndbuf, &last_sent, &sndbuf](){
+            lwip_callback([this, &prevsndbuf, &last_sent, &sndbuf]() {
                 LWIPMutex m;
                 if (!_pcb) {
                     return;
@@ -573,7 +573,7 @@ protected:
         while (_written < _datalen) {
             const auto remaining = _datalen - _written;
             size_t next_chunk_size = 0;
-            lwip_callback([this, &next_chunk_size, &remaining, &scale](){
+            lwip_callback([this, &next_chunk_size, &remaining, &scale]() {
                 LWIPMutex m;
                 if (!_pcb) {
                     return;
