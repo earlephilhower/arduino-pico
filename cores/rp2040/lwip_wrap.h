@@ -28,6 +28,7 @@
 #include <lwip/dns.h>
 #include <lwip/raw.h>
 #include <lwip/timeouts.h>
+#include <lwip/apps/mdns.h>
 
 
 extern void ethernet_arch_lwip_begin() __attribute__((weak));
@@ -200,14 +201,36 @@ typedef enum {
     __netif_index_to_name,
     __netif_get_by_index,
     __netif_find,
-    __netif_add_ext_callback,
-    __netif_remove_ext_callback,
+    // __netif_add_ext_callback,
+    // __netif_remove_ext_callback,
+    __netif_alloc_client_data_id,
+
+    __netif_set_ipaddr = 8100,
+    __netif_set_netmask,
+    __netif_set_gw,
+    __netif_set_addr,
+
+#if LWIP_IPV6
+    __netif_ip6_addr_set = 8200,
+    __netif_ip6_addr_set_state,
     __netif_create_ip6_linklocal_address,
+    __netif_add_ip6_address,
+#endif
 
     __ethernet_input = 9000,
 
+    __mdns_resp_add_netif = 9100,
+    __mdns_resp_remove_netif,
+    __mdns_resp_rename_netif,
+    __mdns_resp_add_service,
+    __mdns_resp_rename_service,
+    __mdns_resp_add_service_txtitem,
+    __mdns_resp_announce,
+    __mdns_resp_restart_delay,
+    __mdns_resp_init,
+
 #if defined(PICO_CYW43_SUPPORTED)
-    __cyw43_wifi_join = 9500,
+    __cyw43_wifi_join = 9900,
     __cyw43_wifi_leave,
     __cyw43_ioctl,
     __cyw43_wifi_update_multicast_filter,
@@ -325,10 +348,33 @@ extern struct netif *__real_netif_get_by_index(u8_t idx);
 extern struct netif *__real_netif_find(const char *name);
 //extern void __real_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn);
 //extern void __real_netif_remove_ext_callback(netif_ext_callback_t *callback);
+extern u8_t __real_netif_alloc_client_data_id();
 
-extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
+extern void __real_netif_set_ipaddr(struct netif *netif, const ip4_addr_t *ipaddr);
+extern void __real_netif_set_netmask(struct netif *netif, const ip4_addr_t *netmask);
+extern void __real_netif_set_gw(struct netif *netif, const ip4_addr_t *gw);
+extern void __real_netif_set_addr(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw);
+
+#if LWIP_IPV6
+extern void __real_netif_ip6_addr_set(struct netif *netif, s8_t addr_idx, const ip6_addr_t *addr6);
+extern void __real_netif_ip6_addr_set_state(struct netif *netif, s8_t addr_idx, u8_t state);
+extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, u8_t from_mac_48bit);
+extern err_t __real_netif_add_ip6_address(struct netif *netif, const ip6_addr_t *ip6addr, s8_t *chosen_idx);
+#endif
 
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
+
+// By inspection of the mdns.c code
+err_t __real_mdns_resp_add_netif(struct netif *netif, const char *hostname);
+err_t __real_mdns_resp_remove_netif(struct netif *netif);
+err_t __real_mdns_resp_rename_netif(struct netif *netif, const char *hostname);
+s8_t __real_mdns_resp_add_service(struct netif *netif, const char *name, const char *service, enum mdns_sd_proto proto, u16_t port, service_get_txt_fn_t txt_fn, void *txt_data);
+err_t __real_mdns_resp_rename_service(struct netif *netif, u8_t slot, const char *name);
+err_t __real_mdns_resp_add_service_txtitem(struct mdns_service *service, const char *txt, u8_t txt_len);
+void __real_mdns_resp_announce(struct netif *netif);
+void __real_mdns_resp_restart_delay(struct netif *netif, uint32_t delay);
+void __real_mdns_resp_init(void);
+
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
 extern int __real_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface);
@@ -914,11 +960,57 @@ typedef struct {
 //    netif_ext_callback_t *callback;
 //} __netif_remove_ext_callback_req;
 
+typedef struct {
+    u8_t *ret;
+} __netif_alloc_client_data_id_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *ipaddr;
+} __netif_set_ipaddr_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *netmask;
+} __netif_set_netmask_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *gw;
+} __netif_set_gw_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip4_addr_t *ipaddr;
+    const ip4_addr_t *netmask;
+    const ip4_addr_t *gw;
+} __netif_set_addr_req;
+
+
 #if LWIP_IPV6
+typedef struct {
+    struct netif *netif;
+    s8_t addr_idx;
+    const ip6_addr_t *addr6;
+} __netif_ip6_addr_set_req;
+
+typedef struct {
+    struct netif *netif;
+    s8_t addr_idx;
+    u8_t state;
+} __netif_ip6_addr_set_state_req;
+
 typedef struct {
     struct netif *netif;
     uint8_t from_mac_48bit;
 } __netif_create_ip6_linklocal_address_req;
+
+typedef struct {
+    struct netif *netif;
+    const ip6_addr_t *ip6addr;
+    s8_t *chosen_idx;
+    err_t *ret;
+} __netif_add_ip6_address_req;
 #endif
 
 typedef struct {
@@ -926,6 +1018,58 @@ typedef struct {
     struct netif *netif;
     err_t *ret;
 } __ethernet_input_req;
+
+typedef struct {
+    struct netif *netif;
+    const char *hostname;
+    err_t *ret;
+} __mdns_resp_add_netif_req;
+
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __mdns_resp_remove_netif_req;
+
+typedef struct {
+    struct netif *netif;
+    const char *hostname;
+    err_t *ret;
+} __mdns_resp_rename_netif_req;
+
+typedef struct {
+    struct netif *netif;
+    const char *name;
+    const char *service;
+    enum mdns_sd_proto proto;
+    u16_t port;
+    service_get_txt_fn_t txt_fn;
+    void *txt_data;
+    s8_t *ret;
+} __mdns_resp_add_service_req;
+
+typedef struct {
+    struct netif *netif;
+    u8_t slot;
+    const char *name;
+    err_t *ret;
+} __mdns_resp_rename_service_req;
+
+typedef struct {
+    struct mdns_service *service;
+    const char *txt;
+    u8_t txt_len;
+    err_t *ret;
+} __mdns_resp_add_service_txtitem_req;
+
+typedef struct {
+    struct netif *netif;
+} __mdns_resp_announce_req;
+
+typedef struct {
+    struct netif *netif;
+    uint32_t delay;
+} __mdns_resp_restart_delay_req;
+
 
 #if defined(PICO_CYW43_SUPPORTED)
 typedef struct {
