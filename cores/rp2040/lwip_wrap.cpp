@@ -1485,7 +1485,7 @@ extern "C" {
 
 void lwip_callback(std::function<void(void)> cb) {
 #ifdef __FREERTOS
-    if(!__isLWIPThread()) {
+    if (!__isLWIPThread()) {
         __lwip(&cb);
     }
 #endif
