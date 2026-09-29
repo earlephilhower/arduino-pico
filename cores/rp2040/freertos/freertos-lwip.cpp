@@ -609,6 +609,11 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_netif_find(r->name);
                 break;
             }
+            case __netif_alloc_client_data_id: {
+                __netif_alloc_client_data_id_req *r = (__netif_alloc_client_data_id_req *)w.req;
+                *(r->ret) = __real_netif_alloc_client_data_id();
+                break;
+            }
 
 
             case __netif_set_ipaddr: {

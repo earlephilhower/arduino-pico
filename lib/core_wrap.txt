@@ -116,6 +116,7 @@
 -Wl,--wrap=netif_index_to_name
 -Wl,--wrap=netif_get_by_index
 -Wl,--wrap=netif_find
+-Wl,--wrap=netif_alloc_client_data_id
 
 -Wl,--wrap=netif_set_ipaddr
 -Wl,--wrap=netif_set_netmask

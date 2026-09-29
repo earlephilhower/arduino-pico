@@ -200,8 +200,9 @@ typedef enum {
     __netif_index_to_name,
     __netif_get_by_index,
     __netif_find,
-    __netif_add_ext_callback,
-    __netif_remove_ext_callback,
+    // __netif_add_ext_callback,
+    // __netif_remove_ext_callback,
+    __netif_alloc_client_data_id,
 
     __netif_set_ipaddr = 8100,
     __netif_set_netmask,
@@ -336,6 +337,7 @@ extern struct netif *__real_netif_get_by_index(u8_t idx);
 extern struct netif *__real_netif_find(const char *name);
 //extern void __real_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn);
 //extern void __real_netif_remove_ext_callback(netif_ext_callback_t *callback);
+extern u8_t __real_netif_alloc_client_data_id();
 
 extern void __real_netif_set_ipaddr(struct netif *netif, const ip4_addr_t *ipaddr);
 extern void __real_netif_set_netmask(struct netif *netif, const ip4_addr_t *netmask);
@@ -935,6 +937,9 @@ typedef struct {
 //    netif_ext_callback_t *callback;
 //} __netif_remove_ext_callback_req;
 
+typedef struct {
+    u8_t *ret;
+} __netif_alloc_client_data_id_req;
 
 typedef struct {
     struct netif *netif;
