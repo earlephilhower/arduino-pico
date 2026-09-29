@@ -487,14 +487,15 @@ static void lwipThread(void *params) {
                 break;
             }
 #endif
-            case __raw_new: {
-                __raw_new_req *r = (__raw_new_req *)w.req;
-                *(r->ret) = __real_raw_new(r->proto);
+
+            case __raw_bind: {
+                __raw_bind_req *r = (__raw_bind_req *)w.req;
+                *(r->ret) = __real_raw_bind(r->pcb, r->ipaddr);
                 break;
             }
-            case __raw_new_ip_type: {
-                __raw_new_ip_type_req *r = (__raw_new_ip_type_req *)w.req;
-                *(r->ret) = __real_raw_new_ip_type(r->type, r->proto);
+            case __raw_bind_netif: {
+                __raw_bind_netif_req *r = (__raw_bind_netif_req *)w.req;
+                __real_raw_bind_netif(r->pcb, r->netif);
                 break;
             }
             case __raw_connect: {
@@ -502,19 +503,24 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_raw_connect(r->pcb, r->ipaddr);
                 break;
             }
+            case __raw_disconnect: {
+                __raw_disconnect_req *r = (__raw_disconnect_req *)w.req;
+                __real_raw_disconnect(r->pcb);
+                break;
+            }
             case __raw_recv: {
                 __raw_recv_req *r = (__raw_recv_req *)w.req;
                 __real_raw_recv(r->pcb, r->recv, r->recv_arg);
                 break;
             }
-            case __raw_bind: {
-                __raw_bind_req *r = (__raw_bind_req *)w.req;
-                *(r->ret) = __real_raw_bind(r->pcb, r->ipaddr);
-                break;
-            }
             case __raw_sendto: {
                 __raw_sendto_req *r = (__raw_sendto_req *)w.req;
                 *(r->ret) = __real_raw_sendto(r->pcb, r->p, r->ipaddr);
+                break;
+            }
+            case __raw_sendto_if_src: {
+                __raw_sendto_if_src_req *r = (__raw_sendto_if_src_req *)w.req;
+                *(r->ret) = __real_raw_sendto_if_src(r->pcb, r->p, r->dst_ip, r->netif, r->src_ip);
                 break;
             }
             case __raw_send: {
@@ -525,6 +531,16 @@ static void lwipThread(void *params) {
             case __raw_remove: {
                 __raw_remove_req *r = (__raw_remove_req *)w.req;
                 __real_raw_remove(r->pcb);
+                break;
+            }
+            case __raw_new: {
+                __raw_new_req *r = (__raw_new_req *)w.req;
+                *(r->ret) = __real_raw_new(r->proto);
+                break;
+            }
+            case __raw_new_ip_type: {
+                __raw_new_ip_type_req *r = (__raw_new_ip_type_req *)w.req;
+                *(r->ret) = __real_raw_new_ip_type(r->type, r->proto);
                 break;
             }
 
@@ -608,19 +624,108 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_netif_find(r->name);
                 break;
             }
+            case __netif_alloc_client_data_id: {
+                __netif_alloc_client_data_id_req *r = (__netif_alloc_client_data_id_req *)w.req;
+                *(r->ret) = __real_netif_alloc_client_data_id();
+                break;
+            }
+
+
+            case __netif_set_ipaddr: {
+                __netif_set_ipaddr_req *r = (__netif_set_ipaddr_req *)w.req;
+                __real_netif_set_ipaddr(r->netif, r->ipaddr);
+                break;
+            }
+            case __netif_set_netmask: {
+                __netif_set_netmask_req *r = (__netif_set_netmask_req *)w.req;
+                __real_netif_set_netmask(r->netif, r->netmask);
+                break;
+            }
+            case __netif_set_gw: {
+                __netif_set_gw_req *r = (__netif_set_gw_req *)w.req;
+                __real_netif_set_gw(r->netif, r->gw);
+                break;
+            }
+            case __netif_set_addr: {
+                __netif_set_addr_req *r = (__netif_set_addr_req *)w.req;
+                __real_netif_set_addr(r->netif, r->ipaddr, r->netmask, r->gw);
+                break;
+            }
 
 #if LWIP_IPV6
+            case __netif_ip6_addr_set: {
+                __netif_ip6_addr_set_req *r = (__netif_ip6_addr_set_req *)w.req;
+                __real_netif_ip6_addr_set(r->netif, r->addr_idx, r->addr6);
+                break;
+            }
+            case __netif_ip6_addr_set_state: {
+                __netif_ip6_addr_set_state_req *r = (__netif_ip6_addr_set_state_req *)w.req;
+                __real_netif_ip6_addr_set_state(r->netif, r->addr_idx, r->state);
+                break;
+            }
             case __netif_create_ip6_linklocal_address: {
                 __netif_create_ip6_linklocal_address_req *r = (__netif_create_ip6_linklocal_address_req *)w.req;
                 __real_netif_create_ip6_linklocal_address(r->netif, r->from_mac_48bit);
                 break;
             }
+            case __netif_add_ip6_address: {
+                __netif_add_ip6_address_req *r = (__netif_add_ip6_address_req *)w.req;
+                __real_netif_add_ip6_address(r->netif, r->ip6addr, r->chosen_idx);
+                break;
+            }
 #endif
+
             case __ethernet_input: {
                 __ethernet_input_req *r = (__ethernet_input_req *)w.req;
                 *(r->ret) = __real_ethernet_input(r->p, r->netif);
                 break;
             }
+
+            case __mdns_resp_add_netif: {
+                __mdns_resp_add_netif_req *r = (__mdns_resp_add_netif_req *)w.req;
+                *(r->ret) = __real_mdns_resp_add_netif(r->netif, r->hostname);
+                break;
+            }
+            case __mdns_resp_remove_netif: {
+                __mdns_resp_remove_netif_req *r = (__mdns_resp_remove_netif_req *)w.req;
+                *(r->ret) = __real_mdns_resp_remove_netif(r->netif);
+                break;
+            }
+            case __mdns_resp_rename_netif: {
+                __mdns_resp_rename_netif_req *r = (__mdns_resp_rename_netif_req *)w.req;
+                *(r->ret) = __real_mdns_resp_rename_netif(r->netif, r->hostname);
+                break;
+            }
+            case __mdns_resp_add_service: {
+                __mdns_resp_add_service_req *r = (__mdns_resp_add_service_req *)w.req;
+                *(r->ret) = __real_mdns_resp_add_service(r->netif, r->name, r->service, r->proto, r->port, r->txt_fn, r->txt_data);
+                break;
+            }
+            case __mdns_resp_rename_service: {
+                __mdns_resp_rename_service_req *r = (__mdns_resp_rename_service_req *)w.req;
+                *(r->ret) = __real_mdns_resp_rename_service(r->netif, r->slot, r->name);
+                break;
+            }
+            case __mdns_resp_add_service_txtitem: {
+                __mdns_resp_add_service_txtitem_req *r = (__mdns_resp_add_service_txtitem_req *)w.req;
+                *(r->ret) = __real_mdns_resp_add_service_txtitem(r->service, r->txt, r->txt_len);
+                break;
+            }
+            case __mdns_resp_announce: {
+                __mdns_resp_announce_req *r = (__mdns_resp_announce_req *)w.req;
+                __real_mdns_resp_announce(r->netif);
+                break;
+            }
+            case __mdns_resp_restart_delay: {
+                __mdns_resp_restart_delay_req *r = (__mdns_resp_restart_delay_req *)w.req;
+                __real_mdns_resp_restart_delay(r->netif, r->delay);
+                break;
+            }
+            case __mdns_resp_init: {
+                __real_mdns_resp_init();
+                break;
+            }
+
 #if defined(PICO_CYW43_SUPPORTED)
             case __cyw43_wifi_join: {
                 __cyw43_wifi_join_req *r = (__cyw43_wifi_join_req *)w.req;
