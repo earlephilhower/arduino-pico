@@ -173,9 +173,12 @@ typedef enum {
     __mld6_leavegroup_netif,
 
     __raw_bind = 7000,
+    __raw_bind_netif,
     __raw_connect,
+    __raw_disconnect,
     __raw_recv,
     __raw_sendto,
+    __raw_sendto_if_src,
     __raw_send,
     __raw_remove,
     __raw_new,
@@ -291,14 +294,18 @@ extern err_t __real_mld6_joingroup_netif(struct netif *netif, const ip6_addr_t *
 extern err_t __real_mld6_leavegroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr);
 extern err_t __real_mld6_leavegroup_netif(struct netif *netif, const ip6_addr_t *groupaddr);
 #endif
+
+extern err_t __real_raw_bind(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
+extern void __real_raw_bind_netif(struct raw_pcb *pcb, const struct netif *netif);
+extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
+extern void __real_raw_disconnect(struct raw_pcb *pcb);
+extern void __real_raw_recv(struct raw_pcb *pcb, raw_recv_fn recv, void *recv_arg);
+extern err_t __real_raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *ipaddr);
+extern err_t __real_raw_sendto_if_src(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, struct netif *netif, const ip_addr_t *src_ip);
+extern err_t __real_raw_send(struct raw_pcb *pcb, struct pbuf *p);
+extern void __real_raw_remove(struct raw_pcb *pcb);
 extern struct raw_pcb *__real_raw_new(u8_t proto);
 extern struct raw_pcb *__real_raw_new_ip_type(u8_t type, u8_t proto);
-extern void __real_raw_recv(struct raw_pcb *pcb, raw_recv_fn recv, void *recv_arg);
-extern err_t __real_raw_bind(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
-extern err_t __real_raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *ipaddr);
-extern err_t __real_raw_send(struct raw_pcb *pcb, struct pbuf *p);
-extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
-extern void __real_raw_remove(struct raw_pcb *pcb);
 
 extern struct netif *__real_netif_add_noaddr(struct netif *netif, void *state, netif_init_fn init, netif_input_fn input);
 extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
@@ -749,15 +756,15 @@ typedef struct {
 #endif
 
 typedef struct {
-    u8_t proto;
-    struct raw_pcb **ret;
-} __raw_new_req;
+    struct raw_pcb *pcb;
+    const ip_addr_t *ipaddr;
+    err_t *ret;
+} __raw_bind_req;
 
 typedef struct {
-    u8_t type;
-    u8_t proto;
-    struct raw_pcb **ret;
-} __raw_new_ip_type_req;
+    struct raw_pcb *pcb;
+    const struct netif *netif;
+} __raw_bind_netif_req;
 
 typedef struct {
     struct raw_pcb *pcb;
@@ -767,15 +774,13 @@ typedef struct {
 
 typedef struct {
     struct raw_pcb *pcb;
-    raw_recv_fn recv;
-    void *recv_arg;
-} __raw_recv_req;
+} __raw_disconnect_req;
 
 typedef struct {
     struct raw_pcb *pcb;
-    const ip_addr_t *ipaddr;
-    err_t *ret;
-} __raw_bind_req;
+    raw_recv_fn recv;
+    void *recv_arg;
+} __raw_recv_req;
 
 typedef struct {
     struct raw_pcb *pcb;
@@ -787,12 +792,32 @@ typedef struct {
 typedef struct {
     struct raw_pcb *pcb;
     struct pbuf *p;
+    const ip_addr_t *dst_ip;
+    struct netif *netif;
+    const ip_addr_t *src_ip;
+    err_t *ret;
+} __raw_sendto_if_src_req;
+
+typedef struct {
+    struct raw_pcb *pcb;
+    struct pbuf *p;
     err_t *ret;
 } __raw_send_req;
 
 typedef struct {
     struct raw_pcb *pcb;
 } __raw_remove_req;
+
+typedef struct {
+    u8_t proto;
+    struct raw_pcb **ret;
+} __raw_new_req;
+
+typedef struct {
+    u8_t type;
+    u8_t proto;
+    struct raw_pcb **ret;
+} __raw_new_ip_type_req;
 
 
 typedef struct {
