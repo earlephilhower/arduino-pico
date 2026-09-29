@@ -174,7 +174,7 @@ public:
         size_t ret = 0;
         lwip_callback([this, &ret]() {
             LWIPMutex m;
-            if(_pcb) {
+            if (_pcb) {
                 ret = tcp_sndbuf(_pcb);
             }
         });
@@ -639,7 +639,7 @@ protected:
         if (has_written) {
             lwip_callback([this]() {
                 LWIPMutex m;
-                if(_pcb) {
+                if (_pcb) {
                     // lwIP's tcp_output doc: "Find out what we can send and send it"
                     // *with respect to Nagle*
                     // more info: https://lists.gnu.org/archive/html/lwip-users/2017-11/msg00134.html
