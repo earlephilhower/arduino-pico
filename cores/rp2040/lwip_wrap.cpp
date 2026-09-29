@@ -1501,6 +1501,120 @@ extern "C" {
         return __real_ethernet_input(p, netif);
     }
 
+    err_t __wrap_mdns_resp_add_netif(struct netif *netif, const char *hostname) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mdns_resp_add_netif_req req = { netif, hostname, &ret };
+            __lwip(__mdns_resp_add_netif, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mdns_resp_add_netif(netif, hostname);
+    }
+
+    err_t __wrap_mdns_resp_remove_netif(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mdns_resp_remove_netif_req req = { netif, &ret };
+            __lwip(__mdns_resp_remove_netif, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mdns_resp_remove_netif(netif);
+    }
+
+    err_t __wrap_mdns_resp_rename_netif(struct netif *netif, const char *hostname) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mdns_resp_rename_netif_req req = { netif, hostname, &ret };
+            __lwip(__mdns_resp_rename_netif, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mdns_resp_rename_netif(netif, hostname);
+    }
+
+    s8_t __wrap_mdns_resp_add_service(struct netif *netif, const char *name, const char *service, enum mdns_sd_proto proto, u16_t port, service_get_txt_fn_t txt_fn, void *txt_data) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            s8_t ret;
+            __mdns_resp_add_service_req req = { netif, name, service, proto, port, txt_fn, txt_data, &ret };
+            __lwip(__mdns_resp_add_service, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mdns_resp_add_service(netif, name, service, proto, port, txt_fn, txt_data);
+    }
+
+    err_t __wrap_mdns_resp_rename_service(struct netif *netif, u8_t slot, const char *name) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mdns_resp_rename_service_req req = { netif, slot, name, &ret };
+            __lwip(__mdns_resp_rename_service, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mdns_resp_rename_service(netif, slot, name);
+    }
+
+    err_t __wrap_mdns_resp_add_service_txtitem(struct mdns_service *service, const char *txt, u8_t txt_len) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __mdns_resp_add_service_txtitem_req req = { service, txt, txt_len, &ret };
+            __lwip(__mdns_resp_add_service_txtitem, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_mdns_resp_add_service_txtitem(service, txt, txt_len);
+    }
+
+    void __wrap_mdns_resp_announce(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __mdns_resp_announce_req req = { netif };
+            __lwip(__mdns_resp_announce, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_mdns_resp_announce(netif);
+    }
+
+    void __wrap_mdns_resp_restart_delay(struct netif *netif, uint32_t delay) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __mdns_resp_restart_delay_req req = { netif, delay };
+            __lwip(__mdns_resp_restart_delay, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_mdns_resp_restart_delay(netif, delay);
+    }
+
+    void __wrap_mdns_resp_init() {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __lwip(__mdns_resp_init, nullptr);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_mdns_resp_init();
+    }
+
+
 #if defined(PICO_CYW43_SUPPORTED)
     int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
     int __wrap_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel) {
