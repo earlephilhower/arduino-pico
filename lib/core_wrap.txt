@@ -48,6 +48,7 @@
 -Wl,--wrap=udp_new_ip_type
 -Wl,--wrap=udp_remove
 -Wl,--wrap=udp_bind
+-Wl,--wrap=udp_bind_netif
 -Wl,--wrap=udp_connect
 -Wl,--wrap=udp_disconnect
 -Wl,--wrap=udp_send
@@ -57,9 +58,21 @@
 -Wl,--wrap=udp_sendto_if_src
 
 -Wl,--wrap=sys_check_timeouts
+-Wl,--wrap=sys_timeouts_sleeptime
 
+-Wl,--wrap=dns_setserver
+-Wl,--wrap=dns_getserver
 -Wl,--wrap=dns_gethostbyname
 -Wl,--wrap=dns_gethostbyname_addrtype
+
+-Wl,--wrap=dhcp_set_struct
+-Wl,--wrap=dhcp_cleanup
+-Wl,--wrap=dhcp_start
+-Wl,--wrap=dhcp_inform
+-Wl,--wrap=dhcp_renew
+-Wl,--wrap=dhcp_release_and_stop
+-Wl,--wrap=dhcp_release
+-Wl,--wrap=dhcp_stop
 
 -Wl,--wrap=igmp_start
 -Wl,--wrap=igmp_stop
@@ -86,12 +99,22 @@
 -Wl,--wrap=raw_new
 -Wl,--wrap=raw_new_ip_type
 
+-Wl,--wrap=netif_add_noaddr
 -Wl,--wrap=netif_add
 -Wl,--wrap=netif_remove
--Wl,--wrap=netif_set_link_up
--Wl,--wrap=netif_set_up
--Wl,--wrap=netif_create_ip6_linklocal_address
 -Wl,--wrap=netif_set_default
+-Wl,--wrap=netif_set_up
+-Wl,--wrap=netif_set_down
+-Wl,--wrap=netif_set_status_callback
+-Wl,--wrap=netif_set_link_up
+-Wl,--wrap=netif_set_link_down
+-Wl,--wrap=netif_set_link_callback
+-Wl,--wrap=netif_name_to_index
+-Wl,--wrap=netif_index_to_name
+-Wl,--wrap=netif_get_by_index
+-Wl,--wrap=netif_find
+
+-Wl,--wrap=netif_create_ip6_linklocal_address
 
 -Wl,--wrap=ethernet_input
 
