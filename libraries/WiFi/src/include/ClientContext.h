@@ -401,7 +401,7 @@ public:
 
     uint8_t state() const {
         uint8_t ret = CLOSED;
-        lwip_callback([this, &ret](){
+        lwip_callback([this, &ret]() {
             LWIPMutex m;
             if (!_pcb || _pcb->state == CLOSE_WAIT || _pcb->state == CLOSING) {
                 // CLOSED for WiFIClient::status() means nothing more can be written
