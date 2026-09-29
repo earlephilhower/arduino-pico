@@ -357,7 +357,7 @@ public:
 
         // wait for peer's acks to flush lwIP's output buffer
         uint32_t last_sent = millis();
-        while (1) {
+        while (true) {
             if (millis() - last_sent > (uint32_t) max_wait_ms) {
 #ifdef DEBUGV
                 // wait until sent: timeout
@@ -386,7 +386,9 @@ public:
             });
             // esp_yield(); // from sys or os context
 
-            if (_pcb && (state() != ESTABLISHED) || (sndbuf == TCP_SND_BUF)) {
+            if (!_pcb) {
+                return false;
+            } else if ((state() != ESTABLISHED) || (sndbuf == TCP_SND_BUF)) {
                 // peer has closed or all bytes are sent and acked
                 // ((TCP_SND_BUF-sndbuf) is the amount of un-acked bytes)
                 break;
