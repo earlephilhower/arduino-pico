@@ -181,13 +181,25 @@ typedef enum {
     __raw_new,
     __raw_new_ip_type,
 
-    __netif_add = 8000,
+    __netif_add_noaddr = 8000,
+    __netif_add,
     __netif_remove,
-    __netif_set_link_up,
-    __netif_set_up,
-    __netif_create_ip6_linklocal_address,
     __netif_set_default,
-
+    __netif_set_up,
+    __netif_set_down,
+    __netif_set_status_callback,
+    __netif_set_remove_callback,
+    __netif_set_link_up,
+    __netif_set_link_down,
+    __netif_set_link_callback,
+    __netif_loop_output,
+    __netif_name_to_index,
+    __netif_index_to_name,
+    __netif_get_by_index,
+    __netif_find,
+    __netif_add_ext_callback,
+    __netif_remove_ext_callback,
+    __netif_create_ip6_linklocal_address,
 
     __ethernet_input = 9000,
 
@@ -287,12 +299,28 @@ extern err_t __real_raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_add
 extern err_t __real_raw_send(struct raw_pcb *pcb, struct pbuf *p);
 extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
 extern void __real_raw_remove(struct raw_pcb *pcb);
+
+extern struct netif *__real_netif_add_noaddr(struct netif *netif, void *state, netif_init_fn init, netif_input_fn input);
 extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
 extern void __real_netif_remove(struct netif *netif);
-extern void __real_netif_set_link_up(struct netif *netif);
-extern void __real_netif_set_up(struct netif *netif);
-extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
 extern void __real_netif_set_default(struct netif *netif);
+extern void __real_netif_set_up(struct netif *netif);
+extern void __real_netif_set_down(struct netif *netif);
+extern void __real_netif_set_status_callback(struct netif *netif, netif_status_callback_fn status_callback);
+extern void __real_netif_set_remove_callback(struct netif *netif, netif_status_callback_fn remove_callback);
+extern void __real_netif_set_link_up(struct netif *netif);
+extern void __real_netif_set_link_down(struct netif *netif);
+extern void __real_netif_set_link_callback(struct netif *netif, netif_status_callback_fn link_callback);
+extern err_t __real_netif_loop_output(struct netif *netif, struct pbuf *p);
+extern u8_t __real_netif_name_to_index(const char *name);
+extern char *__real_netif_index_to_name(u8_t idx, char *name);
+extern struct netif *__real_netif_get_by_index(u8_t idx);
+extern struct netif *__real_netif_find(const char *name);
+//extern void __real_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn);
+//extern void __real_netif_remove_ext_callback(netif_ext_callback_t *callback);
+
+extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
+
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
@@ -766,6 +794,15 @@ typedef struct {
     struct raw_pcb *pcb;
 } __raw_remove_req;
 
+
+typedef struct {
+    struct netif *netif;
+    void *state;
+    netif_init_fn init;
+    netif_input_fn input;
+    struct netif **ret;
+} __netif_add_noaddr_req;
+
 typedef struct {
     struct netif *netif;
     const ip4_addr_t *ipaddr;
@@ -781,14 +818,76 @@ typedef struct {
     struct netif *netif;
 } __netif_remove_req;
 
+typedef struct { 
+    struct netif *netif;
+} __netif_set_default_req;
+
+typedef struct {
+    struct netif *netif;
+} __netif_set_up_req;
+
+typedef struct {
+    struct netif *netif;
+} __netif_set_down_req;
+
+typedef struct {
+    struct netif *netif;
+    netif_status_callback_fn status_callback;
+} __netif_set_status_callback_req;
+
+typedef struct {
+    struct netif *netif;
+    netif_status_callback_fn remove_callback;
+} __netif_set_remove_callback_req;
+
 typedef struct {
     struct netif *netif;
 } __netif_set_link_up_req;
 
 typedef struct {
     struct netif *netif;
-} __netif_set_up_req;
+} __netif_set_link_down_req;
 
+typedef struct {
+    struct netif *netif;
+    netif_status_callback_fn link_callback;
+} __netif_set_link_callback_req;
+
+typedef struct {
+    struct netif *netif;
+    struct pbuf *p;
+    err_t *ret;
+} __netif_loop_output_req;
+
+typedef struct {
+    const char *name;
+    u8_t *ret;
+} __netif_name_to_index_req;
+
+typedef struct {
+    u8_t idx;
+    char *name;
+    char **ret;
+} __netif_index_to_name_req;
+
+typedef struct {
+    u8_t idx;
+    struct netif **ret;
+} __netif_get_by_index_req;
+
+typedef struct {
+    const char *name;
+    struct netif **ret;
+} __netif_find_req;
+
+//typedef struct {
+//    netif_ext_callback_t *callback;
+//    netif_ext_callback_fn fn;
+//} __netif_add_ext_callback_req;
+
+//typedef struct {
+//    netif_ext_callback_t *callback;
+//} __netif_remove_ext_callback_req;
 
 #if LWIP_IPV6
 typedef struct {
@@ -796,10 +895,6 @@ typedef struct {
     uint8_t from_mac_48bit;
 } __netif_create_ip6_linklocal_address_req;
 #endif
-
-typedef struct {
-    struct netif *netif;
-} __netif_set_default_req;
 
 typedef struct {
     struct pbuf *p;

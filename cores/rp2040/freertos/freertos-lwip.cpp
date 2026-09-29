@@ -512,6 +512,12 @@ static void lwipThread(void *params) {
                 __real_raw_remove(r->pcb);
                 break;
             }
+
+            case __netif_add_noaddr: {
+                __netif_add_noaddr_req *r = (__netif_add_noaddr_req *)w.req;
+                *(r->ret) = __real_netif_add_noaddr(r->netif, r->state, r->init, r->input);
+                break;
+            }
             case __netif_add: {
                 __netif_add_req *r = (__netif_add_req *)w.req;
                 *(r->ret) = __real_netif_add(r->netif, r->ipaddr, r->netmask, r->gw, r->state, r->init, r->input);
@@ -522,9 +528,9 @@ static void lwipThread(void *params) {
                 __real_netif_remove(r->netif);
                 break;
             }
-            case __netif_set_link_up: {
-                __netif_set_link_up_req *r = (__netif_set_link_up_req *)w.req;
-                __real_netif_set_link_up(r->netif);
+            case __netif_set_default: {
+                __netif_set_default_req *r = (__netif_set_default_req *)w.req;
+                __real_netif_set_default(r->netif);
                 break;
             }
             case __netif_set_up: {
@@ -532,6 +538,62 @@ static void lwipThread(void *params) {
                 __real_netif_set_up(r->netif);
                 break;
             }
+            case __netif_set_down: {
+                __netif_set_down_req *r = (__netif_set_down_req *)w.req;
+                __real_netif_set_down(r->netif);
+                break;
+            }
+            case __netif_set_status_callback: {
+                __netif_set_status_callback_req *r = (__netif_set_status_callback_req *)w.req;
+                __real_netif_set_status_callback(r->netif, r->status_callback);
+                break;
+            }
+//            case __netif_set_remove_callback: {
+//                __netif_set_remove_callback_req *r = (__netif_set_remove_callback_req *)w.req;
+//                __real_netif_set_remove_callback(r->netif, r->remove_callback);
+//                break;
+//            }
+            case __netif_set_link_up: {
+                __netif_set_link_up_req *r = (__netif_set_link_up_req *)w.req;
+                __real_netif_set_link_up(r->netif);
+                break;
+            }
+            case __netif_set_link_down: {
+                __netif_set_link_down_req *r = (__netif_set_link_down_req *)w.req;
+                __real_netif_set_link_down(r->netif);
+                break;
+            }
+            case __netif_set_link_callback: {
+                __netif_set_link_callback_req *r = (__netif_set_link_callback_req *)w.req;
+                __real_netif_set_link_callback(r->netif, r->link_callback);
+                break;
+            }
+//            case __netif_loop_output: {
+//                __netif_loop_output_req *r = (__netif_loop_output_req *)w.req;
+//                *(r->ret) = __real_netif_loop_output(r->netif, r->p);
+//                break;
+//            }
+            case __netif_name_to_index: {
+                __netif_name_to_index_req *r = (__netif_name_to_index_req *)w.req;
+                *(r->ret) = __real_netif_name_to_index(r->name);
+                break;
+            }
+            case __netif_index_to_name: {
+                __netif_index_to_name_req *r = (__netif_index_to_name_req *)w.req;
+                *(r->ret) = __real_netif_index_to_name(r->idx, r->name);
+                break;
+            }
+            case __netif_get_by_index: {
+                __netif_get_by_index_req *r = (__netif_get_by_index_req *)w.req;
+                *(r->ret) = __real_netif_get_by_index(r->idx);
+                break;
+            }
+            case __netif_find: {
+                __netif_find_req *r = (__netif_find_req *)w.req;
+                *(r->ret) = __real_netif_find(r->name);
+                break;
+            }
+
 #if LWIP_IPV6
             case __netif_create_ip6_linklocal_address: {
                 __netif_create_ip6_linklocal_address_req *r = (__netif_create_ip6_linklocal_address_req *)w.req;

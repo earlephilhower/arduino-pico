@@ -99,12 +99,22 @@
 -Wl,--wrap=raw_new
 -Wl,--wrap=raw_new_ip_type
 
+-Wl,--wrap=netif_add_noaddr
 -Wl,--wrap=netif_add
 -Wl,--wrap=netif_remove
--Wl,--wrap=netif_set_link_up
--Wl,--wrap=netif_set_up
--Wl,--wrap=netif_create_ip6_linklocal_address
 -Wl,--wrap=netif_set_default
+-Wl,--wrap=netif_set_up
+-Wl,--wrap=netif_set_down
+-Wl,--wrap=netif_set_status_callback
+-Wl,--wrap=netif_set_link_up
+-Wl,--wrap=netif_set_link_down
+-Wl,--wrap=netif_set_link_callback
+-Wl,--wrap=netif_name_to_index
+-Wl,--wrap=netif_index_to_name
+-Wl,--wrap=netif_get_by_index
+-Wl,--wrap=netif_find
+
+-Wl,--wrap=netif_create_ip6_linklocal_address
 
 -Wl,--wrap=ethernet_input
 

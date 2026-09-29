@@ -1105,6 +1105,20 @@ extern "C" {
         __real_raw_remove(pcb);
     }
 
+
+struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_init_fn init, netif_input_fn input) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct netif *ret;
+            __netif_add_noaddr_req req = { netif, state, init, input, &ret };
+            __lwip(__netif_add_noaddr, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_add_noaddr(netif, state, init, input);
+}
+
     struct netif *__wrap_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1130,16 +1144,16 @@ extern "C" {
         __real_netif_remove(netif);
     }
 
-    void __wrap_netif_set_link_up(struct netif *netif) {
+    void __wrap_netif_set_default(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
-            __netif_set_link_up_req req = { netif };
-            __lwip(__netif_set_link_up, &req);
+            __netif_set_default_req req = { netif };
+            __lwip(__netif_set_default, &req);
             return;
         }
 #endif
         LWIPMutex m;
-        __real_netif_set_link_up(netif);
+        __real_netif_set_default(netif);
     }
 
     void __wrap_netif_set_up(struct netif *netif) {
@@ -1154,6 +1168,172 @@ extern "C" {
         __real_netif_set_up(netif);
     }
 
+    void __wrap_netif_set_down(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_down_req req = { netif };
+            __lwip(__netif_set_down, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_down(netif);
+    }
+
+    void __wrap_netif_set_status_callback(struct netif *netif, netif_status_callback_fn status_callback) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_status_callback_req req = { netif, status_callback };
+            __lwip(__netif_set_status_callback, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_status_callback(netif, status_callback);
+    }
+
+//    void __wrap_netif_set_remove_callback(struct netif *netif, netif_status_callback_fn remove_callback) {
+//#ifdef __FREERTOS
+//        if (!__isLWIPThread()) {
+//            __netif_set_remove_callback_req req = { netif, remove_callback };
+//            __lwip(__netif_set_remove_callback, &req);
+//            return;
+//        }
+//#endif
+//        LWIPMutex m;
+//        __real_netif_set_remove_callback(netif, remove_callback);
+//    }
+
+    void __wrap_netif_set_link_up(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_up_req req = { netif };
+            __lwip(__netif_set_link_up, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_link_up(netif);
+    }
+
+    void __wrap_netif_set_link_down(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_down_req req = { netif };
+            __lwip(__netif_set_link_down, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_link_down(netif);
+    }
+
+ 
+    void __wrap_netif_set_link_callback(struct netif *netif, netif_status_callback_fn link_callback) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_callback_req req = { netif, link_callback };
+            __lwip(__netif_set_link_callback, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_link_callback(netif, link_callback);
+    }
+ 
+//    err_t __wrap_netif_loop_output(struct netif *netif, struct pbuf *p) {
+//#ifdef __FREERTOS
+//        if (!__isLWIPThread()) {
+//            err_t ret;
+//            __netif_loop_output_req req = { netif, p, &ret };
+//            __lwip(__netif_loop_output, &req);
+//            return ret;
+//        }
+//#endif
+//        LWIPMutex m;
+//        return __real_netif_loop_output(netif, p);
+//    }
+
+ 
+    u8_t __wrap_netif_name_to_index(const char *name) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            u8_t ret;
+            __netif_name_to_index_req req = { name, &ret };
+            __lwip(__netif_name_to_index, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_name_to_index(name);
+    }
+
+ 
+    char *__wrap_netif_index_to_name(u8_t idx, char *name) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            char *ret;
+            __netif_index_to_name_req req = { idx, name, &ret };
+            __lwip(__netif_index_to_name, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_index_to_name(idx, name);
+    }
+
+    struct netif *__wrap_netif_get_by_index(u8_t idx) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct netif *ret;
+            __netif_get_by_index_req req = { idx, &ret };
+            __lwip(__netif_get_by_index, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_get_by_index(idx);
+    }
+
+    struct netif *__wrap_netif_find(const char *name) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct netif *ret;
+            __netif_find_req req = { name, &ret };
+            __lwip(__netif_find, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_find(name);
+    }
+
+//    void __wrap_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn) {
+//#ifdef __FREERTOS
+//        if (!__isLWIPThread()) {
+//            __netif_add_ext_callback_req req = { callback, fn };
+//            __lwip(__netif_add_ext_callback, &req);
+//            return;
+//        }
+//#endif
+//        LWIPMutex m;
+//        __real_netif_add_ext_callback(callback, fn);
+//    }
+
+//    void __wrap_netif_remove_ext_callback(netif_ext_callback_t *callback) {
+//#ifdef __FREERTOS
+//        if (!__isLWIPThread()) {
+//            __netif_remove_ext_callback_req req = { callback };
+//            __lwip(__netif_remove_ext_callback, &req);
+//            return;
+//        }
+//#endif
+//        LWIPMutex m;
+//        __real_netif_remove_ext_callback(callback);
+//    }
+
+
+
 #if LWIP_IPV6
     void __wrap_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit) {
 #ifdef __FREERTOS
@@ -1167,18 +1347,6 @@ extern "C" {
         __real_netif_create_ip6_linklocal_address(netif, from_mac_48bit);
     }
 #endif
-
-    void __wrap_netif_set_default(struct netif *netif) {
-#ifdef __FREERTOS
-        if (!__isLWIPThread()) {
-            __netif_set_default_req req = { netif };
-            __lwip(__netif_set_default, &req);
-            return;
-        }
-#endif
-        LWIPMutex m;
-        __real_netif_set_default(netif);
-    }
 
     err_t __wrap_ethernet_input(struct pbuf *p, struct netif *netif) {
 #ifdef __FREERTOS
