@@ -25,7 +25,7 @@
 #include <_needsbt.h>
 #include <Arduino.h>
 #include <functional>
-#include <pico/cyw43_arch.h>
+#include <BluetoothLock.h>
 #include <class/hid/hid_device.h>
 
 // The BTStack has redefinitions of this USB enum (same values, just redefined), so hide it to allow easy compilation
@@ -86,8 +86,8 @@ private:
 
         case HCI_EVENT_USER_CONFIRMATION_REQUEST:
             // ssp: inform about user confirmation request
-            //log_info("SSP User Confirmation Request with numeric value '%06" PRIu32 "'\n", hci_event_user_confirmation_request_get_numeric_value(packet));
-            //log_info("SSP User Confirmation Auto accept\n");
+            DEBUGBT("SSP User Confirmation Request with numeric value '%06" PRIu32 "'\n", hci_event_user_confirmation_request_get_numeric_value(packet));
+            DEBUGBT("SSP User Confirmation Auto accept\n");
             break;
 
         case HCI_EVENT_HID_META:
@@ -142,15 +142,17 @@ public:
     }
 
     bool send(int id, void *rpt, int len) {
-        __lockBluetooth();
-        if (connected()) {
-            _needToSend = true;
-            _sendReportID = id;
-            _sendReport = rpt;
-            _sendReportLen = len;
-            hid_device_request_can_send_now_event(getCID());
-        }
-        __unlockBluetooth();
+        do {
+            BluetoothLock l;
+            if (connected()) {
+                _needToSend = true;
+                _sendReportID = id;
+                _sendReport = rpt;
+                _sendReportLen = len;
+                hid_device_request_can_send_now_event(getCID());
+            }
+        } while (0);
+
         while (connected() && _needToSend) {
             /* noop busy wait */
         }

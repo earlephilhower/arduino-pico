@@ -162,13 +162,75 @@ bool I2S::setFrequency(int newFreq) {
 }
 
 bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
-    if (samplerate % 11025 == 0) {
-        return set_sys_clock_khz(I2SSYSCLK_44_1, false);
+    if (_isInput && _isOutput) {
+        samplerate *= 2; // We need 4 clocks per bit, not 2, in dual mode
     }
-    if (samplerate % 8000 == 0) {
-        return set_sys_clock_khz(I2SSYSCLK_8, false);
+    int rate;
+    // Numbers taken from I2SBrute either at 0.0% error or a "reasonable" if not minimal
+#ifdef PICO_RP2350
+    switch (samplerate) {
+    case 8000:
+    case 16000:
+    case 32000:
+    case 48000:
+    case 96000:
+        rate = 153600; // Very mild overclock
+        break;
+    case 64000:
+        rate = 102400;
+        break;
+    case 192000:
+        rate = 147600;
+        break;
+    case 11025:
+        rate = 156000; // Mild overclock
+        break;
+    case 22050:
+        rate = 120000;
+        break;
+    case 44100:
+        rate = 144000;
+        break;
+    case 88200:
+        rate = 135600;
+        break;
+    default:
+        rate = F_CPU; // unknown, don't change
+        break;
     }
-    return false;
+#else
+    switch (samplerate) {
+    case 8000:
+        rate = 192000;
+        break;
+    case 16000:
+    case 32000:
+    case 48000:
+    case 96000:
+        rate = 153600;
+        break;
+    case 64000:
+        rate = 213000; // Mild overclock, OTW we drop 50% in speed
+        break;
+    case 192000:
+        rate = 196800;
+        break;
+    case 11025:
+        rate = 204000; // Very mild overclock
+        break;
+    case 22050:
+        rate = 216000; // Mild overclock
+        break;
+    case 44100:
+    case 88200:
+        rate = 192000;
+        break;
+    default:
+        rate = F_CPU;
+        break;
+    }
+#endif
+    return set_sys_clock_khz(rate, false);
 }
 
 bool I2S::setMCLKmult(int mult) {

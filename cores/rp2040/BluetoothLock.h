@@ -24,15 +24,26 @@
 
 #include <_needsbt.h>
 #include <Arduino.h>
+#include <pico/cyw43_arch.h>
 
 class BluetoothLock {
 public:
+#ifdef __FREERTOS
     BluetoothLock() {
-        __lockBluetooth();
+        cyw43_thread_enter();
     }
     ~BluetoothLock() {
-        __unlockBluetooth();
+        cyw43_thread_exit();
     }
+#else
+    BluetoothLock() {
+        async_context_acquire_lock_blocking(cyw43_arch_async_context());
+    }
+
+    ~BluetoothLock() {
+        async_context_release_lock(cyw43_arch_async_context());
+    }
+#endif
 };
 
 #endif

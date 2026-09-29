@@ -96,7 +96,7 @@ public:
         }
         int rc = lfs_rename(&_lfs, pathFrom, pathTo);
         if (rc != 0) {
-            DEBUGV("lfs_rename: rc=%d, from=`%s`, to=`%s`\n", rc, pathFrom, pathTo);
+            DEBUGV("lfs_rename: rc=%d, from=`%s`, to=`%s`", rc, pathFrom, pathTo);
             return false;
         }
         return true;
@@ -121,7 +121,7 @@ public:
         }
         int rc = lfs_remove(&_lfs, path);
         if (rc != 0) {
-            DEBUGV("lfs_remove: rc=%d path=`%s`\n", rc, path);
+            DEBUGV("lfs_remove: rc=%d path=`%s`", rc, path);
             return false;
         }
         // Now try and remove any empty subdirs this makes, silently
@@ -148,7 +148,7 @@ public:
             // Add metadata with creation time to the directory marker
             rc = lfs_setattr(&_lfs, path, 'c', (const void *)&now, sizeof(now));
             if (rc < 0) {
-                DEBUGV("Unable to set creation time on '%s' to %ld\n", path, (long)now);
+                DEBUGV("Unable to set creation time on '%s' to %ld", path, (long)now);
             }
         }
         return (rc == 0);
@@ -193,7 +193,7 @@ public:
 
     bool format() override {
         if (_size == 0) {
-            DEBUGV("lfs size is zero\n");
+            DEBUGV("lfs size is zero");
             return false;
         }
 
@@ -206,7 +206,7 @@ public:
         memset(&_lfs, 0, sizeof(_lfs));
         int rc = lfs_format(&_lfs, &_lfs_cfg);
         if (rc != 0) {
-            DEBUGV("lfs_format: rc=%d\n", rc);
+            DEBUGV("lfs_format: rc=%d", rc);
             return false;
         }
 
@@ -216,13 +216,13 @@ public:
             time_t t = _timeCallback();
             rc = lfs_setattr(&_lfs, "/", 'c', &t, 8);
             if (rc != 0) {
-                DEBUGV("lfs_format, lfs_setattr 'c': rc=%d\n", rc);
+                DEBUGV("lfs_format, lfs_setattr 'c': rc=%d", rc);
                 return false;
             }
 
             rc = lfs_setattr(&_lfs, "/", 't', &t, 8);
             if (rc != 0) {
-                DEBUGV("lfs_format, lfs_setattr 't': rc=%d\n", rc);
+                DEBUGV("lfs_format, lfs_setattr 't': rc=%d", rc);
                 return false;
             }
 
@@ -382,7 +382,7 @@ public:
         }
         int result = lfs_file_write(_fs->getFS(), _getFD(), (void*) buf, size);
         if (result < 0) {
-            DEBUGV("lfs_write rc=%d\n", result);
+            DEBUGV("lfs_write rc=%d", result);
             return 0;
         }
         return result;
@@ -394,7 +394,7 @@ public:
         }
         int result = lfs_file_read(_fs->getFS(), _getFD(), (void*) buf, size);
         if (result < 0) {
-            DEBUGV("lfs_read rc=%d\n", result);
+            DEBUGV("lfs_read rc=%d", result);
             return 0;
         }
 
@@ -407,7 +407,7 @@ public:
         }
         int rc = lfs_file_sync(_fs->getFS(), _getFD());
         if (rc < 0) {
-            DEBUGV("lfs_file_sync rc=%d\n", rc);
+            DEBUGV("lfs_file_sync rc=%d", rc);
         }
     }
 
@@ -419,7 +419,7 @@ public:
         auto lastPos = position();
         int rc = lfs_file_seek(_fs->getFS(), _getFD(), offset, (int)mode); // NB. SeekMode === LFS_SEEK_TYPES
         if (rc < 0) {
-            DEBUGV("lfs_file_seek rc=%d\n", rc);
+            DEBUGV("lfs_file_seek rc=%d", rc);
             return false;
         }
         if (position() > size()) {
@@ -435,7 +435,7 @@ public:
         }
         int result = lfs_file_tell(_fs->getFS(), _getFD());
         if (result < 0) {
-            DEBUGV("lfs_file_tell rc=%d\n", result);
+            DEBUGV("lfs_file_tell rc=%d", result);
             return 0;
         }
 
@@ -452,7 +452,7 @@ public:
         }
         int rc = lfs_file_truncate(_fs->getFS(), _getFD(), size);
         if (rc < 0) {
-            DEBUGV("lfs_file_truncate rc=%d\n", rc);
+            DEBUGV("lfs_file_truncate rc=%d", rc);
             return false;
         }
         return true;
@@ -467,14 +467,14 @@ public:
                 if (_creation) {
                     int rc = lfs_setattr(_fs->getFS(), _name.get(), 'c', (const void *)&_creation, sizeof(_creation));
                     if (rc < 0) {
-                        DEBUGV("Unable to set creation time on '%s' to %lld\n", _name.get(), _creation);
+                        DEBUGV("Unable to set creation time on '%s' to %lld", _name.get(), _creation);
                     }
                 }
                 // Add metadata with last write time
                 time_t now = _timeCallback();
                 int rc = lfs_setattr(_fs->getFS(), _name.get(), 't', (const void *)&now, sizeof(now));
                 if (rc < 0) {
-                    DEBUGV("Unable to set last write time on '%s' to %lld\n", _name.get(), now);
+                    DEBUGV("Unable to set last write time on '%s' to %lld", _name.get(), now);
                 }
             }
         }

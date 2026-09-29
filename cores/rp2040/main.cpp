@@ -157,7 +157,7 @@ extern "C" int main() {
 
 #if defined DEBUG_RP2040_PORT && !defined(__FREERTOS)
     DEBUG_RP2040_PORT.begin(115200);
-#if (defined(ENABLE_BLUETOOTH) || defined(ENABLE_BLE)) && defined(DEBUG_RP2040_BLUETOOTH)
+#if (defined(ENABLE_BLUETOOTH) || defined(ENABLE_BLE)) && defined(DEBUG_RP2040_BTSTACK)
     __EnableBluetoothDebug(DEBUG_RP2040_PORT);
 #endif
 #endif
@@ -242,5 +242,22 @@ extern "C" void __attribute__((__noreturn__)) __wrap___stack_chk_fail() {
     while (true) {
         panic("*** stack smashing detected ***: terminated\n");
     }
+}
+
+
+// Pico_Low_Power needs stdio_flush...
+extern "C" void stdio_flush() {
+    Serial.flush();
+}
+
+// exit/atexist have no meaning here
+extern "C" void __wrap_exit(int status) {
+    (void) status;
+    panic("exit");
+}
+
+extern "C" int __wrap_atexit(void (*function)(void)) {
+    (void) function;
+    return 0; // We lie, sorry!
 }
 

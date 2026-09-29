@@ -110,6 +110,7 @@ uint16_t BLEServer::readHandler(uint16_t con_handle, uint16_t attribute_handle, 
 }
 
 int BLEServer::writeHandler(uint16_t con_handle, uint16_t attribute_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size) {
+    (void) con_handle;
     // Will be running in BT ctx already
     for (auto s : _svc) {
         int ret = s->handleWrite(attribute_handle, transaction_mode, offset, buffer, buffer_size);
@@ -121,6 +122,8 @@ int BLEServer::writeHandler(uint16_t con_handle, uint16_t attribute_handle, uint
 }
 
 void BLEServer::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, uint16_t size) {
+    (void) channel;
+    (void) size;
     // Will be running in BT ctx already
     if (type != HCI_EVENT_PACKET) {
         return;
@@ -134,7 +137,7 @@ void BLEServer::packetHandler(uint8_t type, uint16_t channel, uint8_t *packet, u
         switch (hci_event_gap_meta_get_subevent_code(packet)) {
         case GAP_SUBEVENT_LE_CONNECTION_COMPLETE:
             con_handle = gap_subevent_le_connection_complete_get_connection_handle(packet);
-            DEBUGV("Connection complete %04x\n", con_handle);
+            DEBUGBT("Connection complete %04x", con_handle);
             for (auto s : _svc) {
                 s->setConHandle(con_handle);
             }

@@ -18,14 +18,14 @@ jobs:
     name: Spelling, Style, Boards, Package, PIO
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: false
     - name: Run codespell
       uses: codespell-project/actions-codespell@406322ec52dd7b488e48c1c4b82e2a8b3a1bf630 # v2.1
       with:
-        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino,./.git,./libraries/FatFS/lib/fatfs,./libraries/FatFS/src/diskio.h,./libraries/FatFS/src/ff.cpp,./libraries/FatFS/src/ffconf.h,./libraries/FatFS/src/ffsystem.cpp,./libraries/FatFS/src/ff.h,./libraries/lwIP_WINC1500/src/driver,./libraries/lwIP_WINC1500/src/common,./libraries/lwIP_WINC1500/src/bus_wrapper,./libraries/lwIP_WINC1500/src/spi_flash,./libraries/WiFi/examples/BearSSL_Validation/certs.h
-        ignore_words_list: ser,dout,shiftIn,acount,froms,ThirdParty
+        skip: ./ArduinoCore-API,./libraries/ESP8266SdFat,./libraries/Adafruit_TinyUSB_Arduino,./libraries/LittleFS/lib,./tools/pyserial,./pico-sdk,./.github,./docs/i2s.rst,./cores/rp2040/api,./FreeRTOS,./tools/libbearssl/bearssl,./include,./libraries/WiFi/examples/BearSSL_Server,./ota/uzlib,./libraries/http-parser/lib,./libraries/WebServer/examples/HelloServerBearSSL/HelloServerBearSSL.ino,./libraries/HTTPUpdateServer/examples/SecureBearSSLUpdater/SecureBearSSLUpdater.ino,./.git,./libraries/FatFS/lib/fatfs,./libraries/FatFS/src/diskio.h,./libraries/FatFS/src/ff.cpp,./libraries/FatFS/src/ffconf.h,./libraries/FatFS/src/ffsystem.cpp,./libraries/FatFS/src/ff.h,./libraries/lwIP_WINC1500/src/driver,./libraries/lwIP_WINC1500/src/common,./libraries/lwIP_WINC1500/src/bus_wrapper,./libraries/lwIP_WINC1500/src/spi_flash,./libraries/WiFi/examples/BearSSL_Validation/certs.h,./libraries/PicoCamera
+        ignore_words_list: ser,dout,shiftIn,acount,froms,ThirdParty,enver
     - name: Check boards.txt was not edited after makeboards.py
       run: |
         ./tools/makeboards.py
@@ -56,15 +56,15 @@ jobs:
       matrix:
         chunk: [0, 1, 2, 3, 4, 5]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: true
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
       id: cache-linux
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
@@ -87,15 +87,15 @@ jobs:
       matrix:
         chunk: [0, 1, 2, 3, 4, 5]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: true
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
       id: cache-linux
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
@@ -118,15 +118,15 @@ jobs:
       matrix:
         chunk: [0, 1, 2, 3, 4, 5]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: true
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
       id: cache-linux
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
@@ -146,15 +146,15 @@ jobs:
     name: Build TinyUSB Examples
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: true
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Cache Linux toolchain
       id: cache-linux
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
@@ -172,15 +172,15 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: true
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Cache Windows toolchain
       id: cache-windows
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
@@ -208,15 +208,15 @@ jobs:
         os: [macOS-15-intel, macOS-14]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: true
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Cache Mac toolchain
       id: cache-mac
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ./tools/dist
         key: ${{ runner.os }}-${{ hashFiles('package/package_pico_index.template.json', 'tests/common.sh') }}
@@ -243,7 +243,7 @@ jobs:
     name: Build PlatformIO Examples
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: 'true'
     - name: Initialize needed submodules
@@ -254,19 +254,19 @@ jobs:
         git submodule update --init
         cd ../..
     - name: Cache pip
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     - name: Cache PlatformIO
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.platformio
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Install PlatformIO
@@ -300,7 +300,7 @@ jobs:
       matrix:
         chunk: [0, 1, 2, 3]
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: 'true'
     - name: Initialize needed submodules
@@ -311,19 +311,19 @@ jobs:
         git submodule update --init
         cd ../..
     - name: Cache pip
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     - name: Cache PlatformIO
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.platformio
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: '3.x'
     - name: Install PlatformIO

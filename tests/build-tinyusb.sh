@@ -2,6 +2,9 @@
 
 cache_dir=$(mktemp -d)
 
+# TODO - Wait for https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/586
+export WARN_EXTRA="-Wno-missing-field-initializers"
+
 source "$GITHUB_WORKSPACE"/tests/common.sh
 
 install_arduino nodebug
@@ -33,6 +36,7 @@ EOL
         echo 1
     fi
 }
+
 build_sketches_with_arduino 1 0 "--usbstack tinyusb"
 
 rm -rf "$cache_dir"

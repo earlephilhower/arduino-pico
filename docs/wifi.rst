@@ -5,6 +5,18 @@ WiFi is supported on the Raspberry Pi Pico W by selecting the "Raspberry Pi Pico
 
 Enable WiFi support by selecting the `Raspberry Pi Pico W` board in the IDE and adding ``#include <WiFi.h>`` in your sketch.
 
+Non-Raspberry Pi WiFi Support
+-----------------------------
+
+In addition to the official WiFi chip from Raspberry Pi, this core supports additional WiFi interface devices:
+
+* Microchip WINC1500
+
+* ESP32-based devices using `ESPHost <https://github.com/Networking-for-Arduino/ESPHost>`__
+
+See the examples in the respective library folders for instructions on instantiating and using these devices.  Most of the features documented here will also work on these WiFi chips.
+
+
 Supported Features
 ------------------
 

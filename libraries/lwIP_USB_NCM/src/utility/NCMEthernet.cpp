@@ -138,6 +138,7 @@ uint16_t NCMEthernet::readFrameData(uint8_t* buffer, uint16_t framesize) {
 }
 
 void NCMEthernet::discardFrame(uint16_t ign) {
+    (void) ign;
     this->_recv_pkg = nullptr;
 }
 

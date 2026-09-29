@@ -23,7 +23,6 @@
 #include <_needsbt.h>
 #include <Arduino.h>
 #include "BLEUUID.h"
-#include "BLEDebug.h"
 
 // These are a bitflag which can be |'d together for characteristicPermission
 enum BLECharacteristicPermission {
@@ -50,11 +49,13 @@ public:
     }
 
     virtual void onRead(BLECharacteristic *pCharacteristic) {
-        DEBUGBLE("onRead %p\n", pCharacteristic);
+        (void) pCharacteristic;
+        DEBUGBT("onRead %p", pCharacteristic);
     }
 
     virtual void onWrite(BLECharacteristic *pCharacteristic) {
-        DEBUGBLE("onWrite %p\n", pCharacteristic);
+        (void) pCharacteristic;
+        DEBUGBT("onWrite %p", pCharacteristic);
     }
 };
 

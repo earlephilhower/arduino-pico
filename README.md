@@ -4,7 +4,7 @@
 
 Raspberry Pi Pico Arduino core, for all RP2040 and RP2350 boards
 
-This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 14.3/Newlib 4.5 toolchain and supports ARM and RISC-V cores.
+This is a port of Arduino to the RP2040 (Raspberry Pi Pico processor) and RP2350 (Raspberry Pi Pico 2 processor). It uses the bare Raspberry Pi Pico SDK and a custom GCC 16.1/Newlib 4.6 toolchain and supports ARM and RISC-V cores.
 
 # Documentation
 See https://arduino-pico.readthedocs.io/en/latest/ along with the examples for more detailed usage information.
@@ -68,6 +68,7 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Invector Labs Challenger+ RP2350 BConnect
 * Invector Labs Challenger+ RP2350 WiFi/BLE
 * Invector Labs Challenger+ RP2350 NB-IoT
+* Invector Labs CPico RP2350 8MB
 * Invector Labs RPICO32
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
@@ -92,17 +93,22 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
 * Pintronix PinMax
+* PCBCupid Glyph 2040
+* PCBCupid Glyph Mini 2040
 * RAKwireless RAK11300
 * Redscorp RP2040-Eins
 * Redscorp RP2040-ProMini
 * Sea-Picro
 * Seeed Indicator RP2040
 * Seeed XIAO RP2040
+* Seeed XIAO RP2040 Plus
 * Seeed XIAO RP2350
 * Silicognition RP2040-Shim
 * Solder Party RP2040 Stamp
 * Solder Party RP2350 Stamp
 * Solder Party RP2350 Stamp XL
+* Soldered Electronics NULA Ethernet W55RP20
+* Soldered Electronics NULA Node RP2040
 * Soldered Electronics NULA RP2350
 * SparkFun IoT RedBoard RP2350
 * SparkFun MicroMod RP2040
@@ -127,6 +133,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * Waveshare RP2350 Plus
 * Waveshare RP2350 Plus W
 * Waveshare RP2350 LCD 0.96
+* Waveshare RP2350-POE-ETH
+* WeAct RP2350B Core Board
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5100S-EVB-Pico2
 * WIZnet W5500-EVB-Pico
@@ -308,6 +316,9 @@ The installed tools include a version of OpenOCD (in the pqt-openocd directory) 
 * [FatFS low-level filesystem](http://elm-chan.org/fsw/ff/) code is Copyright (C) 2024, ChaN, all rights reserved.
 * [TLSF memory manager for PSRAM from Espressif fork](https://github.com/espressif/tlsf) of [original](https://github.com/mattconte/tlsf) by Matthew Conte is copyright Matthew Conte and licensed under the MIT license.
 * [ESPHost library](https://github.com/Networking-for-Arduino/ESPHost) is LGPL licensed by its maintainers.
+* [iLabs_ESP-NOW library](https://github.com/PontusO/iLabs_ESP-NOW) is licensed under the MIT license by iLabs Electronics.
+* [iLabs_Hearth library](https://github.com/PontusO/iLabs_Hearth) is licensed under the MIT license by iLabs Electronics.
+* [PicoCamera](https://github.com/umeiko/PicoCamera) camera library is licensed under the MIT license by umeko.
 
 -Earle F. Philhower, III  
  earlephilhower@yahoo.com

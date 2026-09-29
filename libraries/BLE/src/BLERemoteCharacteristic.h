@@ -26,7 +26,6 @@
 
 #include "BLEAdvertising.h"
 #include "BLEUUID.h"
-#include "BLEDebug.h"
 
 class BLERemoteCharacteristic;
 
@@ -40,7 +39,10 @@ public:
     }
 
     virtual void onNotify(BLERemoteCharacteristic *p, const uint8_t *data, uint32_t len) {
-        DEBUGBLE("onNotify %p\n", p);
+        (void) p;
+        (void) data;
+        (void) len;
+        DEBUGBT("onNotify %p", p);
     }
 };
 

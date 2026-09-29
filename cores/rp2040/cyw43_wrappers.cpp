@@ -163,21 +163,6 @@ extern "C" void init_cyw43_wifi() {
     }
 }
 
-extern "C" void __lockBluetooth() {
-#ifdef __FREERTOS
-    cyw43_thread_enter();
-#else
-    async_context_acquire_lock_blocking(cyw43_arch_async_context());
-#endif
-}
-
-extern "C" void __unlockBluetooth() {
-#ifdef __FREERTOS
-    cyw43_thread_exit();
-#else
-    async_context_release_lock(cyw43_arch_async_context());
-#endif
-}
 
 extern "C" void __pinMode(pin_size_t pin, PinMode mode);
 extern "C" void __digitalWrite(pin_size_t pin, PinStatus val);

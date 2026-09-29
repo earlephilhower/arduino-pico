@@ -25,5 +25,10 @@
     using the device.
 */
 void initVariant() {
+    // When the ESP32 co-processor is running ESP-NOW or Hearth firmware the
+    // iLabs_ESP-NOW or iLabs_Hearth library owns the reset sequence (ESP_NOW.setLink(),
+    // Hearth's first-use reset), so skip the AT reset.
+#if !defined(ILABS_ESPNOW) && !defined(ILABS_HEARTH)
     Challenger2040WiFi.reset();
+#endif
 }

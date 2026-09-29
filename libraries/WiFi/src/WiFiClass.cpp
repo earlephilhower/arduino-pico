@@ -178,6 +178,8 @@ uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase) {
 }
 
 uint8_t WiFiClass::beginAP(const char *ssid, const char* passphrase, uint8_t channel) {
+    (void) ssid; // May not be used on non-CYW32 WiFi implementations
+    (void) passphrase; // May not be used on non-CYW32 WiFi implementations
     (void) channel; // May not be used on non-CYW32 WiFi implementations
 
 #if defined(PICO_CYW43_SUPPORTED)

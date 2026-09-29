@@ -32,8 +32,8 @@ def BuildDebugPort(name):
         print("%s.menu.dbgport.%s.build.debug_port=-DDEBUG_RP2040_PORT=%s" % (name, p, p))
 
 def BuildDebugLevel(name):
-    for l in [ ("None", ""), ("Core", "-DDEBUG_RP2040_CORE"), ("SPI", "-DDEBUG_RP2040_SPI"), ("Wire", "-DDEBUG_RP2040_WIRE"), ("Bluetooth", "-DDEBUG_RP2040_BLUETOOTH"), ("BLE", "-DDEBUG_RP2040_BLE"),
-               ("LWIP", "-DLWIP_DEBUG=1"), ("All", "-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1"), ("NDEBUG", "-DNDEBUG") ]:
+    for l in [ ("None", ""), ("Core", "-DDEBUG_RP2040_CORE"), ("SPI", "-DDEBUG_RP2040_SPI"), ("Wire", "-DDEBUG_RP2040_WIRE"), ("BTStack", "-DDEBUG_RP2040_BTSTACK"), ("Bluetooth", "-DDEBUG_RP2040_BLUETOOTH"),
+               ("LWIP", "-DLWIP_DEBUG=1"), ("All", "-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BTSTACK -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1"), ("NDEBUG", "-DNDEBUG") ]:
         print("%s.menu.dbglvl.%s=%s" % (name, l[0], l[0]))
         print("%s.menu.dbglvl.%s.build.debug_level=%s" % (name, l[0], l[1]))
 
@@ -202,6 +202,10 @@ def BuildUploadMethodMenu(name, ram):
         print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
         if a == "picotool":
             print("%s.menu.uploadmethod.%s.build.picodebugflags=-DENABLE_PICOTOOL_USB" % (name, a))
+        if a != "default":
+            # No serial port is involved in these upload methods (picotool/openocd find
+            # the device themselves), so don't make arduino-cli wait for one to reappear.
+            print("%s.menu.uploadmethod.%s.upload.wait_for_upload_port=false" % (name, a))
         print("%s.menu.uploadmethod.%s.upload.maximum_data_size=%d" % (name, a, c * 1024))
         print("%s.menu.uploadmethod.%s.upload.tool=%s" % (name, a, e))
         print("%s.menu.uploadmethod.%s.upload.tool.default=%s" % (name, a, e))
@@ -313,11 +317,25 @@ def BuildGlobalMenuList():
     print("menu.ipbtstack=IP/Bluetooth Stack")
     print("menu.uploadmethod=Upload Method")
 
-def BuildWifiType(name):
+def BuildWifiType(name, hosted = False, matter = False):
     print("%s.menu.espwifitype.esp_at=ESP AT" % (name))
     print("%s.menu.espwifitype.esp_at.build.espwifitype=-DWIFIESPAT2" % (name))
-    print("%s.menu.espwifitype.esp_hosted=ESP Hosted" % (name))
-    print("%s.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1" % (name))
+    if hosted:
+        print("%s.menu.espwifitype.esp_hosted=ESP Hosted" % (name))
+        print("%s.menu.espwifitype.esp_hosted.build.espwifitype=-DESPHOSTSPI=SPI1" % (name))
+    print("%s.menu.espwifitype.esp_now=ESP-NOW" % (name))
+    print("%s.menu.espwifitype.esp_now.build.espwifitype=-DILABS_ESPNOW" % (name))
+    # Hearth speaks Matter over a UART to an ESP32-C6, so it is offered only on
+    # the boards that have one. The three options differ to the flasher, never
+    # to the compiler: the library is transport-agnostic, and on the combined
+    # image AT+MTTRANSPORT picks the stack at runtime.
+    if matter:
+        for (mid, label, variant) in [("matter_wifi", "Hearth (Matter, WiFi)", "wifi"),
+                                      ("matter_thread", "Hearth (Matter, Thread)", "thread"),
+                                      ("matter_combined", "Hearth (Matter, WiFi+Thread)", "combined")]:
+            print("%s.menu.espwifitype.%s=%s" % (name, mid, label))
+            print("%s.menu.espwifitype.%s.build.espwifitype=-DILABS_HEARTH" % (name, mid))
+            print("%s.menu.espwifitype.%s.bootloader.variant=%s" % (name, mid, variant))
 
 def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine, flashsizemb, psramsize, boot2, extra = None, board_url = None):
     smallfs = [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
@@ -352,8 +370,13 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     elif name == "olimex_rp2040pico30":
         BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
-    elif (name == "challenger_2350_wifi6_ble5") or (name == "challenger_2040_wifi_ble"):
-        BuildWifiType(name)
+    elif name == "challenger_2350_wifi6_ble5":
+        BuildWifiType(name, hosted = True, matter = True)
+        BuildCountry(name)
+        BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
+        BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
+    elif name == "challenger_2040_wifi_ble":
+        BuildWifiType(name, hosted = True)
         BuildCountry(name)
         BuildFlashMenu(name, chip, 8*1024*1024, [0, 7*1024*1024, 4*1024*1024, 2*1024*1024])
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
@@ -368,6 +391,14 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
         BuildFlashMenu(name, chip, 16*1024*1024, [0, 15*1024*1024, 14*1024*1024, 12*1024*1024, 8*1024*1024, 4*1024*1024, 2*1024*1024])
     else:
         BuildFlashMenu(name, chip, flashsizemb * 1024 * 1024, fssizelist)
+    if name == "challenger_2040_wifi6_ble":
+        # The only C6 in this group. challenger_2040_wifi and
+        # challenger_nb_2040_wifi carry an ESP8285, and the other two an
+        # ESP32-C3, so none of them can run Hearth.
+        BuildWifiType(name, matter = True)
+    elif name in ["challenger_2040_wifi", "challenger_nb_2040_wifi",
+                  "connectivity_2040_lte_wifi_ble", "ilabs_rpico32"]:
+        BuildWifiType(name)
     if (chip == "rp2350") or (chip == "rp2350-riscv"):
         BuildArch(name)
         BuildFreq(name, 150)
@@ -376,7 +407,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMCS(name)
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
-        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48") or (name == "solderparty_rp2350_stamp_xl"):
+        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48") or (name == "solderparty_rp2350_stamp_xl") or (name == "waveshare_rp2350_core"):
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
@@ -610,18 +641,19 @@ MakeBoard('groundstudio_marble_pico', "rp2040", "GroundStudio", "Marble Pico", "
 MakeBoard("challenger_2040_lte", "rp2040", "iLabs", "Challenger 2040 LTE", "0x2e8a", "0x100b", 500, "CHALLENGER_2040_LTE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_lora", "rp2040", "iLabs", "Challenger 2040 LoRa", "0x2e8a", "0x1023", 250, "CHALLENGER_2040_LORA_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_subghz", "rp2040", "iLabs", "Challenger 2040 SubGHz", "0x2e8a", "0x1032", 250, "CHALLENGER_2040_SUBGHZ_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("challenger_2040_wifi", "rp2040", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", 250, "CHALLENGER_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2040_wifi", "rp2040", "iLabs", "Challenger 2040 WiFi", "0x2e8a", "0x1006", 250, "CHALLENGER_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_wifi_ble", "rp2040", "iLabs", "Challenger 2040 WiFi/BLE", "0x2e8a", "0x102C", 500, "CHALLENGER_2040_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("challenger_2040_wifi6_ble", "rp2040", "iLabs", "Challenger 2040 WiFi6/BLE", "0x2e8a", "0x105F", 500, "CHALLENGER_2040_WIFI6_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("challenger_nb_2040_wifi", "rp2040", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a", "0x100d", 500, "CHALLENGER_NB_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("challenger_2040_wifi6_ble", "rp2040", "iLabs", "Challenger 2040 WiFi6/BLE", "0x2e8a", "0x105F", 500, "CHALLENGER_2040_WIFI6_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("challenger_nb_2040_wifi", "rp2040", "iLabs", "Challenger NB 2040 WiFi", "0x2e8a", "0x100d", 500, "CHALLENGER_NB_2040_WIFI_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_sdrtc", "rp2040", "iLabs", "Challenger 2040 SD/RTC", "0x2e8a", "0x102d", 250, "CHALLENGER_2040_SDRTC_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_nfc", "rp2040", "iLabs", "Challenger 2040 NFC", "0x2e8a", "0x1036", 250, "CHALLENGER_2040_NFC_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2040_uwb", "rp2040", "iLabs", "Challenger 2040 UWB", "0x2e8a", "0x1052", 500, "CHALLENGER_2040_UWB_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("connectivity_2040_lte_wifi_ble", "rp2040", "iLabs", "Connectivity 2040 LTE/WiFi/BLE", "0x2e8a", "0x107b", 500, "CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
-MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum", ["WIFIESPAT2"])
+MakeBoard("connectivity_2040_lte_wifi_ble", "rp2040", "iLabs", "Connectivity 2040 LTE/WiFi/BLE", "0x2e8a", "0x107b", 500, "CONNECTIVITY_2040_LTE_WIFI_BLE_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250, "ILABS_2040_RPICO32_RP2040", 8, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "none")
 MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "none")
 MakeBoard("challenger_2350_nbiot", "rp2350", "iLabs", "Challenger 2350 NB-IoT", "0x2e8a", "0x110d", 500, "CHALLENGER_2350_NBIOT_RP2350", 8, 0, "none")
+MakeBoard("ilabs_cpico_2350", "rp2350", "iLabs", "CPico 2350", "0x2e8a", "0x113f", 500, "CPICO_2350_RP2350", 8, 8, "none")
 
 # Makerbase
 MakeBoard("mksthr36", "rp2040", "Makerbase", "MKS THR36", "0x2e8a", "0x000a", 250, "MAKERBASE_MKSTHR36", 1, 0, "boot2_w25q080_2_padded_checksum")
@@ -652,6 +684,10 @@ MakeBoard("olimex_pico2bb48", "rp2350", "Olimex", "Pico2BB48", "0x15ba", "0x0026
 MakeBoard("olimex_pico2xl", "rp2350", "Olimex", "Pico2XL", "0x15ba", "0x0026", 250, "OLIMEX_PICO2XL", 2, 0, "none")
 MakeBoard("olimex_pico2xxl", "rp2350", "Olimex", "Pico2XXL", "0x15ba", "0x0026", 500, "OLIMEX_PICO2XXL", 16, 8, "none")
 MakeBoard("olimex_rp2040pico30", "rp2040", "Olimex", "RP2040-Pico30", "0x15ba", "0x0026", 250, "OLIMEX_RP2040_PICO30", 2, 0, "boot2_w25q080_2_padded_checksum")
+
+# PCBCupid
+MakeBoard("pcbcupid_glyph_2040", "rp2040", "Pcbcupid", "GLYPH 2040", "0x2e8a", "0x1128", 250, "PCBCUPID_GLYPH_2040", 8, 0, "boot2_w25q64jv_4_padded_checksum", None, "https://pcbcupid.com")
+MakeBoard("pcbcupid_glyph_mini_2040", "rp2040", "Pcbcupid", "GLYPH MINI 2040", "0x2e8a", "0x1123", 250, "PCBCUPID_GLYPH_MINI_2040", 8, 0, "boot2_w25q64jv_4_padded_checksum", None, "https://pcbcupid.com")
 
 # PicoLume
 MakeBoard("picolume", "rp2040", "PicoLume", "Transceiver", "0x1209", "0x2008", 250, "PICOLUME", 2, 0, "boot2_w25q080_2_padded_checksum", None, "https://picolume.com")
@@ -692,6 +728,8 @@ MakeBoard("solderparty_rp2350_stamp_xl", "rp2350", "Solder Party", "RP2350 Stamp
 
 # Soldered Electronics
 MakeBoard("soldered_nula_rp2350", "rp2350", "Soldered Electronics", "NULA RP2350", "0x2e8a", "0x10ec", 500, "SOLDERED_NULA_RP2350", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
+MakeBoard("soldered_nula_ethernet_w55rp20", "rp2040", "Soldered Electronics", "NULA Ethernet W55RP20", "0x2e8a", "0x1122", 250, "SOLDERED_NULA_ETHERNET", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("soldered_nula_node_rp2040", "rp2040", "Soldered Electronics", "NULA Node", "0x2e8a", "0x1143", 250, "SOLDERED_NULA_NODE", 16, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 
 # SparkFun
 MakeBoard("sparkfun_iotredboard_rp2350", "rp2350", "SparkFun", "IoT RedBoard RP2350", "0x1b4f", "0x0047", 250, "SPARKFUN_IOTREDBOARD_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"], "https://www.sparkfun.com/sparkfun-iot-redboard-rp2350.html")
@@ -707,6 +745,7 @@ MakeBoard("sparkfun_xrp_controller", "rp2350", "SparkFun", "XRP Controller", "0x
 # Seeed
 MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("seeed_xiao_rp2040", "rp2040", "Seeed", "XIAO RP2040", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
+MakeBoard("seeed_xiao_rp2040_plus", "rp2040", "Seeed", "XIAO RP2040 Plus", "0x2e8a", "0x000a", 250, "SEEED_XIAO_RP2040_PLUS", 2, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("seeed_xiao_rp2350", "rp2350", "Seeed", "XIAO RP2350", "0x2886", "0x0058", 250, "SEEED_XIAO_RP2350", 2, 0, "none", None, "https://www.seeedstudio.com/Seeed-XIAO-RP2350-p-5944.html")
 
 # Upesy
@@ -730,11 +769,16 @@ MakeBoard("waveshare_rp2040_pizero", "rp2040", "Waveshare", "RP2040 PiZero", "0x
 MakeBoard("waveshare_rp2040_plus", "rp2040", "Waveshare", "RP2040 Plus", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 4, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2350_core", "rp2350", "Waveshare", "RP2350 Core", "0x2e8a", "0x10B2", 500, "WAVESHARE_RP2350_CORE", 16, 0, "none")
 MakeBoard("waveshare_rp2350_zero", "rp2350", "Waveshare", "RP2350 Zero", "0x2e8a", "0x10B0", 500, "WAVESHARE_RP2350_ZERO", 4, 0, "none")
 MakeBoard("waveshare_rp2350_pizero", "rp2350", "Waveshare", "RP2350 PiZero", "0x2e8a", "0x000F", 500, "WAVESHARE_RP2350_PIZERO", 16, 0, "none")
 MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a", "0x10B1", 500, "WAVESHARE_RP2350_PLUS", 4, 0, "none")
 MakeBoard("waveshare_rp2350b_plus_w", "rp2350", "Waveshare", "RP2350B Plus W", "0x2e8a", "0xf00a", 500, "WAVESHARE_RP2350B_PLUS_W", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
+MakeBoard("waveshare_rp2350_poe_eth", "rp2350", "Waveshare", "RP2350-POE-ETH", "0x2e8a", "0x10B8", 500, "WAVESHARE_RP2350_POE_ETH", 16, 0, "none")
+
+# WeAct
+MakeBoard("weact_rp2350b", "rp2350", "WeAct", "Studio RP2350B Core Board", "0x2e8a", "0x000f", 250, "WEACT_RP2350B", 16, 0, "none")
 
 # WIZnet
 MakeBoard("wiznet_5100s_evb_pico", "rp2040", "WIZnet", "W5100S-EVB-Pico", "0x2e8a", "0x1027", 250, "WIZNET_5100S_EVB_PICO", 2, 0, "boot2_w25q080_2_padded_checksum")

@@ -33,9 +33,11 @@
 #define PIN_SX1262_ANT_PWR  (25u)
 
 // Wire
+#define __WIRE0_DEVICE i2c1
 #define PIN_WIRE0_SDA  (2u)
 #define PIN_WIRE0_SCL  (3u)
 
+#define __WIRE1_DEVICE i2c0
 #define PIN_WIRE1_SDA  (20u)
 #define PIN_WIRE1_SCL  (21u)
 

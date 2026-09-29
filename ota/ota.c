@@ -79,9 +79,14 @@ bool has_ota() {
     return true;
 }
 
-
-
-void do_ota() {
+// GCC 16 for RISC-V actually notices that we're doing a CRC and expands it into a big ol'
+// table (>1KB) blowing up the code space needed.  For RV, disable any optimization.
+// This is probably a GCC 16.1 RV bug
+#ifndef __arm__
+#pragma GCC push_options
+#pragma GCC optimize("O0")
+#endif
+uint32_t __attribute__ ((noinline)) crc32() {
     uint32_t crc = 0xffffffff;
     const uint8_t *data = (const uint8_t *)&_ota_cmd;
     for (uint32_t i = 0; i < offsetof(OTACmdPage, crc32); i++) {
@@ -95,6 +100,14 @@ void do_ota() {
         }
     }
     crc = ~crc;
+    return crc;
+}
+#ifndef __arm__
+#pragma GCC pop_options
+#endif
+
+void do_ota() {
+    uint32_t crc = crc32();
     if (crc != _ota_cmd.crc32) {
         uart_puts(uart0, "\ncrc32 mismatch\n");
         return;

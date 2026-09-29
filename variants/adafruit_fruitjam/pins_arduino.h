@@ -56,6 +56,7 @@
 #define __SERIAL1_DEVICE uart1
 #define PIN_SERIAL1_TX (8u)
 #define PIN_SERIAL1_RX (9u)
+#define __SERIAL2_DEVICE uart0
 #define PIN_SERIAL2_TX (99u)
 #define PIN_SERIAL2_RX (99u)
 

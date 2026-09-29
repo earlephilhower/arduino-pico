@@ -136,3 +136,34 @@ not know your new code is compatible here.
 Add ``rp2040`` to ``architectures`` (in ``library.properties``) and
 ``"rp2040"`` to ``platforms[]`` (in ``library.json``) to let the tools know.
 Note that even the RP2350 is identified as ``rp2040`` for this purpose.
+
+
+Debugging
+~~~~~~~~~
+
+Diagnostic output can be enabled to help debug the core (or an application
+using the core) by setting the build-time options:
+
+``Debug Port`` (or FQBN ``:dbgport=...``) sets the debug output serial port:
+``Serial``, ``Serial1``, ``Serial2``, ``SerialSemi``, or ``Disabled``
+(default). If the debug port disabled, all debug output is suppressed.
+
+``Debug Level`` (or FQBN ``:dbglvl=...``) enables extra subsystem debugging:
+``None`` (default), ``Core``, ``SPI``, ``Wire``, ``Bluetooth``, ``BLE``,
+``LWIP``, or ``All``. Note that even at ``None``, some baseline chatter is
+enabled if a debug port is set.
+
+Debug-logging macros are defined in ``cores/rp2040/debug_internal.h``
+(included by ``Arduino.h``):
+
+* ``DEBUGV("format", ...)`` writes to the debug port if one is defined,
+  otherwise gets compiled out. The macro adds a newline (CR-LF); do not include
+  ``\n`` in the format string.
+* ``DEBUGCORE(...)`` is ``DEBUGV(...)`` at debug level ``Core`` or ``All``,
+  otherwise nothing.
+* ``DEBUGWIRE(...)`` is ``DEBUGV(...)`` at debug level ``Wire`` or ``All``,
+  otherwise nothing.
+* ``DEBUGSPI(...)`` is ``DEBUGV(...)`` at debug level ``SPI`` or ``All``,
+  otherwise nothing.
+
+Other subsystems (eg. Bluetooth) use other logging systems, see the code.

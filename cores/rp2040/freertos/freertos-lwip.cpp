@@ -59,6 +59,7 @@ void __startLWIPThread() {
         panic("Unable to create LWIP task");
     }
     vTaskCoreAffinitySet(__lwipTask, 1 << 0);
+    initted = true;
 }
 
 extern "C" void __lwip(__lwip_op op, void *req, bool fromISR) {
@@ -299,6 +300,11 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_udp_bind(r->pcb, r->ipaddr, r->port);
                 break;
             }
+            case __udp_bind_netif: {
+                __udp_bind_netif_req *r = (__udp_bind_netif_req *)w.req;
+                __real_udp_bind_netif(r->pcb, r->netif);
+                break;
+            }
             case __udp_connect: {
                 __udp_connect_req *r = (__udp_connect_req *)w.req;
                 *(r->ret) = __real_udp_connect(r->pcb, r->ipaddr, r->port);
@@ -338,6 +344,21 @@ static void lwipThread(void *params) {
                 __real_sys_check_timeouts();
                 break;
             }
+            case __sys_timeouts_sleeptime: {
+                __sys_timeouts_sleeptime_req *r = (__sys_timeouts_sleeptime_req *)w.req;
+                *(r->ret) = __real_sys_timeouts_sleeptime();
+                break;
+            }
+            case __dns_setserver: {
+                __dns_setserver_req *r = (__dns_setserver_req *)w.req;
+                __real_dns_setserver(r->numdns, r->dnsserver);
+                break;
+            }
+            case __dns_getserver: {
+                __dns_getserver_req *r = (__dns_getserver_req *)w.req;
+                *(r->ret) = __real_dns_getserver(r->numdns);
+                break;
+            }
             case __dns_gethostbyname: {
                 __dns_gethostbyname_req *r = (__dns_gethostbyname_req *)w.req;
                 *(r->ret) = __real_dns_gethostbyname(r->hostname, r->addr, r->found, r->callback_arg);
@@ -348,6 +369,47 @@ static void lwipThread(void *params) {
                 *(r->ret) = __real_dns_gethostbyname_addrtype(r->hostname, r->addr, r->found, r->callback_arg, r->dns_addrtype);
                 break;
             }
+            case __dhcp_set_struct: {
+                __dhcp_set_struct_req *r = (__dhcp_set_struct_req *)w.req;
+                __real_dhcp_set_struct(r->netif, r->dhcp);
+                break;
+            }
+            case __dhcp_cleanup: {
+                __dhcp_cleanup_req *r = (__dhcp_cleanup_req *)w.req;
+                __real_dhcp_cleanup(r->netif);
+                break;
+            }
+            case __dhcp_start: {
+                __dhcp_start_req *r = (__dhcp_start_req *)w.req;
+                *(r->ret) = __real_dhcp_start(r->netif);
+                break;
+            }
+            case __dhcp_inform: {
+                __dhcp_inform_req *r = (__dhcp_inform_req *)w.req;
+                __real_dhcp_inform(r->netif);
+                break;
+            }
+            case __dhcp_renew: {
+                __dhcp_renew_req *r = (__dhcp_renew_req *)w.req;
+                *(r->ret) = __real_dhcp_renew(r->netif);
+                break;
+            }
+            case __dhcp_release_and_stop: {
+                __dhcp_release_and_stop_req *r = (__dhcp_release_and_stop_req *)w.req;
+                __real_dhcp_release_and_stop(r->netif);
+                break;
+            }
+            case __dhcp_release: {
+                __dhcp_release_req *r = (__dhcp_release_req *)w.req;
+                *(r->ret) = __real_dhcp_release(r->netif);
+                break;
+            }
+            case __dhcp_stop: {
+                __dhcp_stop_req *r = (__dhcp_stop_req *)w.req;
+                __real_dhcp_stop(r->netif);
+                break;
+            }
+
             case __igmp_start: {
                 __igmp_start_req *r = (__igmp_start_req *)w.req;
                 *(r->ret) = __real_igmp_start(r->netif);
@@ -465,6 +527,12 @@ static void lwipThread(void *params) {
                 __real_raw_remove(r->pcb);
                 break;
             }
+
+            case __netif_add_noaddr: {
+                __netif_add_noaddr_req *r = (__netif_add_noaddr_req *)w.req;
+                *(r->ret) = __real_netif_add_noaddr(r->netif, r->state, r->init, r->input);
+                break;
+            }
             case __netif_add: {
                 __netif_add_req *r = (__netif_add_req *)w.req;
                 *(r->ret) = __real_netif_add(r->netif, r->ipaddr, r->netmask, r->gw, r->state, r->init, r->input);
@@ -475,9 +543,9 @@ static void lwipThread(void *params) {
                 __real_netif_remove(r->netif);
                 break;
             }
-            case __netif_set_link_up: {
-                __netif_set_link_up_req *r = (__netif_set_link_up_req *)w.req;
-                __real_netif_set_link_up(r->netif);
+            case __netif_set_default: {
+                __netif_set_default_req *r = (__netif_set_default_req *)w.req;
+                __real_netif_set_default(r->netif);
                 break;
             }
             case __netif_set_up: {
@@ -485,6 +553,62 @@ static void lwipThread(void *params) {
                 __real_netif_set_up(r->netif);
                 break;
             }
+            case __netif_set_down: {
+                __netif_set_down_req *r = (__netif_set_down_req *)w.req;
+                __real_netif_set_down(r->netif);
+                break;
+            }
+            case __netif_set_status_callback: {
+                __netif_set_status_callback_req *r = (__netif_set_status_callback_req *)w.req;
+                __real_netif_set_status_callback(r->netif, r->status_callback);
+                break;
+            }
+            //            case __netif_set_remove_callback: {
+            //                __netif_set_remove_callback_req *r = (__netif_set_remove_callback_req *)w.req;
+            //                __real_netif_set_remove_callback(r->netif, r->remove_callback);
+            //                break;
+            //            }
+            case __netif_set_link_up: {
+                __netif_set_link_up_req *r = (__netif_set_link_up_req *)w.req;
+                __real_netif_set_link_up(r->netif);
+                break;
+            }
+            case __netif_set_link_down: {
+                __netif_set_link_down_req *r = (__netif_set_link_down_req *)w.req;
+                __real_netif_set_link_down(r->netif);
+                break;
+            }
+            case __netif_set_link_callback: {
+                __netif_set_link_callback_req *r = (__netif_set_link_callback_req *)w.req;
+                __real_netif_set_link_callback(r->netif, r->link_callback);
+                break;
+            }
+            //            case __netif_loop_output: {
+            //                __netif_loop_output_req *r = (__netif_loop_output_req *)w.req;
+            //                *(r->ret) = __real_netif_loop_output(r->netif, r->p);
+            //                break;
+            //            }
+            case __netif_name_to_index: {
+                __netif_name_to_index_req *r = (__netif_name_to_index_req *)w.req;
+                *(r->ret) = __real_netif_name_to_index(r->name);
+                break;
+            }
+            case __netif_index_to_name: {
+                __netif_index_to_name_req *r = (__netif_index_to_name_req *)w.req;
+                *(r->ret) = __real_netif_index_to_name(r->idx, r->name);
+                break;
+            }
+            case __netif_get_by_index: {
+                __netif_get_by_index_req *r = (__netif_get_by_index_req *)w.req;
+                *(r->ret) = __real_netif_get_by_index(r->idx);
+                break;
+            }
+            case __netif_find: {
+                __netif_find_req *r = (__netif_find_req *)w.req;
+                *(r->ret) = __real_netif_find(r->name);
+                break;
+            }
+
 #if LWIP_IPV6
             case __netif_create_ip6_linklocal_address: {
                 __netif_create_ip6_linklocal_address_req *r = (__netif_create_ip6_linklocal_address_req *)w.req;
@@ -506,6 +630,16 @@ static void lwipThread(void *params) {
             case __cyw43_wifi_leave: {
                 __cyw43_wifi_leave_req *r = (__cyw43_wifi_leave_req*)w.req;
                 *(r->ret) = __real_cyw43_wifi_leave(r->self, r->itf);
+                break;
+            }
+            case __cyw43_ioctl: {
+                __cyw43_ioctl_req *r = (__cyw43_ioctl_req *)w.req;
+                *(r->ret) = __real_cyw43_ioctl(r->self, r->cmd, r->len, r->buf, r->iface);
+                break;
+            }
+            case __cyw43_wifi_update_multicast_filter: {
+                __cyw43_wifi_update_multicast_filter_req *r = (__cyw43_wifi_update_multicast_filter_req *)w.req;
+                *(r->ret) = __real_cyw43_wifi_update_multicast_filter(r->self, r->addr, r->add);
                 break;
             }
 #endif

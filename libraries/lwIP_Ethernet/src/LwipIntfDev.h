@@ -232,6 +232,7 @@ int LwipIntfDev<RawDev>::hostByName(const char* aHostname, IPAddress& aResult, i
 
 template<class RawDev>
 u8_t LwipIntfDev<RawDev>::_pingCB(void *arg, struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *addr) {
+    (void) pcb;
     (void) addr;
     LwipIntfDev<RawDev> *w = (LwipIntfDev<RawDev> *)arg;
     struct icmp_echo_hdr *iecho;
@@ -296,7 +297,7 @@ bool LwipIntfDev<RawDev>::config(const IPAddress& localIP, const IPAddress& gate
                                  const IPAddress& netmask, const IPAddress& dns1,
                                  const IPAddress& dns2) {
     if (_started) {
-        DEBUGV("LwipIntfDev: use config() then begin()\n");
+        DEBUGV("LwipIntfDev: use config() then begin()");
         return false;
     }
 
@@ -429,7 +430,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
 #if LWIP_IPV6_DHCP6_STATELESS
     err_t __res = dhcp6_enable_stateless(&_netif);
     (void) __res; // Not used except for debug
-    DEBUGV("LwipIntfDev: Enabled DHCP6 stateless: %d\n", __res);
+    DEBUGV("LwipIntfDev: Enabled DHCP6 stateless: %d", __res);
 #endif
 
     _started = true;

@@ -49,6 +49,19 @@ extern "C" {
 
     extern void __lwip(__lwip_op op, void *req, bool fromISR = false);
     extern bool __isLWIPThread();
+    extern async_context_t *__getEthernetContext() __attribute__((weak));;
+
+    void __lwip_assert_core_locked() {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            panic("LWIP_ASSERT_CORE_LOCKED failed");
+        }
+#else
+        if (__getEthernetContext) {
+            async_context_lock_check(__getEthernetContext());
+        }
+#endif
+    }
 
     static XoshiroCpp::Xoshiro256PlusPlus *_lwip_rng = nullptr;
     // Random number generator for LWIP
@@ -57,7 +70,6 @@ extern "C" {
     }
 
     // Avoid calling lwip_init multiple times
-    extern void __real_lwip_init();
     void __wrap_lwip_init() {
         if (!_lwip_rng) {
             recursive_mutex_init(&__lwipMutex);
@@ -72,7 +84,6 @@ extern "C" {
         }
     }
 
-    extern u8_t __real_pbuf_header(struct pbuf *p, s16_t header_size);
     u8_t __wrap_pbuf_header(struct pbuf *p, s16_t header_size) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -86,7 +97,6 @@ extern "C" {
         return __real_pbuf_header(p, header_size);
     }
 
-    extern u8_t __real_pbuf_free(struct pbuf *p);
     u8_t __wrap_pbuf_free(struct pbuf *p) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -100,7 +110,6 @@ extern "C" {
         return __real_pbuf_free(p);
     }
 
-    extern struct pbuf *__real_pbuf_alloc(pbuf_layer l, u16_t length, pbuf_type type);
     struct pbuf *__wrap_pbuf_alloc(pbuf_layer l, u16_t length, pbuf_type type) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -114,7 +123,6 @@ extern "C" {
         return __real_pbuf_alloc(l, length, type);
     }
 
-    extern err_t __real_pbuf_take(struct pbuf *buf, const void *dataptr, u16_t len);
     err_t __wrap_pbuf_take(struct pbuf *buf, const void *dataptr, u16_t len) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -128,7 +136,6 @@ extern "C" {
         return __real_pbuf_take(buf, dataptr, len);
     }
 
-    extern u16_t __real_pbuf_copy_partial(const struct pbuf *p, void *dataptr, u16_t len, u16_t offset);
     u16_t __wrap_pbuf_copy_partial(const struct pbuf *p, void *dataptr, u16_t len, u16_t offset) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -142,7 +149,6 @@ extern "C" {
         return __real_pbuf_copy_partial(p, dataptr, len, offset);
     }
 
-    extern void __real_pbuf_ref(struct pbuf *p);
     void __wrap_pbuf_ref(struct pbuf *p) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -155,7 +161,6 @@ extern "C" {
         __real_pbuf_ref(p);
     }
 
-    extern u8_t __real_pbuf_get_at(const struct pbuf* p, u16_t offset);
     u8_t __wrap_pbuf_get_at(const struct pbuf* p, u16_t offset) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -169,7 +174,6 @@ extern "C" {
         return __real_pbuf_get_at(p, offset);
     }
 
-    extern void *__real_pbuf_get_contiguous(const struct pbuf *p, void *buffer, size_t bufsize, u16_t len, u16_t offset);
     void *__wrap_pbuf_get_contiguous(const struct pbuf *p, void *buffer, size_t bufsize, u16_t len, u16_t offset) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -183,7 +187,6 @@ extern "C" {
         return __real_pbuf_get_contiguous(p, buffer, bufsize, len, offset);
     }
 
-    extern void __real_pbuf_cat(struct pbuf *head, struct pbuf *tail);
     void __wrap_pbuf_cat(struct pbuf *head, struct pbuf *tail) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -196,7 +199,6 @@ extern "C" {
         __real_pbuf_cat(head, tail);
     }
 
-    extern void __real_tcp_arg(struct tcp_pcb *pcb, void *arg);
     void __wrap_tcp_arg(struct tcp_pcb *pcb, void *arg) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -209,7 +211,6 @@ extern "C" {
         __real_tcp_arg(pcb, arg);
     }
 
-    extern struct tcp_pcb *__real_tcp_new(void);
     struct tcp_pcb *__wrap_tcp_new(void) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -223,7 +224,6 @@ extern "C" {
         return __real_tcp_new();
     }
 
-    extern struct tcp_pcb *__real_tcp_new_ip_type(u8_t type);
     struct tcp_pcb *__wrap_tcp_new_ip_type(u8_t type) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -238,7 +238,6 @@ extern "C" {
     }
 
 
-    extern err_t __real_tcp_bind(struct tcp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
     err_t __wrap_tcp_bind(struct tcp_pcb *pcb, ip_addr_t *ipaddr, u16_t port) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -252,7 +251,6 @@ extern "C" {
         return __real_tcp_bind(pcb, ipaddr, port);
     }
 
-    extern err_t __real_tcp_bind_netif(struct tcp_pcb *pcb, const struct netif *netif);
     err_t __wrap_tcp_bind_netif(struct tcp_pcb *pcb, const struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -266,7 +264,6 @@ extern "C" {
         return __real_tcp_bind_netif(pcb, netif);
     }
 
-    extern struct tcp_pcb *__real_tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog);
     struct tcp_pcb *__wrap_tcp_listen_with_backlog(struct tcp_pcb *pcb, u8_t backlog) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -281,7 +278,6 @@ extern "C" {
     }
 
 #if 0
-    extern struct tcp_pcb *__real_tcp_listen_with_backlog_and_err(struct tcp_pcb *pcb, u8_t backlog, err_t *err);
     struct tcp_pcb *__wrap_tcp_listen_with_backlog_and_err(struct tcp_pcb *pcb, u8_t backlog, err_t *err) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -297,7 +293,6 @@ extern "C" {
 #endif
 
 
-    extern void __real_tcp_accept(struct tcp_pcb *pcb, err_t (* accept)(void *arg, struct tcp_pcb *newpcb, err_t err));
     void __wrap_tcp_accept(struct tcp_pcb *pcb, err_t (* accept)(void *arg, struct tcp_pcb *newpcb, err_t err)) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -310,7 +305,6 @@ extern "C" {
         __real_tcp_accept(pcb, accept);
     }
 
-    extern err_t __real_tcp_connect(struct tcp_pcb *pcb, ip_addr_t *ipaddr, u16_t port, err_t (* connected)(void *arg, struct tcp_pcb *tpcb, err_t err));
     err_t __wrap_tcp_connect(struct tcp_pcb *pcb, ip_addr_t *ipaddr, u16_t port, err_t (* connected)(void *arg, struct tcp_pcb *tpcb, err_t err)) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -324,7 +318,6 @@ extern "C" {
         return __real_tcp_connect(pcb, ipaddr, port, connected);
     }
 
-    extern err_t __real_tcp_write(struct tcp_pcb *pcb, const void *dataptr, u16_t len, u8_t apiflags);
     err_t __wrap_tcp_write(struct tcp_pcb *pcb, const void *dataptr, u16_t len, u8_t apiflags) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -338,7 +331,6 @@ extern "C" {
         return __real_tcp_write(pcb, dataptr, len, apiflags);
     }
 
-    extern void __real_tcp_sent(struct tcp_pcb *pcb, err_t (* sent)(void *arg, struct tcp_pcb *tpcb, u16_t len));
     void __wrap_tcp_sent(struct tcp_pcb *pcb, err_t (* sent)(void *arg, struct tcp_pcb *tpcb, u16_t len)) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -351,7 +343,6 @@ extern "C" {
         __real_tcp_sent(pcb, sent);
     }
 
-    extern void __real_tcp_recv(struct tcp_pcb *pcb, err_t (* recv)(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err));
     void __wrap_tcp_recv(struct tcp_pcb *pcb, err_t (* recv)(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -364,7 +355,6 @@ extern "C" {
         __real_tcp_recv(pcb, recv);
     }
 
-    extern void __real_tcp_recved(struct tcp_pcb *pcb, u16_t len);
     void __wrap_tcp_recved(struct tcp_pcb *pcb, u16_t len) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -377,7 +367,6 @@ extern "C" {
         __real_tcp_recved(pcb, len);
     }
 
-    extern void __real_tcp_poll(struct tcp_pcb *pcb, err_t (* poll)(void *arg, struct tcp_pcb *tpcb), u8_t interval);
     void __wrap_tcp_poll(struct tcp_pcb *pcb, err_t (* poll)(void *arg, struct tcp_pcb *tpcb), u8_t interval) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -390,7 +379,6 @@ extern "C" {
         __real_tcp_poll(pcb, poll, interval);
     }
 
-    extern err_t __real_tcp_close(struct tcp_pcb *pcb);
     err_t __wrap_tcp_close(struct tcp_pcb *pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -404,7 +392,6 @@ extern "C" {
         return __real_tcp_close(pcb);
     }
 
-    extern void __real_tcp_abort(struct tcp_pcb *pcb);
     void __wrap_tcp_abort(struct tcp_pcb *pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -417,7 +404,6 @@ extern "C" {
         __real_tcp_abort(pcb);
     }
 
-    extern void __real_tcp_err(struct tcp_pcb *pcb, void (* err)(void *arg, err_t err));
     void __wrap_tcp_err(struct tcp_pcb *pcb, void (* err)(void *arg, err_t err)) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -430,7 +416,6 @@ extern "C" {
         __real_tcp_err(pcb, err);
     }
 
-    extern err_t __real_tcp_output(struct tcp_pcb *pcb);
     err_t __wrap_tcp_output(struct tcp_pcb *pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -444,7 +429,6 @@ extern "C" {
         return __real_tcp_output(pcb);
     }
 
-    extern void __real_tcp_setprio(struct tcp_pcb *pcb, u8_t prio);
     void __wrap_tcp_setprio(struct tcp_pcb *pcb, u8_t prio) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -457,7 +441,6 @@ extern "C" {
         __real_tcp_setprio(pcb, prio);
     }
 
-    extern err_t __real_tcp_shutdown(struct tcp_pcb *pcb, int shut_rx, int shut_tx);
     err_t __wrap_tcp_shutdown(struct tcp_pcb *pcb, int shut_rx, int shut_tx) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -472,7 +455,6 @@ extern "C" {
     }
 
 
-    extern void __real_tcp_backlog_delayed(struct tcp_pcb* pcb);
     void __wrap_tcp_backlog_delayed(struct tcp_pcb* pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -485,7 +467,6 @@ extern "C" {
         __real_tcp_backlog_delayed(pcb);
     }
 
-    extern void __real_tcp_backlog_accepted(struct tcp_pcb* pcb);
     void __wrap_tcp_backlog_accepted(struct tcp_pcb* pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -497,7 +478,6 @@ extern "C" {
         LWIPMutex m;
         __real_tcp_backlog_accepted(pcb);
     }
-    extern struct udp_pcb *__real_udp_new(void);
     struct udp_pcb *__wrap_udp_new(void) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -510,7 +490,6 @@ extern "C" {
         LWIPMutex m;
         return __real_udp_new();
     }
-    extern struct udp_pcb *__real_udp_new_ip_type(u8_t type);
     struct udp_pcb *__wrap_udp_new_ip_type(u8_t type) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -525,7 +504,6 @@ extern "C" {
     }
 
 
-    extern void __real_udp_remove(struct udp_pcb *pcb);
     void __wrap_udp_remove(struct udp_pcb *pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -538,7 +516,6 @@ extern "C" {
         __real_udp_remove(pcb);
     }
 
-    extern err_t __real_udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
     err_t __wrap_udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -552,7 +529,18 @@ extern "C" {
         return __real_udp_bind(pcb, ipaddr, port);
     }
 
-    extern err_t __real_udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
+    void __wrap_udp_bind_netif(struct udp_pcb *pcb, const struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __udp_bind_netif_req req = { pcb, netif };
+            __lwip(__udp_bind_netif, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        return __real_udp_bind_netif(pcb, netif);
+    }
+
     err_t __wrap_udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -566,7 +554,6 @@ extern "C" {
         return __real_udp_connect(pcb, ipaddr, port);
     }
 
-    extern err_t __real_udp_disconnect(struct udp_pcb *pcb);
     err_t __wrap_udp_disconnect(struct udp_pcb *pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -580,7 +567,6 @@ extern "C" {
         return __real_udp_disconnect(pcb);
     }
 
-    extern err_t __real_udp_send(struct udp_pcb *pcb, struct pbuf *p);
     err_t __wrap_udp_send(struct udp_pcb *pcb, struct pbuf *p) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -594,7 +580,6 @@ extern "C" {
         return __real_udp_send(pcb, p);
     }
 
-    extern void __real_udp_recv(struct udp_pcb *pcb, void (* recv)(void *arg, struct udp_pcb *upcb, struct pbuf *p, ip_addr_t *addr, u16_t port), void *recv_arg);
     void __wrap_udp_recv(struct udp_pcb *pcb, void (* recv)(void *arg, struct udp_pcb *upcb, struct pbuf *p, ip_addr_t *addr, u16_t port), void *recv_arg) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -607,7 +592,6 @@ extern "C" {
         __real_udp_recv(pcb, recv, recv_arg);
     }
 
-    extern err_t __real_udp_sendto(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port);
     err_t __wrap_udp_sendto(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -621,7 +605,6 @@ extern "C" {
         return __real_udp_sendto(pcb, p, dst_ip, dst_port);
     }
 
-    extern err_t __real_udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif);
     err_t __wrap_udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -635,7 +618,6 @@ extern "C" {
         return __real_udp_sendto_if(pcb, p, dst_ip, dst_port, netif);
     }
 
-    extern err_t __real_udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif, const ip_addr_t *src_ip);
     err_t __wrap_udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif, const ip_addr_t *src_ip) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -650,7 +632,6 @@ extern "C" {
     }
 
     // sys_check_timeouts is special case because the async process will call it.  If we're already in a timeout check, just do a noop
-    extern void __real_sys_check_timeouts();
     void __wrap_sys_check_timeouts(void) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -662,7 +643,45 @@ extern "C" {
         __real_sys_check_timeouts();
     }
 
-    extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);
+    u32_t __wrap_sys_timeouts_sleeptime() {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            u32_t ret;
+            __sys_timeouts_sleeptime_req req = { &ret };
+            __lwip(__sys_timeouts_sleeptime, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_sys_timeouts_sleeptime();
+    }
+
+    void __wrap_dns_setserver(u8_t numdns, const ip_addr_t *dnsserver) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dns_setserver_req req = { numdns, dnsserver };
+            __lwip(__dns_setserver, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dns_setserver(numdns, dnsserver);
+    }
+
+    const ip_addr_t *__wrap_dns_getserver(u8_t numdns) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            const ip_addr_t *ret;
+            __dns_getserver_req req = { numdns, &ret };
+            __lwip(__dns_getserver, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dns_getserver(numdns);
+    }
+
+
     err_t __wrap_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -676,7 +695,6 @@ extern "C" {
         return __real_dns_gethostbyname(hostname, addr, found, callback_arg);
     }
 
-    extern err_t __real_dns_gethostbyname_addrtype(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg, u8_t dns_addrtype);
     err_t __wrap_dns_gethostbyname_addrtype(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg, u8_t dns_addrtype) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -690,7 +708,107 @@ extern "C" {
         return __real_dns_gethostbyname_addrtype(hostname, addr, found, callback_arg, dns_addrtype);
     }
 
-    extern err_t __real_igmp_start(struct netif *netif);
+
+    void __wrap_dhcp_set_struct(struct netif *netif, struct dhcp *dhcp) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_set_struct_req req = { netif, dhcp };
+            __lwip(__dhcp_set_struct, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_set_struct(netif, dhcp);
+    }
+
+    void  __wrap_dhcp_cleanup(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_cleanup_req req = { netif };
+            __lwip(__dhcp_cleanup, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_cleanup(netif);
+    }
+
+    err_t __wrap_dhcp_start(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __dhcp_start_req req = { netif, &ret };
+            __lwip(__dhcp_start, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dhcp_start(netif);
+    }
+
+    void  __wrap_dhcp_inform(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_inform_req req = { netif };
+            __lwip(__dhcp_inform, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_inform(netif);
+    }
+
+    err_t __wrap_dhcp_renew(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __dhcp_renew_req req = { netif, &ret };
+            __lwip(__dhcp_renew, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dhcp_renew(netif);
+    }
+
+    void  __wrap_dhcp_release_and_stop(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_release_and_stop_req req = { netif };
+            __lwip(__dhcp_release_and_stop, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_release_and_stop(netif);
+    }
+
+
+    err_t __wrap_dhcp_release(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            err_t ret;
+            __dhcp_release_req req = { netif, &ret };
+            __lwip(__dhcp_release, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_dhcp_release(netif);
+    }
+
+    void  __wrap_dhcp_stop(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __dhcp_stop_req req = { netif };
+            __lwip(__dhcp_stop, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_dhcp_stop(netif);
+    }
+
     err_t __wrap_igmp_start(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -704,7 +822,6 @@ extern "C" {
         return __real_igmp_start(netif);
     }
 
-    extern err_t __real_igmp_stop(struct netif *netif);
     err_t __wrap_igmp_stop(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -718,7 +835,6 @@ extern "C" {
         return __real_igmp_stop(netif);
     }
 
-    extern void __real_igmp_report_groups(struct netif *netif);
     void __wrap_igmp_report_groups(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -731,7 +847,6 @@ extern "C" {
         __real_igmp_report_groups(netif);
     }
 
-    extern struct igmp_group *__real_igmp_lookfor_group(struct netif *ifp, const ip4_addr_t *addr);
     struct igmp_group *__wrap_igmp_lookfor_group(struct netif *ifp, const ip4_addr_t *addr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -745,7 +860,6 @@ extern "C" {
         return __real_igmp_lookfor_group(ifp, addr);
     }
 
-    extern err_t __real_igmp_joingroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr);
     err_t __wrap_igmp_joingroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -759,7 +873,6 @@ extern "C" {
         return __real_igmp_joingroup(ifaddr, groupaddr);
     }
 
-    extern err_t __real_igmp_joingroup_netif(struct netif *netif, const ip4_addr_t *groupaddr);
     err_t __wrap_igmp_joingroup_netif(struct netif *netif, const ip4_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -773,7 +886,6 @@ extern "C" {
         return __real_igmp_joingroup_netif(netif, groupaddr);
     }
 
-    extern err_t __real_igmp_leavegroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr);
     err_t __wrap_igmp_leavegroup(const ip4_addr_t *ifaddr, const ip4_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -787,7 +899,6 @@ extern "C" {
         return __real_igmp_leavegroup(ifaddr, groupaddr);
     }
 
-    extern err_t __real_igmp_leavegroup_netif(struct netif *netif, const ip4_addr_t *groupaddr);
     err_t __wrap_igmp_leavegroup_netif(struct netif *netif, const ip4_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -802,7 +913,6 @@ extern "C" {
     }
 
 #if LWIP_IPV6
-    extern err_t __real_mld6_stop(struct netif *netif);
     err_t __wrap_mld6_stop(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -816,7 +926,6 @@ extern "C" {
         return __real_mld6_stop(netif);
     }
 
-    extern void __real_mld6_report_groups(struct netif *netif);
     void __wrap_mld6_report_groups(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -829,7 +938,6 @@ extern "C" {
         return __real_mld6_report_groups(netif);
     }
 
-    extern struct mld_group *__real_mld6_lookfor_group(struct netif *ifp, const ip6_addr_t *addr);
     struct mld_group *__wrap_mld6_lookfor_group(struct netif *ifp, const ip6_addr_t *addr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -843,7 +951,6 @@ extern "C" {
         return __real_mld6_lookfor_group(ifp, addr);
     }
 
-    extern err_t __real_mld6_joingroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr);
     err_t __wrap_mld6_joingroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -857,7 +964,6 @@ extern "C" {
         return __real_mld6_joingroup(srcaddr, groupaddr);
     }
 
-    extern err_t __real_mld6_joingroup_netif(struct netif *netif, const ip6_addr_t *groupaddr);
     err_t __wrap_mld6_joingroup_netif(struct netif *netif, const ip6_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -871,7 +977,6 @@ extern "C" {
         return __real_mld6_joingroup_netif(netif, groupaddr);
     }
 
-    extern err_t __real_mld6_leavegroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr);
     err_t __wrap_mld6_leavegroup(const ip6_addr_t *srcaddr, const ip6_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -885,7 +990,6 @@ extern "C" {
         return __real_mld6_leavegroup(srcaddr, groupaddr);
     }
 
-    extern err_t __real_mld6_leavegroup_netif(struct netif *netif, const ip6_addr_t *groupaddr);
     err_t __wrap_mld6_leavegroup_netif(struct netif *netif, const ip6_addr_t *groupaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -900,7 +1004,6 @@ extern "C" {
     }
 #endif
 
-    extern struct raw_pcb *__real_raw_new(u8_t proto);
     struct raw_pcb *__wrap_raw_new(u8_t proto) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -914,7 +1017,6 @@ extern "C" {
         return __real_raw_new(proto);
     }
 
-    extern struct raw_pcb *__real_raw_new_ip_type(u8_t type, u8_t proto);
     struct raw_pcb *__wrap_raw_new_ip_type(u8_t type, u8_t proto) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -928,7 +1030,6 @@ extern "C" {
         return __real_raw_new_ip_type(type, proto);
     }
 
-    extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
     err_t __wrap_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -942,7 +1043,6 @@ extern "C" {
         return __real_raw_connect(pcb, ipaddr);
     }
 
-    extern void __real_raw_recv(struct raw_pcb *pcb, raw_recv_fn recv, void *recv_arg);
     void __wrap_raw_recv(struct raw_pcb *pcb, raw_recv_fn recv, void *recv_arg) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -955,7 +1055,6 @@ extern "C" {
         __real_raw_recv(pcb, recv, recv_arg);
     }
 
-    extern err_t __real_raw_bind(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
     err_t __wrap_raw_bind(struct raw_pcb *pcb, const ip_addr_t *ipaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -969,7 +1068,6 @@ extern "C" {
         return __real_raw_bind(pcb, ipaddr);
     }
 
-    extern err_t __real_raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *ipaddr);
     err_t __wrap_raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_addr_t *ipaddr) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -983,7 +1081,6 @@ extern "C" {
         return __real_raw_sendto(pcb, p, ipaddr);
     }
 
-    extern err_t __real_raw_send(struct raw_pcb *pcb, struct pbuf *p);
     err_t __wrap_raw_send(struct raw_pcb *pcb, struct pbuf *p) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -997,7 +1094,6 @@ extern "C" {
         return __real_raw_send(pcb, p);
     }
 
-    extern void __real_raw_remove(struct raw_pcb *pcb);
     void __wrap_raw_remove(struct raw_pcb *pcb) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1010,7 +1106,20 @@ extern "C" {
         __real_raw_remove(pcb);
     }
 
-    extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
+
+    struct netif *__wrap_netif_add_noaddr(struct netif *netif, void *state, netif_init_fn init, netif_input_fn input) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct netif *ret;
+            __netif_add_noaddr_req req = { netif, state, init, input, &ret };
+            __lwip(__netif_add_noaddr, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_add_noaddr(netif, state, init, input);
+    }
+
     struct netif *__wrap_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1024,7 +1133,6 @@ extern "C" {
         return __real_netif_add(netif, ipaddr, netmask, gw, state, init, input);
     }
 
-    extern void __real_netif_remove(struct netif *netif);
     void __wrap_netif_remove(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1037,20 +1145,18 @@ extern "C" {
         __real_netif_remove(netif);
     }
 
-    extern void __real_netif_set_link_up(struct netif *netif);
-    void __wrap_netif_set_link_up(struct netif *netif) {
+    void __wrap_netif_set_default(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
-            __netif_set_link_up_req req = { netif };
-            __lwip(__netif_set_link_up, &req);
+            __netif_set_default_req req = { netif };
+            __lwip(__netif_set_default, &req);
             return;
         }
 #endif
         LWIPMutex m;
-        __real_netif_set_link_up(netif);
+        __real_netif_set_default(netif);
     }
 
-    extern void __real_netif_set_up(struct netif *netif);
     void __wrap_netif_set_up(struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1063,8 +1169,173 @@ extern "C" {
         __real_netif_set_up(netif);
     }
 
+    void __wrap_netif_set_down(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_down_req req = { netif };
+            __lwip(__netif_set_down, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_down(netif);
+    }
+
+    void __wrap_netif_set_status_callback(struct netif *netif, netif_status_callback_fn status_callback) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_status_callback_req req = { netif, status_callback };
+            __lwip(__netif_set_status_callback, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_status_callback(netif, status_callback);
+    }
+
+    //    void __wrap_netif_set_remove_callback(struct netif *netif, netif_status_callback_fn remove_callback) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            __netif_set_remove_callback_req req = { netif, remove_callback };
+    //            __lwip(__netif_set_remove_callback, &req);
+    //            return;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        __real_netif_set_remove_callback(netif, remove_callback);
+    //    }
+
+    void __wrap_netif_set_link_up(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_up_req req = { netif };
+            __lwip(__netif_set_link_up, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_link_up(netif);
+    }
+
+    void __wrap_netif_set_link_down(struct netif *netif) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_down_req req = { netif };
+            __lwip(__netif_set_link_down, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_link_down(netif);
+    }
+
+
+    void __wrap_netif_set_link_callback(struct netif *netif, netif_status_callback_fn link_callback) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __netif_set_link_callback_req req = { netif, link_callback };
+            __lwip(__netif_set_link_callback, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_netif_set_link_callback(netif, link_callback);
+    }
+
+    //    err_t __wrap_netif_loop_output(struct netif *netif, struct pbuf *p) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            err_t ret;
+    //            __netif_loop_output_req req = { netif, p, &ret };
+    //            __lwip(__netif_loop_output, &req);
+    //            return ret;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        return __real_netif_loop_output(netif, p);
+    //    }
+
+
+    u8_t __wrap_netif_name_to_index(const char *name) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            u8_t ret;
+            __netif_name_to_index_req req = { name, &ret };
+            __lwip(__netif_name_to_index, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_name_to_index(name);
+    }
+
+
+    char *__wrap_netif_index_to_name(u8_t idx, char *name) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            char *ret;
+            __netif_index_to_name_req req = { idx, name, &ret };
+            __lwip(__netif_index_to_name, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_index_to_name(idx, name);
+    }
+
+    struct netif *__wrap_netif_get_by_index(u8_t idx) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct netif *ret;
+            __netif_get_by_index_req req = { idx, &ret };
+            __lwip(__netif_get_by_index, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_get_by_index(idx);
+    }
+
+    struct netif *__wrap_netif_find(const char *name) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            struct netif *ret;
+            __netif_find_req req = { name, &ret };
+            __lwip(__netif_find, &req);
+            return ret;
+        }
+#endif
+        LWIPMutex m;
+        return __real_netif_find(name);
+    }
+
+    //    void __wrap_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            __netif_add_ext_callback_req req = { callback, fn };
+    //            __lwip(__netif_add_ext_callback, &req);
+    //            return;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        __real_netif_add_ext_callback(callback, fn);
+    //    }
+
+    //    void __wrap_netif_remove_ext_callback(netif_ext_callback_t *callback) {
+    //#ifdef __FREERTOS
+    //        if (!__isLWIPThread()) {
+    //            __netif_remove_ext_callback_req req = { callback };
+    //            __lwip(__netif_remove_ext_callback, &req);
+    //            return;
+    //        }
+    //#endif
+    //        LWIPMutex m;
+    //        __real_netif_remove_ext_callback(callback);
+    //    }
+
+
+
 #if LWIP_IPV6
-    extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
     void __wrap_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1078,20 +1349,6 @@ extern "C" {
     }
 #endif
 
-    extern void __real_netif_set_default(struct netif *netif);
-    void __wrap_netif_set_default(struct netif *netif) {
-#ifdef __FREERTOS
-        if (!__isLWIPThread()) {
-            __netif_set_default_req req = { netif };
-            __lwip(__netif_set_default, &req);
-            return;
-        }
-#endif
-        LWIPMutex m;
-        __real_netif_set_default(netif);
-    }
-
-    extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
     err_t __wrap_ethernet_input(struct pbuf *p, struct netif *netif) {
 #ifdef __FREERTOS
         if (!__isLWIPThread()) {
@@ -1131,6 +1388,32 @@ extern "C" {
 #endif
         return __real_cyw43_wifi_leave(self, itf);
     }
+
+    int __real_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface);
+    int __wrap_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            int ret;
+            __cyw43_ioctl_req req = { self, cmd, len, buf, iface, &ret };
+            __lwip(__cyw43_ioctl, &req);
+            return ret;
+        }
+#endif
+        return __real_cyw43_ioctl(self, cmd, len, buf, iface);
+    }
+
+    int __real_cyw43_wifi_update_multicast_filter(cyw43_t *self, uint8_t *addr, bool add);
+    int __wrap_cyw43_wifi_update_multicast_filter(cyw43_t *self, uint8_t *addr, bool add) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            int ret;
+            __cyw43_wifi_update_multicast_filter_req req = { self, addr, add, &ret };
+            __lwip(__cyw43_wifi_update_multicast_filter, &req);
+            return ret;
+        }
+#endif
+        return __real_cyw43_wifi_update_multicast_filter(self, addr, add);
+    }
 #endif
 
 
@@ -1153,51 +1436,39 @@ extern "C" {
     }
 
 #ifndef __FREERTOS
-    extern bool __real_cyw43_driver_init(async_context_t *context);
     bool __wrap_cyw43_driver_init(async_context_t *context) {
         return __real_cyw43_driver_init(context);
     }
-    extern void __real_cyw43_driver_deinit(async_context_t *context);
     void __wrap_cyw43_driver_deinit(async_context_t *context) {
         __real_cyw43_driver_deinit(context);
     }
-    extern void __real_cyw43_thread_enter();
     void __wrap_cyw43_thread_enter() {
         __real_cyw43_thread_enter();
     }
-    extern void __real_cyw43_thread_exit();
     void __wrap_cyw43_thread_exit() {
         __real_cyw43_thread_exit();
     }
-    extern void __real_cyw43_thread_lock_check();
     void __wrap_cyw43_thread_lock_check() {
         __real_cyw43_thread_lock_check();
     }
-    extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
     void _wrap_cyw43_await_background_or_timeout_us(uint32_t timeout_us) {
         __real_cyw43_await_background_or_timeout_us(timeout_us);
     }
-    extern void __real_cyw43_delay_ms(uint32_t ms);
     void __wrap_cyw43_delay_ms(uint32_t ms) {
         __real_cyw43_delay_ms(ms);
     }
-    extern void __real_cyw43_delay_us(uint32_t us);
     void __wrap_cyw43_delay_us(uint32_t us) {
         __real_cyw43_delay_us(us);
     }
-    extern void __real_cyw43_post_poll_hook();
     void __wrap_cyw43_post_poll_hook() {
         __real_cyw43_post_poll_hook();
     }
-    extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
     void __wrap_cyw43_await_background_or_timeout_us(uint32_t timeout_us) {
         __real_cyw43_await_background_or_timeout_us(timeout_us);
     }
-    extern void __real_cyw43_schedule_internal_poll_dispatch(void (*func)());
     void __wrap_cyw43_schedule_internal_poll_dispatch(void (*func)()) {
         __real_cyw43_schedule_internal_poll_dispatch(func);
     }
-    extern void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
     void __wrap_cyw43_arch_gpio_put(uint wl_gpio, bool value) {
         __real_cyw43_arch_gpio_put(wl_gpio, value);
     }

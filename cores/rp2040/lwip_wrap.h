@@ -54,7 +54,7 @@ class LWIPMutex {
 public:
     LWIPMutex() {
 #if !defined(__FREERTOS)
-        __inLWIP++;
+        __inLWIP = __inLWIP + 1;
         if (ethernet_arch_lwip_begin) {
             ethernet_arch_lwip_begin();
         } else {
@@ -70,7 +70,7 @@ public:
         } else {
             recursive_mutex_exit(&__lwipMutex);
         }
-        __inLWIP--;
+        __inLWIP = __inLWIP - 1;
         if (__needsIRQEN && !__inLWIP) {
             __needsIRQEN = false;
             ethernet_arch_lwip_gpio_unmask();
@@ -132,6 +132,7 @@ typedef enum {
     __udp_sendto_if,
     __udp_sendto_if_src,
     __udp_bind,
+    __udp_bind_netif,
     __udp_connect,
     __udp_disconnect,
     __udp_recv,
@@ -140,9 +141,21 @@ typedef enum {
     __udp_new_ip_type,
 
     __sys_check_timeouts = 5000,
+    __sys_timeouts_sleeptime,
 
-    __dns_gethostbyname = 6000,
+    __dns_setserver = 6000,
+    __dns_getserver,
+    __dns_gethostbyname,
     __dns_gethostbyname_addrtype,
+
+    __dhcp_set_struct,
+    __dhcp_cleanup,
+    __dhcp_start,
+    __dhcp_inform,
+    __dhcp_renew,
+    __dhcp_release_and_stop,
+    __dhcp_release,
+    __dhcp_stop,
 
     __igmp_start,
     __igmp_stop,
@@ -169,19 +182,33 @@ typedef enum {
     __raw_new,
     __raw_new_ip_type,
 
-    __netif_add = 8000,
+    __netif_add_noaddr = 8000,
+    __netif_add,
     __netif_remove,
-    __netif_set_link_up,
-    __netif_set_up,
-    __netif_create_ip6_linklocal_address,
     __netif_set_default,
-
+    __netif_set_up,
+    __netif_set_down,
+    __netif_set_status_callback,
+    __netif_set_remove_callback,
+    __netif_set_link_up,
+    __netif_set_link_down,
+    __netif_set_link_callback,
+    __netif_loop_output,
+    __netif_name_to_index,
+    __netif_index_to_name,
+    __netif_get_by_index,
+    __netif_find,
+    __netif_add_ext_callback,
+    __netif_remove_ext_callback,
+    __netif_create_ip6_linklocal_address,
 
     __ethernet_input = 9000,
 
 #if defined(PICO_CYW43_SUPPORTED)
     __cyw43_wifi_join = 9500,
     __cyw43_wifi_leave,
+    __cyw43_ioctl,
+    __cyw43_wifi_update_multicast_filter,
 #endif
 
     __callback = 10000,
@@ -227,6 +254,7 @@ extern struct udp_pcb *__real_udp_new(void);
 extern struct udp_pcb *__real_udp_new_ip_type(u8_t type);
 extern void __real_udp_remove(struct udp_pcb *pcb);
 extern err_t __real_udp_bind(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
+extern void __real_udp_bind_netif(struct udp_pcb *pcb, const struct netif *netif);
 extern err_t __real_udp_connect(struct udp_pcb *pcb, ip_addr_t *ipaddr, u16_t port);
 extern err_t __real_udp_disconnect(struct udp_pcb *pcb);
 extern err_t __real_udp_send(struct udp_pcb *pcb, struct pbuf *p);
@@ -235,8 +263,19 @@ extern err_t __real_udp_sendto(struct udp_pcb *pcb, struct pbuf *p, const ip_add
 extern err_t __real_udp_sendto_if(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif);
 extern err_t __real_udp_sendto_if_src(struct udp_pcb *pcb, struct pbuf *p, const ip_addr_t *dst_ip, u16_t dst_port, struct netif *netif, const ip_addr_t *src_ip);
 extern void __real_sys_check_timeouts();
+extern u32_t __real_sys_timeouts_sleeptime();
+extern void __real_dns_setserver(u8_t numdns, const ip_addr_t *dnsserver);
+extern const ip_addr_t *__real_dns_getserver(u8_t numdns);
 extern err_t __real_dns_gethostbyname(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg);
 extern err_t __real_dns_gethostbyname_addrtype(const char *hostname, ip_addr_t *addr, dns_found_callback found, void *callback_arg, u8_t dns_addrtype);
+extern void __real_dhcp_set_struct(struct netif *netif, struct dhcp *dhcp);
+extern void __real_dhcp_cleanup(struct netif *netif);
+extern err_t __real_dhcp_start(struct netif *netif);
+extern void __real_dhcp_inform(struct netif *netif);
+extern err_t __real_dhcp_renew(struct netif *netif);
+extern void __real_dhcp_release_and_stop(struct netif *netif);
+extern err_t __real_dhcp_release(struct netif *netif);
+extern void __real_dhcp_stop(struct netif *netif);
 extern err_t __real_igmp_start(struct netif *netif);
 extern err_t __real_igmp_stop(struct netif *netif);
 extern void __real_igmp_report_groups(struct netif *netif);
@@ -262,16 +301,45 @@ extern err_t __real_raw_sendto(struct raw_pcb *pcb, struct pbuf *p, const ip_add
 extern err_t __real_raw_send(struct raw_pcb *pcb, struct pbuf *p);
 extern err_t __real_raw_connect(struct raw_pcb *pcb, const ip_addr_t *ipaddr);
 extern void __real_raw_remove(struct raw_pcb *pcb);
+
+extern struct netif *__real_netif_add_noaddr(struct netif *netif, void *state, netif_init_fn init, netif_input_fn input);
 extern struct netif *__real_netif_add(struct netif *netif, const ip4_addr_t *ipaddr, const ip4_addr_t *netmask, const ip4_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
 extern void __real_netif_remove(struct netif *netif);
-extern void __real_netif_set_link_up(struct netif *netif);
-extern void __real_netif_set_up(struct netif *netif);
-extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
 extern void __real_netif_set_default(struct netif *netif);
+extern void __real_netif_set_up(struct netif *netif);
+extern void __real_netif_set_down(struct netif *netif);
+extern void __real_netif_set_status_callback(struct netif *netif, netif_status_callback_fn status_callback);
+extern void __real_netif_set_remove_callback(struct netif *netif, netif_status_callback_fn remove_callback);
+extern void __real_netif_set_link_up(struct netif *netif);
+extern void __real_netif_set_link_down(struct netif *netif);
+extern void __real_netif_set_link_callback(struct netif *netif, netif_status_callback_fn link_callback);
+extern err_t __real_netif_loop_output(struct netif *netif, struct pbuf *p);
+extern u8_t __real_netif_name_to_index(const char *name);
+extern char *__real_netif_index_to_name(u8_t idx, char *name);
+extern struct netif *__real_netif_get_by_index(u8_t idx);
+extern struct netif *__real_netif_find(const char *name);
+//extern void __real_netif_add_ext_callback(netif_ext_callback_t *callback, netif_ext_callback_fn fn);
+//extern void __real_netif_remove_ext_callback(netif_ext_callback_t *callback);
+
+extern void __real_netif_create_ip6_linklocal_address(struct netif *netif, uint8_t from_mac_48bit);
+
 extern err_t __real_ethernet_input(struct pbuf *p, struct netif *netif);
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
-
+extern int __real_cyw43_ioctl(cyw43_t *self, uint32_t cmd, size_t len, uint8_t *buf, uint32_t iface);
+extern int __real_cyw43_wifi_update_multicast_filter(cyw43_t *self, uint8_t *addr, bool add);
+extern bool __real_cyw43_driver_init(async_context_t *context);
+extern void __real_cyw43_driver_deinit(async_context_t *context);
+extern void __real_cyw43_thread_enter();
+extern void __real_cyw43_thread_exit();
+extern void __real_cyw43_thread_lock_check();
+extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
+extern void __real_cyw43_delay_ms(uint32_t ms);
+extern void __real_cyw43_delay_us(uint32_t us);
+extern void __real_cyw43_post_poll_hook();
+extern void __real_cyw43_await_background_or_timeout_us(uint32_t timeout_us);
+extern void __real_cyw43_schedule_internal_poll_dispatch(void (*func)());
+extern void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
 
 typedef struct {
     struct pbuf *p;
@@ -476,6 +544,11 @@ typedef struct {
 
 typedef struct {
     struct udp_pcb *pcb;
+    const struct netif *netif;
+} __udp_bind_netif_req;
+
+typedef struct {
+    struct udp_pcb *pcb;
     ip_addr_t *ipaddr;
     u16_t port;
     err_t *ret;
@@ -526,6 +599,20 @@ typedef struct {
 } __udp_sendto_if_src_req;
 
 typedef struct {
+    u32_t *ret;
+} __sys_timeouts_sleeptime_req;
+
+typedef struct {
+    u8_t numdns;
+    const ip_addr_t *dnsserver;
+} __dns_setserver_req;
+
+typedef struct {
+    u8_t numdns;
+    const ip_addr_t **ret;
+} __dns_getserver_req;
+
+typedef struct {
     const char *hostname;
     ip_addr_t *addr;
     dns_found_callback found;
@@ -541,6 +628,42 @@ typedef struct {
     u8_t dns_addrtype;
     err_t *ret;
 } __dns_gethostbyname_addrtype_req;
+
+typedef struct {
+    struct netif *netif;
+    struct dhcp *dhcp;
+} __dhcp_set_struct_req;
+
+typedef struct {
+    struct netif *netif;
+} __dhcp_cleanup_req;
+
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __dhcp_start_req;
+
+typedef struct {
+    struct netif *netif;
+} __dhcp_inform_req;
+
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __dhcp_renew_req;
+
+typedef struct {
+    struct netif *netif;
+} __dhcp_release_and_stop_req;
+
+typedef struct {
+    struct netif *netif;
+    err_t *ret;
+} __dhcp_release_req;
+
+typedef struct {
+    struct netif *netif;
+} __dhcp_stop_req;
 
 typedef struct {
     struct netif *netif;
@@ -673,6 +796,15 @@ typedef struct {
     struct raw_pcb *pcb;
 } __raw_remove_req;
 
+
+typedef struct {
+    struct netif *netif;
+    void *state;
+    netif_init_fn init;
+    netif_input_fn input;
+    struct netif **ret;
+} __netif_add_noaddr_req;
+
 typedef struct {
     struct netif *netif;
     const ip4_addr_t *ipaddr;
@@ -690,12 +822,74 @@ typedef struct {
 
 typedef struct {
     struct netif *netif;
-} __netif_set_link_up_req;
+} __netif_set_default_req;
 
 typedef struct {
     struct netif *netif;
 } __netif_set_up_req;
 
+typedef struct {
+    struct netif *netif;
+} __netif_set_down_req;
+
+typedef struct {
+    struct netif *netif;
+    netif_status_callback_fn status_callback;
+} __netif_set_status_callback_req;
+
+typedef struct {
+    struct netif *netif;
+    netif_status_callback_fn remove_callback;
+} __netif_set_remove_callback_req;
+
+typedef struct {
+    struct netif *netif;
+} __netif_set_link_up_req;
+
+typedef struct {
+    struct netif *netif;
+} __netif_set_link_down_req;
+
+typedef struct {
+    struct netif *netif;
+    netif_status_callback_fn link_callback;
+} __netif_set_link_callback_req;
+
+typedef struct {
+    struct netif *netif;
+    struct pbuf *p;
+    err_t *ret;
+} __netif_loop_output_req;
+
+typedef struct {
+    const char *name;
+    u8_t *ret;
+} __netif_name_to_index_req;
+
+typedef struct {
+    u8_t idx;
+    char *name;
+    char **ret;
+} __netif_index_to_name_req;
+
+typedef struct {
+    u8_t idx;
+    struct netif **ret;
+} __netif_get_by_index_req;
+
+typedef struct {
+    const char *name;
+    struct netif **ret;
+} __netif_find_req;
+
+//typedef struct {
+//    netif_ext_callback_t *callback;
+//    netif_ext_callback_fn fn;
+//} __netif_add_ext_callback_req;
+
+//typedef struct {
+//    netif_ext_callback_t *callback;
+//} __netif_remove_ext_callback_req;
 
 #if LWIP_IPV6
 typedef struct {
@@ -703,10 +897,6 @@ typedef struct {
     uint8_t from_mac_48bit;
 } __netif_create_ip6_linklocal_address_req;
 #endif
-
-typedef struct {
-    struct netif *netif;
-} __netif_set_default_req;
 
 typedef struct {
     struct pbuf *p;
@@ -732,6 +922,22 @@ typedef struct {
     int itf;
     int *ret;
 } __cyw43_wifi_leave_req;
+
+typedef struct {
+    cyw43_t *self;
+    uint32_t cmd;
+    size_t len;
+    uint8_t *buf;
+    uint32_t iface;
+    int *ret;
+} __cyw43_ioctl_req;
+
+typedef struct {
+    cyw43_t *self;
+    uint8_t *addr;
+    bool add;
+    int *ret;
+} __cyw43_wifi_update_multicast_filter_req;
 #endif
 
 // Run a callback in the LWIP thread (i.e. for Ethernet device polling and packet reception)

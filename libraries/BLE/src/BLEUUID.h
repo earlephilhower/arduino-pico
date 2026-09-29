@@ -41,38 +41,28 @@ public:
     }
 
     BLEUUID(String s) {
-        const char *str = s.c_str();
         is16 = false;
         bzero(uuid128, sizeof(uuid128));
         // 0000FF11-0000-1000-8000-00805F9B34FB
-        if (strlen(str) != 36) {
+        if (s.length() != 36) {
             return;
         }
-        // Maybe not prettiest or most efficient, but not critical in a constructor
-        unsigned int a, b, c, d;
-        unsigned long long e;
-        if (5 != sscanf(str, "%x-%x-%x-%x-%llx", &a, &b, &c, &d, &e)) {
-            return;
-        }
-        if ((b > 0xffff) || (c > 0xffff) || (d > 0xffff) || (e > 0xffffffffffffll)) {
-            return;
-        }
-        uuid128[15] = e >> 0ll;
-        uuid128[14] = e >> 8ll;
-        uuid128[13] = e >> 16ll;
-        uuid128[12] = e >> 24ll;
-        uuid128[11] = e >> 32ll;
-        uuid128[10] = e >> 40ll;
-        uuid128[9] = d >> 0;
-        uuid128[8] = d >> 8;
-        uuid128[7] = c >> 0;
-        uuid128[6] = c >> 8;
-        uuid128[5] = b >> 0;
-        uuid128[4] = b >> 8;
-        uuid128[3] = a >> 0;
-        uuid128[2] = a >> 8;
-        uuid128[1] = a >> 16;
-        uuid128[0] = a >> 24;
+        uuid128[15] = readHexByte(s, 34);
+        uuid128[14] = readHexByte(s, 32);
+        uuid128[13] = readHexByte(s, 30);
+        uuid128[12] = readHexByte(s, 28);
+        uuid128[11] = readHexByte(s, 26);
+        uuid128[10] = readHexByte(s, 24);
+        uuid128[9] = readHexByte(s, 21);
+        uuid128[8] = readHexByte(s, 19);
+        uuid128[7] = readHexByte(s, 16);
+        uuid128[6] = readHexByte(s, 14);
+        uuid128[5] = readHexByte(s, 11);
+        uuid128[4] = readHexByte(s, 9);
+        uuid128[3] = readHexByte(s, 6);
+        uuid128[2] = readHexByte(s, 4);
+        uuid128[1] = readHexByte(s, 2);
+        uuid128[0] = readHexByte(s, 0);
     }
 
     // Does this object hold a "valid" UUID?
@@ -139,4 +129,19 @@ public:
         uint16_t uuid16;
         uint8_t uuid128[16];
     };
+
+private:
+    uint8_t readHexByte(String &s, size_t off) {
+        if (s.length() < off + 1) {
+            return 0; // error, EOL
+        }
+        // Could parse hex directly, but this is not time critical
+        char buff[3];
+        buff[0] = s.c_str()[off];
+        buff[1] = s.c_str()[off + 1];
+        buff[2] = 0;
+        uint8_t ret = 0;
+        sscanf(buff, "%hhx", &ret);
+        return ret;
+    }
 };

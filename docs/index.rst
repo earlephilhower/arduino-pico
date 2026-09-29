@@ -35,6 +35,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    I2S Audio <i2s>
    PWM Audio <pwm>
    Microphone (and Analog Sensor) Input <adc>
+   Camera <camera>
    Serial USB and UARTs <serial>
    "Software Serial" PIO UART <piouart>
    Servo <servo>
@@ -66,6 +67,8 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    WiFiServer <wifiserver>
    WiFiUDP <wifiudp>
    NTP client <wifintp>
+   ESP-NOW (iLabs Boards) <ilabs_espnow>
+   Matter (iLabs Boards) <ilabs_hearth>
    BearSSL Encrypted TLS <bearssl>
    WiFiClientSecure (TLS/SSL/HTTPS) <bearssl-client-secure-class>
    WiFiServerSecure (TLS/SSL/HTTPS) <bearssl-server-secure-class>

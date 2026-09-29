@@ -20,7 +20,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5---3rd-party-Hardware-specification
 
 name=Raspberry Pi RP2040/RP2350 Boards
-version=5.6.0
+version=6.1.1
 
 # Required discoveries and monitors
 # ---------------------------------
@@ -47,7 +47,7 @@ compiler.warning_flags=-Werror=return-type -Wno-psabi
 compiler.warning_flags.none=-Werror=return-type -Wno-psabi
 compiler.warning_flags.default=-Werror=return-type -Wno-psabi
 compiler.warning_flags.more=-Wall -Werror=return-type -Wno-ignored-qualifiers -Wno-psabi
-compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-psabi -Wno-type-limits -Wno-unused-parameter -Wno-missing-field-initializers
+compiler.warning_flags.all=-Wall -Wextra -Werror=return-type -Wno-psabi -Wno-type-limits
 
 compiler.netdefines={build.libpicowdefs} -DLWIP_IGMP=1 -DLWIP_CHECKSUM_CTRL_PER_NETIF=1
 compiler.psramdefines={build.psram_cs} {build.psram_freq}
@@ -58,13 +58,14 @@ compiler.wrap="@{runtime.platform.path}/lib/{build.chip}/platform_wrap.txt" "@{r
 compiler.libbearssl="{runtime.platform.path}/lib/{build.chip}/libbearssl.a"
 
 compiler.c.cmd={build.toolchain}-gcc
-compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} -std=gnu17 -g -pipe
+compiler.c.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} -std=gnu23 -g -pipe
 compiler.c.elf.cmd={build.toolchain}-g++
-compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize}
+compiler.c.elf.flags={compiler.warning_flags} {compiler.defines} {compiler.flags} {build.flags.optimize} -u _printf_float -u _scanf_float
 compiler.S.cmd={build.toolchain}-gcc
 compiler.S.flags=-c {compiler.warning_flags} {compiler.defines} -g -x assembler-with-cpp -MMD {compiler.includes} {build.toolchainopts} -g
 compiler.cpp.cmd={build.toolchain}-g++
-compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} {build.flags.profile} -std=gnu++17 -g -pipe
+# TODO - When SDK and FreeRTOS RP2350 go to C23, remove -Wno-volatile
+compiler.cpp.flags=-c {compiler.warning_flags} {compiler.defines} {compiler.flags} -MMD {compiler.includes} {build.flags.rtti} {build.flags.profile} -std=gnu++23 -g -pipe -Wno-volatile
 
 compiler.ar.cmd={build.toolchain}-ar
 compiler.ar.flags=rcs

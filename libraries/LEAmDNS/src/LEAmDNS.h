@@ -1139,6 +1139,27 @@ protected:
     bool _process(bool p_bUserContext);
     bool _restart(void);
 
+    /* RX DEFERRAL */
+    // The receive callback runs from the network driver: from an interrupt, or on the user thread
+    // when a lwIP lock is released inside a call the user thread is making. While a user call that
+    // sends is running it must not touch the responder, so it only records that packets are waiting.
+    volatile bool m_bUserCallActive;
+    volatile bool m_bRxDeferred;
+    void _drainDeferredRx(void);
+    struct stcUserCallScope {
+        MDNSResponder& m_rResponder;
+        bool           m_bOutermost;
+        stcUserCallScope(MDNSResponder& p_rResponder) :
+            m_rResponder(p_rResponder), m_bOutermost(!p_rResponder.m_bUserCallActive) {
+            m_rResponder.m_bUserCallActive = true;
+        }
+        ~stcUserCallScope() {
+            if (m_bOutermost) {
+                m_rResponder._drainDeferredRx();
+            }
+        }
+    };
+
     /* RECEIVING */
     bool _parseMessage(void);
     bool _parseQuery(const stcMDNS_MsgHeader& p_Header);

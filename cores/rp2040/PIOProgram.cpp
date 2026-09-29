@@ -54,7 +54,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     PIO pi[PIOCNT] = { PIOS };
 
     uint gpioBaseNeeded = ((start + cnt) >= 32) ? 16 : 0;
-    DEBUGV("PIOProgram %p: Searching for base=%d, pins %d-%d\n", _pgm, gpioBaseNeeded, start, start + cnt - 1);
+    DEBUGV("PIOProgram %p: Searching for base=%d, pins %d-%d", _pgm, gpioBaseNeeded, start, start + cnt - 1);
 
     // If it's already loaded into PIO IRAM, try and allocate in that specific PIO
     for (int o = 0; o < PIOCNT; o++) {
@@ -62,7 +62,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
         if ((p != __pioMap[o].end()) && (pio_get_gpio_base(pio_get_instance(o)) == gpioBaseNeeded)) {
             int idx = pio_claim_unused_sm(pi[o], false);
             if (idx >= 0) {
-                DEBUGV("PIOProgram %p: Reusing IMEM ON PIO %p(base=%d) for pins %d-%d\n", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
+                DEBUGV("PIOProgram %p: Reusing IMEM ON PIO %p(base=%d) for pins %d-%d", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
                 _pio = pi[o];
                 _sm = idx;
                 *pio = pi[o];
@@ -76,11 +76,11 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     // Not in any PIO IRAM, so try and add
     for (int o = 0; o < PIOCNT; o++) {
         if (__pioAllocated[o] && (pio_get_gpio_base(pio_get_instance(o)) == gpioBaseNeeded)) {
-            DEBUGV("PIOProgram: Checking PIO %p\n", pi[o]);
+            DEBUGV("PIOProgram: Checking PIO %p", pi[o]);
             if (pio_can_add_program(pi[o], _pgm)) {
                 int idx = pio_claim_unused_sm(pi[o], false);
                 if (idx >= 0) {
-                    DEBUGV("PIOProgram %p: Adding IMEM ON PIO %p(base=%d) for pins %d-%d\n", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
+                    DEBUGV("PIOProgram %p: Adding IMEM ON PIO %p(base=%d) for pins %d-%d", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
                     int off = pio_add_program(pi[o], _pgm);
                     __pioMap[o].insert({_pgm, off});
                     _pio = pi[o];
@@ -90,13 +90,13 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
                     *offset = off;
                     return true;
                 } else {
-                    DEBUGV("PIOProgram: can't claim unused SM\n");
+                    DEBUGV("PIOProgram: can't claim unused SM");
                 }
             } else {
-                DEBUGV("PIOProgram: can't add program\n");
+                DEBUGV("PIOProgram: can't add program");
             }
         } else {
-            DEBUGV("PIOProgram: Skipping PIO %p, wrong allocated/needhi\n", pi[o]);
+            DEBUGV("PIOProgram: Skipping PIO %p, wrong allocated/needhi", pi[o]);
         }
     }
 
@@ -112,7 +112,7 @@ bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
         }
         assert(!__pioAllocated[o]);
         __pioAllocated[o]  = true;
-        DEBUGV("PIOProgram %p: Allocating new PIO %p(base=%d) for pins %d-%d\n", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
+        DEBUGV("PIOProgram %p: Allocating new PIO %p(base=%d) for pins %d-%d", _pgm, pi[o], pio_get_gpio_base(pio_get_instance(o)), start, start + cnt - 1);
         __pioMap[o].insert({_pgm, off});
         _pio = pi[o];
         _sm = idx;

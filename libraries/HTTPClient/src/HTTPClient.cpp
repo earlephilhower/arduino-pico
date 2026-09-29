@@ -124,14 +124,14 @@ bool HTTPClient::begin(String url) {
     // check for : (http: or https:)
     int index = url.indexOf(':');
     if (index < 0) {
-        DEBUG_HTTPCLIENT("[HTTP-Client][begin] failed to parse protocol\n");
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] failed to parse protocol");
         return false;
     }
 
     String protocol = url.substring(0, index);
     protocol.toLowerCase();
     if (protocol != "http" && protocol != "https") {
-        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unknown protocol '%s'\n", protocol.c_str());
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unknown protocol '%s'", protocol.c_str());
         return false;
     }
 
@@ -195,14 +195,14 @@ bool HTTPClient::begin(WiFiClient &client, const String& url) {
     // check for : (http: or https:)
     int index = url.indexOf(':');
     if (index < 0) {
-        DEBUG_HTTPCLIENT("[HTTP-Client][begin] failed to parse protocol\n");
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] failed to parse protocol");
         return false;
     }
 
     String protocol = url.substring(0, index);
     protocol.toLowerCase();
     if (protocol != "http" && protocol != "https") {
-        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unknown protocol '%s'\n", protocol.c_str());
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unknown protocol '%s'", protocol.c_str());
         return false;
     }
 
@@ -260,13 +260,13 @@ bool HTTPClient::begin(WiFiClient &client, const String& host, uint16_t port, co
 bool HTTPClient::beginInternal(const String& __url, const char* expectedProtocol) {
     String url(__url);
 
-    DEBUG_HTTPCLIENT("[HTTP-Client][begin] url: %s\n", url.c_str());
+    DEBUG_HTTPCLIENT("[HTTP-Client][begin] url: %s", url.c_str());
     clear();
 
     // check for : (http: or https:
     int index = url.indexOf(':');
     if (index < 0) {
-        DEBUG_HTTPCLIENT("[HTTP-Client][begin] failed to parse protocol\n");
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] failed to parse protocol");
         return false;
     }
 
@@ -281,7 +281,7 @@ bool HTTPClient::beginInternal(const String& __url, const char* expectedProtocol
         // set default port for 'https'
         _port = 443;
     } else {
-        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unsupported protocol: %s\n", _protocol.c_str());
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unsupported protocol: %s", _protocol.c_str());
         return false;
     }
 
@@ -319,10 +319,10 @@ bool HTTPClient::beginInternal(const String& __url, const char* expectedProtocol
     _uri = url;
 
     if (expectedProtocol != nullptr && _protocol != expectedProtocol) {
-        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unexpected protocol: %s, expected %s\n", _protocol.c_str(), expectedProtocol);
+        DEBUG_HTTPCLIENT("[HTTP-Client][begin] unexpected protocol: %s, expected %s", _protocol.c_str(), expectedProtocol);
         return false;
     }
-    DEBUG_HTTPCLIENT("[HTTP-Client][begin] host: %s port: %d url: %s\n", _host.c_str(), _port, _uri.c_str());
+    DEBUG_HTTPCLIENT("[HTTP-Client][begin] host: %s port: %d url: %s", _host.c_str(), _port, _uri.c_str());
 
     return true;
 }
@@ -349,16 +349,16 @@ void HTTPClient::end(void) {
 void HTTPClient::disconnect(bool preserveClient) {
     if (connected()) {
         if (_client()->available() > 0) {
-            DEBUG_HTTPCLIENT("[HTTP-Client][end] still data in buffer (%d), clean up.\n", _client()->available());
+            DEBUG_HTTPCLIENT("[HTTP-Client][end] still data in buffer (%d), clean up.", _client()->available());
             while (_client()->available() > 0) {
                 _client()->read();
             }
         }
 
         if (_reuse && _canReuse) {
-            DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp keep open for reuse\n");
+            DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp keep open for reuse");
         } else {
-            DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp stop\n");
+            DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp stop");
             if (_client()) {
                 _client()->stop();
                 if (!preserveClient) {
@@ -381,7 +381,7 @@ void HTTPClient::disconnect(bool preserveClient) {
             _clientGiven = false;
         }
 
-        DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp is closed\n");
+        DEBUG_HTTPCLIENT("[HTTP-Client][end] tcp is closed");
     }
 }
 
@@ -470,7 +470,7 @@ bool HTTPClient::setURL(const String& url) {
     }
 
     if (!url.startsWith(_protocol + ':')) {
-        DEBUG_HTTPCLIENT("[HTTP-Client][setURL] new URL not the same protocol, expected '%s', URL: '%s'\n", _protocol.c_str(), url.c_str());
+        DEBUG_HTTPCLIENT("[HTTP-Client][setURL] new URL not the same protocol, expected '%s', URL: '%s'", _protocol.c_str(), url.c_str());
         return false;
     }
     // disconnect but preserve _client (clear _canReuse so disconnect will close the connection)
@@ -595,7 +595,7 @@ int HTTPClient::sendRequest(const char * type, const uint8_t * payload, size_t s
             headers = _headers;
         }
 
-        DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] type: '%s' redirCount: %d\n", type, redirectCount);
+        DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] type: '%s' redirCount: %d", type, redirectCount);
 
         // connect to server
         if (!connect()) {
@@ -649,9 +649,9 @@ int HTTPClient::sendRequest(const char * type, const uint8_t * payload, size_t s
                     !strcmp(type, "HEAD")
                 ) {
                     redirectCount += 1;
-                    DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] following redirect (the same method): '%s' redirCount: %d\n", _location.c_str(), redirectCount);
+                    DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] following redirect (the same method): '%s' redirCount: %d", _location.c_str(), redirectCount);
                     if (!setURL(_location)) {
-                        DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] failed setting URL for redirection\n");
+                        DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] failed setting URL for redirection");
                         // no redirection
                         break;
                     }
@@ -665,9 +665,9 @@ int HTTPClient::sendRequest(const char * type, const uint8_t * payload, size_t s
             case HTTP_CODE_FOUND:
             case HTTP_CODE_SEE_OTHER: {
                 redirectCount += 1;
-                DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] following redirect (dropped to GET/HEAD): '%s' redirCount: %d\n", _location.c_str(), redirectCount);
+                DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] following redirect (dropped to GET/HEAD): '%s' redirCount: %d", _location.c_str(), redirectCount);
                 if (!setURL(_location)) {
-                    DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] failed setting URL for redirection\n");
+                    DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] failed setting URL for redirection");
                     // no redirection
                     break;
                 }
@@ -726,7 +726,7 @@ int HTTPClient::sendRequest(const char * type, Stream * stream, size_t size) {
     // transfer all of it, with timeout
     size_t transferred = StreamSendSize(stream, _client(), size);
     if (transferred != size) {
-        DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] short write, asked for %zu but got %zu failed.\n", size, transferred);
+        DEBUG_HTTPCLIENT("[HTTP-Client][sendRequest] short write, asked for %zu but got %zu failed.", size, transferred);
         return returnError(HTTPC_ERROR_SEND_PAYLOAD_FAILED);
     }
 
@@ -758,7 +758,7 @@ WiFiClient& HTTPClient::getStream(void) {
         return _stream;
     }
 
-    DEBUG_HTTPCLIENT("[HTTP-Client] getStream: not connected\n");
+    DEBUG_HTTPCLIENT("[HTTP-Client] getStream: not connected");
     static WiFiClient empty;
     return empty;
 }
@@ -772,7 +772,7 @@ WiFiClient* HTTPClient::getStreamPtr(void) {
         return &_stream;
     }
 
-    DEBUG_HTTPCLIENT("[HTTP-Client] getStreamPtr: not connected\n");
+    DEBUG_HTTPCLIENT("[HTTP-Client] getStreamPtr: not connected");
     return nullptr;
 }
 
@@ -846,7 +846,7 @@ const String& HTTPClient::getString(void) {
     if (_size > 0) {
         // try to reserve needed memory
         if (!_payload->reserve((_size + 1))) {
-            DEBUG_HTTPCLIENT("[HTTP-Client][getString] not enough memory to reserve a string! need: %d\n", (_size + 1));
+            DEBUG_HTTPCLIENT("[HTTP-Client][getString] not enough memory to reserve a string! need: %d", (_size + 1));
             return *_payload;
         }
     }
@@ -975,7 +975,7 @@ bool HTTPClient::hasHeader(const char* name) {
 */
 bool HTTPClient::connect(void) {
     if (_reuse && _canReuse && connected()) {
-        DEBUG_HTTPCLIENT("[HTTP-Client] connect: already connected, reusing connection\n");
+        DEBUG_HTTPCLIENT("[HTTP-Client] connect: already connected, reusing connection");
         // clear _client's output (all of it, no timeout)
         while (_client()->available()) {
             _client()->read();
@@ -984,18 +984,18 @@ bool HTTPClient::connect(void) {
     }
 
     if (!_client()) {
-        DEBUG_HTTPCLIENT("[HTTP-Client] connect: HTTPClient::begin was not called or returned error\n");
+        DEBUG_HTTPCLIENT("[HTTP-Client] connect: HTTPClient::begin was not called or returned error");
         return false;
     }
 
     _client()->setTimeout(_tcpTimeout);
 
     if (!_client()->connect(_host.c_str(), _port)) {
-        DEBUG_HTTPCLIENT("[HTTP-Client] failed connect to %s:%u\n", _host.c_str(), _port);
+        DEBUG_HTTPCLIENT("[HTTP-Client] failed connect to %s:%u", _host.c_str(), _port);
         return false;
     }
 
-    DEBUG_HTTPCLIENT("[HTTP-Client] connected to %s:%u\n", _host.c_str(), _port);
+    DEBUG_HTTPCLIENT("[HTTP-Client] connected to %s:%u", _host.c_str(), _port);
     _client()->setNoDelay(true);
     return connected();
 }
@@ -1056,7 +1056,10 @@ bool HTTPClient::sendHeader(const char * type) {
     header += _headers;
     header += "\r\n";
 
-    DEBUG_HTTPCLIENT("[HTTP-Client] sending request header\n-----\n%s-----\n", header.c_str());
+    DEBUG_HTTPCLIENT("[HTTP-Client] sending request header");
+    DEBUG_HTTPCLIENT("-----");
+    DEBUG_HTTPCLIENT("%s", header.c_str());
+    DEBUG_HTTPCLIENT("-----");
 
     // transfer all of it, with timeout
     return StreamConstPtr(header).sendAll(_client()) == header.length();
@@ -1093,7 +1096,7 @@ int HTTPClient::handleHeaderResponse() {
 
             lastDataTime = millis();
 
-            DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] RX: '%s'\n", headerLine.c_str());
+            DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] RX: '%s'", headerLine.c_str());
 
             if (headerLine.startsWith(F("HTTP/1."))) {
 
@@ -1153,14 +1156,14 @@ int HTTPClient::handleHeaderResponse() {
             headerLine.trim(); // remove \r
 
             if (headerLine == "") {
-                DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] code: %d\n", _returnCode);
+                DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] code: %d", _returnCode);
 
                 if (_size > 0) {
-                    DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] size: %d\n", _size);
+                    DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] size: %d", _size);
                 }
 
                 if (transferEncoding.length() > 0) {
-                    DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] Transfer-Encoding: %s\n", transferEncoding.c_str());
+                    DEBUG_HTTPCLIENT("[HTTP-Client][handleHeaderResponse] Transfer-Encoding: %s", transferEncoding.c_str());
                     if (transferEncoding.equalsIgnoreCase(F("chunked"))) {
                         _transferEncoding = HTTPC_TE_CHUNKED;
                     } else if (transferEncoding.equalsIgnoreCase(F("identity"))) {
@@ -1201,9 +1204,9 @@ int HTTPClient::handleHeaderResponse() {
 */
 int HTTPClient::returnError(int error) {
     if (error < 0) {
-        DEBUG_HTTPCLIENT("[HTTP-Client][returnError] error(%d): %s\n", error, errorToString(error).c_str());
+        DEBUG_HTTPCLIENT("[HTTP-Client][returnError] error(%d): %s", error, errorToString(error).c_str());
         if (connected()) {
-            DEBUG_HTTPCLIENT("[HTTP-Client][returnError] tcp stop\n");
+            DEBUG_HTTPCLIENT("[HTTP-Client][returnError] tcp stop");
             _client()->stop();
         }
     }

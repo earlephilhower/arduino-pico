@@ -188,8 +188,4 @@ private:
     PIOProgram *_i2sMCLK;
     PIO _pio, _pioMCLK;
     int _sm, _smMCLK;
-
-    static const int I2SSYSCLK_44_1 = 135600; // 44.1, 88.2 kHz sample rates
-    static const int I2SSYSCLK_8 = 153600;  // 8k, 16, 32, 48, 96, 192 kHz
-
 };

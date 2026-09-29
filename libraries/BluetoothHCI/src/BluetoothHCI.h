@@ -65,6 +65,9 @@ protected:
     void setDisconnectCB(void (*fn)()) {
         _disconnectCB = fn;
     }
+    void setPasskeyCB(void (*fn)(uint32_t)) {
+        _passkeyCB = fn;
+    }
 
 private:
     void hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
@@ -86,4 +89,5 @@ private:
     volatile hci_con_handle_t _hciConn = HCI_CON_HANDLE_INVALID;
     bool _smPair = false;
     void (*_disconnectCB)() = nullptr;
+    void (*_passkeyCB)(uint32_t) = nullptr;
 };

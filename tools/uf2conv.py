@@ -272,8 +272,13 @@ def get_drives():
             rpidisk = glob.glob(globexpr)
             if len(rpidisk) > 0:
                 try:
-                    cmd = ["udisksctl", "mount", "--block-device", os.path.realpath(rpidisk[0])]
-                    proc_out = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    # this runs deep in the Arduino build framework; use
+                    # --no-user-interaction to avoid getting stuck at a prompt
+                    cmd = ["udisksctl", "mount", "--no-user-interaction",
+                           "--block-device", os.path.realpath(rpidisk[0])]
+                    proc_out = subprocess.run(cmd, stdin=subprocess.DEVNULL,
+                                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                              timeout=30)
                     if proc_out.returncode == 0:
                         stdoutput = proc_out.stdout.decode("UTF-8")
                         match = re.search(r'Mounted\s+.*\s+at\s+([^\.\r\n]*)', stdoutput)
@@ -300,6 +305,8 @@ def get_drives():
             possibly_any("/var/run/media", drives, u)
             # Add from udisksctl info?
             # Add from /proc/mounts?
+            # avoid uploading twice due to symlinks (eg. /var/run => /run)
+            drives = list(set(os.path.realpath(d) for d in drives))
 
     def has_info(d):
         try:
@@ -431,9 +438,10 @@ def main():
             sys.stdout.flush()
             write_file(d + "/NEW.UF2", outbuf)
 
-        # Wait until serial port (if defined) re-appears, or 2s timeout unless UF2 drive direct upload
+        # Wait until serial port (if defined) re-appears, or 2s timeout.
+        # Skip the special value "UF2_Board" (see pluggable_discovery.py).
         try:
-            if args.serial != "UF2 Board":
+            if args.serial and args.serial != "UF2_Board":
                 timeout = time.time() + 2.0
                 while time.time() < timeout:
                     if os.access(args.serial, os.W_OK):
