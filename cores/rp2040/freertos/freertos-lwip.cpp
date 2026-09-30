@@ -726,6 +726,35 @@ static void lwipThread(void *params) {
                 break;
             }
 
+            case __sntp_init: {
+                __real_sntp_init();
+                break;
+            }
+            case __sntp_stop: {
+                __real_sntp_stop();
+                break;
+            }
+            case __sntp_setoperatingmode: {
+                __sntp_setoperatingmode_req *r = (__sntp_setoperatingmode_req *)w.req;
+                __real_sntp_setoperatingmode(r->operating_mode);
+                break;
+            }
+            //case __sntp_servermode_dhcp: {
+            //    __sntp_servermode_dhcp_req *r = (__sntp_servermode_dhcp_req *)w.req;
+            //    __real_sntp_servermode_dhcp(r->set_servers_from_dhcp);
+            //    break;
+            //}
+            case __sntp_setserver: {
+                __sntp_setserver_req *r = (__sntp_setserver_req *)w.req;
+                __real_sntp_setserver(r->idx, r->server);
+                break;
+            }
+            case __sntp_setservername: {
+                __sntp_setservername_req *r = (__sntp_setservername_req *)w.req;
+                __real_sntp_setservername(r->idx, r->server);
+                break;
+            }
+
 #if defined(PICO_CYW43_SUPPORTED)
             case __cyw43_wifi_join: {
                 __cyw43_wifi_join_req *r = (__cyw43_wifi_join_req *)w.req;
