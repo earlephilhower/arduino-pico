@@ -91,9 +91,12 @@
 -Wl,--wrap=mld6_leavegroup_netif
 
 -Wl,--wrap=raw_bind
+-Wl,--wrap=raw_bind_netif
 -Wl,--wrap=raw_connect
+-Wl,--wrap=raw_disconnect
 -Wl,--wrap=raw_recv
 -Wl,--wrap=raw_sendto
+-Wl,--wrap=raw_sendto_if_src
 -Wl,--wrap=raw_send
 -Wl,--wrap=raw_remove
 -Wl,--wrap=raw_new
@@ -113,10 +116,37 @@
 -Wl,--wrap=netif_index_to_name
 -Wl,--wrap=netif_get_by_index
 -Wl,--wrap=netif_find
+-Wl,--wrap=netif_alloc_client_data_id
 
+-Wl,--wrap=netif_set_ipaddr
+-Wl,--wrap=netif_set_netmask
+-Wl,--wrap=netif_set_gw
+-Wl,--wrap=netif_set_addr
+
+-Wl,--wrap=netif_ip6_addr_set
+-Wl,--wrap=netif_ip6_addr_set_state
 -Wl,--wrap=netif_create_ip6_linklocal_address
+-Wl,--wrap=netif_add_ip6_address
 
 -Wl,--wrap=ethernet_input
+
+-Wl,--wrap=mdns_resp_add_netif
+-Wl,--wrap=mdns_resp_remove_netif
+-Wl,--wrap=mdns_resp_rename_netif
+-Wl,--wrap=mdns_resp_add_service
+-Wl,--wrap=mdns_resp_rename_service
+-Wl,--wrap=mdns_resp_add_service_txtitem
+-Wl,--wrap=mdns_resp_announce
+-Wl,--wrap=mdns_resp_restart_delay
+-Wl,--wrap=mdns_resp_init
+
+-Wl,--wrap=sntp_init
+-Wl,--wrap=sntp_stop
+-Wl,--wrap=sntp_setoperatingmode
+-Wl,--wrap=sntp_servermode_dhcp
+-Wl,--wrap=sntp_setserver
+-Wl,--wrap=sntp_setservername
+
 
 -Wl,--wrap=cyw43_cb_process_ethernet
 -Wl,--wrap=cyw43_cb_tcpip_set_link_up
