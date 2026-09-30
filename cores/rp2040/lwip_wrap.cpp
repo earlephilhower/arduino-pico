@@ -1813,6 +1813,7 @@ void lwip_callback(std::function<void(void)> cb) {
 #ifdef __FREERTOS
     if (!__isLWIPThread()) {
         __lwip(&cb);
+        return;
     }
 #endif
     cb();
