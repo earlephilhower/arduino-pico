@@ -140,6 +140,14 @@
 -Wl,--wrap=mdns_resp_restart_delay
 -Wl,--wrap=mdns_resp_init
 
+-Wl,--wrap=sntp_init
+-Wl,--wrap=sntp_stop
+-Wl,--wrap=sntp_setoperatingmode
+-Wl,--wrap=sntp_servermode_dhcp
+-Wl,--wrap=sntp_setserver
+-Wl,--wrap=sntp_setservername
+
+
 -Wl,--wrap=cyw43_cb_process_ethernet
 -Wl,--wrap=cyw43_cb_tcpip_set_link_up
 -Wl,--wrap=cyw43_cb_tcpip_set_link_down

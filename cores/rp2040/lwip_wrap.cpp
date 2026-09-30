@@ -1614,6 +1614,78 @@ extern "C" {
         __real_mdns_resp_init();
     }
 
+    void __wrap_sntp_init() {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __lwip(__sntp_init, nullptr);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_sntp_init();
+    }
+
+    void __wrap_sntp_stop() {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __lwip(__sntp_stop, nullptr);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_sntp_stop();
+    }
+
+    void __wrap_sntp_setoperatingmode(u8_t operating_mode) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __sntp_setoperatingmode_req req = { operating_mode };
+            __lwip(__sntp_setoperatingmode, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_sntp_setoperatingmode(operating_mode);
+    }
+
+#if 0
+    void __wrap_sntp_servermode_dhcp(int set_servers_from_dhcp) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __sntp_servermode_dhcp_req req = { set_servers_from_dhcp };
+            __lwip(__sntp_servermode_dhcp, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_sntp_servermode_dhcp(set_servers_from_dhcp);
+    }
+#endif
+
+    void __wrap_sntp_setserver(u8_t idx, const ip_addr_t *server) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __sntp_setserver_req req = { idx, server };
+            __lwip(__sntp_setserver, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_sntp_setserver(idx, server);
+    }
+
+    void __wrap_sntp_setservername(u8_t idx, const char *server) {
+#ifdef __FREERTOS
+        if (!__isLWIPThread()) {
+            __sntp_setservername_req req = { idx, server };
+            __lwip(__sntp_setservername, &req);
+            return;
+        }
+#endif
+        LWIPMutex m;
+        __real_sntp_setservername(idx, server);
+    }
+
 
 #if defined(PICO_CYW43_SUPPORTED)
     int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
