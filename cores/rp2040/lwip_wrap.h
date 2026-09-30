@@ -229,6 +229,13 @@ typedef enum {
     __mdns_resp_restart_delay,
     __mdns_resp_init,
 
+    __sntp_init = 9200,
+    __sntp_stop,
+    __sntp_setoperatingmode,
+    //    __sntp_servermode_dhcp,
+    __sntp_setserver,
+    __sntp_setservername,
+
 #if defined(PICO_CYW43_SUPPORTED)
     __cyw43_wifi_join = 9900,
     __cyw43_wifi_leave,
@@ -374,6 +381,14 @@ err_t __real_mdns_resp_add_service_txtitem(struct mdns_service *service, const c
 void __real_mdns_resp_announce(struct netif *netif);
 void __real_mdns_resp_restart_delay(struct netif *netif, uint32_t delay);
 void __real_mdns_resp_init(void);
+
+// By inspection of the sntp.c code
+void __real_sntp_init();
+void __real_sntp_stop();
+void __real_sntp_setoperatingmode(u8_t operating_mode);
+//void __real_sntp_servermode_dhcp(int set_servers_from_dhcp);
+void __real_sntp_setserver(u8_t idx, const ip_addr_t *server);
+void __real_sntp_setservername(u8_t idx, const char *server);
 
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
@@ -1069,6 +1084,25 @@ typedef struct {
     struct netif *netif;
     uint32_t delay;
 } __mdns_resp_restart_delay_req;
+
+
+typedef struct {
+    u8_t operating_mode;
+} __sntp_setoperatingmode_req;
+
+//typedef struct {
+//    int set_servers_from_dhcp;
+//} __sntp_servermode_dhcp_req;
+
+typedef struct {
+    u8_t idx;
+    const ip_addr_t *server;
+} __sntp_setserver_req;
+
+typedef struct {
+    u8_t idx;
+    const char *server;
+} __sntp_setservername_req;
 
 
 #if defined(PICO_CYW43_SUPPORTED)
