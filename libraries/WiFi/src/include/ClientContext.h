@@ -96,7 +96,7 @@ public:
                 tcp_poll(_pcb, nullptr, 0);
                 ret = tcp_close(_pcb);
                 if (ret != ERR_OK) {
-                    DEBUGV(":tc err %d\r\n", (int) err);
+                    DEBUGV(":tc err %d\r\n", (int) ret);
                     tcp_abort(_pcb);
                     ret = ERR_ABRT;
                 }
