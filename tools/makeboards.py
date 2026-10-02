@@ -32,8 +32,8 @@ def BuildDebugPort(name):
         print("%s.menu.dbgport.%s.build.debug_port=-DDEBUG_RP2040_PORT=%s" % (name, p, p))
 
 def BuildDebugLevel(name):
-    for l in [ ("None", ""), ("Core", "-DDEBUG_RP2040_CORE"), ("SPI", "-DDEBUG_RP2040_SPI"), ("Wire", "-DDEBUG_RP2040_WIRE"), ("Bluetooth", "-DDEBUG_RP2040_BLUETOOTH"), ("BLE", "-DDEBUG_RP2040_BLE"),
-               ("LWIP", "-DLWIP_DEBUG=1"), ("All", "-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BLUETOOTH -DDEBUG_RP2040_BLE -DLWIP_DEBUG=1"), ("NDEBUG", "-DNDEBUG") ]:
+    for l in [ ("None", ""), ("Core", "-DDEBUG_RP2040_CORE"), ("SPI", "-DDEBUG_RP2040_SPI"), ("Wire", "-DDEBUG_RP2040_WIRE"), ("BTStack", "-DDEBUG_RP2040_BTSTACK"), ("Bluetooth", "-DDEBUG_RP2040_BLUETOOTH"),
+               ("LWIP", "-DLWIP_DEBUG=1"), ("All", "-DDEBUG_RP2040_WIRE -DDEBUG_RP2040_SPI -DDEBUG_RP2040_CORE -DDEBUG_RP2040_BTSTACK -DDEBUG_RP2040_BLUETOOTH -DLWIP_DEBUG=1"), ("NDEBUG", "-DNDEBUG") ]:
         print("%s.menu.dbglvl.%s=%s" % (name, l[0], l[0]))
         print("%s.menu.dbglvl.%s.build.debug_level=%s" % (name, l[0], l[1]))
 
@@ -202,6 +202,10 @@ def BuildUploadMethodMenu(name, ram):
         print("%s.menu.uploadmethod.%s.build.debugscript=%s" % (name, a, d))
         if a == "picotool":
             print("%s.menu.uploadmethod.%s.build.picodebugflags=-DENABLE_PICOTOOL_USB" % (name, a))
+        if a != "default":
+            # No serial port is involved in these upload methods (picotool/openocd find
+            # the device themselves), so don't make arduino-cli wait for one to reappear.
+            print("%s.menu.uploadmethod.%s.upload.wait_for_upload_port=false" % (name, a))
         print("%s.menu.uploadmethod.%s.upload.maximum_data_size=%d" % (name, a, c * 1024))
         print("%s.menu.uploadmethod.%s.upload.tool=%s" % (name, a, e))
         print("%s.menu.uploadmethod.%s.upload.tool.default=%s" % (name, a, e))
@@ -403,7 +407,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMCS(name)
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
-        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48") or (name == "solderparty_rp2350_stamp_xl"):
+        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48") or (name == "solderparty_rp2350_stamp_xl") or (name == "waveshare_rp2350_core"):
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
@@ -765,11 +769,13 @@ MakeBoard("waveshare_rp2040_pizero", "rp2040", "Waveshare", "RP2040 PiZero", "0x
 MakeBoard("waveshare_rp2040_plus", "rp2040", "Waveshare", "RP2040 Plus", "0x2e8a", "0x1020", 500, "WAVESHARE_RP2040_PLUS", 4, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96", "0x2e8a", "0x1021", 500, "WAVESHARE_RP2040_LCD_0_96", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
+MakeBoard("waveshare_rp2350_core", "rp2350", "Waveshare", "RP2350 Core", "0x2e8a", "0x10B2", 500, "WAVESHARE_RP2350_CORE", 16, 0, "none")
 MakeBoard("waveshare_rp2350_zero", "rp2350", "Waveshare", "RP2350 Zero", "0x2e8a", "0x10B0", 500, "WAVESHARE_RP2350_ZERO", 4, 0, "none")
 MakeBoard("waveshare_rp2350_pizero", "rp2350", "Waveshare", "RP2350 PiZero", "0x2e8a", "0x000F", 500, "WAVESHARE_RP2350_PIZERO", 16, 0, "none")
 MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a", "0x10B1", 500, "WAVESHARE_RP2350_PLUS", 4, 0, "none")
 MakeBoard("waveshare_rp2350b_plus_w", "rp2350", "Waveshare", "RP2350B Plus W", "0x2e8a", "0xf00a", 500, "WAVESHARE_RP2350B_PLUS_W", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
+MakeBoard("waveshare_rp2350_poe_eth", "rp2350", "Waveshare", "RP2350-POE-ETH", "0x2e8a", "0x10B8", 500, "WAVESHARE_RP2350_POE_ETH", 16, 0, "none")
 
 # WeAct
 MakeBoard("weact_rp2350b", "rp2350", "WeAct", "Studio RP2350B Core Board", "0x2e8a", "0x000f", 250, "WEACT_RP2350B", 16, 0, "none")

@@ -48,15 +48,18 @@ public:
     ClientContext(tcp_pcb* pcb, discard_cb_t discard_cb, void* discard_cb_arg) :
         _pcb(pcb), _rx_buf(0), _rx_buf_offset(0), _discard_cb(discard_cb), _discard_cb_arg(discard_cb_arg), _refcnt(0), _next(0),
         _sync(::getDefaultPrivateGlobalSyncValue()) {
-        tcp_setprio(_pcb, TCP_PRIO_MIN);
-        tcp_arg(_pcb, this);
-        tcp_recv(_pcb, &_s_recv);
-        tcp_sent(_pcb, &_s_acked);
-        tcp_err(_pcb, &_s_error);
-        tcp_poll(_pcb, &_s_poll, 1);
+        lwip_callback([this]() {
+            LWIPMutex m;
+            tcp_setprio(_pcb, TCP_PRIO_MIN);
+            tcp_arg(_pcb, this);
+            tcp_recv(_pcb, &_s_recv);
+            tcp_sent(_pcb, &_s_acked);
+            tcp_err(_pcb, &_s_error);
+            tcp_poll(_pcb, &_s_poll, 1);
 
-        // keep-alive not enabled by default
-        //keepAlive();
+            // keep-alive not enabled by default
+            //keepAlive();
+        });
     }
 
     tcp_pcb* getPCB() {
@@ -64,37 +67,43 @@ public:
     }
 
     err_t abort() {
-        if (_pcb) {
-            DEBUGV(":abort\r\n");
-            tcp_arg(_pcb, nullptr);
-            tcp_sent(_pcb, nullptr);
-            tcp_recv(_pcb, nullptr);
-            tcp_err(_pcb, nullptr);
-            tcp_poll(_pcb, nullptr, 0);
-            tcp_abort(_pcb);
-            _pcb = nullptr;
-        }
+        lwip_callback([this]() {
+            LWIPMutex m;
+            if (_pcb) {
+                DEBUGV(":abort\r\n");
+                tcp_arg(_pcb, nullptr);
+                tcp_sent(_pcb, nullptr);
+                tcp_recv(_pcb, nullptr);
+                tcp_err(_pcb, nullptr);
+                tcp_poll(_pcb, nullptr, 0);
+                tcp_abort(_pcb);
+                _pcb = nullptr;
+            }
+        });
         return ERR_ABRT;
     }
 
     err_t close() {
-        err_t err = ERR_OK;
-        if (_pcb) {
-            DEBUGV(":close\r\n");
-            tcp_arg(_pcb, nullptr);
-            tcp_sent(_pcb, nullptr);
-            tcp_recv(_pcb, nullptr);
-            tcp_err(_pcb, nullptr);
-            tcp_poll(_pcb, nullptr, 0);
-            err = tcp_close(_pcb);
-            if (err != ERR_OK) {
-                DEBUGV(":tc err %d\r\n", (int) err);
-                tcp_abort(_pcb);
-                err = ERR_ABRT;
+        err_t ret = ERR_OK;
+        lwip_callback([this, &ret]() {
+            LWIPMutex m;
+            if (_pcb) {
+                DEBUGV(":close\r\n");
+                tcp_arg(_pcb, nullptr);
+                tcp_sent(_pcb, nullptr);
+                tcp_recv(_pcb, nullptr);
+                tcp_err(_pcb, nullptr);
+                tcp_poll(_pcb, nullptr, 0);
+                ret = tcp_close(_pcb);
+                if (ret != ERR_OK) {
+                    DEBUGV(":tc err %d\r\n", (int) ret);
+                    tcp_abort(_pcb);
+                    ret = ERR_ABRT;
+                }
+                _pcb = nullptr;
             }
-            _pcb = nullptr;
-        }
-        return err;
+        });
+        return ret;
     }
 
     ~ClientContext() {
@@ -111,18 +120,18 @@ public:
 
     void ref() {
         ++_refcnt;
-        DEBUGV(":ref %d\r\n", _refcnt);
+        DEBUGV(":ref %d", _refcnt);
     }
 
     void unref() {
-        DEBUGV(":ur %d\r\n", _refcnt);
+        DEBUGV(":ur %d", _refcnt);
         if (--_refcnt == 0) {
             discard_received();
             close();
             if (_discard_cb) {
                 _discard_cb(_discard_cb_arg, this);
             }
-            DEBUGV(":del\r\n");
+            DEBUGV(":del");
             delete this;
         }
     }
@@ -150,11 +159,11 @@ public:
         }, 1);
         _connect_pending = false;
         if (!_pcb) {
-            DEBUGV(":cabrt\r\n");
+            DEBUGV(":cabrt");
             return 0;
         }
         if (state() != ESTABLISHED) {
-            DEBUGV(":ctmo\r\n");
+            DEBUGV(":ctmo");
             abort();
             return 0;
         }
@@ -162,25 +171,40 @@ public:
     }
 
     size_t availableForWrite() const {
-        return _pcb ? tcp_sndbuf(_pcb) : 0;
+        size_t ret = 0;
+        lwip_callback([this, &ret]() {
+            LWIPMutex m;
+            if (_pcb) {
+                ret = tcp_sndbuf(_pcb);
+            }
+        });
+        return ret;
     }
 
     void setNoDelay(bool nodelay) {
-        if (!_pcb) {
-            return;
-        }
-        if (nodelay) {
-            tcp_nagle_disable(_pcb);
-        } else {
-            tcp_nagle_enable(_pcb);
-        }
+        lwip_callback([this, nodelay]() {
+            LWIPMutex m;
+            if (!_pcb) {
+                return;
+            }
+            if (nodelay) {
+                tcp_nagle_disable(_pcb);
+            } else {
+                tcp_nagle_enable(_pcb);
+            }
+        });
     }
 
     bool getNoDelay() const {
-        if (!_pcb) {
-            return false;
-        }
-        return tcp_nagle_disabled(_pcb);
+        bool ret = false;
+        lwip_callback([this, &ret]() {
+            LWIPMutex m;
+            if (!_pcb) {
+                return;
+            }
+            ret = tcp_nagle_disabled(_pcb);
+        });
+        return ret;
     }
 
     void setTimeout(int timeout_ms) {
@@ -196,27 +220,42 @@ public:
     }
 
     const ip_addr_t* getRemoteAddress() const {
-        if (!_pcb) {
-            return 0;
-        }
+        ip_addr_t* ret = 0;
+        lwip_callback([this, &ret]() {
+            LWIPMutex m;
+            if (!_pcb) {
+                return;
+            }
 
-        return &_pcb->remote_ip;
+            ret = &_pcb->remote_ip;
+        });
+        return ret;
     }
 
     uint16_t getRemotePort() const {
-        if (!_pcb) {
-            return 0;
-        }
+        uint16_t ret = 0;
+        lwip_callback([this, &ret]() {
+            LWIPMutex m;
+            if (!_pcb) {
+                return;
+            }
 
-        return _pcb->remote_port;
+            ret = _pcb->remote_port;
+        });
+        return ret;
     }
 
     const ip_addr_t* getLocalAddress() const {
-        if (!_pcb) {
-            return 0;
-        }
+        ip_addr_t *ret = 0;
+        lwip_callback([this, &ret]() {
+            LWIPMutex m;
+            if (!_pcb) {
+                return;
+            }
 
-        return &_pcb->local_ip;
+            ret = &_pcb->local_ip;
+        });
+        return ret;
     }
 
     uint16_t getLocalPort() const {
@@ -253,12 +292,12 @@ public:
         size_t max_size = _rx_buf->tot_len - _rx_buf_offset;
         size = (size < max_size) ? size : max_size;
 
-        DEBUGV(":rd %d, %d, %d\r\n", size, _rx_buf->tot_len, _rx_buf_offset);
+        DEBUGV(":rd %d, %d, %d", size, _rx_buf->tot_len, _rx_buf_offset);
         size_t size_read = 0;
         while (size) {
             size_t buf_size = _rx_buf->len - _rx_buf_offset;
             size_t copy_size = (size < buf_size) ? size : buf_size;
-            DEBUGV(":rdi %d, %d\r\n", buf_size, copy_size);
+            DEBUGV(":rdi %d, %d", buf_size, copy_size);
             memcpy(dst, reinterpret_cast<char*>(_rx_buf->payload) + _rx_buf_offset, copy_size);
             dst += copy_size;
             _consume(copy_size);
@@ -284,16 +323,16 @@ public:
         size_t max_size = _rx_buf->tot_len - _rx_buf_offset;
         size = (size < max_size) ? size : max_size;
 
-        DEBUGV(":pd %d, %d, %d\r\n", size, _rx_buf->tot_len, _rx_buf_offset);
+        DEBUGV(":pd %d, %d, %d", size, _rx_buf->tot_len, _rx_buf_offset);
         size_t buf_size = _rx_buf->len - _rx_buf_offset;
         size_t copy_size = (size < buf_size) ? size : buf_size;
-        DEBUGV(":rpi %d, %d\r\n", buf_size, copy_size);
+        DEBUGV(":rpi %d, %d", buf_size, copy_size);
         memcpy(dst, reinterpret_cast<char*>(_rx_buf->payload) + _rx_buf_offset, copy_size);
         return copy_size;
     }
 
     void discard_received() {
-        DEBUGV(":dsrcv %d\n", _rx_buf ? _rx_buf->tot_len : 0);
+        DEBUGV(":dsrcv %d", _rx_buf ? _rx_buf->tot_len : 0);
         if (!_rx_buf) {
             return;
         }
@@ -318,33 +357,38 @@ public:
 
         // wait for peer's acks to flush lwIP's output buffer
         uint32_t last_sent = millis();
-        while (1) {
+        while (true) {
             if (millis() - last_sent > (uint32_t) max_wait_ms) {
 #ifdef DEBUGV
                 // wait until sent: timeout
-                DEBUGV(":wustmo\n");
+                DEBUGV(":wustmo");
 #endif
                 // All data was not flushed, timeout hit
                 return false;
             }
 
-            if (!_pcb) {
-                return false;
-            }
-            // force lwIP to send what can be sent
-            tcp_output(_pcb);
+            int sndbuf = -1;
+            lwip_callback([this, &prevsndbuf, &last_sent, &sndbuf]() {
+                LWIPMutex m;
+                if (!_pcb) {
+                    return;
+                }
+                // force lwIP to send what can be sent
+                tcp_output(_pcb);
 
-            int sndbuf = tcp_sndbuf(_pcb);
-            if (sndbuf != prevsndbuf) {
-                // send buffer has changed (or first iteration)
-                prevsndbuf = sndbuf;
-                // We just sent a bit, move timeout forward
-                last_sent = millis();
-            }
-
+                sndbuf = tcp_sndbuf(_pcb);
+                if (sndbuf != prevsndbuf) {
+                    // send buffer has changed (or first iteration)
+                    prevsndbuf = sndbuf;
+                    // We just sent a bit, move timeout forward
+                    last_sent = millis();
+                }
+            });
             // esp_yield(); // from sys or os context
 
-            if ((state() != ESTABLISHED) || (sndbuf == TCP_SND_BUF)) {
+            if (!_pcb) {
+                return false;
+            } else if ((state() != ESTABLISHED) || (sndbuf == TCP_SND_BUF)) {
                 // peer has closed or all bytes are sent and acked
                 // ((TCP_SND_BUF-sndbuf) is the amount of un-acked bytes)
                 break;
@@ -356,18 +400,26 @@ public:
     }
 
     uint8_t state() const {
-        if (!_pcb || _pcb->state == CLOSE_WAIT || _pcb->state == CLOSING) {
-            // CLOSED for WiFIClient::status() means nothing more can be written
-            return CLOSED;
-        }
+        uint8_t ret = CLOSED;
+        lwip_callback([this, &ret]() {
+            LWIPMutex m;
+            if (!_pcb || _pcb->state == CLOSE_WAIT || _pcb->state == CLOSING) {
+                // CLOSED for WiFIClient::status() means nothing more can be written
+                ret = CLOSED;
+                return;
+            }
 
-        return _pcb->state;
+            ret = _pcb->state;
+        });
+        return ret;
     }
 
     size_t write(const char* ds, const size_t dl) {
+        // no LWIPMutex here, _write_from_source contains delay()
         if (!_pcb) {
             return 0;
         }
+        // note that _pcb may be NULL again here due to race condition
         return _write_from_source(ds, dl);
     }
 
@@ -375,6 +427,7 @@ public:
         if (!_pcb) {
             return 0;
         }
+        // note that _pcb may become NULL again at any point
         size_t sent = 0;
         uint8_t buff[256];
         while (stream.available()) {
@@ -484,7 +537,7 @@ protected:
 
             if (_written == _datalen || _is_timeout() || state() == CLOSED) {
                 if (_is_timeout()) {
-                    DEBUGV(":wtmo\r\n");
+                    DEBUGV(":wtmo");
                 }
                 _datasource = nullptr;
                 _datalen = 0;
@@ -512,27 +565,25 @@ protected:
             return false;
         }
 
-        DEBUGV(":wr %d %d\r\n", _datalen - _written, _written);
+        DEBUGV(":wr %d %d", _datalen - _written, _written);
 
         bool has_written = false;
         int scale = 0;
 
         while (_written < _datalen) {
-            if (state() == CLOSED) {
-                return false;
-            }
             const auto remaining = _datalen - _written;
-            size_t next_chunk_size;
-            {
+            size_t next_chunk_size = 0;
+            lwip_callback([this, &next_chunk_size, &remaining, &scale]() {
+                LWIPMutex m;
                 if (!_pcb) {
-                    return false;
+                    return;
                 }
                 next_chunk_size = std::min((size_t)tcp_sndbuf(_pcb), remaining);
                 // Potentially reduce transmit size if we are tight on memory, but only if it doesn't return a 0 chunk size
                 if (next_chunk_size > (size_t)(1 << scale)) {
                     next_chunk_size >>= scale;
                 }
-            }
+            });
             if (!next_chunk_size) {
                 break;
             }
@@ -555,12 +606,18 @@ protected:
                 flags |= TCP_WRITE_FLAG_COPY;
             }
 
-            if (!_pcb) {
-                return false;
-            }
-            err_t err = tcp_write(_pcb, buf, next_chunk_size, flags);
+            err_t err;
+            lwip_callback([this, &err, &buf, &next_chunk_size, &flags]() {
 
-            DEBUGV(":wrc %d %d %d\r\n", next_chunk_size, remaining, (int)err);
+                LWIPMutex m;
+                if (!_pcb || state() == CLOSED) {
+                    err = ERR_CLSD;
+                }
+                err = tcp_write(_pcb, buf, next_chunk_size, flags);
+            });
+
+
+            DEBUGV(":wrc %d %d %d", next_chunk_size, remaining, (int)err);
 
             if (err == ERR_OK) {
                 _written += next_chunk_size;
@@ -579,11 +636,16 @@ protected:
             }
         }
 
-        if (has_written && _pcb) {
-            // lwIP's tcp_output doc: "Find out what we can send and send it"
-            // *with respect to Nagle*
-            // more info: https://lists.gnu.org/archive/html/lwip-users/2017-11/msg00134.html
-            tcp_output(_pcb);
+        if (has_written) {
+            lwip_callback([this]() {
+                LWIPMutex m;
+                if (_pcb) {
+                    // lwIP's tcp_output doc: "Find out what we can send and send it"
+                    // *with respect to Nagle*
+                    // more info: https://lists.gnu.org/archive/html/lwip-users/2017-11/msg00134.html
+                    tcp_output(_pcb);
+                }
+            });
         }
 
         return has_written;
@@ -600,7 +662,7 @@ protected:
     err_t _acked(tcp_pcb* pcb, uint16_t len) {
         (void) pcb;
         (void) len;
-        DEBUGV(":ack %d\r\n", len);
+        DEBUGV(":ack %d", len);
         _write_some_from_cb();
         return ERR_OK;
     }
@@ -610,22 +672,25 @@ protected:
         if (left > 0) {
             _rx_buf_offset += size;
         } else if (!_rx_buf->next) {
-            DEBUGV(":c0 %d, %d\r\n", size, _rx_buf->tot_len);
+            DEBUGV(":c0 %d, %d", size, _rx_buf->tot_len);
             auto head = _rx_buf;
             _rx_buf = 0;
             _rx_buf_offset = 0;
             pbuf_free(head);
         } else {
-            DEBUGV(":c %d, %d, %d\r\n", size, _rx_buf->len, _rx_buf->tot_len);
+            DEBUGV(":c %d, %d, %d", size, _rx_buf->len, _rx_buf->tot_len);
             auto head = _rx_buf;
             _rx_buf = _rx_buf->next;
             _rx_buf_offset = 0;
             pbuf_ref(_rx_buf);
             pbuf_free(head);
         }
-        if (_pcb) {
-            tcp_recved(_pcb, size);
-        }
+        lwip_callback([this, size]() {
+            LWIPMutex m;
+            if (_pcb) {
+                tcp_recved(_pcb, size);
+            }
+        });
     }
 
     err_t _recv(tcp_pcb* pcb, pbuf* pb, err_t err) {
@@ -633,7 +698,7 @@ protected:
         (void) err;
         if (pb == 0) {
             // connection closed by peer
-            DEBUGV(":rcl pb=%p sz=%d\r\n", _rx_buf, _rx_buf ? _rx_buf->tot_len : -1);
+            DEBUGV(":rcl pb=%p sz=%d", _rx_buf, _rx_buf ? _rx_buf->tot_len : -1);
             _notify_error();
             if (_rx_buf && _rx_buf->tot_len) {
                 // there is still something to read
@@ -648,10 +713,10 @@ protected:
         }
 
         if (_rx_buf) {
-            DEBUGV(":rch %d, %d\r\n", _rx_buf->tot_len, pb->tot_len);
+            DEBUGV(":rch %d, %d", _rx_buf->tot_len, pb->tot_len);
             pbuf_cat(_rx_buf, pb);
         } else {
-            DEBUGV(":rn %d\r\n", pb->tot_len);
+            DEBUGV(":rn %d", pb->tot_len);
             _rx_buf = pb;
             _rx_buf_offset = 0;
         }
@@ -660,7 +725,7 @@ protected:
 
     void _error(err_t err) {
         (void) err;
-        DEBUGV(":er %d 0x%08lx\r\n", (int) err, (uint32_t) _datasource);
+        DEBUGV(":er %d 0x%08lx", (int) err, (uint32_t) _datasource);
         tcp_arg(_pcb, nullptr);
         tcp_sent(_pcb, nullptr);
         tcp_recv(_pcb, nullptr);

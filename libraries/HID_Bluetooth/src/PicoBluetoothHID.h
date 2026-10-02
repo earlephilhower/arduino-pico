@@ -86,8 +86,8 @@ private:
 
         case HCI_EVENT_USER_CONFIRMATION_REQUEST:
             // ssp: inform about user confirmation request
-            //log_info("SSP User Confirmation Request with numeric value '%06" PRIu32 "'\n", hci_event_user_confirmation_request_get_numeric_value(packet));
-            //log_info("SSP User Confirmation Auto accept\n");
+            DEBUGBT("SSP User Confirmation Request with numeric value '%06" PRIu32 "'\n", hci_event_user_confirmation_request_get_numeric_value(packet));
+            DEBUGBT("SSP User Confirmation Auto accept\n");
             break;
 
         case HCI_EVENT_HID_META:

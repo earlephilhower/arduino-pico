@@ -99,7 +99,7 @@ public:
 
     bool info(FSInfo& info) override {
         if (!_mounted) {
-            DEBUGV("SDFS::info: FS not mounted\n");
+            DEBUGV("SDFS::info: FS not mounted");
             return false;
         }
         info.maxOpenFiles = 999; // TODO - not valid
@@ -125,7 +125,7 @@ public:
 
     bool setConfig(const FSConfig &cfg) override {
         if ((cfg._type != SDFSConfig::FSId) || _mounted) {
-            DEBUGV("SDFS::setConfig: invalid config or already mounted\n");
+            DEBUGV("SDFS::setConfig: invalid config or already mounted");
             return false;
         }
         _cfg = *static_cast<const SDFSConfig *>(&cfg);
@@ -328,7 +328,7 @@ public:
             return _fd->seekCur(pos);
         default:
             // Should not be hit, we've got an invalid seek mode
-            DEBUGV("SDFSFileImpl::seek: invalid seek mode %d\n", mode);
+            DEBUGV("SDFSFileImpl::seek: invalid seek mode %d", mode);
             assert((mode == SeekSet) || (mode == SeekEnd) || (mode == SeekCur)); // Will fail and give meaningful assert message
             return false;
         }
@@ -344,7 +344,7 @@ public:
 
     bool truncate(uint32_t size) override {
         if (!_opened) {
-            DEBUGV("SDFSFileImpl::truncate: file not opened\n");
+            DEBUGV("SDFSFileImpl::truncate: file not opened");
             return false;
         }
         return _fd->truncate(size);
@@ -359,7 +359,7 @@ public:
 
     const char* name() const override {
         if (!_opened) {
-            DEBUGV("SDFSFileImpl::name: file not opened\n");
+            DEBUGV("SDFSFileImpl::name: file not opened");
             return nullptr;
         } else {
             const char *p = _name.get();
@@ -439,7 +439,7 @@ public:
 
     const char* fileName() override {
         if (!_valid) {
-            DEBUGV("SDFSDirImpl::fileName: directory not valid\n");
+            DEBUGV("SDFSDirImpl::fileName: directory not valid");
             return nullptr;
         }
         return (const char*) _lfn; //_dirent.name;

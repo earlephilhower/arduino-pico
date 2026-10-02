@@ -114,7 +114,7 @@ public:
         noInterrupts(); // Avoid possible race conditions if IRQ comes in while main app is in middle of this
         // Disable any IRQs that are being used for SPI
         io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-        DEBUGSPI("SPI: IRQ masks before = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0],
+        DEBUGSPI("SPI: IRQ masks before = %08x %08x %08x %08x %08x %08x", (unsigned)irq_ctrl_base->inte[0],
                  (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3],
                  (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
         for (auto entry : _usingIRQs) {
@@ -124,10 +124,10 @@ public:
             io_rw_32 *en_reg = &irq_ctrl_base->inte[gpio / 8];
             uint32_t val = ((*en_reg) >> (4 * (gpio % 8))) & 0xf;
             _usingIRQs.insert_or_assign(gpio, val);
-            DEBUGSPI("SPI: GPIO %d = %lu\n", gpio, val);
+            DEBUGSPI("SPI: GPIO %d = %lu", gpio, val);
             (*en_reg) ^= val << (4 * (gpio % 8));
         }
-        DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0],
+        DEBUGSPI("SPI: IRQ masks after = %08x %08x %08x %08x %08x %08x", (unsigned)irq_ctrl_base->inte[0],
                  (unsigned)irq_ctrl_base->inte[1], (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3],
                  (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0, (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
         interrupts();
@@ -141,7 +141,7 @@ public:
             return;
         }
         noInterrupts(); // Avoid race condition so the GPIO IRQs won't come back until all state is restored
-        DEBUGSPI("SPI::endTransaction()\n");
+        DEBUGSPI("SPI::endTransaction()");
         // Re-enable IRQs
         for (auto entry : _usingIRQs) {
             int gpio = entry.first;
@@ -150,7 +150,7 @@ public:
         }
         io_bank0_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ? &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
         (void) irq_ctrl_base;
-        DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x %08x %08x\n", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1],
+        DEBUGSPI("SPI: IRQ masks = %08x %08x %08x %08x %08x %08x", (unsigned)irq_ctrl_base->inte[0], (unsigned)irq_ctrl_base->inte[1],
                  (unsigned)irq_ctrl_base->inte[2], (unsigned)irq_ctrl_base->inte[3], (GPIOIRQREGS > 4) ? (unsigned)irq_ctrl_base->inte[4] : 0,
                  (GPIOIRQREGS > 5) ? (unsigned)irq_ctrl_base->inte[5] : 0);
         interrupts();

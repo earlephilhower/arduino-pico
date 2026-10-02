@@ -53,7 +53,7 @@ bool WiFiMulti::addAP(const char *ssid, const char *pass) {
     } else {
         ap.pass = nullptr;
     }
-    DEBUGV("[WIFIMULTI] Adding: '%s' '%s' to list\n", ap.ssid, ap.pass);
+    DEBUGV("[WIFIMULTI] Adding: '%s' '%s' to list", ap.ssid, ap.pass);
     _list.push_front(ap);
     return true;
 }
@@ -81,7 +81,7 @@ uint8_t WiFiMulti::run(uint32_t to) {
         return WL_CONNECTED;
     }
 
-    DEBUGV("[WIFIMULTI] Rescanning to build new list of APs\n");
+    DEBUGV("[WIFIMULTI] Rescanning to build new list of APs");
     int cnt = WiFi.scanNetworks();
     if (!cnt) {
         return WL_DISCONNECTED;
@@ -105,13 +105,13 @@ uint8_t WiFiMulti::run(uint32_t to) {
         return a.rssi > b.rssi;
     });
     for (auto j = _scanList.begin(); j != _scanList.end(); j++) {
-        DEBUGV("[WIFIMULTI] scanList: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d\n", j->ssid,
+        DEBUGV("[WIFIMULTI] scanList: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d", j->ssid,
                j->bssid[0], j->bssid[1], j->bssid[2], j->bssid[3], j->bssid[4], j->bssid[5], j->rssi);
     }
 
     // Attempt to connect to each (will be in order of decreasing RSSI)
     for (auto j = _scanList.begin(); j != _scanList.end(); j++) {
-        DEBUGV("[WIFIMULTI] Connecting to: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d\n", j->ssid,
+        DEBUGV("[WIFIMULTI] Connecting to: SSID: '%s' -- BSSID: '%02X%02X%02X%02X%02X%02X' -- RSSI: %d", j->ssid,
                j->bssid[0], j->bssid[1], j->bssid[2], j->bssid[3], j->bssid[4], j->bssid[5], j->rssi);
         uint32_t start = millis();
         if (j->psk) {

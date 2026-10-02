@@ -363,6 +363,8 @@ bool MDNSResponder::_prepareMDNSMessage(MDNSResponder::stcMDNSSendParameter& p_r
 */
 bool
 MDNSResponder::_sendMDNSServiceQuery(const MDNSResponder::stcMDNSServiceQuery& p_ServiceQuery) {
+    // Also called straight from user code (queryService, installServiceQuery), so guard the send here
+    stcUserCallScope userCall(*this);
     return _sendMDNSQuery(p_ServiceQuery.m_ServiceTypeDomain, DNS_RRTYPE_PTR);
 }
 

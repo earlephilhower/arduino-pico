@@ -85,11 +85,11 @@ time_t (*__fatfs_timeCallback)(void) = nullptr;
 
 FileImplPtr FatFSImpl::open(const char* path, OpenMode openMode, AccessMode accessMode) {
     if (!_mounted) {
-        DEBUGV("FatFSImpl::open() called on unmounted FS\n");
+        DEBUGV("FatFSImpl::open() called on unmounted FS");
         return FileImplPtr();
     }
     if (!path || !path[0]) {
-        DEBUGV("FatFSImpl::open() called with invalid filename\n");
+        DEBUGV("FatFSImpl::open() called with invalid filename");
         return FileImplPtr();
     }
     BYTE flags = _getFlags(openMode, accessMode);
@@ -174,7 +174,7 @@ DirImplPtr FatFSImpl::openDir(const char* path) {
     }
     // TODO -can this ever happen?
     //    if (!dirFile) {
-    //        DEBUGV("FatFSImpl::openDir: path=`%s`\n", path);
+    //        DEBUGV("FatFSImpl::openDir: path=`%s`", path);
     //        return DirImplPtr();
     //    }
     auto sharedDir = std::make_shared<DIR>(dirFile);

@@ -157,7 +157,7 @@ extern "C" int main() {
 
 #if defined DEBUG_RP2040_PORT && !defined(__FREERTOS)
     DEBUG_RP2040_PORT.begin(115200);
-#if (defined(ENABLE_BLUETOOTH) || defined(ENABLE_BLE)) && defined(DEBUG_RP2040_BLUETOOTH)
+#if (defined(ENABLE_BLUETOOTH) || defined(ENABLE_BLE)) && defined(DEBUG_RP2040_BTSTACK)
     __EnableBluetoothDebug(DEBUG_RP2040_PORT);
 #endif
 #endif

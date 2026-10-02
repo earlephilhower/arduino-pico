@@ -85,7 +85,7 @@ public:
     }
 
     void unref() {
-        DEBUGV(":ur %d\r\n", _refcnt);
+        DEBUGV(":ur %d", _refcnt);
         if (--_refcnt == 0) {
             delete this;
         }
@@ -183,7 +183,7 @@ public:
             pb = pb->next;
         }
         l += snprintf(&buf[l], sizeof(buf) - l, "(end)");
-        DEBUGV("%s\n", buf);
+        DEBUGV("%s", buf);
     }
 #else
     void printChain(const pbuf* pb, const char* msg) const {
@@ -307,7 +307,7 @@ public:
 
         size_t max_size = _rx_buf_size - _rx_buf_offset;
         size = (size < max_size) ? size : max_size;
-        DEBUGV(":urd %d, %d, %d\r\n", size, _rx_buf_size, _rx_buf_offset);
+        DEBUGV(":urd %d, %d, %d", size, _rx_buf_size, _rx_buf_offset);
 
         void* buf = pbuf_get_contiguous(_rx_buf, dst, size, size, _rx_buf_offset);
         if (!buf) {
@@ -424,7 +424,7 @@ private:
 
         err_t err = udp_sendto(_pcb, tx_copy, addr, port);
         if (err != ERR_OK) {
-            DEBUGV(":ust rc=%d\r\n", (int) err);
+            DEBUGV(":ust rc=%d", (int) err);
         }
 
         pbuf_free(tx_copy);
@@ -494,7 +494,7 @@ private:
             if (p) {
                 // pbuf chain too deep, dropping
                 pbuf_free(pb);
-                DEBUGV(":udr\r\n");
+                DEBUGV(":udr");
                 return;
             }
         }
@@ -528,7 +528,7 @@ private:
             pbuf_cat(_rx_buf, pb_helper);
 
             // now chain the new data pbuf
-            DEBUGV(":urch %d, %d\r\n", _rx_buf->tot_len, pb->tot_len);
+            DEBUGV(":urch %d, %d", _rx_buf->tot_len, pb->tot_len);
             pbuf_cat(_rx_buf, pb);
         } else {
             _currentAddr.srcaddr = srcaddr;
@@ -536,7 +536,7 @@ private:
             _currentAddr.srcport = srcport;
             _currentAddr.input_netif = ip_current_input_netif();
 
-            DEBUGV(":urn %d\r\n", pb->tot_len);
+            DEBUGV(":urn %d", pb->tot_len);
             _first_buf_taken = false;
             _rx_buf = pb;
             _rx_buf_offset = 0;

@@ -41,16 +41,18 @@ extern "C" {
 
 extern "C" struct _reent *__getreent();
 
-extern "C" void *__wrap_malloc(size_t size) {
+extern "C" void *__real__malloc_r(void *reent, size_t size);
+extern "C" void *__wrap__malloc_r(void *reent, size_t size) {
     noInterrupts();
-    void *rc = __real_malloc(size);
+    void *rc = __real__malloc_r(reent, size);
     interrupts();
     return rc;
 }
 
-extern "C" void *__wrap_calloc(size_t count, size_t size) {
+extern "C" void *__real__calloc_r(void *reent, size_t count, size_t size);
+extern "C" void *__wrap__calloc_r(void *reent, size_t count, size_t size) {
     noInterrupts();
-    void *rc = __real_calloc(count, size);
+    void *rc = __real__calloc_r(reent, count, size);
     interrupts();
     return rc;
 }
@@ -89,41 +91,53 @@ extern "C" void *pcalloc(size_t count, size_t size) {
 }
 #endif
 
-extern "C" void *__wrap_realloc(void *mem, size_t size) {
+extern "C" void *__real__realloc_r(void *reent, void *mem, size_t size);
+extern "C" void *__wrap__realloc_r(void *reent, void *mem, size_t size) {
     void *rc;
     noInterrupts();
 #ifdef RP2350_PSRAM_CS
     if (mem && (mem < __ram_start)) {
         rc = __psram_realloc(mem, size);
     } else {
-        rc = __real_realloc(mem, size);
+        rc = __real__realloc_r(reent, mem, size);
     }
 #else
-    rc = __real_realloc(mem, size);
+    rc = __real__realloc_r(reent, mem, size);
 #endif
     interrupts();
     return rc;
 }
 
-extern "C" void __wrap_free(void *mem) {
+extern "C" void __real__free_r(void *reent, void *mem);
+extern "C" void __wrap__free_r(void *reent, void *mem) {
     noInterrupts();
 #ifdef RP2350_PSRAM_CS
     if (mem && (mem < __ram_start)) {
         __psram_free(mem);
     } else {
-        __real_free(mem);
+        __real__free_r(reent, mem);
     }
 #else
-    __real_free(mem);
+    __real__free_r(reent, mem);
 #endif
     interrupts();
 }
 
-extern "C" struct mallinfo __wrap_mallinfo() {
+extern "C" struct mallinfo __real__mallinfo_r(void *reent);
+extern "C" struct mallinfo __wrap__mallinfo_r(void *reent) {
     noInterrupts();
     __malloc_lock(__getreent());
-    auto ret = __real_mallinfo();
+    auto ret = __real__mallinfo_r(reent);
     __malloc_unlock(__getreent());
     interrupts();
     return ret;
 }
+
+extern "C" void *__real__memalign_r(void *reent, size_t align, size_t nbytes);
+extern "C" void *__wrap__memalign_r(void *reent, size_t align, size_t nbytes) {
+    noInterrupts();
+    void *rc = __real__memalign_r(reent, align, nbytes);
+    interrupts();
+    return rc;
+}
+

@@ -48,8 +48,6 @@
 #include <btstack_event.h>
 #include <ble/gatt-service/battery_service_server.h>
 #include <ble/gatt-service/device_information_service_server.h>
-//#include <ble/gatt-service/hids_device.h>
-
 
 
 class PicoBluetoothBLEHID_;
@@ -100,11 +98,11 @@ private:
             sm_just_works_confirm(sm_event_just_works_request_get_handle(packet));
             break;
         case SM_EVENT_NUMERIC_COMPARISON_REQUEST:
-            // printf("Confirming numeric comparison: %"PRIu32"\n", sm_event_numeric_comparison_request_get_passkey(packet));
+            DEBUGBT("Confirming numeric comparison: %" PRIu32, sm_event_numeric_comparison_request_get_passkey(packet));
             sm_numeric_comparison_confirm(sm_event_passkey_display_number_get_handle(packet));
             break;
         case SM_EVENT_PASSKEY_DISPLAY_NUMBER:
-            //printf("Display Passkey: %"PRIu32"\n", sm_event_passkey_display_number_get_passkey(packet));
+            DEBUGBT("Display Passkey: %" PRIu32, sm_event_passkey_display_number_get_passkey(packet));
             break;
         case HCI_EVENT_HIDS_META:
             switch (hci_event_hids_meta_get_subevent_code(packet)) {
@@ -135,14 +133,14 @@ private:
                         hids_device_send_boot_mouse_input_report(_con_handle, &(((const uint8_t *)_sendReport)[1]), _sendReportLen);
                     }
                     if (__BLEInstallMouse && __BLEInstallJoystick) {
-                        printf("Error: BLE HID in boot mode, but mouse & keyboard are active\n");
+                        DEBUGBT("Error: BLE HID in boot mode, but mouse & keyboard are active");
                     }
                     break;
                 case 1:
                     reportID = ((const uint8_t *)_sendReport)[0];
                     result = hids_device_send_input_report_for_id(_con_handle, (uint16_t)reportID, &(((const uint8_t *)_sendReport)[1]), _sendReportLen - 1);
                     if (result) {
-                        Serial.printf("Error sending %d - report ID: %d\n", result, reportID);
+                        DEBUGBT("Error sending %d - report ID: %d\n", result, reportID);
                     }
                     break;
                 default:

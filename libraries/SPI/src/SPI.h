@@ -47,7 +47,7 @@ public:
         @param [in] data Data to send
         @returns Read back byte from SPI interface
     */
-    byte transfer(uint8_t data) override;
+    uint8_t transfer(uint8_t data) override;
 
     /**
         @brief Send a 16-bit quantity over SPI and return read-back 16-bit value under a single CS assertion

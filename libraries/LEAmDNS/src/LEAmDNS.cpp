@@ -57,7 +57,7 @@ namespace MDNSImplementation {
 */
 MDNSResponder::MDNSResponder(void) :
     m_pServices(0), m_pUDPContext(0), m_pcHostname(0), m_pServiceQueries(0),
-    m_fnServiceTxtCallback(0) {
+    m_fnServiceTxtCallback(0), m_bUserCallActive(false), m_bRxDeferred(false) {
 }
 
 /*
@@ -114,6 +114,7 @@ bool MDNSResponder::begin(const char* p_pcHostname, const IPAddress& /*p_IPAddre
 bool MDNSResponder::close(void) {
     bool bResult = false;
 
+    stcUserCallScope userCall(*this);
     if (0 != m_pUDPContext) {
         _announce(false, true);
         _resetProbeStatus(false);  // Stop probing
@@ -232,9 +233,10 @@ MDNSResponder::hMDNSService MDNSResponder::addService(const char* p_pcName,
 
 */
 bool MDNSResponder::removeService(const MDNSResponder::hMDNSService p_hService) {
-    stcMDNSService* pService = 0;
-    bool            bResult  = (((pService = _findService(p_hService)))
-                                && (_announceService(*pService, false)) && (_releaseService(pService)));
+    stcUserCallScope userCall(*this);
+    stcMDNSService*  pService = 0;
+    bool             bResult  = (((pService = _findService(p_hService)))
+                                 && (_announceService(*pService, false)) && (_releaseService(pService)));
     DEBUG_EX_ERR(if (!bResult) {
     DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeService: FAILED!\n"));
     });
@@ -1119,6 +1121,7 @@ bool MDNSResponder::notifyAPChange(void) {
 
 */
 bool MDNSResponder::update(void) {
+    stcUserCallScope userCall(*this);
     return _process(true);
 }
 
@@ -1129,6 +1132,7 @@ bool MDNSResponder::update(void) {
     items...
 */
 bool MDNSResponder::announce(void) {
+    stcUserCallScope userCall(*this);
     return (_announce(true, true));
 }
 
