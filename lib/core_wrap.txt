@@ -196,6 +196,7 @@
 -Wl,--wrap=netif_set_up
 
 -Wl,--wrap=ethernet_input
+-Wl,--wrap=ethernet_output
 
 -Wl,--wrap=mdns_get_service_txt_userdata
 -Wl,--wrap=mdns_resp_add_netif

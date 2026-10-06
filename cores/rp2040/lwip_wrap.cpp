@@ -95,6 +95,7 @@ extern "C" {
 #include "./lwip-wrappers/wrap_mld6_functions.inc"
 #include "./lwip-wrappers/wrap_mdns_functions.inc"
 #include "./lwip-wrappers/wrap_sntp_functions.inc"
+#include "./lwip-wrappers/wrap_ethernet_functions.inc"
 
     // sys_check_timeouts is special case because the async process will call it.  If we're already in a timeout check, just do a noop
     void __wrap_sys_check_timeouts(void) {
@@ -119,19 +120,6 @@ extern "C" {
 #endif
         LWIPMutex m;
         return __real_sys_timeouts_sleeptime();
-    }
-
-    err_t __wrap_ethernet_input(struct pbuf *p, struct netif *netif) {
-#ifdef __FREERTOS
-        if (!__isLWIPThread()) {
-            err_t ret;
-            __ethernet_input_req req = { p, netif, &ret };
-            __lwip(__ethernet_input, &req);
-            return ret;
-        }
-#endif
-        LWIPMutex m;
-        return __real_ethernet_input(p, netif);
     }
 
 

@@ -135,6 +135,7 @@ static void lwipThread(void *params) {
 #include "../lwip-wrappers/wrap_mld6_cases.inc"
 #include "../lwip-wrappers/wrap_mdns_cases.inc"
 #include "../lwip-wrappers/wrap_sntp_cases.inc"
+#include "../lwip-wrappers/wrap_ethernet_cases.inc"
 
             case __sys_check_timeouts: {
                 __real_sys_check_timeouts();
@@ -143,11 +144,6 @@ static void lwipThread(void *params) {
             case __sys_timeouts_sleeptime: {
                 __sys_timeouts_sleeptime_req *r = (__sys_timeouts_sleeptime_req *)w.req;
                 *(r->ret) = __real_sys_timeouts_sleeptime();
-                break;
-            }
-            case __ethernet_input: {
-                __ethernet_input_req *r = (__ethernet_input_req *)w.req;
-                *(r->ret) = __real_ethernet_input(r->p, r->netif);
                 break;
             }
 
