@@ -148,7 +148,7 @@ extern "C" void __wrap_cyw43_driver_deinit(async_context_t *context) {
 // These methods are called in pensv context and on either core
 // They can be called recursively
 extern "C" void __wrap_cyw43_thread_enter() {
-    xSemaphoreTakeRecursive(_cyw43_arch_mutex, portTICK_PERIOD_MS);
+    xSemaphoreTakeRecursive(_cyw43_arch_mutex, portMAX_DELAY);
 }
 
 extern "C" void __wrap_cyw43_thread_exit() {
