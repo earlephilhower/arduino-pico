@@ -19,7 +19,9 @@ static SemaphoreHandle_t _run_loop_exit_binary;
 
 static void do_btstack_work_pending(void *data) {
     (void) data;
+    cyw43_thread_enter(); // The run loop lists are shared with the task-side callers below
     btstack_work_pending(NULL, NULL);
+    cyw43_thread_exit();
 }
 
 static void btstack_run_loop_freertos_native_init(void) {
@@ -55,15 +57,15 @@ static void btstack_run_loop_freertos_native_disable_data_source_callbacks(btsta
 static void btstack_run_loop_freertos_native_set_timer(btstack_timer_source_t *ts, uint32_t timeout_in_ms) {
     cyw43_thread_enter();
     ts->timeout = to_ms_since_boot(get_absolute_time()) + timeout_in_ms + 1;
-    lwip_callback(do_btstack_work_pending, NULL);
     cyw43_thread_exit();
+    lwip_callback(do_btstack_work_pending, NULL); // Outside the lock: this waits for the LWIP task, which takes the lock
 }
 
 static void btstack_run_loop_freertos_native_add_timer(btstack_timer_source_t *timer) {
     cyw43_thread_enter();
     btstack_run_loop_base_add_timer(timer);
-    lwip_callback(do_btstack_work_pending, NULL);
     cyw43_thread_exit();
+    lwip_callback(do_btstack_work_pending, NULL);
 }
 
 static bool btstack_run_loop_freertos_native_remove_timer(btstack_timer_source_t *timer) {
@@ -95,8 +97,8 @@ static void btstack_run_loop_async_context_trigger_exit(void) {
 static void btstack_run_loop_freertos_native_execute_on_main_thread(btstack_context_callback_registration_t *callback_registration) {
     cyw43_thread_enter();
     btstack_run_loop_base_add_callback(callback_registration);
-    lwip_callback(do_btstack_work_pending, NULL);
     cyw43_thread_exit();
+    lwip_callback(do_btstack_work_pending, NULL);
 }
 
 static void btstack_run_loop_freertos_native_poll_data_sources_from_irq(void) {
