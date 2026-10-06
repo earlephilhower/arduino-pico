@@ -1,0 +1,41 @@
+// Machine generated (makewrapper.py).  DO NOT EDIT
+__pbuf_add_header,
+__pbuf_add_header_force,
+__pbuf_alloc,
+__pbuf_alloc_reference,
+#if LWIP_SUPPORT_CUSTOM_PBUF
+__pbuf_alloced_custom,
+#endif
+__pbuf_cat,
+__pbuf_chain,
+__pbuf_clen,
+__pbuf_clone,
+__pbuf_coalesce,
+__pbuf_copy,
+__pbuf_copy_partial,
+__pbuf_copy_partial_pbuf,
+__pbuf_dechain,
+#if LWIP_CHECKSUM_ON_COPY
+__pbuf_fill_chksum,
+#endif
+__pbuf_free,
+__pbuf_free_header,
+__pbuf_free_ooseq,
+__pbuf_get_at,
+__pbuf_get_contiguous,
+__pbuf_header,
+__pbuf_header_force,
+__pbuf_memcmp,
+__pbuf_memfind,
+__pbuf_put_at,
+__pbuf_realloc,
+__pbuf_ref,
+__pbuf_remove_header,
+__pbuf_skip,
+#if LWIP_TCP && TCP_QUEUE_OOSEQ && LWIP_WND_SCALE
+__pbuf_split_64k,
+#endif
+__pbuf_strstr,
+__pbuf_take,
+__pbuf_take_at,
+__pbuf_try_get_at,

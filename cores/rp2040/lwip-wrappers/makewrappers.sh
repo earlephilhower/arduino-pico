@@ -1,0 +1,7 @@
+#!/bin/bash
+for i in pbuf raw tcp udp netif dns dhcp igmp mld6; do
+    ../../../tools/makewrapper.py  -s ../../../pico-sdk/lib/lwip/src/include/lwip/$i.h -p wrap_$i
+done
+for i in mdns sntp; do
+    ../../../tools/makewrapper.py  -s ../../../pico-sdk/lib/lwip/src/include/lwip/apps/$i.h -p wrap_$i
+done
