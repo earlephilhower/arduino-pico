@@ -1,0 +1,10 @@
+-Wl,--wrap=dns_gethostbyname
+-Wl,--wrap=dns_gethostbyname_addrtype
+-Wl,--wrap=dns_getserver
+-Wl,--wrap=dns_init
+-Wl,--wrap=dns_local_addhost
+-Wl,--wrap=dns_local_iterate
+-Wl,--wrap=dns_local_lookup
+-Wl,--wrap=dns_local_removehost
+-Wl,--wrap=dns_setserver
+-Wl,--wrap=dns_tmr

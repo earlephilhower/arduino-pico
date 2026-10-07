@@ -1,0 +1,2 @@
+-Wl,--wrap=ethernet_input
+-Wl,--wrap=ethernet_output
