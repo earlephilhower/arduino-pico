@@ -28,7 +28,7 @@
 #define configTICK_RATE_HZ                ( ( TickType_t ) 1000 )
 #endif
 #ifndef configMAX_PRIORITIES
-#define configMAX_PRIORITIES              ( 8 )
+#define configMAX_PRIORITIES              ( 32 )
 #endif
 #ifndef configMINIMAL_STACK_SIZE
 #define configMINIMAL_STACK_SIZE          ( ( unsigned short ) 256 )
