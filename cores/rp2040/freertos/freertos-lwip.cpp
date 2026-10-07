@@ -45,23 +45,32 @@ typedef struct {
 static void lwipThread(void *params);
 static TaskHandle_t __lwipTask;
 static QueueHandle_t __lwipQueue;
+static SemaphoreHandle_t __lwipInitMutex;
+
+void __initLWIPThreadMutex() {
+    // Create before the scheduler starts so the mutex itself cannot be initialized twice.
+    __lwipInitMutex = xSemaphoreCreateMutex();
+    if (!__lwipInitMutex) {
+        panic("Unable to allocate LWIP init mutex");
+    }
+}
 
 void __startLWIPThread() {
     static bool initted = false;
-    if (initted) {
-        return;
+    // Also blocks the new LWIP task's re-entry from lwip_init() until creation is complete.
+    xSemaphoreTake(__lwipInitMutex, portMAX_DELAY);
+    if (!initted) {
+        __lwipQueue = xQueueCreate(LWIP_WORK_ENTRIES, sizeof(LWIPWork));
+        if (!__lwipQueue) {
+            panic("Unable to allocate LWIP work queue");
+        }
+        if (pdPASS != xTaskCreate(lwipThread, "LWIP", 1024, 0, LWIP_TASK_PRIORITY, &__lwipTask)) {
+            panic("Unable to create LWIP task");
+        }
+        vTaskCoreAffinitySet(__lwipTask, 1 << 0);
+        initted = true;
     }
-    // Set before xTaskCreate: the new task starts on core 0 and re-enters this from lwip_init()
-    // while the creator may still be here on core 1 (the flag set at the end then came too late).
-    initted = true;
-    __lwipQueue = xQueueCreate(LWIP_WORK_ENTRIES, sizeof(LWIPWork));
-    if (!__lwipQueue) {
-        panic("Unable to allocate LWIP work queue");
-    }
-    if (pdPASS != xTaskCreate(lwipThread, "LWIP", 1024, 0, LWIP_TASK_PRIORITY, &__lwipTask)) {
-        panic("Unable to create LWIP task");
-    }
-    vTaskCoreAffinitySet(__lwipTask, 1 << 0);
+    xSemaphoreGive(__lwipInitMutex);
 }
 
 extern "C" void __lwip(__lwip_op op, void *req, bool fromISR) {
