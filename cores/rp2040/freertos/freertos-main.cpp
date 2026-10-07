@@ -51,6 +51,7 @@ static TaskHandle_t __idleCoreTask[2];
 
 void initFreeRTOS(void) {
     __initFreeRTOSMutexes();
+    __initLWIPThreadMutex();
 }
 
 static void __core0(void *params) {
