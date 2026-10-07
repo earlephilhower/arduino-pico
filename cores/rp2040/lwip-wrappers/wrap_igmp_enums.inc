@@ -1,0 +1,12 @@
+// Machine generated (makewrapper.py).  DO NOT EDIT
+__igmp_init,
+__igmp_input,
+__igmp_joingroup,
+__igmp_joingroup_netif,
+__igmp_leavegroup,
+__igmp_leavegroup_netif,
+__igmp_lookfor_group,
+__igmp_report_groups,
+__igmp_start,
+__igmp_stop,
+__igmp_tmr,

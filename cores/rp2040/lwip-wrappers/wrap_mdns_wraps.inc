@@ -1,0 +1,16 @@
+-Wl,--wrap=mdns_get_service_txt_userdata
+-Wl,--wrap=mdns_resp_add_netif
+-Wl,--wrap=mdns_resp_add_service
+-Wl,--wrap=mdns_resp_add_service_txtitem
+-Wl,--wrap=mdns_resp_announce
+-Wl,--wrap=mdns_resp_del_service
+-Wl,--wrap=mdns_resp_init
+-Wl,--wrap=mdns_resp_netif_active
+-Wl,--wrap=mdns_resp_register_name_result_cb
+-Wl,--wrap=mdns_resp_remove_netif
+-Wl,--wrap=mdns_resp_rename_netif
+-Wl,--wrap=mdns_resp_rename_service
+-Wl,--wrap=mdns_resp_restart
+-Wl,--wrap=mdns_resp_restart_delay
+-Wl,--wrap=mdns_search_service
+-Wl,--wrap=mdns_search_stop

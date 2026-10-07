@@ -1,0 +1,12 @@
+// Machine generated (makewrapper.py).  DO NOT EDIT
+__raw_bind,
+__raw_bind_netif,
+__raw_connect,
+__raw_disconnect,
+__raw_new,
+__raw_new_ip_type,
+__raw_recv,
+__raw_remove,
+__raw_send,
+__raw_sendto,
+__raw_sendto_if_src,
