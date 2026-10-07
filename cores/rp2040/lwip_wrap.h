@@ -106,11 +106,7 @@ typedef enum {
 #include "./lwip-wrappers/wrap_mdns_enums.inc"
 #include "./lwip-wrappers/wrap_sntp_enums.inc"
 #include "./lwip-wrappers/wrap_ethernet_enums.inc"
-
-    // Manually implemented, they're special
-    __sys_check_timeouts,
-    __sys_timeouts_sleeptime,
-
+#include "./lwip-wrappers/wrap_timeouts_enums.inc"
 
 #if defined(PICO_CYW43_SUPPORTED)
     __cyw43_wifi_join,
@@ -140,9 +136,7 @@ extern void __real_lwip_init();
 #include "./lwip-wrappers/wrap_mdns_externs.inc"
 #include "./lwip-wrappers/wrap_sntp_externs.inc"
 #include "./lwip-wrappers/wrap_ethernet_externs.inc"
-
-extern void __real_sys_check_timeouts();
-extern u32_t __real_sys_timeouts_sleeptime();
+#include "./lwip-wrappers/wrap_timeouts_externs.inc"
 
 extern int __real_cyw43_wifi_join(cyw43_t *self, size_t ssid_len, const uint8_t *ssid, size_t key_len, const uint8_t *key, uint32_t auth_type, const uint8_t *bssid, uint32_t channel);
 extern int __real_cyw43_wifi_leave(cyw43_t *self, int itf);
@@ -173,10 +167,8 @@ extern void __real_cyw43_arch_gpio_put(uint wl_gpio, bool value);
 #include "./lwip-wrappers/wrap_mdns_structs.inc"
 #include "./lwip-wrappers/wrap_sntp_structs.inc"
 #include "./lwip-wrappers/wrap_ethernet_structs.inc"
+#include "./lwip-wrappers/wrap_timeouts_structs.inc"
 
-typedef struct {
-    u32_t *ret;
-} __sys_timeouts_sleeptime_req;
 
 #if defined(PICO_CYW43_SUPPORTED)
 typedef struct {

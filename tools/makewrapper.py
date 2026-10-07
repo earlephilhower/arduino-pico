@@ -61,6 +61,11 @@ ifdefs['netif_loop_output'] = "#if ENABLE_LOOPBACK"
 ifdefs['netif_poll'] = "#if ENABLE_LOOPBACK"
 ifdefs['netif_poll_all'] = "#if ENABLE_LOOPBACK && !LWIP_NETIF_LOOPBACK_MULTITHREADING"
 ifdefs['netif_set_remove_callback'] = "#if LWIP_NETIF_REMOVE_CALLBACK"
+ifdefs['sys_timeouts_get_next_timeout'] = "#if LWIP_TESTMODE"
+ifdefs['lwip_cyclic_timer'] = "#if LWIP_TESTMODE"
+ifdefs['sys_timeout_debug'] = "#if LWIP_DEBUG_TIMERNAMES"
+ifdefs['sys_timeout'] = "#if !LWIP_DEBUG_TIMERNAMES"
+
 
 # ctags entries which appear but should be skipped
 skips = {}

@@ -97,8 +97,15 @@
 -Wl,--wrap=udp_sendto_if_src
 -Wl,--wrap=udp_sendto_if_src_chksum
 
+-Wl,--wrap=lwip_cyclic_timer
 -Wl,--wrap=sys_check_timeouts
+-Wl,--wrap=sys_restart_timeouts
+-Wl,--wrap=sys_timeout
+-Wl,--wrap=sys_timeout_debug
+-Wl,--wrap=sys_timeouts_get_next_timeout
+-Wl,--wrap=sys_timeouts_init
 -Wl,--wrap=sys_timeouts_sleeptime
+-Wl,--wrap=sys_untimeout
 
 -Wl,--wrap=dns_gethostbyname
 -Wl,--wrap=dns_gethostbyname_addrtype

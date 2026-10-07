@@ -96,31 +96,7 @@ extern "C" {
 #include "./lwip-wrappers/wrap_mdns_functions.inc"
 #include "./lwip-wrappers/wrap_sntp_functions.inc"
 #include "./lwip-wrappers/wrap_ethernet_functions.inc"
-
-    // sys_check_timeouts is special case because the async process will call it.  If we're already in a timeout check, just do a noop
-    void __wrap_sys_check_timeouts(void) {
-#ifdef __FREERTOS
-        if (!__isLWIPThread()) {
-            __lwip(__sys_check_timeouts, nullptr);
-            return;
-        }
-#endif
-        LWIPMutex m;
-        __real_sys_check_timeouts();
-    }
-
-    u32_t __wrap_sys_timeouts_sleeptime() {
-#ifdef __FREERTOS
-        if (!__isLWIPThread()) {
-            u32_t ret;
-            __sys_timeouts_sleeptime_req req = { &ret };
-            __lwip(__sys_timeouts_sleeptime, &req);
-            return ret;
-        }
-#endif
-        LWIPMutex m;
-        return __real_sys_timeouts_sleeptime();
-    }
+#include "./lwip-wrappers/wrap_timeouts_functions.inc"
 
 
 #if defined(PICO_CYW43_SUPPORTED)

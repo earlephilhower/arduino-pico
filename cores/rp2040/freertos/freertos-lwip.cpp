@@ -136,16 +136,7 @@ static void lwipThread(void *params) {
 #include "../lwip-wrappers/wrap_mdns_cases.inc"
 #include "../lwip-wrappers/wrap_sntp_cases.inc"
 #include "../lwip-wrappers/wrap_ethernet_cases.inc"
-
-            case __sys_check_timeouts: {
-                __real_sys_check_timeouts();
-                break;
-            }
-            case __sys_timeouts_sleeptime: {
-                __sys_timeouts_sleeptime_req *r = (__sys_timeouts_sleeptime_req *)w.req;
-                *(r->ret) = __real_sys_timeouts_sleeptime();
-                break;
-            }
+#include "../lwip-wrappers/wrap_timeouts_cases.inc"
 
 #if defined(PICO_CYW43_SUPPORTED)
             case __cyw43_wifi_join: {
