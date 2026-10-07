@@ -1,0 +1,12 @@
+-Wl,--wrap=sntp_enabled
+-Wl,--wrap=sntp_getkodreceived
+-Wl,--wrap=sntp_getoperatingmode
+-Wl,--wrap=sntp_getreachability
+-Wl,--wrap=sntp_getserver
+-Wl,--wrap=sntp_getservername
+-Wl,--wrap=sntp_init
+-Wl,--wrap=sntp_servermode_dhcp
+-Wl,--wrap=sntp_setoperatingmode
+-Wl,--wrap=sntp_setserver
+-Wl,--wrap=sntp_setservername
+-Wl,--wrap=sntp_stop

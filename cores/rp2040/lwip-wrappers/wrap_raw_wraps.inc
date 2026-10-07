@@ -1,0 +1,11 @@
+-Wl,--wrap=raw_bind
+-Wl,--wrap=raw_bind_netif
+-Wl,--wrap=raw_connect
+-Wl,--wrap=raw_disconnect
+-Wl,--wrap=raw_new
+-Wl,--wrap=raw_new_ip_type
+-Wl,--wrap=raw_recv
+-Wl,--wrap=raw_remove
+-Wl,--wrap=raw_send
+-Wl,--wrap=raw_sendto
+-Wl,--wrap=raw_sendto_if_src

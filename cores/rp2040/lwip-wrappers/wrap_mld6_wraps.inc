@@ -1,0 +1,9 @@
+-Wl,--wrap=mld6_input
+-Wl,--wrap=mld6_joingroup
+-Wl,--wrap=mld6_joingroup_netif
+-Wl,--wrap=mld6_leavegroup
+-Wl,--wrap=mld6_leavegroup_netif
+-Wl,--wrap=mld6_lookfor_group
+-Wl,--wrap=mld6_report_groups
+-Wl,--wrap=mld6_stop
+-Wl,--wrap=mld6_tmr

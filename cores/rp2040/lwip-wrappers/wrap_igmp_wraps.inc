@@ -1,0 +1,11 @@
+-Wl,--wrap=igmp_init
+-Wl,--wrap=igmp_input
+-Wl,--wrap=igmp_joingroup
+-Wl,--wrap=igmp_joingroup_netif
+-Wl,--wrap=igmp_leavegroup
+-Wl,--wrap=igmp_leavegroup_netif
+-Wl,--wrap=igmp_lookfor_group
+-Wl,--wrap=igmp_report_groups
+-Wl,--wrap=igmp_start
+-Wl,--wrap=igmp_stop
+-Wl,--wrap=igmp_tmr
