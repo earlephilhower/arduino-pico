@@ -653,6 +653,7 @@ MakeBoard("ilabs_rpico32", "rp2040", "iLabs", "RPICO32", "0x2e8a", "0x1010", 250
 MakeBoard("challenger_2350_wifi6_ble5", "rp2350", "iLabs", "Challenger 2350 WiFi/BLE", "0x2e8a", "0x109a", 500, "CHALLENGER_2350_WIFI_BLE_RP2350", 8, 8, "none")
 MakeBoard("challenger_2350_bconnect", "rp2350", "iLabs", "Challenger 2350 BConnect", "0x2e8a", "0x109b", 500, "CHALLENGER_2350_BCONNECT_RP2350", 8, 8, "none")
 MakeBoard("challenger_2350_nbiot", "rp2350", "iLabs", "Challenger 2350 NB-IoT", "0x2e8a", "0x110d", 500, "CHALLENGER_2350_NBIOT_RP2350", 8, 0, "none")
+MakeBoard("challenger_zp_2350_lora", "rp2350", "iLabs", "Challenger ZP 2350 LoRa", "0x2e8a", "0x1123", 500, "CHALLENGER_ZP_2350_LORA_RP2350", 8, 0, "none")
 MakeBoard("ilabs_cpico_2350", "rp2350", "iLabs", "CPico 2350", "0x2e8a", "0x113f", 500, "CPICO_2350_RP2350", 8, 8, "none")
 
 # Makerbase
