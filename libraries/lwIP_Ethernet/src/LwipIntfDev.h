@@ -181,6 +181,7 @@ public:
 
     // Hides RawDev::isLinked() so app-side PHY reads are serialized with packet I/O
     bool isLinked();
+    bool isLinked() const;
 
 protected:
     err_t netif_init();
@@ -518,6 +519,18 @@ EthernetLinkStatus LwipIntfDev<RawDev>::linkStatus() {
 
 template<class RawDev>
 bool LwipIntfDev<RawDev>::isLinked() {
+#ifdef __FREERTOS
+    xSemaphoreTake(_hwMutex, portMAX_DELAY);
+#endif
+    bool ret = RawDev::isLinked();
+#ifdef __FREERTOS
+    xSemaphoreGive(_hwMutex);
+#endif
+    return ret;
+}
+
+template<class RawDev>
+bool LwipIntfDev<RawDev>::isLinked() const {
 #ifdef __FREERTOS
     xSemaphoreTake(_hwMutex, portMAX_DELAY);
 #endif
