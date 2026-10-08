@@ -45,6 +45,7 @@
 #include "LwipIntf.h"
 #include "LwipEthernet.h"
 #include "wl_definitions.h"
+#include <atomic>
 
 #ifdef __FREERTOS
 #include "FreeRTOS.h"
@@ -207,6 +208,7 @@ protected:
     int8_t   _intrPin;
     uint8_t  _macAddress[6];
     bool     _started;
+    std::atomic<bool> _stopping { false };
     bool     _default;
 
     // ICMP Ping
@@ -348,6 +350,7 @@ bool LwipIntfDev<RawDev>::begin(const uint8_t* macAddress, const uint16_t mtu) {
         // ERROR - Need to ::end before calling ::begin again
         return false;
     }
+    _stopping = false;
 
     lwip_init();
     __startEthernetContext();
@@ -460,7 +463,7 @@ extern std::function<void(struct netif *)> _removeNetifCB;
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
-    if (_started) {
+    if (_started && !_stopping.exchange(true)) {
         if (_isDHCP) {
             dhcp_stop(&_netif);
             dhcp_cleanup(&_netif);
@@ -477,7 +480,7 @@ void LwipIntfDev<RawDev>::end() {
         }
 
         // Detach from lwIP before stopping the chip.  Link down stops CYW43 RX (and its ARP replies) first.
-        // Under FreeRTOS these run in FIFO order on the LWIP task, draining queued IRQ/poll work (not NCM's ncmTask).
+        // Sketch-task calls drain earlier queued work; the RX guard also covers teardown inside a callback.
         netif_set_link_down(&_netif);
         netif_remove(&_netif);
 
@@ -519,6 +522,9 @@ EthernetLinkStatus LwipIntfDev<RawDev>::linkStatus() {
 template<class RawDev>
 err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     LwipIntfDev* lid = (LwipIntfDev*)netif->state;
+    if (lid->_stopping) {
+        return ERR_IF;
+    }
 
 #ifdef __FREERTOS
     xSemaphoreTake(lid->_hwMutex, portMAX_DELAY);
@@ -526,7 +532,7 @@ err_t LwipIntfDev<RawDev>::linkoutput_s(netif* netif, struct pbuf* pbuf) {
     ethernet_arch_lwip_begin();
 #endif
 
-    uint16_t len = lid->sendFrame(pbuf);
+    uint16_t len = lid->_stopping ? 0 : lid->sendFrame(pbuf);
 
 #ifdef __FREERTOS
     xSemaphoreGive(lid->_hwMutex);
@@ -614,6 +620,9 @@ template<class RawDev>
 err_t LwipIntfDev<RawDev>::handlePackets() {
     int pkt = 0;
     while (1) {
+        if (_stopping) {
+            return ERR_OK;
+        }
         if (++pkt == 10)
             // prevent starvation
         {
@@ -623,8 +632,8 @@ err_t LwipIntfDev<RawDev>::handlePackets() {
 #ifdef __FREERTOS
         xSemaphoreTake(_hwMutex, portMAX_DELAY);
 #endif
-        uint16_t tot_len = RawDev::readFrameSize();
-        if (!tot_len) {
+        uint16_t tot_len = _stopping ? 0 : RawDev::readFrameSize();
+        if (!tot_len || _stopping) {
 #ifdef __FREERTOS
             xSemaphoreGive(_hwMutex);
 #endif
