@@ -104,15 +104,21 @@ void WiFiClientSecureCtx::_clearAuthenticationSettings() {
 }
 
 
-WiFiClientSecureCtx::WiFiClientSecureCtx() : WiFiClient() {
+WiFiClientSecureCtx::WiFiClientSecureCtx() : WiFiClient(Registration::Deferred) {
     _clear();
     _clearAuthenticationSettings();
     _certStore = nullptr; // Don't want to remove cert store on a clear, should be long lived
     _sk = nullptr;
     stack_thunk_add_ref();
+#ifdef __FREERTOS
+    WiFiClient::_add(this);
+#endif
 }
 
 WiFiClientSecureCtx::~WiFiClientSecureCtx() {
+#ifdef __FREERTOS
+    WiFiClient::_remove(this);
+#endif
     if (_client) {
         _client->unref();
         _client = nullptr;
@@ -129,7 +135,7 @@ WiFiClientSecureCtx::~WiFiClientSecureCtx() {
 WiFiClientSecureCtx::WiFiClientSecureCtx(ClientContext* client,
         const X509List *chain, const PrivateKey *sk,
         int iobuf_in_size, int iobuf_out_size, ServerSessions *cache,
-        const X509List *client_CA_ta, int tls_min, int tls_max) {
+        const X509List *client_CA_ta, int tls_min, int tls_max) : WiFiClient(Registration::Deferred) {
     _clear();
     _clearAuthenticationSettings();
     stack_thunk_add_ref();
@@ -144,13 +150,16 @@ WiFiClientSecureCtx::WiFiClientSecureCtx(ClientContext* client,
         _client = nullptr;
         _clear();
     }
+#ifdef __FREERTOS
+    WiFiClient::_add(this);
+#endif
 }
 
 WiFiClientSecureCtx::WiFiClientSecureCtx(ClientContext *client,
         const X509List *chain,
         unsigned cert_issuer_key_type, const PrivateKey *sk,
         int iobuf_in_size, int iobuf_out_size, ServerSessions *cache,
-        const X509List *client_CA_ta, int tls_min, int tls_max) {
+        const X509List *client_CA_ta, int tls_min, int tls_max) : WiFiClient(Registration::Deferred) {
     _clear();
     _clearAuthenticationSettings();
     stack_thunk_add_ref();
@@ -165,6 +174,9 @@ WiFiClientSecureCtx::WiFiClientSecureCtx(ClientContext *client,
         _client = nullptr;
         _clear();
     }
+#ifdef __FREERTOS
+    WiFiClient::_add(this);
+#endif
 }
 
 void WiFiClientSecureCtx::setClientRSACert(const X509List *chain, const PrivateKey *sk) {

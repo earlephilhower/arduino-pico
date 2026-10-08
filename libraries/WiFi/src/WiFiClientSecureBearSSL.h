@@ -361,15 +361,24 @@ class WiFiClientSecure : public WiFiClient {
 
 public:
 
-    WiFiClientSecure(): _ctx(new WiFiClientSecureCtx()) {
+    WiFiClientSecure(): WiFiClient(Registration::Deferred), _ctx(new WiFiClientSecureCtx()) {
         _owned = _ctx.get();
+#ifdef __FREERTOS
+        WiFiClient::_add(this);
+#endif
     }
-    WiFiClientSecure(const WiFiClientSecure &rhs): WiFiClient(), _ctx(rhs._ctx) {
+    WiFiClientSecure(const WiFiClientSecure &rhs): WiFiClient(Registration::Deferred), _ctx(rhs._ctx) {
         if (_ctx) {
             _owned = _ctx.get();
         }
+#ifdef __FREERTOS
+        WiFiClient::_add(this);
+#endif
     }
     ~WiFiClientSecure() override {
+#ifdef __FREERTOS
+        WiFiClient::_remove(this);
+#endif
         _ctx = nullptr;
     }
 
@@ -591,14 +600,20 @@ private:
     friend class WiFiServerSecure; // Server needs to access these constructors
     WiFiClientSecure(ClientContext *client, const X509List *chain, unsigned cert_issuer_key_type,
                      const PrivateKey *sk, int iobuf_in_size, int iobuf_out_size, ServerSessions *cache,
-                     const X509List *client_CA_ta, int tls_min, int tls_max):
+                     const X509List *client_CA_ta, int tls_min, int tls_max): WiFiClient(Registration::Deferred),
         _ctx(new WiFiClientSecureCtx(client, chain, cert_issuer_key_type, sk, iobuf_in_size, iobuf_out_size, cache, client_CA_ta, tls_min, tls_max)) {
+#ifdef __FREERTOS
+        WiFiClient::_add(this);
+#endif
     }
 
     WiFiClientSecure(ClientContext* client, const X509List *chain, const PrivateKey *sk,
                      int iobuf_in_size, int iobuf_out_size, ServerSessions *cache,
-                     const X509List *client_CA_ta, int tls_min, int tls_max):
+                     const X509List *client_CA_ta, int tls_min, int tls_max): WiFiClient(Registration::Deferred),
         _ctx(new WiFiClientSecureCtx(client, chain, sk, iobuf_in_size, iobuf_out_size, cache, client_CA_ta, tls_min, tls_max)) {
+#ifdef __FREERTOS
+        WiFiClient::_add(this);
+#endif
     }
 
 }; // class WiFiClientSecure

@@ -267,21 +267,17 @@ uint16_t WiFiUDP::localPort() const {
 }
 
 void WiFiUDP::stopAll() {
-    _lock();
-    for (WiFiUDP* it = _s_first; it; it = it->_next) {
+    _forEach([](WiFiUDP * it) {
         DEBUGV("%s %p %p", __func__, it, _s_first);
         it->stop();
-    }
-    _unlock();
+    });
 }
 
 void WiFiUDP::stopAllExcept(WiFiUDP * exC) {
-    _lock();
-    for (WiFiUDP* it = _s_first; it; it = it->_next) {
+    _forEach([exC](WiFiUDP * it) {
         if (it->_ctx != exC->_ctx) {
             DEBUGV("%s %p %p", __func__, it, _s_first);
             it->stop();
         }
-    }
-    _unlock();
+    });
 }
