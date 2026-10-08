@@ -36,12 +36,6 @@
 
 template<>
 WiFiUDP* SList<WiFiUDP>::_s_first = 0;
-#ifdef __FREERTOS
-template<>
-SemaphoreHandle_t SList<WiFiUDP>::_s_first_lock = 0;
-template<>
-bool SList<WiFiUDP>::_s_first_lock_created = false;
-#endif
 
 
 /* Constructor */
@@ -273,17 +267,21 @@ uint16_t WiFiUDP::localPort() const {
 }
 
 void WiFiUDP::stopAll() {
+    _lock();
     for (WiFiUDP* it = _s_first; it; it = it->_next) {
         DEBUGV("%s %p %p", __func__, it, _s_first);
         it->stop();
     }
+    _unlock();
 }
 
 void WiFiUDP::stopAllExcept(WiFiUDP * exC) {
+    _lock();
     for (WiFiUDP* it = _s_first; it; it = it->_next) {
         if (it->_ctx != exC->_ctx) {
             DEBUGV("%s %p %p", __func__, it, _s_first);
             it->stop();
         }
     }
+    _unlock();
 }

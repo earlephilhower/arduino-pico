@@ -57,12 +57,6 @@ bool WiFiClient::getDefaultSync() {
 
 template<>
 WiFiClient* SList<WiFiClient>::_s_first = 0;
-#ifdef __FREERTOS
-template<>
-SemaphoreHandle_t SList<WiFiClient>::_s_first_lock = 0;
-template<>
-bool SList<WiFiClient>::_s_first_lock_created = false;
-#endif
 
 WiFiClient::WiFiClient()
     : _client(0), _owned(0) {
@@ -342,9 +336,11 @@ uint16_t WiFiClient::localPort() {
 }
 
 void WiFiClient::stopAll() {
+    _lock();
     for (WiFiClient* it = _s_first; it; it = it->_next) {
         it->stop();
     }
+    _unlock();
 }
 
 
@@ -353,6 +349,7 @@ void WiFiClient::stopAllExcept(WiFiClient* except) {
     while (except->_owned) {
         except = except->_owned;
     }
+    _lock();
     for (WiFiClient* it = _s_first; it; it = it->_next) {
         WiFiClient* conn = it;
         // Find the lowest-level owner of the current list entry
@@ -363,6 +360,7 @@ void WiFiClient::stopAllExcept(WiFiClient* except) {
             conn->stop();
         }
     }
+    _unlock();
 }
 
 void WiFiClient::keepAlive(uint16_t idle_sec, uint16_t intv_sec, uint8_t count) {
