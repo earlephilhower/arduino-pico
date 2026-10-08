@@ -301,6 +301,9 @@ void SerialUART::begin(unsigned long baud, uint16_t config) {
 }
 
 void SerialUART::end() {
+    if (!_running) {
+        return;
+    }
     // Same lock as the I/O calls so teardown waits for any in-progress operation
     CoreMutex m(&_mutex);
     if (!_running || !m) {

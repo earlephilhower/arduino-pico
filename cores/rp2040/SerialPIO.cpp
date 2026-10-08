@@ -269,6 +269,9 @@ void SerialPIO::begin(unsigned long baud, uint16_t config) {
 }
 
 void SerialPIO::end() {
+    if (!_running) {
+        return;
+    }
     // Wait for any in-progress I/O so it can't block on a stopped state machine
     CoreMutex m(&_mutex);
     if (!_running || !m) {
