@@ -136,7 +136,7 @@ bool ESPHostLwIP::begin() {
         CEspControl::getInstance().setWifiMode(WIFI_MODE_STA);
         if (CEspControl::getInstance().connectAccessPoint(ap) != ESP_CONTROL_OK) {
             wifiStatus = WL_CONNECT_FAILED;
-            ethernet_arch_lwip_end();
+            ethernet_arch_lwip_gpio_unmask();
             return false;
         }
         CEspControl::getInstance().getAccessPointConfig(ap);
@@ -152,7 +152,7 @@ bool ESPHostLwIP::begin() {
         int rv = CEspControl::getInstance().startSoftAccessPoint(softAP);
         if (rv != ESP_CONTROL_OK) {
             wifiStatus = WL_AP_FAILED;
-            ethernet_arch_lwip_end();
+            ethernet_arch_lwip_gpio_unmask();
             return false;
         }
         CEspControl::getInstance().getSoftAccessPointConfig(softAP);
