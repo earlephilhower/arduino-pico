@@ -28,7 +28,7 @@ When using Platform.IO you need to add the following define to your .ini file:
 Configuration and Predefined Tasks
 ----------------------------------
 
-FreeRTOS is configured with 8 priority levels (0 through 7) and a process for
+FreeRTOS is configured with 32 priority levels (0 through 31) and a process for
 ``setup()/loop()``, ``setup1()/loop1()``, LWIP, and the USB port will be created.  The task
 quantum is 1 millisecond (i.e. 1,000 switches per second).
 

@@ -23,6 +23,9 @@
 #ifdef __FREERTOS
 #include <functional>
 
+// Create the startup mutex before the scheduler starts
+void __initLWIPThreadMutex();
+
 // Create the thread and work queue
 void __startLWIPThread();
 

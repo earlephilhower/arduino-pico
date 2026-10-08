@@ -1,0 +1,176 @@
+// Machine generated (makewrapper.py).  DO NOT EDIT
+case __pbuf_add_header: {
+    __pbuf_add_header_req *r = (__pbuf_add_header_req *)w.req;
+    *(r->ret) = __real_pbuf_add_header(r->p, r->header_size_increment);
+    break;
+}
+case __pbuf_add_header_force: {
+    __pbuf_add_header_force_req *r = (__pbuf_add_header_force_req *)w.req;
+    *(r->ret) = __real_pbuf_add_header_force(r->p, r->header_size_increment);
+    break;
+}
+case __pbuf_alloc: {
+    __pbuf_alloc_req *r = (__pbuf_alloc_req *)w.req;
+    *(r->ret) = __real_pbuf_alloc(r->l, r->length, r->type);
+    break;
+}
+case __pbuf_alloc_reference: {
+    __pbuf_alloc_reference_req *r = (__pbuf_alloc_reference_req *)w.req;
+    *(r->ret) = __real_pbuf_alloc_reference(r->payload, r->length, r->type);
+    break;
+}
+#if LWIP_SUPPORT_CUSTOM_PBUF
+case __pbuf_alloced_custom: {
+    __pbuf_alloced_custom_req *r = (__pbuf_alloced_custom_req *)w.req;
+    *(r->ret) = __real_pbuf_alloced_custom(r->l, r->length, r->type, r->p, r->payload_mem, r->payload_mem_len);
+    break;
+}
+#endif
+case __pbuf_cat: {
+    __pbuf_cat_req *r = (__pbuf_cat_req *)w.req;
+    __real_pbuf_cat(r->head, r->tail);
+    break;
+}
+case __pbuf_chain: {
+    __pbuf_chain_req *r = (__pbuf_chain_req *)w.req;
+    __real_pbuf_chain(r->head, r->tail);
+    break;
+}
+case __pbuf_clen: {
+    __pbuf_clen_req *r = (__pbuf_clen_req *)w.req;
+    *(r->ret) = __real_pbuf_clen(r->p);
+    break;
+}
+case __pbuf_clone: {
+    __pbuf_clone_req *r = (__pbuf_clone_req *)w.req;
+    *(r->ret) = __real_pbuf_clone(r->l, r->type, r->p);
+    break;
+}
+case __pbuf_coalesce: {
+    __pbuf_coalesce_req *r = (__pbuf_coalesce_req *)w.req;
+    *(r->ret) = __real_pbuf_coalesce(r->p, r->layer);
+    break;
+}
+case __pbuf_copy: {
+    __pbuf_copy_req *r = (__pbuf_copy_req *)w.req;
+    *(r->ret) = __real_pbuf_copy(r->p_to, r->p_from);
+    break;
+}
+case __pbuf_copy_partial: {
+    __pbuf_copy_partial_req *r = (__pbuf_copy_partial_req *)w.req;
+    *(r->ret) = __real_pbuf_copy_partial(r->p, r->dataptr, r->len, r->offset);
+    break;
+}
+case __pbuf_copy_partial_pbuf: {
+    __pbuf_copy_partial_pbuf_req *r = (__pbuf_copy_partial_pbuf_req *)w.req;
+    *(r->ret) = __real_pbuf_copy_partial_pbuf(r->p_to, r->p_from, r->copy_len, r->offset);
+    break;
+}
+case __pbuf_dechain: {
+    __pbuf_dechain_req *r = (__pbuf_dechain_req *)w.req;
+    *(r->ret) = __real_pbuf_dechain(r->p);
+    break;
+}
+#if LWIP_CHECKSUM_ON_COPY
+case __pbuf_fill_chksum: {
+    __pbuf_fill_chksum_req *r = (__pbuf_fill_chksum_req *)w.req;
+    *(r->ret) = __real_pbuf_fill_chksum(r->p, r->start_offset, r->dataptr, r->len, r->chksum);
+    break;
+}
+#endif
+case __pbuf_free: {
+    __pbuf_free_req *r = (__pbuf_free_req *)w.req;
+    *(r->ret) = __real_pbuf_free(r->p);
+    break;
+}
+case __pbuf_free_header: {
+    __pbuf_free_header_req *r = (__pbuf_free_header_req *)w.req;
+    *(r->ret) = __real_pbuf_free_header(r->q, r->size);
+    break;
+}
+case __pbuf_free_ooseq: {
+    __real_pbuf_free_ooseq();
+    break;
+}
+case __pbuf_get_at: {
+    __pbuf_get_at_req *r = (__pbuf_get_at_req *)w.req;
+    *(r->ret) = __real_pbuf_get_at(r->p, r->offset);
+    break;
+}
+case __pbuf_get_contiguous: {
+    __pbuf_get_contiguous_req *r = (__pbuf_get_contiguous_req *)w.req;
+    *(r->ret) = __real_pbuf_get_contiguous(r->p, r->buffer, r->bufsize, r->len, r->offset);
+    break;
+}
+case __pbuf_header: {
+    __pbuf_header_req *r = (__pbuf_header_req *)w.req;
+    *(r->ret) = __real_pbuf_header(r->p, r->header_size);
+    break;
+}
+case __pbuf_header_force: {
+    __pbuf_header_force_req *r = (__pbuf_header_force_req *)w.req;
+    *(r->ret) = __real_pbuf_header_force(r->p, r->header_size);
+    break;
+}
+case __pbuf_memcmp: {
+    __pbuf_memcmp_req *r = (__pbuf_memcmp_req *)w.req;
+    *(r->ret) = __real_pbuf_memcmp(r->p, r->offset, r->s2, r->n);
+    break;
+}
+case __pbuf_memfind: {
+    __pbuf_memfind_req *r = (__pbuf_memfind_req *)w.req;
+    *(r->ret) = __real_pbuf_memfind(r->p, r->mem, r->mem_len, r->start_offset);
+    break;
+}
+case __pbuf_put_at: {
+    __pbuf_put_at_req *r = (__pbuf_put_at_req *)w.req;
+    __real_pbuf_put_at(r->p, r->offset, r->data);
+    break;
+}
+case __pbuf_realloc: {
+    __pbuf_realloc_req *r = (__pbuf_realloc_req *)w.req;
+    __real_pbuf_realloc(r->p, r->size);
+    break;
+}
+case __pbuf_ref: {
+    __pbuf_ref_req *r = (__pbuf_ref_req *)w.req;
+    __real_pbuf_ref(r->p);
+    break;
+}
+case __pbuf_remove_header: {
+    __pbuf_remove_header_req *r = (__pbuf_remove_header_req *)w.req;
+    *(r->ret) = __real_pbuf_remove_header(r->p, r->header_size);
+    break;
+}
+case __pbuf_skip: {
+    __pbuf_skip_req *r = (__pbuf_skip_req *)w.req;
+    *(r->ret) = __real_pbuf_skip(r->in, r->in_offset, r->out_offset);
+    break;
+}
+#if LWIP_TCP && TCP_QUEUE_OOSEQ && LWIP_WND_SCALE
+case __pbuf_split_64k: {
+    __pbuf_split_64k_req *r = (__pbuf_split_64k_req *)w.req;
+    __real_pbuf_split_64k(r->p, r->rest);
+    break;
+}
+#endif
+case __pbuf_strstr: {
+    __pbuf_strstr_req *r = (__pbuf_strstr_req *)w.req;
+    *(r->ret) = __real_pbuf_strstr(r->p, r->substr);
+    break;
+}
+case __pbuf_take: {
+    __pbuf_take_req *r = (__pbuf_take_req *)w.req;
+    *(r->ret) = __real_pbuf_take(r->buf, r->dataptr, r->len);
+    break;
+}
+case __pbuf_take_at: {
+    __pbuf_take_at_req *r = (__pbuf_take_at_req *)w.req;
+    *(r->ret) = __real_pbuf_take_at(r->buf, r->dataptr, r->len, r->offset);
+    break;
+}
+case __pbuf_try_get_at: {
+    __pbuf_try_get_at_req *r = (__pbuf_try_get_at_req *)w.req;
+    *(r->ret) = __real_pbuf_try_get_at(r->p, r->offset);
+    break;
+}

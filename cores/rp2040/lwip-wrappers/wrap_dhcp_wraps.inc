@@ -1,0 +1,13 @@
+-Wl,--wrap=dhcp_cleanup
+-Wl,--wrap=dhcp_coarse_tmr
+-Wl,--wrap=dhcp_fine_tmr
+-Wl,--wrap=dhcp_inform
+-Wl,--wrap=dhcp_network_changed_link_up
+-Wl,--wrap=dhcp_release
+-Wl,--wrap=dhcp_release_and_stop
+-Wl,--wrap=dhcp_renew
+-Wl,--wrap=dhcp_set_ntp_servers
+-Wl,--wrap=dhcp_set_struct
+-Wl,--wrap=dhcp_start
+-Wl,--wrap=dhcp_stop
+-Wl,--wrap=dhcp_supplied_address

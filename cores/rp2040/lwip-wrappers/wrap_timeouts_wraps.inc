@@ -1,0 +1,9 @@
+-Wl,--wrap=lwip_cyclic_timer
+-Wl,--wrap=sys_check_timeouts
+-Wl,--wrap=sys_restart_timeouts
+-Wl,--wrap=sys_timeout
+-Wl,--wrap=sys_timeout_debug
+-Wl,--wrap=sys_timeouts_get_next_timeout
+-Wl,--wrap=sys_timeouts_init
+-Wl,--wrap=sys_timeouts_sleeptime
+-Wl,--wrap=sys_untimeout
