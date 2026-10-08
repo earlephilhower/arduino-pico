@@ -476,9 +476,12 @@ void LwipIntfDev<RawDev>::end() {
             _removeNetifCB(&_netif);
         }
 
-        RawDev::end();
-
+        // Detach from lwIP before stopping the chip.  Link down stops CYW43 RX (and its ARP replies) first.
+        // Under FreeRTOS these run in FIFO order on the LWIP task, draining queued IRQ/poll work (not NCM's ncmTask).
+        netif_set_link_down(&_netif);
         netif_remove(&_netif);
+
+        RawDev::end();
 
         _started = false;
     }
