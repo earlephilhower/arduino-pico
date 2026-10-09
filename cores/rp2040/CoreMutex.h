@@ -45,5 +45,6 @@ private:
     uint8_t _option;
 #ifdef __FREERTOS
     BaseType_t _pxHigherPriorityTaskWoken;
+    SemaphoreHandle_t _fm;
 #endif
 };

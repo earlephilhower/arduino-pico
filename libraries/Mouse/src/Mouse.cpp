@@ -65,6 +65,9 @@ void Mouse_::move(int x, int y, signed char wheel) {
         return;
     }
     CoreMutex m(&USB.mutex);
+    if (!m) {
+        return;
+    }
     tud_task();
     if (USB.HIDReady()) {
         tud_hid_mouse_report(USB.findHIDReportID(_id), _buttons, limit_xy(x), limit_xy(y), wheel, 0);
