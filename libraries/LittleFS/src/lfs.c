@@ -1,10 +1,7 @@
 // Can't place library in the src/ directory, Arduino will attempt to build the tests/etc.
 // Just have a stub here that redirects to the actual source file
 
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#define LFS_NAME_MAX 255
-#define LFS_NO_DEBUG
-#define LFS_NO_WARN
-#define LFS_NO_ERROR
+#include "./lfs_local_config.h"
 
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #include "../lib/littlefs/lfs.c"

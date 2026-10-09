@@ -98,7 +98,7 @@ void DoTest(FS *fs) {
   f = fs->open("/testwrite.bin", "r");
   for (int i = 0; i < TESTSIZEKB; i++) {
     for (int j = 0; j < 4; j++) {
-      if (!f.seek(256 + 256 * j * i, SeekEnd)) {
+      if (!f.seek(-256 - 256 * j * i, SeekEnd)) {
         Serial.printf("Unable to seek to %d, aborting\n", -256 - 256 * j * i);
         return;
       }
