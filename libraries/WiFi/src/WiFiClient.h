@@ -45,6 +45,9 @@ class WiFiServer;
 class WiFiClient : public Client, public SList<WiFiClient> {
 protected:
     WiFiClient(ClientContext* client);
+    // Derived clients publish their initialized state before RTOS traversal can call stop().
+    enum class Registration { Deferred };
+    explicit WiFiClient(Registration);
 
 public:
     WiFiClient();
