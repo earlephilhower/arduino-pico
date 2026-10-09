@@ -13,6 +13,10 @@ import re
 parser = argparse.ArgumentParser(description='Wrapper file generator')
 parser.add_argument('-s', '--source', action='store', required=True, help='source header file')
 parser.add_argument('-p', '--prefix', action='store', required=True, help='output file prefix')
+parser.add_argument('-m', '--mutex', action='store', required=False, default='LWIPMutex', help='mutex class for event handler')
+parser.add_argument('-t', '--threadcheck', action='store', required=False, default='__isLWIPThread', help='function returns is thread is worker thread')
+parser.add_argument('-q', '--messagequeue', action='store', required=False, default='__lwip', help='freertos message queue function')
+
 args = parser.parse_args()
 
 # Overrides we already know about, if the fcn name matches we dump the FreeRTOS case in a if-block
@@ -135,7 +139,7 @@ for line in ctags.stdout.readlines():
 
         funcdef = functype + " __wrap_" + func +  api['signature'] + " {\n"
         funcdef = funcdef + "#ifdef __FREERTOS\n"
-        funcdef = funcdef + "    if (!__isLWIPThread()) {\n"
+        funcdef = funcdef + "    if (!" + args.threadcheck + "()) {\n"
         if not functype == "void":
             funcdef = funcdef + "        " + functype + " ret;\n"
         funcdef = funcdef + "        __" + func + "_req req = { "
@@ -153,14 +157,14 @@ for line in ctags.stdout.readlines():
         if not functype == "void":
             elems = elems + ["&ret"]
         funcdef = funcdef + ", ".join(elems) + " };\n"
-        funcdef = funcdef + "        __lwip(__" + func + ", &req);\n"
+        funcdef = funcdef + "        " + args.messagequeue + "(__" + func + ", &req);\n"
         if not functype == "void":
             funcdef = funcdef + "        return ret;\n"
         else:
             funcdef = funcdef + "        return;\n"
         funcdef = funcdef + "    }\n"
         funcdef = funcdef + "#endif\n"
-        funcdef = funcdef + "    LWIPMutex m;\n"
+        funcdef = funcdef + "    " + args.mutex + " m;\n"
         if not functype == "void":
             funcdef = funcdef + "    return __real_" + func + "(" + ", ".join(elemsnoret) + ");\n"
         else:
