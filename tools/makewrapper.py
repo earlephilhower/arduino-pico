@@ -70,6 +70,7 @@ ifdefs['lwip_cyclic_timer'] = "#if LWIP_TESTMODE"
 ifdefs['sys_timeout_debug'] = "#if LWIP_DEBUG_TIMERNAMES"
 ifdefs['sys_timeout'] = "#if !LWIP_DEBUG_TIMERNAMES"
 
+ifdefs['lfs_migrate'] = "#ifdef LFS_MIGRATE"
 
 # ctags entries which appear but should be skipped
 skips = {}
