@@ -179,6 +179,10 @@ public:
     // Arduino Ethernet compatibility
     EthernetLinkStatus linkStatus();
 
+    // Hides RawDev::isLinked() so app-side PHY reads are serialized with packet I/O
+    bool isLinked();
+    bool isLinked() const;
+
 protected:
     err_t netif_init();
     void  check_route();
@@ -510,7 +514,31 @@ wl_status_t LwipIntfDev<RawDev>::status() {
 
 template<class RawDev>
 EthernetLinkStatus LwipIntfDev<RawDev>::linkStatus() {
-    return RawDev::isLinkDetectable() ? _started && RawDev::isLinked() ? LinkON : LinkOFF : Unknown;
+    return RawDev::isLinkDetectable() ? _started && isLinked() ? LinkON : LinkOFF : Unknown;
+}
+
+template<class RawDev>
+bool LwipIntfDev<RawDev>::isLinked() {
+#ifdef __FREERTOS
+    xSemaphoreTake(_hwMutex, portMAX_DELAY);
+#endif
+    bool ret = RawDev::isLinked();
+#ifdef __FREERTOS
+    xSemaphoreGive(_hwMutex);
+#endif
+    return ret;
+}
+
+template<class RawDev>
+bool LwipIntfDev<RawDev>::isLinked() const {
+#ifdef __FREERTOS
+    xSemaphoreTake(_hwMutex, portMAX_DELAY);
+#endif
+    bool ret = RawDev::isLinked();
+#ifdef __FREERTOS
+    xSemaphoreGive(_hwMutex);
+#endif
+    return ret;
 }
 
 template<class RawDev>
