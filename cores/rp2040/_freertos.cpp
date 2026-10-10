@@ -22,6 +22,7 @@
 
 #include "_freertos.h"
 #include <pico/mutex.h>
+#include <hardware/sync.h>
 #include <stdlib.h>
 #include "Arduino.h"
 
@@ -35,8 +36,9 @@ static StaticSemaphore_t _mapMutex[16];
 
 static SemaphoreHandle_t __find_freertos_mutex_for_ptr(mutex_t *m) {
     for (int i = 0; i < 16; i++) {
-        // Acquire pairs with the release in __get_freertos_mutex_for_ptr so dst is valid once src matches
-        if (m == __atomic_load_n(&_map[i].src, __ATOMIC_ACQUIRE)) {
+        // Aligned word read is atomic; fence pairs with the release in __get_freertos_mutex_for_ptr so dst is valid once src matches
+        if (m == _map[i].src) {
+            __mem_fence_acquire();
             return _map[i].dst;
         }
     }
@@ -68,7 +70,8 @@ SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
                 fm = xSemaphoreCreateMutexStatic(&_mapMutex[i]);
             }
             _map[i].dst = fm;
-            __atomic_store_n(&_map[i].src, m, __ATOMIC_RELEASE);
+            __mem_fence_release(); // dst visible before src publishes it
+            _map[i].src = m;
         }
     }
     if (fromISR) {
