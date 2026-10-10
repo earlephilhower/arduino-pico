@@ -45,7 +45,6 @@
 #include "LwipIntf.h"
 #include "LwipEthernet.h"
 #include "wl_definitions.h"
-#include <atomic>
 
 #ifdef __FREERTOS
 #include "FreeRTOS.h"
@@ -208,7 +207,7 @@ protected:
     int8_t   _intrPin;
     uint8_t  _macAddress[6];
     bool     _started;
-    std::atomic<bool> _stopping { false };
+    volatile bool _stopping = false;
     bool     _default;
 
     // ICMP Ping
@@ -463,7 +462,9 @@ extern std::function<void(struct netif *)> _removeNetifCB;
 
 template<class RawDev>
 void LwipIntfDev<RawDev>::end() {
-    if (_started && !_stopping.exchange(true)) {
+    // Guards re-entry from status/remove callbacks on this same context, not concurrent end() calls
+    if (_started && !_stopping) {
+        _stopping = true;
         if (_isDHCP) {
             dhcp_stop(&_netif);
             dhcp_cleanup(&_netif);
