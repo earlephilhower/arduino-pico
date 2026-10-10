@@ -22,6 +22,7 @@
 
 #include "_freertos.h"
 #include <pico/mutex.h>
+#include <hardware/sync.h>
 #include <stdlib.h>
 #include "Arduino.h"
 
@@ -30,37 +31,55 @@ typedef struct {
     SemaphoreHandle_t dst;
 } FMMap;
 
-static FMMap *_map = nullptr;
-SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
-    if (!_map) {
-        _map = (FMMap *)calloc(16, sizeof(FMMap));
-    }
-    // Pre-existing map
+static FMMap _map[16];
+static StaticSemaphore_t _mapMutex[16];
+
+static SemaphoreHandle_t __find_freertos_mutex_for_ptr(mutex_t *m) {
     for (int i = 0; i < 16; i++) {
+        // Aligned word read is atomic; fence pairs with the release in __get_freertos_mutex_for_ptr so dst is valid once src matches
         if (m == _map[i].src) {
+            __mem_fence_acquire();
             return _map[i].dst;
         }
     }
+    return nullptr;
+}
 
-    for (int i = 0; i < 16; i++) {
+SemaphoreHandle_t __get_freertos_mutex_for_ptr(mutex_t *m, bool recursive) {
+    // Pre-existing map
+    SemaphoreHandle_t fm = __find_freertos_mutex_for_ptr(m);
+    if (fm) {
+        return fm;
+    }
+
+    // Serialize lookup+create+publish across tasks, ISRs, and both cores
+    UBaseType_t savedIrqs = 0;
+    bool fromISR = portGET_CRITICAL_NESTING_COUNT() == 0U && portCHECK_IF_IN_ISR();
+    if (fromISR) {
+        savedIrqs = taskENTER_CRITICAL_FROM_ISR();
+    } else {
+        taskENTER_CRITICAL();
+    }
+    fm = __find_freertos_mutex_for_ptr(m);
+    for (int i = 0; !fm && i < 16; i++) {
         if (_map[i].src == nullptr) {
-            // Make a new mutex
-            SemaphoreHandle_t fm;
+            // Make a new mutex, static so no malloc (and its newlib lock) inside the critical section
             if (recursive) {
-                fm = xSemaphoreCreateRecursiveMutex();
+                fm = xSemaphoreCreateRecursiveMutexStatic(&_mapMutex[i]);
             } else {
-                fm = xSemaphoreCreateMutex();
+                fm = xSemaphoreCreateMutexStatic(&_mapMutex[i]);
             }
-            if (fm == nullptr) {
-                return nullptr;
-            }
-
-            _map[i].src = m;
             _map[i].dst = fm;
-            return fm;
+            __mem_fence_release(); // dst visible before src publishes it
+            _map[i].src = m;
         }
     }
-    return nullptr; // Need to make space for more mutex maps!
+    if (fromISR) {
+        taskEXIT_CRITICAL_FROM_ISR(savedIrqs);
+    } else {
+        taskEXIT_CRITICAL();
+    }
+    return fm; // nullptr if we need to make space for more mutex maps!
 }
 
 #endif
