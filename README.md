@@ -20,18 +20,28 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * 0xCB Helios
 * Adafruit Feather RP2040
 * Adafruit Feather RP2040 SCORPIO
-* Adafruit Floppsy RP2040
+* Adafruit Feather RP2040 DVI
+* Adafruit Feather RP2040 Adalogger
+* Adafruit Feather RP2040 RFM
+* Adafruit Feather RP2040 ThinkINK
+* Adafruit Feather RP2040 USB Host
+* Adafruit Feather RP2040 CAN
+* Adafruit Feather RP2040 Prop-Maker
 * Adafruit ItsyBitsy RP2040
-* Adafruit KB2040
-* Adafruit Macropad RP2040
 * Adafruit Metro RP2040
-* Adafruit Metro RP2350
-* Adafruit QTPy RP2040
+* Adafruit QT Py RP2040
 * Adafruit STEMMA Friend RP2040
 * Adafruit Trinkey RP2040 QT
-* Amken Bunny 
-* Amken Revelop 
-* Amken Revelop Plus 
+* Adafruit MacroPad RP2040
+* Adafruit KB2040
+* Adafruit Feather RP2350 Adalogger
+* Adafruit Feather RP2350 HSTX
+* Adafruit Floppsy
+* Adafruit Metro RP2350
+* Adafruit Fruit Jam RP2350
+* Amken BunnyBoard
+* Amken Revelop
+* Amken Revelop Plus
 * Amken Revelop eS
 * Architeuthis Flux Jumperless
 * Architeuthis Flux Jumperless V5
@@ -42,100 +52,112 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * BridgeTek IDM2040-7A
 * BridgeTek IDM2040-43A
 * Cytron IRIV IO Controller
-* Cytron Maker Pi RP2040
 * Cytron Maker Nano RP2040
+* Cytron Maker Pi RP2040
 * Cytron Maker Uno RP2040
 * Cytron Motion 2350 Pro
 * Cytron Maker Sumo RP2350
-* Datanoise PicoADK v1
-* Datanoise PicoADK v2 (RP2350)
-* Degz Suibo RP2040
-* DeRuiLab FlyBoard2040 Core
+* DatanoiseTV PicoADK
+* DatanoiseTV PicoADK v2
+* Degz Robotics Suibo RP2040
+* DeRuiLab FlyBoard2040Core
 * DFRobot Beetle RP2040
-* ElectronicCats Hunter Cat NFC
+* L'atelier d'Arnoz DudesCab
+* ElectronicCats HunterCat NFC RP2040
 * EVN Alpha
 * ExtremeElectronics RC2040
 * GeeekPi RP2040 Plus
 * GroundStudio Marble Pico
-* Invector Labs Challenger RP2040 WiFi
-* Invector Labs Challenger RP2040 WiFi/BLE
-* Invector Labs Challenger RP2040 WiFi6/BLE
-* Invector Labs Challenger NB RP2040 WiFi
-* Invector Labs Challenger RP2040 LTE
-* Invector Labs Challenger RP2040 LoRa
-* Invector Labs Challenger RP2040 SubGHz
-* Invector Labs Challenger RP2040 SD/RTC
-* Invector Labs Challenger RP2040 UWB
-* Invector Labs Challenger+ RP2350 BConnect
-* Invector Labs Challenger+ RP2350 WiFi/BLE
-* Invector Labs Challenger+ RP2350 NB-IoT
-* Invector Labs CPico RP2350 8MB
-* Invector Labs RPICO32
+* iLabs Challenger 2040 LTE
+* iLabs Challenger 2040 LoRa
+* iLabs Challenger 2040 SubGHz
+* iLabs Challenger 2040 WiFi
+* iLabs Challenger 2040 WiFi/BLE
+* iLabs Challenger 2040 WiFi6/BLE
+* iLabs Challenger NB 2040 WiFi
+* iLabs Challenger 2040 SD/RTC
+* iLabs Challenger 2040 NFC
+* iLabs Challenger 2040 UWB
+* iLabs Connectivity 2040 LTE/WiFi/BLE
+* iLabs RPICO32
+* iLabs Challenger 2350 WiFi/BLE
+* iLabs Challenger 2350 BConnect
+* iLabs Challenger 2350 NB-IoT
+* iLabs Challenger ZP 2350 LoRa
+* iLabs CPico 2350
+* Makerbase MKS THR36
+* Makerbase MKS THR42
 * Melopero Cookie RP2040
 * Melopero Shake RP2040
 * METE HOCA Akana R1
-* Makerbase MKSTHR36
-* Makerbase MKSTHR42
 * MyMakers RP2040
+* MyMakers RP2350B
 * Neko Systems BL2040 Mini
 * Newsan Archi
 * nullbits Bit-C PRO
+* Olimex Pico2BB48
 * Olimex Pico2XL
 * Olimex Pico2XXL
 * Olimex RP2040-Pico30
+* Pcbcupid GLYPH 2040
+* Pcbcupid GLYPH MINI 2040
 * PicoLume Transceiver
 * Pimoroni PGA2040
-* Pimoroni Pico Plus 2
-* Pimoroni Pico Plus 2W
+* Pimoroni PGA2350
+* Pimoroni PicoPlus2
+* Pimoroni PicoPlus2W
 * Pimoroni Plasma2040
 * Pimoroni Plasma2350
 * Pimoroni Plasma2350W
 * Pimoroni Servo2040
 * Pimoroni Tiny2040
 * Pimoroni Tiny2350
+* Pimoroni Explorer
 * Pintronix PinMax
-* PCBCupid Glyph 2040
-* PCBCupid Glyph Mini 2040
 * RAKwireless RAK11300
-* Redscorp RP2040-Eins
-* Redscorp RP2040-ProMini
-* Sea-Picro
-* Seeed Indicator RP2040
-* Seeed XIAO RP2040
-* Seeed XIAO RP2040 Plus
-* Seeed XIAO RP2350
+* redscorp RP2040-Eins
+* redscorp RP2040-ProMini
+* Generic Sea-Picro
 * Silicognition RP2040-Shim
 * Solder Party RP2040 Stamp
 * Solder Party RP2350 Stamp
 * Solder Party RP2350 Stamp XL
-* Soldered Electronics NULA Ethernet W55RP20
-* Soldered Electronics NULA Node RP2040
 * Soldered Electronics NULA RP2350
+* Soldered Electronics NULA Ethernet W55RP20
+* Soldered Electronics NULA Node
 * SparkFun IoT RedBoard RP2350
 * SparkFun MicroMod RP2040
 * SparkFun ProMicro RP2040
 * SparkFun ProMicro RP2350
 * SparkFun Thing Plus RP2040
 * SparkFun Thing Plus RP2350
+* SparkFun IoT Node LoRaWAN
+* SparkFun XRP Controller (Beta)
 * SparkFun XRP Controller
+* Seeed INDICATOR RP2040
+* Seeed XIAO RP2040
+* Seeed XIAO RP2040 Plus
+* Seeed XIAO RP2350
 * uPesy RP2040 DevKit
-* VCC-GND YD-RP2040
+* VCC-GND YD RP2040
+* Vicharak Shrike-Lite
 * Viyalab Mizu RP2040
 * Waveshare RP2040 Zero
 * Waveshare RP2040 One
-* Waveshare RP2040 Plus
-* Waveshare RP2040 LCD 0.96
-* Waveshare RP2040 LCD 1.28
 * Waveshare RP2040 LoRa
 * Waveshare RP2040 Matrix
 * Waveshare RP2040 PiZero
+* Waveshare RP2040 Plus
+* Waveshare RP2040 LCD 0.96
+* Waveshare RP2040 LCD 1.28
+* Waveshare RP2350 Core
 * Waveshare RP2350 Zero
 * Waveshare RP2350 PiZero
 * Waveshare RP2350 Plus
-* Waveshare RP2350 Plus W
+* Waveshare RP2350B Plus W
 * Waveshare RP2350 LCD 0.96
 * Waveshare RP2350-POE-ETH
-* WeAct RP2350B Core Board
+* WeAct Studio RP2350B Core Board
 * WIZnet W5100S-EVB-Pico
 * WIZnet W5100S-EVB-Pico2
 * WIZnet W5500-EVB-Pico
@@ -144,8 +166,8 @@ Read the [Contributing Guide](https://github.com/earlephilhower/arduino-pico/blo
 * WIZnet W6300-EVB-Pico
 * WIZnet W6300-EVB-Pico2
 * WIZnet WizFi360-EVB-Pico
-* Generic RP2040 (configurable flash, I/O pins)
-* Generic RP2350 (configurable flash, I/O pins)
+* Generic RP2040
+* Generic RP2350
 
 # Features
 * Adafruit TinyUSB Arduino (USB mouse, keyboard, flash drive, generic HID, CDC Serial, MIDI, WebUSB, others)
