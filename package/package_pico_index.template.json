@@ -147,6 +147,9 @@
                      "name": "Cytron Motion 2350 Pro"
                   },
                   {
+                     "name": "Cytron Maker Sumo RP2350"
+                  },
+                  {
                      "name": "DatanoiseTV PicoADK"
                   },
                   {
@@ -456,9 +459,6 @@
                      "name": "WIZnet W5100S-EVB-Pico2"
                   },
                   {
-                     "name": "WIZnet WizFi360-EVB-Pico"
-                  },
-                  {
                      "name": "WIZnet W5500-EVB-Pico"
                   },
                   {
@@ -472,6 +472,9 @@
                   },
                   {
                      "name": "WIZnet W6300-EVB-Pico2"
+                  },
+                  {
+                     "name": "WIZnet WizFi360-EVB-Pico"
                   },
                   {
                      "name": "Generic RP2040"
