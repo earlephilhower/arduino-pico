@@ -147,6 +147,9 @@
                      "name": "Cytron Motion 2350 Pro"
                   },
                   {
+                     "name": "Cytron Maker Sumo RP2350"
+                  },
+                  {
                      "name": "DatanoiseTV PicoADK"
                   },
                   {
@@ -223,6 +226,9 @@
                   },
                   {
                      "name": "iLabs Challenger 2350 NB-IoT"
+                  },
+                  {
+                     "name": "iLabs Challenger ZP 2350 LoRa"
                   },
                   {
                      "name": "iLabs CPico 2350"
@@ -453,9 +459,6 @@
                      "name": "WIZnet W5100S-EVB-Pico2"
                   },
                   {
-                     "name": "WIZnet WizFi360-EVB-Pico"
-                  },
-                  {
                      "name": "WIZnet W5500-EVB-Pico"
                   },
                   {
@@ -469,6 +472,9 @@
                   },
                   {
                      "name": "WIZnet W6300-EVB-Pico2"
+                  },
+                  {
+                     "name": "WIZnet WizFi360-EVB-Pico"
                   },
                   {
                      "name": "Generic RP2040"

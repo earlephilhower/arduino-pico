@@ -27,26 +27,16 @@
 //#include "debug.h"
 #include "WiFi.h"
 #include "WiFiUdp.h"
-#include "lwip/opt.h"
-#include "lwip/udp.h"
-#include "lwip/inet.h"
-#include "lwip/igmp.h"
-#include "lwip/mem.h"
-#include <include/UdpContext.h>
-
-template<>
-WiFiUDP* SList<WiFiUDP>::_s_first = 0;
-#ifdef __FREERTOS
-template<>
-SemaphoreHandle_t SList<WiFiUDP>::_s_first_lock = 0;
-template<>
-bool SList<WiFiUDP>::_s_first_lock_created = false;
-#endif
+#include <lwip/opt.h>
+#include <lwip/udp.h>
+#include <lwip/inet.h>
+#include <lwip/igmp.h>
+#include <lwip/mem.h>
+#include "include/UdpContext.h"
 
 
 /* Constructor */
 WiFiUDP::WiFiUDP() : _ctx(0), _multicast(false), _dirty(false) {
-    WiFiUDP::_add(this);
 }
 
 WiFiUDP::WiFiUDP(const WiFiUDP& other) {
@@ -54,7 +44,6 @@ WiFiUDP::WiFiUDP(const WiFiUDP& other) {
     if (_ctx) {
         _ctx->ref();
     }
-    WiFiUDP::_add(this);
     _multicast = other._multicast;
     _dirty = other._dirty;
 }
@@ -68,7 +57,6 @@ WiFiUDP& WiFiUDP::operator=(const WiFiUDP& rhs) {
 }
 
 WiFiUDP::~WiFiUDP() {
-    WiFiUDP::_remove(this);
     if (_ctx) {
         _ctx->unref();
     }
@@ -270,20 +258,4 @@ uint16_t WiFiUDP::localPort() const {
     }
 
     return _ctx->getLocalPort();
-}
-
-void WiFiUDP::stopAll() {
-    for (WiFiUDP* it = _s_first; it; it = it->_next) {
-        DEBUGV("%s %p %p", __func__, it, _s_first);
-        it->stop();
-    }
-}
-
-void WiFiUDP::stopAllExcept(WiFiUDP * exC) {
-    for (WiFiUDP* it = _s_first; it; it = it->_next) {
-        if (it->_ctx != exC->_ctx) {
-            DEBUGV("%s %p %p", __func__, it, _s_first);
-            it->stop();
-        }
-    }
 }

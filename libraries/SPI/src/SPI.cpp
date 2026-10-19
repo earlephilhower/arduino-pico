@@ -153,6 +153,10 @@ void SPIClassRP2040::transfer(const void *txbuf, void *rxbuf, size_t count) {
 
 void SPIClassRP2040::beginTransaction(SPISettings settings) {
     DEBUGSPI("SPI::beginTransaction(clk=%lu, bo=%s)", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
+    // Mask first: a usingInterrupt() handler must not run while the bus is set up again below.
+    // It would take the bus as already set up for its settings and find it in reset or disabled
+    // (SPI: its transfer then never completes) or at the new clock.
+    _helper.maskInterrupts();
     if (_initted && settings == _spis) {
         DEBUGSPI("SPI: Reusing existing initted SPI");
     } else {
@@ -170,7 +174,6 @@ void SPIClassRP2040::beginTransaction(SPISettings settings) {
         spi_set_format(_spi, 8, _helper.cpol(_spis), _helper.cpha(_spis), SPI_MSB_FIRST);
         _initted = true;
     }
-    _helper.maskInterrupts();
 }
 
 void SPIClassRP2040::endTransaction(void) {

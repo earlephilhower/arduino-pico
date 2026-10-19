@@ -270,7 +270,7 @@ bool WINC1500LwIP::begin() {
         }
         if (m2m_wifi_connect(_connInfo.acSSID, strlen(_connInfo.acSSID), secType, (void*) _pwd, _channel) < 0) {
             _status = WL_CONNECT_FAILED;
-            ethernet_arch_lwip_end();
+            ethernet_arch_lwip_gpio_unmask();
             return false;
         }
         _status = WL_IDLE_STATUS;
@@ -282,7 +282,7 @@ bool WINC1500LwIP::begin() {
         }
         if (_status != WL_CONNECTED) {
             _status = WL_CONNECT_FAILED;
-            ethernet_arch_lwip_end();
+            ethernet_arch_lwip_gpio_unmask();
             return false;
         }
     } else {
@@ -293,6 +293,7 @@ bool WINC1500LwIP::begin() {
         _apConfig.au8DHCPServerIP[0] = 192; // not used but checked
         if (m2m_wifi_enable_ap(&_apConfig) < 0) {
             _status = WL_AP_FAILED;
+            ethernet_arch_lwip_gpio_unmask();
             return false;
         }
 #ifdef CONF_PERIPH
