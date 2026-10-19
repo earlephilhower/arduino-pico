@@ -124,14 +124,13 @@ static void lwipThread(void *params) {
     assert(__isLWIPThread());
     unsigned int scd = 100 / portTICK_PERIOD_MS;
 
-    lwip_init(); // Will call our wrapper and set up the RNG
-
     while (true) {
         auto ret = xQueueReceive(__lwipQueue, &w, scd);
         if (ret) {
             switch (w.op) {
             case __lwip_init: {
-                __real_lwip_init();
+                // We always __real_lwip_init in lwip_wrap.cpp
+                //__real_lwip_init();
                 break;
             }
 
