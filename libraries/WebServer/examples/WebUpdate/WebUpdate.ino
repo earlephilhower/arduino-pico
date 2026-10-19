@@ -41,7 +41,6 @@ void setup(void) {
     []() {
       HTTPUpload& upload = server.upload();
       if (upload.status == UPLOAD_FILE_START) {
-        WiFiUDP::stopAll();
         Serial.printf("Update: %s\n", upload.filename.c_str());
         FSInfo i;
         LittleFS.begin();
