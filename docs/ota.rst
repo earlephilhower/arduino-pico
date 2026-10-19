@@ -264,9 +264,6 @@ HTTP Server
 
 Note that by default this class closes all other connections except the one used by the update, this is because the update method blocks. This means that if there's another application receiving data then TCP packets will build up in the buffer leading to out of memory errors causing the OTA update to fail. There's also a limited number of receive buffers available and all may be used up by other applications.
 
-There are some cases where you know that you won't be receiving any data but would still like to send progress updates.
-It's possible to disable the default behaviour (and keep connections open) by calling closeConnectionsOnUpdate(false).
-
 Requirements
 ~~~~~~~~~~~~
 
