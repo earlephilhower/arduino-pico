@@ -29,7 +29,7 @@
 #include <FS.h>
 #include <FSImpl.h>
 
-#define LFS_NAME_MAX 255
+#include "./lfs_local_config.h"
 #include "../lib/littlefs/lfs.h"
 
 using namespace fs;

@@ -92,10 +92,6 @@ public:
         _followRedirects = follow;
     }
 
-    void closeConnectionsOnUpdate(bool sever) {
-        _closeConnectionsOnUpdate = sever;
-    }
-
     void setMD5sum(const String &md5Sum) {
         _md5Sum = md5Sum;
     }
@@ -142,7 +138,6 @@ protected:
     }
     int _lastError;
     bool _rebootOnUpdate = true;
-    bool _closeConnectionsOnUpdate = true;
     String _user;
     String _password;
     String _auth;

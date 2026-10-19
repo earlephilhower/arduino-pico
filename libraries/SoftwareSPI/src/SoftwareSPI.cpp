@@ -151,6 +151,10 @@ void SoftwareSPI::transfer(const void *csrc, void *cdest, size_t count) {
 
 void SoftwareSPI::beginTransaction(SPISettings settings) {
     DEBUGSPI("SoftwareSPI::beginTransaction(clk=%lu, bo=%s)", settings.getClockFreq(), (settings.getBitOrder() == MSBFIRST) ? "MSB" : "LSB");
+    // Mask first: a usingInterrupt() handler must not run while the bus is set up again below.
+    // It would take the bus as already set up for its settings and find it in reset or disabled
+    // (SPI: its transfer then never completes) or at the new clock.
+    _helper.maskInterrupts();
     if (_initted && settings == _spis) {
         DEBUGSPI("SoftwareSPI: Reusing existing initted SPI");
     } else {
@@ -166,7 +170,6 @@ void SoftwareSPI::beginTransaction(SPISettings settings) {
         // Note we can only change frequency, not CPOL/CPHA (which would be physically not too useful anyway)
         _initted = true;
     }
-    _helper.maskInterrupts();
 }
 
 void SoftwareSPI::endTransaction(void) {

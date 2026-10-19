@@ -23,13 +23,12 @@
 
 #include <Arduino.h>
 #include <Udp.h>
-#include <include/slist.h>
 
 #define UDP_TX_PACKET_MAX_SIZE 8192
 
 class UdpContext;
 
-class WiFiUDP : public UDP, public SList<WiFiUDP> {
+class WiFiUDP : public UDP {
 private:
     UdpContext* _ctx;
 
@@ -110,9 +109,6 @@ public:
     IPAddress destinationIP() const;
     // Return the local port for outgoing packets
     uint16_t localPort() const;
-
-    static void stopAll();
-    static void stopAllExcept(WiFiUDP * exC);
 
 private:
     bool _multicast;

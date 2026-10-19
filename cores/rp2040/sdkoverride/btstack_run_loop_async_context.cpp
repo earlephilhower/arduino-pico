@@ -8,6 +8,7 @@
 */
 #include <Arduino.h>
 #include <lwip_wrap.h>
+#include "freertos/freertos-lwip.h"
 #include "FreeRTOS.h"
 #include "semphr.h"
 
@@ -17,9 +18,31 @@
 static void btstack_work_pending(async_context_t *context, async_when_pending_worker_t *worker);
 static SemaphoreHandle_t _run_loop_exit_binary;
 
+static __callback_req _kickBuffer;
+static bool _kickPending; // Protected by the CYW43 lock
+
 static void do_btstack_work_pending(void *data) {
     (void) data;
+    cyw43_thread_enter(); // The run loop lists are shared with the task-side callers below
+    _kickPending = false;
     btstack_work_pending(NULL, NULL);
+    cyw43_thread_exit();
+}
+
+// Callers may hold the CYW43 lock (BluetoothLock, or BTstack sending from under it), and the
+// LWIP task takes that lock to do the work, so never wait for it: queue one run and return.
+static void kick_btstack_work() {
+    if (__isLWIPThread()) {
+        do_btstack_work_pending(NULL);
+        return;
+    }
+    cyw43_thread_enter();
+    bool queue = !_kickPending;
+    _kickPending = true;
+    cyw43_thread_exit();
+    if (queue) {
+        lwip_callback(do_btstack_work_pending, NULL, &_kickBuffer);
+    }
 }
 
 static void btstack_run_loop_freertos_native_init(void) {
@@ -55,15 +78,15 @@ static void btstack_run_loop_freertos_native_disable_data_source_callbacks(btsta
 static void btstack_run_loop_freertos_native_set_timer(btstack_timer_source_t *ts, uint32_t timeout_in_ms) {
     cyw43_thread_enter();
     ts->timeout = to_ms_since_boot(get_absolute_time()) + timeout_in_ms + 1;
-    lwip_callback(do_btstack_work_pending, NULL);
     cyw43_thread_exit();
+    kick_btstack_work();
 }
 
 static void btstack_run_loop_freertos_native_add_timer(btstack_timer_source_t *timer) {
     cyw43_thread_enter();
     btstack_run_loop_base_add_timer(timer);
-    lwip_callback(do_btstack_work_pending, NULL);
     cyw43_thread_exit();
+    kick_btstack_work();
 }
 
 static bool btstack_run_loop_freertos_native_remove_timer(btstack_timer_source_t *timer) {
@@ -95,12 +118,12 @@ static void btstack_run_loop_async_context_trigger_exit(void) {
 static void btstack_run_loop_freertos_native_execute_on_main_thread(btstack_context_callback_registration_t *callback_registration) {
     cyw43_thread_enter();
     btstack_run_loop_base_add_callback(callback_registration);
-    lwip_callback(do_btstack_work_pending, NULL);
     cyw43_thread_exit();
+    kick_btstack_work();
 }
 
 static void btstack_run_loop_freertos_native_poll_data_sources_from_irq(void) {
-    lwip_callback(do_btstack_work_pending, NULL);
+    kick_btstack_work();
 }
 
 static const btstack_run_loop_t btstack_run_loop_freertos_native = {

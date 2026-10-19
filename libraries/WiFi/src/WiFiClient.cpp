@@ -22,12 +22,12 @@
 
 #include "WiFi.h"
 
-#include "lwip/opt.h"
-#include "lwip/ip.h"
-#include "lwip/tcp.h"
-#include "lwip/inet.h"
-#include "lwip/netif.h"
-#include <include/ClientContext.h>
+#include <lwip/opt.h>
+#include <lwip/ip.h>
+#include <lwip/tcp.h>
+#include <lwip/inet.h>
+#include <lwip/netif.h>
+#include "include/ClientContext.h"
 //#include <StreamDev.h>
 
 uint16_t WiFiClient::_localPort = 0;
@@ -55,33 +55,21 @@ bool WiFiClient::getDefaultSync() {
     return defaultSync;
 }
 
-template<>
-WiFiClient* SList<WiFiClient>::_s_first = 0;
-#ifdef __FREERTOS
-template<>
-SemaphoreHandle_t SList<WiFiClient>::_s_first_lock = 0;
-template<>
-bool SList<WiFiClient>::_s_first_lock_created = false;
-#endif
-
 WiFiClient::WiFiClient()
     : _client(0), _owned(0) {
     _timeout = 5000;
-    WiFiClient::_add(this);
 }
 
 WiFiClient::WiFiClient(ClientContext* client)
     : _client(client), _owned(0) {
     _timeout = 5000;
     _client->ref();
-    WiFiClient::_add(this);
 
     setSync(defaultSync);
     setNoDelay(defaultNoDelay);
 }
 
 WiFiClient::~WiFiClient() {
-    WiFiClient::_remove(this);
     if (_client) {
         _client->unref();
     }
@@ -99,7 +87,6 @@ WiFiClient::WiFiClient(const WiFiClient& other) {
     if (_client) {
         _client->ref();
     }
-    WiFiClient::_add(this);
 }
 
 WiFiClient& WiFiClient::operator=(const WiFiClient& other) {
@@ -339,30 +326,6 @@ uint16_t WiFiClient::localPort() {
     }
 
     return _client->getLocalPort();
-}
-
-void WiFiClient::stopAll() {
-    for (WiFiClient* it = _s_first; it; it = it->_next) {
-        it->stop();
-    }
-}
-
-
-void WiFiClient::stopAllExcept(WiFiClient* except) {
-    // Stop all will look at the lowest-level wrapper connections only
-    while (except->_owned) {
-        except = except->_owned;
-    }
-    for (WiFiClient* it = _s_first; it; it = it->_next) {
-        WiFiClient* conn = it;
-        // Find the lowest-level owner of the current list entry
-        while (conn->_owned) {
-            conn = conn->_owned;
-        }
-        if (conn != except) {
-            conn->stop();
-        }
-    }
 }
 
 void WiFiClient::keepAlive(uint16_t idle_sec, uint16_t intv_sec, uint8_t count) {

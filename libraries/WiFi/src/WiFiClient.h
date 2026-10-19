@@ -26,7 +26,6 @@
 #include "Print.h"
 #include "Client.h"
 #include "IPAddress.h"
-#include "include/slist.h"
 
 #ifndef TCP_MSS
 #define TCP_MSS 1460 // lwip1.4
@@ -42,7 +41,7 @@
 class ClientContext;
 class WiFiServer;
 
-class WiFiClient : public Client, public SList<WiFiClient> {
+class WiFiClient : public Client {
 protected:
     WiFiClient(ClientContext* client);
 
@@ -107,9 +106,6 @@ public:
     friend class WiFiServer;
 
     using Print::write;
-
-    static void stopAll();
-    static void stopAllExcept(WiFiClient * c);
 
     void     keepAlive(uint16_t idle_sec = TCP_DEFAULT_KEEPALIVE_IDLE_SEC, uint16_t intv_sec = TCP_DEFAULT_KEEPALIVE_INTERVAL_SEC, uint8_t count = TCP_DEFAULT_KEEPALIVE_COUNT);
     bool     isKeepAliveEnabled() const;
