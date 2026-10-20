@@ -154,7 +154,7 @@ static void _handler1() {
     } else {
         Wire1.onIRQ();
     }
-#else
+#elif defined(PIN_WIRE1_SDA)
     Wire1.onIRQ();
 #endif
 }
