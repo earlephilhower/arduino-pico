@@ -62,11 +62,9 @@ extern "C" void __lfs(__lfs_op op, void *req, bool fromISR) {
     if (fromISR) {
         panic("LFS from an ISR not supported");
     } else {
-        TaskStatus_t t;
-        vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
         w.op = op;
         w.req = req;
-        w.wakeup = t.xHandle;
+        w.wakeup = xTaskGetCurrentTaskHandle();
         if (!xQueueSend(__lfsQueue, &w, portMAX_DELAY)) {
             panic("LFS task send failed");
         }
@@ -75,9 +73,7 @@ extern "C" void __lfs(__lfs_op op, void *req, bool fromISR) {
 }
 
 extern "C" bool __isLFSThread() {
-    TaskStatus_t t;
-    vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
-    return t.xHandle == __lfsTask;
+    return xTaskGetCurrentTaskHandle() == __lfsTask;
 }
 
 static void lfsThread(void *params) {
