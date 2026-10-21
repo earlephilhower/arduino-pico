@@ -19,11 +19,8 @@
 
 #include <Arduino.h>
 #include "wrap_lfs.h"
-#ifdef __FREERTOS
-#include "wrap_lfs_freertos.h"
-#endif
 
-#ifndef __FREERTOS
+#if !defined(__FREERTOS)
 recursive_mutex_t __lfsMutex;
 
 void __initLFSMutex() {
@@ -35,7 +32,9 @@ SemaphoreHandle_t __lfsMutex;
 void __initLFSMutex() {
     __lfsMutex = xSemaphoreCreateMutex();
 }
+// We're not using a work thread so every task is the LFS thread context!
 #define __isLFSThread() true
+#define __lfs(a, b) do { (void) a; (void) b; } while (0)
 #endif
 
 extern "C" {
