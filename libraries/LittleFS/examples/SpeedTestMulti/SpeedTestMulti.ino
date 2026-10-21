@@ -33,33 +33,27 @@ const char *rate(unsigned long start, unsigned long stop, unsigned long bytes) {
   return buff;
 }
 
-volatile bool running = false;
 
-void DoTest(FS *fs) {
-  if (rp2040.cpuid() == 0) {
-    if (!fs->format()) {
-      Serial.printf("Unable to format(), aborting\n");
-      return;
-    }
-    if (!fs->begin()) {
-      Serial.printf("Unable to begin(), aborting\n");
-      return;
-    }
+void DoTest(FS *fs, int id) {
+  Serial.printf("%d: Beginning test\n", id);
+  Serial.flush();
+  if (!fs->begin()) {
+    Serial.printf("Unable to begin(), aborting\n");
+    return;
   }
   uint8_t data[256];
   for (int i = 0; i < 256; i++) {
     data[i] = (uint8_t) i;
   }
 
-  Serial.printf("%d: Creating %dKB file, may take a while...\n", rp2040.cpuid(), TESTSIZEKB);
+  Serial.printf("%d: Creating %dKB file, may take a while...\n", id, TESTSIZEKB);
   unsigned long start = millis();
-  running = true;
   String filename = "/testwrite";
-  filename += rp2040.cpuid() ? "1" : "0";
+  filename += id;
   filename += ".bin";
   File f = fs->open(filename, "w");
   if (!f) {
-    Serial.printf("%d: Unable to open file for writing, aborting\n", rp2040.cpuid());
+    Serial.printf("%d: Unable to open file for writing, aborting\n", id);
     return;
   }
   for (int i = 0; i < TESTSIZEKB; i++) {
@@ -69,13 +63,13 @@ void DoTest(FS *fs) {
   }
   f.close();
   unsigned long stop = millis();
-  Serial.printf("%d: ==> Time to write %dKB in 256b chunks = %lu milliseconds\n", rp2040.cpuid(), TESTSIZEKB, stop - start);
+  Serial.printf("%d: ==> Time to write %dKB in 256b chunks = %lu milliseconds\n", id, TESTSIZEKB, stop - start);
 
   f = fs->open(filename, "r");
-  Serial.printf("%d: ==> Created file size = %zu\n", rp2040.cpuid(), f.size());
+  Serial.printf("%d: ==> Created file size = %zu\n", id, f.size());
   f.close();
 
-  Serial.printf("%d: Reading %dKB file sequentially in 256b chunks\n", rp2040.cpuid(), TESTSIZEKB);
+  Serial.printf("%d: Reading %dKB file sequentially in 256b chunks\n", id, TESTSIZEKB);
   start = millis();
   f = fs->open(filename, "r");
   for (int i = 0; i < TESTSIZEKB; i++) {
@@ -85,9 +79,9 @@ void DoTest(FS *fs) {
   }
   f.close();
   stop = millis();
-  Serial.printf("%d: ==> Time to read %dKB sequentially in 256b chunks = %lu milliseconds = %s\n", rp2040.cpuid(), TESTSIZEKB, stop - start, rate(start, stop, TESTSIZEKB * 1024));
+  Serial.printf("%d: ==> Time to read %dKB sequentially in 256b chunks = %lu milliseconds = %s\n", id, TESTSIZEKB, stop - start, rate(start, stop, TESTSIZEKB * 1024));
 
-  Serial.printf("%d: Reading %dKB file MISALIGNED in flash and RAM sequentially in 256b chunks\n", rp2040.cpuid(), TESTSIZEKB);
+  Serial.printf("%d: Reading %dKB file MISALIGNED in flash and RAM sequentially in 256b chunks\n", id, TESTSIZEKB);
   start = millis();
   f = fs->open(filename, "r");
   f.read();
@@ -98,28 +92,28 @@ void DoTest(FS *fs) {
   }
   f.close();
   stop = millis();
-  Serial.printf("%d: ==> Time to read %dKB sequentially MISALIGNED in flash and RAM in 256b chunks = %lu milliseconds = %s\n", rp2040.cpuid(), TESTSIZEKB, stop - start, rate(start, stop, TESTSIZEKB * 1024));
+  Serial.printf("%d: ==> Time to read %dKB sequentially MISALIGNED in flash and RAM in 256b chunks = %lu milliseconds = %s\n", id, TESTSIZEKB, stop - start, rate(start, stop, TESTSIZEKB * 1024));
 
-  Serial.printf("%d: Reading %dKB file in reverse by 256b chunks\n", rp2040.cpuid(), TESTSIZEKB);
+  Serial.printf("%d: Reading %dKB file in reverse by 256b chunks\n", id, TESTSIZEKB);
   start = millis();
   f = fs->open(filename, "r");
   for (int i = 0; i < TESTSIZEKB; i++) {
     for (int j = 0; j < 4; j++) {
       if (!f.seek(-256 - 256 * j * i, SeekEnd)) {
-        Serial.printf("%d: Unable to seek to %d, aborting\n", rp2040.cpuid(), -256 - 256 * j * i);
+        Serial.printf("%d: Unable to seek to %d, aborting\n", id, -256 - 256 * j * i);
         return;
       }
       if (256 != f.read(data, 256)) {
-        Serial.printf("%d: Unable to read 256 bytes, aborting\n", rp2040.cpuid());
+        Serial.printf("%d: Unable to read 256 bytes, aborting\n", id);
         return;
       }
     }
   }
   f.close();
   stop = millis();
-  Serial.printf("%d: ==> Time to read %dKB in reverse in 256b chunks = %lu milliseconds = %s\n", rp2040.cpuid(), TESTSIZEKB, stop - start, rate(start, stop, TESTSIZEKB * 1024));
+  Serial.printf("%d: ==> Time to read %dKB in reverse in 256b chunks = %lu milliseconds = %s\n", id, TESTSIZEKB, stop - start, rate(start, stop, TESTSIZEKB * 1024));
 
-  Serial.printf("%d: Writing 64K file in 1-byte chunks\n", rp2040.cpuid());
+  Serial.printf("%d: Writing 64K file in 1-byte chunks\n", id);
   start = millis();
   f = fs->open(filename, "w");
   for (int i = 0; i < 65536; i++) {
@@ -127,9 +121,9 @@ void DoTest(FS *fs) {
   }
   f.close();
   stop = millis();
-  Serial.printf("%d: ==> Time to write 64KB in 1b chunks = %lu milliseconds = %s\n", rp2040.cpuid(), stop - start, rate(start, stop, 65536));
+  Serial.printf("%d: ==> Time to write 64KB in 1b chunks = %lu milliseconds = %s\n", id, stop - start, rate(start, stop, 65536));
 
-  Serial.printf("%d: Reading 64K file in 1-byte chunks\n", rp2040.cpuid());
+  Serial.printf("%d: Reading 64K file in 1-byte chunks\n", id);
   start = millis();
   f = fs->open(filename, "r");
   for (int i = 0; i < 65536; i++) {
@@ -138,16 +132,23 @@ void DoTest(FS *fs) {
   }
   f.close();
   stop = millis();
-  Serial.printf("%d: ==> Time to read 64KB in 1b chunks = %lu milliseconds = %s\n", rp2040.cpuid(), stop - start, rate(start, stop, 65536));
+  Serial.printf("%d: ==> Time to read 64KB in 1b chunks = %lu milliseconds = %s\n", id, stop - start, rate(start, stop, 65536));
+
+  Serial.printf("%d: Test done\n", id);
 }
 
 void setup() {
   Serial.begin(115200);
+  if (!TESTFS.format()) {
+    Serial.printf("Unable to format(), aborting\n");
+    return;
+  }
+#ifdef __FREERTOS
+  TaskHandle_t task;
+  xTaskCreate(setup2, "setup2", 1024, NULL, configMAX_PRIORITIES / 2, &task);
+#endif
   delay(5000);
-  Serial.printf("Beginning test\n");
-  Serial.flush();
-  DoTest(&TESTFS);
-  Serial.println("done");
+  DoTest(&TESTFS, 0);
 }
 
 void loop() {
@@ -155,9 +156,12 @@ void loop() {
 }
 
 void setup1() {
-  while (!running) {};
-  Serial.printf("Beginning test1\n");
-  Serial.flush();
-  DoTest(&TESTFS);
-  Serial.println("done1");
+  delay(5000);
+  DoTest(&TESTFS, 1);
+}
+
+void setup2(void *param) {
+  (void) param;
+  delay(5000);
+  DoTest(&TESTFS, 2);
 }

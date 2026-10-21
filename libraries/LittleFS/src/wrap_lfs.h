@@ -42,7 +42,7 @@ public:
         }
         recursive_mutex_enter_blocking(&__lfsMutex);
 #else
-        xSemaphoreTake(__lfsMutex, portMAX_DELAY);
+        xSemaphoreTakeRecursive(__lfsMutex, portMAX_DELAY);
 #endif
     }
 
@@ -53,7 +53,7 @@ public:
             interrupts();
         }
 #else
-        xSemaphoreGive(__lfsMutex);
+        xSemaphoreGiveRecursive(__lfsMutex);
 #endif
     }
 };
