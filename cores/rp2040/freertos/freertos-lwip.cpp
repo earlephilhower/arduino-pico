@@ -85,11 +85,9 @@ extern "C" void __lwip(__lwip_op op, void *req, bool fromISR) {
         }
         portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
     } else {
-        TaskStatus_t t;
-        vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
         w.op = op;
         w.req = req;
-        w.wakeup = t.xHandle;
+        w.wakeup = xTaskGetCurrentTaskHandle();
         if (!xQueueSend(__lwipQueue, &w, portMAX_DELAY)) {
             panic("LWIP task send failed");
         }
@@ -100,12 +98,9 @@ extern "C" void __lwip(__lwip_op op, void *req, bool fromISR) {
 void __lwip(std::function<void(void)> *cb) {
     LWIPWork w;
 
-    TaskStatus_t t;
-    vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
-
     w.op = __function;
     w.req = cb;
-    w.wakeup = t.xHandle;
+    w.wakeup = xTaskGetCurrentTaskHandle();
     if (!xQueueSend(__lwipQueue, &w, portMAX_DELAY)) {
         panic("LWIP task send failed");
     }
@@ -113,9 +108,7 @@ void __lwip(std::function<void(void)> *cb) {
 }
 
 extern "C" bool __isLWIPThread() {
-    TaskStatus_t t;
-    vTaskGetInfo(nullptr, &t, pdFALSE, eInvalid); // TODO - can we speed this up???
-    return t.xHandle == __lwipTask;
+    return xTaskGetCurrentTaskHandle() == __lwipTask;
 }
 
 static void lwipThread(void *params) {
