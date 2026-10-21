@@ -23,7 +23,12 @@
 #include "./lfs_local_config.h"
 #include "../lib/littlefs/lfs.h"
 
+#if !defined(__FREERTOS)
 extern recursive_mutex_t __lfsMutex;
+#else
+#include <FreeRTOS.h>
+extern SemaphoreHandle_t __lfsMutex;
+#endif
 
 class LFSMutex {
 public:
@@ -36,6 +41,8 @@ public:
             noInterrupts();
         }
         recursive_mutex_enter_blocking(&__lfsMutex);
+#else
+        xSemaphoreTake(__lfsMutex, portMAX_DELAY);
 #endif
     }
 
@@ -45,6 +52,8 @@ public:
         if (rp2040.cpuid() == 0) {
             interrupts();
         }
+#else
+        xSemaphoreGive(__lfsMutex);
 #endif
     }
 };

@@ -23,12 +23,19 @@
 #include "wrap_lfs_freertos.h"
 #endif
 
+#ifndef __FREERTOS
 recursive_mutex_t __lfsMutex;
 
-#ifndef __FREERTOS
 void __initLFSMutex() {
     recursive_mutex_init(&__lfsMutex);
 }
+#else
+SemaphoreHandle_t __lfsMutex;
+
+void __initLFSMutex() {
+    __lfsMutex = xSemaphoreCreateMutex();
+}
+#define __isLFSThread() true
 #endif
 
 extern "C" {
