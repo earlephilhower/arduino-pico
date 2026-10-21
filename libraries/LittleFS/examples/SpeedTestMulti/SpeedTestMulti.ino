@@ -1,15 +1,13 @@
-// Simple speed test for filesystem objects
+// Simple speed test for filesystem objects with multicore and multi-thread
 // Released to the public domain by Earle F. Philhower, III
 
 #include <FS.h>
 #include <LittleFS.h>
-#include <SDFS.h>
 
 // Choose the filesystem to test
 // WARNING:  The filesystem will be formatted at the start of the test!
 
 #define TESTFS LittleFS
-//#define TESTFS SDFS
 
 // How large of a file to test
 #define TESTSIZEKB 256
@@ -164,4 +162,6 @@ void setup2(void *param) {
   (void) param;
   delay(5000);
   DoTest(&TESTFS, 2);
+  // We can't return from a task, need to delete ourselves
+  vTaskDelete(nullptr);
 }
