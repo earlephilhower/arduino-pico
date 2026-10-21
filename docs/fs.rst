@@ -57,6 +57,41 @@ All of these filesystems can open and manipulate ``File`` and ``Dir``
 objects with the same code because the implement a common end-user
 filesystem API.
 
+SDFS/SD/FatFS Multicore and Multithreading(FreeRTOS) Caveats
+------------------------------------------------------------
+
+When using these filesystems and both cores (in No-OS mode) or multiple
+cores/tasks (FreeRTOS), only a single task or core may access the
+filesystem or any ``File`` objects without explicit application-level
+synchronization.
+
+When in No-OS mode(bare metal) the LWIP callbacks are executed at
+interrupt time, effectively running in their own "quasi-task".  This 
+means that ONLY the main app OR LWIP callbacks (i.e. WebServer handlers)
+may access these filesystem, even for read-only applications.  If your
+app tries to read a file in a WebServer callback which interrupts a
+file creation/write from the main ``setup`` or ``loop`` you will
+likely corrupt the filesystem state in memory and/or on flash causing
+a crash or data loss.
+
+LittleFS Multicore and Multithreading(FreeRTOS) Caveats
+-------------------------------------------------------
+
+LittleFS has been modified to be fully FreeRTOS ``Task`` safe and multiple
+tasks may use the ``LittleFS`` object and ``Files``.
+
+For bare metal operation, only *EITHER* LWIP(WebServer, etc.) callbacks
+*OR* the main ``setup`` and ``loop`` on core 0 may access the filesystem
+(similar to the SDFS caveats above), but core 1 ``setup1`` and ``loop1``
+may also access ``LittleFS`` and ``File`` objects.
+
+One example on bare metal would be to use ``setup1`` and ``loop1`` to write
+logs that are served through WebServer callbacks on core 0.
+
+See the ``SpeedTestMulti.ino`` example for a demonstration in both
+non-OS and FreeRTOS modes.
+
+
 FatFS File System Caveats and Warnings
 --------------------------------------
 
