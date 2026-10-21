@@ -34,12 +34,6 @@ class LFSMutex {
 public:
     LFSMutex() {
 #if !defined(__FREERTOS)
-        // In bare metal we do LWIP callbacks in core0 IRQ context and they
-        // might access the FS (i.e. WebServer sending a log file).  Avoid
-        // deadlock/corruption by disabling IRQs per call.
-        if (rp2040.cpuid() == 0) {
-            noInterrupts();
-        }
         recursive_mutex_enter_blocking(&__lfsMutex);
 #else
         xSemaphoreTakeRecursive(__lfsMutex, portMAX_DELAY);
@@ -49,9 +43,6 @@ public:
     ~LFSMutex() {
 #if !defined(__FREERTOS)
         recursive_mutex_exit(&__lfsMutex);
-        if (rp2040.cpuid() == 0) {
-            interrupts();
-        }
 #else
         xSemaphoreGiveRecursive(__lfsMutex);
 #endif
