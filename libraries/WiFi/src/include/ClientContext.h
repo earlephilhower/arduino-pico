@@ -27,7 +27,7 @@ class WiFiClient;
 typedef void (*discard_cb_t)(void*, ClientContext*);
 
 #include <assert.h>
-#include "lwip/timeouts.h"
+#include <lwip/timeouts.h>
 
 //#include <esp_priv.h>
 //#include <coredecls.h>

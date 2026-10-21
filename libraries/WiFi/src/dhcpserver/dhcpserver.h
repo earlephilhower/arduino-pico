@@ -30,8 +30,8 @@ extern "C" {
 #endif // __cplusplus
 
 
-#include "lwip/ip_addr.h"
-#include "lwip/netif.h"
+#include <lwip/ip_addr.h>
+#include <lwip/netif.h>
 
 #define DHCPS_BASE_IP (16)
 #define DHCPS_MAX_IP (8)

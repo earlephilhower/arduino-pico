@@ -74,13 +74,11 @@ extern "C" {
         if (!_lwip_rng) {
             recursive_mutex_init(&__lwipMutex);
             _lwip_rng = new XoshiroCpp::Xoshiro256PlusPlus(micros());
-            {
-                LWIPMutex m;
-                __real_lwip_init();
-            }
 #ifdef __FREERTOS
             __startLWIPThread();
 #endif
+            LWIPMutex m;
+            __real_lwip_init();
         }
     }
 

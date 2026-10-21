@@ -256,11 +256,6 @@ HTTPUpdateResult HTTPUpdate::handleUpdate(HTTPClient& http, const String& curren
                     return HTTP_UPDATE_FAILED;
                 }
 
-                if (_closeConnectionsOnUpdate) {
-                    WiFiUDP::stopAll();
-                    WiFiClient::stopAllExcept(tcp);
-                }
-
                 delay(100);
 
                 int command;

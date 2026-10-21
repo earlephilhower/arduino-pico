@@ -22,10 +22,10 @@
 
 
 #include "WiFi.h"
-#include "lwip/opt.h"
-#include "lwip/tcp.h"
-#include "lwip/inet.h"
-#include <include/ClientContext.h>
+#include <lwip/opt.h>
+#include <lwip/tcp.h>
+#include <lwip/inet.h>
+#include "include/ClientContext.h"
 
 #ifndef MAX_PENDING_CLIENTS_PER_PORT
 #define MAX_PENDING_CLIENTS_PER_PORT 5
