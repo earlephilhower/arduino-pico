@@ -158,6 +158,7 @@ void setup1() {
   DoTest(&TESTFS, 1);
 }
 
+#ifdef __FREERTOS
 void setup2(void *param) {
   (void) param;
   delay(5000);
@@ -165,3 +166,4 @@ void setup2(void *param) {
   // We can't return from a task, need to delete ourselves
   vTaskDelete(nullptr);
 }
+#endif
