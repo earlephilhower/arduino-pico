@@ -50,7 +50,8 @@ void SoftwareSPI::_adjustPIO(int bits) {
     // Manually set the shiftctl and possibly Y for 8 bits
     pio_sm_set_enabled(_pio, _sm, false);
     uint32_t v = _pio->sm[_sm].shiftctrl ;
-    v &= ~0x3e000000 | ~0x01f00000;
+    // Clear shift in/out values
+    v &= ~(0x3e000000 | 0x01f00000);
     if (bits == 8) {
         v |= 0x108 << 20; // Hardcode push/pull threshold 0'b0100001000, there is no simple accessor I can find
     } else {
