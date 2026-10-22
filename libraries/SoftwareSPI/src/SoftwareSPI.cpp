@@ -20,6 +20,7 @@
 
 #include "SoftwareSPI.h"
 #include <hardware/gpio.h>
+#include <hardware/regs/pio.h>
 #include <hardware/structs/iobank0.h>
 #include <hardware/irq.h>
 #include "spi.pio.h"
@@ -50,13 +51,11 @@ void SoftwareSPI::_adjustPIO(int bits) {
     // Manually set the shiftctl and possibly Y for 8 bits
     pio_sm_set_enabled(_pio, _sm, false);
     uint32_t v = _pio->sm[_sm].shiftctrl ;
-    // Clear shift in/out values
-    v &= ~(0x3e000000 | 0x01f00000);
-    if (bits == 8) {
-        v |= 0x108 << 20; // Hardcode push/pull threshold 0'b0100001000, there is no simple accessor I can find
-    } else {
-        v |= 0x210 << 20; // 0b'1000010000
-    }
+    // Clear shift threshold in/out values
+    v &= ~(PIO_SM0_SHIFTCTRL_PULL_THRESH_BITS | PIO_SM0_SHIFTCTRL_PUSH_THRESH_BITS);
+    // Set push and pull threshold
+    v |= (bits & 0x1f) << PIO_SM0_SHIFTCTRL_PUSH_THRESH_LSB;
+    v |= (bits & 0x1f) << PIO_SM0_SHIFTCTRL_PULL_THRESH_LSB;
     _pio->sm[_sm].shiftctrl = v;
     if (_hwCS) {
         pio_sm_exec(_pio, _sm, pio_encode_set(pio_x, bits - 2));
