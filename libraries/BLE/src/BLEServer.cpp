@@ -51,10 +51,7 @@ void BLEServer::prepareAdvertising(BLEAdvertising *adv, bool advertiseServiceUUI
     BLEUUID uuid;
     for (auto s : _svc) {
         s->addATTDB();
-        Serial.println(s->_svc.toString());
-        //        if (s->_svc != BLEUUID(ORG_BLUETOOTH_SERVICE_BATTERY_SERVICE)) {
         uuid = s->_svc;
-        //        }
     }
     if (uuid && advertiseServiceUUID) {
         adv->setPartialUUID(uuid);
