@@ -156,11 +156,11 @@ env.Append(
     ] + toolopts,
 
     CFLAGS=[
-        "-std=gnu17"
+        "-std=gnu23",
     ],
 
     CXXFLAGS=[
-        "-std=gnu++17",
+        "-std=gnu++23",
     ],
 
     CPPDEFINES=[
