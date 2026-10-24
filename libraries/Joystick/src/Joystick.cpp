@@ -60,6 +60,9 @@ void Joystick_::send_now(void) {
         return;
     }
     CoreMutex m(&USB.mutex);
+    if (!m) {
+        return;
+    }
     tud_task();
     if (USB.HIDReady()) {
         tud_hid_n_report(0, USB.findHIDReportID(_id), &data, sizeof(data));

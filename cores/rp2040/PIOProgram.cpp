@@ -51,6 +51,9 @@ PIOProgram::~PIOProgram() {
 // Possibly load into a PIO and allocate a SM
 bool PIOProgram::prepare(PIO *pio, int *sm, int *offset, int start, int cnt) {
     CoreMutex m(&_pioMutex);
+    if (!m) {
+        return false;
+    }
     PIO pi[PIOCNT] = { PIOS };
 
     uint gpioBaseNeeded = ((start + cnt) >= 32) ? 16 : 0;

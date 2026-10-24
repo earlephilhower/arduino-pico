@@ -61,6 +61,9 @@ void Keyboard_::sendReport(KeyReport* keys) {
         return;
     }
     CoreMutex m(&USB.mutex);
+    if (!m) {
+        return;
+    }
     tud_task();
     if (USB.HIDReady()) {
         tud_hid_keyboard_report(USB.findHIDReportID(_id), keys->modifiers, keys->keys);
@@ -73,6 +76,9 @@ void Keyboard_::sendConsumerReport(uint16_t key) {
         return;
     }
     CoreMutex m(&USB.mutex);
+    if (!m) {
+        return;
+    }
     tud_task();
     if (USB.HIDReady()) {
         tud_hid_report(USB.findHIDReportID(_idConsumer), &key, sizeof(key));
