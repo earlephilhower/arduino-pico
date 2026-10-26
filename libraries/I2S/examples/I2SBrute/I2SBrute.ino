@@ -10,7 +10,7 @@
 void setup() {
   delay(5000);
   int F[] = { 8000, 16000, 24000, 32000, 64000, 48000, 96000, 192000, 11025, 22050, 44100, 88200 };
-  for (int x = 0; x < sizeof(F)/sizeof(F[0]); x++) {
+  for (unsigned int x = 0; x < sizeof(F) / sizeof(F[0]); x++) {
     int f = F[x];
     Serial.printf("Checking for %d\n", f);
     int khz = (F_CPU * 1.10) / 1000;
