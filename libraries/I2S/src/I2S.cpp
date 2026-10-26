@@ -171,6 +171,7 @@ bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
     switch (samplerate) {
     case 8000:
     case 16000:
+    case 24000:
     case 32000:
     case 48000:
     case 96000:
@@ -201,6 +202,7 @@ bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
 #else
     switch (samplerate) {
     case 8000:
+    case 24000:
         rate = 192000;
         break;
     case 16000:
