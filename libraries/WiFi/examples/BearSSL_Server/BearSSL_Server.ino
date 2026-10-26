@@ -140,9 +140,9 @@ GBEnkz4KpKv7TkHoW+j7F5EMcLcSrUIpyw==
 
 #define CACHE_SIZE 5  // Number of sessions to cache.
 #define USE_CACHE     // Enable SSL session caching.
-                      // Caching SSL sessions shortens the length of the SSL handshake.
-                      // You can see the performance improvement by looking at the
-                      // Network tab of the developer tools of your browser.
+// Caching SSL sessions shortens the length of the SSL handshake.
+// You can see the performance improvement by looking at the
+// Network tab of the developer tools of your browser.
 //#define DYNAMIC_CACHE // Whether to dynamically allocate the cache.
 
 #if defined(USE_CACHE) && defined(DYNAMIC_CACHE)
@@ -207,7 +207,9 @@ static const char *HTTP_RES = "HTTP/1.0 200 OK\r\n"
 void loop() {
   static int cnt;
   BearSSL::WiFiClientSecure incoming = server.accept();
-  if (!incoming) { return; }
+  if (!incoming) {
+    return;
+  }
   Serial.printf("Incoming connection...%d\n", cnt++);
 
   // Ugly way to wait for \r\n (i.e. end of HTTP request which we don't actually parse here)
@@ -225,10 +227,13 @@ void loop() {
     } else if (x == 0x0D) {
       continue;
     } else if (x == 0x0A) {
-      if (lcwn) { break; }
+      if (lcwn) {
+        break;
+      }
       lcwn = 1;
-    } else
+    } else {
       lcwn = 0;
+    }
   }
   incoming.write((uint8_t *)HTTP_RES, strlen(HTTP_RES));
   incoming.flush();

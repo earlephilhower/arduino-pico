@@ -110,8 +110,8 @@ bool A2DPSink::begin() {
     a2dp_sink_register_media_handler(L2CAPPACKETHANDLERCB(A2DPSink, handle_l2cap_media_data_packet));
     a2dp_sink_stream_endpoint_t * stream_endpoint = &a2dp_sink_stream_endpoint;
     avdtp_stream_endpoint_t * local_stream_endpoint = a2dp_sink_create_stream_endpoint(AVDTP_AUDIO,
-            AVDTP_CODEC_SBC, media_sbc_codec_capabilities, sizeof(media_sbc_codec_capabilities),
-            stream_endpoint->media_sbc_codec_configuration, sizeof(stream_endpoint->media_sbc_codec_configuration));
+        AVDTP_CODEC_SBC, media_sbc_codec_capabilities, sizeof(media_sbc_codec_capabilities),
+        stream_endpoint->media_sbc_codec_configuration, sizeof(stream_endpoint->media_sbc_codec_configuration));
     if (!local_stream_endpoint) {
         DEBUGBT("A2DP Source: not enough memory to create local stream endpoint");
         return false;

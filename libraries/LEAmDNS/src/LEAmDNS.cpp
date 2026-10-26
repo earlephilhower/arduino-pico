@@ -89,7 +89,7 @@ bool MDNSResponder::begin(const char* p_pcHostname, const IPAddress& /*p_IPAddre
     }
 
     LwipIntf::stateUpCB(
-    [this](netif * intf) {
+        [this](netif * intf) {
         (void)intf;
         DEBUG_EX_INFO(DEBUG_OUTPUT.printf_P(
                           PSTR("[MDNSResponder] new Interface '%c%c' is UP! restarting\n"), intf->name[0],
@@ -97,8 +97,8 @@ bool MDNSResponder::begin(const char* p_pcHostname, const IPAddress& /*p_IPAddre
         _restart();
     });
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] begin: FAILED for '%s'!\n"),
-                          (p_pcHostname ? : "-"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] begin: FAILED for '%s'!\n"),
+                              (p_pcHostname ? : "-"));
     });
 
     return bResult;
@@ -159,7 +159,7 @@ bool MDNSResponder::setHostname(const char* p_pcHostname) {
 
         // Replace 'auto-set' service names
         bResult = true;
-        for (stcMDNSService* pService = m_pServices; ((bResult) && (pService));
+        for (stcMDNSService * pService = m_pServices; ((bResult) && (pService));
                 pService                 = pService->m_pNext) {
             if (pService->m_bAutoName) {
                 bResult                                      = pService->setName(p_pcHostname);
@@ -168,8 +168,8 @@ bool MDNSResponder::setHostname(const char* p_pcHostname) {
         }
     }
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] setHostname: FAILED for '%s'!\n"),
-                          (p_pcHostname ? : "-"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] setHostname: FAILED for '%s'!\n"),
+                              (p_pcHostname ? : "-"));
     });
     return bResult;
 }
@@ -208,7 +208,7 @@ MDNSResponder::hMDNSService MDNSResponder::addService(const char* p_pcName,
                           p_pcProtocol)) { // Not already used
             if (0
                     != (hResult = (hMDNSService)_allocService(p_pcName, p_pcService, p_pcProtocol,
-                                  p_u16Port))) {
+                        p_u16Port))) {
                 // Start probing
                 ((stcMDNSService*)hResult)->m_ProbeInformation.m_ProbingStatus
                     = ProbingStatus_ReadyToStart;
@@ -219,8 +219,8 @@ MDNSResponder::hMDNSService MDNSResponder::addService(const char* p_pcName,
                       PSTR("[MDNSResponder] addService: %s to add '%s.%s.%s'!\n"),
                       (hResult ? "Succeeded" : "FAILED"), (p_pcName ? : "-"), p_pcService, p_pcProtocol););
     DEBUG_EX_ERR(if (!hResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] addService: FAILED to add '%s.%s.%s'!\n"),
-                          (p_pcName ? : "-"), p_pcService, p_pcProtocol);
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] addService: FAILED to add '%s.%s.%s'!\n"),
+                              (p_pcName ? : "-"), p_pcService, p_pcProtocol);
     });
     return hResult;
 }
@@ -238,7 +238,7 @@ bool MDNSResponder::removeService(const MDNSResponder::hMDNSService p_hService) 
     bool             bResult  = (((pService = _findService(p_hService)))
                                  && (_announceService(*pService, false)) && (_releaseService(pService)));
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeService: FAILED!\n"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeService: FAILED!\n"));
     });
     return bResult;
 }
@@ -272,8 +272,8 @@ bool MDNSResponder::setServiceName(const MDNSResponder::hMDNSService p_hService,
            && ((pService = _findService(p_hService))) && (pService->setName(p_pcInstanceName))
            && ((pService->m_ProbeInformation.m_ProbingStatus = ProbingStatus_ReadyToStart)));
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] setServiceName: FAILED for '%s'!\n"),
-                          (p_pcInstanceName ? : "-"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] setServiceName: FAILED for '%s'!\n"),
+                              (p_pcInstanceName ? : "-"));
     });
     return bResult;
 }
@@ -297,8 +297,8 @@ MDNSResponder::addServiceTxt(const MDNSResponder::hMDNSService p_hService, const
         hTxt = (hMDNSTxt)_addServiceTxt(pService, p_pcKey, p_pcValue, false);
     }
     DEBUG_EX_ERR(if (!hTxt) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] addServiceTxt: FAILED for '%s=%s'!\n"),
-                          (p_pcKey ? : "-"), (p_pcValue ? : "-"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] addServiceTxt: FAILED for '%s=%s'!\n"),
+                              (p_pcKey ? : "-"), (p_pcValue ? : "-"));
     });
     return hTxt;
 }
@@ -400,7 +400,7 @@ bool MDNSResponder::removeServiceTxt(const MDNSResponder::hMDNSService p_hServic
         }
     }
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeServiceTxt: FAILED!\n"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeServiceTxt: FAILED!\n"));
     });
     return bResult;
 }
@@ -420,8 +420,8 @@ bool MDNSResponder::removeServiceTxt(const MDNSResponder::hMDNSService p_hServic
         }
     }
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeServiceTxt: FAILED for '%s'!\n"),
-                          (p_pcKey ? : "-"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeServiceTxt: FAILED for '%s'!\n"),
+                              (p_pcKey ? : "-"));
     });
     return bResult;
 }
@@ -498,7 +498,7 @@ bool MDNSResponder::setDynamicServiceTxtCallback(
         bResult = true;
     }
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] setDynamicServiceTxtCallback: FAILED!\n"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] setDynamicServiceTxtCallback: FAILED!\n"));
     });
     return bResult;
 }
@@ -519,9 +519,9 @@ MDNSResponder::addDynamicServiceTxt(MDNSResponder::hMDNSService p_hService, cons
         hTxt = _addServiceTxt(pService, p_pcKey, p_pcValue, true);
     }
     DEBUG_EX_ERR(if (!hTxt) {
-    DEBUG_OUTPUT.printf_P(
-        PSTR("[MDNSResponder] addDynamicServiceTxt: FAILED for '%s=%s'!\n"),
-        (p_pcKey ? : "-"), (p_pcValue ? : "-"));
+        DEBUG_OUTPUT.printf_P(
+            PSTR("[MDNSResponder] addDynamicServiceTxt: FAILED for '%s=%s'!\n"),
+            (p_pcKey ? : "-"), (p_pcValue ? : "-"));
     });
     return hTxt;
 }
@@ -796,9 +796,9 @@ MDNSResponder::installServiceQuery(const char* p_pcService, const char* p_pcProt
                       PSTR("[MDNSResponder] installServiceQuery: %s for '%s.%s'!\n\n"),
                       (hResult ? "Succeeded" : "FAILED"), (p_pcService ? : "-"), (p_pcProtocol ? : "-")););
     DEBUG_EX_ERR(if (!hResult) {
-    DEBUG_OUTPUT.printf_P(
-        PSTR("[MDNSResponder] installServiceQuery: FAILED for '%s.%s'!\n\n"),
-        (p_pcService ? : "-"), (p_pcProtocol ? : "-"));
+        DEBUG_OUTPUT.printf_P(
+            PSTR("[MDNSResponder] installServiceQuery: FAILED for '%s.%s'!\n\n"),
+            (p_pcService ? : "-"), (p_pcProtocol ? : "-"));
     });
     return hResult;
 }
@@ -814,7 +814,7 @@ bool MDNSResponder::removeServiceQuery(MDNSResponder::hMDNSServiceQuery p_hServi
     bool                 bResult       = (((pServiceQuery = _findServiceQuery(p_hServiceQuery)))
                                           && (_removeServiceQuery(pServiceQuery)));
     DEBUG_EX_ERR(if (!bResult) {
-    DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeServiceQuery: FAILED!\n"));
+        DEBUG_OUTPUT.printf_P(PSTR("[MDNSResponder] removeServiceQuery: FAILED!\n"));
     });
     return bResult;
 }
@@ -1059,7 +1059,7 @@ bool MDNSResponder::setHostProbeResultCallback(MDNSResponder::MDNSHostProbeFn p_
 bool MDNSResponder::setHostProbeResultCallback(MDNSHostProbeFn1 pfn) {
     using namespace std::placeholders;
     return setHostProbeResultCallback(
-    [this, pfn](const char* p_pcDomainName, bool p_bProbeResult) {
+               [this, pfn](const char* p_pcDomainName, bool p_bProbeResult) {
         pfn(*this, p_pcDomainName, p_bProbeResult);
     });
 }
@@ -1094,7 +1094,7 @@ MDNSResponder::setServiceProbeResultCallback(const MDNSResponder::hMDNSService  
     return setServiceProbeResultCallback(
                p_hService,
                [this, p_fnCallback](const char* p_pcServiceName, const hMDNSService p_hMDNSService,
-    bool p_bProbeResult) {
+                                    bool p_bProbeResult) {
         p_fnCallback(*this, p_pcServiceName, p_hMDNSService, p_bProbeResult);
     });
 }
@@ -1170,7 +1170,7 @@ bool MDNSResponder::_joinMulticastGroups(void) {
     bool bResult = false;
 
     // Join multicast group(s)
-    for (netif* pNetIf = netif_list; pNetIf; pNetIf = pNetIf->next) {
+    for (netif * pNetIf = netif_list; pNetIf; pNetIf = pNetIf->next) {
         if (netif_is_up(pNetIf)) {
 #ifdef MDNS_IP4_SUPPORT
             ip_addr_t multicast_addr_V4 = DNS_MQUERY_IPV4_GROUP_INIT;
@@ -1218,7 +1218,7 @@ bool MDNSResponder::_joinMulticastGroups(void) {
 bool MDNSResponder::_leaveMulticastGroups() {
     bool bResult = false;
 
-    for (netif* pNetIf = netif_list; pNetIf; pNetIf = pNetIf->next) {
+    for (netif * pNetIf = netif_list; pNetIf; pNetIf = pNetIf->next) {
         if (netif_is_up(pNetIf)) {
             bResult = true;
 

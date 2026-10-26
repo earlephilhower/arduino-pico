@@ -592,24 +592,24 @@ bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_requ
         // Function Subset header: length, type, first interface, reserved, subset length
         U16_TO_U8S_LE(0x0008), U16_TO_U8S_LE(MS_OS_20_SUBSET_HEADER_FUNCTION), USB.findInterfaceID(_picotool_itf_num), 0, U16_TO_U8S_LE(0x009C),
 
-        // MS OS 2.0 Compatible ID descriptor: length, type, compatible ID, sub compatible ID
-        U16_TO_U8S_LE(0x0014), U16_TO_U8S_LE(MS_OS_20_FEATURE_COMPATBLE_ID), 'W', 'I', 'N', 'U', 'S', 'B', 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // sub-compatible
+            // MS OS 2.0 Compatible ID descriptor: length, type, compatible ID, sub compatible ID
+            U16_TO_U8S_LE(0x0014), U16_TO_U8S_LE(MS_OS_20_FEATURE_COMPATBLE_ID), 'W', 'I', 'N', 'U', 'S', 'B', 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // sub-compatible
 
-        // MS OS 2.0 Registry property descriptor: length, type
-        U16_TO_U8S_LE(0x0080), U16_TO_U8S_LE(MS_OS_20_FEATURE_REG_PROPERTY),
-        U16_TO_U8S_LE(0x0001), U16_TO_U8S_LE(0x0028), // wPropertyDataType, wPropertyNameLength and PropertyName "DeviceInterfaceGUID" in UTF-16
-        'D', 0x00, 'e', 0x00, 'v', 0x00, 'i', 0x00, 'c', 0x00, 'e', 0x00, 'I', 0x00, 'n', 0x00, 't', 0x00, 'e', 0x00,
-        'r', 0x00, 'f', 0x00, 'a', 0x00, 'c', 0x00, 'e', 0x00, 'G', 0x00, 'U', 0x00, 'I', 0x00, 'D', 0x00, 0x00, 0x00,
-        U16_TO_U8S_LE(0x004E), // wPropertyDataLength
-        // Vendor-defined Property Data: {bc7398c1-73cd-4cb7-98b8-913a8fca7bf6}
-        '{', 0,     'b', 0,     'c', 0,     '7', 0,     '3', 0,     '9', 0,
-        '8', 0,     'c', 0,     '1', 0,     '-', 0,     '7', 0,     '3', 0,
-        'c', 0,     'd', 0,     '-', 0,     '4', 0,     'c', 0,     'b', 0,
-        '7', 0,     '-', 0,     '9', 0,     '8', 0,     'b', 0,     '8', 0,
-        '-', 0,     '9', 0,     '1', 0,     '3', 0,     'a', 0,     '8', 0,
-        'f', 0,     'c', 0,     'a', 0,     '7', 0,     'b', 0,     'f', 0,
-        '6', 0,     '}', 0,       0, 0
+            // MS OS 2.0 Registry property descriptor: length, type
+            U16_TO_U8S_LE(0x0080), U16_TO_U8S_LE(MS_OS_20_FEATURE_REG_PROPERTY),
+            U16_TO_U8S_LE(0x0001), U16_TO_U8S_LE(0x0028), // wPropertyDataType, wPropertyNameLength and PropertyName "DeviceInterfaceGUID" in UTF-16
+            'D', 0x00, 'e', 0x00, 'v', 0x00, 'i', 0x00, 'c', 0x00, 'e', 0x00, 'I', 0x00, 'n', 0x00, 't', 0x00, 'e', 0x00,
+            'r', 0x00, 'f', 0x00, 'a', 0x00, 'c', 0x00, 'e', 0x00, 'G', 0x00, 'U', 0x00, 'I', 0x00, 'D', 0x00, 0x00, 0x00,
+            U16_TO_U8S_LE(0x004E), // wPropertyDataLength
+            // Vendor-defined Property Data: {bc7398c1-73cd-4cb7-98b8-913a8fca7bf6}
+            '{', 0,     'b', 0,     'c', 0,     '7', 0,     '3', 0,     '9', 0,
+            '8', 0,     'c', 0,     '1', 0,     '-', 0,     '7', 0,     '3', 0,
+            'c', 0,     'd', 0,     '-', 0,     '4', 0,     'c', 0,     'b', 0,
+            '7', 0,     '-', 0,     '9', 0,     '8', 0,     'b', 0,     '8', 0,
+            '-', 0,     '9', 0,     '1', 0,     '3', 0,     'a', 0,     '8', 0,
+            'f', 0,     'c', 0,     'a', 0,     '7', 0,     'b', 0,     'f', 0,
+            '6', 0,     '}', 0,       0, 0
     };
 
     TU_VERIFY_STATIC(sizeof(desc_ms_os_20) == MS_OS_20_DESC_LEN, "Incorrect size");

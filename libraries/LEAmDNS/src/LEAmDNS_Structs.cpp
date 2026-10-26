@@ -270,7 +270,7 @@ MDNSResponder::stcMDNSServiceTxts::operator=(const stcMDNSServiceTxts& p_Other) 
     if (this != &p_Other) {
         clear();
 
-        for (stcMDNSServiceTxt* pOtherTxt = p_Other.m_pTxts; pOtherTxt;
+        for (stcMDNSServiceTxt * pOtherTxt = p_Other.m_pTxts; pOtherTxt;
                 pOtherTxt                    = pOtherTxt->m_pNext) {
             add(new stcMDNSServiceTxt(*pOtherTxt));
         }
@@ -351,7 +351,7 @@ bool MDNSResponder::stcMDNSServiceTxts::removeTempTxts(void) {
 MDNSResponder::stcMDNSServiceTxt* MDNSResponder::stcMDNSServiceTxts::find(const char* p_pcKey) {
     stcMDNSServiceTxt* pResult = 0;
 
-    for (stcMDNSServiceTxt* pTxt = m_pTxts; pTxt; pTxt = pTxt->m_pNext) {
+    for (stcMDNSServiceTxt * pTxt = m_pTxts; pTxt; pTxt = pTxt->m_pNext) {
         if ((p_pcKey) && (0 == strcmp(pTxt->m_pcKey, p_pcKey))) {
             pResult = pTxt;
             break;
@@ -367,7 +367,7 @@ const MDNSResponder::stcMDNSServiceTxt*
 MDNSResponder::stcMDNSServiceTxts::find(const char* p_pcKey) const {
     const stcMDNSServiceTxt* pResult = 0;
 
-    for (const stcMDNSServiceTxt* pTxt = m_pTxts; pTxt; pTxt = pTxt->m_pNext) {
+    for (const stcMDNSServiceTxt * pTxt = m_pTxts; pTxt; pTxt = pTxt->m_pNext) {
         if ((p_pcKey) && (0 == strcmp(pTxt->m_pcKey, p_pcKey))) {
             pResult = pTxt;
             break;
@@ -383,7 +383,7 @@ MDNSResponder::stcMDNSServiceTxt*
 MDNSResponder::stcMDNSServiceTxts::find(const stcMDNSServiceTxt* p_pTxt) {
     stcMDNSServiceTxt* pResult = 0;
 
-    for (stcMDNSServiceTxt* pTxt = m_pTxts; pTxt; pTxt = pTxt->m_pNext) {
+    for (stcMDNSServiceTxt * pTxt = m_pTxts; pTxt; pTxt = pTxt->m_pNext) {
         if (p_pTxt == pTxt) {
             pResult = pTxt;
             break;
@@ -426,7 +426,7 @@ bool MDNSResponder::stcMDNSServiceTxts::c_str(char* p_pcBuffer) {
         bResult = true;
 
         *p_pcBuffer = 0;
-        for (stcMDNSServiceTxt* pTxt = m_pTxts; ((bResult) && (pTxt)); pTxt = pTxt->m_pNext) {
+        for (stcMDNSServiceTxt * pTxt = m_pTxts; ((bResult) && (pTxt)); pTxt = pTxt->m_pNext) {
             size_t stLength;
             if ((bResult = (0 != (stLength = (pTxt->m_pcKey ? strlen(pTxt->m_pcKey) : 0))))) {
                 if (pTxt != m_pTxts) {
@@ -467,7 +467,7 @@ bool MDNSResponder::stcMDNSServiceTxts::buffer(char* p_pcBuffer) {
         bResult = true;
 
         *p_pcBuffer = 0;
-        for (stcMDNSServiceTxt* pTxt = m_pTxts; ((bResult) && (pTxt)); pTxt = pTxt->m_pNext) {
+        for (stcMDNSServiceTxt * pTxt = m_pTxts; ((bResult) && (pTxt)); pTxt = pTxt->m_pNext) {
             *(unsigned char*)p_pcBuffer++ = pTxt->length();
             size_t stLength;
             if ((bResult = (0 != (stLength = (pTxt->m_pcKey ? strlen(pTxt->m_pcKey) : 0))))) {
@@ -494,7 +494,7 @@ bool MDNSResponder::stcMDNSServiceTxts::compare(
 
     if ((bResult = (length() == p_Other.length()))) {
         // Compare A->B
-        for (const stcMDNSServiceTxt* pTxt = m_pTxts; ((bResult) && (pTxt));
+        for (const stcMDNSServiceTxt * pTxt = m_pTxts; ((bResult) && (pTxt));
                 pTxt                          = pTxt->m_pNext) {
             const stcMDNSServiceTxt* pOtherTxt = p_Other.find(pTxt->m_pcKey);
             bResult = ((pOtherTxt) && (pTxt->m_pcValue) && (pOtherTxt->m_pcValue)
@@ -502,7 +502,7 @@ bool MDNSResponder::stcMDNSServiceTxts::compare(
                        && (0 == strcmp(pTxt->m_pcValue, pOtherTxt->m_pcValue)));
         }
         // Compare B->A
-        for (const stcMDNSServiceTxt* pOtherTxt = p_Other.m_pTxts; ((bResult) && (pOtherTxt));
+        for (const stcMDNSServiceTxt * pOtherTxt = p_Other.m_pTxts; ((bResult) && (pOtherTxt));
                 pOtherTxt                          = pOtherTxt->m_pNext) {
             const stcMDNSServiceTxt* pTxt = find(pOtherTxt->m_pcKey);
             bResult = ((pTxt) && (pOtherTxt->m_pcValue) && (pTxt->m_pcValue)
@@ -635,10 +635,10 @@ bool MDNSResponder::stcMDNS_RRDomain::compare(const stcMDNS_RRDomain& p_Other) c
     if (m_u16NameLength == p_Other.m_u16NameLength) {
         const char* pT = m_acName;
         const char* pO = p_Other.m_acName;
-        while ((pT) && (pO) && (*((unsigned char*)pT) == *((unsigned char*)pO))
+        while ((pT) && (pO) && (*((unsigned char *)pT) == *((unsigned char *)pO))
                 &&  // Same length AND
-                (0 == strncasecmp((pT + 1), (pO + 1), *((unsigned char*)pT)))) { // Same content
-            if (*((unsigned char*)pT)) { // Not 0
+                (0 == strncasecmp((pT + 1), (pO + 1), *((unsigned char *)pT)))) { // Same content
+            if (*((unsigned char *)pT)) { // Not 0
                 pT += (1 + * ((unsigned char*)pT)); // Shift by length byte and length
                 pO += (1 + * ((unsigned char*)pO));
             } else { // Is 0 -> Successfully reached the end
@@ -1814,7 +1814,7 @@ uint32_t MDNSResponder::stcMDNSServiceQuery::indexOfAnswer(
     const MDNSResponder::stcMDNSServiceQuery::stcAnswer* p_pAnswer) const {
     uint32_t u32Index = 0;
 
-    for (const stcAnswer* pAnswer = m_pAnswers; pAnswer; pAnswer = pAnswer->m_pNext, ++u32Index) {
+    for (const stcAnswer * pAnswer = m_pAnswers; pAnswer; pAnswer = pAnswer->m_pNext, ++u32Index) {
         if (pAnswer == p_pAnswer) {
             return u32Index;
         }

@@ -400,7 +400,7 @@ private:
         pbuf* tx_copy = pbuf_alloc(PBUF_TRANSPORT, data_size, PBUF_RAM);
         if (tx_copy) {
             uint8_t* dst = reinterpret_cast<uint8_t*>(tx_copy->payload);
-            for (pbuf* p = _tx_buf_head; p; p = p->next) {
+            for (pbuf * p = _tx_buf_head; p; p = p->next) {
                 size_t will_copy = (data_size < p->len) ? data_size : p->len;
                 memcpy(dst, p->payload, will_copy);
                 dst += will_copy;

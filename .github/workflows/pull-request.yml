@@ -34,7 +34,7 @@ jobs:
     - name: Run astyle on all code/examples
       run: |
         sudo apt update
-        sudo apt install astyle
+        sudo apt install cmake
         ./tests/restyle.sh
         # If anything changed, GIT should return an error and fail the test
         git diff --exit-code
