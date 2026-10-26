@@ -165,7 +165,7 @@ bool PWMAudio::begin() {
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
 
     _arb = new AudioBufferManager(_buffers, _bufferWords, 0x80008000, OUTPUT, DMA_SIZE_32);
-    if (!_arb->begin(_pacer_dreq, (volatile void*)ccAddr)) {
+    if (!_arb->begin(_pacer_dreq, (volatile void *)ccAddr)) {
         _running = false;
         delete _arb;
         _arb = nullptr;

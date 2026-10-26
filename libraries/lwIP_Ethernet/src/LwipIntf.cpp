@@ -166,7 +166,7 @@ bool LwipIntf::hostname(const char* aHostname) {
     // now we should inform dhcp server for this change, using lwip_renew()
     // looping through all existing interface
     // harmless for AP, also compatible with ethernet adapters (to come)
-    for (netif* intf = netif_list; intf; intf = intf->next) {
+    for (netif * intf = netif_list; intf; intf = intf->next) {
         // unconditionally update all known interfaces
         intf->hostname = wifi_station_hostname;
 

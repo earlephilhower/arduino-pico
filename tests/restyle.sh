@@ -7,7 +7,7 @@ cd "$base/tests"
 if ! [ -e astyle ]; then
     git clone https://gitlab.com/saalen/astyle.git astyle
     cd astyle
-    git checkout 3.1
+    git checkout 3.6.20
     cd AStyle
     mkdir build
     cd build/

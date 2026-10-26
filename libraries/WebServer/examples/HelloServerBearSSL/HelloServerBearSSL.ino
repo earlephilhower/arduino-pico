@@ -97,7 +97,9 @@ void handleNotFound() {
   message += "\nArguments: ";
   message += server.args();
   message += "\n";
-  for (int i = 0; i < server.args(); i++) { message += " " + server.argName(i) + ": " + server.arg(i) + "\n"; }
+  for (int i = 0; i < server.args(); i++) {
+    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
+  }
   server.send(404, "text/plain", message);
   digitalWrite(led, 0);
 }
@@ -123,7 +125,9 @@ void setup(void) {
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
-  if (MDNS.begin("picow")) { Serial.println("MDNS responder started"); }
+  if (MDNS.begin("picow")) {
+    Serial.println("MDNS responder started");
+  }
 
   server.getServer().setRSACert(new BearSSL::X509List(serverCert), new BearSSL::PrivateKey(serverKey));
 

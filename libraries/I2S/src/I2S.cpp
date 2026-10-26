@@ -466,7 +466,7 @@ bool I2S::begin() {
     // Generate the input ARB for DMA to RAM
     if (_isInput) {
         _arbInput = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, INPUT);
-        if (!_arbInput->begin(pio_get_dreq(_pio, _sm, false), (volatile void*)&_pio->rxf[_sm])) {
+        if (!_arbInput->begin(pio_get_dreq(_pio, _sm, false), (volatile void *)&_pio->rxf[_sm])) {
             _running = false;
             delete _arbInput;
             _arbInput = nullptr;
