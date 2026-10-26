@@ -1,5 +1,21 @@
 #!/bin/bash
 
+base=$(git rev-parse --show-toplevel)
+cd "$base/tests"
+
+# Build our own astyle because version creep could cause issues
+if ! [ -e astyle ]; then
+    git clone https://gitlab.com/saalen/astyle.git astyle
+    cd astyle
+    git checkout 3.1
+    cd AStyle
+    mkdir build
+    cd build/
+    cmake ..
+    make -j
+fi
+astyle="$base/tests/astyle/AStyle/build/astyle"
+
 for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleFileDrive \
            ./libraries/LittleFS/src ./libraries/LittleFS/examples ./libraries/PWMAudio \
            ./libraries/rp2040 ./libraries/SD ./libraries/ADCInput \
@@ -19,7 +35,7 @@ for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleF
            ./libraries/BluetoothHIDMaster ./libraries/NetBIOS ./libraries/Ticker \
            ./libraries/VFS ./libraries/rp2350 ./libraries/SimpleMDNS ./libraries/SoftwareSPI \
            ./libraries/MIDIUSB ./libraries/BLE; do
-    find $dir -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" \) -a  \! -path '*api*' -exec astyle --suffix=none --options=./tests/astyle_core.conf \{\} \;
-    find $dir -type f -name "*.ino" -exec astyle --suffix=none --options=./tests/astyle_examples.conf \{\} \;
+    find "$base"/$dir -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" \) -a  \! -path '*api*' -exec "$astyle" --suffix=none --options="$base"/tests/astyle_core.conf \{\} \;
+    find "$base"/$dir -type f -name "*.ino" -exec "$astyle" --suffix=none --options="$base"/tests/astyle_examples.conf \{\} \;
 done
 
