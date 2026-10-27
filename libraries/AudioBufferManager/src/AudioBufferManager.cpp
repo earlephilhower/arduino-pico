@@ -25,7 +25,7 @@
 #include "AudioBufferManager.h"
 
 static int                 __channelCount = 0;     // # of channels left.  When we hit 0, then remove our handler
-static AudioBufferManager* __channelMap[12];       // Lets the IRQ handler figure out where to dispatch to
+static AudioBufferManager* __channelMap[NUM_DMA_CHANNELS]; // Lets the IRQ handler figure out where to dispatch to
 static bool                __irqInstalled = false; // Have we put in our IRQ handler yet?
 
 AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction, enum dma_channel_transfer_size dmaSize) {
@@ -75,11 +75,17 @@ AudioBufferManager::~AudioBufferManager() {
     noInterrupts();
     if (_running) {
         _running = false;
+        // Data channels first: cleanup disables them, so a control channel
+        // still running can't restart one.
         for (auto i = 0; i < 2; i++) {
             dma_channel_cleanup(_channelDMA[i]);
             __channelMap[_channelDMA[i]] = nullptr;
             dma_channel_unclaim(_channelDMA[i]);
             __channelCount--;
+        }
+        for (auto i = 0; i < 2; i++) {
+            dma_channel_cleanup(_channelCtrl[i]);
+            dma_channel_unclaim(_channelCtrl[i]);
         }
     }
     interrupts();
@@ -113,20 +119,29 @@ void AudioBufferManager::setCallback(void (*fn)(void *), void *cbData) {
 }
 
 bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
-    // Get ping and pong DMA channels
-    for (auto i = 0; i < 2; i++) {
-        _channelDMA[i] = dma_claim_unused_channel(false);
-        if (_channelDMA[i] == -1) {
-            if (i == 1) {
-                dma_channel_unclaim(_channelDMA[0]);
+    // Get ping and pong DMA channels, and a control channel for each
+    int ch[4];
+    for (auto i = 0; i < 4; i++) {
+        ch[i] = dma_claim_unused_channel(false);
+        if (ch[i] == -1) {
+            while (i--) {
+                dma_channel_unclaim(ch[i]);
             }
             return false;
         }
     }
+    for (auto i = 0; i < 2; i++) {
+        _channelDMA[i] = ch[i];
+        _channelCtrl[i] = ch[i + 2];
+    }
 
     _running = true;
 
-    // Need to know both channels to set up ping-pong, so do in 2 stages
+    // Each data channel, when done, chains to its control channel, which
+    // starts the other data channel at that one's slot.  The hardware reloads
+    // the transfer count each time.  So the DMA never depends on the IRQ to
+    // stay in its buffers: if the IRQ is late (eg: interrupts off for a flash
+    // erase), the data channels go back and forth over the 2 buffers they have.
     for (auto i = 0; i < 2; i++) {
         dma_channel_config c = dma_channel_get_default_config(_channelDMA[i]);
         channel_config_set_transfer_data_size(&c, _dmaSize); // 16b/32b transfers into PIO FIFO
@@ -138,7 +153,7 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
             channel_config_set_write_increment(&c, true); // Writing to incrememting buffers
         }
         channel_config_set_dreq(&c, dreq); // Wait for the PIO TX FIFO specified
-        channel_config_set_chain_to(&c, _channelDMA[i ^ 1]); // Start other channel when done
+        channel_config_set_chain_to(&c, _channelCtrl[i]); // Start other channel when done
         channel_config_set_irq_quiet(&c, false); // Need IRQs
 
         if (_isOutput) {
@@ -147,9 +162,20 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
             _active[i] = _takeFromList(&_empty);
             dma_channel_configure(_channelDMA[i], &c, _active[i]->buff, pioFIFOAddr, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
         }
+        _slot[i] = (uint32_t)_active[i]->buff;
         dma_channel_set_irq0_enabled(_channelDMA[i], true);
         __channelMap[_channelDMA[i]] = this;
         __channelCount++;
+    }
+    for (auto i = 0; i < 2; i++) {
+        // One word, from the other data channel's slot to its address register's trigger alias
+        dma_channel_config c = dma_channel_get_default_config(_channelCtrl[i]);
+        channel_config_set_transfer_data_size(&c, DMA_SIZE_32);
+        channel_config_set_read_increment(&c, false);
+        channel_config_set_write_increment(&c, false);
+        auto other = dma_channel_hw_addr(_channelDMA[i ^ 1]);
+        volatile void *trig = _isOutput ? (volatile void *)&other->al3_read_addr_trig : (volatile void *)&other->al2_write_addr_trig;
+        dma_channel_configure(_channelCtrl[i], &c, trig, &_slot[i ^ 1], 1, false);
     }
     if (!__irqInstalled) {
         irq_add_shared_handler(DMA_IRQ_0, _irq, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
@@ -157,7 +183,7 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
         __irqInstalled = true;
     }
 
-    dma_channel_start(_channelDMA[0]);
+    dma_channel_start(_channelCtrl[1]); // Starts data channel 0 at its slot
     return true;
 }
 
@@ -310,34 +336,89 @@ void AudioBufferManager::flush() {
     }
 }
 
+// Handles both data channels: whichever finished, perhaps both if we're late.
 void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
+    (void) channel;
     if (!_running) {
         return;
     }
+
+    // Which data channel is running, and which have finished since we last
+    // looked.  One is always busy, except for the few cycles a control channel
+    // takes to start the other, so read busy either side of the status, until
+    // they agree.
+    const uint32_t mask = (1u << _channelDMA[0]) | (1u << _channelDMA[1]);
+    bool busy0, busy1;
+    uint32_t done;
+    do {
+        busy0 = dma_channel_is_busy(_channelDMA[0]);
+        busy1 = dma_channel_is_busy(_channelDMA[1]);
+        done = dma_hw->ints0 & mask;
+    } while (busy0 == busy1 || busy0 != dma_channel_is_busy(_channelDMA[0]) || busy1 != dma_channel_is_busy(_channelDMA[1]));
+    if (!done) {
+        return;
+    }
+    dma_hw->ints0 = done;
+    const int idle = busy0 ? 1 : 0;
+    const int run = idle ^ 1;
+    const uint32_t runBit = 1u << _channelDMA[run];
+
+    if (!(done & (1u << _channelDMA[idle]))) {
+        // Only the running one finished: then it has been restarted on its own
+        // buffer, which is lost.
+        _overunderflow = true;
+        return;
+    }
+    if (done & runBit) {
+        // We're late: both finished, and the running one is reusing its
+        // buffer, so that buffer's data is lost.  The idle one has the latest.
+        _overunderflow = true;
+    }
+
+    // The idle channel has finished its buffer.  Give it the next one.
+    AudioBuffer *full = _active[idle];
+    AudioBuffer *next;
     if (_isOutput) {
-        if (_active[0] != _silence) {
-            _addToList(&_empty, _active[0]);
-        }
-        _active[0] = _active[1];
-        if (!_filled) {
-            _active[1] = _silence;
-        } else {
-            _active[1] = _takeFromList(&_filled);
-        }
-        _overunderflow = _overunderflow | (_active[1] == _silence);
-        dma_channel_set_read_addr(channel, _active[1]->buff, false);
-    } else {
-        if (_empty) {
-            _addToList(&_filled, _active[0]);
-            _active[0] = _active[1];
-            _active[1] = _takeFromList(&_empty);
-        } else {
+        next = _takeFromList(&_filled);
+        if (!next) {
+            next = _silence;
             _overunderflow = true;
         }
-        dma_channel_set_write_addr(channel, _active[1]->buff, false);
+    } else {
+        next = _takeFromList(&_empty);
+        if (!next) {
+            next = full; // Nowhere to put more: record over this one again
+            _overunderflow = true;
+        }
     }
-    dma_channel_set_trans_count(channel, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
-    dma_channel_acknowledge_irq0(channel);
+    _active[idle] = next;
+    _slot[idle] = (uint32_t)next->buff;
+    __dmb();
+
+    if (next != full && (dma_hw->ints0 & runBit)) {
+        // The running channel finished while we were here, and has restarted
+        // the idle one: on next, or on full if before we changed its slot.  If
+        // full, it's still the DMA's, so keep it and put next back.
+        auto hw = dma_channel_hw_addr(_channelDMA[idle]);
+        uint32_t addr = _isOutput ? hw->read_addr : hw->write_addr;
+        if (addr - (uint32_t)full->buff < _wordsPerBuffer * sizeof(uint32_t)) {
+            if (next != _silence) {
+                _addToFront(_isOutput ? &_filled : &_empty, next);
+            }
+            _active[idle] = full;
+            _slot[idle] = (uint32_t)full->buff;
+            _overunderflow = true;
+            return;
+        }
+    }
+
+    if (_isOutput) {
+        if (full != _silence) {
+            _addToList(&_empty, full);
+        }
+    } else if (full != next) {
+        _addToList(&_filled, full);
+    }
     if (_callbackCB) {
         _callbackCB(_callbackData);
     } else if (_callback) {
@@ -346,7 +427,7 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
 }
 
 void __not_in_flash_func(AudioBufferManager::_irq)() {
-    for (size_t i = 0; i < sizeof(__channelMap); i++) {
+    for (size_t i = 0; i < NUM_DMA_CHANNELS; i++) {
         if (dma_channel_get_irq0_status(i) && __channelMap[i]) {
             __channelMap[i]->_dmaIRQ(i);
         }
