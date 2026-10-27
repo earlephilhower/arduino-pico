@@ -56,7 +56,13 @@ private:
     AudioBuffer *_silence = nullptr; // A single silence buffer to be looped on underflow
     AudioBuffer *_filled = nullptr;  // List of buffers ready to be played
     AudioBuffer *_empty = nullptr;   // List of buffers waiting to be filled. *_empty = currently writing
-    AudioBuffer *_active[2] = { nullptr, nullptr }; // The 2 buffers currently in use for DMA
+    AudioBuffer *_active[2] = { nullptr, nullptr }; // The 2 buffers currently in use for DMA, by data channel
+
+    // The address each data channel starts on next.  When one data channel
+    // finishes, its control channel copies the other's slot into that
+    // channel's address register, which starts it.  Only the IRQ changes the
+    // slots, so if it's late the DMA reuses a buffer it owns, never more RAM.
+    volatile uint32_t _slot[2] = { 0, 0 };
 
     // Can't use std::list because we need to put in RAM for IRQ use, so roll our own
     void __not_in_flash_func(_addToList)(AudioBuffer **list, AudioBuffer *element) {
@@ -71,6 +77,13 @@ private:
             *list = element;
         }
         element->next = nullptr; // Belt and braces
+        interrupts();
+    }
+
+    void __not_in_flash_func(_addToFront)(AudioBuffer **list, AudioBuffer *element) {
+        noInterrupts();
+        element->next = *list;
+        *list = element;
         interrupts();
     }
 
@@ -94,7 +107,8 @@ private:
     enum dma_channel_transfer_size _dmaSize;
     bool _isOutput;
 
-    int _channelDMA[2];
+    int _channelDMA[2];  // Data: PIO FIFO <-> buffers
+    int _channelCtrl[2]; // Control: _channelCtrl[i] starts data channel i ^ 1 at its slot
 
     bool _useData;
     void (*_callback)();
