@@ -24,9 +24,9 @@
 #include <hardware/irq.h>
 #include "AudioBufferManager.h"
 
-static int                 __channelCount = 0;     // # of channels left.  When we hit 0, then remove our handler
-static AudioBufferManager* __channelMap[12];       // Lets the IRQ handler figure out where to dispatch to
-static bool                __irqInstalled = false; // Have we put in our IRQ handler yet?
+static int                 __channelCount = 0;             // # of channels left.  When we hit 0, then remove our handler
+static AudioBufferManager* __channelMap[NUM_DMA_CHANNELS]; // Lets the IRQ handler figure out where to dispatch to
+static bool                __irqInstalled = false;         // Have we put in our IRQ handler yet?
 
 AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction, enum dma_channel_transfer_size dmaSize) {
     _running = false;
@@ -346,7 +346,7 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
 }
 
 void __not_in_flash_func(AudioBufferManager::_irq)() {
-    for (size_t i = 0; i < sizeof(__channelMap); i++) {
+    for (size_t i = 0; i < sizeof(__channelMap) / sizeof(__channelMap[0]); i++) {
         if (dma_channel_get_irq0_status(i) && __channelMap[i]) {
             __channelMap[i]->_dmaIRQ(i);
         }
