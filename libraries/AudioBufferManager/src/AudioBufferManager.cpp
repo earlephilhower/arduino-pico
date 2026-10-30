@@ -115,8 +115,6 @@ void AudioBufferManager::setCallback(void (*fn)(void *), void *cbData) {
     _useData = true;
 }
 
-dma_channel_hw_t *ping, *pingTrig, *pong, *pongTrig;
-
 bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
     // Get ping, pingTrigger, pong, pongTrigger DMAs.  Get all or we fail
     int chan[4];
@@ -134,11 +132,6 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
     _triggerDMA[0] = chan[1];
     _channelDMA[1] = chan[2];
     _triggerDMA[1] = chan[3];
-
-    ping = dma_channel_hw_addr(_channelDMA[0]);
-    pingTrig = dma_channel_hw_addr(_triggerDMA[0]);
-    pong = dma_channel_hw_addr(_channelDMA[1]);
-    pongTrig = dma_channel_hw_addr(_triggerDMA[1]);
 
     _running = true;
 
