@@ -26,7 +26,15 @@ CYW43lwIP::CYW43lwIP(int8_t cs) : LwipIntfDev<CYW43>(cs) {
 }
 
 void CYW43lwIP::end() {
+    // Keep link events from restoring RX between netif removal and clearing the driver's pointer.
+#ifdef __FREERTOS
+    lwip_callback([this] {
+        LwipIntfDev<CYW43>::end();
+    });
+#else
+    LWIPMutex m;
     LwipIntfDev<CYW43>::end();
+#endif
 }
 
 bool CYW43lwIP::connected() {
