@@ -140,13 +140,8 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
         // The Channel DMA will send the block of data out and fire the trigger DMA
         dma_channel_config chan = dma_channel_get_default_config(_channelDMA[i]);
         channel_config_set_transfer_data_size(&chan, _dmaSize); // 16b/32b transfers into PIO FIFO
-        if (_isOutput) {
-            channel_config_set_read_increment(&chan, true); // Reading incrementing addresses
-            channel_config_set_write_increment(&chan, false); // Writing to the same FIFO address
-        } else {
-            channel_config_set_read_increment(&chan, false); // Reading same FIFO address
-            channel_config_set_write_increment(&chan, true); // Writing to incrememting buffers
-        }
+        channel_config_set_read_increment(&chan, _isOutput); // Output increments read, writes to static FIFO
+        channel_config_set_write_increment(&chan, !_isOutput); // Input increments write, reads from static FIFO
         channel_config_set_dreq(&chan, dreq); // Wait for the PIO TX FIFO specified
         channel_config_set_chain_to(&chan, _triggerDMA[i]); // channel->triggerOther
         channel_config_set_irq_quiet(&chan, true); // Channel doesn't IRQ, the transfer one does
