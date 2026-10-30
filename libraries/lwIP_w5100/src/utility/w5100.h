@@ -82,7 +82,7 @@ public:
         Check physical link
         @return true when physical link is up
     */
-    bool isLinked() const {
+    bool isLinked() {
         return true;  //XXX TODO
     }
 
