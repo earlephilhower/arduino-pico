@@ -371,6 +371,11 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)() {
         }
     } while (lastChan == -1); // It is possible that neither of these hit due to some craziness, try again
 
+    // If both IRQs are set, we had underflow
+    if ((dma_hw->intr & (1 << _triggerDMA[0])) && (dma_hw->intr & (1 << _triggerDMA[1]))) {
+        _overunderflow = true;
+    }
+
     if (_isOutput) {
         if (_active[lastChan] != _silence) {
             _addToList(&_empty, _active[lastChan]);
