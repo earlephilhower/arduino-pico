@@ -40,8 +40,10 @@
 #include <hardware/gpio.h>
 #include <hardware/regs/addressmap.h>
 #include <hardware/spi.h>
+#include <hardware/structs/ioqspi.h>
 #include <hardware/structs/qmi.h>
 #include <hardware/structs/xip_ctrl.h>
+#include <hardware/sync.h>
 #include <pico/runtime_init.h>
 
 // Include TLSF in this compilation unit
@@ -71,11 +73,6 @@ size_t __psram_heap_size = 0;
 
 
 
-#include <hardware/structs/ioqspi.h>
-#include <hardware/structs/qmi.h>
-#include <hardware/structs/xip_ctrl.h>
-#include <hardware/clocks.h>
-#include <hardware/sync.h>
 
 size_t __no_inline_not_in_flash_func(psram_detect)(void) {
     int psram_size = 0;

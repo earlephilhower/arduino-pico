@@ -28,7 +28,6 @@
 #include <lwip/raw.h>
 #include <lwip/timeouts.h>
 #include <pico/cyw43_arch.h>
-#include <pico/mutex.h>
 #include <sys/lock.h>
 #include "_xoshiro.h"
 #include "lwip_wrap.h"

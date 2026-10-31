@@ -19,9 +19,10 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <Arduino.h>
+
 #if !defined(USE_TINYUSB) && !defined(NO_USB)
 
-#include <Arduino.h>
 #include "CoreMutex.h"
 #include "USB.h"
 
@@ -697,8 +698,6 @@ usbd_class_driver_t const *usbd_app_driver_get_cb(uint8_t *driver_count) {
 #elif defined NO_USB
 
 #warning "NO_USB selected. No output to Serial will occur!"
-
-#include <Arduino.h>
 
 void SerialUSBClass::begin(unsigned long baud) {
 }
