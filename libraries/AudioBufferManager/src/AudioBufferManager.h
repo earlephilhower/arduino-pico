@@ -108,3 +108,11 @@ private:
     // User buffer pointer
     size_t _userOff = 0;
 };
+
+#if defined(DEBUG_RP2040_CORE)
+// Debugging counters
+extern uint32_t _abm_normal[2]; // We stopped the DMA on first try
+extern uint32_t _abm_missed[2]; // Missed the 1st DMA stop, stopped the second (very rare)
+extern uint32_t _abm_single; // Single channel IRQ present, no OVF
+extern uint32_t _abm_double; // Double channel IRQ present, OVF
+#endif

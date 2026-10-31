@@ -325,6 +325,13 @@ void AudioBufferManager::flush() {
     }
 }
 
+#if defined(DEBUG_RP2040_CORE)
+uint32_t _abm_normal[2] = {0, 0};
+uint32_t _abm_missed[2] = {0, 0};
+uint32_t _abm_single = 0;
+uint32_t _abm_double = 0;
+#endif
+
 void __not_in_flash_func(AudioBufferManager::_dmaIRQ)() {
     if (!_running) {
         return;
@@ -356,10 +363,16 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)() {
                     // If we missed that, something is really messed up
                     assert(dma_channel_is_busy(_channelDMA[_that]));
                     lastChan = _this; // pong buffer active, ping buffer ready
+#if defined(DEBUG_RP2040_CORE)
+                    _abm_missed[i]++;
+#endif
                     break;
                 } else {
                     // We stopped ping in middle of DMA, so pong is ready
                     lastChan = _that;
+#if defined(DEBUG_RP2040_CORE)
+                    _abm_normal[i]++;
+#endif
                     break;
                 }
             }
@@ -369,6 +382,14 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)() {
     // If both IRQs are set, we had underflow
     if ((dma_hw->intr & (1 << _triggerDMA[0])) && (dma_hw->intr & (1 << _triggerDMA[1]))) {
         _overunderflow = true;
+#if defined(DEBUG_RP2040_CORE)
+        _abm_double++;
+#endif
+    } else {
+        /* Single */
+#if defined(DEBUG_RP2040_CORE)
+        _abm_single++;
+#endif
     }
 
     if (_isOutput) {
