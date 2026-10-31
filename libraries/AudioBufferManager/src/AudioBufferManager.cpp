@@ -72,17 +72,21 @@ AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, i
 }
 
 AudioBufferManager::~AudioBufferManager() {
-    noInterrupts();
     if (_running) {
+        noInterrupts();
         _running = false;
         for (auto i = 0; i < 2; i++) {
             dma_channel_cleanup(_channelDMA[i]);
-            __channelMap[_channelDMA[i]] = nullptr;
             dma_channel_unclaim(_channelDMA[i]);
+            dma_channel_cleanup(_triggerDMA[i]);
+            dma_channel_unclaim(_triggerDMA[i]);
+            __channelMap[_triggerDMA[i]] = nullptr;
             __channelCount--;
         }
+        interrupts();
+        // At this stage these DMAs can not be signaling an IRQ request, they're disabled
+        // No worries about IRQs during the following cleanup
     }
-    interrupts();
     for (int i = 0; i < 2; i++) {
         if (_active[i] != _silence) {
             _deleteAudioBuffer(_active[i]);
@@ -113,42 +117,54 @@ void AudioBufferManager::setCallback(void (*fn)(void *), void *cbData) {
 }
 
 bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
-    // Get ping and pong DMA channels
-    for (auto i = 0; i < 2; i++) {
-        _channelDMA[i] = dma_claim_unused_channel(false);
-        if (_channelDMA[i] == -1) {
-            if (i == 1) {
-                dma_channel_unclaim(_channelDMA[0]);
+    // Get ping, pingTrigger, pong, pongTrigger DMAs.  Get all or we fail
+    int chan[4];
+    for (auto i = 0; i < 4; i ++) {
+        chan[i] = dma_claim_unused_channel(false);
+        if (chan[i] == -1) {
+            // This failed, so free all prior ones and exit
+            for (auto j = i - 1; j >= 0; j--) {
+                dma_channel_unclaim(chan[j]);
             }
             return false;
         }
     }
+    _channelDMA[0] = chan[0];
+    _triggerDMA[0] = chan[1];
+    _channelDMA[1] = chan[2];
+    _triggerDMA[1] = chan[3];
 
     _running = true;
 
-    // Need to know both channels to set up ping-pong, so do in 2 stages
-    for (auto i = 0; i < 2; i++) {
-        dma_channel_config c = dma_channel_get_default_config(_channelDMA[i]);
-        channel_config_set_transfer_data_size(&c, _dmaSize); // 16b/32b transfers into PIO FIFO
+    // Set up the ping->pingTrigger, pong->pongTrigger chains.
+    for (auto i = 0; i < 2; i ++) {
+        // The Channel DMA will send the block of data out and fire the trigger DMA
+        dma_channel_config chan = dma_channel_get_default_config(_channelDMA[i]);
+        channel_config_set_transfer_data_size(&chan, _dmaSize); // 16b/32b transfers into PIO FIFO
+        channel_config_set_read_increment(&chan, _isOutput); // Output increments read, writes to static FIFO
+        channel_config_set_write_increment(&chan, !_isOutput); // Input increments write, reads from static FIFO
+        channel_config_set_dreq(&chan, dreq); // Wait for the PIO TX FIFO specified
+        channel_config_set_chain_to(&chan, _triggerDMA[i]); // channel->triggerOther
+        channel_config_set_irq_quiet(&chan, true); // Channel doesn't IRQ, the transfer one does
         if (_isOutput) {
-            channel_config_set_read_increment(&c, true); // Reading incrementing addresses
-            channel_config_set_write_increment(&c, false); // Writing to the same FIFO address
-        } else {
-            channel_config_set_read_increment(&c, false); // Reading same FIFO address
-            channel_config_set_write_increment(&c, true); // Writing to incrememting buffers
-        }
-        channel_config_set_dreq(&c, dreq); // Wait for the PIO TX FIFO specified
-        channel_config_set_chain_to(&c, _channelDMA[i ^ 1]); // Start other channel when done
-        channel_config_set_irq_quiet(&c, false); // Need IRQs
-
-        if (_isOutput) {
-            dma_channel_configure(_channelDMA[i], &c, pioFIFOAddr, _silence->buff, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
+            _nextBuffer[i] = _silence->buff; // READ-ADDR
+            dma_channel_configure(_channelDMA[i], &chan, pioFIFOAddr, _nextBuffer[i], _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
         } else {
             _active[i] = _takeFromList(&_empty);
-            dma_channel_configure(_channelDMA[i], &c, _active[i]->buff, pioFIFOAddr, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
+            _nextBuffer[i] = _active[i]->buff; // WRITE-ADDR
+            dma_channel_configure(_channelDMA[i], &chan, _nextBuffer[i], pioFIFOAddr, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
         }
-        dma_channel_set_irq0_enabled(_channelDMA[i], true);
-        __channelMap[_channelDMA[i]] = this;
+
+        // Trigger will read from nextDMA pointer for opposite buffer, write that to the read/write address trigger of the opposite chain (thus starting *that* DMA chain, and interrupt the core
+        dma_channel_config trig = dma_channel_get_default_config(_triggerDMA[i]);
+        channel_config_set_transfer_data_size(&trig, DMA_SIZE_32);
+        channel_config_set_read_increment(&trig, false);
+        channel_config_set_write_increment(&trig, false);
+        channel_config_set_irq_quiet(&trig, false); // The trigger notifies the buffer ready
+        auto thatDMA = dma_channel_hw_addr(_channelDMA[i ^ 1]);
+        dma_channel_configure(_triggerDMA[i], &trig, _isOutput ? &thatDMA->al3_read_addr_trig : &thatDMA->al2_write_addr_trig, &_nextBuffer[i ^ 1], 1, false);
+        dma_channel_set_irq0_enabled(_triggerDMA[i], true);
+        __channelMap[_triggerDMA[i]] = this;
         __channelCount++;
     }
     if (!__irqInstalled) {
@@ -310,34 +326,100 @@ void AudioBufferManager::flush() {
     }
 }
 
-void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
+#if defined(DEBUG_RP2040_CORE)
+uint32_t _abm_normal[2] = {0, 0};
+uint32_t _abm_missed[2] = {0, 0};
+uint32_t _abm_single = 0;
+uint32_t _abm_double = 0;
+#endif
+
+void __not_in_flash_func(AudioBufferManager::_dmaIRQ)() {
     if (!_running) {
         return;
     }
+
+    // We can't trust the channel we're *processing* the IRQ from in the case of
+    // HW over/underflow.  So we pause both DMA when the DMA process is on
+    // either ping or pong and assume the opposite side is ready to work on
+
+    int lastChan = -1;
+    do {
+        for (auto i = 0; i < 2; i++) {
+            int _this = i;
+            int _that = i ^ 1;
+            auto thisDMA = dma_channel_hw_addr(_channelDMA[_this]);
+            auto thatDMA = dma_channel_hw_addr(_channelDMA[_that]);
+            // Is ping being written?
+            if (dma_channel_is_busy(_channelDMA[_this])) {
+                // Try and pause it
+                thisDMA->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_EN_BITS;
+                // If we didn't stop it (the transferDMA[0] is now run/running), restart it and wait for pong to be active
+                // We know this is a very short wait because it's just the time it takes for transferDMA 1-word read/write
+                if (!dma_channel_is_busy(_channelDMA[_this])) {
+                    thisDMA->al1_ctrl |= DMA_CH0_CTRL_TRIG_EN_BITS;
+                    while (!dma_channel_is_busy(_channelDMA[_that])) {
+                        /* busy wait */
+                    }
+                    thatDMA->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_EN_BITS;
+                    // If we missed that, something is really messed up
+                    assert(dma_channel_is_busy(_channelDMA[_that]));
+                    lastChan = _this; // pong buffer active, ping buffer ready
+#if defined(DEBUG_RP2040_CORE)
+                    _abm_missed[i]++;
+#endif
+                    break;
+                } else {
+                    // We stopped ping in middle of DMA, so pong is ready
+                    lastChan = _that;
+#if defined(DEBUG_RP2040_CORE)
+                    _abm_normal[i]++;
+#endif
+                    break;
+                }
+            }
+        }
+    } while (lastChan == -1); // It is possible that neither of these hit due to some craziness, try again
+
+    // If both IRQs are set, we had underflow
+    if ((dma_hw->intr & (1 << _triggerDMA[0])) && (dma_hw->intr & (1 << _triggerDMA[1]))) {
+        _overunderflow = true;
+#if defined(DEBUG_RP2040_CORE)
+        _abm_double++;
+#endif
+    } else {
+        /* Single */
+#if defined(DEBUG_RP2040_CORE)
+        _abm_single++;
+#endif
+    }
+
     if (_isOutput) {
-        if (_active[0] != _silence) {
-            _addToList(&_empty, _active[0]);
+        if (_active[lastChan] != _silence) {
+            _addToList(&_empty, _active[lastChan]);
         }
-        _active[0] = _active[1];
         if (!_filled) {
-            _active[1] = _silence;
+            _active[lastChan] = _silence;
         } else {
-            _active[1] = _takeFromList(&_filled);
+            _active[lastChan] = _takeFromList(&_filled);
         }
-        _overunderflow = _overunderflow | (_active[1] == _silence);
-        dma_channel_set_read_addr(channel, _active[1]->buff, false);
+        _overunderflow = _overunderflow | (_active[lastChan] == _silence);
     } else {
         if (_empty) {
-            _addToList(&_filled, _active[0]);
-            _active[0] = _active[1];
-            _active[1] = _takeFromList(&_empty);
+            _addToList(&_filled, _active[lastChan]);
+            _active[lastChan] = _takeFromList(&_empty);
         } else {
             _overunderflow = true;
         }
-        dma_channel_set_write_addr(channel, _active[1]->buff, false);
     }
-    dma_channel_set_trans_count(channel, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
-    dma_channel_acknowledge_irq0(channel);
+    _nextBuffer[lastChan] = _active[lastChan]->buff; // This'll be loaded by the opposite's triggerDMA in the future...
+
+    // We've handled this so make sure both ping and pong are cleared.  It's not possible for these to be set after the initial do-while above
+    dma_channel_acknowledge_irq0(_triggerDMA[0]);
+    dma_channel_acknowledge_irq0(_triggerDMA[1]);
+
+    // Restart the active (other) block's data DMA and we're done.
+    dma_channel_hw_addr(_channelDMA[lastChan ^ 1])->al1_ctrl |= DMA_CH0_CTRL_TRIG_EN_BITS;
+
     if (_callbackCB) {
         _callbackCB(_callbackData);
     } else if (_callback) {
@@ -348,7 +430,7 @@ void __not_in_flash_func(AudioBufferManager::_dmaIRQ)(int channel) {
 void __not_in_flash_func(AudioBufferManager::_irq)() {
     for (size_t i = 0; i < sizeof(__channelMap) / sizeof(__channelMap[0]); i++) {
         if (dma_channel_get_irq0_status(i) && __channelMap[i]) {
-            __channelMap[i]->_dmaIRQ(i);
+            __channelMap[i]->_dmaIRQ();
         }
     }
 }

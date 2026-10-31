@@ -43,7 +43,7 @@ public:
     int available();
 
 private:
-    void _dmaIRQ(int channel);
+    void _dmaIRQ();
     static void _irq();
 
     typedef struct AudioBuffer {
@@ -56,7 +56,7 @@ private:
     AudioBuffer *_silence = nullptr; // A single silence buffer to be looped on underflow
     AudioBuffer *_filled = nullptr;  // List of buffers ready to be played
     AudioBuffer *_empty = nullptr;   // List of buffers waiting to be filled. *_empty = currently writing
-    AudioBuffer *_active[2] = { nullptr, nullptr }; // The 2 buffers currently in use for DMA
+    AudioBuffer *_active[2] = { nullptr, nullptr }; // The 2 buffers currently in use for channelDMA
 
     // Can't use std::list because we need to put in RAM for IRQ use, so roll our own
     void __not_in_flash_func(_addToList)(AudioBuffer **list, AudioBuffer *element) {
@@ -95,6 +95,8 @@ private:
     bool _isOutput;
 
     int _channelDMA[2];
+    int _triggerDMA[2];
+    void *_nextBuffer[2]; // Used by triggerDMA to load opposite address-trigger
 
     bool _useData;
     void (*_callback)();
@@ -106,3 +108,11 @@ private:
     // User buffer pointer
     size_t _userOff = 0;
 };
+
+#if defined(DEBUG_RP2040_CORE)
+// Debugging counters
+extern uint32_t _abm_normal[2]; // We stopped the DMA on first try
+extern uint32_t _abm_missed[2]; // Missed the 1st DMA stop, stopped the second (very rare)
+extern uint32_t _abm_single; // Single channel IRQ present, no OVF
+extern uint32_t _abm_double; // Double channel IRQ present, OVF
+#endif
