@@ -72,7 +72,6 @@ AudioBufferManager::AudioBufferManager(size_t bufferCount, size_t bufferWords, i
 }
 
 AudioBufferManager::~AudioBufferManager() {
-    noInterrupts();
     if (_running) {
         noInterrupts();
         _running = false;
@@ -85,6 +84,8 @@ AudioBufferManager::~AudioBufferManager() {
             __channelCount--;
         }
         interrupts();
+        // At this stage these DMAs can not be signaling an IRQ request, they're disabled
+        // No worries about IRQs during the following cleanup
     }
     for (int i = 0; i < 2; i++) {
         if (_active[i] != _silence) {
