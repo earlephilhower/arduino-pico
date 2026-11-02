@@ -30,16 +30,28 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
     _option = option;
 #ifdef __FREERTOS
     _pxHigherPriorityTaskWoken = 0; // pdFALSE
-    auto m = __get_freertos_mutex_for_ptr(mutex);
+    _fm = __get_freertos_mutex_for_ptr(mutex);
+    if (!_fm) {
+        return; // No FreeRTOS mutex available to map to
+    }
 
     if (portCHECK_IF_IN_ISR()) {
-        if (!xSemaphoreTakeFromISR(m, &_pxHigherPriorityTaskWoken)) {
+        // Can't block here, so only take it if free.  TakeFromISR records no holder, so the matching GiveFromISR won't assert
+        if (!xSemaphoreTakeFromISR(_fm, &_pxHigherPriorityTaskWoken)) {
             return;
         }
         // At this point we have the mutex in ISR
-    } else {
+    } else if (!xSemaphoreTake(_fm, 0)) {
+        if (xSemaphoreGetMutexHolder(_fm) == xTaskGetCurrentTaskHandle()) { // Deadlock!
+            if (_option & DebugEnable) {
+                DEBUGCORE("CoreMutex - Deadlock detected!");
+            }
+            return;
+        }
         // Grab the mutex normally, possibly waking other tasks to get it
-        xSemaphoreTake(m, portMAX_DELAY);
+        if (!xSemaphoreTake(_fm, portMAX_DELAY)) {
+            return; // Wait was aborted, we do not own it
+        }
     }
 #else
     uint32_t owner;
@@ -59,12 +71,11 @@ CoreMutex::CoreMutex(mutex_t *mutex, uint8_t option) {
 CoreMutex::~CoreMutex() {
     if (_acquired) {
 #ifdef __FREERTOS
-        auto m = __get_freertos_mutex_for_ptr(_mutex);
         if (portCHECK_IF_IN_ISR()) {
-            xSemaphoreGiveFromISR(m, &_pxHigherPriorityTaskWoken);
+            xSemaphoreGiveFromISR(_fm, &_pxHigherPriorityTaskWoken);
             portYIELD_FROM_ISR(_pxHigherPriorityTaskWoken);
         } else {
-            xSemaphoreGive(m);
+            xSemaphoreGive(_fm);
         }
 #else
         mutex_exit(_mutex);
