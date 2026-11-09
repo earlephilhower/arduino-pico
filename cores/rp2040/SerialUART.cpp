@@ -316,10 +316,12 @@ void SerialUART::end() {
     }
 
     // Wait out an IRQ handler running on the other core
+    noInterrupts();
     mutex_enter_blocking(&_fifoMutex);
     uart_deinit(_uart);
     delete _queue;
     mutex_exit(&_fifoMutex);
+    interrupts();
 
     // Restore pin functions
     if (_tx != UART_PIN_NOT_DEFINED) {
@@ -404,10 +406,12 @@ bool SerialUART::overflow() {
         _pumpFIFO();
     }
 
+    noInterrupts();
     mutex_enter_blocking(&_fifoMutex);
     bool ovf = _overflow;
     _overflow = false;
     mutex_exit(&_fifoMutex);
+    interrupts();
 
     return ovf;
 }
@@ -492,10 +496,12 @@ bool SerialUART::getBreakReceived() {
         _pumpFIFO();
     }
 
+    noInterrupts();
     mutex_enter_blocking(&_fifoMutex);
     bool break_received = _break;
     _break = false;
     mutex_exit(&_fifoMutex);
+    interrupts();
 
     return break_received;
 }
