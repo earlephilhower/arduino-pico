@@ -35,7 +35,7 @@ extern "C" {
 
 #define PBUF_ALIGNER_ADJUST 4
 #define PBUF_ALIGNER(x) ((void*)((((intptr_t)(x))+3)&~3))
-#define PBUF_HELPER_FLAG 0xff // lwIP pbuf flag: u8_t
+#define PBUF_HELPER_FLAG 0x80 // lwIP pbuf flag: u8_t, making sure not to use any bits set by LWIP itself
 
 class UdpContext {
 public:
