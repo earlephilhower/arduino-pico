@@ -83,13 +83,16 @@ int PDMClass::begin(int channels, int sampleRate) {
     _doubleBuffer.swap(0);
 
     // The mic accepts an input clock from 1.2 to 3.25 Mhz
-    // Setup the decimation factor accordingly
-    if ((sampleRate * decimation * 2) > 3250000) {
+    // Setup the decimation factor accordingly.
+    // PDM clock = sampleRate * decimation (the PIO program takes
+    // two instructions per bit, which clkDiv below accounts for).
+    decimation = 128;
+    if ((sampleRate * decimation) > 3250000) {
         decimation = 64;
     }
 
     // Sanity check, abort if still over 3.25Mhz
-    if ((sampleRate * decimation * 2) > 3250000) {
+    if ((sampleRate * decimation) > 3250000) {
         //ERROR:  Sample rate too high, the mic would glitch
         return -1;
     }
