@@ -205,7 +205,7 @@ jobs:
     name: Mac
     strategy:
       matrix:
-        os: [macOS-15-intel, macOS-15]
+        os: [macOS-15, macOS-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v7
