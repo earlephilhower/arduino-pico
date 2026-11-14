@@ -1,0 +1,15 @@
+; Adapted from RP2350-SDR-CW-Interface/wm8960_i2s_slave_rx.pio.
+; GPIO wait operands are relocated to the configured clocks before SM startup.
+.program wm8960_i2s_rx
+.wrap_target
+    wait 1 gpio 0
+    wait 0 gpio 0
+    wait 1 gpio 0
+    wait 0 gpio 0
+    set x, 15
+capture_left:
+    wait 1 gpio 0
+    in pins, 1
+    wait 0 gpio 0
+    jmp x-- capture_left
+.wrap
