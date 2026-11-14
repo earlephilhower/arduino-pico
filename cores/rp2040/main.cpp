@@ -20,6 +20,7 @@
 
 #include "Arduino.h"
 #include "USB.h"
+#include "CoreClock.h"
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
 #include <hardware/vreg.h>
@@ -88,7 +89,10 @@ extern void __loop() {
 }
 static struct _reent *_impure_ptr1 = nullptr;
 
-extern "C" int main() {
+// Apply the clock / VREG / PSRAM-timing configuration selected by F_CPU on top of the
+// SDK default clocks.  A no-op when F_CPU is the SDK default.  Called from main() at boot and
+// by libraries (e.g. LowPower) after something has reset the clocks to the SDK defaults.
+extern "C" void __applyCoreClockConfig() {
 #if (defined(PICO_RP2040) && (F_CPU != 125000000)) || (defined(PICO_RP2350) && (F_CPU != 150000000))
 
 #if defined(PICO_RP2040)
@@ -124,6 +128,10 @@ extern "C" int main() {
 #endif
 
 #endif // over/underclock
+}
+
+extern "C" int main() {
+    __applyCoreClockConfig();
 
 #ifndef __FREERTOS
     // Allocate impure_ptr (newlib temps) if there is a 2nd core running
