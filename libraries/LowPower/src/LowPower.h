@@ -151,6 +151,17 @@ public:
         return _wakeReason;
     }
 
+    /**
+        @brief Peripherals that keep running during sleepFor() and sleepUntilPin() (light sleep; dormant ignores it).
+
+        mask = KR_* bits OR-ed together; 0 (the default) is the normal gated light sleep.  Any non-zero mask also leaves the system clock on PLL_SYS (the
+        library otherwise runs it from the 12 MHz crystal and stops the PLLs during the sleep): the kept peripherals keep their rate, and a byte
+        arriving on a UART while the chip wakes is not damaged, at the cost of about 4 mA (the PLL) while asleep.  KR_UART0 keeps UART0 (Serial1) running in
+        sleepFor() too, and makes the first byte of a sleepUntilPin() wake on its RX pin arrive intact.
+    */
+    enum KeepRunningMask { KR_UART0 = 4 };
+    void keepRunning(uint32_t mask);
+
 private:
     uint64_t _keepMask = 0;
     bool _restore = true;

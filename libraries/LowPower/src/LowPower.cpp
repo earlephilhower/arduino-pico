@@ -61,6 +61,23 @@ extern void loop1() __attribute__((weak));
 
 LowPowerClass LowPower;
 
+// keepRunning(): peripherals that keep running in light sleep (sleepFor, sleepUntilPin).  A non-zero mask also leaves PLL_SYS, clk_sys and clk_peri alone, so the
+// kept peripherals keep their rate (with the system clock on the 12 MHz crystal PWM, PIO and UART rates would be wrong and the ADC would return zeros).
+static uint32_t lpRunMask = 0;
+static bool lpRunFull = false;
+
+void LowPowerClass::keepRunning(uint32_t mask) {
+    lpRunMask = mask;
+    lpRunFull = mask != 0;
+}
+
+static void lpRunClocks(clock_dest_bitset_t *keep) {
+    if (lpRunMask & LowPowerClass::KR_UART0) {
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_UART0);
+        clock_dest_bitset_add(keep, CLK_DEST_PERI_UART0);
+    }
+}
+
 #if LP_LIGHT_SLEEP_CLOCKS
 // Light sleep (sleepFor / sleepUntilPin).  The SDK sleep only gates peripheral clocks (SLEEP_ENx) and leaves
 // PLL_SYS, PLL_USB, the ring oscillator and clk_usb/clk_adc running: datasheet 2.15.2.5, "The PLLs are not affected by SLEEP mode.  If the
@@ -90,13 +107,17 @@ static void waitUartsIdle() {
 
 // everything stopped: USB clocks and both PLLs as well
 static void clocksDownAll() {
-    waitUartsIdle();
-    clock_configure_undivided(clk_ref, CLOCKS_CLK_REF_CTRL_SRC_VALUE_XOSC_CLKSRC, 0, XOSC_HZ);
-    clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLK_REF, 0, XOSC_HZ);
+    if (!lpRunFull) {
+        waitUartsIdle();
+        clock_configure_undivided(clk_ref, CLOCKS_CLK_REF_CTRL_SRC_VALUE_XOSC_CLKSRC, 0, XOSC_HZ);
+        clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLK_REF, 0, XOSC_HZ);
+    }
     clock_stop(clk_adc);
     clock_stop(clk_usb);
-    clock_configure(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_HZ, XOSC_HZ);
-    pll_deinit(pll_sys);
+    if (!lpRunFull) {
+        clock_configure(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_HZ, XOSC_HZ);
+        pll_deinit(pll_sys);
+    }
     pll_deinit(pll_usb);
     savedRoscCtrl = rosc_hw->ctrl;
     rosc_hw->ctrl = (savedRoscCtrl & ~ROSC_CTRL_ENABLE_BITS) | (ROSC_CTRL_ENABLE_VALUE_DISABLE << ROSC_CTRL_ENABLE_LSB);
@@ -107,6 +128,14 @@ static void clocksDownAll() {
 static void clocksUpAll() {
     rosc_hw->ctrl = savedRoscCtrl;
     while (!(rosc_hw->status & ROSC_STATUS_STABLE_BITS)) {
+    }
+    if (lpRunFull) {
+        // PLL_SYS, clk_sys and clk_peri were never stopped: bring back only what was (no glitch for the peripherals that kept running, a UART
+        // that is receiving the wake byte keeps its bit timing)
+        pll_init(pll_usb, PLL_USB_REFDIV, PLL_USB_VCO_FREQ_HZ, PLL_USB_POSTDIV1, PLL_USB_POSTDIV2);
+        clock_configure_undivided(clk_usb, 0, CLOCKS_CLK_USB_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB, USB_CLK_HZ);
+        clock_configure_undivided(clk_adc, 0, CLOCKS_CLK_ADC_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB, USB_CLK_HZ);
+        return;
     }
     runtime_init_clocks();
 }
@@ -151,12 +180,16 @@ static inline void lightSleepClocksUp() {
 #else
 // USB clocks (PLL_USB, clk_usb) kept
 static void clocksDownKeepUsb() {
-    waitUartsIdle();
     // clk_sys/clk_peri from the crystal; PLL_USB and clk_usb stay
-    clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLK_REF, 0, XOSC_HZ);
-    clock_configure(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_HZ, XOSC_HZ);
+    if (!lpRunFull) {
+        waitUartsIdle();
+        clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLK_REF, 0, XOSC_HZ);
+        clock_configure(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_HZ, XOSC_HZ);
+    }
     clock_stop(clk_adc);
-    pll_deinit(pll_sys);
+    if (!lpRunFull) {
+        pll_deinit(pll_sys);
+    }
     savedRoscCtrl = rosc_hw->ctrl;
     rosc_hw->ctrl = (savedRoscCtrl & ~ROSC_CTRL_ENABLE_BITS) | (ROSC_CTRL_ENABLE_VALUE_DISABLE << ROSC_CTRL_ENABLE_LSB);
     while (rosc_hw->status & ROSC_STATUS_STABLE_BITS) {
@@ -168,10 +201,12 @@ static void clocksUpKeepUsb() {
     while (!(rosc_hw->status & ROSC_STATUS_STABLE_BITS)) {
     }
     // only PLL_SYS and what hangs on it come back; PLL_USB and clk_usb were never touched
-    pll_init(pll_sys, PLL_SYS_REFDIV, PLL_SYS_VCO_FREQ_HZ, PLL_SYS_POSTDIV1, PLL_SYS_POSTDIV2);
-    clock_configure_undivided(clk_ref, CLOCKS_CLK_REF_CTRL_SRC_VALUE_XOSC_CLKSRC, 0, XOSC_HZ);
-    clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLKSRC_CLK_SYS_AUX, CLOCKS_CLK_SYS_CTRL_AUXSRC_VALUE_CLKSRC_PLL_SYS, SYS_CLK_HZ);
-    clock_configure_undivided(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, SYS_CLK_HZ);
+    if (!lpRunFull) {
+        pll_init(pll_sys, PLL_SYS_REFDIV, PLL_SYS_VCO_FREQ_HZ, PLL_SYS_POSTDIV1, PLL_SYS_POSTDIV2);
+        clock_configure_undivided(clk_ref, CLOCKS_CLK_REF_CTRL_SRC_VALUE_XOSC_CLKSRC, 0, XOSC_HZ);
+        clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLKSRC_CLK_SYS_AUX, CLOCKS_CLK_SYS_CTRL_AUXSRC_VALUE_CLKSRC_PLL_SYS, SYS_CLK_HZ);
+        clock_configure_undivided(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, SYS_CLK_HZ);
+    }
     clock_configure_undivided(clk_adc, 0, CLOCKS_CLK_ADC_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB, USB_CLK_HZ);
 }
 
@@ -366,6 +401,7 @@ static void lpKeepClocks(clock_dest_bitset_t *keep) {
     clock_dest_bitset_add(keep, CLK_DEST_USB);
 #endif
 #endif
+    lpRunClocks(keep);
 }
 
 // every interrupt except `keep0` and `keep1` is disabled while asleep, so nothing but the two wake sources runs
@@ -525,7 +561,9 @@ int LowPowerClass::sleepFor(uint32_t ms) {
     }
 #endif
     lightSleepClocksDown();
-    int rc = low_power_sleep_for_ms(ms, nullptr, true);
+    clock_dest_bitset_t userKeep = clock_dest_bitset_none();
+    lpRunClocks(&userKeep);
+    int rc = low_power_sleep_for_ms(ms, lpRunMask ? &userKeep : nullptr, true);
     lightSleepClocksUp();
     leave();
 #if defined(PICO_CYW43_SUPPORTED)
