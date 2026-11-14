@@ -446,6 +446,15 @@ int LowPowerClass::sleepUntilPinImpl(pin_size_t pin, PinStatus mode, uint32_t ti
     lpKeepClocks(&keep);
 
     enter();
+#if defined(PICO_CYW43_SUPPORTED)
+    // As in sleepFor(): a CYW43 interrupt (WiFi or, much more often, Bluetooth traffic) shares IO_IRQ_BANK0 with the wake pin and would run the driver's worker
+    // while the clocks are lowered, whose PIO SPI transfer then fails or hangs (Bluetooth: advertising and the stack are lost).  Holding the async context's lock
+    // keeps the worker off until the clocks are back.
+    async_context_t *cyw43Ctx = cyw43Powered() ? cyw43_arch_async_context() : nullptr;
+    if (cyw43Ctx) {
+        async_context_acquire_lock_blocking(cyw43Ctx);
+    }
+#endif
     lpPinFired = false;
     lpTimerFired = false;
     lpPin = pin;
@@ -486,6 +495,11 @@ int LowPowerClass::sleepUntilPinImpl(pin_size_t pin, PinStatus mode, uint32_t ti
         timer_hardware_alarm_unclaim(timer_hw, alarm);
     }
     leave();
+#if defined(PICO_CYW43_SUPPORTED)
+    if (cyw43Ctx) {
+        async_context_release_lock(cyw43Ctx);
+    }
+#endif
     _wakeReason = lpPinFired ? WAKE_PIN : WAKE_TIMER;
     _lastSleepMs = (uint32_t)((t1 - t0 + 500) / 1000);
     return 0;
