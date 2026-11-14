@@ -55,6 +55,8 @@ WiFi is not needed (a sleep of more than about 10 seconds, see below) power the 
 * Timing, Pico 2 W: the chip is up and joined after about 6.8 s (firmware load about 0.4 s, the rest is scan,
   association and DHCP).  A remembered channel and BSSID, or a static address, did not shorten it measurably, so none is kept.
   Some reconnects take 10 s or more (up to 18 s seen), when the first join attempt fails and the driver retries.
+  How long it takes depends on the access point: 6 to 15 s were measured on one, so the default ``timeoutMs`` of 15 s can be too short for a slow one (``powerOn()`` then returns false while the join may still
+  complete a little later); pass a larger ``timeoutMs`` for such a network.
   The reconnect costs about 0.43 C (62 mA for 7 s), so powering off pays when the sleep is longer than about 9 s; for
   shorter ones keep the station connected (``LowPower`` light sleep keeps a connected station alive).
 * Pico 2 W board current at 3.7 V: connected and in ``LowPower.sleepFor()`` about 51 mA, chip powered off about 4.4 mA
