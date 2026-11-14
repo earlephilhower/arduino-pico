@@ -409,9 +409,14 @@ bool WiFiClass::powerOn(bool reconnect, uint32_t timeoutMs) {
     String password = _password;
     int savedTimeout = _timeout;
     _timeout = (int)timeoutMs;
-    int status = begin(ssid.c_str(), password.length() ? password.c_str() : nullptr);
+    uint32_t start = millis();
+    begin(ssid.c_str(), password.length() ? password.c_str() : nullptr);
+    // begin() does not block after WiFi.mode() (ESP8266-style): wait here, up to timeoutMs, until the join is done
+    while (!connected() && (millis() - start < timeoutMs)) {
+        delay(10);
+    }
     _timeout = savedTimeout;
-    return status == WL_CONNECTED;
+    return connected();
 }
 #endif
 

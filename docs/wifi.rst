@@ -49,7 +49,7 @@ WiFi is not needed (a sleep of more than about 10 seconds, see below) power the 
 * ``powerOff()`` leaves the network (and stops the access point, if any), then pulls ``WL_ON`` low.  The SSID and
   password of the last ``begin()`` are remembered; a static address set with ``config()`` is kept.
 * ``powerOn()`` powers the chip up again (the firmware is loaded again) and, with ``reconnect``, joins the same
-  network again like ``begin()`` does, blocking until connected or twice ``timeoutMs`` have passed.  With
+  network again like ``begin()`` does, blocking until connected or ``timeoutMs`` (twice that when ``begin()`` itself blocks) have passed, also in a sketch that called ``WiFi.mode()``.  With
   ``reconnect = false`` the chip is only powered up (and left in station mode); call ``begin()`` later.
 * Sockets and server objects do not survive: re-create them after ``powerOn()``.
 * Timing, Pico 2 W: the chip is up and joined after about 6.8 s (firmware load about 0.4 s, the rest is scan,
