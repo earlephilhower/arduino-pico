@@ -178,7 +178,7 @@ pays off for sleeps longer than roughly 0.1 to 0.3 s, at the price of a wake in 
 On the RP2350 prefer light sleep: dormant is no lower (the regulator only enters its low-power mode in a power-state
 change).  The light sleep floor is steady within one sleep but differs from sleep to sleep in steps of about 0.6 mA
 (the cause is not known; a plain Pico 2 shows the same, so it is not the CYW43), and the first sleep after a reset
-can cost about 1.7 mA more.  The RISC-V cores have no clock gating: light sleep draws 5.8 to 8.7 mA.
+can cost about 1.7 mA more.  The RISC-V cores have no clock gating: light sleep draws about 6 to 9.5 mA.
 
 Caveats
 -------
@@ -203,6 +203,11 @@ Caveats
 * **Peripherals** configured before the call keep working afterwards without ``begin()``: UART, SPI, I2C,
   ``SerialPIO``, PIO programs (``tone()``), ADC, and PWM (``analogWrite`` stops while dormant and resumes at the same
   frequency and duty).
+* **Bluetooth (BLE) on a Pico W / Pico 2 W.**  Advertising and an established connection survive every sleep and dormant
+  call: tested on a Pico 2 W with a laptop connected, the link stayed up through ``sleepFor`` of 1, 3 and 10 s,
+  ``sleepUntilPin`` and ``dormantUntilPin``, and reads and notifications worked right after each wake (the link layer runs
+  in the CYW43, so even a sleep longer than the 9.6 s supervision timeout the laptop chose did not drop it).  Like WiFi it needs the driver's
+  lock held around the sleep, which the library does for every call.
 * **FreeRTOS: not supported.**  In a build with ``Tools->Operating System->FreeRTOS SMP`` every sleep and dormant call returns
   ``PICO_ERROR_NOT_PERMITTED`` and does nothing.  FreeRTOS owns the tick (SysTick), the second core and the WiFi driver's
   tasks, which the calls change underneath it.  Tested on a Pico 2 W: with plain tasks light sleep worked, but the FreeRTOS
