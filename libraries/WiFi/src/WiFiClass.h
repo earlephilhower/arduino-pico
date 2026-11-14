@@ -248,6 +248,33 @@ public:
     */
     int disconnect(bool wifi_off = false);
 
+#if defined(PICO_CYW43_SUPPORTED)
+    /*
+        Pico W / Pico 2 W: leave the network(s) and power the CYW43 chip off (WL_ON low).  end() and disconnect() leave the
+        chip powered (about 20 mA); powered off the board draws about 4 mA (Pico 2 W) in a LowPower sleep.  The SSID and
+        password of the last begin() are remembered for powerOn().
+
+        return: true if the chip is off (also when it was off already), false if there is no CYW43 chip on this board
+    */
+    bool powerOff();
+
+    /*
+        Power the CYW43 chip on again (it reloads its firmware) and, with reconnect, join the network of the last begin()
+        again, as begin() does (it blocks until connected or twice timeoutMs); with no earlier begin() the chip is only powered up.  A static address set with config() is kept.
+        Without reconnect the chip is only powered up and left in station mode; call begin() when you want it to join.
+
+        return: true when powered on (and connected, with reconnect), false on failure or when there is no CYW43 chip
+    */
+    bool powerOn(bool reconnect = true, uint32_t timeoutMs = 15000);
+
+    /*
+        return: false after powerOff() until powerOn()
+    */
+    bool isPoweredOn() const {
+        return !_cywOff;
+    }
+#endif
+
     void end(void);
 
     /*
@@ -440,6 +467,7 @@ private:
     uint8_t _bssid[6];
     String _password;
     bool _wifiHWInitted = false;
+    bool _cywOff = false;
 
     // AP hardware and credentials
     bool _apHWInitted = false;

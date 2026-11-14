@@ -379,6 +379,42 @@ int WiFiClass::disconnect(bool wifi_off __unused) {
     return WL_DISCONNECTED;
 }
 
+#if defined(PICO_CYW43_SUPPORTED)
+bool WiFiClass::powerOff() {
+    if (!rp2040.isPicoW()) {
+        return false;
+    }
+    if (_cywOff) {
+        return true;
+    }
+    disconnectAP();
+    end(); // leaves the network and removes the netif; _ssid and _password stay
+    cyw43_arch_lwip_begin();
+    cyw43_deinit(&cyw43_state); // WL_ON low, PIO and DMA released, driver state reset; the async context and lwIP stay up
+    cyw43_arch_lwip_end();
+    _cywOff = true;
+    return true;
+}
+
+bool WiFiClass::powerOn(bool reconnect, uint32_t timeoutMs) {
+    if (!rp2040.isPicoW()) {
+        return false;
+    }
+    _cywOff = false;
+    if (!reconnect || _ssid.length() == 0) {
+        cyw43_arch_enable_sta_mode(); // powers the chip up and loads its firmware
+        return true;
+    }
+    String ssid = _ssid; // begin() assigns _ssid and _password again
+    String password = _password;
+    int savedTimeout = _timeout;
+    _timeout = (int)timeoutMs;
+    int status = begin(ssid.c_str(), password.length() ? password.c_str() : nullptr);
+    _timeout = savedTimeout;
+    return status == WL_CONNECTED;
+}
+#endif
+
 void WiFiClass::end(void) {
     if (_wifiHWInitted || _apHWInitted || _mode != WIFI_OFF) {
         disconnect();
