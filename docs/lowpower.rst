@@ -203,6 +203,12 @@ Caveats
 * **Peripherals** configured before the call keep working afterwards without ``begin()``: UART, SPI, I2C,
   ``SerialPIO``, PIO programs (``tone()``), ADC, and PWM (``analogWrite`` stops while dormant and resumes at the same
   frequency and duty).
+* **FreeRTOS: not supported.**  In a build with ``Tools->Operating System->FreeRTOS SMP`` every sleep and dormant call returns
+  ``PICO_ERROR_NOT_PERMITTED`` and does nothing.  FreeRTOS owns the tick (SysTick), the second core and the WiFi driver's
+  tasks, which the calls change underneath it.  Tested on a Pico 2 W: with plain tasks light sleep worked, but the FreeRTOS
+  tick does not run asleep (tick counts, ``vTaskDelay()`` and timeouts do not include the sleep); with ``setup1()`` /
+  ``loop1()`` defined or a connected WiFi chip light sleep hung; after a dormant wake the tick never ran again.  Use
+  ``vTaskDelay()`` or the SDK's own sleep with FreeRTOS.
 * **Both cores.**  With ``setup1()`` / ``loop1()`` the library idles the other core around the call and resumes it
   after the wake; the lowest currents need single-core sketches.
 * **Flashing a dormant chip.**  A dormant chip cannot be reached over SWD and an upload fails.  Reset it through the

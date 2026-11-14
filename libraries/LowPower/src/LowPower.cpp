@@ -428,6 +428,9 @@ int LowPowerClass::sleepUntilPinImpl(pin_size_t pin, PinStatus mode, uint32_t ti
     bool edge, high;
     _lastSleepMs = 0;
     _wakeReason = WAKE_NONE;
+#ifdef __FREERTOS
+    return PICO_ERROR_NOT_PERMITTED; // FreeRTOS owns the tick, the second core and the WiFi driver's tasks: not supported, see docs/lowpower.rst
+#endif
     if (pin >= NUM_BANK0_GPIOS || !mapPinStatus(mode, &edge, &high)) {
         return PICO_ERROR_INVALID_ARG;
     }
@@ -491,6 +494,9 @@ int LowPowerClass::sleepUntilPinImpl(pin_size_t pin, PinStatus mode, uint32_t ti
 int LowPowerClass::sleepFor(uint32_t ms) {
     _lastSleepMs = 0;
     _wakeReason = WAKE_NONE;
+#ifdef __FREERTOS
+    return PICO_ERROR_NOT_PERMITTED; // FreeRTOS owns the tick, the second core and the WiFi driver's tasks: not supported, see docs/lowpower.rst
+#endif
     if (!ms) {
         return 0;
     }
@@ -522,6 +528,9 @@ int LowPowerClass::dormantUntilPin(pin_size_t pin, PinStatus mode) {
     bool edge, high;
     _lastSleepMs = 0;
     _wakeReason = WAKE_NONE;
+#ifdef __FREERTOS
+    return PICO_ERROR_NOT_PERMITTED; // FreeRTOS owns the tick, the second core and the WiFi driver's tasks: not supported, see docs/lowpower.rst
+#endif
     if (pin >= NUM_BANK0_GPIOS || !mapPinStatus(mode, &edge, &high)) {
         return PICO_ERROR_INVALID_ARG;
     }
@@ -545,6 +554,9 @@ int LowPowerClass::dormantFor(uint32_t ms) {
 #endif
     _lastSleepMs = 0;
     _wakeReason = WAKE_NONE;
+#ifdef __FREERTOS
+    return PICO_ERROR_NOT_PERMITTED; // FreeRTOS owns the tick, the second core and the WiFi driver's tasks: not supported, see docs/lowpower.rst
+#endif
     enter();
     parkPins(parkMask(-1));
     int rc = low_power_dormant_for_ms(ms, src, nullptr);

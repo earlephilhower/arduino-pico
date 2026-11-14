@@ -15,7 +15,8 @@
 
 /**
     @brief Low-power modes.  All functions return 0 on success or a (negative)
-    Pico SDK error code (PICO_ERROR_*, see pico/error.h) on failure.
+    Pico SDK error code (PICO_ERROR_*, see pico/error.h) on failure.  With the FreeRTOS SMP
+    operating system option every sleep and dormant call returns PICO_ERROR_NOT_PERMITTED.
 */
 class LowPowerClass {
 public:
