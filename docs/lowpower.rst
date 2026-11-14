@@ -59,6 +59,7 @@ API
     int sleepUntilPin(pin_size_t pin, PinStatus mode, uint32_t timeoutMs);   // pin or timeout
     int dormantUntilPin(pin_size_t pin, PinStatus mode);
     int dormantFor(uint32_t ms);
+    void keepRunning(uint32_t mask);   // KR_PWM, KR_PIO, KR_UART0, KR_UART1, KR_ADC, KR_DMA: keep these running in sleepFor / sleepUntilPin
     void keepPins(uint64_t mask);
     void setPinRestore(bool restore);
     uint32_t lastSleepMs() const;
@@ -199,7 +200,7 @@ Caveats
   RP2040 B2 / RP2350 chips are not affected.
 * **Clocks.**  The SDK wakes into its default clocks; the library re-applies the core's ``F_CPU`` setting (and the
   matching core voltage and PSRAM timing) so peripherals configured before the sleep keep working.  The UART clock is
-  gated while sleeping: call ``Serial1.flush()`` before the call and do not expect to receive data during sleep.
+  gated while sleeping (unless ``keepRunning()`` keeps it, see below): call ``Serial1.flush()`` before the call and do not expect to receive data during sleep.
 * **Peripherals** configured before the call keep working afterwards without ``begin()``: UART, SPI, I2C,
   ``SerialPIO``, PIO programs (``tone()``), ADC, and PWM (``analogWrite`` stops while dormant and resumes at the same
   frequency and duty).
@@ -223,9 +224,51 @@ Caveats
 Wake latency (RP2040 at 133 MHz, from the start of a UART wake byte to the first output): ``dormantUntilPin`` about
 73 ms, ``sleepUntilPin`` about 4 to 6 ms, ``sleepFor`` and the timeout form return at the requested time (about 1 ms late).
 
+Keeping peripherals running in light sleep
+------------------------------------------
+
+``sleepFor()`` and ``sleepUntilPin()`` gate the clocks of every peripheral except the timer (and UART0 and USB in the pin forms)
+and run the system clock from the 12 MHz crystal with the PLLs stopped.  A PWM output, a PIO program, an ADC capture or UART1 left running
+therefore stops, and a byte that arrives on UART0 while the chip wakes can be damaged because the clocks restart while it is being received.
+``LowPower.keepRunning(mask)`` keeps selected peripherals running; ``keepRunning(0)``, the default, is the normal gated sleep.
+Dormant ignores it (the oscillators are off).  Any non-zero mask leaves the system clock on PLL_SYS, so the kept peripherals run at their
+normal rate; the price is the PLL, about 4 mA on a Pico 2 W.
+
+* ``KR_PWM`` (all PWM slices), ``KR_PIO`` (PIO0, PIO1 and, on the RP2350, PIO2), ``KR_UART1``, ``KR_DMA``.
+* ``KR_ADC`` keeps the ADC, the DMA clock and PLL_USB (the ADC's clock): sampling and DMA transfers continue.
+* ``KR_UART0`` keeps UART0 (``Serial1``) running in ``sleepFor()`` as well, and makes a wake on the UART's RX pin
+  (``sleepUntilPin(1, FALLING)`` with ``Serial1`` on GP1) deliver the first byte intact: 8 of 8 bytes intact at 115200 baud with
+  ``KR_UART0``, the first byte lost in every run without it.
+
+Measured on a Pico 2 W (150 MHz, 3.7 V, 12 s ``sleepFor`` per case, 1 kHz PWM or PIO square wave observed on a pin, a 6000-sample DMA
+capture of the ADC temperature sensor, a 16-byte UART1 loopback at 9600 baud; the plain sleep varies by about 0.4 mA between runs):
+
++-------------------------------------+---------------------------------+------------------------------+
+| ``keepRunning`` mask                | works                           | extra current in the sleep   |
++=====================================+=================================+==============================+
+| 0 (normal gated sleep)              | -                               | 2.6 to 3.0 mA total          |
++-------------------------------------+---------------------------------+------------------------------+
+| any mask, nothing running           | -                               | +3.9 mA (PLL_SYS stays on)   |
++-------------------------------------+---------------------------------+------------------------------+
+| ``KR_PWM``                          | 1000.0 Hz, 50 % (8 runs)        | +0.7 mA                      |
++-------------------------------------+---------------------------------+------------------------------+
+| ``KR_PIO``                          | 1000 Hz square wave             | +1.6 mA (one run +3.3 mA)    |
++-------------------------------------+---------------------------------+------------------------------+
+| ``KR_UART1``                        | 16 of 16 bytes intact           | +0.15 mA                     |
++-------------------------------------+---------------------------------+------------------------------+
+| ``KR_ADC``                          | 6000 of 6000 samples valid      | +5 mA (PLL_USB for clk_adc)  |
++-------------------------------------+---------------------------------+------------------------------+
+| ``KR_UART0``                        | 8 of 8 wake bytes intact        | none beyond the PLL          |
++-------------------------------------+---------------------------------+------------------------------+
+
+A kept peripheral makes the sleep a 7 to 12 mA one, so a timed wake loop (sleep, do the work, sleep) is often cheaper than a continuous
+peripheral.  On the RP2350's RISC-V cores the library does not stop the PLLs at all, so the mask only keeps the peripheral clocks.  Not
+measured on the RP2040.  The mask has no effect on the CYW43 handling: the driver's lock is held around every sleep either way.
+
 Examples
 --------
 
 * ``SleepForSerial1`` - sleep 5 seconds in a loop, reporting over ``Serial1``.
 * ``SleepPinOrTimeout`` - light sleep until a pin or a timeout.
 * ``DormantUntilPin`` - go dormant until GP15 is pulled low.
+* ``KeepRunningPWM`` - keep a PWM output running during a ``sleepFor``.
