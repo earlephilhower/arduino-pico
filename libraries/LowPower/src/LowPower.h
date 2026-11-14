@@ -158,8 +158,9 @@ public:
         library otherwise runs it from the 12 MHz crystal and stops the PLLs during the sleep): the kept peripherals keep their rate, and a byte
         arriving on a UART while the chip wakes is not damaged, at the cost of about 4 mA (the PLL) while asleep.  KR_UART0 keeps UART0 (Serial1) running in
         sleepFor() too, and makes the first byte of a sleepUntilPin() wake on its RX pin arrive intact.
+        KR_ADC also keeps the DMA clock and PLL_USB (the ADC clock), another 5 mA.
     */
-    enum KeepRunningMask { KR_UART0 = 4 };
+    enum KeepRunningMask { KR_PWM = 1, KR_PIO = 2, KR_UART0 = 4, KR_UART1 = 8, KR_ADC = 16, KR_DMA = 32 };
     void keepRunning(uint32_t mask);
 
 private:

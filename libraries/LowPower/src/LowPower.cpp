@@ -72,6 +72,32 @@ void LowPowerClass::keepRunning(uint32_t mask) {
 }
 
 static void lpRunClocks(clock_dest_bitset_t *keep) {
+    if (lpRunMask & LowPowerClass::KR_PWM) {
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_PWM);
+    }
+    if (lpRunMask & LowPowerClass::KR_PIO) {
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_PIO0);
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_PIO1);
+#if PICO_RP2350
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_PIO2);
+#endif
+    }
+    if (lpRunMask & LowPowerClass::KR_UART1) {
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_UART1);
+        clock_dest_bitset_add(keep, CLK_DEST_PERI_UART1);
+    }
+    if (lpRunMask & (LowPowerClass::KR_ADC | LowPowerClass::KR_DMA)) {
+        // KR_ADC implies the DMA clock (the usual way to collect samples); KR_DMA alone keeps a memory-to-memory or peripheral DMA going
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_DMA);
+    }
+    if (lpRunMask & LowPowerClass::KR_ADC) {
+        clock_dest_bitset_add(keep, CLK_DEST_SYS_ADC);
+#if PICO_RP2040
+        clock_dest_bitset_add(keep, CLK_DEST_ADC_ADC);
+#else
+        clock_dest_bitset_add(keep, CLK_DEST_ADC);
+#endif
+    }
     if (lpRunMask & LowPowerClass::KR_UART0) {
         clock_dest_bitset_add(keep, CLK_DEST_SYS_UART0);
         clock_dest_bitset_add(keep, CLK_DEST_PERI_UART0);
@@ -112,13 +138,18 @@ static void clocksDownAll() {
         clock_configure_undivided(clk_ref, CLOCKS_CLK_REF_CTRL_SRC_VALUE_XOSC_CLKSRC, 0, XOSC_HZ);
         clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLK_REF, 0, XOSC_HZ);
     }
-    clock_stop(clk_adc);
+    const bool keepAdc = lpRunMask & LowPowerClass::KR_ADC;     // clk_adc runs from PLL_USB
+    if (!keepAdc) {
+        clock_stop(clk_adc);
+    }
     clock_stop(clk_usb);
     if (!lpRunFull) {
         clock_configure(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_HZ, XOSC_HZ);
         pll_deinit(pll_sys);
     }
-    pll_deinit(pll_usb);
+    if (!keepAdc) {
+        pll_deinit(pll_usb);
+    }
     savedRoscCtrl = rosc_hw->ctrl;
     rosc_hw->ctrl = (savedRoscCtrl & ~ROSC_CTRL_ENABLE_BITS) | (ROSC_CTRL_ENABLE_VALUE_DISABLE << ROSC_CTRL_ENABLE_LSB);
     while (rosc_hw->status & ROSC_STATUS_STABLE_BITS) {
@@ -132,7 +163,9 @@ static void clocksUpAll() {
     if (lpRunFull) {
         // PLL_SYS, clk_sys and clk_peri were never stopped: bring back only what was (no glitch for the peripherals that kept running, a UART
         // that is receiving the wake byte keeps its bit timing)
-        pll_init(pll_usb, PLL_USB_REFDIV, PLL_USB_VCO_FREQ_HZ, PLL_USB_POSTDIV1, PLL_USB_POSTDIV2);
+        if (!(lpRunMask & LowPowerClass::KR_ADC)) {
+            pll_init(pll_usb, PLL_USB_REFDIV, PLL_USB_VCO_FREQ_HZ, PLL_USB_POSTDIV1, PLL_USB_POSTDIV2);
+        }
         clock_configure_undivided(clk_usb, 0, CLOCKS_CLK_USB_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB, USB_CLK_HZ);
         clock_configure_undivided(clk_adc, 0, CLOCKS_CLK_ADC_CTRL_AUXSRC_VALUE_CLKSRC_PLL_USB, USB_CLK_HZ);
         return;
@@ -186,7 +219,9 @@ static void clocksDownKeepUsb() {
         clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLK_REF, 0, XOSC_HZ);
         clock_configure(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_HZ, XOSC_HZ);
     }
-    clock_stop(clk_adc);
+    if (!(lpRunMask & LowPowerClass::KR_ADC)) {
+        clock_stop(clk_adc);
+    }
     if (!lpRunFull) {
         pll_deinit(pll_sys);
     }
