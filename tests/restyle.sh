@@ -34,7 +34,7 @@ for dir in ./cores/rp2040 ./libraries/EEPROM ./libraries/I2S ./libraries/SingleF
            ./libraries/FatFSUSB ./libraries/BluetoothAudio ./libraries/BluetoothHCI \
            ./libraries/BluetoothHIDMaster ./libraries/NetBIOS ./libraries/Ticker \
            ./libraries/VFS ./libraries/rp2350 ./libraries/SimpleMDNS ./libraries/SoftwareSPI \
-           ./libraries/MIDIUSB ./libraries/BLE; do
+           ./libraries/MIDIUSB ./libraries/BLE ./libraries/LowPower; do
     find "$base"/$dir -type f \( -name "*.c" -o -name "*.h" -o -name "*.cpp" \) -a  \! -path '*api*' -exec "$astyle" --suffix=none --options="$base"/tests/astyle_core.conf \{\} \;
     find "$base"/$dir -type f -name "*.ino" -exec "$astyle" --suffix=none --options="$base"/tests/astyle_examples.conf \{\} \;
 done

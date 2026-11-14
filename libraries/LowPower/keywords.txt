@@ -1,0 +1,31 @@
+#######################################
+# Syntax Coloring Map LowPower
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LowPower	KEYWORD1	LowPower
+LowPowerClass	KEYWORD1
+WakeReason	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+sleepFor	KEYWORD2
+sleepUntilPin	KEYWORD2
+dormantUntilPin	KEYWORD2
+dormantFor	KEYWORD2
+keepPins	KEYWORD2
+setPinRestore	KEYWORD2
+lastSleepMs	KEYWORD2
+wakeReason	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+SLEEP_UNKNOWN	LITERAL1
+WAKE_NONE	LITERAL1
+WAKE_PIN	LITERAL1
+WAKE_TIMER	LITERAL1
