@@ -57,16 +57,16 @@ void handleWifi() {
           + String(softAP_ssid) + F("</td></tr>"
                                     "<tr><td>IP ")
           + toStringIp(WiFi.softAPIP()) + F("</td></tr>"
-              "</table>"
-              "\r\n<br />"
-              "<table><tr><th align='left'>WLAN config</th></tr>"
-              "<tr><td>SSID ")
+            "</table>"
+            "\r\n<br />"
+            "<table><tr><th align='left'>WLAN config</th></tr>"
+            "<tr><td>SSID ")
           + String(ssid) + F("</td></tr>"
                              "<tr><td>IP ")
           + toStringIp(WiFi.localIP()) + F("</td></tr>"
-              "</table>"
-              "\r\n<br />"
-              "<table><tr><th align='left'>WLAN list (refresh if any missing)</th></tr>");
+            "</table>"
+            "\r\n<br />"
+            "<table><tr><th align='left'>WLAN list (refresh if any missing)</th></tr>");
   Serial.println("scan start");
   int n = WiFi.scanNetworks();
   Serial.println("scan done");

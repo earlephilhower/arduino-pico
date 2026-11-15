@@ -19,6 +19,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <Arduino.h>
+#include <wiring_private.h> // __shim
 #include "PWMAudio.h"
 #include "PWMAudioPrecalc.h"
 #include <hardware/pwm.h>
@@ -29,7 +30,6 @@ PWMAudio::PWMAudio(pin_size_t pin, bool stereo) {
     _pin = pin;
     _freq = 48000;
     _arb = nullptr;
-    _cb = nullptr;
     _cbd = nullptr;
     _buffers = 8;
     _bufferWords = 0;
@@ -114,10 +114,7 @@ bool PWMAudio::setFrequency(int frequency) {
 }
 
 void PWMAudio::onTransmit(void(*fn)(void)) {
-    _cb = fn;
-    if (_running) {
-        _arb->setCallback(_cb);
-    }
+    onTransmit(__shim, (void *)fn);
 }
 
 void PWMAudio::onTransmit(void(*fn)(void *), void *cbData) {
@@ -165,7 +162,7 @@ bool PWMAudio::begin() {
     uint32_t ccAddr = PWM_BASE + PWM_CH0_CC_OFFSET + pwm_gpio_to_slice_num(_pin) * 20;
 
     _arb = new AudioBufferManager(_buffers, _bufferWords, 0x80008000, OUTPUT, DMA_SIZE_32);
-    if (!_arb->begin(_pacer_dreq, (volatile void*)ccAddr)) {
+    if (!_arb->begin(_pacer_dreq, (volatile void *)ccAddr)) {
         _running = false;
         delete _arb;
         _arb = nullptr;
@@ -174,8 +171,6 @@ bool PWMAudio::begin() {
 
     if (_cbd) {
         _arb->setCallback(_cbd, _cbdata);
-    } else {
-        _arb->setCallback(_cb);
     }
 
     return true;

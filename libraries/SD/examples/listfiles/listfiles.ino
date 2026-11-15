@@ -69,12 +69,12 @@ void setup() {
   } else {
     // Ensure the SPI pinout the SD card is connected to is configured properly
     // Select the correct SPI based on _MISO pin for the RP2040
-    if (_MISO == 0 || _MISO == 4 || _MISO == 16) {
+    if (_MISO == 0 || _MISO == 4 || _MISO == 16 || _MISO == 20 || _MISO == 32 || _MISO == 36) {
       SPI.setRX(_MISO);
       SPI.setTX(_MOSI);
       SPI.setSCK(_SCK);
       sdInitialized = SD.begin(_CS);
-    } else if (_MISO == 8 || _MISO == 12) {
+    } else if (_MISO == 8 || _MISO == 12 || _MISO == 24 || _MISO == 28 || _MISO == 40 || _MISO == 44) {
       SPI1.setRX(_MISO);
       SPI1.setTX(_MOSI);
       SPI1.setSCK(_SCK);

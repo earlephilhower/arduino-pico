@@ -28,7 +28,8 @@
 
 void __clearADCPin(pin_size_t p);
 
-static uint32_t analogScale = 255;
+static uint32_t analogRange = 255; // as set by analogWriteRange()
+static uint32_t analogScale = 255; // analogRange after the clock divider adjustments in analogWrite()
 static uint32_t analogFreq = 1000;
 static uint64_t pwmInitted = 0;
 static bool scaleInitted = false;
@@ -56,11 +57,11 @@ extern "C" void analogWriteFreq(uint32_t freq) {
 }
 
 extern "C" void analogWriteRange(uint32_t range) {
-    if (range == analogScale) {
+    if (range == analogRange) {
         return;
     }
     if ((range >= 3) && (range <= 65535)) {
-        analogScale = range;
+        analogRange = range;
         pwmInitted = 0;
         scaleInitted = false;
     } else {
@@ -86,6 +87,7 @@ extern "C" void analogWrite(pin_size_t pin, int val) {
     __clearADCPin(pin);
     if (!scaleInitted) {
         // For low frequencies, we need to scale the output max value up to achieve lower periods
+        analogScale = analogRange;
         analogWritePseudoScale = 1;
         while (((clock_get_hz(clk_sys) / ((float)analogScale * analogFreq)) > 255.0f) && (analogScale < 32678)) {
             analogWritePseudoScale++;

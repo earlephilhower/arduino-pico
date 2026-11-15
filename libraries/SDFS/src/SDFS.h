@@ -503,7 +503,7 @@ public:
             } else {
                 _valid = 0;
             }
-        } while (_valid && strncmp((const char*) _lfn, _pattern.c_str(), n) != 0);
+        } while (_valid && strncmp((const char *) _lfn, _pattern.c_str(), n) != 0);
         return _valid;
     }
 

@@ -435,7 +435,7 @@ uint16_t Wiznet6300::sendFrame(struct pbuf *p) {
         }
     };
 
-    wizchip_send_data((const uint8_t*)p->payload, p->len);
+    wizchip_send_data((const uint8_t *)p->payload, p->len);
     setSn_CR(Sn_CR_SEND);
 
     while (1) {

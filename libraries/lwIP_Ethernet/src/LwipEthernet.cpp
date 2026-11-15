@@ -68,7 +68,12 @@ void ethernet_arch_lwip_begin() {
 #else
 #if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
-        cyw43_arch_lwip_begin();
+        // Lock the arch context directly: cyw43_arch_lwip_begin() goes through the driver's own context pointer, which
+        // cyw43_arch_deinit() clears before it removes the lwIP workers (their timeout code runs this under lock): NULL dereference
+        async_context_t *ctx = cyw43_arch_async_context();
+        if (ctx) {
+            async_context_acquire_lock_blocking(ctx);
+        }
         return;
     }
 #endif
@@ -82,7 +87,10 @@ void ethernet_arch_lwip_end() {
 #else
 #if defined(PICO_CYW43_SUPPORTED)
     if (rp2040.isPicoW()) {
-        cyw43_arch_lwip_end();
+        async_context_t *ctx = cyw43_arch_async_context();
+        if (ctx) {
+            async_context_release_lock(ctx);
+        }
         return;
     }
 #endif

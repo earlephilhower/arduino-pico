@@ -69,6 +69,9 @@ void UpdaterClass::_reset() {
     _currentAddress = 0;
     _size = 0;
     _command = U_FLASH;
+    if (_fp) {
+        _fp.close();
+    }
 }
 
 bool UpdaterClass::begin(size_t size, int command) {

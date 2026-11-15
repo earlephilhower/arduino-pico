@@ -373,7 +373,7 @@ const uint8_t * UUID::getUuid(void) const {
 static char uuid16_buffer[5];
 const char * UUID::getUuidString() const {
     // TODO: fix uuid_has_bluetooth_prefix call to use const
-    if (uuid_has_bluetooth_prefix((uint8_t*)uuid)) {
+    if (uuid_has_bluetooth_prefix((uint8_t *)uuid)) {
         sprintf(uuid16_buffer, "%04x", (uint16_t) big_endian_read_32(uuid, 0));
         return uuid16_buffer;
     }  else {
@@ -470,7 +470,7 @@ bool BLEAdvertisement::nameHasPrefix(const char * name_prefix) {
             if (compare_len > data_len) {
                 compare_len = data_len;
             }
-            if (strncmp(name_prefix, (const char*) data, compare_len) == 0) {
+            if (strncmp(name_prefix, (const char *) data, compare_len) == 0) {
                 return true;
             }
             break;

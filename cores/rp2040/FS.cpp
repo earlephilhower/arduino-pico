@@ -582,7 +582,7 @@ File open(const char* path, const char* mode) {
         return File();
     }
 
-    for (MountEntry* entry = s_mounted; entry; entry = entry->next) {
+    for (MountEntry * entry = s_mounted; entry; entry = entry->next) {
         size_t offset = entry->path.length();
         if (strstr(path, entry->path.c_str())) {
             File result = entry->fs->open(path + offset);

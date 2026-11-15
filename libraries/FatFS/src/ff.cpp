@@ -3486,7 +3486,7 @@ static FRESULT follow_path(  /* FR_OK(0): successful, !=0: error code */
 #endif
 #endif
 
-    if ((UINT)*path < ' ') {				/* Null path name is the origin directory itself */
+    if ((UINT) * path < ' ') {				/* Null path name is the origin directory itself */
         dp->fn[NSFLAG] = NS_NONAME;
         res = dir_sdi(dp, 0);
 
@@ -4997,7 +4997,7 @@ FRESULT f_getcwd(
 #if FF_VOLUMES >= 2			/* Put drive prefix */
             vl = 0;
 #if FF_STR_VOLUME_ID >= 1	/* String volume ID */
-            for (n = 0, vp = (const char*)VolumeStr[CurrVol]; vp[n]; n++) ;
+            for (n = 0, vp = (const char *)VolumeStr[CurrVol]; vp[n]; n++) ;
             if (i >= n + 2) {
                 if (FF_STR_VOLUME_ID == 2) {
                     *tp++ = (TCHAR)'/';
@@ -6174,7 +6174,7 @@ FRESULT f_setlabel(
     if (fs->fs_type == FS_EXFAT) {	/* On the exFAT volume */
         memset(dirvn, 0, 22);
         di = 0;
-        while ((UINT)*label >= ' ') {	/* Create volume label */
+        while ((UINT) * label >= ' ') {	/* Create volume label */
             dc = tchar2uni(&label);	/* Get a Unicode character */
             if (dc >= 0x10000) {
                 if (dc == 0xFFFFFFFF || di >= 10) {	/* Wrong surrogate or buffer overflow */
@@ -6194,7 +6194,7 @@ FRESULT f_setlabel(
         /* On the FAT/FAT32 volume */
         memset(dirvn, ' ', 11);
         di = 0;
-        while ((UINT)*label >= ' ') {	/* Create volume label */
+        while ((UINT) * label >= ' ') {	/* Create volume label */
 #if FF_USE_LFN
             dc = tchar2uni(&label);
             wc = (dc < 0x10000) ? ff_uni2oem(ff_wtoupper(dc), CODEPAGE) : 0;

@@ -19,6 +19,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 #include <Arduino.h>
+#include <wiring_private.h> // __shim
 #include "I2S.h"
 #include "pio_i2s.pio.h"
 #include <pico/stdlib.h>
@@ -52,10 +53,8 @@ I2S::I2S(PinMode direction, pin_size_t bclk, pin_size_t data, pin_size_t mclk, p
 #endif
     _freq = 48000;
     _arbInput = nullptr;
-    _cbInput = nullptr;
     _cbdInput = nullptr;
     _arbOutput = nullptr;
-    _cbOutput = nullptr;
     _cbdOutput = nullptr;
     _buffers = 6;
     _bufferWords = 0;
@@ -171,6 +170,7 @@ bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
     switch (samplerate) {
     case 8000:
     case 16000:
+    case 24000:
     case 32000:
     case 48000:
     case 96000:
@@ -201,6 +201,7 @@ bool I2S::setSysClk(int samplerate) { // optimise sys_clk for desired samplerate
 #else
     switch (samplerate) {
     case 8000:
+    case 24000:
         rate = 192000;
         break;
     case 16000:
@@ -278,12 +279,7 @@ bool I2S::swapClocks() {
 }
 
 void I2S::onTransmit(void(*fn)(void)) {
-    if (_isOutput) {
-        _cbOutput = fn;
-        if (_running) {
-            _arbOutput->setCallback(_cbOutput);
-        }
-    }
+    onTransmit(__shim, (void *)fn);
 }
 
 void I2S::onTransmit(void(*fn)(void *), void *cbData) {
@@ -297,12 +293,7 @@ void I2S::onTransmit(void(*fn)(void *), void *cbData) {
 }
 
 void I2S::onReceive(void(*fn)(void)) {
-    if (_isInput) {
-        _cbInput = fn;
-        if (_running) {
-            _arbInput->setCallback(_cbInput);
-        }
-    }
+    onReceive(__shim, (void *)fn);
 }
 
 void I2S::onReceive(void(*fn)(void *), void *cbData) {
@@ -464,7 +455,7 @@ bool I2S::begin() {
     // Generate the input ARB for DMA to RAM
     if (_isInput) {
         _arbInput = new AudioBufferManager(_buffers, _bufferWords, _silenceSample, INPUT);
-        if (!_arbInput->begin(pio_get_dreq(_pio, _sm, false), (volatile void*)&_pio->rxf[_sm])) {
+        if (!_arbInput->begin(pio_get_dreq(_pio, _sm, false), (volatile void *)&_pio->rxf[_sm])) {
             _running = false;
             delete _arbInput;
             _arbInput = nullptr;
@@ -476,8 +467,6 @@ bool I2S::begin() {
         }
         if (_cbdInput) {
             _arbInput->setCallback(_cbdInput, _cbdataInput);
-        } else {
-            _arbInput->setCallback(_cbInput);
         }
     }
 
@@ -498,8 +487,6 @@ bool I2S::begin() {
         }
         if (_cbdOutput) {
             _arbOutput->setCallback(_cbdOutput, _cbdataOutput);
-        } else {
-            _arbOutput->setCallback(_cbOutput);
         }
     }
 

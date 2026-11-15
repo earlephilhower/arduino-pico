@@ -35,7 +35,7 @@ extern "C" {
 
 #define PBUF_ALIGNER_ADJUST 4
 #define PBUF_ALIGNER(x) ((void*)((((intptr_t)(x))+3)&~3))
-#define PBUF_HELPER_FLAG 0xff // lwIP pbuf flag: u8_t
+#define PBUF_HELPER_FLAG 0x80 // lwIP pbuf flag: u8_t, making sure not to use any bits set by LWIP itself
 
 class UdpContext {
 public:
@@ -400,7 +400,7 @@ private:
         pbuf* tx_copy = pbuf_alloc(PBUF_TRANSPORT, data_size, PBUF_RAM);
         if (tx_copy) {
             uint8_t* dst = reinterpret_cast<uint8_t*>(tx_copy->payload);
-            for (pbuf* p = _tx_buf_head; p; p = p->next) {
+            for (pbuf * p = _tx_buf_head; p; p = p->next) {
                 size_t will_copy = (data_size < p->len) ? data_size : p->len;
                 memcpy(dst, p->payload, will_copy);
                 dst += will_copy;

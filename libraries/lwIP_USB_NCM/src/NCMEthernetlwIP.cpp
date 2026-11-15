@@ -52,6 +52,11 @@ void NCMEthernetlwIP::_call_irq(async_context_t *context, async_when_pending_wor
 #ifdef __FREERTOS
     // In freertos we can afford to block, as long as no other code uses tinyUSB and lwIP at the same time.
     CoreMutex m(&USB.mutex);
+    if (!m) {
+        // Could not get USB mutex, try again later.
+        NCMEthernet::_set_recv_pending();
+        return;
+    }
 #else
     if (!mutex_try_enter(&USB.mutex, NULL)) {
         // Could not get USB mutex, try again later.

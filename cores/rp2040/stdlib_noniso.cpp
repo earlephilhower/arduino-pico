@@ -170,7 +170,7 @@ extern "C" const char* strrstr(const char*__restrict p_pcString,
             (stPatternLength) &&
             (stPatternLength <= stStringLength)) {
         // Pattern is shorter or has the same length than the string
-        for (const char* s = (p_pcString + stStringLength - stPatternLength); s >= p_pcString; --s) {
+        for (const char * s = (p_pcString + stStringLength - stPatternLength); s >= p_pcString; --s) {
             if (0 == strncmp(s, p_pcPattern, stPatternLength)) {
                 pcResult = s;
                 break;

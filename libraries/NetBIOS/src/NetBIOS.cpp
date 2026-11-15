@@ -115,10 +115,10 @@ bool NetBIOS::begin(const char *name) {
     }
 
     _udp.onPacket(
-    [](void *arg, AsyncUDPPacket & packet) {
+        [](void *arg, AsyncUDPPacket & packet) {
         ((NetBIOS *)(arg))->_onPacket(packet);
     },
-    this
+        this
     );
     return _udp.listen(NBNS_PORT);
 }

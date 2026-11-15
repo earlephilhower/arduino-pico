@@ -581,7 +581,7 @@ private_key *read_private_key(const char *buff, size_t len) {
     private_key *sk = nullptr;
     pem_object *pos = nullptr;
 
-    if (looks_like_DER((const unsigned char*)buff, len)) {
+    if (looks_like_DER((const unsigned char *)buff, len)) {
         sk = decode_private_key((const unsigned char*)buff, len);
         return sk;
     }
@@ -608,7 +608,7 @@ public_key *read_public_key(const char *buff, size_t len) {
     public_key *pk = nullptr;
     pem_object *pos = nullptr;
 
-    if (looks_like_DER((const unsigned char*)buff, len)) {
+    if (looks_like_DER((const unsigned char *)buff, len)) {
         pk = decode_public_key((const unsigned char*)buff, len);
         return pk;
     }

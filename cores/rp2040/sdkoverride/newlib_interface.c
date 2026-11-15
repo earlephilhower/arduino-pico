@@ -27,10 +27,6 @@
 #include "pico/stdio.h"
 #endif
 
-#if PICO_ENTER_USB_BOOT_ON_EXIT
-#include "pico/bootrom.h"
-#endif
-
 extern char __StackLimit; /* Set by linker.  */
 
 #define STDIO_HANDLE_STDIN  0

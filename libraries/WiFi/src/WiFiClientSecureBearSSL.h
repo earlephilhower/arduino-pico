@@ -52,6 +52,9 @@ public:
     int connect(const char* name, uint16_t port) override;
 
     uint8_t connected() override;
+    size_t write(uint8_t y) override {
+        return write(&y, 1);
+    }
     size_t write(const uint8_t *buf, size_t size) override;
     //    size_t write_P(PGM_P buf, size_t size) override;
     size_t write(Stream& stream); // Note this is not virtual
@@ -394,6 +397,9 @@ public:
 
     uint8_t connected() override {
         return _ctx->connected();
+    }
+    size_t write(uint8_t y) override {
+        return write(&y, 1);
     }
     size_t write(const uint8_t *buf, size_t size) override {
         return _ctx->write(buf, size);

@@ -112,10 +112,10 @@ static int cnt = 0;
 
 void loop() {
 #if USE_WIFI
- // wait for WiFi connection
- if ((WiFiMulti.run() == WL_CONNECTED)) {
+  // wait for WiFi connection
+  if ((WiFiMulti.run() == WL_CONNECTED)) {
 #elif USE_WIRED
- if (eth.connected()) {
+  if (eth.connected()) {
 #endif
     HTTPClient https;
     switch (cnt) {

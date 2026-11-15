@@ -56,6 +56,9 @@ void MouseAbsolute_::move(int x, int y, signed char wheel) {
         return;
     }
     CoreMutex m(&USB.mutex);
+    if (!m) {
+        return;
+    }
     tud_task();
     if (tud_hid_ready()) {
         tud_hid_abs_mouse_report(USB.findHIDReportID(_id), _buttons, limit_xy(x), limit_xy(y), wheel, 0);

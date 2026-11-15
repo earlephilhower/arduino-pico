@@ -244,6 +244,11 @@ SECTIONS
         __bss_end__ = .;
     } > RAM
 
+    /* pico_low_power (Pstate) references these. The core has no persistent-data
+       section yet, so provide an empty one. */
+    PROVIDE(__persistent_data_start__ = __bss_end__);
+    PROVIDE(__persistent_data_end__ = __bss_end__);
+
     .heap (NOLOAD):
     {
         __end__ = .;

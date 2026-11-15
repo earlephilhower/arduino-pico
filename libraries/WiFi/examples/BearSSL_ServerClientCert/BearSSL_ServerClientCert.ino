@@ -164,7 +164,7 @@ void setClock() {
   NTP.begin("pool.ntp.org", "time.nist.gov");
 
   Serial.print("Waiting for NTP time sync: ");
-  NTP.waitSet([]() { Serial.print("."); } );
+  NTP.waitSet([]() { Serial.print("."); });
   Serial.println("");
 
   time_t now = time(nullptr);
@@ -223,7 +223,9 @@ static const char *HTTP_RES = "HTTP/1.0 200 OK\r\n"
 
 void loop() {
   BearSSL::WiFiClientSecure incoming = server.accept();
-  if (!incoming) { return; }
+  if (!incoming) {
+    return;
+  }
   Serial.println("Incoming connection...\n");
 
   // Ugly way to wait for \r\n (i.e. end of HTTP request which we don't actually parse here)
@@ -241,10 +243,13 @@ void loop() {
     } else if (x == 0x0D) {
       continue;
     } else if (x == 0x0A) {
-      if (lcwn) { break; }
+      if (lcwn) {
+        break;
+      }
       lcwn = 1;
-    } else
+    } else {
       lcwn = 0;
+    }
   }
   incoming.write((uint8_t *)HTTP_RES, strlen(HTTP_RES));
   incoming.flush();
