@@ -28,7 +28,6 @@ public:
     AudioBufferManager(size_t bufferCount, size_t bufferWords, int32_t silenceSample, PinMode direction = OUTPUT, enum dma_channel_transfer_size dmaSize = DMA_SIZE_32);
     ~AudioBufferManager();
 
-    void setCallback(void (*fn)());
     void setCallback(void (*fn)(void *), void *cbData);
 
     bool begin(int dreq, volatile void *pioFIFOAddr);
@@ -98,8 +97,6 @@ private:
     int _triggerDMA[2];
     void *_nextBuffer[2]; // Used by triggerDMA to load opposite address-trigger
 
-    bool _useData;
-    void (*_callback)();
     void (*_callbackCB)(void *);
     void *_callbackData;
 

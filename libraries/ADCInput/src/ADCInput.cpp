@@ -21,6 +21,7 @@
 */
 
 #include <Arduino.h>
+#include <wiring_private.h> // __shim
 #include "ADCInput.h"
 #include <hardware/adc.h>
 #include <debug_internal.h>
@@ -87,7 +88,7 @@ bool ADCInput::setFrequency(int newFreq) {
 void ADCInput::onReceive(void(*fn)(void)) {
     _cb = fn;
     if (_running) {
-        _arb->setCallback(_cb);
+        _arb->setCallback(__shim, (void *)_cb);
     }
 }
 
@@ -146,7 +147,9 @@ bool ADCInput::begin() {
         _arb = nullptr;
         return false;
     }
-    _arb->setCallback(_cb);
+    if (_cb) {
+        _arb->setCallback(__shim, (void *)_cb);
+    }
 
     adc_fifo_drain();
 
