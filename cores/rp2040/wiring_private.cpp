@@ -100,7 +100,7 @@ void *_gpioIrqCBParam[__GPIOCNT] = {};
 // dispatch to the real callback manually
 static void __not_in_flash_func(_gpioInterruptDispatcher)(uint gpio, uint32_t events) {
     (void) events;
-    void * param = _gpioIrqCBParam[gpio];
+    void *param = _gpioIrqCBParam[gpio];
     if(param) {
         voidFuncPtrParam cb = (voidFuncPtrParam)_gpioIrqCB[gpio];
         if(cb) cb(param);
@@ -119,7 +119,7 @@ static void _detachInterruptInternal(pin_size_t pin) {
 }
 
 extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode) {
-    attachInterruptParam( pin, (voidFuncPtrParam)callback, mode, 0);
+    attachInterruptParam(pin, (voidFuncPtrParam)callback, mode, 0);
 }
 
 void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus mode, void *param) {
