@@ -44,6 +44,7 @@ For the latest version, always check https://github.com/earlephilhower/arduino-p
    File Systems (SD, SDFS, LittleFS) <fs>
    USB (Arduino and Adafruit_TinyUSB) <usb>
    Multicore Processing <multicore>
+   Low Power (Sleep and Dormant) <lowpower>
    Semihosting <semihosting>
    Profiling (GPROF) <profiling>
 
