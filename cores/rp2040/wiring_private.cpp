@@ -92,10 +92,15 @@ extern "C" void noInterrupts() {
 #endif
 }
 
+// Calls the function passed in as cb without a parameter
+extern "C" void __shim(void *cb) {
+    voidFuncPtr c = (voidFuncPtr)cb;
+    c();
+}
+
 auto_init_mutex(_irqMutex);
 static uint64_t _gpioIrqEnabled = 0; // Sized to work with RP2350B, 48 GPIOs
-static uint64_t _gpioIrqUseParam;
-void *_gpioIrqCB[__GPIOCNT];
+voidFuncPtrParam _gpioIrqCB[__GPIOCNT];
 void *_gpioIrqCBParam[__GPIOCNT];
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
@@ -104,13 +109,7 @@ static void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
     (void) events;
     uint64_t mask = 1LL << gpio;
     if (_gpioIrqEnabled & mask) {
-        if (_gpioIrqUseParam & mask) {
-            voidFuncPtr cb = (voidFuncPtr)_gpioIrqCB[gpio];
-            cb();
-        } else {
-            voidFuncPtrParam cb = (voidFuncPtrParam)_gpioIrqCB[gpio];
-            cb(_gpioIrqCBParam[gpio]);
-        }
+        _gpioIrqCB[gpio](_gpioIrqCBParam[gpio]);
     }
 }
 
@@ -124,27 +123,7 @@ static void _detachInterruptInternal(pin_size_t pin) {
 }
 
 extern "C" void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode) {
-    CoreMutex m(&_irqMutex);
-    if (!m) {
-        return;
-    }
-    uint64_t mask = 1LL << pin;
-    uint32_t events;
-    switch (mode) {
-    case LOW:     events = 1; break;
-    case HIGH:    events = 2; break;
-    case FALLING: events = 4; break;
-    case RISING:  events = 8; break;
-    case CHANGE:  events = 4 | 8; break;
-    default:      return;  // ERROR
-    }
-    noInterrupts();
-    _detachInterruptInternal(pin);
-    _gpioIrqEnabled |= mask;
-    _gpioIrqUseParam &= ~mask; // No parameter
-    _gpioIrqCB[pin] = (void *)callback;
-    gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
-    interrupts();
+    attachInterruptParam(pin, __shim, mode, (void *)callback);
 }
 
 void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus mode, void *param) {
@@ -165,8 +144,7 @@ void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus m
     noInterrupts();
     _detachInterruptInternal(pin);
     _gpioIrqEnabled |= mask;
-    _gpioIrqUseParam &= ~mask; // No parameter
-    _gpioIrqCB[pin] = (void *)callback;
+    _gpioIrqCB[pin] = callback;
     _gpioIrqCBParam[pin] = param;
     gpio_set_irq_enabled_with_callback(pin, events, true, _gpioInterruptDispatcher);
     interrupts();

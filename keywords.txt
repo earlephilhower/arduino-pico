@@ -63,6 +63,8 @@ restart	KEYWORD2
 
 isPicoW	KEYWORD2
 
+attachInterruptParam	KEYWORD2
+
 pmalloc	KEYWORD2
 pcalloc	KEYWORD2
 getPSRAMSize	KEYWORD2
