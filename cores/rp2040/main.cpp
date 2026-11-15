@@ -75,6 +75,9 @@ void __attribute__((__noreturn__)) main1() {
     }
 }
 
+void __initLFSMutex() __attribute__((weak));
+void __initLFSMutex() { }
+
 extern void __loop() {
 #ifdef USE_TINYUSB
     yield();
@@ -152,7 +155,7 @@ extern "C" int main() {
 #else
     initVariant();
 #endif
-
+    __initLFSMutex();
 
 #ifndef NO_USB
 #ifdef USE_TINYUSB

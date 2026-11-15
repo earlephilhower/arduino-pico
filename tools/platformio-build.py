@@ -193,6 +193,7 @@ env.Append(
         "@%s" % os.path.join(FRAMEWORK_DIR, "cores", "rp2040", "lwip-wrappers", "wrap_ethernet_wraps.inc"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "cores", "rp2040", "lwip-wrappers", "wrap_mdns_wraps.inc"),
         "@%s" % os.path.join(FRAMEWORK_DIR, "cores", "rp2040", "lwip-wrappers", "wrap_sntp_wraps.inc"),
+        "@%s" % os.path.join(FRAMEWORK_DIR, "libraries", "LittleFS", "src", "wrap_lfs_wraps.inc"),
         # no cross-reference table, heavily spams the output
         # "-Wl,--cref",
         "-Wl,--no-warn-rwx-segments",
