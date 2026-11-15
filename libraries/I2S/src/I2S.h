@@ -170,11 +170,9 @@ private:
     int32_t _holdWord = 0;
     int _isHolding = 0;
 
-    void (*_cbInput)();
     void (*_cbdInput)(void *);
     void *_cbdataInput;
 
-    void (*_cbOutput)();
     void (*_cbdOutput)(void *);
     void *_cbdataOutput;
 

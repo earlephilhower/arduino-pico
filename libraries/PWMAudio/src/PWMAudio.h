@@ -106,7 +106,6 @@ private:
     bool _wasHolding;
     uint32_t _holdWord;
 
-    void (*_cb)();
     void (*_cbd)(void *);
     void *_cbdata;
 
