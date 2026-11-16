@@ -93,7 +93,7 @@ extern "C" void noInterrupts() {
 }
 
 // Calls the function passed in as cb without a parameter
-extern "C" void __shim(void *cb) {
+extern "C" void __not_in_flash_func(__shim)(void *cb) {
     voidFuncPtr c = (voidFuncPtr)cb;
     c();
 }
@@ -105,7 +105,7 @@ void *_gpioIrqCBParam[__GPIOCNT];
 
 // Only 1 GPIO IRQ callback for all pins, so we need to look at the pin it's for and
 // dispatch to the real callback manually
-static void _gpioInterruptDispatcher(uint gpio, uint32_t events) {
+static void __not_in_flash_func(_gpioInterruptDispatcher)(uint gpio, uint32_t events) {
     (void) events;
     uint64_t mask = 1LL << gpio;
     if (_gpioIrqEnabled & mask) {
