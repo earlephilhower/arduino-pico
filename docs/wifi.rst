@@ -54,6 +54,7 @@ WiFi is not needed (a sleep of more than about 10 seconds, see below) power the 
 * ``powerOn()`` powers the chip up again (the firmware is loaded again) and, with ``reconnect``, joins the same
   network again like ``begin()`` does, blocking until connected or ``timeoutMs`` (twice that when ``begin()`` itself blocks) have passed, also in a sketch that called ``WiFi.mode()``.  With
   ``reconnect = false`` the chip is only powered up (and left in station mode); call ``begin()`` later.
+* The three calls exist on every board so that a sketch builds everywhere; on a board without the CYW43 chip ``powerOff()`` and ``powerOn()`` do nothing and return ``false``, and ``isPoweredOn()`` is ``false``.
 * Sockets and server objects do not survive: re-create them after ``powerOn()``.
 * Timing, Pico 2 W: the chip is up and joined after about 6.8 s (firmware load about 0.4 s, the rest is scan,
   association and DHCP).  A remembered channel and BSSID, or a static address, did not shorten it measurably, so none is kept.

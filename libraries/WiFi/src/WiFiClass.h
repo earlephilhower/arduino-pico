@@ -248,7 +248,6 @@ public:
     */
     int disconnect(bool wifi_off = false);
 
-#if defined(PICO_CYW43_SUPPORTED)
     /*
         Pico W / Pico 2 W: leave the network(s) and power the CYW43 chip off (WL_ON low).  end() and disconnect() leave the
         chip powered (about 20 mA); powered off the board draws about 4 mA (Pico 2 W) in a LowPower sleep.  The SSID and
@@ -257,7 +256,7 @@ public:
         The chip carries Bluetooth as well as WiFi: this powers all of it off, so a Bluetooth link and advertising end too.  powerOn() restores WiFi only; a sketch
         that uses Bluetooth has to start the Bluetooth stack again after powerOn().
 
-        return: true if the chip is off (also when it was off already), false if there is no CYW43 chip on this board
+        return: true if the chip is off (also when it was off already), false if there is no CYW43 chip on this board (the call is declared on every board and does nothing there)
     */
     bool powerOff();
 
@@ -271,12 +270,15 @@ public:
     bool powerOn(bool reconnect = true, uint32_t timeoutMs = 15000);
 
     /*
-        return: false after powerOff() until powerOn()
+        return: false after powerOff() until powerOn(), and always false on a board without the CYW43 chip
     */
     bool isPoweredOn() const {
+#if defined(PICO_CYW43_SUPPORTED)
         return !_cywOff;
-    }
+#else
+        return false;
 #endif
+    }
 
     void end(void);
 

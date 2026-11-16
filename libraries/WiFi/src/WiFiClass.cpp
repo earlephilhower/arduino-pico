@@ -418,6 +418,15 @@ bool WiFiClass::powerOn(bool reconnect, uint32_t timeoutMs) {
     _timeout = savedTimeout;
     return connected();
 }
+#else
+// No CYW43 chip on this board: declared everywhere so that sketches build on every board, nothing to power
+bool WiFiClass::powerOff() {
+    return false;
+}
+
+bool WiFiClass::powerOn(bool, uint32_t) {
+    return false;
+}
 #endif
 
 void WiFiClass::end(void) {
