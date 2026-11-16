@@ -47,7 +47,10 @@ WiFi is not needed (a sleep of more than about 10 seconds, see below) power the 
     bool WiFi.isPoweredOn();
 
 * ``powerOff()`` leaves the network (and stops the access point, if any), then pulls ``WL_ON`` low.  The SSID and
-  password of the last ``begin()`` are remembered; a static address set with ``config()`` is kept.
+  password of the last ``begin()`` are remembered; a static address set with ``config()`` is kept.  **Bluetooth stops too**: the CYW43 chip carries both WiFi and
+  Bluetooth, and ``powerOff()`` powers all of it off, ending a Bluetooth link and advertising.  ``powerOn()`` restores WiFi only; a sketch that uses Bluetooth (BTstack) has to
+  start the Bluetooth stack again after ``powerOn()`` (tested on a Pico 2 W with BTstack and a laptop connected, 10 of 10 cycles: the link was gone after ``powerOff()`` and
+  nothing advertised again after ``powerOn()``).
 * ``powerOn()`` powers the chip up again (the firmware is loaded again) and, with ``reconnect``, joins the same
   network again like ``begin()`` does, blocking until connected or ``timeoutMs`` (twice that when ``begin()`` itself blocks) have passed, also in a sketch that called ``WiFi.mode()``.  With
   ``reconnect = false`` the chip is only powered up (and left in station mode); call ``begin()`` later.
