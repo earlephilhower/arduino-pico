@@ -305,6 +305,8 @@ static bool mapPinStatus(PinStatus mode, bool *edge, bool *high) {
     }
 }
 
+static void lpDeepSleepOff();
+
 void LowPowerClass::enter() {
     if (setup1 || loop1) {
         rp2040.idleOtherCore();
@@ -319,6 +321,9 @@ void LowPowerClass::leave() {
     if (clock_get_hz(clk_sys) != (uint32_t)F_CPU) {
         __applyCoreClockConfig();
     }
+    // The SDK's dormant calls return with the processor's deep sleep bit still set (they set it and, unlike its sleep calls, never clear it): clear it, so that a later
+    // WFI / WFE (sleep_ms(), a blocking queue, the sketch's own) is the ordinary sleep it was before the call.
+    lpDeepSleepOff();
     // Pins go back after the clocks, before the sketch (and core 1) runs again
     unparkPins();
     if (setup1 || loop1) {

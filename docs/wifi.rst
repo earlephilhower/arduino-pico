@@ -33,6 +33,39 @@ Supported Features
   * See the ``ScanNetworks.ino`` example to better understand the process.
 
 
+Powering the WiFi Chip Off (Pico W / Pico 2 W)
+----------------------------------------------
+
+``WiFi.end()`` and ``WiFi.disconnect()`` leave the network but keep the CYW43 chip powered, which costs about 20 mA
+on the board whatever the CPU does (about 50 mA with the station connected and idle).  To save power while the
+WiFi is not needed (a sleep of more than about 10 seconds, see below) power the chip off:
+
+.. code:: cpp
+
+    bool WiFi.powerOff();
+    bool WiFi.powerOn(bool reconnect = true, uint32_t timeoutMs = 15000);
+    bool WiFi.isPoweredOn();
+
+* ``powerOff()`` leaves the network (and stops the access point, if any), then pulls ``WL_ON`` low.  The SSID and
+  password of the last ``begin()`` are remembered; a static address set with ``config()`` is kept.  **Bluetooth stops too**: the CYW43 chip carries both WiFi and
+  Bluetooth, and ``powerOff()`` powers all of it off, ending a Bluetooth link and advertising.  ``powerOn()`` restores WiFi only; a sketch that uses Bluetooth (BTstack) has to
+  start the Bluetooth stack again after ``powerOn()`` (tested on a Pico 2 W with BTstack and a laptop connected, 10 of 10 cycles: the link was gone after ``powerOff()`` and
+  nothing advertised again after ``powerOn()``).
+* ``powerOn()`` powers the chip up again (the firmware is loaded again) and, with ``reconnect``, joins the same
+  network again like ``begin()`` does, blocking until connected or ``timeoutMs`` (twice that when ``begin()`` itself blocks) have passed, also in a sketch that called ``WiFi.mode()``.  With
+  ``reconnect = false`` the chip is only powered up (and left in station mode); call ``begin()`` later.
+* The three calls exist on every board so that a sketch builds everywhere; on a board without the CYW43 chip ``powerOff()`` and ``powerOn()`` do nothing and return ``false``, and ``isPoweredOn()`` is ``false``.
+* Sockets and server objects do not survive: re-create them after ``powerOn()``.
+* Timing, Pico 2 W: the chip is up and joined after about 6.8 s (firmware load about 0.4 s, the rest is scan,
+  association and DHCP).  A remembered channel and BSSID, or a static address, did not shorten it measurably, so none is kept.
+  Some reconnects take 10 s or more (up to 18 s seen), when the first join attempt fails and the driver retries.
+  How long it takes depends on the access point: 6 to 15 s were measured on one, so the default ``timeoutMs`` of 15 s can be too short for a slow one (``powerOn()`` then returns false while the join may still
+  complete a little later); pass a larger ``timeoutMs`` for such a network.
+  The reconnect costs about 0.43 C (62 mA for 7 s), so powering off pays when the sleep is longer than about 9 s; for
+  shorter ones keep the station connected (``LowPower`` light sleep keeps a connected station alive).
+* Pico 2 W board current at 3.7 V: connected and in ``LowPower.sleepFor()`` about 51 mA, chip powered off about 4.4 mA
+  (the RP2350's own sleep floor; 3.6 mA in ``dormantFor``).  See the ``WiFiPowerOffSleep`` example.
+
 Important Information
 ---------------------
 

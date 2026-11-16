@@ -379,6 +379,56 @@ int WiFiClass::disconnect(bool wifi_off __unused) {
     return WL_DISCONNECTED;
 }
 
+#if defined(PICO_CYW43_SUPPORTED)
+bool WiFiClass::powerOff() {
+    if (!rp2040.isPicoW()) {
+        return false;
+    }
+    if (_cywOff) {
+        return true;
+    }
+    disconnectAP();
+    end(); // leaves the network and removes the netif; _ssid and _password stay
+    cyw43_arch_lwip_begin();
+    cyw43_deinit(&cyw43_state); // WL_ON low, PIO and DMA released, driver state reset; the async context and lwIP stay up
+    cyw43_arch_lwip_end();
+    _cywOff = true;
+    return true;
+}
+
+bool WiFiClass::powerOn(bool reconnect, uint32_t timeoutMs) {
+    if (!rp2040.isPicoW()) {
+        return false;
+    }
+    _cywOff = false;
+    if (!reconnect || _ssid.length() == 0) {
+        cyw43_arch_enable_sta_mode(); // powers the chip up and loads its firmware
+        return true;
+    }
+    String ssid = _ssid; // begin() assigns _ssid and _password again
+    String password = _password;
+    int savedTimeout = _timeout;
+    _timeout = (int)timeoutMs;
+    uint32_t start = millis();
+    begin(ssid.c_str(), password.length() ? password.c_str() : nullptr);
+    // begin() does not block after WiFi.mode() (ESP8266-style): wait here, up to timeoutMs, until the join is done
+    while (!connected() && (millis() - start < timeoutMs)) {
+        delay(10);
+    }
+    _timeout = savedTimeout;
+    return connected();
+}
+#else
+// No CYW43 chip on this board: declared everywhere so that sketches build on every board, nothing to power
+bool WiFiClass::powerOff() {
+    return false;
+}
+
+bool WiFiClass::powerOn(bool, uint32_t) {
+    return false;
+}
+#endif
+
 void WiFiClass::end(void) {
     if (_wifiHWInitted || _apHWInitted || _mode != WIFI_OFF) {
         disconnect();
