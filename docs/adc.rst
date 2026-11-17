@@ -61,6 +61,10 @@ That is, if you have code like this:
 1.5ms, 2.5ms, etc.  Each input is sampled at the proper frequency but offset in time
 since there is only one active ADC at a time.
 
+The ADC clock divider limits the slowest rate.  The sample rate times the number
+of pins must be at least 733Hz, otherwise ``setFrequency`` and
+``begin(sampleRate)`` return ``false``.
+
 bool begin()/begin(long sampleRate)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Start the ADC input up with the given sample rate, or with the value set
