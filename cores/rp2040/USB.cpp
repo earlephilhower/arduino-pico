@@ -63,7 +63,7 @@ USBClass USB;
 uint8_t _picotool_itf_num;
 #endif
 
-int usb_hid_poll_interval __attribute__((weak)) = 10;
+int usb_hid_poll_interval __attribute__((weak)) = 1;
 
 uint8_t USBClass::registerEndpointIn() {
     if (!_endpointIn) {
