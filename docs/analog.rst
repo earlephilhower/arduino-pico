@@ -6,11 +6,11 @@ Analog Input
 For analog inputs, the RP2040 device has a 12-bit, 4-channel ADC +
 temperature sensor available on a fixed set of pins (A0...A3).
 The standard Arduino calls can be used to read their values (with
-3.3V nominally reading as 4095).
+3.3V nominally reading as 1023 with the default resolution of 10bits).
 
 int analogRead(pin_size_t pin = A0..A3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Returns a value from 0...4095 correspionding to the ADC reading
+Returns a value from 0...1023 (with the default resolution of 10bits) corresponding to the ADC reading
 of the specific pin.
 
 void analogReadResolution(int bits)
