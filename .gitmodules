@@ -12,7 +12,7 @@
 	url = https://github.com/littlefs-project/littlefs.git
 [submodule "libraries/Keyboard"]
 	path = libraries/HID_Keyboard
-	url = https://github.com/earlephilhower/Keyboard.git
+	url = https://github.com/sponked-dev/Keyboard.git
 [submodule "libraries/Mouse"]
 	path = libraries/HID_Mouse
 	url = https://github.com/earlephilhower/Mouse.git
