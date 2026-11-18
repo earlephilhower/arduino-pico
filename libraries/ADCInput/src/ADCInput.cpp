@@ -79,8 +79,12 @@ bool ADCInput::setPins(pin_size_t pin0, pin_size_t pin1, pin_size_t pin2, pin_si
 }
 
 bool ADCInput::setFrequency(int newFreq) {
-    _freq = newFreq;
     int scaledFreq = newFreq * __builtin_popcount(_pinMask); // Want to sample all channels at given frequency
+    // The integer part of the ADC divider is only 16 bits, a slower rate would wrap around to a faster one
+    if ((scaledFreq <= 0) || (48000000.0f / scaledFreq - 1.0f >= 65536.0f)) {
+        return false;
+    }
+    _freq = newFreq;
     adc_set_clkdiv(48000000.0f / scaledFreq - 1.0f);
     return true;
 }
