@@ -266,6 +266,8 @@ extern "C" void __attribute__((__noreturn__)) __wrap___stack_chk_fail() {
 extern "C" void stdio_flush() {
 #if defined(NO_USB)
     // Nothing to flush
+#elif defined(USE_TINYUSB_HOST)
+    // Native USB host mode: no device CDC to flush.
 #elif defined(USE_TINYUSB)
     tud_cdc_write_flush();
 #else
