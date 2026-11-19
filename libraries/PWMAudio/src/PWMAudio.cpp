@@ -85,7 +85,8 @@ bool PWMAudio::setPWMFrequency(int newFreq) {
 
     pwm_config c = pwm_get_default_config();
     pwm_config_set_clkdiv(&c, clock_get_hz(clk_sys) / fPWM);
-    pwm_config_set_wrap(&c, _pwmScale);
+    // The counter period is wrap + 1, and wrap is only 16 bits so 1 << 16 must not be passed directly
+    pwm_config_set_wrap(&c, _pwmScale - 1);
     pwm_init(pwm_gpio_to_slice_num(_pin), &c, _running);
     gpio_set_function(_pin, GPIO_FUNC_PWM);
     pwm_set_gpio_level(_pin, (0x8000 * _pwmScale) >> 16);
