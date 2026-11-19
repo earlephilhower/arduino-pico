@@ -59,6 +59,32 @@ static bool cyw43Powered() {
 extern void setup1() __attribute__((weak));
 extern void loop1() __attribute__((weak));
 
+#if defined(NO_USB) || (defined(USE_TINYUSB) && defined(USE_TINYUSB_HOST))
+// libpico's pico_low_power is built with LIB_TINYUSB_DEVICE, so its dormant/pstate clock switch calls tud_inited(), tud_deinit() and
+// tud_init() (= tud_rhport_init()).  With no USB device stack (NO_USB, or Adafruit TinyUSB in host-only mode) nothing defines them, so
+// the linker pulls usbd.c.o, and with it the SDK's whole TinyUSB device stack, out of libpico.a: dead flash and RAM with NO_USB, and
+// duplicate tu_fifo_* / tusb_* symbols against the Adafruit library's own TinyUSB in host-only mode.
+// No device stack is running here, so report it as not initialised and the SDK never calls the other two.  Defined in this file so they
+// are always linked before libpico.a is searched; weak so a library that does build the device stack still wins.
+extern "C" {
+    bool tud_inited(void) __attribute__((weak));
+    bool tud_inited(void) {
+        return false;
+    }
+    bool tud_deinit(uint8_t rhport) __attribute__((weak));
+    bool tud_deinit(uint8_t rhport) {
+        (void) rhport;
+        return false;
+    }
+    bool tud_rhport_init(uint8_t rhport, const void *rh_init) __attribute__((weak));
+    bool tud_rhport_init(uint8_t rhport, const void *rh_init) {
+        (void) rhport;
+        (void) rh_init;
+        return false;
+    }
+}
+#endif
+
 LowPowerClass LowPower;
 
 // keepRunning(): peripherals that keep running in light sleep (sleepFor, sleepUntilPin).  A non-zero mask also leaves PLL_SYS, clk_sys and clk_peri alone, so the
