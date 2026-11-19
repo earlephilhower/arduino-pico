@@ -65,6 +65,15 @@ To list the supported boards:
 
         arduino-cli board listall | grep rp2040
 
+Using Visual Micro on Windows
+-----------------------------
+Visual Micro's `Pico board-package selection guide <https://www.visualmicro.com/page/RP2040-Overview.aspx#choose-pico-core>`_
+describes selecting an Arduino core for a Pico project in Microsoft Visual Studio.
+Use this Arduino-Pico package and its package index above when following that
+workflow; Arduino's Mbed OS RP2040 package is a separate core.
+The Visual Studio integration is a third-party extension with its own licensing
+and support provided by Visual Micro.
+
 Installing via GIT
 ------------------
 To install via GIT (for latest and greatest versions):
