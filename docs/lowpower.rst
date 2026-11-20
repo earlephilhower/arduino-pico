@@ -192,6 +192,10 @@ Caveats
   library keeps the CYW43 pins through dormant and ``sleepFor`` holds the WiFi driver's lock until the clocks are
   back); the cost is the chip: about 48 mA asleep while connected.  ``WiFi.end()`` leaves the network but does not
   power the chip off (about 19 mA); with WiFi never started the board draws what a board without WiFi does.
+  To sleep without the chip's current, call ``WiFi.powerOff()`` before the sleep and ``WiFi.powerOn()`` after the
+  wake (Pico 2 W: about 4.4 mA in ``sleepFor`` with the chip off).  ``powerOn()`` reloads the chip's firmware and
+  re-joins the last network, which takes about 7 s or more, so it pays for sleeps longer than about 9 s.  Sockets do
+  not survive and Bluetooth stops too; see :doc:`Powering the WiFi Chip Off <wifi>`.
 * **USB.**  ``sleepFor`` does not affect USB.  Dormant disconnects it: the board re-attaches about 0.6 s after the
   wake, the host sees the port disappear, and output printed just before or in the first second after the wake can be
   lost.  Do not call ``Serial.end()`` / ``begin()`` after a wake.  Log anything important after a dormant wake on a
