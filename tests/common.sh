@@ -229,7 +229,9 @@ function install_ide()
     mkdir pico
     cd pico
     if [ "$WINDOWS" = "1" ]; then
-        cp -a $core_path rp2040
+        # -L: copy what symlinks point to (as the release package does). Git Bash cannot create a symlink to a file
+        # that is not copied yet, e.g. AGENTS.md -> CLAUDE.md in libraries/Adafruit_TinyUSB_Arduino.
+        cp -aL $core_path rp2040
     else
         ln -s $core_path rp2040
     fi
