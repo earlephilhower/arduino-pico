@@ -141,19 +141,23 @@ int PDMClass::begin(int channels, int sampleRate) {
 
     // Configure two chained DMA channels for transferring the PIO rx
     // FIFO into the raw buffers, without ever stopping
-    _dmaChannel = dma_claim_unused_channel(false);
-    dmaChannelB = dma_claim_unused_channel(false);
+    // (claimed into ints first: _dmaChannel is unsigned, so a failed
+    // claim, -1, could not be detected on it)
+    const int chA = dma_claim_unused_channel(false);
+    const int chB = dma_claim_unused_channel(false);
 
-    if (_dmaChannel < 0 || dmaChannelB < 0) {
-        if (_dmaChannel >= 0) {
-            dma_channel_unclaim(_dmaChannel);
+    if (chA < 0 || chB < 0) {
+        if (chA >= 0) {
+            dma_channel_unclaim(chA);
         }
-        if (dmaChannelB >= 0) {
-            dma_channel_unclaim(dmaChannelB);
+        if (chB >= 0) {
+            dma_channel_unclaim(chB);
         }
         pio_sm_unclaim(_pio, _smIdx);
         return 0;
     }
+    _dmaChannel = chA;
+    dmaChannelB = chB;
 
     dma_channel_config ca = dma_channel_get_default_config(_dmaChannel);
     channel_config_set_read_increment(&ca, false);
