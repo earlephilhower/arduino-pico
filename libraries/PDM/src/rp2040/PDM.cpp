@@ -22,6 +22,15 @@ volatile int rawBufferIndex = 0;
 
 int decimation = 128;
 
+// Two DMA channels chained into each other (A fills rawBuffer0, then B
+// fills rawBuffer1, then A again...), so the hardware never stops
+// reading the PIO. With a single channel restarted from the interrupt,
+// any interrupt delay longer than the PIO FIFO (~10 us of PDM bits)
+// dropped bits and made a click; now the interrupt may be up to one
+// whole block late. _dmaChannel is A, dmaChannelB is B.
+static int dmaChannelB = -1;
+static volatile int nextRaw = 0;   // which buffer completes next
+
 // final buffer is the one to be filled with PCM data
 int16_t* volatile finalBuffer;
 
@@ -130,27 +139,56 @@ int PDMClass::begin(int channels, int sampleRate) {
     // Wait for microphone
     delay(100);
 
-    // Configure DMA for transferring PIO rx buffer to raw buffers
+    // Configure two chained DMA channels for transferring the PIO rx
+    // FIFO into the raw buffers, without ever stopping
     _dmaChannel = dma_claim_unused_channel(false);
-    dma_channel_config c = dma_channel_get_default_config(_dmaChannel);
-    channel_config_set_read_increment(&c, false);
-    channel_config_set_write_increment(&c, true);
-    channel_config_set_dreq(&c, pio_get_dreq(_pio, _smIdx, false));
-    channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
+    dmaChannelB = dma_claim_unused_channel(false);
+
+    if (_dmaChannel < 0 || dmaChannelB < 0) {
+        if (_dmaChannel >= 0) {
+            dma_channel_unclaim(_dmaChannel);
+        }
+        if (dmaChannelB >= 0) {
+            dma_channel_unclaim(dmaChannelB);
+        }
+        pio_sm_unclaim(_pio, _smIdx);
+        return 0;
+    }
+
+    dma_channel_config ca = dma_channel_get_default_config(_dmaChannel);
+    channel_config_set_read_increment(&ca, false);
+    channel_config_set_write_increment(&ca, true);
+    channel_config_set_dreq(&ca, pio_get_dreq(_pio, _smIdx, false));
+    channel_config_set_transfer_data_size(&ca, DMA_SIZE_8);
+
+    dma_channel_config cb = ca;
+    channel_config_set_chain_to(&ca, dmaChannelB);
+    channel_config_set_chain_to(&cb, _dmaChannel);
 
     // Clear DMA interrupts
-    dma_hw->ints0 = 1u << _dmaChannel;
+    dma_hw->ints0 = (1u << _dmaChannel) | (1u << dmaChannelB);
     // Enable DMA interrupts
     dma_channel_set_irq0_enabled(_dmaChannel, true);
+    dma_channel_set_irq0_enabled(dmaChannelB, true);
     // Share but allocate a high priority to the interrupt
     irq_add_shared_handler(DMA_IRQ_0, dmaHandler, 0);
     irq_set_enabled(DMA_IRQ_0, true);
 
-    dma_channel_configure(_dmaChannel, &c,
-                          rawBuffer[rawBufferIndex],        // Destinatinon pointer
+    nextRaw = 0;
+    rawBufferIndex = 0;
+
+    // B waits to be triggered by A's chain
+    dma_channel_configure(dmaChannelB, &cb,
+                          rawBuffer[1],            // Destination pointer
                           &_pio->rxf[_smIdx],      // Source pointer
-                          RAW_BUFFER_SIZE, // Number of transfers
-                          true                // Start immediately
+                          RAW_BUFFER_SIZE,         // Number of transfers
+                          false                    // Wait for A
+                         );
+    dma_channel_configure(_dmaChannel, &ca,
+                          rawBuffer[0],            // Destination pointer
+                          &_pio->rxf[_smIdx],      // Source pointer
+                          RAW_BUFFER_SIZE,         // Number of transfers
+                          true                     // Start immediately
                          );
 
     _cutSamples = 100;
@@ -167,8 +205,20 @@ void PDMClass::end() {
     }
 
     dma_channel_set_irq0_enabled(_dmaChannel, false);
+    dma_channel_set_irq0_enabled(dmaChannelB, false);
+
+    // Break the chain (each channel chains to itself = no chaining),
+    // then stop both
+    hw_write_masked(&dma_hw->ch[_dmaChannel].al1_ctrl, _dmaChannel << DMA_CH0_CTRL_TRIG_CHAIN_TO_LSB,
+                    DMA_CH0_CTRL_TRIG_CHAIN_TO_BITS);
+    hw_write_masked(&dma_hw->ch[dmaChannelB].al1_ctrl, dmaChannelB << DMA_CH0_CTRL_TRIG_CHAIN_TO_LSB,
+                    DMA_CH0_CTRL_TRIG_CHAIN_TO_BITS);
     dma_channel_abort(_dmaChannel);
+    dma_channel_abort(dmaChannelB);
+    dma_hw->ints0 = (1u << _dmaChannel) | (1u << dmaChannelB);
     dma_channel_unclaim(_dmaChannel);
+    dma_channel_unclaim(dmaChannelB);
+    dmaChannelB = -1;
     irq_remove_handler(DMA_IRQ_0, dmaHandler);
     pio_sm_unclaim(_pio, _smIdx);
     pinMode(_clkPin, INPUT);
@@ -214,33 +264,47 @@ void PDMClass::setBufferSize(int bufferSize) {
 
 void PDMClass::IrqHandler(bool halftranfer) {
 
-    // Clear the interrupt request.
-    dma_hw->ints0 = 1u << _dmaChannel;
-    // Restart dma pointing to the other buffer
-    int shadowIndex = rawBufferIndex ^ 1;
-    dma_channel_set_write_addr(_dmaChannel, rawBuffer[shadowIndex], true);
+    (void) halftranfer;
 
-    if (!_doubleBuffer.available()) {
-        // fill final buffer with PCM samples
-        if (filter.Decimation == 128) {
-            Open_PDM_Filter_128(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
-        } else {
-            Open_PDM_Filter_64(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
+    // The DMA_IRQ_0 handler is shared: only act on our channels, in the
+    // order they complete (both if this interrupt came very late)
+    while (true) {
+
+        const int ch = nextRaw ? dmaChannelB : _dmaChannel;
+        const uint32_t bit = 1u << ch;
+
+        if (!(dma_hw->ints0 & bit)) {
+            break;
         }
 
-        if (_cutSamples) {
-            memset(finalBuffer, 0, _cutSamples);
-            _cutSamples = 0;
+        // Clear the interrupt request and re-arm this channel for its
+        // next turn (the other one is already filling its buffer)
+        dma_hw->ints0 = bit;
+        dma_channel_set_write_addr(ch, rawBuffer[nextRaw], false);
+        rawBufferIndex = nextRaw;
+        nextRaw ^= 1;
+
+        if (!_doubleBuffer.available()) {
+            // fill final buffer with PCM samples
+            if (filter.Decimation == 128) {
+                Open_PDM_Filter_128(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
+            } else {
+                Open_PDM_Filter_64(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
+            }
+
+            if (_cutSamples) {
+                memset(finalBuffer, 0, _cutSamples);
+                _cutSamples = 0;
+            }
+
+            // swap final buffer
+            finalBuffer = (int16_t*)_doubleBuffer.data();
+            _doubleBuffer.swap(filter.nSamples * sizeof(int16_t));
         }
 
-        // swap final buffer and raw buffers' indexes
-        finalBuffer = (int16_t*)_doubleBuffer.data();
-        _doubleBuffer.swap(filter.nSamples * sizeof(int16_t));
-        rawBufferIndex = shadowIndex;
-    }
-
-    if (_onReceive) {
-        _onReceive();
+        if (_onReceive) {
+            _onReceive();
+        }
     }
 }
 #ifndef PIN_PDM_DIN
