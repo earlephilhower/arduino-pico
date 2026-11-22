@@ -132,7 +132,7 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
     for (auto i = 0; i < 2; i ++) {
         // The Channel DMA will send the block of data out and fire the trigger DMA
         dma_channel_config chan = dma_channel_get_default_config(_channelDMA[i]);
-        channel_config_set_transfer_data_size(&chan, _dmaSize); // 16b/32b transfers into PIO FIFO
+        channel_config_set_transfer_data_size(&chan, _dmaSize); // 8b/16b/32b transfers to/from PIO FIFO
         channel_config_set_read_increment(&chan, _isOutput); // Output increments read, writes to static FIFO
         channel_config_set_write_increment(&chan, !_isOutput); // Input increments write, reads from static FIFO
         channel_config_set_dreq(&chan, dreq); // Wait for the PIO TX FIFO specified
@@ -140,11 +140,11 @@ bool AudioBufferManager::begin(int dreq, volatile void *pioFIFOAddr) {
         channel_config_set_irq_quiet(&chan, true); // Channel doesn't IRQ, the transfer one does
         if (_isOutput) {
             _nextBuffer[i] = _silence->buff; // READ-ADDR
-            dma_channel_configure(_channelDMA[i], &chan, pioFIFOAddr, _nextBuffer[i], _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
+            dma_channel_configure(_channelDMA[i], &chan, pioFIFOAddr, _nextBuffer[i], _wordsPerBuffer * _transfersPerWord(), false);
         } else {
             _active[i] = _takeFromList(&_empty);
             _nextBuffer[i] = _active[i]->buff; // WRITE-ADDR
-            dma_channel_configure(_channelDMA[i], &chan, _nextBuffer[i], pioFIFOAddr, _wordsPerBuffer * (_dmaSize == DMA_SIZE_16 ? 2 : 1), false);
+            dma_channel_configure(_channelDMA[i], &chan, _nextBuffer[i], pioFIFOAddr, _wordsPerBuffer * _transfersPerWord(), false);
         }
 
         // Trigger will read from nextDMA pointer for opposite buffer, write that to the read/write address trigger of the opposite chain (thus starting *that* DMA chain, and interrupt the core

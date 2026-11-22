@@ -23,6 +23,8 @@
 
 #include "utility/PDMDoubleBuffer.h"
 
+class AudioBufferManager;
+
 class PDMClass {
 public:
     PDMClass(int dinPin, int clkPin);
@@ -61,7 +63,7 @@ private:
     int _cutSamples;
 
     // Hardware peripherals used
-    uint _dmaChannel;
+    AudioBufferManager *_arb;
     PIO _pio;
     int _smIdx;
     int _pgmOffset;
