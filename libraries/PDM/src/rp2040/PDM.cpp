@@ -4,6 +4,8 @@
 #include "PDM.h"
 #include "OpenPDMFilter.h"
 
+#include "AudioBufferManager.h"
+
 extern "C" {
 #include <hardware/pio.h>
 #include <hardware/dma.h>
@@ -13,12 +15,14 @@ extern "C" {
 #include "pdm.pio.h"
 static PIOProgram _pdmPgm(&pdm_pio_program);
 
-// raw buffers contain PDM data
-#define RAW_BUFFER_SIZE 512 // should be a multiple of (decimation / 8)
-uint8_t rawBuffer0[RAW_BUFFER_SIZE];
-uint8_t rawBuffer1[RAW_BUFFER_SIZE];
-uint8_t* rawBuffer[2] = {rawBuffer0, rawBuffer1};
-volatile int rawBufferIndex = 0;
+// Raw PDM data is read from the PIO by an AudioBufferManager, so the DMA
+// keeps running between blocks: an interrupt that comes late no longer
+// drops PDM bits (a click), and one that is missed entirely (e.g. during
+// a flash erase) only loses audio, never writes outside the buffers.
+#define RAW_BUFFER_SIZE 512 // bytes, should be a multiple of (decimation / 8)
+#define RAW_BUFFER_WORDS (RAW_BUFFER_SIZE / 4)
+#define RAW_BUFFERS 4       // 2 being filled by the DMA + 2 spare
+static uint32_t rawBuffer[RAW_BUFFER_WORDS]; // block being filtered
 
 int decimation = 128;
 
@@ -29,10 +33,9 @@ int16_t* volatile finalBuffer;
 #define FILTER_GAIN     16
 TPDMFilter_InitStruct filter;
 
-extern "C" {
-    __attribute__((__used__)) void dmaHandler(void) {
-        PDM.IrqHandler(true);
-    }
+// Called by the AudioBufferManager (DMA interrupt) when a block is ready
+static void __not_in_flash_func(pdmBlockReady)(void *) {
+    PDM.IrqHandler(true);
 }
 
 
@@ -45,7 +48,7 @@ PDMClass::PDMClass(int dinPin, int clkPin) :
     _samplerate(-1),
     _init(-1),
     _cutSamples(100),
-    _dmaChannel(0),
+    _arb(nullptr),
     _pio(nullptr),
     _smIdx(-1),
     _pgmOffset(-1) {
@@ -130,30 +133,19 @@ int PDMClass::begin(int channels, int sampleRate) {
     // Wait for microphone
     delay(100);
 
-    // Configure DMA for transferring PIO rx buffer to raw buffers
-    _dmaChannel = dma_claim_unused_channel(false);
-    dma_channel_config c = dma_channel_get_default_config(_dmaChannel);
-    channel_config_set_read_increment(&c, false);
-    channel_config_set_write_increment(&c, true);
-    channel_config_set_dreq(&c, pio_get_dreq(_pio, _smIdx, false));
-    channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
-
-    // Clear DMA interrupts
-    dma_hw->ints0 = 1u << _dmaChannel;
-    // Enable DMA interrupts
-    dma_channel_set_irq0_enabled(_dmaChannel, true);
-    // Share but allocate a high priority to the interrupt
-    irq_add_shared_handler(DMA_IRQ_0, dmaHandler, 0);
-    irq_set_enabled(DMA_IRQ_0, true);
-
-    dma_channel_configure(_dmaChannel, &c,
-                          rawBuffer[rawBufferIndex],        // Destinatinon pointer
-                          &_pio->rxf[_smIdx],      // Source pointer
-                          RAW_BUFFER_SIZE, // Number of transfers
-                          true                // Start immediately
-                         );
-
     _cutSamples = 100;
+
+    // The PIO pushes one byte of PDM bits at a time
+    _arb = new AudioBufferManager(RAW_BUFFERS, RAW_BUFFER_WORDS, 0, INPUT, DMA_SIZE_8);
+    _arb->setCallback(pdmBlockReady, nullptr);
+
+    if (!_arb->begin(pio_get_dreq(_pio, _smIdx, false), (volatile void *)&_pio->rxf[_smIdx])) {
+        // ERROR, no free DMA channels
+        delete _arb;
+        _arb = nullptr;
+        pio_sm_unclaim(_pio, _smIdx);
+        return 0;
+    }
 
     _init = 1;
 
@@ -166,13 +158,12 @@ void PDMClass::end() {
         return;
     }
 
-    dma_channel_set_irq0_enabled(_dmaChannel, false);
-    dma_channel_abort(_dmaChannel);
-    dma_channel_unclaim(_dmaChannel);
-    irq_remove_handler(DMA_IRQ_0, dmaHandler);
+    // Stops and releases the DMA channels
+    delete _arb;
+    _arb = nullptr;
+
     pio_sm_unclaim(_pio, _smIdx);
     pinMode(_clkPin, INPUT);
-    rawBufferIndex = 0;
     _pgmOffset = -1;
 
     _init = 0;
@@ -214,33 +205,36 @@ void PDMClass::setBufferSize(int bufferSize) {
 
 void PDMClass::IrqHandler(bool halftranfer) {
 
-    // Clear the interrupt request.
-    dma_hw->ints0 = 1u << _dmaChannel;
-    // Restart dma pointing to the other buffer
-    int shadowIndex = rawBufferIndex ^ 1;
-    dma_channel_set_write_addr(_dmaChannel, rawBuffer[shadowIndex], true);
+    (void) halftranfer;
 
-    if (!_doubleBuffer.available()) {
-        // fill final buffer with PCM samples
-        if (filter.Decimation == 128) {
-            Open_PDM_Filter_128(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
-        } else {
-            Open_PDM_Filter_64(rawBuffer[rawBufferIndex], finalBuffer, 1, &filter);
+    // Filter every block the DMA has finished (more than one if this
+    // interrupt came late)
+    while (_arb && _arb->available() >= RAW_BUFFER_WORDS) {
+
+        _arb->read(rawBuffer, RAW_BUFFER_WORDS, false);
+        uint8_t *raw = reinterpret_cast<uint8_t *>(rawBuffer);
+
+        if (!_doubleBuffer.available()) {
+            // fill final buffer with PCM samples
+            if (filter.Decimation == 128) {
+                Open_PDM_Filter_128(raw, finalBuffer, 1, &filter);
+            } else {
+                Open_PDM_Filter_64(raw, finalBuffer, 1, &filter);
+            }
+
+            if (_cutSamples) {
+                memset(finalBuffer, 0, _cutSamples);
+                _cutSamples = 0;
+            }
+
+            // swap final buffer
+            finalBuffer = (int16_t*)_doubleBuffer.data();
+            _doubleBuffer.swap(filter.nSamples * sizeof(int16_t));
         }
 
-        if (_cutSamples) {
-            memset(finalBuffer, 0, _cutSamples);
-            _cutSamples = 0;
+        if (_onReceive) {
+            _onReceive();
         }
-
-        // swap final buffer and raw buffers' indexes
-        finalBuffer = (int16_t*)_doubleBuffer.data();
-        _doubleBuffer.swap(filter.nSamples * sizeof(int16_t));
-        rawBufferIndex = shadowIndex;
-    }
-
-    if (_onReceive) {
-        _onReceive();
     }
 }
 #ifndef PIN_PDM_DIN

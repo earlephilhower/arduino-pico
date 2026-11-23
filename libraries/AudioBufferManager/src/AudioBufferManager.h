@@ -83,6 +83,11 @@ private:
         return ret;
     }
 
+    // DMA transfers needed to fill one 32-bit buffer word
+    size_t _transfersPerWord() const {
+        return _dmaSize == DMA_SIZE_8 ? 4 : _dmaSize == DMA_SIZE_16 ? 2 : 1;
+    }
+
     void _deleteAudioBuffer(AudioBuffer *ab) {
         delete[] ab->buff;
         delete ab;
