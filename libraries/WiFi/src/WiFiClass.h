@@ -152,19 +152,10 @@ public:
         return true;
     }
 
-    bool softAPdisconnect(bool wifioff = false) {
-        (void) wifioff;
-#if defined(PICO_CYW43_SUPPORTED)
-        if (_mode == WIFI_AP_STA) {
-            // Only tear down AP, keep STA
-            return disconnectAP();
-        }
-#endif
-        disconnect();
-        return true;
-    }
+    // Stop the AP and its DHCP server. With wifioff, also deselect the AP role.
+    bool softAPdisconnect(bool wifioff = false);
 
-    // Disconnect only the AP side in AP_STA mode
+    // Stop a running AP and deselect its role, preserving any station connection.
     bool disconnectAP();
 
     uint8_t softAPgetStationNum();
@@ -487,6 +478,7 @@ private:
 
     // ESP compat and mode tracking
     bool _calledESP = false; // Should we behave like the ESP8266 for connect?
+    bool _beginAsAP = false; // WiFi.mode(WIFI_AP) explicitly selects AP startup for begin()
     WiFiMode_t _mode = WIFI_OFF;
 };
 
