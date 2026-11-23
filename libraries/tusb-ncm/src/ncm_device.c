@@ -38,3 +38,5 @@ bool netd_control_xfer_cb(uint8_t rhport, uint8_t stage,
       }
   return netd_control_xfer_cb_orig(rhport, stage, request);
 }
+
+static_assert(TUSB_VERSION_NUMBER == 1800, "pico-sdk's TinyUSB was updated: check it includes hathach/tinyusb#3914 and remove this backport");
