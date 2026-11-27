@@ -354,7 +354,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     else:
         raise Exception("Unknown board type " + str(chip))
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
-    if (name == "generic") or (name == "generic_rp2350") or (name == "vccgnd_yd_rp2040"):
+    if name in ["generic", "generic_rp2350", "vccgnd_yd_rp2040"]:
         smfs =  [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
         BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
@@ -409,11 +409,13 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMFreq(name)
         elif name in ["datanoisetv_picoadk_v2", "olimex_pico2bb48",
                       "solderparty_rp2350_stamp_xl",
-                      "waveshare_rp2350_core", "waveshare_rp2350_pizero",
-                      "adafruit_feather_rp2350_hstx", "adafruit_metro_rp2350"]:
+                      "waveshare_rp2350_core", "waveshare_rp2350_pizero"]:
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
+        elif name in ["adafruit_feather_rp2350_hstx", "adafruit_metro_rp2350"]:
+            # Optional, user needs to solder themselves
+            BuildPSRAM(name)
     else:
         BuildFreq(name, 200)
     BuildOptimize(name)
