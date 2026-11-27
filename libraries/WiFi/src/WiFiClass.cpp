@@ -54,6 +54,7 @@ const char* WiFiClass::firmwareVersion() {
 
 void WiFiClass::mode(WiFiMode_t m) {
     _calledESP = true;
+    _beginAsAP = (m == WIFI_AP);
     switch (m) {
     case WiFiMode_t::WIFI_OFF:
         end();
@@ -71,8 +72,8 @@ void WiFiClass::mode(WiFiMode_t m) {
 }
 
 bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const uint8_t *bssid) {
-    // Simple ESP8266 compatibility hack
-    if (_mode == WIFI_AP) {
+    // A stopped AP can still be selected after softAPdisconnect(false).
+    if (_mode == WIFI_AP && (_beginAsAP || _apHWInitted)) {
         // When beginAP was a success, it returns WL_CONNECTED and we return true as success.
         return beginAP(ssid, passphrase) == WL_CONNECTED;
     }
@@ -100,7 +101,7 @@ bool WiFiClass::_beginInternal(const char* ssid, const char *passphrase, const u
     _wifi.setBSSID(_bssid);
     _wifi.setPassword(passphrase);
     _wifi.setTimeout(_timeout);
-    _mode = WIFI_STA;
+    _mode = _apHWInitted ? WIFI_AP_STA : WIFI_STA;
     _wifiHWInitted = true;
 
     // Internal wifi.begin returns false when failed, therefore we return false as error
@@ -387,7 +388,6 @@ bool WiFiClass::powerOff() {
     if (_cywOff) {
         return true;
     }
-    disconnectAP();
     end(); // leaves the network and removes the netif; _ssid and _password stay
     cyw43_arch_lwip_begin();
     cyw43_deinit(&cyw43_state); // WL_ON low, PIO and DMA released, driver state reset; the async context and lwIP stay up
@@ -431,18 +431,18 @@ bool WiFiClass::powerOn(bool, uint32_t) {
 
 void WiFiClass::end(void) {
     if (_wifiHWInitted || _apHWInitted || _mode != WIFI_OFF) {
+        softAPdisconnect(true);
         disconnect();
     }
 }
 
 
 bool WiFiClass::disconnectAP() {
-#if defined(PICO_CYW43_SUPPORTED)
-    // Only disconnect AP if it's running
-    if (!_apHWInitted) {
-        return false;
-    }
+    return _apHWInitted && softAPdisconnect(true);
+}
 
+bool WiFiClass::softAPdisconnect(bool wifioff) {
+#if defined(PICO_CYW43_SUPPORTED)
     // Cleanup DHCP server
     if (_dhcpServer) {
         dhcp_server_deinit(_dhcpServer);
@@ -450,23 +450,20 @@ bool WiFiClass::disconnectAP() {
         _dhcpServer = nullptr;
     }
 
-    // Stop AP interface
-    _wifiAP.end();
-    _apHWInitted = false;
-
-    // Clear AP credentials
+    if (_apHWInitted) {
+        _wifiAP.end();
+        _apHWInitted = false;
+    }
     _apSSID = "";
     _apPassword = "";
+    _beginAsAP = false;
 
-    // Update mode based on what's still running
-    if (_mode == WIFI_AP_STA) {
-        _mode = WIFI_STA;
-    } else if (_mode == WIFI_AP) {
-        _mode = WIFI_OFF;
+    if (wifioff) {
+        _mode = static_cast<WiFiMode_t>(_mode & ~WIFI_AP);
     }
-
     return true;
 #else
+    (void) wifioff;
     return false;
 #endif
 }
