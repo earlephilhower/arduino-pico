@@ -6,6 +6,9 @@
 
 #define PICO_RP2350A 0 // RP2350B
 
+// Enables external PSRAM
+#define RP2350_PSRAM_CS (47)
+
 // Serial
 #define PIN_SERIAL1_TX (0u)
 #define PIN_SERIAL1_RX (1u)

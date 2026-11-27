@@ -354,7 +354,7 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     else:
         raise Exception("Unknown board type " + str(chip))
     BuildHeader(name, chip, tup, opts, vendor_name, product_name, vid, pid, pwr, boarddefine, name, flashsizemb * 1024 * 1024, psramsize, boot2, extra)
-    if (name == "generic") or (name == "generic_rp2350") or (name == "vccgnd_yd_rp2040"):
+    if name in ["generic", "generic_rp2350", "vccgnd_yd_rp2040"]:
         smfs =  [ 0, 64 * 1024, 128 * 1024, 256 * 1024, 512 * 1024 ]
         BuildFlashMenu(name, chip, 2*1024*1024, [*smallfs, 1024 * 1024])
         BuildFlashMenu(name, chip, 4*1024*1024, [0, 3*1024*1024, 2*1024*1024])
@@ -407,11 +407,13 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
             BuildPSRAMCS(name)
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
-        elif (name == "datanoisetv_picoadk_v2") or (name == "olimex_pico2bb48") or (name == "solderparty_rp2350_stamp_xl") or (name == "waveshare_rp2350_core"):
+        elif name in ["datanoisetv_picoadk_v2", "olimex_pico2bb48",
+                      "solderparty_rp2350_stamp_xl",
+                      "waveshare_rp2350_core", "waveshare_rp2350_pizero"]:
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
             BuildPSRAMFreq(name)
-        elif (name == "adafruit_feather_rp2350_hstx") or (name == "adafruit_metro_rp2350"):
+        elif name in ["adafruit_feather_rp2350_hstx", "adafruit_metro_rp2350"]:
             # Optional, user needs to solder themselves
             BuildPSRAM(name)
     else:
@@ -776,7 +778,7 @@ MakeBoard("waveshare_rp2040_lcd_0_96", "rp2040", "Waveshare", "RP2040 LCD 0.96",
 MakeBoard("waveshare_rp2040_lcd_1_28", "rp2040", "Waveshare", "RP2040 LCD 1.28", "0x2e8a", "0x1039", 500, "WAVESHARE_RP2040_LCD_1_28", 2, 0, "boot2_w25q16jvxq_4_padded_checksum")
 MakeBoard("waveshare_rp2350_core", "rp2350", "Waveshare", "RP2350 Core", "0x2e8a", "0x10B2", 500, "WAVESHARE_RP2350_CORE", 16, 0, "none")
 MakeBoard("waveshare_rp2350_zero", "rp2350", "Waveshare", "RP2350 Zero", "0x2e8a", "0x10B0", 500, "WAVESHARE_RP2350_ZERO", 4, 0, "none")
-MakeBoard("waveshare_rp2350_pizero", "rp2350", "Waveshare", "RP2350 PiZero", "0x2e8a", "0x000F", 500, "WAVESHARE_RP2350_PIZERO", 16, 0, "none")
+MakeBoard("waveshare_rp2350_pizero", "rp2350", "Waveshare", "RP2350 PiZero", "0x2e8a", "0x000F", 500, "WAVESHARE_RP2350_PIZERO", 16, 8, "none")
 MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a", "0x10B1", 500, "WAVESHARE_RP2350_PLUS", 4, 0, "none")
 MakeBoard("waveshare_rp2350b_plus_w", "rp2350", "Waveshare", "RP2350B Plus W", "0x2e8a", "0xf00a", 500, "WAVESHARE_RP2350B_PLUS_W", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1", "PICO_CYW43_PINOUT=36,37,37,37,39,38"])
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
