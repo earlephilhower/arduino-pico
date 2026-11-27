@@ -456,7 +456,7 @@ def MakeBoardJSON(name, chip, vendor_name, product_name, vid, pid, pwr, boarddef
         cpu = "cortex-m0plus"
         ramsize = 256
         jlink = "RP2040_M0_0"
-        fcpu = "133000000L"
+        fcpu = "200000000L"
     elif chip == "rp2350":
         cpu = "cortex-m33"
         ramsize = 512
