@@ -166,6 +166,14 @@ def BuildCountry(name):
         print("%s.menu.wificountry.%s=%s" % (name, sane.lower(), c))
         print("%s.menu.wificountry.%s.build.wificc=-DWIFICC=CYW43_COUNTRY_%s" % (name, sane.lower(), sane))
 
+def BuildCYW43Menu(name):
+    print("%s.menu.cyw43.disabled=Disabled" % (name))
+    print("%s.menu.cyw43.disabled.build.cyw43option=" % (name))
+    print("%s.menu.cyw43.enabled=Enabled, Default R.Pi Pinout" % (name))
+    print("%s.menu.cyw43.enabled.build.cyw43option=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1" % (name))
+    print("%s.menu.cyw43.custom=Enabled, Custom Pinout" % (name))
+    print("%s.menu.cyw43.custom.build.cyw43option=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1 -DPICO_CYW43_NO_DEFAULT_INIT" % (name))
+
 def BuildIPBTStack(name):
     print("%s.menu.ipbtstack.ipv4only=IPv4 Only" % (name))
     print('%s.menu.ipbtstack.ipv4only.build.libpicow=liblwip.a' % (name))
@@ -311,6 +319,7 @@ def BuildGlobalMenuList():
     print("menu.dbgport=Debug Port")
     print("menu.dbglvl=Debug Level")
     print("menu.boot2=Boot Stage 2")
+    print("menu.cyw43=CYW43 Support")
     print("menu.wificountry=WiFi Region")
     print("menu.usbstack=USB Stack")
     print("menu.espwifitype=ESP Wifi Type")
@@ -427,7 +436,9 @@ def MakeBoard(name, chip, vendor_name, product_name, vid, pid, pwr, boarddefine,
     BuildDebugPort(name)
     BuildDebugLevel(name)
     BuildUSBStack(name)
-    if name in ["rpipicow", "rpipico2w", "pimoroni_pico_plus_2w", "sparkfun_thingplusrp2350", "waveshare_rp2350b_plus_w"]:
+    if name in ["generic", "generic_rp2350"]:
+        BuildCYW43Menu(name)
+    if name in ["rpipicow", "rpipico2w", "pimoroni_pico_plus_2w", "sparkfun_thingplusrp2350", "waveshare_rp2350b_plus_w", "generic", "generic_rp2350"]:
         BuildCountry(name)
     BuildIPBTStack(name)
     if name == "generic":
