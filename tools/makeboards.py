@@ -734,10 +734,10 @@ MakeBoard("solderparty_rp2350_stamp_xl", "rp2350", "Solder Party", "RP2350 Stamp
 # Soldered Electronics
 MakeBoard("soldered_nula_rp2350", "rp2350", "Soldered Electronics", "NULA RP2350", "0x2e8a", "0x10ec", 500, "SOLDERED_NULA_RP2350", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("soldered_nula_ethernet_w55rp20", "rp2040", "Soldered Electronics", "NULA Ethernet W55RP20", "0x2e8a", "0x1122", 250, "SOLDERED_NULA_ETHERNET", 2, 0, "boot2_w25q080_2_padded_checksum")
-MakeBoard("soldered_nula_node_rp2040", "rp2040", "Soldered Electronics", "NULA Node", "0x2e8a", "0x1143", 250, "SOLDERED_NULA_NODE", 16, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
+MakeBoard("soldered_nula_node_rp2040", "rp2040", "Soldered Electronics", "NULA Node", "0x2e8a", "0x1143", 250, "SOLDERED_NULA_NODE", 16, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1", "PICO_CYW43_PINOUT=23,24,24,24,29,25"])
 
 # SparkFun
-MakeBoard("sparkfun_iotredboard_rp2350", "rp2350", "SparkFun", "IoT RedBoard RP2350", "0x1b4f", "0x0047", 250, "SPARKFUN_IOTREDBOARD_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"], "https://www.sparkfun.com/sparkfun-iot-redboard-rp2350.html")
+MakeBoard("sparkfun_iotredboard_rp2350", "rp2350", "SparkFun", "IoT RedBoard RP2350", "0x1b4f", "0x0047", 250, "SPARKFUN_IOTREDBOARD_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1", "PICO_CYW43_PINOUT=24,38,38,38,37,36"], "https://www.sparkfun.com/sparkfun-iot-redboard-rp2350.html")
 MakeBoard("sparkfun_micromodrp2040", "rp2040", "SparkFun", "MicroMod RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_MICROMOD_RP2040", 16, 0, "boot2_w25q080_2_padded_checksum")
 MakeBoard("sparkfun_promicrorp2040", "rp2040", "SparkFun", "ProMicro RP2040", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2040", 16, 0, "boot2_generic_03h_4_padded_checksum")
 MakeBoard("sparkfun_promicrorp2350", "rp2350", "SparkFun", "ProMicro RP2350", "0x1b4f", "0x0026", 250, "SPARKFUN_PROMICRO_RP2350", 16, 8, "none")
@@ -745,7 +745,7 @@ MakeBoard("sparkfun_thingplusrp2040", "rp2040", "SparkFun", "Thing Plus RP2040",
 MakeBoard("sparkfun_thingplusrp2350", "rp2350", "SparkFun", "Thing Plus RP2350", "0x1b4f", "0x0038", 250, "SPARKFUN_THINGPLUS_RP2350", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
 MakeBoard("sparkfun_iotnode_lorawanrp2350", "rp2350", "SparkFun", "IoT Node LoRaWAN", "0x1b4f", "0x0044", 250, "SPARKFUN_IOTNODE_LORAWAN_RP2350", 16, 8, "none")
 MakeBoard("sparkfun_xrp_controller_beta", "rp2040", "SparkFun", "XRP Controller (Beta)", "0x1b4f", "0x0045", 250, "SPARKFUN_XRP_CONTROLLER_BETA", 2, 0, "boot2_w25q080_2_padded_checksum", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
-MakeBoard("sparkfun_xrp_controller", "rp2350", "SparkFun", "XRP Controller", "0x1b4f", "0x0046", 250, "SPARKFUN_XRP_CONTROLLER", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
+MakeBoard("sparkfun_xrp_controller", "rp2350", "SparkFun", "XRP Controller", "0x1b4f", "0x0046", 250, "SPARKFUN_XRP_CONTROLLER", 16, 8, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1", "PICO_CYW43_PINOUT=26,29,29,29,28,27"])
 
 # Seeed
 MakeBoard("seeed_indicator_rp2040", "rp2040", "Seeed", "INDICATOR RP2040", "0x2886", "0x0050", 250, "SEEED_INDICATOR_RP2040", 2, 0, "boot2_w25q080_2_padded_checksum")
@@ -778,7 +778,7 @@ MakeBoard("waveshare_rp2350_core", "rp2350", "Waveshare", "RP2350 Core", "0x2e8a
 MakeBoard("waveshare_rp2350_zero", "rp2350", "Waveshare", "RP2350 Zero", "0x2e8a", "0x10B0", 500, "WAVESHARE_RP2350_ZERO", 4, 0, "none")
 MakeBoard("waveshare_rp2350_pizero", "rp2350", "Waveshare", "RP2350 PiZero", "0x2e8a", "0x000F", 500, "WAVESHARE_RP2350_PIZERO", 16, 0, "none")
 MakeBoard("waveshare_rp2350_plus", "rp2350", "Waveshare", "RP2350 Plus", "0x2e8a", "0x10B1", 500, "WAVESHARE_RP2350_PLUS", 4, 0, "none")
-MakeBoard("waveshare_rp2350b_plus_w", "rp2350", "Waveshare", "RP2350B Plus W", "0x2e8a", "0xf00a", 500, "WAVESHARE_RP2350B_PLUS_W", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1"])
+MakeBoard("waveshare_rp2350b_plus_w", "rp2350", "Waveshare", "RP2350B Plus W", "0x2e8a", "0xf00a", 500, "WAVESHARE_RP2350B_PLUS_W", 16, 0, "none", ["PICO_CYW43_SUPPORTED=1", "CYW43_PIN_WL_DYNAMIC=1", "PICO_CYW43_PINOUT=36,37,37,37,39,38"])
 MakeBoard("waveshare_rp2350_lcd_0_96", "rp2350", "Waveshare", "RP2350 LCD 0.96", "0x2e8a", "0x10B7", 500, "WAVESHARE_RP2350_LCD_0_96", 4, 0, "none")
 MakeBoard("waveshare_rp2350_poe_eth", "rp2350", "Waveshare", "RP2350-POE-ETH", "0x2e8a", "0x10B8", 500, "WAVESHARE_RP2350_POE_ETH", 16, 0, "none")
 
