@@ -1,0 +1,15 @@
+; Adapted from RP2350-SDR-CW-Interface/wm8960_i2s_master_tx.pio.
+.program wm8960_i2s_tx
+.side_set 2
+.wrap_target
+    set x, 14         side 0b01
+left_bits:
+    out pins, 1       side 0b00
+    jmp x-- left_bits side 0b01
+    out pins, 1       side 0b10
+    set x, 14         side 0b11
+right_bits:
+    out pins, 1       side 0b10
+    jmp x-- right_bits side 0b11
+    out pins, 1       side 0b00
+.wrap
