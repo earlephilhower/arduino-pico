@@ -6388,6 +6388,12 @@ adafruit_feather_rp2350_hstx.menu.psram.8mb=8MByte PSRAM
 adafruit_feather_rp2350_hstx.menu.psram.8mb.build.psram_length=0x800000
 adafruit_feather_rp2350_hstx.menu.psram.16mb=16MByte PSRAM
 adafruit_feather_rp2350_hstx.menu.psram.16mb.build.psram_length=0x1600000
+adafruit_feather_rp2350_hstx.menu.psramfreq.freq104=104 MHz
+adafruit_feather_rp2350_hstx.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
+adafruit_feather_rp2350_hstx.menu.psramfreq.freq109=109 MHz
+adafruit_feather_rp2350_hstx.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+adafruit_feather_rp2350_hstx.menu.psramfreq.freq133=133 MHz
+adafruit_feather_rp2350_hstx.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
 adafruit_feather_rp2350_hstx.menu.opt.Small=Small (-Os) (standard)
 adafruit_feather_rp2350_hstx.menu.opt.Small.build.flags.optimize=-Os
 adafruit_feather_rp2350_hstx.menu.opt.Optimize=Optimize (-O)
@@ -7055,6 +7061,12 @@ adafruit_metro_rp2350.menu.psram.8mb=8MByte PSRAM
 adafruit_metro_rp2350.menu.psram.8mb.build.psram_length=0x800000
 adafruit_metro_rp2350.menu.psram.16mb=16MByte PSRAM
 adafruit_metro_rp2350.menu.psram.16mb.build.psram_length=0x1600000
+adafruit_metro_rp2350.menu.psramfreq.freq104=104 MHz
+adafruit_metro_rp2350.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
+adafruit_metro_rp2350.menu.psramfreq.freq109=109 MHz
+adafruit_metro_rp2350.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+adafruit_metro_rp2350.menu.psramfreq.freq133=133 MHz
+adafruit_metro_rp2350.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
 adafruit_metro_rp2350.menu.opt.Small=Small (-Os) (standard)
 adafruit_metro_rp2350.menu.opt.Small.build.flags.optimize=-Os
 adafruit_metro_rp2350.menu.opt.Optimize=Optimize (-O)
@@ -41970,7 +41982,7 @@ waveshare_rp2350_pizero.build.ldscript=memmap_default.ld
 waveshare_rp2350_pizero.build.boot2=none
 waveshare_rp2350_pizero.build.usb_manufacturer="Waveshare"
 waveshare_rp2350_pizero.build.usb_product="RP2350 PiZero"
-waveshare_rp2350_pizero.build.psram_length=0x000000
+waveshare_rp2350_pizero.build.psram_length=0x800000
 waveshare_rp2350_pizero.menu.flash.16777216_0=16MB (no FS)
 waveshare_rp2350_pizero.menu.flash.16777216_0.upload.maximum_size=16769024
 waveshare_rp2350_pizero.menu.flash.16777216_0.build.flash_total=16777216
@@ -42153,6 +42165,22 @@ waveshare_rp2350_pizero.menu.freq.276=276 MHz (Overclock)
 waveshare_rp2350_pizero.menu.freq.276.build.f_cpu=276000000L
 waveshare_rp2350_pizero.menu.freq.300=300 MHz (Overclock)
 waveshare_rp2350_pizero.menu.freq.300.build.f_cpu=300000000L
+waveshare_rp2350_pizero.menu.psram.0mb=0MByte PSRAM
+waveshare_rp2350_pizero.menu.psram.0mb.build.psram_length=0x000000
+waveshare_rp2350_pizero.menu.psram.2mb=2MByte PSRAM
+waveshare_rp2350_pizero.menu.psram.2mb.build.psram_length=0x200000
+waveshare_rp2350_pizero.menu.psram.4mb=4MByte PSRAM
+waveshare_rp2350_pizero.menu.psram.4mb.build.psram_length=0x400000
+waveshare_rp2350_pizero.menu.psram.8mb=8MByte PSRAM
+waveshare_rp2350_pizero.menu.psram.8mb.build.psram_length=0x800000
+waveshare_rp2350_pizero.menu.psram.16mb=16MByte PSRAM
+waveshare_rp2350_pizero.menu.psram.16mb.build.psram_length=0x1600000
+waveshare_rp2350_pizero.menu.psramfreq.freq104=104 MHz
+waveshare_rp2350_pizero.menu.psramfreq.freq104.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=104000000
+waveshare_rp2350_pizero.menu.psramfreq.freq109=109 MHz
+waveshare_rp2350_pizero.menu.psramfreq.freq109.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=109000000
+waveshare_rp2350_pizero.menu.psramfreq.freq133=133 MHz
+waveshare_rp2350_pizero.menu.psramfreq.freq133.build.psram_freq=-DRP2350_PSRAM_MAX_SCK_HZ=133000000
 waveshare_rp2350_pizero.menu.opt.Small=Small (-Os) (standard)
 waveshare_rp2350_pizero.menu.opt.Small.build.flags.optimize=-Os
 waveshare_rp2350_pizero.menu.opt.Optimize=Optimize (-O)
