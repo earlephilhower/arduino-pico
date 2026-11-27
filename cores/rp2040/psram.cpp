@@ -312,6 +312,7 @@ void *__psram_calloc(size_t num, size_t size) {
 }
 
 static bool max_free_walker(void *ptr, size_t size, int used, void *user) {
+    (void) ptr;
     size_t *max_size = (size_t *)user;
     if (!used && *max_size < size) {
         *max_size = size;
@@ -331,6 +332,8 @@ size_t __psram_largest_free_block() {
 }
 
 static bool memory_size_walker(void *ptr, size_t size, int used, void *user) {
+    (void) ptr;
+    (void) used;
     *((size_t *)user) += size;
     return true;
 }
@@ -347,6 +350,7 @@ size_t __psram_total_space() {
 }
 
 static bool memory_used_walker(void *ptr, size_t size, int used, void *user) {
+    (void) ptr;
     if (used) {
         *((size_t *)user) += size;
     }

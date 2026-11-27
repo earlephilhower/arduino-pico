@@ -33552,7 +33552,7 @@ soldered_nula_node_rp2040.build.ldscript=memmap_default.ld
 soldered_nula_node_rp2040.build.boot2=boot2_w25q080_2_padded_checksum
 soldered_nula_node_rp2040.build.usb_manufacturer="Soldered Electronics"
 soldered_nula_node_rp2040.build.usb_product="NULA Node"
-soldered_nula_node_rp2040.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
+soldered_nula_node_rp2040.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1 -DPICO_CYW43_PINOUT=23,24,24,24,29,25
 soldered_nula_node_rp2040.menu.flash.16777216_0=16MB (no FS)
 soldered_nula_node_rp2040.menu.flash.16777216_0.upload.maximum_size=16773120
 soldered_nula_node_rp2040.menu.flash.16777216_0.build.flash_total=16777216
@@ -33894,7 +33894,7 @@ sparkfun_iotredboard_rp2350.build.boot2=none
 sparkfun_iotredboard_rp2350.build.usb_manufacturer="SparkFun"
 sparkfun_iotredboard_rp2350.build.usb_product="IoT RedBoard RP2350"
 sparkfun_iotredboard_rp2350.build.psram_length=0x800000
-sparkfun_iotredboard_rp2350.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
+sparkfun_iotredboard_rp2350.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1 -DPICO_CYW43_PINOUT=24,38,38,38,37,36
 sparkfun_iotredboard_rp2350.menu.flash.16777216_0=16MB (no FS)
 sparkfun_iotredboard_rp2350.menu.flash.16777216_0.upload.maximum_size=16769024
 sparkfun_iotredboard_rp2350.menu.flash.16777216_0.build.flash_total=16777216
@@ -36707,7 +36707,7 @@ sparkfun_xrp_controller.build.boot2=none
 sparkfun_xrp_controller.build.usb_manufacturer="SparkFun"
 sparkfun_xrp_controller.build.usb_product="XRP Controller"
 sparkfun_xrp_controller.build.psram_length=0x800000
-sparkfun_xrp_controller.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
+sparkfun_xrp_controller.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1 -DPICO_CYW43_PINOUT=26,29,29,29,28,27
 sparkfun_xrp_controller.menu.flash.16777216_0=16MB (no FS)
 sparkfun_xrp_controller.menu.flash.16777216_0.upload.maximum_size=16769024
 sparkfun_xrp_controller.menu.flash.16777216_0.build.flash_total=16777216
@@ -42622,7 +42622,7 @@ waveshare_rp2350b_plus_w.build.boot2=none
 waveshare_rp2350b_plus_w.build.usb_manufacturer="Waveshare"
 waveshare_rp2350b_plus_w.build.usb_product="RP2350B Plus W"
 waveshare_rp2350b_plus_w.build.psram_length=0x000000
-waveshare_rp2350b_plus_w.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1
+waveshare_rp2350b_plus_w.build.extra_flags=-DPICO_CYW43_SUPPORTED=1 -DCYW43_PIN_WL_DYNAMIC=1 -DPICO_CYW43_PINOUT=36,37,37,37,39,38
 waveshare_rp2350b_plus_w.menu.flash.4194304_0=4MB (no FS)
 waveshare_rp2350b_plus_w.menu.flash.4194304_0.upload.maximum_size=4186112
 waveshare_rp2350b_plus_w.menu.flash.4194304_0.build.flash_total=4194304

@@ -207,4 +207,16 @@ extern "C" PinStatus cyw43_digitalRead(pin_size_t pin) {
     }
 }
 
+extern "C" void pinMode(pin_size_t pin, PinMode mode) {
+    cyw43_pinMode(pin, mode);
+}
+
+extern "C" void digitalWrite(pin_size_t pin, PinStatus val) {
+    cyw43_digitalWrite(pin, val);
+}
+
+extern "C" PinStatus digitalRead(pin_size_t pin) {
+    return cyw43_digitalRead(pin);
+}
+
 #endif

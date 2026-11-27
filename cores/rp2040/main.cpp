@@ -52,7 +52,21 @@ extern void __EnableBluetoothDebug(Print &);
 
 // Weak empty variant initialization. May be redefined by variant files.
 void initVariant() __attribute__((weak));
-void initVariant() { }
+
+// We do normal workflow inits for the CYW32 boards.  If you need a custom init, define PICO_CYW43_NO_DEFAULT_INIT=1 in your makeboards
+#if defined(PICO_CYW43_SUPPORTED) && !defined(PICO_CYW43_NO_DEFAULT_INIT)
+#include "cyw43_wrappers.h"
+void initVariant() {
+#ifdef PICO_CYW43_PINOUT
+    static uint cyw43_pin_array[CYW43_PIN_INDEX_WL_COUNT] = { PICO_CYW43_PINOUT };
+    cyw43_set_pins_wl(cyw43_pin_array);
+#endif // PICO_CYW43_PINOUT
+    init_cyw43_wifi();
+}
+#else // !PICO_CYW43_SUPPORTED
+void initVariant() {
+}
+#endif // PICO_CYW43_SUPPORTED
 
 // Optional 2nd core setup and loop
 bool core1_separate_stack __attribute__((weak)) = false;
